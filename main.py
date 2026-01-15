@@ -31,6 +31,12 @@ INPUT_DIR = os.getenv("INPUT_DIR", "mnt/data")
 SCREENSHOTS = [os.path.join(INPUT_DIR, s) for s in DEFAULT_SCREENSHOTS]
 GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, DEFAULT_GROUND_TRUTH)
 
+PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "4"))
+MAX_CALLS_PER_SCREEN = int(os.getenv("MAX_CALLS_PER_SCREEN", "4"))
+STOP_ON_ANCHOR_UNCERTAIN = os.getenv("STOP_ON_ANCHOR_UNCERTAIN", "0") == "1"  # keep 0: some screens may not show anchors
+
+PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1") == "1"
+
 # Model selection (override via env)
 MODEL_MAIN = os.getenv("OPENAI_MODEL", "gpt-4o")
 MODEL_ANCHOR = os.getenv("OPENAI_MODEL_ANCHOR", MODEL_MAIN)
@@ -69,7 +75,7 @@ FIELD_RETRY_MAP: Dict[str, Tuple[float, float, float, float]] = {
     "nr_altri_componenti_nucleo_familiare": (0.00, 0.40, 1.00, 0.78),
     "di_cui_percepiscono_reddito": (0.00, 0.40, 1.00, 0.78),
     "importo_totale_annuo_altri_componenti": (0.00, 0.40, 1.00, 0.82),
-    "note_scheda_privati": (0.00, 0.55, 1.00, 1.00),
+    "note": (0.00, 0.55, 1.00, 1.00),
 }
 
 # Soglia confidenza “dura” per ancore (anti errori silenziosi)
@@ -88,20 +94,47 @@ FIELD_KEYS = [
     "tipo",
     "evidenze",
     "filiale_relazione",
-    "ultima_validazione_scheda_privati",
+    "ultima_validazione",
     "professione_principale",
     "numero_mensilita",
     "retribuzione_annua_netta",
     "tipo_contratto",
-    "datore_lavoro_anagrafica",
+    "anagrafica",
     "dal",
     "rating_ufficiale",
     "score_cgs",
     "nr_altri_componenti_nucleo_familiare",
     "di_cui_percepiscono_reddito",
     "importo_totale_annuo_altri_componenti",
-    "note_scheda_privati",
+    "note",
 ]
+
+CSV_TO_SCHEMA = {
+    "NDG": "ndg",
+    "DENOMINAZIONE": "denominazione",
+    "Tipo": "tipo",
+    "Evidenze": "evidenze",
+    "Filiale relazione": "filiale_relazione",
+    "Ultima validazione": "ultima_validazione",
+    "Professione principale": "professione_principale",
+    "Numero mensilità": "numero_mensilita",
+    "Retribuzione annua netta": "retribuzione_annua_netta",
+    "Tipo contratto": "tipo_contratto",
+    "ANAGRAFICA": "anagrafica",
+    "DAL": "dal",
+    "RATING UFFICIALE": "rating_ufficiale",
+    "SCORE CGS": "score_cgs",
+    "Nr altri componenti nucleo familiare": "nr_altri_componenti_nucleo_familiare",
+    "Di cui percepiscono reddito": "di_cui_percepiscono_reddito",
+    "Importo totale annuo altri componenti nucleo familiare": "importo_totale_annuo_altri_componenti",
+    "Note": "note",
+}
+
+_SOGGETTI_KEY_MAP = {
+    "NDG": "ndg",
+    "DENOMINAZIONE": "denominazione",
+    "RUOLO": "ruolo"
+}
 
 # ============================================================
 # Prompts
@@ -125,7 +158,7 @@ Campi (label/sinonimi):
 - tipo: "Tipo"
 - evidenze: "Evidenze"
 - filiale_relazione: "Filiale relazione"
-- ultima_validazione_scheda_privati: "Ultima validazione"
+- ultima_validazione: "Ultima validazione"
 - professione_principale: "PROFESSIONE PRINCIPALE"
 - numero_mensilita: "NUMERO MENSILITÀ", "MENSILITA"
 - retribuzione_annua_netta: "RETRIBUZIONE ANNUA NETTA"
@@ -137,7 +170,7 @@ Campi (label/sinonimi):
 - nr_altri_componenti_nucleo_familiare: "NR. ALTRI COMPONENTI NUCLEO FAMILIARE"
 - di_cui_percepiscono_reddito: "DI CUI PERCEPISCONO REDDITO"
 - importo_totale_annuo_altri_componenti: "IMPORTO TOTALE ANNUO"
-- note_scheda_privati: "NOTE", "NOTE CONCLUSIVE"
+- note: "NOTE", "NOTE CONCLUSIVE"
 
 Restituisci SOLO JSON.
 """.strip()
@@ -274,6 +307,28 @@ def normalize_tipo(val: Any) -> Any:
 # Helpers
 # ============================================================
 
+def infer_screenshots_from_gt(gt: Dict[str, Dict[str, Any]], base_dir: str = ".") -> List[str]:
+    """
+    Builds an ordered list of screenshot file paths from GT keys.
+    Assumes files are named like 'screen 1.png' and located in base_dir (default: current working directory).
+    """
+    names = sorted(gt.keys(), key=lambda s: (re.sub(r"\D+", "", s) or "0", s))
+    paths = []
+    for name in names:
+        candidate = os.path.join(base_dir, f"{name}.png") if not name.lower().endswith(".png") else os.path.join(base_dir, name)
+        # Common naming from your project: 'screen 1.png'
+        if os.path.exists(candidate):
+            paths.append(candidate)
+            continue
+        # Try also with spaces normalized
+        candidate2 = os.path.join(base_dir, name)
+        if os.path.exists(candidate2):
+            paths.append(candidate2)
+            continue
+        # If not found, still append the canonical expected path for visibility
+        paths.append(os.path.join(base_dir, f"{name}.png"))
+    return paths
+
 def estimate_cost_usd(model: str, prompt_tokens: int, completion_tokens: int) -> float:
     p = PRICING_PER_1M.get(model)
     if not p:
@@ -310,11 +365,11 @@ def is_nullish(v: Any) -> bool:
 
 def safe_field(fields: Dict[str, Any], key: str) -> Dict[str, Any]:
     """
-    Under strict JSON schema, individual fields may be null.
-    This helper always returns a dict with the expected keys.
+    Fields may be None under the JSON schema. This helper always returns a dict-like field with defaults.
     """
     f = (fields or {}).get(key)
     if isinstance(f, dict):
+        # Ensure required keys exist
         return {
             "value": f.get("value"),
             "confidence": float(f.get("confidence", 0.0) or 0.0),
@@ -323,10 +378,10 @@ def safe_field(fields: Dict[str, Any], key: str) -> Dict[str, Any]:
         }
     return {"value": None, "confidence": 0.0, "evidence_text": None, "section": None}
 
+
+
 def safe_set_field(fields: Dict[str, Any], key: str, *, value=None, confidence=None, evidence_text=None, section=None) -> None:
-    """
-    Ensures fields[key] is a dict, then sets provided attributes.
-    """
+    """Ensure fields[key] is a dict (not None) and set provided attributes safely."""
     if fields is None:
         return
     f = fields.get(key)
@@ -368,7 +423,41 @@ def pick_best(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, Any]:
         return a
     return a if a.get("confidence", 0.0) >= b.get("confidence", 0.0) else b
 
-def classify_field(gt_val, pred_val) -> str:
+def _extract_date_ddmmyyyy(s: Any) -> str:
+    if s is None:
+        return ""
+    m = re.search(r"(\b\d{2}/\d{2}/\d{4}\b)", str(s))
+    return m.group(1) if m else ""
+
+def _norm_company(s: Any) -> str:
+    if s is None:
+        return ""
+    x = str(s).upper()
+    x = re.sub(r"[^A-Z0-9 ]+", " ", x)  # remove punctuation
+    x = re.sub(r"\bS\s*P\s*A\b", "SPA", x)
+    x = re.sub(r"\bS\.?P\.?A\.?\b", "SPA", x)
+    x = re.sub(r"\s+", " ", x).strip()
+    return x
+
+def _norm_text_aggressive(s: Any) -> str:
+    if s is None:
+        return ""
+    x = str(s).lower()
+    x = re.sub(r"[\r\n\t]+", " ", x)
+    x = re.sub(r"[^a-z0-9àèéìòù ]+", " ", x)
+    x = re.sub(r"\s+", " ", x).strip()
+    return x
+
+def _similar(a: str, b: str) -> float:
+    # lightweight similarity without extra deps
+    from difflib import SequenceMatcher
+    return SequenceMatcher(None, a, b).ratio()
+
+def classify_field(gt_val, pred_val, field_key: Optional[str] = None) -> str:
+    """
+    Returns: OK, WRONG, MISSING, HALLUCINATED, OK_NULL
+    field_key is optional and enables field-specific normalization.
+    """
     gt_null = is_nullish(gt_val) or (str(gt_val).strip().lower() == "nan")
     pr_null = is_nullish(pred_val)
 
@@ -378,39 +467,21 @@ def classify_field(gt_val, pred_val) -> str:
         return "HALLUCINATED"
     if gt_null and pr_null:
         return "OK_NULL"
+
+    # both present: field-specific compares
+    if field_key == "ultima_validazione":
+        return "OK" if _extract_date_ddmmyyyy(gt_val) == _extract_date_ddmmyyyy(pred_val) else "WRONG"
+
+    if field_key == "datore_lavoro_anagrafica":
+        return "OK" if _norm_company(gt_val) == _norm_company(pred_val) else "WRONG"
+
+    if field_key == "note":
+        a = _norm_text_aggressive(gt_val)
+        b = _norm_text_aggressive(pred_val)
+        return "OK" if _similar(a, b) >= 0.90 else "WRONG"
+
+    # default exactish compare
     return "OK" if norm_text(pred_val) == norm_text(gt_val) else "WRONG"
-
-# ============================================================
-# CSV mapping (strip-safe)
-# ============================================================
-CSV_TO_SCHEMA = {
-    "NDG": "ndg",
-    "DENOMINAZIONE": "denominazione",
-    "Tipo": "tipo",
-    "Evidenze": "evidenze",
-    "Filiale relazione": "filiale_relazione",
-    "Ultima validazione scheda privati": "ultima_validazione_scheda_privati",
-    "Professione principale": "professione_principale",
-    "Numero mensilità": "numero_mensilita",
-    "Retribuzione annua netta": "retribuzione_annua_netta",
-    "Tipo contratto": "tipo_contratto",
-    "DATORE DI LAVORO ANAGRAFICA": "datore_lavoro_anagrafica",
-    "DAL": "dal",
-    "RATING UFFICIALE": "rating_ufficiale",
-    "SCORE CGS": "score_cgs",
-    "Nr altri componenti nucleo familiare": "nr_altri_componenti_nucleo_familiare",
-    "Di cui percepiscono reddito": "di_cui_percepiscono_reddito",
-    "Importo totale annuo altri componenti nucleo familiare": "importo_totale_annuo_altri_componenti",
-    "Note Scheda Privati": "note_scheda_privati",
-}
-
-
-# ---- Helpers: table "soggetti" mapping (NDG 1..N, DENOMINAZIONE 1..N, RUOLO 1..N) ----
-_SOGGETTI_KEY_MAP = {
-    "NDG": "ndg",
-    "DENOMINAZIONE": "denominazione",
-    "RUOLO": "ruolo",
-}
 
 def _parse_tabular_subject_key(gt_key: str):
     """Return (base_key, idx0) if gt_key is like 'NDG 1' or 'DENOMINAZIONE 2' or 'RUOLO 3'."""
@@ -541,6 +612,39 @@ def call_vlm(
     out["attempt"] = attempt
     return out
 
+def call_vlm_with_retry(
+    client: OpenAI,
+    image_bytes: bytes,
+    prompt: str,
+    screen_id: str,
+    attempt: str,
+    model: str,
+    schema: Dict[str, Any],
+    max_retries: int = 3,
+) -> Dict[str, Any]:
+    """
+    Retry wrapper for transient API errors (rate limits, timeouts).
+    Keeps observability intact; each successful call returns the same structure as call_vlm().
+    """
+    last_err = None
+    for i in range(max_retries):
+        try:
+            return call_vlm(
+                client=client,
+                image_bytes=image_bytes,
+                prompt=prompt,
+                screen_id=screen_id,
+                attempt=attempt,
+                model=model,
+                schema=schema,
+            )
+        except Exception as e:
+            last_err = e
+            # Exponential backoff with jitter (bounded)
+            sleep_s = min(8.0, (2 ** i) * 0.8) + (0.05 * i)
+            time.sleep(sleep_s)
+    raise last_err
+
 def _save_debug_crop(img: Image.Image, screen_id: str, name: str) -> None:
     if not DEBUG_SAVE_CROPS:
         return
@@ -556,7 +660,7 @@ def extract_anchors(client: OpenAI, content_img: Image.Image, screen_id: str) ->
     _save_debug_crop(header_img, screen_id, "HEADER_IN_CONTENT")
 
     payload = img_to_png_bytes(header_img)
-    out = call_vlm(
+    out = call_vlm_with_retry(
         client=client,
         image_bytes=payload,
         prompt=ANCHOR_PROMPT,
@@ -622,7 +726,7 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
         anchor_hint.append(f"Denominazione attesa: {anchors['denominazione']['value']}")
     prompt_with_hint = PROMPT + ("\n\n" + "\n".join(anchor_hint) if anchor_hint else "")
 
-    main_out = call_vlm(
+    main_out = call_vlm_with_retry(
         client=client,
         image_bytes=payload,
         prompt=prompt_with_hint,
@@ -664,7 +768,7 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
         crop_img = crop_relative(content_img, crop_box)
         _save_debug_crop(crop_img, screen_id, f"RETRY_{field_key}")
 
-        retry_out = call_vlm(
+        retry_out = call_vlm_with_retry(
             client=client,
             image_bytes=img_to_png_bytes(crop_img),
             prompt=prompt_with_hint,
@@ -716,29 +820,65 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
 # Ground truth loader
 # ============================================================
 def load_ground_truth(csv_path: str) -> Dict[str, Dict[str, Any]]:
+    """
+    Supports both:
+      - Screenshot, Denominazione da attribuire, Valore rilevato 
+      - Fotogramma, Denominazione da attribuire, Valore rilevato 
+    (some files may have trailing spaces in column names).
+    Returns: { "screen 1": { "NDG": "...", ... }, ... }
+    """
     df = pd.read_csv(csv_path)
 
-    df["Screenshot"] = df["Screenshot"].astype(str).str.strip()
-    df["Denominazione da attribuire"] = df["Denominazione da attribuire"].astype(str).str.strip()
+    # Normalize columns (strip)
+    df.columns = [str(c).strip() for c in df.columns]
 
-    # Colonna con spazio finale nel file
-    val_col = "Valore rilevato "
-    df[val_col] = df[val_col].astype(str).str.strip()
+    # Find screen column
+    screen_col = None
+    for c in ("Screenshot", "Fotogramma", "Screen", "screen"):
+        if c in df.columns:
+            screen_col = c
+            break
+    if screen_col is None:
+        raise ValueError(f"Cannot find screen column in CSV. Columns={df.columns.tolist()}")
+
+    # Find value column (some files have a trailing space)
+    value_col = None
+    for c in ("Valore rilevato", "Valore rilevato ", "Valore", "Value"):
+        if c in df.columns:
+            value_col = c
+            break
+    if value_col is None:
+        raise ValueError(f"Cannot find value column in CSV. Columns={df.columns.tolist()}")
+
+    key_col = None
+    for c in ("Denominazione da attribuire", "Denominazione", "Campo", "Field"):
+        if c in df.columns:
+            key_col = c
+            break
+    if key_col is None:
+        raise ValueError(f"Cannot find key column in CSV. Columns={df.columns.tolist()}")
+
+    df[screen_col] = df[screen_col].astype(str).str.strip()
+    df[key_col] = df[key_col].astype(str).str.strip()
+    df[value_col] = df[value_col].astype(str).str.strip()
 
     gt: Dict[str, Dict[str, Any]] = {}
     for _, row in df.iterrows():
-        scr = str(row["Screenshot"]).strip()
-        key = row["Denominazione da attribuire"]
-        if key is None or str(key).strip().lower() in ("nan", ""):
+        scr = row[screen_col]
+        key = row[key_col]
+        val = row[value_col]
+
+        # Skip empty keys
+        if key is None or str(key).strip().lower() in ("", "nan", "none"):
             continue
-        key = str(key).strip()  # IMPORTANT: elimina trailing spaces tipo "Evidenze "
-        val = row[val_col]
+        key = str(key).strip()
+        if val is None or str(val).strip().lower() in ("nan",):
+            val = ""
+
         gt.setdefault(scr, {})[key] = val
+
     return gt
 
-# ============================================================
-# Evaluation & reporting
-# ============================================================
 def eval_outputs(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]]) -> None:
     # Two metrics: raw and filtered (exclude dataset mismatch)
     total_raw = correct_raw = 0
@@ -814,7 +954,7 @@ def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[st
             if source_key is None:
                 continue
 
-            status = "DATASET_MISMATCH" if mismatch else classify_field(gt_val, pred_val)
+            status = "DATASET_MISMATCH" if mismatch else classify_field(gt_val, pred_val, field_key=source_key)
 
             source_attempt = ""
             if source_key in FIELD_KEYS:
@@ -867,15 +1007,42 @@ def main():
 
     gt = load_ground_truth(GROUND_TRUTH_CSV)
 
-    outputs: Dict[str, Dict[str, Any]] = {}
-    for p in SCREENSHOTS:
-        if not os.path.exists(p):
-            print(f"Warning: File not found {p}")
-            continue
-        screen_id = os.path.splitext(os.path.basename(p))[0]
-        print(f"Extracting {screen_id} ...")
-        outputs[screen_id] = extract_from_screen(client, p)
+    # Infer screenshots from GT if present (supports 5+ screens)
+    global SCREENSHOTS
+    base_dir = os.getenv('SCREENSHOT_DIR', INPUT_DIR)  # Use INPUT_DIR by default
+    SCREENSHOTS = infer_screenshots_from_gt(gt, base_dir=base_dir)
 
+    outputs: Dict[str, Dict[str, Any]] = {}
+
+    def _worker_extract(path: str) -> Tuple[str, Dict[str, Any]]:
+        # Create a dedicated client per thread to avoid any thread-safety surprises
+        local_client = OpenAI()
+        screen_id_local = os.path.splitext(os.path.basename(path))[0]
+        return screen_id_local, extract_from_screen(local_client, path)
+
+    existing_paths = [p for p in SCREENSHOTS if os.path.exists(p)]
+    missing_paths = [p for p in SCREENSHOTS if not os.path.exists(p)]
+    for p in missing_paths:
+        print(f"Warning: File not found {p}")
+
+    if PARALLEL_ENABLED and PARALLEL_WORKERS > 1 and len(existing_paths) > 1:
+        print(f"Parallel enabled: workers={PARALLEL_WORKERS}, screens={len(existing_paths)}")
+        with ThreadPoolExecutor(max_workers=PARALLEL_WORKERS) as ex:
+            futs = {ex.submit(_worker_extract, p): p for p in existing_paths}
+            for fut in as_completed(futs):
+                p = futs[fut]
+                screen_id = os.path.splitext(os.path.basename(p))[0]
+                try:
+                    sid, out = fut.result()
+                    outputs[sid] = out
+                    print(f"Done {sid}")
+                except Exception as e:
+                    print(f"ERROR extracting {screen_id}: {e}")
+    else:
+        for p in existing_paths:
+            screen_id = os.path.splitext(os.path.basename(p))[0]
+            print(f"Extracting {screen_id} ...")
+            outputs[screen_id] = extract_from_screen(client, p)
     # Save outputs
     outputs_path = os.path.join(INPUT_DIR, "poc_outputs_improved.json")
     with open(outputs_path, "w", encoding="utf-8") as f:
@@ -895,3 +1062,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+

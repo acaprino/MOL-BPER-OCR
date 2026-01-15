@@ -1,31 +1,39 @@
 screen,field,gt_key,gt_value,pred_value,confidence,evidence_text,section,status,source_attempt,screen_calls,screen_total_tokens,screen_estimated_cost_usd,screen_latency_ms,_status
-screen 1,ndg,NDG,31943680,31943680,0.95,"31943680 TICCHI SERENA, CABRAS LUCA",NDG Denominazione,OK,ANCHOR_HEADER,11,29455,0.11212,200324,OK
-screen 1,denominazione,DENOMINAZIONE,"TICCHI SERENA, CABRAS LUCA","TICCHI SERENA, CABRAS LUCA",0.95,"31943680 TICCHI SERENA, CABRAS LUCA",NDG Denominazione,OK,ANCHOR_HEADER,11,29455,0.11212,200324,OK
-screen 1,tipo,Tipo,BPI Mutui,BPI Mutui,0.9,BPI Mutui,,OK,RETRY_tipo,11,29455,0.11212,200324,OK
-screen 1,evidenze,Evidenze,P,15090,0.9,15090,,WRONG,CONTENT_MAIN,11,29455,0.11212,200324,OK
-screen 2,soggetti[0].ndg,NDG 1,31943680,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[0].denominazione,DENOMINAZIONE 1,"TICCHI SERENA, CABRAS LUCA",,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[0].ruolo,RUOLO 1,Richiedente,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[1].ndg,NDG 2,18504264,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[1].denominazione,DENOMINAZIONE 2,TICCHI SERENA,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[1].ruolo,RUOLO 2,Nuovo Garante/nuovo Datore di Pegno,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[2].ndg,NDG 3,26282163,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[2].denominazione,DENOMINAZIONE 3,TICCHI Maurizio,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[2].ruolo,RUOLO 3,Nuovo Garante/nuovo Datore di Pegno,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[3].ndg,NDG 4,27202091,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[3].denominazione,DENOMINAZIONE 4,CABRAS LUCA,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,soggetti[3].ruolo,RUOLO 4,Nuovo Garante/nuovo Datore di Pegno,,0.0,,,DATASET_MISMATCH,,14,37651,0.142833,253509,OK
-screen 2,filiale_relazione,Filiale relazione,3620 - Genova 24,,0.0,,,DATASET_MISMATCH,CONTENT_MAIN,14,37651,0.142833,253509,OK
-screen 3,ultima_validazione_scheda_privati,Ultima validazione scheda privati,08/07/2025 (20 ore fa),08/07/2025 14:01,0.9,08/07/2025 14:01 (20 ore fa),Ultima validazione,WRONG,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 3,professione_principale,Professione principale,Operaio imprese private (servizi),OPERAIO IMPRESE PRIVATE (SERVIZI),0.9,PROFESSIONE PRINCIPALE OPERAIO IMPRESE PRIVATE (SERVIZI),ENTRATE CONTINUATIVE,OK,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 3,numero_mensilita,Numero mensilità,13,13,0.9,NUMERO MENSILITA 13,ENTRATE CONTINUATIVE,OK,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 3,retribuzione_annua_netta,Retribuzione annua netta,27000,27.000,0.9,RETRIBUZIONE ANNUA NETTA 27.000,ENTRATE CONTINUATIVE,WRONG,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 3,tipo_contratto,Tipo contratto,Tempo indeterminato,TEMPO INDETERMINATO,0.9,TIPO CONTRATTO TEMPO INDETERMINATO,ENTRATE CONTINUATIVE,OK,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 3,datore_lavoro_anagrafica,DATORE DI LAVORO ANAGRAFICA,COSME spa,COSME S.P.A.,0.9,ANAGRAFICA COSME S.P.A.,DATORE DI LAVORO,WRONG,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 3,dal,DAL,giugno 2021,GIUGNO 2021,0.9,DAL GIUGNO 2021,ENTRATE CONTINUATIVE,OK,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 3,rating_ufficiale,RATING UFFICIALE,nan,,0.3,RATING UFFICIALE N/D,DATORE DI LAVORO,OK_NULL,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 3,score_cgs,SCORE CGS,nan,,0.3,SCORE CGS N/D,DATORE DI LAVORO,OK_NULL,CONTENT_MAIN,8,20959,0.079113,163285,OK
-screen 4,nr_altri_componenti_nucleo_familiare,Nr altri componenti nucleo familiare,1,1,0.9,NR. ALTRI COMPONENTI NUCLEO FAMILIARE 1,SITUAZIONE FAMILIARE,OK,CONTENT_MAIN,9,22319,0.076745,110137,ANCHOR_UNCERTAIN
-screen 4,di_cui_percepiscono_reddito,Di cui percepiscono reddito,1,1,0.9,DI CUI PERCEPISCONO REDDITO 1,SITUAZIONE FAMILIARE,OK,CONTENT_MAIN,9,22319,0.076745,110137,ANCHOR_UNCERTAIN
-screen 4,importo_totale_annuo_altri_componenti,Importo totale annuo altri componenti nucleo familiare,4000,4000,0.9,IMPORTO TOTALE ANNUO ALTRI COMPONENTI NUCLEO FAMILIARE 4.000,SITUAZIONE FAMILIARE,OK,CONTENT_MAIN,9,22319,0.076745,110137,ANCHOR_UNCERTAIN
-screen 4,note_scheda_privati,Note Scheda Privati,non cliente da inserire come garante per il mutuo cointestato 017-5503355. Lavora a tempo indeterminato e vive con la moglie in casa di proprietà. La moglie percepisce piccole pensione. Non ha impegni in corso.,non cliente da inserire come garante per il mutuo cointestato 017-5503535 Lavora a tempo indeterminato e vive con la moglie in casa di proprietà. La moglie percepisce piccola pensione. Non ha impegni in corso.,0.9,NOTE: non cliente da inserire come garante per il mutuo cointestato 017-5503535 Lavora a tempo indeterminato e vive con la moglie in casa di proprietà. La moglie percepisce piccola pensione. Non ha impegni in corso.,NOTE CONCLUSIVE,WRONG,CONTENT_MAIN,9,22319,0.076745,110137,ANCHOR_UNCERTAIN
+screen 1,ndg,NDG,31943680,31943680,0.95,"NDG
+31943680",,DATASET_MISMATCH,ANCHOR_HEADER,12,32355,0.12597,188555,OK
+screen 1,denominazione,DENOMINAZIONE,"TICCHI SERENA, CABRAS LUCA","TICCHI SERENA,CABRAS LUCA",0.95,"Denominazione
+TICCHI SERENA,CABRAS LUCA",,DATASET_MISMATCH,ANCHOR_HEADER,12,32355,0.12597,188555,OK
+screen 1,tipo,Tipo,BPI Mutui,BPI Mutui Sospeso,1.0,BPI Mutui Sospeso,,DATASET_MISMATCH,CONTENT_MAIN,12,32355,0.12597,188555,OK
+screen 1,evidenze,Evidenze,P,,0.3,,,DATASET_MISMATCH,CONTENT_MAIN,12,32355,0.12597,188555,OK
+screen 2,soggetti[0].ndg,NDG 1,31943680,31943080,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+31943080 TICCHI SERENA CABRAS LUCA Richiedente Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[0].denominazione,DENOMINAZIONE 1,"TICCHI SERENA, CABRAS LUCA",TICCHI SERENA CABRAS LUCA,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+31943080 TICCHI SERENA CABRAS LUCA Richiedente Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[0].ruolo,RUOLO 1,Richiedente,Richiedente,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+31943080 TICCHI SERENA CABRAS LUCA Richiedente Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[1].ndg,NDG 2,18504264,18604264,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+18604264 TICCHI SERENA Nuovo Garante/nuovo Datore Di Pegno Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[1].denominazione,DENOMINAZIONE 2,TICCHI SERENA,TICCHI SERENA,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+18604264 TICCHI SERENA Nuovo Garante/nuovo Datore Di Pegno Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[1].ruolo,RUOLO 2,Nuovo Garante/nuovo Datore di Pegno,Nuovo Garante/nuovo Datore Di Pegno,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+18604264 TICCHI SERENA Nuovo Garante/nuovo Datore Di Pegno Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[2].ndg,NDG 3,26282163,20221063,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+20221063 TICCHI MAURIZIO Nuovo Garante/nuovo Datore Di Pegno Istruttoria",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[2].denominazione,DENOMINAZIONE 3,TICCHI Maurizio,TICCHI MAURIZIO,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+20221063 TICCHI MAURIZIO Nuovo Garante/nuovo Datore Di Pegno Istruttoria",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[2].ruolo,RUOLO 3,Nuovo Garante/nuovo Datore di Pegno,Nuovo Garante/nuovo Datore Di Pegno,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+20221063 TICCHI MAURIZIO Nuovo Garante/nuovo Datore Di Pegno Istruttoria",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[3].ndg,NDG 4,27202091,2722001,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+2722001 CABRAS LUCA Nuovo Garante/nuovo Datore Di Pegno Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[3].denominazione,DENOMINAZIONE 4,CABRAS LUCA,CABRAS LUCA,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+2722001 CABRAS LUCA Nuovo Garante/nuovo Datore Di Pegno Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,soggetti[3].ruolo,RUOLO 4,Nuovo Garante/nuovo Datore di Pegno,Nuovo Garante/nuovo Datore Di Pegno,0.9,"NDG Denominazione Ruolo Fase di perfezionamento Privacy Titolare effettivo Q.A.V. Azioni
+2722001 CABRAS LUCA Nuovo Garante/nuovo Datore Di Pegno Verifica Preliminare",,DATASET_MISMATCH,,14,38920,0.15757,265221,OK
+screen 2,filiale_relazione,Filiale relazione,3620 - Genova 24,3620 - GENOVA 24,0.9,Filiale relazione: 3620 - GENOVA 24,DETTAGLIO PRATICA,DATASET_MISMATCH,CONTENT_MAIN,14,38920,0.15757,265221,OK
+screen 4,professione_principale,Professione principale,Operaio imprese private (servizi),OPERAIO IMPRESE PRIVATE (SERVIZI),0.9,OPERAIO IMPRESE PRIVATE (SERVIZI),Redditi da lavoro / Pensione,OK,CONTENT_MAIN,9,23570,0.089375,120023,OK
+screen 4,numero_mensilita,Numero mensilità,13,13,0.9,13,Redditi da lavoro / Pensione,OK,CONTENT_MAIN,9,23570,0.089375,120023,OK
+screen 4,retribuzione_annua_netta,Retribuzione annua netta,27000,"27,000",0.9,"27,000",Redditi da lavoro / Pensione,WRONG,CONTENT_MAIN,9,23570,0.089375,120023,OK
+screen 4,tipo_contratto,Tipo contratto,Tempo indeterminato,TEMPO INDETERMINATO,0.9,TEMPO INDETERMINATO,Redditi da lavoro / Pensione,OK,CONTENT_MAIN,9,23570,0.089375,120023,OK
+screen 4,dal,DAL,giugno 2021,GIUGNO 2021,0.9,GIUGNO 2021,Datore di lavoro,OK,CONTENT_MAIN,9,23570,0.089375,120023,OK
+screen 4,rating_ufficiale,RATING UFFICIALE,,,0.3,N/D,Datore di lavoro,OK_NULL,CONTENT_MAIN,9,23570,0.089375,120023,OK
+screen 4,score_cgs,SCORE CGS,,,0.3,N/D,,OK_NULL,CONTENT_MAIN,9,23570,0.089375,120023,OK
