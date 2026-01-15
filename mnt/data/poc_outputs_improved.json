@@ -1,0 +1,1080 @@
+{
+  "screen 1": {
+    "screen_id": "screen 1",
+    "attempt": "CONTENT_MAIN",
+    "fields": {
+      "ndg": {
+        "value": "31943680",
+        "confidence": 0.95,
+        "evidence_text": "31943680",
+        "section": null
+      },
+      "denominazione": {
+        "value": "TICCHI SERENA,CABRAS LUCA",
+        "confidence": 0.95,
+        "evidence_text": "TICCHI SERENA,CABRAS LUCA",
+        "section": null
+      },
+      "tipo": {
+        "value": "BPI Mutui Sospeso",
+        "confidence": 0.9,
+        "evidence_text": "BPI Mutui Sospeso",
+        "section": null
+      },
+      "evidenze": {
+        "value": "15080",
+        "confidence": 0.9,
+        "evidence_text": "15080",
+        "section": null
+      },
+      "filiale_relazione": {
+        "value": "3020",
+        "confidence": 0.9,
+        "evidence_text": "3020",
+        "section": null
+      },
+      "ultima_validazione_scheda_privati": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "professione_principale": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "numero_mensilita": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "retribuzione_annua_netta": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "tipo_contratto": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "datore_lavoro_anagrafica": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "dal": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "rating_ufficiale": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "score_cgs": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "nr_altri_componenti_nucleo_familiare": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "di_cui_percepiscono_reddito": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "importo_totale_annuo_altri_componenti": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "note_scheda_privati": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      }
+    },
+    "soggetti": [
+      {
+        "ndg": "31943680",
+        "denominazione": "TICCHI SERENA,CABRAS LUCA",
+        "ruolo": null,
+        "confidence": 0.9,
+        "evidence_text": "31943680 TICCHI SERENA,CABRAS LUCA"
+      }
+    ],
+    "_meta": {
+      "model": "gpt-4o",
+      "screen_id": "screen 1",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 24938,
+      "prompt_tokens": 2740,
+      "completion_tokens": 585,
+      "total_tokens": 3325,
+      "estimated_cost_usd": 0.0127
+    },
+    "_attempts": [
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 4454,
+        "prompt_tokens": 864,
+        "completion_tokens": 86,
+        "total_tokens": 950,
+        "estimated_cost_usd": 0.00302
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 24938,
+        "prompt_tokens": 2740,
+        "completion_tokens": 585,
+        "total_tokens": 3325,
+        "estimated_cost_usd": 0.0127
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_professione_principale",
+        "latency_ms": 18663,
+        "prompt_tokens": 2230,
+        "completion_tokens": 583,
+        "total_tokens": 2813,
+        "estimated_cost_usd": 0.011405
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_numero_mensilita",
+        "latency_ms": 19591,
+        "prompt_tokens": 2230,
+        "completion_tokens": 575,
+        "total_tokens": 2805,
+        "estimated_cost_usd": 0.011325
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_retribuzione_annua_netta",
+        "latency_ms": 18199,
+        "prompt_tokens": 2230,
+        "completion_tokens": 529,
+        "total_tokens": 2759,
+        "estimated_cost_usd": 0.010865
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_tipo_contratto",
+        "latency_ms": 17541,
+        "prompt_tokens": 2230,
+        "completion_tokens": 575,
+        "total_tokens": 2805,
+        "estimated_cost_usd": 0.011325
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_datore_lavoro_anagrafica",
+        "latency_ms": 17111,
+        "prompt_tokens": 2230,
+        "completion_tokens": 496,
+        "total_tokens": 2726,
+        "estimated_cost_usd": 0.010535
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_dal",
+        "latency_ms": 21172,
+        "prompt_tokens": 2230,
+        "completion_tokens": 515,
+        "total_tokens": 2745,
+        "estimated_cost_usd": 0.010725
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_nr_altri_componenti_nucleo_familiare",
+        "latency_ms": 13111,
+        "prompt_tokens": 2230,
+        "completion_tokens": 493,
+        "total_tokens": 2723,
+        "estimated_cost_usd": 0.010505
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_di_cui_percepiscono_reddito",
+        "latency_ms": 15236,
+        "prompt_tokens": 2230,
+        "completion_tokens": 494,
+        "total_tokens": 2724,
+        "estimated_cost_usd": 0.010515
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_importo_totale_annuo_altri_componenti",
+        "latency_ms": 19185,
+        "prompt_tokens": 2230,
+        "completion_tokens": 496,
+        "total_tokens": 2726,
+        "estimated_cost_usd": 0.010535
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_note_scheda_privati",
+        "latency_ms": 18084,
+        "prompt_tokens": 2230,
+        "completion_tokens": 504,
+        "total_tokens": 2734,
+        "estimated_cost_usd": 0.010615
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gpt-4o",
+      "model_anchor": "gpt-4o",
+      "calls": 12,
+      "prompt_tokens": 25904,
+      "completion_tokens": 5931,
+      "total_tokens": 31835,
+      "estimated_cost_usd": 0.12407,
+      "latency_ms": 207285
+    },
+    "_field_sources": {
+      "ndg": "ANCHOR_HEADER",
+      "denominazione": "ANCHOR_HEADER",
+      "tipo": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "ultima_validazione_scheda_privati": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "datore_lavoro_anagrafica": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo_familiare": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_altri_componenti": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN"
+    },
+    "_status": "OK"
+  },
+  "screen 2": {
+    "screen_id": "screen 2",
+    "attempt": "CONTENT_MAIN",
+    "fields": {
+      "ndg": {
+        "value": "26282163",
+        "confidence": 0.95,
+        "evidence_text": "26282163",
+        "section": null
+      },
+      "denominazione": {
+        "value": "TICCHI MAURIZIO",
+        "confidence": 0.9,
+        "evidence_text": "TICCHI MAURIZIO",
+        "section": null
+      },
+      "tipo": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "evidenze": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "filiale_relazione": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "ultima_validazione_scheda_privati": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "professione_principale": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "numero_mensilita": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "retribuzione_annua_netta": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "tipo_contratto": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "datore_lavoro_anagrafica": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "dal": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "rating_ufficiale": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "score_cgs": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "nr_altri_componenti_nucleo_familiare": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "di_cui_percepiscono_reddito": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "importo_totale_annuo_altri_componenti": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "note_scheda_privati": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      }
+    },
+    "soggetti": [],
+    "_meta": {
+      "model": "gpt-4o",
+      "screen_id": "screen 2",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 25389,
+      "prompt_tokens": 2724,
+      "completion_tokens": 514,
+      "total_tokens": 3238,
+      "estimated_cost_usd": 0.01195
+    },
+    "_attempts": [
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 3210,
+        "prompt_tokens": 864,
+        "completion_tokens": 62,
+        "total_tokens": 926,
+        "estimated_cost_usd": 0.00278
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 25389,
+        "prompt_tokens": 2724,
+        "completion_tokens": 514,
+        "total_tokens": 3238,
+        "estimated_cost_usd": 0.01195
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_professione_principale",
+        "latency_ms": 19131,
+        "prompt_tokens": 2214,
+        "completion_tokens": 517,
+        "total_tokens": 2731,
+        "estimated_cost_usd": 0.010705
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_numero_mensilita",
+        "latency_ms": 20247,
+        "prompt_tokens": 2214,
+        "completion_tokens": 512,
+        "total_tokens": 2726,
+        "estimated_cost_usd": 0.010655
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_retribuzione_annua_netta",
+        "latency_ms": 43868,
+        "prompt_tokens": 2214,
+        "completion_tokens": 515,
+        "total_tokens": 2729,
+        "estimated_cost_usd": 0.010685
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_tipo_contratto",
+        "latency_ms": 19974,
+        "prompt_tokens": 2214,
+        "completion_tokens": 567,
+        "total_tokens": 2781,
+        "estimated_cost_usd": 0.011205
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_datore_lavoro_anagrafica",
+        "latency_ms": 19385,
+        "prompt_tokens": 2214,
+        "completion_tokens": 516,
+        "total_tokens": 2730,
+        "estimated_cost_usd": 0.010695
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_dal",
+        "latency_ms": 26498,
+        "prompt_tokens": 2214,
+        "completion_tokens": 568,
+        "total_tokens": 2782,
+        "estimated_cost_usd": 0.011215
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_tipo",
+        "latency_ms": 19057,
+        "prompt_tokens": 2214,
+        "completion_tokens": 500,
+        "total_tokens": 2714,
+        "estimated_cost_usd": 0.010535
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_evidenze",
+        "latency_ms": 18733,
+        "prompt_tokens": 2214,
+        "completion_tokens": 498,
+        "total_tokens": 2712,
+        "estimated_cost_usd": 0.010515
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_nr_altri_componenti_nucleo_familiare",
+        "latency_ms": 16765,
+        "prompt_tokens": 2214,
+        "completion_tokens": 496,
+        "total_tokens": 2710,
+        "estimated_cost_usd": 0.010495
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_di_cui_percepiscono_reddito",
+        "latency_ms": 11955,
+        "prompt_tokens": 2214,
+        "completion_tokens": 496,
+        "total_tokens": 2710,
+        "estimated_cost_usd": 0.010495
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_importo_totale_annuo_altri_componenti",
+        "latency_ms": 8859,
+        "prompt_tokens": 2214,
+        "completion_tokens": 496,
+        "total_tokens": 2710,
+        "estimated_cost_usd": 0.010495
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_note_scheda_privati",
+        "latency_ms": 19377,
+        "prompt_tokens": 2214,
+        "completion_tokens": 508,
+        "total_tokens": 2722,
+        "estimated_cost_usd": 0.010615
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gpt-4o",
+      "model_anchor": "gpt-4o",
+      "calls": 14,
+      "prompt_tokens": 30156,
+      "completion_tokens": 6765,
+      "total_tokens": 36921,
+      "estimated_cost_usd": 0.14304,
+      "latency_ms": 272448
+    },
+    "_field_sources": {
+      "ndg": "ANCHOR_HEADER",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "ultima_validazione_scheda_privati": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "datore_lavoro_anagrafica": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo_familiare": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_altri_componenti": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN"
+    },
+    "_status": "OK"
+  },
+  "screen 3": {
+    "screen_id": "screen 3",
+    "attempt": "CONTENT_MAIN",
+    "fields": {
+      "ndg": {
+        "value": 67553,
+        "confidence": 0.95,
+        "evidence_text": "67553 STEFANO MILLEFIORI",
+        "section": null
+      },
+      "denominazione": {
+        "value": "STEFANO MILLEFIORI",
+        "confidence": 0.95,
+        "evidence_text": "67553 STEFANO MILLEFIORI",
+        "section": null
+      },
+      "tipo": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "evidenze": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "filiale_relazione": {
+        "value": "05387 BPER Banca",
+        "confidence": 0.9,
+        "evidence_text": "05387 BPER Banca",
+        "section": "Ultima modifica"
+      },
+      "ultima_validazione_scheda_privati": {
+        "value": "08/07/2025 14:01",
+        "confidence": 0.9,
+        "evidence_text": "08/07/2025 14:01 (20 ore fa)",
+        "section": "Ultima validazione"
+      },
+      "professione_principale": {
+        "value": "OPERAIO IMPRESE PRIVATE (SERVIZI)",
+        "confidence": 0.9,
+        "evidence_text": "OPERAIO IMPRESE PRIVATE (SERVIZI)",
+        "section": "REDDITI DA LAVORO / PENSIONE"
+      },
+      "numero_mensilita": {
+        "value": 13,
+        "confidence": 0.9,
+        "evidence_text": "NUMERO MENSILITA 13",
+        "section": "REDDITI DA LAVORO / PENSIONE"
+      },
+      "retribuzione_annua_netta": {
+        "value": "27.000",
+        "confidence": 0.9,
+        "evidence_text": "RETRIBUZIONE ANNUA NETTA 27.000",
+        "section": "REDDITI DA LAVORO / PENSIONE"
+      },
+      "tipo_contratto": {
+        "value": "TEMPO INDETERMINATO",
+        "confidence": 0.9,
+        "evidence_text": "TIPO CONTRATTO TEMPO INDETERMINATO",
+        "section": "REDDITI DA LAVORO / PENSIONE"
+      },
+      "datore_lavoro_anagrafica": {
+        "value": "COSME - S.P.A.",
+        "confidence": 0.9,
+        "evidence_text": "ANAGRAFICA COSME - S.P.A.",
+        "section": "DATORE DI LAVORO"
+      },
+      "dal": {
+        "value": "GIUGNO 2021",
+        "confidence": 0.9,
+        "evidence_text": "DAL GIUGNO 2021",
+        "section": "DATORE DI LAVORO"
+      },
+      "rating_ufficiale": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": "RATING UFFICIALE N/D",
+        "section": "DATORE DI LAVORO"
+      },
+      "score_cgs": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": "SCORE CGS N/D",
+        "section": "DATORE DI LAVORO"
+      },
+      "nr_altri_componenti_nucleo_familiare": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "di_cui_percepiscono_reddito": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "importo_totale_annuo_altri_componenti": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "note_scheda_privati": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      }
+    },
+    "soggetti": [
+      {
+        "ndg": null,
+        "denominazione": null,
+        "ruolo": null,
+        "confidence": 0.3,
+        "evidence_text": null
+      }
+    ],
+    "_meta": {
+      "model": "gpt-4o",
+      "screen_id": "screen 3",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 29363,
+      "prompt_tokens": 2737,
+      "completion_tokens": 764,
+      "total_tokens": 3501,
+      "estimated_cost_usd": 0.014482499999999999
+    },
+    "_attempts": [
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 3",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 3990,
+        "prompt_tokens": 864,
+        "completion_tokens": 90,
+        "total_tokens": 954,
+        "estimated_cost_usd": 0.0030600000000000002
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 3",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 29363,
+        "prompt_tokens": 2737,
+        "completion_tokens": 764,
+        "total_tokens": 3501,
+        "estimated_cost_usd": 0.014482499999999999
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_tipo",
+        "latency_ms": 22727,
+        "prompt_tokens": 2227,
+        "completion_tokens": 591,
+        "total_tokens": 2818,
+        "estimated_cost_usd": 0.0114775
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_evidenze",
+        "latency_ms": 22180,
+        "prompt_tokens": 2227,
+        "completion_tokens": 596,
+        "total_tokens": 2823,
+        "estimated_cost_usd": 0.0115275
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_nr_altri_componenti_nucleo_familiare",
+        "latency_ms": 19118,
+        "prompt_tokens": 2227,
+        "completion_tokens": 580,
+        "total_tokens": 2807,
+        "estimated_cost_usd": 0.0113675
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_di_cui_percepiscono_reddito",
+        "latency_ms": 12186,
+        "prompt_tokens": 2227,
+        "completion_tokens": 340,
+        "total_tokens": 2567,
+        "estimated_cost_usd": 0.0089675
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_importo_totale_annuo_altri_componenti",
+        "latency_ms": 25023,
+        "prompt_tokens": 2227,
+        "completion_tokens": 577,
+        "total_tokens": 2804,
+        "estimated_cost_usd": 0.0113375
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_note_scheda_privati",
+        "latency_ms": 18207,
+        "prompt_tokens": 2227,
+        "completion_tokens": 543,
+        "total_tokens": 2770,
+        "estimated_cost_usd": 0.0109975
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gpt-4o",
+      "model_anchor": "gpt-4o",
+      "calls": 8,
+      "prompt_tokens": 16963,
+      "completion_tokens": 4081,
+      "total_tokens": 21044,
+      "estimated_cost_usd": 0.083217,
+      "latency_ms": 152794
+    },
+    "_field_sources": {
+      "ndg": "ANCHOR_HEADER",
+      "denominazione": "ANCHOR_HEADER",
+      "tipo": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "ultima_validazione_scheda_privati": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "datore_lavoro_anagrafica": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo_familiare": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_altri_componenti": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN"
+    },
+    "_status": "OK"
+  },
+  "screen 4": {
+    "screen_id": "screen 4",
+    "attempt": "CONTENT_MAIN",
+    "fields": {
+      "ndg": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "denominazione": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "tipo": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "evidenze": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "filiale_relazione": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "ultima_validazione_scheda_privati": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "professione_principale": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "numero_mensilita": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "retribuzione_annua_netta": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "tipo_contratto": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "datore_lavoro_anagrafica": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": null,
+        "section": null
+      },
+      "dal": {
+        "value": "1990",
+        "confidence": 0.9,
+        "evidence_text": "DAL\n1990",
+        "section": "SITUAZIONE FAMILIARE"
+      },
+      "rating_ufficiale": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": "N/D",
+        "section": null
+      },
+      "score_cgs": {
+        "value": null,
+        "confidence": 0.3,
+        "evidence_text": "N/D",
+        "section": null
+      },
+      "nr_altri_componenti_nucleo_familiare": {
+        "value": "1",
+        "confidence": 0.9,
+        "evidence_text": "NR. ALTRI COMPONENTI NUCLEO FAMILIARE\n1",
+        "section": "SITUAZIONE FAMILIARE"
+      },
+      "di_cui_percepiscono_reddito": {
+        "value": "1",
+        "confidence": 0.9,
+        "evidence_text": "DI CUI PERCEPISCONO REDDITO\n1",
+        "section": "SITUAZIONE FAMILIARE"
+      },
+      "importo_totale_annuo_altri_componenti": {
+        "value": "4000",
+        "confidence": 0.9,
+        "evidence_text": "IMPORTO TOTALE ANNUO ALTRI COMPONENTI NUCLEO FAMILIARE\n4.000",
+        "section": "SITUAZIONE FAMILIARE"
+      },
+      "note_scheda_privati": {
+        "value": "Non cliente da inserire come garante per il mutuo cointestato 017-5503535 Lavora a tempo indeterminato e vive con la moglie in casa di proprietà. La moglie percepisce piccola pensione. Non ha impegni in corso.",
+        "confidence": 0.9,
+        "evidence_text": "Non cliente da inserire come garante per il mutuo cointestato 017-5503535 Lavora a tempo indeterminato e vive con la moglie in casa di proprietà. La moglie percepisce piccola pensione. Non ha impegni in corso.",
+        "section": "NOTE CONCLUSIVE"
+      }
+    },
+    "soggetti": [],
+    "_meta": {
+      "model": "gpt-4o",
+      "screen_id": "screen 4",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 25887,
+      "prompt_tokens": 2714,
+      "completion_tokens": 707,
+      "total_tokens": 3421,
+      "estimated_cost_usd": 0.013855
+    },
+    "_attempts": [
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 2836,
+        "prompt_tokens": 864,
+        "completion_tokens": 63,
+        "total_tokens": 927,
+        "estimated_cost_usd": 0.00279
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 25887,
+        "prompt_tokens": 2714,
+        "completion_tokens": 707,
+        "total_tokens": 3421,
+        "estimated_cost_usd": 0.013855
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_professione_principale",
+        "latency_ms": 6695,
+        "prompt_tokens": 2204,
+        "completion_tokens": 170,
+        "total_tokens": 2374,
+        "estimated_cost_usd": 0.007209999999999999
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_numero_mensilita",
+        "latency_ms": 16406,
+        "prompt_tokens": 2204,
+        "completion_tokens": 493,
+        "total_tokens": 2697,
+        "estimated_cost_usd": 0.010439999999999998
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_retribuzione_annua_netta",
+        "latency_ms": 6810,
+        "prompt_tokens": 2204,
+        "completion_tokens": 170,
+        "total_tokens": 2374,
+        "estimated_cost_usd": 0.007209999999999999
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_tipo_contratto",
+        "latency_ms": 8060,
+        "prompt_tokens": 2204,
+        "completion_tokens": 200,
+        "total_tokens": 2404,
+        "estimated_cost_usd": 0.007509999999999999
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_datore_lavoro_anagrafica",
+        "latency_ms": 13600,
+        "prompt_tokens": 2204,
+        "completion_tokens": 332,
+        "total_tokens": 2536,
+        "estimated_cost_usd": 0.00883
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_tipo",
+        "latency_ms": 6590,
+        "prompt_tokens": 2204,
+        "completion_tokens": 221,
+        "total_tokens": 2425,
+        "estimated_cost_usd": 0.007719999999999999
+      },
+      {
+        "model": "gpt-4o",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_evidenze",
+        "latency_ms": 8377,
+        "prompt_tokens": 2204,
+        "completion_tokens": 225,
+        "total_tokens": 2429,
+        "estimated_cost_usd": 0.0077599999999999995
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gpt-4o",
+      "model_anchor": "gpt-4o",
+      "calls": 9,
+      "prompt_tokens": 19006,
+      "completion_tokens": 2581,
+      "total_tokens": 21587,
+      "estimated_cost_usd": 0.073325,
+      "latency_ms": 95261
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "ultima_validazione_scheda_privati": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "datore_lavoro_anagrafica": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo_familiare": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_altri_componenti": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN"
+    },
+    "_status": "ANCHOR_UNCERTAIN"
+  }
+}

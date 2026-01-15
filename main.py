@@ -1,3 +1,4 @@
+
 import os
 import io
 import json
@@ -11,33 +12,74 @@ from PIL import Image, ImageEnhance, ImageFilter
 
 from openai import OpenAI
 
-# -----------------------------
+# ============================================================
 # CONFIG
-# -----------------------------
-SCREENSHOTS = [
-    "mnt/data/screen 1.png",
-    "mnt/data/screen 2.png",
-    "mnt/data/screen 3.png",
-    "mnt/data/screen 4.png",
-]
-GROUND_TRUTH_CSV = "mnt/data/dati.csv"
+# ============================================================
 
-# Pricing (USD per 1M tokens) - aggiornabile da config
+# Input files (override with INPUT_DIR env if desired)
+DEFAULT_SCREENSHOTS = [
+    "screen 1.png",
+    "screen 2.png",
+    "screen 3.png",
+    "screen 4.png",
+]
+DEFAULT_GROUND_TRUTH = "dati.csv"
+
+INPUT_DIR = os.getenv("INPUT_DIR", "/mnt/data")
+SCREENSHOTS = [os.path.join(INPUT_DIR, s) for s in DEFAULT_SCREENSHOTS]
+GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, DEFAULT_GROUND_TRUTH)
+
+# Model selection (override via env)
+MODEL_MAIN = os.getenv("OPENAI_MODEL", "gpt-4o")
+MODEL_ANCHOR = os.getenv("OPENAI_MODEL_ANCHOR", MODEL_MAIN)
+
+# Pricing (USD per 1M tokens) - keep configurable; pricing may change over time.
 PRICING_PER_1M = {
     "gpt-4o": {"input": 2.50, "output": 10.00},
     "gpt-4o-mini": {"input": 0.15, "output": 0.60},
 }
 
-# Crop percentuali (robusti a PC diversi)
-CROPS = {
-    "FULL": None,
-    # Tipico: taglia topbar browser e sidebar sinistra
-    "CONTENT": (0.18, 0.12, 0.98, 0.98),
-    # Porzione bassa per "Situazione familiare" e "Note"
-    "LOWER": (0.18, 0.45, 0.98, 0.98),
+# ------------------------------------------------------------
+# Crops (percentuali) – invarianti rispetto a risoluzione/PC
+# ------------------------------------------------------------
+# Content crop: rimuove sidebar e topbar browser (tipico)
+CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)
+
+# Header dentro il contenuto (per NDG / Denominazione)
+HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)
+
+# Retry crops mirati (sempre nel sistema di riferimento del CONTENT)
+# Nota: sono volutamente “larghi” per essere robusti allo scroll / layout.
+FIELD_RETRY_MAP: Dict[str, Tuple[float, float, float, float]] = {
+    # Sezione entrate / redditi (tipicamente parte alta centrale)
+    "professione_principale": (0.00, 0.12, 1.00, 0.48),
+    "numero_mensilita": (0.00, 0.12, 1.00, 0.48),
+    "retribuzione_annua_netta": (0.00, 0.12, 1.00, 0.48),
+    "tipo_contratto": (0.00, 0.12, 1.00, 0.55),
+    "datore_lavoro_anagrafica": (0.18, 0.25, 0.98, 0.62),
+    "dal": (0.00, 0.12, 1.00, 0.55),
+
+    # Evidenze/Tipo spesso in griglia “pratiche”
+    "tipo": (0.00, 0.00, 1.00, 0.25),
+    "evidenze": (0.00, 0.00, 1.00, 0.30),
+
+    # Situazione familiare / note tipicamente più in basso
+    "nr_altri_componenti_nucleo_familiare": (0.00, 0.40, 1.00, 0.78),
+    "di_cui_percepiscono_reddito": (0.00, 0.40, 1.00, 0.78),
+    "importo_totale_annuo_altri_componenti": (0.00, 0.40, 1.00, 0.82),
+    "note_scheda_privati": (0.00, 0.55, 1.00, 1.00),
 }
 
-# Campi target (coerenti con la vostra ground truth)
+# Soglia confidenza “dura” per ancore (anti errori silenziosi)
+ANCHOR_CONF_MIN = float(os.getenv("ANCHOR_CONF_MIN", "0.95"))
+
+# Debug: salva i crop su disco (0/1)
+DEBUG_SAVE_CROPS = os.getenv("DEBUG_SAVE_CROPS", "0") == "1"
+DEBUG_CROP_DIR = os.path.join(INPUT_DIR, "debug_crops")
+
+# ============================================================
+# Target fields
+# ============================================================
 FIELD_KEYS = [
     "ndg",
     "denominazione",
@@ -59,11 +101,16 @@ FIELD_KEYS = [
     "note_scheda_privati",
 ]
 
+# ============================================================
+# Prompts
+# ============================================================
 PROMPT = """
 Sei un sistema di estrazione dati da screenshot di una web app (UI banca).
 Devi estrarre SOLO i campi richiesti e restituire JSON conforme allo schema.
 
 Regole:
+- Se ci sono più soggetti (NDG 1..3, Denominazione 1..3, Ruolo 1..3), estrai TUTTE le righe della tabella in "soggetti" mantenendo l'ordine dall'alto verso il basso.
+
 - Se un valore non è presente o non è leggibile: value = null e confidence <= 0.3.
 - Trattare "N/D", "ND", "---", vuoto come null.
 - Non inventare mai valori.
@@ -81,7 +128,7 @@ Campi (label/sinonimi):
 - numero_mensilita: "NUMERO MENSILITÀ", "MENSILITA"
 - retribuzione_annua_netta: "RETRIBUZIONE ANNUA NETTA"
 - tipo_contratto: "TIPO CONTRATTO"
-- datore_lavoro_anagrafica: "DATORE DI LAVORO", "ANAGRAFICA"
+- datore_lavoro_anagrafica: "ANAGRAFICA" (nella sezione/tab "DATORE DI LAVORO")
 - dal: "DAL"
 - rating_ufficiale: "RATING UFFICIALE"
 - score_cgs: "SCORE CGS"
@@ -93,9 +140,24 @@ Campi (label/sinonimi):
 Restituisci SOLO JSON.
 """.strip()
 
-# -----------------------------
-# Structured Outputs JSON Schema (strict)
-# -----------------------------
+ANCHOR_PROMPT = """
+Estrai SOLO i seguenti campi dallo screenshot:
+- ndg
+- denominazione
+
+Regole:
+- Se non sei assolutamente certo, restituisci null.
+- NDG deve essere una sequenza numerica ESATTA (non stimare).
+- Non inventare mai valori.
+- Imposta confidence >= 0.95 solo se il valore è chiaramente leggibile.
+
+Restituisci SOLO JSON conforme allo schema.
+""".strip()
+
+# ============================================================
+# JSON Schemas (strict)
+# ============================================================
+
 RESPONSE_SCHEMA = {
     "name": "bper_screen_extraction",
     "strict": True,
@@ -144,9 +206,72 @@ RESPONSE_SCHEMA = {
     },
 }
 
-# -----------------------------
+ANCHOR_SCHEMA = {
+    "name": "bper_anchor_extraction",
+    "strict": True,
+    "schema": {
+        "type": "object",
+        "additionalProperties": False,
+        "properties": {
+            "screen_id": {"type": "string"},
+            "attempt": {"type": "string"},
+            "fields": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "ndg": {
+                        "type": ["object", "null"],
+                        "additionalProperties": False,
+                        "properties": {
+                            "value": {"type": ["string", "number", "integer", "null"]},
+                            "confidence": {"type": "number"},
+                            "evidence_text": {"type": ["string", "null"]},
+                            "section": {"type": ["string", "null"]},
+                        },
+                        "required": ["value", "confidence", "evidence_text", "section"],
+                    },
+                    "denominazione": {
+                        "type": ["object", "null"],
+                        "additionalProperties": False,
+                        "properties": {
+                            "value": {"type": ["string", "number", "integer", "null"]},
+                            "confidence": {"type": "number"},
+                            "evidence_text": {"type": ["string", "null"]},
+                            "section": {"type": ["string", "null"]},
+                        },
+                        "required": ["value", "confidence", "evidence_text", "section"],
+                    },
+                },
+                "required": ["ndg", "denominazione"],
+            },
+        },
+        "required": ["screen_id", "attempt", "fields"],
+    },
+}
+
+# ============================================================
+# Post-processing (categorial mapping)
+# ============================================================
+
+TIPO_MAPPING = {
+    "mutui spesa": "BPI Mutui",
+    "mutuo spesa": "BPI Mutui",
+    "bpi mutui": "BPI Mutui",
+}
+
+def normalize_tipo(val: Any) -> Any:
+    if val is None:
+        return None
+    s = str(val).strip()
+    if not s:
+        return None
+    key = s.lower()
+    return TIPO_MAPPING.get(key, s)
+
+# ============================================================
 # Helpers
-# -----------------------------
+# ============================================================
+
 def estimate_cost_usd(model: str, prompt_tokens: int, completion_tokens: int) -> float:
     p = PRICING_PER_1M.get(model)
     if not p:
@@ -181,6 +306,19 @@ def is_nullish(v: Any) -> bool:
     s = str(v).strip().lower()
     return s in ("", "n/d", "nd", "---", "null", "none", "nan")
 
+def norm_text(x: Any) -> str:
+    s = "" if x is None else str(x)
+    s = s.strip()
+    s = re.sub(r"\s+", " ", s)
+    return s.lower()
+
+def norm_number_str(x: Any) -> str:
+    if x is None:
+        return ""
+    s = str(x).strip()
+    s = s.replace(".", "").replace(",", "")
+    return s
+
 def pick_best(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, Any]:
     if not a:
         return b
@@ -194,35 +332,6 @@ def pick_best(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, Any]:
         return a
     return a if a.get("confidence", 0.0) >= b.get("confidence", 0.0) else b
 
-def merge_attempts(attempts: List[Dict[str, Any]]) -> Dict[str, Any]:
-    merged = attempts[0]
-    for a in attempts[1:]:
-        for k in FIELD_KEYS:
-            merged["fields"][k] = pick_best(merged["fields"][k], a["fields"][k])
-        # soggetti: dedup semplice per (ndg, denominazione, ruolo)
-        seen = set((s.get("ndg"), s.get("denominazione"), s.get("ruolo")) for s in merged.get("soggetti", []))
-        for s in a.get("soggetti", []):
-            key = (s.get("ndg"), s.get("denominazione"), s.get("ruolo"))
-            if key not in seen:
-                merged["soggetti"].append(s)
-                seen.add(key)
-    merged["attempt"] = "MERGED"
-    return merged
-
-def norm_text(x: Any) -> str:
-    s = "" if x is None else str(x)
-    s = s.strip()
-    s = re.sub(r"\s+", " ", s)
-    return s.lower()
-
-def norm_number_str(x: Any) -> str:
-    """Normalizza 27.000 / 27000 / 27,000 -> 27000 (stringa)"""
-    if x is None:
-        return ""
-    s = str(x).strip()
-    s = s.replace(".", "").replace(",", "")
-    return s
-
 def classify_field(gt_val, pred_val) -> str:
     gt_null = is_nullish(gt_val) or (str(gt_val).strip().lower() == "nan")
     pr_null = is_nullish(pred_val)
@@ -233,76 +342,129 @@ def classify_field(gt_val, pred_val) -> str:
         return "HALLUCINATED"
     if gt_null and pr_null:
         return "OK_NULL"
-    # entrambi presenti
     return "OK" if norm_text(pred_val) == norm_text(gt_val) else "WRONG"
 
-def dataset_mismatch_guard(screen_id: str, gt_kv: Dict[str, Any], pred: Dict[str, Any]) -> bool:
-    # usa NDG e DENOMINAZIONE se presenti in GT per quel screen
+# ============================================================
+# CSV mapping (strip-safe)
+# ============================================================
+CSV_TO_SCHEMA = {
+    "NDG": "ndg",
+    "DENOMINAZIONE": "denominazione",
+    "Tipo": "tipo",
+    "Evidenze": "evidenze",
+    "Filiale relazione": "filiale_relazione",
+    "Ultima validazione scheda privati": "ultima_validazione_scheda_privati",
+    "Professione principale": "professione_principale",
+    "Numero mensilità": "numero_mensilita",
+    "Retribuzione annua netta": "retribuzione_annua_netta",
+    "Tipo contratto": "tipo_contratto",
+    "DATORE DI LAVORO ANAGRAFICA": "datore_lavoro_anagrafica",
+    "DAL": "dal",
+    "RATING UFFICIALE": "rating_ufficiale",
+    "SCORE CGS": "score_cgs",
+    "Nr altri componenti nucleo familiare": "nr_altri_componenti_nucleo_familiare",
+    "Di cui percepiscono reddito": "di_cui_percepiscono_reddito",
+    "Importo totale annuo altri componenti nucleo familiare": "importo_totale_annuo_altri_componenti",
+    "Note Scheda Privati": "note_scheda_privati",
+}
+
+
+# ---- Helpers: table "soggetti" mapping (NDG 1..N, DENOMINAZIONE 1..N, RUOLO 1..N) ----
+_SOGGETTI_KEY_MAP = {
+    "NDG": "ndg",
+    "DENOMINAZIONE": "denominazione",
+    "RUOLO": "ruolo",
+}
+
+def _parse_tabular_subject_key(gt_key: str):
+    """Return (base_key, idx0) if gt_key is like 'NDG 1' or 'DENOMINAZIONE 2' or 'RUOLO 3'."""
+    m = re.match(r"^(NDG|DENOMINAZIONE|RUOLO)\s+(\d+)$", gt_key.strip(), re.IGNORECASE)
+    if not m:
+        return None
+    base = m.group(1).upper()
+    idx0 = int(m.group(2)) - 1
+    if idx0 < 0:
+        return None
+    return base, idx0
+
+def get_pred_value_for_gt_key(pred: Dict[str, Any], gt_key: str):
+    """
+    Returns a tuple:
+      (source, value, confidence, evidence_text, section)
+    where source is either a schema field name (e.g. 'ndg') or 'soggetti[i].ndg'.
+    """
+    gt_key_norm = str(gt_key).strip()
+    # 1) Handle tabular keys -> soggetti array
+    parsed = _parse_tabular_subject_key(gt_key_norm)
+    if parsed:
+        base, idx0 = parsed
+        key = _SOGGETTI_KEY_MAP.get(base)
+        soggetti = pred.get("soggetti") or []
+        if key and idx0 < len(soggetti) and isinstance(soggetti[idx0], dict):
+            s = soggetti[idx0]
+            return (f"soggetti[{idx0}].{key}",
+                    s.get(key),
+                    s.get("confidence", 0.0),
+                    s.get("evidence_text"),
+                    None)
+        return (f"soggetti[{idx0}].{key}", None, 0.0, None, None)
+
+    # 2) Normal fields mapping via CSV_TO_SCHEMA
+    schema_key = CSV_TO_SCHEMA.get(gt_key_norm)
+    if not schema_key:
+        return (None, None, 0.0, None, None)
+    field = (pred.get("fields", {}) or {}).get(schema_key) or {}
+    if not isinstance(field, dict):
+        return (schema_key, None, 0.0, None, None)
+    return (schema_key,
+            field.get("value"),
+            field.get("confidence", 0.0),
+            field.get("evidence_text"),
+            field.get("section"))
+
+
+
+# ============================================================
+# Dataset mismatch guard (anchor-based)
+# ============================================================
+def dataset_mismatch_guard(gt_kv: Dict[str, Any], pred: Dict[str, Any]) -> bool:
+    """
+    Returns True if the GT keys clearly belong to a different record than what we extracted.
+    We use anchors (NDG / DENOMINAZIONE), falling back to the first row of 'soggetti' if needed.
+    """
     gt_ndg = gt_kv.get("NDG") or gt_kv.get("NDG 1")
     gt_den = gt_kv.get("DENOMINAZIONE") or gt_kv.get("DENOMINAZIONE 1")
 
-    pr_ndg = (pred.get("fields", {}).get("ndg") or {}).get("value")
-    pr_den = (pred.get("fields", {}).get("denominazione") or {}).get("value")
+    pred_fields = pred.get("fields", {}) or {}
+    pr_ndg = (pred_fields.get("ndg") or {}).get("value")
+    pr_den = (pred_fields.get("denominazione") or {}).get("value")
 
-    # se GT ha una delle ancore, e pred non combacia, segnala mismatch
+    # fallback to first row of soggetti if fields anchors are empty
+    soggetti = pred.get("soggetti") or []
+    if is_nullish(pr_ndg) and soggetti and isinstance(soggetti[0], dict):
+        pr_ndg = soggetti[0].get("ndg")
+    if is_nullish(pr_den) and soggetti and isinstance(soggetti[0], dict):
+        pr_den = soggetti[0].get("denominazione")
+
     if gt_ndg and pr_ndg and norm_number_str(gt_ndg) != norm_number_str(pr_ndg):
         return True
     if gt_den and pr_den and norm_text(gt_den) != norm_text(pr_den):
         return True
     return False
 
-def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]], out_csv_path: str):
-    rows = []
-    for scr, gt_kv in gt.items():
-        pred = outputs.get(scr)
-        if not pred:
-            continue
-
-        mismatch = dataset_mismatch_guard(scr, gt_kv, pred)
-
-        for gt_key, gt_val in gt_kv.items():
-            # normalizza key per match mapping
-            gt_key_norm = str(gt_key).strip()
-            schema_key = CSV_TO_SCHEMA.get(gt_key_norm)
-            if not schema_key:
-                continue
-
-            field = (pred.get("fields", {}) or {}).get(schema_key) or {}
-            pred_val = field.get("value")
-            conf = field.get("confidence")
-            evidence = field.get("evidence_text")
-            section = field.get("section")
-
-            status = "DATASET_MISMATCH" if mismatch else classify_field(gt_val, pred_val)
-
-            meta = pred.get("_meta", {})
-            rows.append({
-                "screen": scr,
-                "field": schema_key,
-                "gt_key": gt_key_norm,
-                "gt_value": gt_val,
-                "pred_value": pred_val,
-                "confidence": conf,
-                "evidence_text": evidence,
-                "section": section,
-                "status": status,
-                "model": meta.get("model"),
-                "attempt": meta.get("attempt"),
-                "prompt_tokens": meta.get("prompt_tokens"),
-                "completion_tokens": meta.get("completion_tokens"),
-                "total_tokens": meta.get("total_tokens"),
-                "estimated_cost_usd": meta.get("estimated_cost_usd"),
-                "latency_ms": meta.get("latency_ms"),
-            })
-
-    pd.DataFrame(rows).to_csv(out_csv_path, index=False, encoding="utf-8")
-
-# -----------------------------
-# VLM call (Responses API + Structured Outputs)
-# -----------------------------
-def call_vlm(client: OpenAI, image_bytes: bytes, prompt: str, screen_id: str, attempt: str, model: str="gpt-4o") -> Dict[str, Any]:
-    import base64, time
-    base64_image = base64.b64encode(image_bytes).decode('utf-8')
+# ============================================================
+# VLM calls (Chat Completions + Structured Outputs)
+# ============================================================
+def call_vlm(
+    client: OpenAI,
+    image_bytes: bytes,
+    prompt: str,
+    screen_id: str,
+    attempt: str,
+    model: str,
+    schema: Dict[str, Any],
+) -> Dict[str, Any]:
+    base64_image = base64.b64encode(image_bytes).decode("utf-8")
 
     t0 = time.time()
     resp = client.chat.completions.create(
@@ -315,9 +477,9 @@ def call_vlm(client: OpenAI, image_bytes: bytes, prompt: str, screen_id: str, at
                     {"type": "text", "text": "Estrai i campi richiesti dallo screenshot."},
                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}},
                 ],
-            }
+            },
         ],
-        response_format={"type": "json_schema", "json_schema": RESPONSE_SCHEMA},
+        response_format={"type": "json_schema", "json_schema": schema},
     )
     dt_ms = int((time.time() - t0) * 1000)
 
@@ -343,124 +505,326 @@ def call_vlm(client: OpenAI, image_bytes: bytes, prompt: str, screen_id: str, at
     out["attempt"] = attempt
     return out
 
-# -----------------------------
-# Orchestrator per singolo screenshot
-# -----------------------------
+def _save_debug_crop(img: Image.Image, screen_id: str, name: str) -> None:
+    if not DEBUG_SAVE_CROPS:
+        return
+    os.makedirs(DEBUG_CROP_DIR, exist_ok=True)
+    out_path = os.path.join(DEBUG_CROP_DIR, f"{screen_id}__{name}.png")
+    img.save(out_path)
+
+# ============================================================
+# Anchor extraction (NDG, Denominazione)
+# ============================================================
+def extract_anchors(client: OpenAI, content_img: Image.Image, screen_id: str) -> Dict[str, Any]:
+    header_img = crop_relative(content_img, HEADER_IN_CONTENT)
+    _save_debug_crop(header_img, screen_id, "HEADER_IN_CONTENT")
+
+    payload = img_to_png_bytes(header_img)
+    out = call_vlm(
+        client=client,
+        image_bytes=payload,
+        prompt=ANCHOR_PROMPT,
+        screen_id=screen_id,
+        attempt="ANCHOR_HEADER",
+        model=MODEL_ANCHOR,
+        schema=ANCHOR_SCHEMA,
+    )
+
+    ndg = out["fields"]["ndg"]
+    den = out["fields"]["denominazione"]
+
+    # Gate duro: alta confidenza o null
+    if ndg["confidence"] < ANCHOR_CONF_MIN:
+        ndg["value"] = None
+    if den["confidence"] < ANCHOR_CONF_MIN:
+        den["value"] = None
+
+    return {
+        "ndg": ndg,
+        "denominazione": den,
+        "_meta": out["_meta"],
+    }
+
+# ============================================================
+# Main extraction per screen: 1 pass + retry condizionale
+# ============================================================
+def merge_field_sources(
+    field_sources: Dict[str, str],
+    field_key: str,
+    current: Dict[str, Any],
+    candidate: Dict[str, Any],
+    candidate_source: str,
+) -> Dict[str, Any]:
+    """Pick best AND track source attempt for the winning value."""
+    chosen = pick_best(current, candidate)
+    if chosen is candidate:
+        field_sources[field_key] = candidate_source
+    return chosen
+
 def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
     img = Image.open(path).convert("RGB")
     img = normalize_image(img)
 
     screen_id = os.path.splitext(os.path.basename(path))[0]
-    attempts = []
 
-    for crop_name, rel_box in CROPS.items():
-        work = img if rel_box is None else crop_relative(img, rel_box)
-        payload = img_to_png_bytes(work)
+    # Content crop (baseline)
+    content_img = crop_relative(img, CONTENT_CROP)
+    _save_debug_crop(content_img, screen_id, "CONTENT")
 
-        out = call_vlm(client, payload, PROMPT, screen_id=screen_id, attempt=crop_name)
-        attempts.append(out)
+    # 1) Extract anchors first (dedicated)
+    anchors = extract_anchors(client, content_img, screen_id)
 
-        # Early stop: se 2 dei 3 campi "ancora" sono buoni
-        good = 0
-        for k in ("ndg", "denominazione", "retribuzione_annua_netta"):
-            field_data = out["fields"].get(k)
-            if field_data is None:
-                continue
-            v = field_data["value"]
-            c = field_data["confidence"]
-            if (not is_nullish(v)) and c >= 0.75:
-                good += 1
-        if good >= 2:
-            break
+    # 2) Main pass: run on content
+    payload = img_to_png_bytes(content_img)
 
-    return merge_attempts(attempts)
+    # Hint anchors in prompt (non cambia schema; migliora disambiguazione)
+    anchor_hint = []
+    if anchors["ndg"]["value"]:
+        anchor_hint.append(f"NDG atteso: {anchors['ndg']['value']}")
+    if anchors["denominazione"]["value"]:
+        anchor_hint.append(f"Denominazione attesa: {anchors['denominazione']['value']}")
+    prompt_with_hint = PROMPT + ("\n\n" + "\n".join(anchor_hint) if anchor_hint else "")
 
-# -----------------------------
-# Evaluation vs dati.csv
-# -----------------------------
+    main_out = call_vlm(
+        client=client,
+        image_bytes=payload,
+        prompt=prompt_with_hint,
+        screen_id=screen_id,
+        attempt="CONTENT_MAIN",
+        model=MODEL_MAIN,
+        schema=RESPONSE_SCHEMA,
+    )
+
+    attempts_meta = [anchors["_meta"], main_out["_meta"]]
+
+    # 3) Merge anchors into main fields (anchors have higher priority if present)
+    field_sources: Dict[str, str] = {k: "CONTENT_MAIN" for k in FIELD_KEYS}
+    # initialize with main result
+    result = main_out
+
+    # Replace with gated anchors if available
+    for k in ("ndg", "denominazione"):
+        if anchors[k]["value"] is not None:
+            result["fields"][k] = anchors[k]
+            field_sources[k] = "ANCHOR_HEADER"
+
+    # 4) Post-process tipo mapping (before retries)
+    # Normalize categorical field "tipo" safely (field may be None under schema)
+    tipo_field = (result.get("fields", {}) or {}).get("tipo")
+    if isinstance(tipo_field, dict):
+        tipo_field["value"] = normalize_tipo(tipo_field.get("value"))
+        result["fields"]["tipo"] = tipo_field
+# 5) Retry ONLY for missing/low-confidence fields
+    for field_key, crop_box in FIELD_RETRY_MAP.items():
+        current = result["fields"].get(field_key) or {}
+        cur_val = current.get("value")
+        cur_conf = float(current.get("confidence", 0.0) or 0.0)
+
+        should_retry = is_nullish(cur_val) or (cur_conf < 0.55)
+        if not should_retry:
+            continue
+
+        crop_img = crop_relative(content_img, crop_box)
+        _save_debug_crop(crop_img, screen_id, f"RETRY_{field_key}")
+
+        retry_out = call_vlm(
+            client=client,
+            image_bytes=img_to_png_bytes(crop_img),
+            prompt=prompt_with_hint,
+            screen_id=screen_id,
+            attempt=f"RETRY_{field_key}",
+            model=MODEL_MAIN,
+            schema=RESPONSE_SCHEMA,
+        )
+        attempts_meta.append(retry_out["_meta"])
+
+        candidate = retry_out["fields"].get(field_key) or {}
+        # Apply tipo mapping if retry is about tipo
+        if field_key == "tipo":
+            candidate["value"] = normalize_tipo(candidate.get("value"))
+
+        result["fields"][field_key] = merge_field_sources(
+            field_sources=field_sources,
+            field_key=field_key,
+            current=current,
+            candidate=candidate,
+            candidate_source=f"RETRY_{field_key}",
+        )
+
+    # 6) Aggregate meta (tokens/cost) for the whole screen
+    meta_agg = {
+        "model_main": MODEL_MAIN,
+        "model_anchor": MODEL_ANCHOR,
+        "calls": len(attempts_meta),
+        "prompt_tokens": sum(int(m.get("prompt_tokens", 0) or 0) for m in attempts_meta),
+        "completion_tokens": sum(int(m.get("completion_tokens", 0) or 0) for m in attempts_meta),
+        "total_tokens": sum(int(m.get("total_tokens", 0) or 0) for m in attempts_meta),
+        "estimated_cost_usd": round(sum(float(m.get("estimated_cost_usd", 0.0) or 0.0) for m in attempts_meta), 6),
+        "latency_ms": sum(int(m.get("latency_ms", 0) or 0) for m in attempts_meta),
+    }
+
+    result["_attempts"] = attempts_meta
+    result["_meta_agg"] = meta_agg
+    result["_field_sources"] = field_sources
+
+    # 7) Optional: anchor gate status (useful for routing/review)
+    if result["fields"]["ndg"]["value"] is None or result["fields"]["denominazione"]["value"] is None:
+        result["_status"] = "ANCHOR_UNCERTAIN"
+    else:
+        result["_status"] = "OK"
+
+    return result
+
+# ============================================================
+# Ground truth loader
+# ============================================================
 def load_ground_truth(csv_path: str) -> Dict[str, Dict[str, Any]]:
     df = pd.read_csv(csv_path)
 
     df["Screenshot"] = df["Screenshot"].astype(str).str.strip()
     df["Denominazione da attribuire"] = df["Denominazione da attribuire"].astype(str).str.strip()
 
-    # colonna "Valore rilevato " ha spazio finale nel file
+    # Colonna con spazio finale nel file
     val_col = "Valore rilevato "
     df[val_col] = df[val_col].astype(str).str.strip()
 
     gt: Dict[str, Dict[str, Any]] = {}
     for _, row in df.iterrows():
-        scr = row["Screenshot"]
+        scr = str(row["Screenshot"]).strip()
         key = row["Denominazione da attribuire"]
         if key is None or str(key).strip().lower() in ("nan", ""):
             continue
-        key = str(key).strip()   # IMPORTANT: elimina trailing spaces tipo "Evidenze "
+        key = str(key).strip()  # IMPORTANT: elimina trailing spaces tipo "Evidenze "
         val = row[val_col]
         gt.setdefault(scr, {})[key] = val
     return gt
 
-# Mapping minimo CSV -> schema (puoi estenderlo)
-CSV_TO_SCHEMA = {
-    "NDG": "ndg",
-    "DENOMINAZIONE": "denominazione",
-    "Tipo": "tipo",
-    "Evidenze": "evidenze",
-    "Filiale relazione": "filiale_relazione",
-    "Ultima validazione scheda privati": "ultima_validazione_scheda_privati",
-    "Professione principale": "professione_principale",
-    "Numero mensilità": "numero_mensilita",
-    "Retribuzione annua netta": "retribuzione_annua_netta",
-    "Tipo contratto": "tipo_contratto",
-    "DATORE DI LAVORO ANAGRAFICA": "datore_lavoro_anagrafica",
-    "DAL": "dal",
-    "RATING UFFICIALE": "rating_ufficiale",
-    "SCORE CGS": "score_cgs",
-    "Nr altri componenti nucleo familiare": "nr_altri_componenti_nucleo_familiare",
-    "Di cui percepiscono reddito": "di_cui_percepiscono_reddito",
-    "Importo totale annuo altri componenti nucleo familiare": "importo_totale_annuo_altri_componenti",
-    "Note Scheda Privati": "note_scheda_privati",
-}
-
+# ============================================================
+# Evaluation & reporting
+# ============================================================
 def eval_outputs(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]]) -> None:
-    total = 0
-    correct = 0
-    per_field = {}
+    # Two metrics: raw and filtered (exclude dataset mismatch)
+    total_raw = correct_raw = 0
+    total_filt = correct_filt = 0
+
+    per_field_raw: Dict[str, List[int]] = {}
+    per_field_filt: Dict[str, List[int]] = {}
 
     for scr, kv in gt.items():
-        # scr es: "screen 1" -> schema id: "screen 1" senza estensione
-        pred = outputs.get(scr, {})
+        pred = outputs.get(scr)
         if not pred:
             continue
 
+        mismatch = dataset_mismatch_guard(kv, pred)
+
         for csv_key, gt_val in kv.items():
-            if csv_key not in CSV_TO_SCHEMA:
+            csv_key_norm = str(csv_key).strip()
+            schema_key = CSV_TO_SCHEMA.get(csv_key_norm)
+            if not schema_key:
                 continue
-            schema_key = CSV_TO_SCHEMA[csv_key]
-            
-            field_data = pred.get("fields", {}).get(schema_key)
-            pred_val = field_data["value"] if field_data else None
+
+            pred_val = (pred.get("fields", {}).get(schema_key) or {}).get("value")
 
             # Normalizzazione numeri per importi
-            if schema_key in ("retribuzione_annua_netta", "importo_totale_annuo_altri_componenti"):
+            if schema_key in ("retribuzione_annua_netta", "importo_totale_annuo_altri_componenti", "ndg"):
                 ok = norm_number_str(pred_val) == norm_number_str(gt_val)
             else:
                 ok = norm_text(pred_val) == norm_text(gt_val)
 
-            total += 1
-            correct += int(ok)
-            per_field.setdefault(schema_key, [0, 0])
-            per_field[schema_key][0] += int(ok)
-            per_field[schema_key][1] += 1
+            # RAW
+            total_raw += 1
+            correct_raw += int(ok)
+            per_field_raw.setdefault(schema_key, [0, 0])
+            per_field_raw[schema_key][0] += int(ok)
+            per_field_raw[schema_key][1] += 1
 
-    acc = (correct / total) if total else 0.0
-    print(f"\nOVERALL: {correct}/{total} = {acc:.2%}\n")
-    for k, (c, t) in sorted(per_field.items(), key=lambda x: x[0]):
-        print(f"{k:40s} {c:3d}/{t:3d} = {(c/t):.2%}")
+            # FILTERED
+            if not mismatch:
+                total_filt += 1
+                correct_filt += int(ok)
+                per_field_filt.setdefault(schema_key, [0, 0])
+                per_field_filt[schema_key][0] += int(ok)
+                per_field_filt[schema_key][1] += 1
 
-# -----------------------------
-# -----------------------------
+    acc_raw = (correct_raw / total_raw) if total_raw else 0.0
+    acc_filt = (correct_filt / total_filt) if total_filt else 0.0
+
+    print(f"\nOVERALL (RAW):      {correct_raw}/{total_raw} = {acc_raw:.2%}")
+    print(f"OVERALL (FILTERED): {correct_filt}/{total_filt} = {acc_filt:.2%}\n")
+
+    print("Per-field (FILTERED):")
+    for k, (c, t) in sorted(per_field_filt.items(), key=lambda x: x[0]):
+        print(f"  {k:40s} {c:3d}/{t:3d} = {(c/t):.2%}")
+
+def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]], out_csv_path: str):
+    rows = []
+    for scr, gt_kv in gt.items():
+        pred = outputs.get(scr)
+        if not pred:
+            continue
+
+        mismatch = dataset_mismatch_guard(gt_kv, pred)
+        field_sources = pred.get("_field_sources", {})
+        meta_agg = pred.get("_meta_agg", {})
+
+        for gt_key, gt_val in gt_kv.items():
+            gt_key_norm = str(gt_key).strip()
+            schema_key = CSV_TO_SCHEMA.get(gt_key_norm)
+            if not schema_key:
+                continue
+
+            field = (pred.get("fields", {}) or {}).get(schema_key) or {}
+            pred_val = field.get("value")
+            conf = field.get("confidence")
+            evidence = field.get("evidence_text")
+            section = field.get("section")
+
+            status = "DATASET_MISMATCH" if mismatch else classify_field(gt_val, pred_val)
+
+            rows.append({
+                "screen": scr,
+                "field": source,
+                "gt_key": gt_key_norm,
+                "gt_value": gt_val,
+                "pred_value": pred_val,
+                "confidence": conf,
+                "evidence_text": evidence,
+                "section": section,
+                "status": status,
+                "source_attempt": field_sources.get(schema_key, ""),
+                "screen_calls": meta_agg.get("calls"),
+                "screen_total_tokens": meta_agg.get("total_tokens"),
+                "screen_estimated_cost_usd": meta_agg.get("estimated_cost_usd"),
+                "screen_latency_ms": meta_agg.get("latency_ms"),
+                "_status": pred.get("_status"),
+            })
+
+    pd.DataFrame(rows).to_csv(out_csv_path, index=False, encoding="utf-8")
+
+def print_cost_summary(outputs: Dict[str, Dict[str, Any]]) -> None:
+    print("\nCOST SUMMARY (per screen):")
+    total_cost = 0.0
+    total_tokens = 0
+    total_calls = 0
+    for scr, out in outputs.items():
+        agg = out.get("_meta_agg", {})
+        cost = float(agg.get("estimated_cost_usd", 0.0) or 0.0)
+        toks = int(agg.get("total_tokens", 0) or 0)
+        calls = int(agg.get("calls", 0) or 0)
+        total_cost += cost
+        total_tokens += toks
+        total_calls += calls
+        print(f"  {scr:10s}  calls={calls:2d}  tokens={toks:5d}  cost=${cost:.4f}  status={out.get('_status')}")
+    print(f"\nTOTAL: calls={total_calls}  tokens={total_tokens}  cost=${total_cost:.4f}\n")
+
+# ============================================================
+# MAIN
+# ============================================================
 def main():
-    client = OpenAI()  # legge OPENAI_API_KEY da env
+    client = OpenAI()  # uses OPENAI_API_KEY from env
+
+    if not os.path.exists(GROUND_TRUTH_CSV):
+        raise FileNotFoundError(f"Ground truth CSV not found: {GROUND_TRUTH_CSV}")
 
     gt = load_ground_truth(GROUND_TRUTH_CSV)
 
@@ -469,20 +833,26 @@ def main():
         if not os.path.exists(p):
             print(f"Warning: File not found {p}")
             continue
-        screen_id = os.path.splitext(os.path.basename(p))[0]  # "screen 1"
+        screen_id = os.path.splitext(os.path.basename(p))[0]
         print(f"Extracting {screen_id} ...")
         outputs[screen_id] = extract_from_screen(client, p)
 
-    # Salva output per ispezione
-    output_path = "mnt/data/poc_outputs.json"
-    with open(output_path, "w", encoding="utf-8") as f:
+    # Save outputs
+    outputs_path = os.path.join(INPUT_DIR, "poc_outputs_improved.json")
+    with open(outputs_path, "w", encoding="utf-8") as f:
         json.dump(outputs, f, ensure_ascii=False, indent=2)
 
-    # Valuta
+    # Evaluate & report
     eval_outputs(outputs, gt)
-    build_debug_report(outputs, gt, "mnt/data/poc_debug.csv")
 
-    print(f"\nSaved: {output_path}")
+    debug_csv_path = os.path.join(INPUT_DIR, "poc_debug_improved.csv")
+    build_debug_report(outputs, gt, debug_csv_path)
+    print_cost_summary(outputs)
+
+    print(f"Saved outputs: {outputs_path}")
+    print(f"Saved debug report: {debug_csv_path}")
+    if DEBUG_SAVE_CROPS:
+        print(f"Saved debug crops to: {DEBUG_CROP_DIR}")
 
 if __name__ == "__main__":
     main()

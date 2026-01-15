@@ -1,0 +1,22 @@
+screen,field,gt_key,gt_value,pred_value,confidence,evidence_text,section,status,source_attempt,screen_calls,screen_total_tokens,screen_estimated_cost_usd,screen_latency_ms,_status
+screen 1,ndg,NDG,31943680,31943680,0.95,31943680,,DATASET_MISMATCH,ANCHOR_HEADER,12,31835,0.12407,207285,OK
+screen 1,denominazione,DENOMINAZIONE,"TICCHI SERENA, CABRAS LUCA","TICCHI SERENA,CABRAS LUCA",0.95,"TICCHI SERENA,CABRAS LUCA",,DATASET_MISMATCH,ANCHOR_HEADER,12,31835,0.12407,207285,OK
+screen 1,tipo,Tipo,BPI Mutui,BPI Mutui Sospeso,0.9,BPI Mutui Sospeso,,DATASET_MISMATCH,CONTENT_MAIN,12,31835,0.12407,207285,OK
+screen 1,evidenze,Evidenze,P,15080,0.9,15080,,DATASET_MISMATCH,CONTENT_MAIN,12,31835,0.12407,207285,OK
+screen 2,filiale_relazione,Filiale relazione,3620 - Genova 24,,0.3,,,DATASET_MISMATCH,CONTENT_MAIN,14,36921,0.14304,272448,OK
+screen 3,ultima_validazione_scheda_privati,Ultima validazione scheda privati,08/07/2025 (20 ore fa),08/07/2025 14:01,0.9,08/07/2025 14:01 (20 ore fa),Ultima validazione,WRONG,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 3,professione_principale,Professione principale,Operaio imprese private (servizi),OPERAIO IMPRESE PRIVATE (SERVIZI),0.9,OPERAIO IMPRESE PRIVATE (SERVIZI),REDDITI DA LAVORO / PENSIONE,OK,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 3,numero_mensilita,Numero mensilità,13,13,0.9,NUMERO MENSILITA 13,REDDITI DA LAVORO / PENSIONE,OK,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 3,retribuzione_annua_netta,Retribuzione annua netta,27000,27.000,0.9,RETRIBUZIONE ANNUA NETTA 27.000,REDDITI DA LAVORO / PENSIONE,WRONG,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 3,tipo_contratto,Tipo contratto,Tempo indeterminato,TEMPO INDETERMINATO,0.9,TIPO CONTRATTO TEMPO INDETERMINATO,REDDITI DA LAVORO / PENSIONE,OK,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 3,datore_lavoro_anagrafica,DATORE DI LAVORO ANAGRAFICA,COSME spa,COSME - S.P.A.,0.9,ANAGRAFICA COSME - S.P.A.,DATORE DI LAVORO,WRONG,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 3,dal,DAL,giugno 2021,GIUGNO 2021,0.9,DAL GIUGNO 2021,DATORE DI LAVORO,OK,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 3,rating_ufficiale,RATING UFFICIALE,nan,,0.3,RATING UFFICIALE N/D,DATORE DI LAVORO,OK_NULL,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 3,score_cgs,SCORE CGS,nan,,0.3,SCORE CGS N/D,DATORE DI LAVORO,OK_NULL,CONTENT_MAIN,8,21044,0.083217,152794,OK
+screen 4,nr_altri_componenti_nucleo_familiare,Nr altri componenti nucleo familiare,1,1,0.9,"NR. ALTRI COMPONENTI NUCLEO FAMILIARE
+1",SITUAZIONE FAMILIARE,OK,CONTENT_MAIN,9,21587,0.073325,95261,ANCHOR_UNCERTAIN
+screen 4,di_cui_percepiscono_reddito,Di cui percepiscono reddito,1,1,0.9,"DI CUI PERCEPISCONO REDDITO
+1",SITUAZIONE FAMILIARE,OK,CONTENT_MAIN,9,21587,0.073325,95261,ANCHOR_UNCERTAIN
+screen 4,importo_totale_annuo_altri_componenti,Importo totale annuo altri componenti nucleo familiare,4000,4000,0.9,"IMPORTO TOTALE ANNUO ALTRI COMPONENTI NUCLEO FAMILIARE
+4.000",SITUAZIONE FAMILIARE,OK,CONTENT_MAIN,9,21587,0.073325,95261,ANCHOR_UNCERTAIN
+screen 4,note_scheda_privati,Note Scheda Privati,non cliente da inserire come garante per il mutuo cointestato 017-5503355. Lavora a tempo indeterminato e vive con la moglie in casa di proprietà. La moglie percepisce piccole pensione. Non ha impegni in corso.,Non cliente da inserire come garante per il mutuo cointestato 017-5503535 Lavora a tempo indeterminato e vive con la moglie in casa di proprietà. La moglie percepisce piccola pensione. Non ha impegni in corso.,0.9,Non cliente da inserire come garante per il mutuo cointestato 017-5503535 Lavora a tempo indeterminato e vive con la moglie in casa di proprietà. La moglie percepisce piccola pensione. Non ha impegni in corso.,NOTE CONCLUSIVE,WRONG,CONTENT_MAIN,9,21587,0.073325,95261,ANCHOR_UNCERTAIN
