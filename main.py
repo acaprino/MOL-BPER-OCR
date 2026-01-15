@@ -7,6 +7,8 @@ import time
 import base64
 from typing import Dict, Any, Optional, Tuple, List
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
 import pandas as pd
 from PIL import Image, ImageEnhance, ImageFilter
 
@@ -25,9 +27,12 @@ DEFAULT_SCREENSHOTS = [
 ]
 DEFAULT_GROUND_TRUTH = "dati.csv"
 
-INPUT_DIR = os.getenv("INPUT_DIR", "/mnt/data")
+INPUT_DIR = os.getenv("INPUT_DIR", "mnt/data")
 SCREENSHOTS = [os.path.join(INPUT_DIR, s) for s in DEFAULT_SCREENSHOTS]
 GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, DEFAULT_GROUND_TRUTH)
+
+PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "4"))
+PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1") == "1"
 
 # Model selection (override via env)
 MODEL_MAIN = os.getenv("OPENAI_MODEL", "gpt-4o")
@@ -505,6 +510,39 @@ def call_vlm(
     out["attempt"] = attempt
     return out
 
+def call_vlm_with_retry(
+    client: OpenAI,
+    image_bytes: bytes,
+    prompt: str,
+    screen_id: str,
+    attempt: str,
+    model: str,
+    schema: Dict[str, Any],
+    max_retries: int = 3,
+) -> Dict[str, Any]:
+    """
+    Retry wrapper for transient API errors (rate limits, timeouts).
+    Keeps observability intact; each successful call returns the same structure as call_vlm().
+    """
+    last_err = None
+    for i in range(max_retries):
+        try:
+            return call_vlm(
+                client=client,
+                image_bytes=image_bytes,
+                prompt=prompt,
+                screen_id=screen_id,
+                attempt=attempt,
+                model=model,
+                schema=schema,
+            )
+        except Exception as e:
+            last_err = e
+            # Exponential backoff with jitter (bounded)
+            sleep_s = min(8.0, (2 ** i) * 0.8) + (0.05 * i)
+            time.sleep(sleep_s)
+    raise last_err
+
 def _save_debug_crop(img: Image.Image, screen_id: str, name: str) -> None:
     if not DEBUG_SAVE_CROPS:
         return
@@ -520,7 +558,7 @@ def extract_anchors(client: OpenAI, content_img: Image.Image, screen_id: str) ->
     _save_debug_crop(header_img, screen_id, "HEADER_IN_CONTENT")
 
     payload = img_to_png_bytes(header_img)
-    out = call_vlm(
+    out = call_vlm_with_retry(
         client=client,
         image_bytes=payload,
         prompt=ANCHOR_PROMPT,
@@ -534,7 +572,7 @@ def extract_anchors(client: OpenAI, content_img: Image.Image, screen_id: str) ->
     den = out["fields"]["denominazione"]
 
     # Gate duro: alta confidenza o null
-    if ndg["confidence"] < ANCHOR_CONF_MIN:
+    if is_nullish(ndg) or ndg["confidence"] < ANCHOR_CONF_MIN:
         ndg["value"] = None
     if den["confidence"] < ANCHOR_CONF_MIN:
         den["value"] = None
@@ -585,7 +623,7 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
         anchor_hint.append(f"Denominazione attesa: {anchors['denominazione']['value']}")
     prompt_with_hint = PROMPT + ("\n\n" + "\n".join(anchor_hint) if anchor_hint else "")
 
-    main_out = call_vlm(
+    main_out = call_vlm_with_retry(
         client=client,
         image_bytes=payload,
         prompt=prompt_with_hint,
@@ -627,7 +665,7 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
         crop_img = crop_relative(content_img, crop_box)
         _save_debug_crop(crop_img, screen_id, f"RETRY_{field_key}")
 
-        retry_out = call_vlm(
+        retry_out = call_vlm_with_retry(
             client=client,
             image_bytes=img_to_png_bytes(crop_img),
             prompt=prompt_with_hint,
@@ -829,14 +867,36 @@ def main():
     gt = load_ground_truth(GROUND_TRUTH_CSV)
 
     outputs: Dict[str, Dict[str, Any]] = {}
-    for p in SCREENSHOTS:
-        if not os.path.exists(p):
-            print(f"Warning: File not found {p}")
-            continue
-        screen_id = os.path.splitext(os.path.basename(p))[0]
-        print(f"Extracting {screen_id} ...")
-        outputs[screen_id] = extract_from_screen(client, p)
 
+    def _worker_extract(path: str) -> Tuple[str, Dict[str, Any]]:
+        # Create a dedicated client per thread to avoid any thread-safety surprises
+        local_client = OpenAI()
+        screen_id_local = os.path.splitext(os.path.basename(path))[0]
+        return screen_id_local, extract_from_screen(local_client, path)
+
+    existing_paths = [p for p in SCREENSHOTS if os.path.exists(p)]
+    missing_paths = [p for p in SCREENSHOTS if not os.path.exists(p)]
+    for p in missing_paths:
+        print(f"Warning: File not found {p}")
+
+    if PARALLEL_ENABLED and PARALLEL_WORKERS > 1 and len(existing_paths) > 1:
+        print(f"Parallel enabled: workers={PARALLEL_WORKERS}, screens={len(existing_paths)}")
+        with ThreadPoolExecutor(max_workers=PARALLEL_WORKERS) as ex:
+            futs = {ex.submit(_worker_extract, p): p for p in existing_paths}
+            for fut in as_completed(futs):
+                p = futs[fut]
+                screen_id = os.path.splitext(os.path.basename(p))[0]
+                try:
+                    sid, out = fut.result()
+                    outputs[sid] = out
+                    print(f"Done {sid}")
+                except Exception as e:
+                    print(f"ERROR extracting {screen_id}: {e}")
+    else:
+        for p in existing_paths:
+            screen_id = os.path.splitext(os.path.basename(p))[0]
+            print(f"Extracting {screen_id} ...")
+            outputs[screen_id] = extract_from_screen(client, p)
     # Save outputs
     outputs_path = os.path.join(INPUT_DIR, "poc_outputs_improved.json")
     with open(outputs_path, "w", encoding="utf-8") as f:
