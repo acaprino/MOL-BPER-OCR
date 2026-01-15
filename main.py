@@ -31,9 +31,6 @@ INPUT_DIR = os.getenv("INPUT_DIR", "mnt/data")
 SCREENSHOTS = [os.path.join(INPUT_DIR, s) for s in DEFAULT_SCREENSHOTS]
 GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, DEFAULT_GROUND_TRUTH)
 
-PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "4"))
-PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1") == "1"
-
 # Model selection (override via env)
 MODEL_MAIN = os.getenv("OPENAI_MODEL", "gpt-4o")
 MODEL_ANCHOR = os.getenv("OPENAI_MODEL_ANCHOR", MODEL_MAIN)
@@ -311,6 +308,40 @@ def is_nullish(v: Any) -> bool:
     s = str(v).strip().lower()
     return s in ("", "n/d", "nd", "---", "null", "none", "nan")
 
+def safe_field(fields: Dict[str, Any], key: str) -> Dict[str, Any]:
+    """
+    Under strict JSON schema, individual fields may be null.
+    This helper always returns a dict with the expected keys.
+    """
+    f = (fields or {}).get(key)
+    if isinstance(f, dict):
+        return {
+            "value": f.get("value"),
+            "confidence": float(f.get("confidence", 0.0) or 0.0),
+            "evidence_text": f.get("evidence_text"),
+            "section": f.get("section"),
+        }
+    return {"value": None, "confidence": 0.0, "evidence_text": None, "section": None}
+
+def safe_set_field(fields: Dict[str, Any], key: str, *, value=None, confidence=None, evidence_text=None, section=None) -> None:
+    """
+    Ensures fields[key] is a dict, then sets provided attributes.
+    """
+    if fields is None:
+        return
+    f = fields.get(key)
+    if not isinstance(f, dict):
+        f = {"value": None, "confidence": 0.0, "evidence_text": None, "section": None}
+        fields[key] = f
+    if value is not None or f.get("value") is None:
+        f["value"] = value
+    if confidence is not None:
+        f["confidence"] = float(confidence or 0.0)
+    if evidence_text is not None:
+        f["evidence_text"] = evidence_text
+    if section is not None:
+        f["section"] = section
+
 def norm_text(x: Any) -> str:
     s = "" if x is None else str(x)
     s = s.strip()
@@ -418,7 +449,7 @@ def get_pred_value_for_gt_key(pred: Dict[str, Any], gt_key: str):
     schema_key = CSV_TO_SCHEMA.get(gt_key_norm)
     if not schema_key:
         return (None, None, 0.0, None, None)
-    field = (pred.get("fields", {}) or {}).get(schema_key) or {}
+    field = safe_field((pred.get("fields", {}) or {}), schema_key)
     if not isinstance(field, dict):
         return (schema_key, None, 0.0, None, None)
     return (schema_key,
@@ -510,39 +541,6 @@ def call_vlm(
     out["attempt"] = attempt
     return out
 
-def call_vlm_with_retry(
-    client: OpenAI,
-    image_bytes: bytes,
-    prompt: str,
-    screen_id: str,
-    attempt: str,
-    model: str,
-    schema: Dict[str, Any],
-    max_retries: int = 3,
-) -> Dict[str, Any]:
-    """
-    Retry wrapper for transient API errors (rate limits, timeouts).
-    Keeps observability intact; each successful call returns the same structure as call_vlm().
-    """
-    last_err = None
-    for i in range(max_retries):
-        try:
-            return call_vlm(
-                client=client,
-                image_bytes=image_bytes,
-                prompt=prompt,
-                screen_id=screen_id,
-                attempt=attempt,
-                model=model,
-                schema=schema,
-            )
-        except Exception as e:
-            last_err = e
-            # Exponential backoff with jitter (bounded)
-            sleep_s = min(8.0, (2 ** i) * 0.8) + (0.05 * i)
-            time.sleep(sleep_s)
-    raise last_err
-
 def _save_debug_crop(img: Image.Image, screen_id: str, name: str) -> None:
     if not DEBUG_SAVE_CROPS:
         return
@@ -558,7 +556,7 @@ def extract_anchors(client: OpenAI, content_img: Image.Image, screen_id: str) ->
     _save_debug_crop(header_img, screen_id, "HEADER_IN_CONTENT")
 
     payload = img_to_png_bytes(header_img)
-    out = call_vlm_with_retry(
+    out = call_vlm(
         client=client,
         image_bytes=payload,
         prompt=ANCHOR_PROMPT,
@@ -568,14 +566,15 @@ def extract_anchors(client: OpenAI, content_img: Image.Image, screen_id: str) ->
         schema=ANCHOR_SCHEMA,
     )
 
-    ndg = out["fields"]["ndg"]
-    den = out["fields"]["denominazione"]
+    fields = out.get("fields", {})
+    ndg = safe_field(fields, "ndg")
+    den = safe_field(fields, "denominazione")
 
     # Gate duro: alta confidenza o null
-    if is_nullish(ndg) or ndg["confidence"] < ANCHOR_CONF_MIN:
-        ndg["value"] = None
-    if den["confidence"] < ANCHOR_CONF_MIN:
-        den["value"] = None
+    if ndg.get("confidence", 0.0) < ANCHOR_CONF_MIN:
+        safe_set_field(fields, "ndg", value=None, confidence=ndg.get("confidence", 0.0), evidence_text=ndg.get("evidence_text"), section=ndg.get("section"))
+    if den.get("confidence", 0.0) < ANCHOR_CONF_MIN:
+        safe_set_field(fields, "denominazione", value=None, confidence=den.get("confidence", 0.0), evidence_text=den.get("evidence_text"), section=den.get("section"))
 
     return {
         "ndg": ndg,
@@ -623,7 +622,7 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
         anchor_hint.append(f"Denominazione attesa: {anchors['denominazione']['value']}")
     prompt_with_hint = PROMPT + ("\n\n" + "\n".join(anchor_hint) if anchor_hint else "")
 
-    main_out = call_vlm_with_retry(
+    main_out = call_vlm(
         client=client,
         image_bytes=payload,
         prompt=prompt_with_hint,
@@ -665,7 +664,7 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
         crop_img = crop_relative(content_img, crop_box)
         _save_debug_crop(crop_img, screen_id, f"RETRY_{field_key}")
 
-        retry_out = call_vlm_with_retry(
+        retry_out = call_vlm(
             client=client,
             image_bytes=img_to_png_bytes(crop_img),
             prompt=prompt_with_hint,
@@ -795,6 +794,10 @@ def eval_outputs(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any
         print(f"  {k:40s} {c:3d}/{t:3d} = {(c/t):.2%}")
 
 def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]], out_csv_path: str):
+    """
+    Debug report with per-(screen, GT-key) rows.
+    Uses get_pred_value_for_gt_key() so tabular keys (NDG 1..N etc.) map to soggetti[].
+    """
     rows = []
     for scr, gt_kv in gt.items():
         pred = outputs.get(scr)
@@ -802,26 +805,24 @@ def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[st
             continue
 
         mismatch = dataset_mismatch_guard(gt_kv, pred)
-        field_sources = pred.get("_field_sources", {})
-        meta_agg = pred.get("_meta_agg", {})
+        field_sources = pred.get("_field_sources", {}) or {}
+        meta_agg = pred.get("_meta_agg", {}) or {}
 
         for gt_key, gt_val in gt_kv.items():
             gt_key_norm = str(gt_key).strip()
-            schema_key = CSV_TO_SCHEMA.get(gt_key_norm)
-            if not schema_key:
+            source_key, pred_val, conf, evidence, section = get_pred_value_for_gt_key(pred, gt_key_norm)
+            if source_key is None:
                 continue
-
-            field = (pred.get("fields", {}) or {}).get(schema_key) or {}
-            pred_val = field.get("value")
-            conf = field.get("confidence")
-            evidence = field.get("evidence_text")
-            section = field.get("section")
 
             status = "DATASET_MISMATCH" if mismatch else classify_field(gt_val, pred_val)
 
+            source_attempt = ""
+            if source_key in FIELD_KEYS:
+                source_attempt = field_sources.get(source_key, "")
+
             rows.append({
                 "screen": scr,
-                "field": source,
+                "field": source_key,
                 "gt_key": gt_key_norm,
                 "gt_value": gt_val,
                 "pred_value": pred_val,
@@ -829,7 +830,7 @@ def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[st
                 "evidence_text": evidence,
                 "section": section,
                 "status": status,
-                "source_attempt": field_sources.get(schema_key, ""),
+                "source_attempt": source_attempt,
                 "screen_calls": meta_agg.get("calls"),
                 "screen_total_tokens": meta_agg.get("total_tokens"),
                 "screen_estimated_cost_usd": meta_agg.get("estimated_cost_usd"),
@@ -867,36 +868,14 @@ def main():
     gt = load_ground_truth(GROUND_TRUTH_CSV)
 
     outputs: Dict[str, Dict[str, Any]] = {}
+    for p in SCREENSHOTS:
+        if not os.path.exists(p):
+            print(f"Warning: File not found {p}")
+            continue
+        screen_id = os.path.splitext(os.path.basename(p))[0]
+        print(f"Extracting {screen_id} ...")
+        outputs[screen_id] = extract_from_screen(client, p)
 
-    def _worker_extract(path: str) -> Tuple[str, Dict[str, Any]]:
-        # Create a dedicated client per thread to avoid any thread-safety surprises
-        local_client = OpenAI()
-        screen_id_local = os.path.splitext(os.path.basename(path))[0]
-        return screen_id_local, extract_from_screen(local_client, path)
-
-    existing_paths = [p for p in SCREENSHOTS if os.path.exists(p)]
-    missing_paths = [p for p in SCREENSHOTS if not os.path.exists(p)]
-    for p in missing_paths:
-        print(f"Warning: File not found {p}")
-
-    if PARALLEL_ENABLED and PARALLEL_WORKERS > 1 and len(existing_paths) > 1:
-        print(f"Parallel enabled: workers={PARALLEL_WORKERS}, screens={len(existing_paths)}")
-        with ThreadPoolExecutor(max_workers=PARALLEL_WORKERS) as ex:
-            futs = {ex.submit(_worker_extract, p): p for p in existing_paths}
-            for fut in as_completed(futs):
-                p = futs[fut]
-                screen_id = os.path.splitext(os.path.basename(p))[0]
-                try:
-                    sid, out = fut.result()
-                    outputs[sid] = out
-                    print(f"Done {sid}")
-                except Exception as e:
-                    print(f"ERROR extracting {screen_id}: {e}")
-    else:
-        for p in existing_paths:
-            screen_id = os.path.splitext(os.path.basename(p))[0]
-            print(f"Extracting {screen_id} ...")
-            outputs[screen_id] = extract_from_screen(client, p)
     # Save outputs
     outputs_path = os.path.join(INPUT_DIR, "poc_outputs_improved.json")
     with open(outputs_path, "w", encoding="utf-8") as f:
