@@ -2,6 +2,8 @@ import os
 import io
 import json
 import re
+import time
+import base64
 from typing import Dict, Any, Optional, Tuple, List
 
 import pandas as pd
@@ -19,6 +21,12 @@ SCREENSHOTS = [
     "mnt/data/screen 4.png",
 ]
 GROUND_TRUTH_CSV = "mnt/data/dati.csv"
+
+# Pricing (USD per 1M tokens) - aggiornabile da config
+PRICING_PER_1M = {
+    "gpt-4o": {"input": 2.50, "output": 10.00},
+    "gpt-4o-mini": {"input": 0.15, "output": 0.60},
+}
 
 # Crop percentuali (robusti a PC diversi)
 CROPS = {
@@ -139,6 +147,12 @@ RESPONSE_SCHEMA = {
 # -----------------------------
 # Helpers
 # -----------------------------
+def estimate_cost_usd(model: str, prompt_tokens: int, completion_tokens: int) -> float:
+    p = PRICING_PER_1M.get(model)
+    if not p:
+        return 0.0
+    return (prompt_tokens / 1_000_000) * p["input"] + (completion_tokens / 1_000_000) * p["output"]
+
 def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image:
     w, h = img.size
     scale = long_side / max(w, h)
@@ -209,39 +223,122 @@ def norm_number_str(x: Any) -> str:
     s = s.replace(".", "").replace(",", "")
     return s
 
+def classify_field(gt_val, pred_val) -> str:
+    gt_null = is_nullish(gt_val) or (str(gt_val).strip().lower() == "nan")
+    pr_null = is_nullish(pred_val)
+
+    if not gt_null and pr_null:
+        return "MISSING"
+    if gt_null and not pr_null:
+        return "HALLUCINATED"
+    if gt_null and pr_null:
+        return "OK_NULL"
+    # entrambi presenti
+    return "OK" if norm_text(pred_val) == norm_text(gt_val) else "WRONG"
+
+def dataset_mismatch_guard(screen_id: str, gt_kv: Dict[str, Any], pred: Dict[str, Any]) -> bool:
+    # usa NDG e DENOMINAZIONE se presenti in GT per quel screen
+    gt_ndg = gt_kv.get("NDG") or gt_kv.get("NDG 1")
+    gt_den = gt_kv.get("DENOMINAZIONE") or gt_kv.get("DENOMINAZIONE 1")
+
+    pr_ndg = (pred.get("fields", {}).get("ndg") or {}).get("value")
+    pr_den = (pred.get("fields", {}).get("denominazione") or {}).get("value")
+
+    # se GT ha una delle ancore, e pred non combacia, segnala mismatch
+    if gt_ndg and pr_ndg and norm_number_str(gt_ndg) != norm_number_str(pr_ndg):
+        return True
+    if gt_den and pr_den and norm_text(gt_den) != norm_text(pr_den):
+        return True
+    return False
+
+def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]], out_csv_path: str):
+    rows = []
+    for scr, gt_kv in gt.items():
+        pred = outputs.get(scr)
+        if not pred:
+            continue
+
+        mismatch = dataset_mismatch_guard(scr, gt_kv, pred)
+
+        for gt_key, gt_val in gt_kv.items():
+            # normalizza key per match mapping
+            gt_key_norm = str(gt_key).strip()
+            schema_key = CSV_TO_SCHEMA.get(gt_key_norm)
+            if not schema_key:
+                continue
+
+            field = (pred.get("fields", {}) or {}).get(schema_key) or {}
+            pred_val = field.get("value")
+            conf = field.get("confidence")
+            evidence = field.get("evidence_text")
+            section = field.get("section")
+
+            status = "DATASET_MISMATCH" if mismatch else classify_field(gt_val, pred_val)
+
+            meta = pred.get("_meta", {})
+            rows.append({
+                "screen": scr,
+                "field": schema_key,
+                "gt_key": gt_key_norm,
+                "gt_value": gt_val,
+                "pred_value": pred_val,
+                "confidence": conf,
+                "evidence_text": evidence,
+                "section": section,
+                "status": status,
+                "model": meta.get("model"),
+                "attempt": meta.get("attempt"),
+                "prompt_tokens": meta.get("prompt_tokens"),
+                "completion_tokens": meta.get("completion_tokens"),
+                "total_tokens": meta.get("total_tokens"),
+                "estimated_cost_usd": meta.get("estimated_cost_usd"),
+                "latency_ms": meta.get("latency_ms"),
+            })
+
+    pd.DataFrame(rows).to_csv(out_csv_path, index=False, encoding="utf-8")
+
 # -----------------------------
 # VLM call (Responses API + Structured Outputs)
 # -----------------------------
-def call_vlm(client: OpenAI, image_bytes: bytes, prompt: str, screen_id: str, attempt: str) -> Dict[str, Any]:
-    # Convert image bytes to base64 for the standard Chat Completions API
-    import base64
+def call_vlm(client: OpenAI, image_bytes: bytes, prompt: str, screen_id: str, attempt: str, model: str="gpt-4o") -> Dict[str, Any]:
+    import base64, time
     base64_image = base64.b64encode(image_bytes).decode('utf-8')
 
+    t0 = time.time()
     resp = client.chat.completions.create(
-        model="gpt-4o",
+        model=model,
         messages=[
-            {
-                "role": "system",
-                "content": prompt
-            },
+            {"role": "system", "content": prompt},
             {
                 "role": "user",
                 "content": [
                     {"type": "text", "text": "Estrai i campi richiesti dallo screenshot."},
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": f"data:image/png;base64,{base64_image}"
-                        }
-                    },
+                    {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}},
                 ],
             }
         ],
         response_format={"type": "json_schema", "json_schema": RESPONSE_SCHEMA},
     )
+    dt_ms = int((time.time() - t0) * 1000)
 
-    # The JSON result is in the content of the first choice
     out = json.loads(resp.choices[0].message.content)
+
+    usage = getattr(resp, "usage", None)
+    prompt_tokens = getattr(usage, "prompt_tokens", 0) if usage else 0
+    completion_tokens = getattr(usage, "completion_tokens", 0) if usage else 0
+    total_tokens = getattr(usage, "total_tokens", 0) if usage else 0
+    cost_usd = estimate_cost_usd(model, prompt_tokens, completion_tokens)
+
+    out["_meta"] = {
+        "model": model,
+        "screen_id": screen_id,
+        "attempt": attempt,
+        "latency_ms": dt_ms,
+        "prompt_tokens": prompt_tokens,
+        "completion_tokens": completion_tokens,
+        "total_tokens": total_tokens,
+        "estimated_cost_usd": cost_usd,
+    }
     out["screen_id"] = screen_id
     out["attempt"] = attempt
     return out
@@ -283,15 +380,22 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
 # -----------------------------
 def load_ground_truth(csv_path: str) -> Dict[str, Dict[str, Any]]:
     df = pd.read_csv(csv_path)
+
     df["Screenshot"] = df["Screenshot"].astype(str).str.strip()
     df["Denominazione da attribuire"] = df["Denominazione da attribuire"].astype(str).str.strip()
-    df["Valore rilevato "] = df["Valore rilevato "].astype(str).str.strip()
+
+    # colonna "Valore rilevato " ha spazio finale nel file
+    val_col = "Valore rilevato "
+    df[val_col] = df[val_col].astype(str).str.strip()
 
     gt: Dict[str, Dict[str, Any]] = {}
     for _, row in df.iterrows():
         scr = row["Screenshot"]
         key = row["Denominazione da attribuire"]
-        val = row["Valore rilevato "]
+        if key is None or str(key).strip().lower() in ("nan", ""):
+            continue
+        key = str(key).strip()   # IMPORTANT: elimina trailing spaces tipo "Evidenze "
+        val = row[val_col]
         gt.setdefault(scr, {})[key] = val
     return gt
 
@@ -376,6 +480,7 @@ def main():
 
     # Valuta
     eval_outputs(outputs, gt)
+    build_debug_report(outputs, gt, "mnt/data/poc_debug.csv")
 
     print(f"\nSaved: {output_path}")
 
