@@ -129,19 +129,29 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
         
         all_results = {}
         
-        for i, path in enumerate(image_paths):
-            filename = os.path.basename(path)
-            status_text.text(f"Elaborazione: {filename}...")
-            
-            try:
-                # Estrazione
-                result = extract_from_screen(client, path)
-                screen_id = os.path.splitext(filename)[0]
-                all_results[screen_id] = result
-            except Exception as e:
-                st.error(f"Errore su {filename}: {e}")
-            
-            progress_bar.progress((i + 1) / len(image_paths))
+        # Parallel extraction logic
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        
+        def _worker_extract(path: str):
+            local_client = OpenAI(api_key=api_key)
+            screen_id_local = os.path.splitext(os.path.basename(path))[0]
+            return screen_id_local, extract_from_screen(local_client, path)
+
+        with ThreadPoolExecutor(max_workers=5) as ex:
+            futs = {ex.submit(_worker_extract, p): p for p in image_paths}
+            completed = 0
+            for fut in as_completed(futs):
+                p = futs[fut]
+                filename = os.path.basename(p)
+                try:
+                    sid, result = fut.result()
+                    all_results[sid] = result
+                except Exception as e:
+                    st.error(f"Errore su {filename}: {e}")
+                
+                completed += 1
+                progress_bar.progress(completed / len(image_paths))
+                status_text.text(f"Completati {completed}/{len(image_paths)}...")
         
         status_text.success("Estrazione completata!")
         

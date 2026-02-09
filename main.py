@@ -590,6 +590,8 @@ def call_vlm(
     )
     dt_ms = int((time.time() - t0) * 1000)
 
+    ##TODO: migliorare attesa risposta con controllo attivo per minimizzare i tempi
+
     out = json.loads(resp.choices[0].message.content)
 
     usage = getattr(resp, "usage", None)
@@ -639,6 +641,8 @@ def call_vlm_with_retry(
                 schema=schema,
             )
         except Exception as e:
+            #TODO: Better error handling
+
             last_err = e
             # Exponential backoff with jitter (bounded)
             sleep_s = min(8.0, (2 ** i) * 0.8) + (0.05 * i)
