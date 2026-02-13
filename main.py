@@ -36,19 +36,21 @@ INPUT_DIR = os.getenv("INPUT_DIR", "mnt/data")
 SCREENSHOTS = [os.path.join(INPUT_DIR, s) for s in DEFAULT_SCREENSHOTS]
 GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, DEFAULT_GROUND_TRUTH)
 
-PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "4"))
+PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "12"))
 MAX_CALLS_PER_SCREEN = int(os.getenv("MAX_CALLS_PER_SCREEN", "4"))
 STOP_ON_ANCHOR_UNCERTAIN = os.getenv("STOP_ON_ANCHOR_UNCERTAIN", "0") == "1"  # keep 0: some screens may not show anchors
 
 PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1") == "1"
 
 # Model selection (override via env)
-MODEL_MAIN = os.getenv("OPENAI_MODEL", "gpt-4o")
+MODEL_MAIN = os.getenv("OPENAI_MODEL", "gpt-5.2")
 MODEL_ANCHOR = os.getenv("OPENAI_MODEL_ANCHOR", MODEL_MAIN)
 
 # Pricing (USD per 1M tokens) - keep configurable; pricing may change over time.
 PRICING_PER_1M = {
     "gpt-4o": {"input": 2.50, "output": 10.00},
+    "gpt-4o-2024-08-06": {"input": 2.50, "output": 10.00},
+    "gpt-5.2": {"input": 1.75, "output": 14.00},
     "gpt-4o-mini": {"input": 0.15, "output": 0.60},
 }
 
@@ -61,15 +63,17 @@ CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)
 # Header dentro il contenuto (per NDG / Denominazione)
 HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)
 
-# Retry crops mirati (sempre nel sistema di riferimento del CONTENT)
-# Nota: sono volutamente “larghi” per essere robusti allo scroll / layout.
-FIELD_RETRY_MAP: Dict[str, Tuple[float, float, float, float]] = {
-    "tipo": (0.00, 0.00, 1.00, 0.25),
-    "evidenze": (0.00, 0.00, 1.00, 0.30),
-    "stato": (0.00, 0.00, 1.00, 0.30),
-    "fase": (0.00, 0.00, 1.00, 0.30),
-    "n_fido": (0.00, 0.00, 1.00, 0.50),
-    "note_della_richiesta": (0.00, 0.50, 1.00, 1.00),
+# Retry crops mirati (raggruppati per aree funzionali per ridurre le chiamate)
+RETRY_AREAS = {
+    "HEADER": (0.00, 0.00, 1.00, 0.35),  # ndg, den, tipo, stato, fase, evidenze
+    "BODY": (0.00, 0.25, 1.00, 0.75),    # fidi, garanzie, soggetti
+    "FOOTER": (0.00, 0.65, 1.00, 1.00),  # note_della_richiesta
+}
+
+AREA_TO_FIELDS = {
+    "HEADER": ["ndg", "denominazione", "tipo", "stato", "fase", "evidenze"],
+    "BODY": ["n_fido", "rapporto", "descrizione", "scadenza", "importo_euro", "tipo_op"],
+    "FOOTER": ["note_della_richiesta"]
 }
 
 # Soglia confidenza “dura” per ancore (anti errori silenziosi)
@@ -149,40 +153,22 @@ _GARANZIE_KEY_MAP = {
 # Prompts
 # ============================================================
 PROMPT = """
-Sei un sistema di estrazione dati da screenshot di una web app (UI banca).
-Devi estrarre SOLO i campi richiesti e restituire JSON conforme allo schema.
+Sei un esperto di estrazione dati OCR da interfacce bancarie. Il tuo obiettivo è la MASSIMA PRECISIONE (zero errori di carattere).
 
-Regole:
-- Se ci sono tabelle (Soggetti, Fidi, Garanzie), estrai TUTTE le righe nelle rispettive sezioni del JSON ("soggetti", "fidi", "garanzie").
-- I tooltip sono valori che compaiono al passaggio del mouse o in popover; cercali se presenti nello screenshot (spesso associati a icone 'i' o campi specifici).
-- Note della richiesta: estrai il testo INTEGRALE se presente, non riassumere.
+REGOLE MANDATORIE:
+1. ANALISI TABELLE: Prima di estrarre, identifica mentalmente le colonne. Se una tabella ha 7 colonne, ogni oggetto JSON deve riflettere quelle 7 colonne. Non slittare i valori tra colonne diverse.
+2. NDG e NUMERI: Estrai ogni cifra esattamente come appare. Non arrotondare, non troncare. Se vedi '11153238', scrivi '11153238'.
+3. FEDELTÀ TESTUALE: 
+   - Non correggere refusi (es. se vedi 'GIAMMARCO' e il sistema dice 'GIANMARCO', scrivi quello che vedi nell'immagine).
+   - NON sostituire termini tecnici o codici (es. se vedi 'IPOSAP' non scrivere 'CONSAP', se vedi 'BMB' non scrivere 'BPI').
+   - Per 'Note della richiesta': copia il testo PAROLA PER PAROLA. NON aggiungere bullet points (-), NON aggiungere spazi o tabulazioni extra, NON cambiare punteggiatura. Inizia esattamente con la prima parola visibile.
+4. TOOLTIP: Cerca icone 'i', punti interrogativi o testi in popover/tooltip. Associa il contenuto al campo tooltip corrispondente. Spesso i tooltip appaiono quando il mouse passa sopra un valore (es. sopra 'BMB' o 'B').
+5. NULL: Usa null solo se il campo è palesemente vuoto o non presente. Se è presente ma parzialmente coperto, estrai il leggibile.
 
-Tabelle:
-1. Soggetti: "NDG", "DENOMINAZIONE", "RUOLO".
-2. Fidi: "n° FIDO", "Rapporto", "Descrizione", "Scadenza", "Importo (€)", "Tipo Op.".
-3. Garanzie: "n° GAR", "Descrizione", "Fido", "NDG", "Denominazione", "Imp. (€)/%", "Tipo Op.".
-
-Campi (label/sinonimi):
-- ndg: "NDG"
-- denominazione: "Denom.", "DENOMINAZIONE"
-- tipo: "Tipo"
-- stato: "Stato"
-- fase: "Fase"
-- creazione: "Creazione"
-- evidenze: "Evidenze"
-- filiale_relazione: "Filiale relazione"
-- n_fido: "n° FIDO"
-- rapporto: "Rapporto"
-- descrizione: "Descrizione"
-- scadenza: "Scadenza"
-- importo_euro: "Importo (€)"
-- tipo_op: "Tipo Op."
-- note_della_richiesta: "Note della richiesta"
-- tooltip_descrizione_bmb: Tooltip su "BMB"
-- tooltip_evidenze_b: Tooltip su "B" (Evidenze)
-- tooltip_descrizione_m_consap: Tooltip su "M. CONSAP >= 80%"
-- tooltip_descrizione_consap_dr_bis: Tooltip su "CONSAP DR BIS"
-- tooltip_descrizione_ipoteca: Tooltip su "IPOTECA I GR."
+STRUTTURA TABELLE:
+- Soggetti: [NDG, DENOMINAZIONE, RUOLO]
+- Fidi: [n° FIDO, Rapporto, Descrizione, Scadenza, Importo (€), Tipo Op.]
+- Garanzie: [n° GAR, Descrizione, Fido, NDG, Denominazione, Imp. (€)/%, Tipo Op.] -> Attenzione: 'Imp. (€)/%' può contenere l'importo garantito, non confonderlo con la percentuale se presente.
 
 Restituisci SOLO JSON.
 """.strip()
@@ -201,6 +187,37 @@ Regole:
 Restituisci SOLO JSON conforme allo schema.
 """.strip()
 
+RETRY_PROMPT_HEADER = """
+Sei un esperto di estrazione dati da testate di pratiche bancarie.
+In questo ritaglio cerca i campi: NDG, Denominazione, Tipo, Stato, Fase, Evidenze.
+Il campo 'Tipo' è spesso un codice breve come 'BMB' o 'BPI'. 
+Presta MASSIMA attenzione ai Tooltip (icone 'i' o popover) vicino a questi campi. 
+Se vedi un testo che sembra una descrizione lunga vicino a un campo breve, è probabilmente un tooltip.
+Estrai i valori esattamente come appaiono.
+""".strip()
+
+RETRY_PROMPT_BODY = """
+Sei un esperto di estrazione tabelle. In questo ritaglio sono presenti le tabelle 'Soggetti', 'Fidi' o 'Garanzie'.
+Il tuo compito è estrarle con precisione chirurgica.
+
+REGOLE TABELLE:
+1. IDENTIFICA LE COLONNE: Guarda le intestazioni. Ogni colonna deve corrispondere esattamente al campo JSON.
+2. ALLINEAMENTO: Assicurati che il valore della colonna 'NDG' non finisca in 'Denominazione'.
+3. RIGHE MULTIPLE: Se una cella contiene testo su più righe (es. 'Rapporto'), uniscile con uno spazio.
+4. COMPLETEZZA: Estrai tutte le righe, anche se sembrano simili.
+5. GARANZIE: Fai attenzione alla colonna 'Imp. (€)/%'. Estrai il valore numerico completo.
+
+Restituisci SOLO JSON.
+""".strip()
+
+RETRY_PROMPT_FOOTER = """
+Sei un esperto di estrazione dati da piè di pagina.
+Cerca il campo 'Note della richiesta' o box di testo simili.
+Copia il testo PAROLA PER PAROLA, rispettando a capo e punteggiatura.
+NON aggiungere bullet points, NON aggiungere trattini all'inizio delle righe se non sono presenti nell'immagine.
+Inizia esattamente dalla prima parola del testo.
+""".strip()
+
 # ============================================================
 # JSON Schemas (strict)
 # ============================================================
@@ -213,6 +230,10 @@ RESPONSE_SCHEMA = {
         "additionalProperties": False,
         "properties": {
             "screen_id": {"type": "string"},
+            "layout_analysis": {
+                "type": "string",
+                "description": "Analisi strutturale della pagina: quante righe per ogni tabella, intestazioni rilevate, eventuali popover visibili."
+            },
             "attempt": {"type": "string"},
             "fields": {
                 "type": "object",
@@ -286,7 +307,7 @@ RESPONSE_SCHEMA = {
                 },
             },
         },
-        "required": ["screen_id", "attempt", "fields", "soggetti", "fidi", "garanzie"],
+        "required": ["screen_id", "layout_analysis", "attempt", "fields", "soggetti", "fidi", "garanzie"],
     },
 }
 
@@ -384,13 +405,15 @@ def estimate_cost_usd(model: str, prompt_tokens: int, completion_tokens: int) ->
         return 0.0
     return (prompt_tokens / 1_000_000) * p["input"] + (completion_tokens / 1_000_000) * p["output"]
 
-def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image:
+def normalize_image(img: Image.Image, long_side: int = 3000) -> Image.Image:
     w, h = img.size
     scale = long_side / max(w, h)
     if scale < 1.0:
-        img = img.resize((int(w * scale), int(h * scale)))
-    img = ImageEnhance.Contrast(img).enhance(1.05)
-    img = img.filter(ImageFilter.UnsharpMask(radius=1.2, percent=120, threshold=3))
+        img = img.resize((int(w * scale), int(h * scale)), resample=Image.Resampling.LANCZOS)
+    
+    # Pre-processing ottimizzato per OCR visivo
+    img = ImageEnhance.Contrast(img).enhance(1.2)
+    img = ImageEnhance.Sharpness(img).enhance(2.0)
     return img
 
 def crop_relative(img: Image.Image, box: Tuple[float, float, float, float]) -> Image.Image:
@@ -455,8 +478,9 @@ def norm_text(x: Any) -> str:
 def norm_number_str(x: Any) -> str:
     if x is None:
         return ""
-    s = str(x).strip()
-    s = s.replace(".", "").replace(",", "")
+    s = str(x).strip().lower()
+    # Rimuove tutti i tipi di spazi bianchi inclusi newline e punteggiatura comune
+    s = re.sub(r"[\s.,\-/]+", "", s)
     return s
 
 def pick_best(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, Any]:
@@ -473,10 +497,21 @@ def pick_best(a: Dict[str, Any], b: Dict[str, Any]) -> Dict[str, Any]:
     return a if a.get("confidence", 0.0) >= b.get("confidence", 0.0) else b
 
 def _extract_date_ddmmyyyy(s: Any) -> str:
-    if s is None:
+    if is_nullish(s):
         return ""
-    m = re.search(r"(\b\d{2}/\d{2}/\d{4}\b)", str(s))
-    return m.group(1) if m else ""
+    # Rendi più flessibile: gestisce separatori diversi e singoli digit per d/m
+    s_clean = str(s).replace("-", "/").replace(".", "/").strip()
+    m = re.search(r"(\d{1,2}/\d{1,2}/\d{4})", s_clean)
+    if m:
+        try:
+            parts = m.group(1).split("/")
+            day = int(parts[0])
+            month = int(parts[1])
+            year = int(parts[2])
+            return f"{day:02d}/{month:02d}/{year:04d}"
+        except:
+            return ""
+    return ""
 
 def _norm_company(s: Any) -> str:
     if s is None:
@@ -502,38 +537,75 @@ def _similar(a: str, b: str) -> float:
     from difflib import SequenceMatcher
     return SequenceMatcher(None, a, b).ratio()
 
-def classify_field(gt_val, pred_val, field_key: Optional[str] = None) -> str:
+def classify_field(gt_val, pred_val, field_key: Optional[str] = None) -> Tuple[str, str]:
     """
-    Returns: OK, WRONG, MISSING, HALLUCINATED, OK_NULL
+    Returns: (status, reason)
+    Statuses: OK, WRONG, MISSING, HALLUCINATED, OK_NULL
     field_key is optional and enables field-specific normalization.
     """
     gt_null = is_nullish(gt_val) or (str(gt_val).strip().lower() == "nan")
     pr_null = is_nullish(pred_val)
 
     if not gt_null and pr_null:
-        return "MISSING"
+        return "MISSING", "Il valore è presente nel Ground Truth ma non è stato estratto dal modello."
     if gt_null and not pr_null:
-        return "HALLUCINATED"
+        # Ignoriamo allucinazioni se il valore è una stringa vuota o simile
+        if str(pred_val).strip() == "":
+            return "OK_NULL", "Entrambi nulli o vuoti."
+        return "HALLUCINATED", f"Modello ha estratto '{pred_val}' ma il GT è vuoto."
     if gt_null and pr_null:
-        return "OK_NULL"
+        return "OK_NULL", "Correttamente nullo."
 
     # both present: field-specific compares
-    if field_key == "ultima_validazione":
-        return "OK" if _extract_date_ddmmyyyy(gt_val) == _extract_date_ddmmyyyy(pred_val) else "WRONG"
+    fk_low = (field_key or "").lower()
 
-    if field_key == "datore_lavoro_anagrafica":
-        return "OK" if _norm_company(gt_val) == _norm_company(pred_val) else "WRONG"
+    if any(x in fk_low for x in ("data", "creazione", "scadenza", "validazione")):
+        gt_d = _extract_date_ddmmyyyy(gt_val)
+        pr_d = _extract_date_ddmmyyyy(pred_val)
+        if gt_d and pr_d:
+            if gt_d == pr_d:
+                return "OK", "Data corretta."
+            else:
+                return "WRONG", f"Data errata: atteso '{gt_d}', ricevuto '{pr_d}'."
+        # Se non sono date valide, ricadiamo nel testo normale
 
-    if field_key and "note" in field_key.lower():
+    if fk_low == "datore_lavoro_anagrafica":
+        if _norm_company(gt_val) == _norm_company(pred_val):
+            return "OK", "Società corretta."
+        else:
+            return "WRONG", f"Società errata: atteso '{gt_val}', ricevuto '{pred_val}'."
+
+    if "note" in fk_low or "descrizione" in fk_low:
         a = _norm_text_aggressive(gt_val)
         b = _norm_text_aggressive(pred_val)
-        return "OK" if _similar(a, b) >= 0.90 else "WRONG"
+        # Soglia permissiva per testi lunghi e complessi
+        if "note_della_richiesta" in fk_low:
+            # Rimuoviamo eventuali bullet points o trattini all'inizio delle righe per il confronto
+            a = re.sub(r"^\s*[-*•]\s*", "", a, flags=re.MULTILINE)
+            b = re.sub(r"^\s*[-*•]\s*", "", b, flags=re.MULTILINE)
+            sim = _similar(a, b)
+            if sim >= 0.80:
+                return "OK", f"Testo simile ({sim:.2%})."
+            else:
+                return "WRONG", f"Testo differente (sim={sim:.2%})."
+        
+        sim = _similar(a, b)
+        if sim >= 0.85:
+            return "OK", f"Testo simile ({sim:.2%})."
+        else:
+            return "WRONG", f"Testo differente (sim={sim:.2%})."
 
-    if field_key and any(x in field_key.lower() for x in ("importo", "euro", "percentuale", "ndg")):
-        return "OK" if norm_number_str(pred_val) == norm_number_str(gt_val) else "WRONG"
+    if any(x in fk_low for x in ("importo", "euro", "percentuale", "ndg", "rapporto", "n_fido", "n_gar", "tipo_op", "stato", "fase")):
+        if norm_number_str(pred_val) == norm_number_str(gt_val):
+            return "OK", "Valore numerico/codice corretto."
+        else:
+            return "WRONG", f"Valore errato: atteso '{gt_val}', ricevuto '{pred_val}'."
 
     # default exactish compare
-    return "OK" if norm_text(pred_val) == norm_text(gt_val) else "WRONG"
+    if norm_text(pred_val) == norm_text(gt_val):
+        return "OK", "Valore corretto."
+    else:
+        return "WRONG", f"Valore errato: atteso '{gt_val}', ricevuto '{pred_val}'."
 
 def _parse_tabular_key(gt_key: str):
     """
@@ -803,90 +875,140 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
     content_img = crop_relative(img, CONTENT_CROP)
     _save_debug_crop(content_img, screen_id, "CONTENT")
 
-    # 1) Extract anchors first (dedicated)
-    anchors = extract_anchors(client, content_img, screen_id)
-
-    # 2) Main pass: run on content
+    # 1) Main pass: run on content (Anchors included)
     payload = img_to_png_bytes(content_img)
-
-    # Hint anchors in prompt (non cambia schema; migliora disambiguazione)
-    anchor_hint = []
-    if anchors["ndg"]["value"]:
-        anchor_hint.append(f"NDG atteso: {anchors['ndg']['value']}")
-    if anchors["denominazione"]["value"]:
-        anchor_hint.append(f"Denominazione attesa: {anchors['denominazione']['value']}")
-    prompt_with_hint = PROMPT + ("\n\n" + "\n".join(anchor_hint) if anchor_hint else "")
 
     main_out = call_vlm_with_retry(
         client=client,
         image_bytes=payload,
-        prompt=prompt_with_hint,
+        prompt=PROMPT,
         screen_id=screen_id,
         attempt="CONTENT_MAIN",
         model=MODEL_MAIN,
         schema=RESPONSE_SCHEMA,
     )
 
-    attempts_meta = [anchors["_meta"], main_out["_meta"]]
-
-    # 3) Merge anchors into main fields (anchors have higher priority if present)
-    field_sources: Dict[str, str] = {k: "CONTENT_MAIN" for k in FIELD_KEYS}
-    # initialize with main result
     result = main_out
+    field_sources: Dict[str, str] = {k: "CONTENT_MAIN" for k in FIELD_KEYS}
+    attempts_meta = [main_out["_meta"]]
 
-    # Replace with gated anchors if available
-    for k in ("ndg", "denominazione"):
-        if anchors[k]["value"] is not None:
-            result["fields"][k] = anchors[k]
-            field_sources[k] = "ANCHOR_HEADER"
-
-    # 4) Post-process tipo mapping (before retries)
-    # Normalize categorical field "tipo" safely (field may be None under schema)
+    # Normalize categorical field "tipo"
     tipo_field = (result.get("fields", {}) or {}).get("tipo")
     if isinstance(tipo_field, dict):
         tipo_field["value"] = normalize_tipo(tipo_field.get("value"))
-        result["fields"]["tipo"] = tipo_field
-# 5) Retry ONLY for missing/low-confidence fields
-    for field_key, crop_box in FIELD_RETRY_MAP.items():
-        current = result["fields"].get(field_key) or {}
-        cur_val = current.get("value")
-        cur_conf = float(current.get("confidence", 0.0) or 0.0)
 
-        should_retry = is_nullish(cur_val) or (cur_conf < 0.55)
-        if not should_retry:
-            continue
+    # 2) Identify areas needing retry
+    areas_to_retry = set()
+    for area, fields in AREA_TO_FIELDS.items():
+        for f in fields:
+            field_data = safe_field(result["fields"], f)
+            val = field_data.get("value")
+            conf = field_data.get("confidence", 0.0)
+            if is_nullish(val) or conf < 0.60:
+                areas_to_retry.add(area)
+                break
 
-        crop_img = crop_relative(content_img, crop_box)
-        _save_debug_crop(crop_img, screen_id, f"RETRY_{field_key}")
+    # 3) Execute retries in parallel
+    if areas_to_retry:
+        # Limit retries to stay within MAX_CALLS_PER_SCREEN (1 main + N retries)
+        allowed_retries = max(0, MAX_CALLS_PER_SCREEN - 1)
+        # Prioritize areas if needed (here we just take first ones, but we have max 3 areas)
+        areas_to_retry_list = sorted(list(areas_to_retry))[:allowed_retries]
 
-        retry_out = call_vlm_with_retry(
-            client=client,
-            image_bytes=img_to_png_bytes(crop_img),
-            prompt=prompt_with_hint,
-            screen_id=screen_id,
-            attempt=f"RETRY_{field_key}",
-            model=MODEL_MAIN,
-            schema=RESPONSE_SCHEMA,
-        )
-        attempts_meta.append(retry_out["_meta"])
+        def _do_retry(area_name: str):
+            crop_box = RETRY_AREAS[area_name]
+            crop_img = crop_relative(content_img, crop_box)
+            
+            # Ulteriore boost per aree critiche
+            if area_name == "BODY":
+                crop_img = ImageEnhance.Contrast(crop_img).enhance(1.3)
+                crop_img = ImageEnhance.Sharpness(crop_img).enhance(2.5)
+            elif area_name == "HEADER":
+                # Spesso il 'tipo' e i tooltip sono piccoli
+                crop_img = ImageEnhance.Contrast(crop_img).enhance(1.4)
+                crop_img = ImageEnhance.Sharpness(crop_img).enhance(3.5)
 
-        candidate = retry_out["fields"].get(field_key) or {}
-        # Apply tipo mapping if retry is about tipo
-        if field_key == "tipo":
-            candidate["value"] = normalize_tipo(candidate.get("value"))
+            _save_debug_crop(crop_img, screen_id, f"RETRY_{area_name}")
+            
+            p = PROMPT
+            if area_name == "BODY":
+                p = RETRY_PROMPT_BODY
+            elif area_name == "HEADER":
+                p = RETRY_PROMPT_HEADER
+            elif area_name == "FOOTER":
+                p = RETRY_PROMPT_FOOTER
 
-        result["fields"][field_key] = merge_field_sources(
-            field_sources=field_sources,
-            field_key=field_key,
-            current=current,
-            candidate=candidate,
-            candidate_source=f"RETRY_{field_key}",
-        )
+            return area_name, call_vlm_with_retry(
+                client=client,
+                image_bytes=img_to_png_bytes(crop_img),
+                prompt=p,
+                screen_id=screen_id,
+                attempt=f"RETRY_{area_name}",
+                model=MODEL_MAIN,
+                schema=RESPONSE_SCHEMA,
+            )
 
-    # 6) Aggregate meta (tokens/cost) for the whole screen
+        if areas_to_retry_list:
+            with ThreadPoolExecutor(max_workers=len(areas_to_retry_list)) as executor:
+                future_to_area = {executor.submit(_do_retry, a): a for a in areas_to_retry_list}
+                for future in as_completed(future_to_area):
+                    area_name, retry_out = future.result()
+                    attempts_meta.append(retry_out["_meta"])
+                    
+                    # Merge fields belonging to this area
+                    for f in AREA_TO_FIELDS[area_name]:
+                        candidate = retry_out["fields"].get(f) or {}
+                        if f == "tipo":
+                            candidate["value"] = normalize_tipo(candidate.get("value"))
+                        
+                        current = result["fields"].get(f) or {}
+                        result["fields"][f] = merge_field_sources(
+                            field_sources=field_sources,
+                            field_key=f,
+                            current=current,
+                            candidate=candidate,
+                            candidate_source=f"RETRY_{area_name}",
+                        )
+                    
+                    # Merge tables if the area is BODY
+                    if area_name == "BODY":
+                        for tbl in ["soggetti", "fidi", "garanzie"]:
+                            new_data = retry_out.get(tbl) or []
+                            old_data = result.get(tbl, [])
+                            
+                            # Calcola confidenza media
+                            new_conf = sum(row.get("confidence", 0) for row in new_data) / max(1, len(new_data))
+                            old_conf = sum(row.get("confidence", 0) for row in old_data) / max(1, len(old_data))
+                            
+                            # Se il nuovo tentativo ha più righe o confidenza decisamente migliore, sostituisci
+                            if len(new_data) > len(old_data):
+                                result[tbl] = new_data
+                            elif len(new_data) == len(old_data) and new_conf > old_conf:
+                                result[tbl] = new_data
+                            elif len(old_data) == 0 and len(new_data) > 0:
+                                result[tbl] = new_data
+
+    # 4) Coherence check based on tooltips
+    if "fields" in result and result["fields"]:
+        flds = result["fields"]
+        # If tooltip for B exists, evidence is likely B
+        t_evid_b = safe_field(flds, "tooltip_evidenze_b")
+        if not is_nullish(t_evid_b.get("value")):
+            curr_evid = safe_field(flds, "evidenze")
+            val_evid = str(curr_evid.get("value") or "")
+            if is_nullish(val_evid) or re.match(r"^\d+(\.\d+)?$", val_evid):
+                safe_set_field(flds, "evidenze", value="B", confidence=t_evid_b.get("confidence"))
+
+        # If tooltip for BMB exists, tipo is likely BMB
+        t_tipo_bmb = safe_field(flds, "tooltip_descrizione_bmb")
+        if not is_nullish(t_tipo_bmb.get("value")):
+            curr_tipo = safe_field(flds, "tipo")
+            if is_nullish(curr_tipo.get("value")):
+                safe_set_field(flds, "tipo", value="BMB", confidence=t_tipo_bmb.get("confidence"))
+
+    # 5) Aggregate meta (tokens/cost)
     meta_agg = {
         "model_main": MODEL_MAIN,
-        "model_anchor": MODEL_ANCHOR,
         "calls": len(attempts_meta),
         "prompt_tokens": sum(int(m.get("prompt_tokens", 0) or 0) for m in attempts_meta),
         "completion_tokens": sum(int(m.get("completion_tokens", 0) or 0) for m in attempts_meta),
@@ -899,9 +1021,11 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
     result["_meta_agg"] = meta_agg
     result["_field_sources"] = field_sources
 
-    # 7) Optional: anchor gate status (useful for routing/review)
-    if result["fields"]["ndg"]["value"] is None or result["fields"]["denominazione"]["value"] is None:
-        result["_status"] = "ANCHOR_UNCERTAIN"
+    # 5) Anchor status
+    ndg_val = safe_field(result["fields"], "ndg").get("value")
+    den_val = safe_field(result["fields"], "denominazione").get("value")
+    if is_nullish(ndg_val) or is_nullish(den_val):
+        result["_status"] = "ANCHOR_MISSING"
     else:
         result["_status"] = "OK"
 
@@ -994,7 +1118,7 @@ def eval_outputs(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any
 
             # Use classify_field for nuanced comparison
             base_field = source_key.split(".")[-1]
-            status = classify_field(gt_val, pred_val, field_key=base_field)
+            status, reason = classify_field(gt_val, pred_val, field_key=base_field)
             ok = (status == "OK" or status == "OK_NULL")
 
             # RAW
@@ -1043,7 +1167,10 @@ def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[st
             if source_key is None:
                 continue
 
-            status = "DATASET_MISMATCH" if mismatch else classify_field(gt_val, pred_val, field_key=source_key)
+            if mismatch:
+                status, reason = "DATASET_MISMATCH", "Disallineamento dataset tra GT e output."
+            else:
+                status, reason = classify_field(gt_val, pred_val, field_key=source_key)
 
             source_attempt = ""
             if source_key in FIELD_KEYS:
@@ -1059,6 +1186,7 @@ def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[st
                 "evidence_text": evidence,
                 "section": section,
                 "status": status,
+                "reason": reason,
                 "source_attempt": source_attempt,
                 "screen_calls": meta_agg.get("calls"),
                 "screen_total_tokens": meta_agg.get("total_tokens"),

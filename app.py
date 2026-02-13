@@ -206,8 +206,9 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
                             gt_v = gt_for_screen.get(csv_label)
                             
                             row["Ground Truth"] = gt_v
-                            status = classify_field(gt_v, pred_v, field_key=f_key)
+                            status, reason = classify_field(gt_v, pred_v, field_key=f_key)
                             row["Status"] = status
+                            row["Motivazione"] = reason
                             
                         fields_data.append(row)
                     
