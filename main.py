@@ -1219,15 +1219,38 @@ def print_cost_summary(outputs: Dict[str, Dict[str, Any]]) -> None:
 def main():
     client = OpenAI()  # uses OPENAI_API_KEY from env
 
-    if not os.path.exists(GROUND_TRUTH_CSV):
-        raise FileNotFoundError(f"Ground truth CSV not found: {GROUND_TRUTH_CSV}")
+    gt = {}
+    if os.path.exists(GROUND_TRUTH_CSV):
+        try:
+            gt = load_ground_truth(GROUND_TRUTH_CSV)
+        except Exception as e:
+            print(f"Warning: Failed to load ground truth from {GROUND_TRUTH_CSV}: {e}")
+            print("Proceeding in extraction-only mode.")
+            gt = {}
+    else:
+        print(f"Ground truth CSV not found at {GROUND_TRUTH_CSV}. Running in extraction-only mode.")
 
-    gt = load_ground_truth(GROUND_TRUTH_CSV)
-
-    # Infer screenshots from GT if present (supports 5+ screens)
+    # Infer screenshots from GT if present, else list files in INPUT_DIR
     global SCREENSHOTS
     base_dir = os.getenv('SCREENSHOT_DIR', INPUT_DIR)  # Use INPUT_DIR by default
-    SCREENSHOTS = infer_screenshots_from_gt(gt, base_dir=base_dir)
+    if gt:
+        SCREENSHOTS = infer_screenshots_from_gt(gt, base_dir=base_dir)
+    else:
+        # Fallback: find all png/jpg/jpeg in base_dir
+        SCREENSHOTS = []
+        if os.path.exists(base_dir):
+            for f in sorted(os.listdir(base_dir)):
+                if f.lower().endswith((".png", ".jpg", ".jpeg")):
+                    SCREENSHOTS.append(os.path.join(base_dir, f))
+        
+        if not SCREENSHOTS:
+            # Last resort: use the default list if they exist
+            DEFAULT_LIST = [os.path.join(INPUT_DIR, s) for s in DEFAULT_SCREENSHOTS]
+            SCREENSHOTS = [p for p in DEFAULT_LIST if os.path.exists(p)]
+    
+    if not SCREENSHOTS:
+        print(f"No screenshots found in {base_dir} and no ground truth provided. Exiting.")
+        return
 
     outputs: Dict[str, Dict[str, Any]] = {}
 
@@ -1265,15 +1288,17 @@ def main():
     with open(outputs_path, "w", encoding="utf-8") as f:
         json.dump(outputs, f, ensure_ascii=False, indent=2)
 
-    # Evaluate & report
-    eval_outputs(outputs, gt)
-
-    debug_csv_path = os.path.join(INPUT_DIR, "poc_debug_improved.csv")
-    build_debug_report(outputs, gt, debug_csv_path)
+    # Evaluate & report if GT is available
+    if gt:
+        eval_outputs(outputs, gt)
+        debug_csv_path = os.path.join(INPUT_DIR, "poc_debug_improved.csv")
+        build_debug_report(outputs, gt, debug_csv_path)
+        print(f"Saved debug report: {debug_csv_path}")
+    else:
+        print("Skipping evaluation and debug report (no ground truth available).")
     print_cost_summary(outputs)
 
     print(f"Saved outputs: {outputs_path}")
-    print(f"Saved debug report: {debug_csv_path}")
     if DEBUG_SAVE_CROPS:
         print(f"Saved debug crops to: {DEBUG_CROP_DIR}")
 

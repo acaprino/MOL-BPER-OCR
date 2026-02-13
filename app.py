@@ -121,7 +121,13 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
             csv_path = os.path.join(temp_dir, "temp_gt.csv")
             with open(csv_path, "wb") as f:
                 f.write(uploaded_csv.getbuffer())
-            gt_data = load_ground_truth(csv_path)
+            try:
+                gt_data = load_ground_truth(csv_path)
+                st.success("Ground Truth caricato con successo!")
+            except Exception as e:
+                st.error(f"Errore nel caricamento del Ground Truth: {e}")
+                st.warning("L'estrazione procederà senza confronto con Ground Truth.")
+                gt_data = None
 
         # Progress bar
         progress_bar = st.progress(0)
