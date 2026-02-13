@@ -20,10 +20,15 @@ from openai import OpenAI
 
 # Input files (override with INPUT_DIR env if desired)
 DEFAULT_SCREENSHOTS = [
-    "screen 1.png",
-    "screen 2.png",
-    "screen 3.png",
-    "screen 4.png",
+    "screen-1.png",
+    "screen-2.png",
+    "screen-3.png",
+    "screen-4.png",
+    "screen-5.png",
+    "screen-6.png",
+    "screen-7.png",
+    "screen-8.png",
+    "screen-9.png",
 ]
 DEFAULT_GROUND_TRUTH = "dati.csv"
 
@@ -59,23 +64,12 @@ HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)
 # Retry crops mirati (sempre nel sistema di riferimento del CONTENT)
 # Nota: sono volutamente “larghi” per essere robusti allo scroll / layout.
 FIELD_RETRY_MAP: Dict[str, Tuple[float, float, float, float]] = {
-    # Sezione entrate / redditi (tipicamente parte alta centrale)
-    "professione_principale": (0.00, 0.12, 1.00, 0.48),
-    "numero_mensilita": (0.00, 0.12, 1.00, 0.48),
-    "retribuzione_annua_netta": (0.00, 0.12, 1.00, 0.48),
-    "tipo_contratto": (0.00, 0.12, 1.00, 0.55),
-    "datore_lavoro_anagrafica": (0.18, 0.25, 0.98, 0.62),
-    "dal": (0.00, 0.12, 1.00, 0.55),
-
-    # Evidenze/Tipo spesso in griglia “pratiche”
     "tipo": (0.00, 0.00, 1.00, 0.25),
     "evidenze": (0.00, 0.00, 1.00, 0.30),
-
-    # Situazione familiare / note tipicamente più in basso
-    "nr_altri_componenti_nucleo_familiare": (0.00, 0.40, 1.00, 0.78),
-    "di_cui_percepiscono_reddito": (0.00, 0.40, 1.00, 0.78),
-    "importo_totale_annuo_altri_componenti": (0.00, 0.40, 1.00, 0.82),
-    "note": (0.00, 0.55, 1.00, 1.00),
+    "stato": (0.00, 0.00, 1.00, 0.30),
+    "fase": (0.00, 0.00, 1.00, 0.30),
+    "n_fido": (0.00, 0.00, 1.00, 0.50),
+    "note_della_richiesta": (0.00, 0.50, 1.00, 1.00),
 }
 
 # Soglia confidenza “dura” per ancore (anti errori silenziosi)
@@ -92,48 +86,63 @@ FIELD_KEYS = [
     "ndg",
     "denominazione",
     "tipo",
+    "stato",
+    "fase",
+    "creazione",
     "evidenze",
     "filiale_relazione",
-    "ultima_validazione",
-    "professione_principale",
-    "numero_mensilita",
-    "retribuzione_annua_netta",
-    "tipo_contratto",
-    "anagrafica",
-    "dal",
-    "rating_ufficiale",
-    "score_cgs",
-    "nr_altri_componenti_nucleo_familiare",
-    "di_cui_percepiscono_reddito",
-    "importo_totale_annuo_altri_componenti",
-    "note",
+    "n_fido",
+    "rapporto",
+    "descrizione",
+    "scadenza",
+    "importo_euro",
+    "tipo_op",
+    "note_della_richiesta",
+    "tooltip_descrizione_bmb",
+    "tooltip_evidenze_b",
+    "tooltip_descrizione_m_consap",
+    "tooltip_descrizione_consap_dr_bis",
+    "tooltip_descrizione_ipoteca",
 ]
 
 CSV_TO_SCHEMA = {
     "NDG": "ndg",
-    "DENOMINAZIONE": "denominazione",
+    "Denom.": "denominazione",
     "Tipo": "tipo",
+    "Stato": "stato",
+    "Fase": "fase",
+    "Creazione": "creazione",
     "Evidenze": "evidenze",
+    "Evidenze ": "evidenze",
     "Filiale relazione": "filiale_relazione",
-    "Ultima validazione": "ultima_validazione",
-    "Professione principale": "professione_principale",
-    "Numero mensilità": "numero_mensilita",
-    "Retribuzione annua netta": "retribuzione_annua_netta",
-    "Tipo contratto": "tipo_contratto",
-    "ANAGRAFICA": "anagrafica",
-    "DAL": "dal",
-    "RATING UFFICIALE": "rating_ufficiale",
-    "SCORE CGS": "score_cgs",
-    "Nr altri componenti nucleo familiare": "nr_altri_componenti_nucleo_familiare",
-    "Di cui percepiscono reddito": "di_cui_percepiscono_reddito",
-    "Importo totale annuo altri componenti nucleo familiare": "importo_totale_annuo_altri_componenti",
-    "Note": "note",
+    "n° FIDO": "n_fido",
+    "Rapporto": "rapporto",
+    "Descrizione": "descrizione",
+    "Scadenza": "scadenza",
+    "Importo (€)": "importo_euro",
+    "Tipo Op.": "tipo_op",
+    "Note della richiesta": "note_della_richiesta",
+    "tooltip su valore campo Descrizione: BMB": "tooltip_descrizione_bmb",
+    "tooltip su valore campo Evidenze: B": "tooltip_evidenze_b",
+    "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%": "tooltip_descrizione_m_consap",
+    "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS": "tooltip_descrizione_consap_dr_bis",
+    "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.": "tooltip_descrizione_ipoteca",
 }
 
 _SOGGETTI_KEY_MAP = {
     "NDG": "ndg",
     "DENOMINAZIONE": "denominazione",
     "RUOLO": "ruolo"
+}
+
+_GARANZIE_KEY_MAP = {
+    "N° GAR": "n_gar",
+    "DESCRIZIONE": "descrizione",
+    "FIDO": "fido",
+    "NDG": "ndg",
+    "DENOMINAZIONE": "denominazione",
+    "IMP. (€)/%": "importo_percentuale",
+    "TIPO OP.": "tipo_op"
 }
 
 # ============================================================
@@ -144,33 +153,36 @@ Sei un sistema di estrazione dati da screenshot di una web app (UI banca).
 Devi estrarre SOLO i campi richiesti e restituire JSON conforme allo schema.
 
 Regole:
-- Se ci sono più soggetti (NDG 1..3, Denominazione 1..3, Ruolo 1..3), estrai TUTTE le righe della tabella in "soggetti" mantenendo l'ordine dall'alto verso il basso.
+- Se ci sono tabelle (Soggetti, Fidi, Garanzie), estrai TUTTE le righe nelle rispettive sezioni del JSON ("soggetti", "fidi", "garanzie").
+- I tooltip sono valori che compaiono al passaggio del mouse o in popover; cercali se presenti nello screenshot (spesso associati a icone 'i' o campi specifici).
+- Note della richiesta: estrai il testo INTEGRALE se presente, non riassumere.
 
-- Se un valore non è presente o non è leggibile: value = null e confidence <= 0.3.
-- Trattare "N/D", "ND", "---", vuoto come null.
-- Non inventare mai valori.
-- Per ogni campo: includi evidence_text (breve estratto) e section (titolo sezione se visibile).
-- Se ci sono più soggetti (NDG 1..4, Denominazione 1..4, Ruolo 1..4), popola l'array soggetti.
+Tabelle:
+1. Soggetti: "NDG", "DENOMINAZIONE", "RUOLO".
+2. Fidi: "n° FIDO", "Rapporto", "Descrizione", "Scadenza", "Importo (€)", "Tipo Op.".
+3. Garanzie: "n° GAR", "Descrizione", "Fido", "NDG", "Denominazione", "Imp. (€)/%", "Tipo Op.".
 
 Campi (label/sinonimi):
 - ndg: "NDG"
-- denominazione: "DENOMINAZIONE", "Nominativo"
+- denominazione: "Denom.", "DENOMINAZIONE"
 - tipo: "Tipo"
+- stato: "Stato"
+- fase: "Fase"
+- creazione: "Creazione"
 - evidenze: "Evidenze"
 - filiale_relazione: "Filiale relazione"
-- ultima_validazione: "Ultima validazione"
-- professione_principale: "PROFESSIONE PRINCIPALE"
-- numero_mensilita: "NUMERO MENSILITÀ", "MENSILITA"
-- retribuzione_annua_netta: "RETRIBUZIONE ANNUA NETTA"
-- tipo_contratto: "TIPO CONTRATTO"
-- datore_lavoro_anagrafica: "ANAGRAFICA" (nella sezione/tab "DATORE DI LAVORO")
-- dal: "DAL"
-- rating_ufficiale: "RATING UFFICIALE"
-- score_cgs: "SCORE CGS"
-- nr_altri_componenti_nucleo_familiare: "NR. ALTRI COMPONENTI NUCLEO FAMILIARE"
-- di_cui_percepiscono_reddito: "DI CUI PERCEPISCONO REDDITO"
-- importo_totale_annuo_altri_componenti: "IMPORTO TOTALE ANNUO"
-- note: "NOTE", "NOTE CONCLUSIVE"
+- n_fido: "n° FIDO"
+- rapporto: "Rapporto"
+- descrizione: "Descrizione"
+- scadenza: "Scadenza"
+- importo_euro: "Importo (€)"
+- tipo_op: "Tipo Op."
+- note_della_richiesta: "Note della richiesta"
+- tooltip_descrizione_bmb: Tooltip su "BMB"
+- tooltip_evidenze_b: Tooltip su "B" (Evidenze)
+- tooltip_descrizione_m_consap: Tooltip su "M. CONSAP >= 80%"
+- tooltip_descrizione_consap_dr_bis: Tooltip su "CONSAP DR BIS"
+- tooltip_descrizione_ipoteca: Tooltip su "IPOTECA I GR."
 
 Restituisci SOLO JSON.
 """.strip()
@@ -236,8 +248,45 @@ RESPONSE_SCHEMA = {
                     "required": ["ndg", "denominazione", "ruolo", "confidence", "evidence_text"],
                 },
             },
+            "fidi": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "properties": {
+                        "n_fido": {"type": ["string", "null"]},
+                        "rapporto": {"type": ["string", "null"]},
+                        "descrizione": {"type": ["string", "null"]},
+                        "scadenza": {"type": ["string", "null"]},
+                        "importo_euro": {"type": ["string", "null"]},
+                        "tipo_op": {"type": ["string", "null"]},
+                        "confidence": {"type": "number"},
+                        "evidence_text": {"type": ["string", "null"]},
+                    },
+                    "required": ["n_fido", "rapporto", "descrizione", "scadenza", "importo_euro", "tipo_op", "confidence", "evidence_text"],
+                },
+            },
+            "garanzie": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "additionalProperties": False,
+                    "properties": {
+                        "n_gar": {"type": ["string", "null"]},
+                        "descrizione": {"type": ["string", "null"]},
+                        "fido": {"type": ["string", "null"]},
+                        "ndg": {"type": ["string", "null"]},
+                        "denominazione": {"type": ["string", "null"]},
+                        "importo_percentuale": {"type": ["string", "null"]},
+                        "tipo_op": {"type": ["string", "null"]},
+                        "confidence": {"type": "number"},
+                        "evidence_text": {"type": ["string", "null"]},
+                    },
+                    "required": ["n_gar", "descrizione", "fido", "ndg", "denominazione", "importo_percentuale", "tipo_op", "confidence", "evidence_text"],
+                },
+            },
         },
-        "required": ["screen_id", "attempt", "fields", "soggetti"],
+        "required": ["screen_id", "attempt", "fields", "soggetti", "fidi", "garanzie"],
     },
 }
 
@@ -475,24 +524,46 @@ def classify_field(gt_val, pred_val, field_key: Optional[str] = None) -> str:
     if field_key == "datore_lavoro_anagrafica":
         return "OK" if _norm_company(gt_val) == _norm_company(pred_val) else "WRONG"
 
-    if field_key == "note":
+    if field_key and "note" in field_key.lower():
         a = _norm_text_aggressive(gt_val)
         b = _norm_text_aggressive(pred_val)
         return "OK" if _similar(a, b) >= 0.90 else "WRONG"
 
+    if field_key and any(x in field_key.lower() for x in ("importo", "euro", "percentuale", "ndg")):
+        return "OK" if norm_number_str(pred_val) == norm_number_str(gt_val) else "WRONG"
+
     # default exactish compare
     return "OK" if norm_text(pred_val) == norm_text(gt_val) else "WRONG"
 
-def _parse_tabular_subject_key(gt_key: str):
-    """Return (base_key, idx0) if gt_key is like 'NDG 1' or 'DENOMINAZIONE 2' or 'RUOLO 3'."""
-    m = re.match(r"^(NDG|DENOMINAZIONE|RUOLO)\s+(\d+)$", gt_key.strip(), re.IGNORECASE)
+def _parse_tabular_key(gt_key: str):
+    """
+    Returns (table_name, base_key, idx0) if gt_key is like:
+      - 'NDG (riga 1)' -> ambiguous between soggetti/garanzie -> returns ('auto', 'NDG', 0)
+      - 'n° Gar  (riga 1)' -> ('garanzie', 'N° GAR', 0)
+    """
+    gt_key = gt_key.strip()
+    m = re.match(r"^(.*?)\s*\(riga\s+(\d+)\)$", gt_key, re.IGNORECASE)
     if not m:
+        # Compatibility with old format "NDG 1"
+        m = re.match(r"^(NDG|DENOMINAZIONE|RUOLO)\s+(\d+)$", gt_key, re.IGNORECASE)
+        if m:
+            return "soggetti", m.group(1).upper(), int(m.group(2)) - 1
         return None
-    base = m.group(1).upper()
+
+    label = m.group(1).strip().upper()
     idx0 = int(m.group(2)) - 1
     if idx0 < 0:
         return None
-    return base, idx0
+
+    if label in ("NDG", "DENOMINAZIONE"):
+        return "auto", label, idx0
+    if label in ("RUOLO",):
+        return "soggetti", label, idx0
+    if label in ("N° GAR", "DESCRIZIONE", "FIDO", "IMP. (€)/%", "TIPO OP."):
+        # Garanzie table
+        return "garanzie", label, idx0
+    
+    return None
 
 def get_pred_value_for_gt_key(pred: Dict[str, Any], gt_key: str):
     """
@@ -501,20 +572,43 @@ def get_pred_value_for_gt_key(pred: Dict[str, Any], gt_key: str):
     where source is either a schema field name (e.g. 'ndg') or 'soggetti[i].ndg'.
     """
     gt_key_norm = str(gt_key).strip()
-    # 1) Handle tabular keys -> soggetti array
-    parsed = _parse_tabular_subject_key(gt_key_norm)
+    # 1) Handle tabular keys
+    parsed = _parse_tabular_key(gt_key_norm)
     if parsed:
-        base, idx0 = parsed
-        key = _SOGGETTI_KEY_MAP.get(base)
-        soggetti = pred.get("soggetti") or []
-        if key and idx0 < len(soggetti) and isinstance(soggetti[idx0], dict):
-            s = soggetti[idx0]
-            return (f"soggetti[{idx0}].{key}",
-                    s.get(key),
-                    s.get("confidence", 0.0),
-                    s.get("evidence_text"),
+        table, base, idx0 = parsed
+
+        # Resolve ambiguous NDG/DENOMINAZIONE with preference to garanzie if present
+        if table == "auto":
+            # prefer garanzie if row exists and has a matching key
+            gar = pred.get("garanzie") or []
+            sog = pred.get("soggetti") or []
+            base_map_key_gar = _GARANZIE_KEY_MAP.get(base)
+            base_map_key_sog = _SOGGETTI_KEY_MAP.get(base)
+            if idx0 < len(gar) and isinstance(gar[idx0], dict) and base_map_key_gar in gar[idx0]:
+                table = "garanzie"
+                key = base_map_key_gar
+                data = gar
+            else:
+                table = "soggetti"
+                key = base_map_key_sog
+                data = sog
+        else:
+            data = pred.get(table) or []
+            if table == "soggetti":
+                key = _SOGGETTI_KEY_MAP.get(base)
+            elif table == "garanzie":
+                key = _GARANZIE_KEY_MAP.get(base)
+            else:
+                key = None
+
+        if key and idx0 < len(data) and isinstance(data[idx0], dict):
+            row = data[idx0]
+            return (f"{table}[{idx0}].{key}",
+                    row.get(key),
+                    row.get("confidence", 0.0),
+                    row.get("evidence_text"),
                     None)
-        return (f"soggetti[{idx0}].{key}", None, 0.0, None, None)
+        return (f"{table}[{idx0}].{key if key else 'unknown'}", None, 0.0, None, None)
 
     # 2) Normal fields mapping via CSV_TO_SCHEMA
     schema_key = CSV_TO_SCHEMA.get(gt_key_norm)
@@ -537,21 +631,14 @@ def get_pred_value_for_gt_key(pred: Dict[str, Any], gt_key: str):
 def dataset_mismatch_guard(gt_kv: Dict[str, Any], pred: Dict[str, Any]) -> bool:
     """
     Returns True if the GT keys clearly belong to a different record than what we extracted.
-    We use anchors (NDG / DENOMINAZIONE), falling back to the first row of 'soggetti' if needed.
+    We use anchors (NDG / DENOMINAZIONE).
     """
-    gt_ndg = gt_kv.get("NDG") or gt_kv.get("NDG 1")
-    gt_den = gt_kv.get("DENOMINAZIONE") or gt_kv.get("DENOMINAZIONE 1")
+    gt_ndg = gt_kv.get("NDG") or gt_kv.get("Denom.")
+    gt_den = gt_kv.get("DENOMINAZIONE") or gt_kv.get("Denominazione")
 
     pred_fields = pred.get("fields", {}) or {}
     pr_ndg = (pred_fields.get("ndg") or {}).get("value")
     pr_den = (pred_fields.get("denominazione") or {}).get("value")
-
-    # fallback to first row of soggetti if fields anchors are empty
-    soggetti = pred.get("soggetti") or []
-    if is_nullish(pr_ndg) and soggetti and isinstance(soggetti[0], dict):
-        pr_ndg = soggetti[0].get("ndg")
-    if is_nullish(pr_den) and soggetti and isinstance(soggetti[0], dict):
-        pr_den = soggetti[0].get("denominazione")
 
     if gt_ndg and pr_ndg and norm_number_str(gt_ndg) != norm_number_str(pr_ndg):
         return True
@@ -898,34 +985,32 @@ def eval_outputs(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any
 
         mismatch = dataset_mismatch_guard(kv, pred)
 
-        for csv_key, gt_val in kv.items():
-            csv_key_norm = str(csv_key).strip()
-            schema_key = CSV_TO_SCHEMA.get(csv_key_norm)
-            if not schema_key:
+        for gt_key, gt_val in kv.items():
+            gt_key_norm = str(gt_key).strip()
+            source_key, pred_val, conf, evidence, section = get_pred_value_for_gt_key(pred, gt_key_norm)
+            
+            if source_key is None:
                 continue
 
-            pred_val = (pred.get("fields", {}).get(schema_key) or {}).get("value")
-
-            # Normalizzazione numeri per importi
-            if schema_key in ("retribuzione_annua_netta", "importo_totale_annuo_altri_componenti", "ndg"):
-                ok = norm_number_str(pred_val) == norm_number_str(gt_val)
-            else:
-                ok = norm_text(pred_val) == norm_text(gt_val)
+            # Use classify_field for nuanced comparison
+            base_field = source_key.split(".")[-1]
+            status = classify_field(gt_val, pred_val, field_key=base_field)
+            ok = (status == "OK" or status == "OK_NULL")
 
             # RAW
             total_raw += 1
             correct_raw += int(ok)
-            per_field_raw.setdefault(schema_key, [0, 0])
-            per_field_raw[schema_key][0] += int(ok)
-            per_field_raw[schema_key][1] += 1
+            per_field_raw.setdefault(base_field, [0, 0])
+            per_field_raw[base_field][0] += int(ok)
+            per_field_raw[base_field][1] += 1
 
             # FILTERED
             if not mismatch:
                 total_filt += 1
                 correct_filt += int(ok)
-                per_field_filt.setdefault(schema_key, [0, 0])
-                per_field_filt[schema_key][0] += int(ok)
-                per_field_filt[schema_key][1] += 1
+                per_field_filt.setdefault(base_field, [0, 0])
+                per_field_filt[base_field][0] += int(ok)
+                per_field_filt[base_field][1] += 1
 
     acc_raw = (correct_raw / total_raw) if total_raw else 0.0
     acc_filt = (correct_filt / total_filt) if total_filt else 0.0
