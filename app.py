@@ -1,26 +1,22 @@
 import streamlit as st
 import os
-import io
 import json
 import pandas as pd
-from PIL import Image
-from openai import OpenAI
-import base64
-import time
 
-# Importiamo le funzioni dal file main.py esistente
-# Nota: Assicurati che main.py sia nella stessa cartella o accessibile
 try:
-    from main import (
-        extract_from_screen, 
-        load_ground_truth, 
-        eval_outputs, 
+    from extraction import (
+        extract_from_screen,
+        load_ground_truth,
+        eval_outputs,
         get_pred_value_for_gt_key,
         classify_field,
-        dataset_mismatch_guard
+        dataset_mismatch_guard,
+        run_extraction_batch,
+        CSV_TO_SCHEMA,
+        FIELD_KEYS,
     )
 except ImportError:
-    st.error("Errore: Impossibile importare le funzioni da main.py. Assicurati che il file sia presente.")
+    st.error("Errore: Impossibile importare le funzioni dal pacchetto extraction. Assicurati che sia presente.")
 
 # --- CONFIGURAZIONE PAGINA ---
 st.set_page_config(
@@ -103,8 +99,6 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
     elif not uploaded_images:
         st.warning("Carica almeno un'immagine per procedere.")
     else:
-        client = OpenAI(api_key=api_key)
-        
         # Salvataggio temporaneo delle immagini caricate
         temp_dir = "temp_uploads"
         os.makedirs(temp_dir, exist_ok=True)
@@ -114,7 +108,7 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
             with open(path, "wb") as f:
                 f.write(img_file.getbuffer())
             image_paths.append(path)
-        
+
         # Caricamento GT se presente
         gt_data = None
         if uploaded_csv:
@@ -126,33 +120,27 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
         # Progress bar
         progress_bar = st.progress(0)
         status_text = st.empty()
-        
-        all_results = {}
-        
-        # Parallel extraction logic
-        from concurrent.futures import ThreadPoolExecutor, as_completed
-        
-        def _worker_extract(path: str):
-            local_client = OpenAI(api_key=api_key)
-            screen_id_local = os.path.splitext(os.path.basename(path))[0]
-            return screen_id_local, extract_from_screen(local_client, path)
+        completed = [0]  # mutable counter for closure
 
-        with ThreadPoolExecutor(max_workers=5) as ex:
-            futs = {ex.submit(_worker_extract, p): p for p in image_paths}
-            completed = 0
-            for fut in as_completed(futs):
-                p = futs[fut]
-                filename = os.path.basename(p)
-                try:
-                    sid, result = fut.result()
-                    all_results[sid] = result
-                except Exception as e:
-                    st.error(f"Errore su {filename}: {e}")
-                
-                completed += 1
-                progress_bar.progress(completed / len(image_paths))
-                status_text.text(f"Completati {completed}/{len(image_paths)}...")
-        
+        def _on_complete(sid, result):
+            completed[0] += 1
+            progress_bar.progress(completed[0] / len(image_paths))
+            status_text.text(f"Completati {completed[0]}/{len(image_paths)}...")
+
+        def _on_error(sid, exc):
+            completed[0] += 1
+            progress_bar.progress(completed[0] / len(image_paths))
+            st.error(f"Errore su {sid}: {exc}")
+
+        all_results = run_extraction_batch(
+            image_paths,
+            api_key=api_key,
+            parallel=True,
+            max_workers=5,
+            on_complete=_on_complete,
+            on_error=_on_error,
+        )
+
         status_text.success("Estrazione completata!")
         
         # --- VISUALIZZAZIONE RISULTATI ---
@@ -199,8 +187,6 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
                         }
                         
                         if gt_data:
-                            # Troviamo la chiave CSV corrispondente (approssimativa per visualizzazione)
-                            from main import CSV_TO_SCHEMA, FIELD_KEYS
                             inv_map = {v: k for k, v in CSV_TO_SCHEMA.items()}
                             csv_label = inv_map.get(f_key, f_key)
                             gt_v = gt_for_screen.get(csv_label)
