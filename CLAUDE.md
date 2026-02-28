@@ -3,7 +3,7 @@
 ## Project Overview
 
 AI-powered data extraction from Italian banking screenshots using OpenAI Vision API (GPT-4o).
-Extracts 19 structured fields from UI screenshots via a multi-pass VLM pipeline, evaluates
+Extracts 18 structured fields from UI screenshots via a multi-pass VLM pipeline, evaluates
 accuracy against ground truth CSV, and reports per-field metrics and cost breakdowns.
 
 **Tech stack:** Python 3.8+, OpenAI Vision API, Pillow, Pandas, Streamlit
@@ -13,16 +13,18 @@ accuracy against ground truth CSV, and reports per-field metrics and cost breakd
 
 ### Multi-Pass Extraction Pipeline
 
-Each screenshot goes through three stages in `extract_from_screen()`:
+Each screenshot goes through three stages in `extract_from_screen()` (`extraction/pipeline.py`):
 
 1. **Anchor extraction** — `extract_anchors()` crops the header region and extracts only NDG + DENOMINAZIONE with high confidence (>= 0.95). Gates further processing.
-2. **Main extraction** — Full content crop sent to VLM with anchor hints ("NDG atteso: {value}"). Extracts all 19 fields + soggetti array in one call.
+2. **Main extraction** — Full content crop sent to VLM with anchor hints ("NDG atteso: {value}"). Extracts all 18 fields + soggetti array in one call.
 3. **Conditional retry** — Only retries fields that are nullish or low confidence (< 0.55). Each field has a dedicated crop region in `FIELD_RETRY_MAP`. Best value selected via `pick_best()`.
 
 ### Dual Mode
 
 - **CLI** (`python main.py`): Batch-processes all screens in `INPUT_DIR`, outputs JSON results + debug CSV, prints accuracy metrics and cost summary.
 - **Streamlit** (`streamlit run app.py`): Web UI with file upload, per-screen results display, confidence tables, and JSON export.
+
+Both modes share `run_extraction_batch()` in `extraction/cli.py` — do not duplicate the `ThreadPoolExecutor` logic.
 
 ## Running the Project
 
@@ -58,7 +60,7 @@ streamlit run app.py
 ### Type Annotations
 All functions must have full type annotations on parameters and return types:
 ```python
-def call_vlm(client: OpenAI, img: Image.Image, ...) -> Dict[str, Any]: ...
+def call_vlm(client: OpenAI, image_bytes: bytes, ...) -> Dict[str, Any]: ...
 def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image: ...
 ```
 
@@ -82,20 +84,45 @@ Code sections are delimited with:
 
 These patterns are load-bearing. Do not remove or restructure without understanding downstream effects:
 
-1. **Multi-pass pipeline** — The anchor → main → retry pattern is critical for accuracy. Anchors gate main extraction; retries use field-specific crops.
-2. **Cost tracking** — Every VLM call must populate `_meta` with `estimated_cost_usd`, `prompt_tokens`, `completion_tokens`, `latency_ms`. Aggregated in `_meta_agg`.
-3. **Environment-based config** — All configuration via `os.getenv()` with sensible defaults. No config files.
-4. **Thread safety** — Each worker thread creates its own `OpenAI()` client. Never share clients across threads.
-5. **Structured output** — VLM calls use `json_schema` response format with `additionalProperties: False`. All fields explicitly defined.
+1. **Multi-pass pipeline** — The anchor → main → retry pattern is critical for accuracy. Anchors gate main extraction; retries use field-specific crops. See `extraction/pipeline.py`.
+2. **Cost tracking** — Every VLM call must populate `_meta` with `estimated_cost_usd`, `prompt_tokens`, `completion_tokens`, `latency_ms`. Aggregated in `_meta_agg`. See `extraction/vlm_client.py`.
+3. **Environment-based config** — All configuration via `os.getenv()` with sensible defaults. No config files. See `extraction/config.py`.
+4. **Thread safety** — Each worker thread creates its own `OpenAI()` client. Never share clients across threads. See `extraction/cli.py:run_extraction_batch()`.
+5. **Structured output** — VLM calls use `json_schema` response format with `additionalProperties: False`. All fields explicitly defined. See `extraction/schemas.py`.
 6. **Field source tracking** — `_field_sources` dict records which pass (ANCHOR_HEADER, CONTENT_MAIN, RETRY_{field}) produced each field's final value.
-7. **Dataset mismatch guard** — `dataset_mismatch_guard()` detects when extracted NDG/DENOMINAZIONE differs from ground truth, preventing false negatives in evaluation.
+7. **Dataset mismatch guard** — `dataset_mismatch_guard()` detects when extracted NDG/DENOMINAZIONE differs from ground truth, preventing false negatives in evaluation. See `extraction/normalization.py`.
+8. **Shared batch runner** — `run_extraction_batch()` in `extraction/cli.py` is used by both `main()` and `app.py`. Do not re-implement batch/threading logic elsewhere.
+9. **Screenshot path resolution** — `get_screenshot_paths()` in `extraction/config.py` replaces the old pattern of mutating a global `SCREENSHOTS` list. Use this function; do not reintroduce a mutable global.
 
 ## Key Files
 
+### Entry Points
+
 | File | Purpose |
 |---|---|
-| `main.py` | Core extraction engine (1071 lines): pipeline, VLM calls, evaluation, cost tracking |
-| `app.py` | Streamlit web UI (233 lines): upload, process, display results |
+| `main.py` | 6-line shim: `from extraction import *` + calls `main()` |
+| `app.py` | Streamlit web UI (216 lines): upload, process, display results |
+
+### extraction/ Package
+
+| Module | Purpose |
+|---|---|
+| `extraction/__init__.py` | Public API re-exports for backward compatibility |
+| `extraction/config.py` | Env-var config, crop constants, pricing, `get_screenshot_paths()` |
+| `extraction/fields.py` | `FIELD_KEYS` (18 fields), `CSV_TO_SCHEMA` mapping |
+| `extraction/schemas.py` | `RESPONSE_SCHEMA` and `ANCHOR_SCHEMA` (strict JSON schemas) |
+| `extraction/prompts.py` | `PROMPT` and `ANCHOR_PROMPT` (Italian VLM prompts) |
+| `extraction/normalization.py` | Text normalization, `classify_field()`, `pick_best()`, `dataset_mismatch_guard()` |
+| `extraction/imaging.py` | `normalize_image()`, `crop_relative()`, `img_to_png_bytes()`, `save_debug_crop()` |
+| `extraction/vlm_client.py` | `call_vlm()`, `call_vlm_with_retry()`, `estimate_cost_usd()` |
+| `extraction/pipeline.py` | `extract_anchors()`, `extract_from_screen()` (main orchestrator) |
+| `extraction/evaluation.py` | `eval_outputs()`, `build_debug_report()`, `print_cost_summary()`, `load_ground_truth()` |
+| `extraction/cli.py` | `main()` CLI entry point, `run_extraction_batch()` shared by CLI and Streamlit |
+
+### Data Files
+
+| File | Purpose |
+|---|---|
 | `mnt/data/dati.csv` | Ground truth dataset (5 screens, maps field names to expected values) |
 | `mnt/data/screen *.png` | Test banking screenshots (5 images) |
 | `mnt/data/poc_outputs_improved.json` | Previous extraction results |
