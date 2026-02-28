@@ -95,7 +95,7 @@ def get_screenshot_paths(gt: Dict[str, Dict[str, Any]], base_dir: Optional[str] 
     if base_dir is None:
         base_dir = os.getenv("SCREENSHOT_DIR", INPUT_DIR)
 
-    names = sorted(gt.keys(), key=lambda s: (re.sub(r"\D+", "", s) or "0", s))
+    names = sorted(gt.keys(), key=lambda s: (int(re.sub(r"\D+", "", s) or "0"), s))
     paths: List[str] = []
     for name in names:
         candidate = (

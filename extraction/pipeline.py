@@ -223,7 +223,9 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
     result["_field_sources"] = field_sources
 
     # 7) Anchor gate status
-    if result["fields"]["ndg"]["value"] is None or result["fields"]["denominazione"]["value"] is None:
+    ndg_field = result["fields"].get("ndg") or {}
+    den_field = result["fields"].get("denominazione") or {}
+    if ndg_field.get("value") is None or den_field.get("value") is None:
         result["_status"] = "ANCHOR_UNCERTAIN"
     else:
         result["_status"] = "OK"

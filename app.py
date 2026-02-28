@@ -5,15 +5,11 @@ import pandas as pd
 
 try:
     from extraction import (
-        extract_from_screen,
         load_ground_truth,
-        eval_outputs,
-        get_pred_value_for_gt_key,
         classify_field,
         dataset_mismatch_guard,
         run_extraction_batch,
         CSV_TO_SCHEMA,
-        FIELD_KEYS,
     )
 except ImportError:
     st.error("Errore: Impossibile importare le funzioni dal pacchetto extraction. Assicurati che sia presente.")
@@ -177,6 +173,8 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
                     mismatch = dataset_mismatch_guard(gt_for_screen, res) if gt_data else False
                     
                     for f_key, f_val in fields.items():
+                        if not isinstance(f_val, dict):
+                            continue
                         pred_v = f_val.get("value")
                         conf = f_val.get("confidence", 0)
                         
