@@ -32,6 +32,13 @@ from extraction.imaging import (
 )
 from extraction.vlm_client import call_vlm_with_retry
 
+# ============================================================
+# Startup assertions — catch naming drift early
+# ============================================================
+
+_invalid_retry = set(FIELD_RETRY_MAP) - set(FIELD_KEYS)
+assert not _invalid_retry, f"FIELD_RETRY_MAP keys not in FIELD_KEYS: {_invalid_retry}"
+
 
 # ============================================================
 # Anchor extraction (NDG, Denominazione)

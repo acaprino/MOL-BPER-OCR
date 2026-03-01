@@ -24,7 +24,7 @@ Campi (label/sinonimi):
 - numero_mensilita: "NUMERO MENSILITÀ", "MENSILITA"
 - retribuzione_annua_netta: "RETRIBUZIONE ANNUA NETTA"
 - tipo_contratto: "TIPO CONTRATTO"
-- datore_lavoro_anagrafica: "ANAGRAFICA" (nella sezione/tab "DATORE DI LAVORO")
+- anagrafica: "ANAGRAFICA" (nella sezione/tab "DATORE DI LAVORO")
 - dal: "DAL"
 - rating_ufficiale: "RATING UFFICIALE"
 - score_cgs: "SCORE CGS"

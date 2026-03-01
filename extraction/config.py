@@ -57,7 +57,7 @@ FIELD_RETRY_MAP: Dict[str, Tuple[float, float, float, float]] = {
     "numero_mensilita": (0.00, 0.12, 1.00, 0.48),
     "retribuzione_annua_netta": (0.00, 0.12, 1.00, 0.48),
     "tipo_contratto": (0.00, 0.12, 1.00, 0.55),
-    "datore_lavoro_anagrafica": (0.18, 0.25, 0.98, 0.62),
+    "anagrafica": (0.18, 0.25, 0.98, 0.62),
     "dal": (0.00, 0.12, 1.00, 0.55),
     # Evidenze/Tipo spesso in griglia "pratiche"
     "tipo": (0.00, 0.00, 1.00, 0.25),

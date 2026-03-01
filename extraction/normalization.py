@@ -4,7 +4,7 @@ import re
 from difflib import SequenceMatcher
 from typing import Dict, Any, Optional, Tuple
 
-from extraction.fields import CSV_TO_SCHEMA, _SOGGETTI_KEY_MAP
+from extraction.fields import CSV_TO_SCHEMA, FIELD_KEYS, _SOGGETTI_KEY_MAP
 
 # ============================================================
 # Post-processing (categorical mapping)
@@ -166,9 +166,12 @@ def _similar(a: str, b: str) -> float:
 
 _FIELD_COMPARATORS: Dict[str, Any] = {
     "ultima_validazione": lambda gt, pr: _extract_date_ddmmyyyy(gt) == _extract_date_ddmmyyyy(pr),
-    "datore_lavoro_anagrafica": lambda gt, pr: _norm_company(gt) == _norm_company(pr),
+    "anagrafica": lambda gt, pr: _norm_company(gt) == _norm_company(pr),
     "note": lambda gt, pr: _similar(_norm_text_aggressive(gt), _norm_text_aggressive(pr)) >= 0.90,
 }
+
+_invalid_cmp = set(_FIELD_COMPARATORS) - set(FIELD_KEYS)
+assert not _invalid_cmp, f"_FIELD_COMPARATORS keys not in FIELD_KEYS: {_invalid_cmp}"
 
 
 def classify_field(gt_val: Any, pred_val: Any, field_key: Optional[str] = None) -> str:
