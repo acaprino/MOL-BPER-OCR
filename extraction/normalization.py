@@ -171,7 +171,9 @@ _FIELD_COMPARATORS: Dict[str, Any] = {
 }
 
 _invalid_cmp = set(_FIELD_COMPARATORS) - set(FIELD_KEYS)
-assert not _invalid_cmp, f"_FIELD_COMPARATORS keys not in FIELD_KEYS: {_invalid_cmp}"
+if _invalid_cmp:
+    raise ValueError(f"_FIELD_COMPARATORS keys not in FIELD_KEYS: {_invalid_cmp}")
+del _invalid_cmp
 
 
 def classify_field(gt_val: Any, pred_val: Any, field_key: Optional[str] = None) -> str:

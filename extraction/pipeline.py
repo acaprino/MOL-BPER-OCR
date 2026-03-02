@@ -37,7 +37,9 @@ from extraction.vlm_client import call_vlm_with_retry
 # ============================================================
 
 _invalid_retry = set(FIELD_RETRY_MAP) - set(FIELD_KEYS)
-assert not _invalid_retry, f"FIELD_RETRY_MAP keys not in FIELD_KEYS: {_invalid_retry}"
+if _invalid_retry:
+    raise ValueError(f"FIELD_RETRY_MAP keys not in FIELD_KEYS: {_invalid_retry}")
+del _invalid_retry
 
 
 # ============================================================
