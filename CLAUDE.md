@@ -33,7 +33,7 @@ Both modes share `run_extraction_batch()` in `extraction/cli.py` — do not dupl
 ### OpenAI (default)
 
 ```bash
-export OPENAI_API_KEY="sk-..."
+export LLM_API_KEY="sk-..."
 python main.py                  # CLI batch mode
 streamlit run app.py            # Streamlit web UI
 ```
@@ -42,24 +42,22 @@ streamlit run app.py            # Streamlit web UI
 
 ```bash
 export LLM_PROVIDER=gemini
-export GEMINI_API_KEY="AI..."
+export LLM_API_KEY="AI..."
+export LLM_MODEL=gemini-3-flash-preview
 python main.py                  # CLI batch mode
 streamlit run app.py            # Streamlit web UI
 ```
 
-**Required:** `OPENAI_API_KEY` (or `GEMINI_API_KEY` if using Gemini) must be set (or entered in Streamlit sidebar).
+**Required:** `LLM_API_KEY` must be set (or entered in Streamlit sidebar).
 
 ## Configuration (Environment Variables)
 
 | Variable | Default | Description |
 |---|---|---|
-| `OPENAI_API_KEY` | *(required for openai)* | OpenAI API credential |
-| `OPENAI_MODEL` | `gpt-4o` | Model for main extraction (OpenAI) |
-| `OPENAI_MODEL_ANCHOR` | same as `OPENAI_MODEL` | Model for anchor pass (OpenAI) |
 | `LLM_PROVIDER` | `openai` | Provider: `openai` or `gemini` |
-| `GEMINI_API_KEY` | *(required for gemini)* | Google Gemini API credential |
-| `GEMINI_MODEL` | `gemini-3-flash-preview` | Model for main extraction (Gemini) |
-| `GEMINI_MODEL_ANCHOR` | same as `GEMINI_MODEL` | Model for anchor pass (Gemini) |
+| `LLM_API_KEY` | *(required)* | API credential (OpenAI or Gemini key) |
+| `LLM_MODEL` | `gpt-4o` | Model for main extraction |
+| `LLM_MODEL_ANCHOR` | same as `LLM_MODEL` | Model for anchor pass |
 | `INPUT_DIR` | `mnt/data` | Data directory (screenshots + ground truth) |
 | `SCREENSHOT_DIR` | same as `INPUT_DIR` | Screenshot location |
 | `PARALLEL_WORKERS` | `4` | Thread pool size |
@@ -79,7 +77,7 @@ def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image: ...
 ```
 
 ### Naming
-- **Constants:** `UPPER_SNAKE_CASE` — `FIELD_KEYS`, `CONTENT_CROP`, `MODEL_MAIN`
+- **Constants:** `UPPER_SNAKE_CASE` — `FIELD_KEYS`, `CONTENT_CROP`, `LLM_MODEL`
 - **Private helpers:** `_leading_underscore` — `_extract_date_ddmmyyyy()`, `_norm_company()`
 - **Schemas:** `UPPER_SNAKE_CASE` — `RESPONSE_SCHEMA`, `ANCHOR_SCHEMA`
 

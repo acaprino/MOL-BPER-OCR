@@ -6,12 +6,12 @@ Public API re-exports for backward compatibility with app.py and main.py.
 __all__ = [
     # Config
     "INPUT_DIR", "GROUND_TRUTH_CSV", "PARALLEL_WORKERS", "PARALLEL_ENABLED",
-    "MAX_CALLS_PER_SCREEN", "MODEL_MAIN", "MODEL_ANCHOR", "PRICING_PER_1M",
+    "MAX_CALLS_PER_SCREEN", "PRICING_PER_1M",
     "CONTENT_CROP", "HEADER_IN_CONTENT", "FIELD_RETRY_MAP", "ANCHOR_CONF_MIN",
     "DEBUG_SAVE_CROPS", "DEBUG_CROP_DIR", "STOP_ON_ANCHOR_UNCERTAIN",
     "get_screenshot_paths",
-    "LLM_PROVIDER", "GEMINI_MODEL_MAIN", "GEMINI_MODEL_ANCHOR",
-    "get_model_main", "get_model_anchor", "PROVIDER_MODELS",
+    "LLM_PROVIDER", "LLM_MODEL", "LLM_MODEL_ANCHOR",
+    "PROVIDER_MODELS",
     # LLM factory
     "create_chat_model",
     # Fields
@@ -45,8 +45,6 @@ from extraction.config import (
     PARALLEL_WORKERS,
     PARALLEL_ENABLED,
     MAX_CALLS_PER_SCREEN,
-    MODEL_MAIN,
-    MODEL_ANCHOR,
     PRICING_PER_1M,
     CONTENT_CROP,
     HEADER_IN_CONTENT,
@@ -57,10 +55,8 @@ from extraction.config import (
     STOP_ON_ANCHOR_UNCERTAIN,
     get_screenshot_paths,
     LLM_PROVIDER,
-    GEMINI_MODEL_MAIN,
-    GEMINI_MODEL_ANCHOR,
-    get_model_main,
-    get_model_anchor,
+    LLM_MODEL,
+    LLM_MODEL_ANCHOR,
     PROVIDER_MODELS,
 )
 

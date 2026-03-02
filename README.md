@@ -31,7 +31,7 @@ cp .env.example .env
 ### Esecuzione con OpenAI (default)
 
 ```bash
-export OPENAI_API_KEY="sk-..."
+export LLM_API_KEY="sk-..."
 python main.py                  # CLI batch
 streamlit run app.py            # Web UI su localhost:8501
 ```
@@ -40,7 +40,8 @@ streamlit run app.py            # Web UI su localhost:8501
 
 ```bash
 export LLM_PROVIDER=gemini
-export GEMINI_API_KEY="AI..."
+export LLM_API_KEY="AI..."
+export LLM_MODEL=gemini-3-flash-preview
 python main.py                  # CLI batch
 streamlit run app.py            # Web UI su localhost:8501
 ```
@@ -104,12 +105,9 @@ Tutte le variabili sono configurabili via environment. Vedi [`.env.example`](.en
 | Variabile | Default | Descrizione |
 |-----------|---------|-------------|
 | `LLM_PROVIDER` | `openai` | Provider: `openai` o `gemini` |
-| `OPENAI_API_KEY` | *(obbligatoria per openai)* | Chiave API OpenAI |
-| `OPENAI_MODEL` | `gpt-4o` | Modello per estrazione principale (OpenAI) |
-| `OPENAI_MODEL_ANCHOR` | come `OPENAI_MODEL` | Modello per il pass anchor (OpenAI) |
-| `GEMINI_API_KEY` | *(obbligatoria per gemini)* | Chiave API Google Gemini |
-| `GEMINI_MODEL` | `gemini-3-flash-preview` | Modello per estrazione principale (Gemini) |
-| `GEMINI_MODEL_ANCHOR` | come `GEMINI_MODEL` | Modello per il pass anchor (Gemini) |
+| `LLM_API_KEY` | *(obbligatoria)* | Chiave API (OpenAI o Gemini a seconda del provider) |
+| `LLM_MODEL` | `gpt-4o` | Modello per estrazione principale |
+| `LLM_MODEL_ANCHOR` | come `LLM_MODEL` | Modello per il pass anchor |
 | `INPUT_DIR` | `mnt/data` | Directory dati (screenshot + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `MAX_CALLS_PER_SCREEN` | `4` | Massimo chiamate VLM per screenshot |

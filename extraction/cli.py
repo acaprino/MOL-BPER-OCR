@@ -14,8 +14,8 @@ from extraction.config import (
     DEBUG_SAVE_CROPS,
     DEBUG_CROP_DIR,
     LLM_PROVIDER,
-    get_model_main,
-    get_model_anchor,
+    LLM_MODEL,
+    LLM_MODEL_ANCHOR,
     get_screenshot_paths,
 )
 from extraction.pipeline import extract_from_screen
@@ -45,8 +45,8 @@ def run_extraction_batch(
     on_error) are invoked from the calling thread, not from worker threads.
     """
     effective_provider = provider_name or LLM_PROVIDER
-    main_model_name = model_main or get_model_main(effective_provider)
-    anchor_model_name = model_anchor or get_model_anchor(effective_provider)
+    main_model_name = model_main or LLM_MODEL
+    anchor_model_name = model_anchor or LLM_MODEL_ANCHOR
 
     # LangChain ChatModels are thread-safe — shared across all workers
     main_model = create_chat_model(effective_provider, model=main_model_name, api_key=api_key)

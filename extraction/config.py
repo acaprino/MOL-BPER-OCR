@@ -24,32 +24,12 @@ STOP_ON_ANCHOR_UNCERTAIN = os.getenv("STOP_ON_ANCHOR_UNCERTAIN", "0") == "1"
 PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1") == "1"
 
 # ============================================================
-# Model selection
-# ============================================================
-
-MODEL_MAIN = os.getenv("OPENAI_MODEL", "gpt-4o")
-MODEL_ANCHOR = os.getenv("OPENAI_MODEL_ANCHOR", MODEL_MAIN)
-
-# ============================================================
-# Provider selection
+# Provider & model selection (unified)
 # ============================================================
 
 LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai")
-
-# Gemini model selection
-GEMINI_MODEL_MAIN: str = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
-GEMINI_MODEL_ANCHOR: str = os.getenv("GEMINI_MODEL_ANCHOR", GEMINI_MODEL_MAIN)
-
-
-def get_model_main(provider_name: str = LLM_PROVIDER) -> str:
-    """Return the main extraction model for the given provider."""
-    return GEMINI_MODEL_MAIN if provider_name == "gemini" else MODEL_MAIN
-
-
-def get_model_anchor(provider_name: str = LLM_PROVIDER) -> str:
-    """Return the anchor extraction model for the given provider."""
-    return GEMINI_MODEL_ANCHOR if provider_name == "gemini" else MODEL_ANCHOR
-
+LLM_MODEL: str = os.getenv("LLM_MODEL", "gpt-4o")
+LLM_MODEL_ANCHOR: str = os.getenv("LLM_MODEL_ANCHOR", LLM_MODEL)
 
 # Provider → model list (for Streamlit dropdown)
 PROVIDER_MODELS: Dict[str, List[str]] = {

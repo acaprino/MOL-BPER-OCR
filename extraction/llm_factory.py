@@ -1,9 +1,16 @@
 """LangChain ChatModel factory — replaces extraction/providers/ package."""
 
 import os
+import warnings
 from typing import Optional
 
 from langchain_core.language_models import BaseChatModel
+
+# Legacy env vars — checked as fallback so existing deployments keep working.
+_LEGACY_KEY_VARS = {
+    "openai": "OPENAI_API_KEY",
+    "gemini": "GEMINI_API_KEY",
+}
 
 
 def create_chat_model(
@@ -19,23 +26,39 @@ def create_chat_model(
     """
     provider = provider_name.lower()
 
+    key = (api_key or os.getenv("LLM_API_KEY") or "").strip()
+    if not key:
+        legacy_var = _LEGACY_KEY_VARS.get(provider)
+        if legacy_var:
+            key = (os.getenv(legacy_var) or "").strip()
+            if key:
+                warnings.warn(
+                    f"{legacy_var} is deprecated. Use LLM_API_KEY instead.",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
+    if not key:
+        raise ValueError(
+            "API key required. Set LLM_API_KEY env var or pass api_key=."
+        )
+
     if provider == "openai":
         from langchain_openai import ChatOpenAI
 
-        key = api_key or os.getenv("OPENAI_API_KEY")
-        if not key:
+        if model.startswith("gemini"):
             raise ValueError(
-                "OpenAI API key required. Set OPENAI_API_KEY env var or pass api_key=."
+                f"Model {model!r} looks like a Gemini model but provider is 'openai'. "
+                f"Set LLM_PROVIDER=gemini or choose an OpenAI model."
             )
         return ChatOpenAI(model=model, api_key=key)
 
     if provider == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI
 
-        key = api_key or os.getenv("GEMINI_API_KEY")
-        if not key:
+        if model.startswith("gpt-"):
             raise ValueError(
-                "Gemini API key required. Set GEMINI_API_KEY env var or pass api_key=."
+                f"Model {model!r} looks like an OpenAI model but provider is 'gemini'. "
+                f"Set LLM_MODEL to a Gemini model (e.g. 'gemini-3-flash-preview')."
             )
         return ChatGoogleGenerativeAI(model=model, google_api_key=key)
 

@@ -76,14 +76,9 @@ with st.sidebar:
     provider_choice = st.selectbox("Provider LLM", ["openai", "gemini"], index=0)
 
     # API key (do not pre-populate from env vars to avoid sending secrets to the browser)
-    if provider_choice == "openai":
-        api_key_input = st.text_input("OpenAI API Key", type="password",
-                                      placeholder="Lascia vuoto per usare env var")
-        api_key = api_key_input or os.getenv("OPENAI_API_KEY", "")
-    else:
-        api_key_input = st.text_input("Gemini API Key", type="password",
-                                      placeholder="Lascia vuoto per usare env var")
-        api_key = api_key_input or os.getenv("GEMINI_API_KEY", "")
+    api_key_input = st.text_input("LLM API Key", type="password",
+                                  placeholder="Lascia vuoto per usare env var LLM_API_KEY")
+    api_key = api_key_input or None
 
     # Model dropdown (filtered by provider)
     available_models = PROVIDER_MODELS.get(provider_choice, [])
