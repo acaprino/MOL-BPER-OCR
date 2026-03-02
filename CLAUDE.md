@@ -93,6 +93,7 @@ These patterns are load-bearing. Do not remove or restructure without understand
 7. **Dataset mismatch guard** — `dataset_mismatch_guard()` detects when extracted NDG/DENOMINAZIONE differs from ground truth, preventing false negatives in evaluation. See `extraction/normalization.py`.
 8. **Shared batch runner** — `run_extraction_batch()` in `extraction/cli.py` is used by both `main()` and `app.py`. Do not re-implement batch/threading logic elsewhere.
 9. **Screenshot path resolution** — `get_screenshot_paths()` in `extraction/config.py` replaces the old pattern of mutating a global `SCREENSHOTS` list. Use this function; do not reintroduce a mutable global.
+10. **Startup assertions** — `if/raise` guards at module load time catch naming drift between dictionaries. `FIELD_RETRY_MAP` keys are validated against `FIELD_KEYS` in `extraction/pipeline.py`; `_FIELD_COMPARATORS` keys are validated against `FIELD_KEYS` in `extraction/normalization.py`. These run under `python -O` (unlike `assert`).
 
 ## Key Files
 
@@ -129,12 +130,27 @@ These patterns are load-bearing. Do not remove or restructure without understand
 | `mnt/data/poc_debug_improved.csv` | Per-field debug report |
 | `prompts_immagini.txt` | Image generation prompts (reference only, not used in pipeline) |
 
+### Ground Truth CSV Format
+
+`dati.csv` uses three columns: `Fotogramma` (screen ID), `Denominazione da attribuire` (field name), `Valore rilevato` (expected value). The loader (`load_ground_truth()` in `extraction/evaluation.py`) auto-detects alternative column names (`Screenshot`/`Screen`, `Campo`/`Field`, `Valore`/`Value`) via `_find_column()`.
+
+### Field Classification (eval_outputs)
+
+Each extracted field is classified as one of 5 statuses by `classify_field()`:
+- **OK** — extracted value matches ground truth
+- **WRONG** — extracted value does not match
+- **MISSING** — ground truth has a value, extraction returned null
+- **HALLUCINATED** — ground truth is null, extraction produced a value
+- **OK_NULL** — both null (correct)
+
+Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (excludes screens where `dataset_mismatch_guard()` detected an NDG/DENOMINAZIONE mismatch).
+
 ## Dependencies
 
 No `requirements.txt` exists. Inferred from imports:
 
 ```
-openai          # GPT-4V API client
+openai          # GPT-4o Vision API client
 pillow          # Image processing (PIL)
 pandas          # CSV/data handling
 streamlit       # Web UI
@@ -147,8 +163,6 @@ The following are not yet implemented:
 - Tests — no test suite exists
 - CI/CD — no pipeline configured
 - Docker — no containerization
-- `.env.example` — no template for required environment variables
-- README — no project documentation
 
 ## Testing & Validation
 
