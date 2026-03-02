@@ -122,6 +122,7 @@ def main() -> None:
 
     # Save outputs
     outputs_path = os.path.join(INPUT_DIR, "poc_outputs_improved.json")
+    os.makedirs(os.path.dirname(outputs_path), exist_ok=True)
     with open(outputs_path, "w", encoding="utf-8") as f:
         json.dump(outputs, f, ensure_ascii=False, indent=2)
 

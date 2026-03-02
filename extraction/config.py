@@ -30,6 +30,7 @@ PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1") == "1"
 LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai")
 LLM_MODEL: str = os.getenv("LLM_MODEL", "gpt-4o")
 LLM_MODEL_ANCHOR: str = os.getenv("LLM_MODEL_ANCHOR", LLM_MODEL)
+LLM_THINKING_LEVEL: str = os.getenv("LLM_THINKING_LEVEL", "")  # Gemini 3+: low/medium/high
 
 # Provider → model list (for Streamlit dropdown)
 PROVIDER_MODELS: Dict[str, List[str]] = {

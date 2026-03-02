@@ -10,7 +10,7 @@ __all__ = [
     "CONTENT_CROP", "HEADER_IN_CONTENT", "FIELD_RETRY_MAP", "ANCHOR_CONF_MIN",
     "DEBUG_SAVE_CROPS", "DEBUG_CROP_DIR", "STOP_ON_ANCHOR_UNCERTAIN",
     "get_screenshot_paths",
-    "LLM_PROVIDER", "LLM_MODEL", "LLM_MODEL_ANCHOR",
+    "LLM_PROVIDER", "LLM_MODEL", "LLM_MODEL_ANCHOR", "LLM_THINKING_LEVEL",
     "PROVIDER_MODELS",
     # LLM factory
     "create_chat_model",
@@ -57,6 +57,7 @@ from extraction.config import (
     LLM_PROVIDER,
     LLM_MODEL,
     LLM_MODEL_ANCHOR,
+    LLM_THINKING_LEVEL,
     PROVIDER_MODELS,
 )
 

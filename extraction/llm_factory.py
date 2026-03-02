@@ -60,6 +60,10 @@ def create_chat_model(
                 f"Model {model!r} looks like an OpenAI model but provider is 'gemini'. "
                 f"Set LLM_MODEL to a Gemini model (e.g. 'gemini-3-flash-preview')."
             )
-        return ChatGoogleGenerativeAI(model=model, google_api_key=key)
+        kwargs = {}
+        thinking_level = os.getenv("LLM_THINKING_LEVEL", "").strip().lower()
+        if thinking_level in ("low", "medium", "high"):
+            kwargs["thinking_level"] = thinking_level
+        return ChatGoogleGenerativeAI(model=model, google_api_key=key, **kwargs)
 
     raise ValueError(f"Unknown provider: {provider_name!r}. Available: ['openai', 'gemini']")
