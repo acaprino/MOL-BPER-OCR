@@ -18,10 +18,7 @@ Il sistema riceve screenshot di schermate bancarie e, attraverso tre passaggi VL
 ### Setup
 
 ```bash
-pip install langchain-core langchain-openai pillow pandas streamlit
-
-# (Opzionale) Per usare Google Gemini:
-pip install langchain-google-genai
+pip install -r requirements.txt
 
 # Configurare le variabili d'ambiente
 cp .env.example .env
@@ -108,6 +105,7 @@ Tutte le variabili sono configurabili via environment. Vedi [`.env.example`](.en
 | `LLM_API_KEY` | *(obbligatoria)* | Chiave API (OpenAI o Gemini a seconda del provider) |
 | `LLM_MODEL` | `gpt-4o` | Modello per estrazione principale |
 | `LLM_MODEL_ANCHOR` | come `LLM_MODEL` | Modello per il pass anchor |
+| `LLM_THINKING_LEVEL` | *(nessuno)* | Gemini 3+ thinking budget: `low`, `medium`, `high` |
 | `INPUT_DIR` | `mnt/data` | Directory dati (screenshot + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `MAX_CALLS_PER_SCREEN` | `4` | Massimo chiamate VLM per screenshot |

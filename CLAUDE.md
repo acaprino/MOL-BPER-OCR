@@ -65,6 +65,7 @@ streamlit run app.py            # Streamlit web UI
 | `MAX_CALLS_PER_SCREEN` | `4` | Max VLM calls per screen |
 | `ANCHOR_CONF_MIN` | `0.95` | Minimum confidence for anchor acceptance |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Stop processing if anchor confidence is low |
+| `LLM_THINKING_LEVEL` | *(unset)* | Gemini 3+ thinking budget: `low`, `medium`, or `high` |
 | `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to disk |
 
 ## Code Conventions
@@ -114,7 +115,7 @@ These patterns are load-bearing. Do not remove or restructure without understand
 
 | File | Purpose |
 |---|---|
-| `main.py` | 6-line shim: `from extraction import *` + calls `main()` |
+| `main.py` | Shim: loads `.env` via `python-dotenv`, then `from extraction import *` + calls `main()` |
 | `app.py` | Streamlit web UI: upload, process, display results. Uses `tempfile.mkdtemp()` for uploads, sanitizes filenames. |
 
 ### extraction/ Package
@@ -161,21 +162,22 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 
 ## Dependencies
 
-No `requirements.txt` exists. Inferred from imports:
+Pinned in `requirements.txt`:
 
 ```
 langchain-core          # LangChain core abstractions (BaseChatModel, messages)
 langchain-openai        # LangChain OpenAI ChatModel
+langchain-google-genai  # LangChain Gemini ChatModel (required if LLM_PROVIDER=gemini)
 pillow                  # Image processing (PIL)
 pandas                  # CSV/data handling
 streamlit               # Web UI
-langchain-google-genai  # (optional) LangChain Gemini ChatModel — required only if LLM_PROVIDER=gemini
+python-dotenv           # Auto-loads .env at startup (main.py and app.py)
 ```
 
 ## Missing Infrastructure
 
 The following are not yet implemented:
-- `requirements.txt` or `pyproject.toml` — dependencies are not pinned
+- `pyproject.toml` — dependencies are listed in `requirements.txt` but not version-pinned
 - Tests — no test suite exists
 - CI/CD — no pipeline configured
 - Docker — no containerization
