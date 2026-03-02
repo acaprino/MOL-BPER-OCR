@@ -114,6 +114,8 @@ Tutte le variabili sono configurabili via environment. Vedi [`.env.example`](.en
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `MAX_CALLS_PER_SCREEN` | `4` | Massimo chiamate VLM per screenshot |
 | `ANCHOR_CONF_MIN` | `0.95` | Confidenza minima per accettare gli anchor |
+| `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Fermare il processing se anchor e' incerto (`1` per attivare) |
+| `DEBUG_SAVE_CROPS` | `0` | Salvare i crop intermedi su disco per debug |
 
 ## Output JSON
 
@@ -173,7 +175,7 @@ poc-data-extraction/
     __init__.py            # Re-export API pubblica
     config.py              # Configurazione env-var, crop, pricing
     fields.py              # 18 field keys + CSV_TO_SCHEMA mapping
-    schemas.py             # JSON schema VLM (strict mode)
+    schemas.py             # Pydantic models per output strutturato
     prompts.py             # Prompt italiano per VLM
     normalization.py       # Normalizzazione testo, classify_field, pick_best
     imaging.py             # Crop, resize, conversione immagini

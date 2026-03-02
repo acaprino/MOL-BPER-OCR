@@ -1,6 +1,9 @@
 import streamlit as st
+import logging
 import os
 import json
+import re
+import tempfile
 import pandas as pd
 
 try:
@@ -10,9 +13,12 @@ try:
         dataset_mismatch_guard,
         run_extraction_batch,
         CSV_TO_SCHEMA,
+        PROVIDER_MODELS,
     )
 except ImportError:
     st.error("Errore: Impossibile importare le funzioni dal pacchetto extraction. Assicurati che sia presente.")
+
+logger = logging.getLogger(__name__)
 
 # --- CONFIGURAZIONE PAGINA ---
 st.set_page_config(
@@ -69,16 +75,17 @@ with st.sidebar:
     # Provider selection
     provider_choice = st.selectbox("Provider LLM", ["openai", "gemini"], index=0)
 
-    # API key (context-dependent)
+    # API key (do not pre-populate from env vars to avoid sending secrets to the browser)
     if provider_choice == "openai":
-        api_key = st.text_input("OpenAI API Key", type="password",
-                                value=os.getenv("OPENAI_API_KEY", ""))
+        api_key_input = st.text_input("OpenAI API Key", type="password",
+                                      placeholder="Lascia vuoto per usare env var")
+        api_key = api_key_input or os.getenv("OPENAI_API_KEY", "")
     else:
-        api_key = st.text_input("Gemini API Key", type="password",
-                                value=os.getenv("GEMINI_API_KEY", ""))
+        api_key_input = st.text_input("Gemini API Key", type="password",
+                                      placeholder="Lascia vuoto per usare env var")
+        api_key = api_key_input or os.getenv("GEMINI_API_KEY", "")
 
     # Model dropdown (filtered by provider)
-    from extraction.config import PROVIDER_MODELS
     available_models = PROVIDER_MODELS.get(provider_choice, [])
     model_choice = st.selectbox("Modello VLM", available_models, index=0)
 
@@ -108,12 +115,13 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
     elif not uploaded_images:
         st.warning("Carica almeno un'immagine per procedere.")
     else:
-        # Salvataggio temporaneo delle immagini caricate
-        temp_dir = "temp_uploads"
-        os.makedirs(temp_dir, exist_ok=True)
+        # Salvataggio temporaneo delle immagini caricate (session-scoped)
+        temp_dir = tempfile.mkdtemp(prefix="extraction_")
         image_paths = []
         for img_file in uploaded_images:
-            path = os.path.join(temp_dir, img_file.name)
+            # Sanitize filename to prevent path traversal
+            safe_name = re.sub(r'[^\w\-.]', '_', os.path.basename(img_file.name))
+            path = os.path.join(temp_dir, safe_name)
             with open(path, "wb") as f:
                 f.write(img_file.getbuffer())
             image_paths.append(path)
@@ -139,12 +147,14 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
         def _on_error(sid, exc):
             completed[0] += 1
             progress_bar.progress(completed[0] / len(image_paths))
-            st.error(f"Errore su {sid}: {exc}")
+            logger.exception("Extraction error for %s", sid)
+            st.error(f"Errore durante l'estrazione di {sid}. Controlla i log per dettagli.")
 
         all_results = run_extraction_batch(
             image_paths,
             api_key=api_key,
             provider_name=provider_choice,
+            model_main=model_choice,
             parallel=True,
             max_workers=5,
             on_complete=_on_complete,
@@ -152,21 +162,21 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
         )
 
         status_text.success("Estrazione completata!")
-        
+
         # --- VISUALIZZAZIONE RISULTATI ---
         st.divider()
         st.header("📋 Risultati Estrazione")
-        
+
         for sid, res in all_results.items():
             with st.expander(f"Dettagli: {sid}", expanded=True):
                 c1, c2 = st.columns([1, 2])
-                
+
                 with c1:
                     # Mostra l'immagine
                     img_path = os.path.join(temp_dir, f"{sid}.png")
                     if os.path.exists(img_path):
                         st.image(img_path, use_column_width=True)
-                    
+
                     # Metriche screen
                     meta = res.get("_meta_agg", {})
                     st.markdown(f"""
@@ -181,37 +191,37 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
                     # Tabella risultati
                     fields_data = []
                     fields = res.get("fields", {})
-                    
+
                     # Confronto con GT se disponibile
                     gt_for_screen = gt_data.get(sid, {}) if gt_data else {}
                     mismatch = dataset_mismatch_guard(gt_for_screen, res) if gt_data else False
-                    
+
                     for f_key, f_val in fields.items():
                         if not isinstance(f_val, dict):
                             continue
                         pred_v = f_val.get("value")
                         conf = f_val.get("confidence", 0)
-                        
+
                         row = {
                             "Campo": f_key,
                             "Valore Predetto": pred_v,
                             "Confidenza": f"{conf:.2%}"
                         }
-                        
+
                         if gt_data:
                             inv_map = {v: k for k, v in CSV_TO_SCHEMA.items()}
                             csv_label = inv_map.get(f_key, f_key)
                             gt_v = gt_for_screen.get(csv_label)
-                            
+
                             row["Ground Truth"] = gt_v
                             status = classify_field(gt_v, pred_v, field_key=f_key)
                             row["Status"] = status
-                            
+
                         fields_data.append(row)
-                    
+
                     df_res = pd.DataFrame(fields_data)
                     st.table(df_res)
-                    
+
                     if mismatch:
                         st.warning("⚠️ Possibile mismatch rilevato tra screenshot e Ground Truth!")
 

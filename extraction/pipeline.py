@@ -11,6 +11,8 @@ from extraction.config import (
     HEADER_IN_CONTENT,
     FIELD_RETRY_MAP,
     ANCHOR_CONF_MIN,
+    MAX_CALLS_PER_SCREEN,
+    STOP_ON_ANCHOR_UNCERTAIN,
 )
 from extraction.fields import FIELD_KEYS
 from extraction.prompts import PROMPT, ANCHOR_PROMPT
@@ -136,9 +138,14 @@ def _retry_low_confidence_fields(
     result: Dict[str, Any],
     field_sources: Dict[str, str],
     attempts_meta: List[Dict[str, Any]],
+    max_retry_calls: int = MAX_CALLS_PER_SCREEN - 2,
 ) -> None:
     """Retry fields that are nullish or have confidence < 0.55 using targeted crops."""
+    retry_calls = 0
     for field_key, crop_box in FIELD_RETRY_MAP.items():
+        if retry_calls >= max_retry_calls:
+            break
+
         current = result["fields"].get(field_key) or {}
         cur_val = current.get("value")
         cur_conf = float(current.get("confidence", 0.0) or 0.0)
@@ -160,6 +167,7 @@ def _retry_low_confidence_fields(
             schema=ExtractionResponse,
         )
         attempts_meta.append(retry_out["_meta"])
+        retry_calls += 1
 
         candidate = retry_out["fields"].get(field_key) or {}
         if field_key == "tipo":
@@ -209,6 +217,21 @@ def extract_from_screen(
 
     # 1) Anchor pass
     anchors = extract_anchors(anchor_model, anchor_model_name, content_img, screen_id)
+
+    # Early exit if anchor confidence too low and STOP_ON_ANCHOR_UNCERTAIN is enabled
+    if STOP_ON_ANCHOR_UNCERTAIN:
+        if anchors["ndg"]["value"] is None and anchors["denominazione"]["value"] is None:
+            return {
+                "screen_id": screen_id,
+                "fields": {},
+                "soggetti": [],
+                "_status": "ANCHOR_UNCERTAIN",
+                "_attempts": [anchors["_meta"]],
+                "_meta_agg": _aggregate_meta(
+                    [anchors["_meta"]], main_model_name, anchor_model_name,
+                ),
+                "_field_sources": {},
+            }
 
     # 2) Main pass
     prompt_with_hint = _build_anchor_hint_prompt(anchors)

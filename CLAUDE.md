@@ -98,14 +98,15 @@ Code sections are delimited with:
 
 These patterns are load-bearing. Do not remove or restructure without understanding downstream effects:
 
-1. **Multi-pass pipeline** — The anchor → main → retry pattern is critical for accuracy. Anchors gate main extraction; retries use field-specific crops. See `extraction/pipeline.py`.
+1. **Multi-pass pipeline** — The anchor → main → retry pattern is critical for accuracy. Anchors gate main extraction (with optional early exit via `STOP_ON_ANCHOR_UNCERTAIN`); retries use field-specific crops and are capped by `MAX_CALLS_PER_SCREEN`. See `extraction/pipeline.py`.
 2. **Cost tracking** — Every VLM call must populate `_meta` with `estimated_cost_usd`, `prompt_tokens`, `completion_tokens`, `latency_ms`. Aggregated in `_meta_agg`. See `extraction/vlm_client.py`.
 3. **Environment-based config** — All configuration via `os.getenv()` with sensible defaults. No config files. See `extraction/config.py`.
 4. **Thread safety** — LangChain ChatModel instances are thread-safe and shared across all workers. Created once in `run_extraction_batch()` before the thread pool. See `extraction/cli.py`.
 5. **Structured output** — VLM calls use LangChain's `.with_structured_output(PydanticModel)` which handles per-provider schema translation automatically. Pydantic models in `extraction/schemas.py`.
+    - Retry logic in `call_vlm_with_retry()` only retries transient errors; `ValueError` (parsing failures) is re-raised immediately.
 6. **Field source tracking** — `_field_sources` dict records which pass (ANCHOR_HEADER, CONTENT_MAIN, RETRY_{field}) produced each field's final value.
 7. **Dataset mismatch guard** — `dataset_mismatch_guard()` detects when extracted NDG/DENOMINAZIONE differs from ground truth, preventing false negatives in evaluation. See `extraction/normalization.py`.
-8. **Shared batch runner** — `run_extraction_batch()` in `extraction/cli.py` is used by both `main()` and `app.py`. Do not re-implement batch/threading logic elsewhere.
+8. **Shared batch runner** — `run_extraction_batch()` in `extraction/cli.py` is used by both `main()` and `app.py`. Accepts optional `model_main`/`model_anchor` overrides (used by Streamlit dropdown). Callbacks (`on_complete`, `on_error`) are invoked from the calling thread, not from worker threads. Do not re-implement batch/threading logic elsewhere.
 9. **Screenshot path resolution** — `get_screenshot_paths()` in `extraction/config.py` replaces the old pattern of mutating a global `SCREENSHOTS` list. Use this function; do not reintroduce a mutable global.
 10. **Startup assertions** — `if/raise` guards at module load time catch naming drift between dictionaries. `FIELD_RETRY_MAP` keys are validated against `FIELD_KEYS` in `extraction/pipeline.py`; `_FIELD_COMPARATORS` keys are validated against `FIELD_KEYS` in `extraction/normalization.py`. These run under `python -O` (unlike `assert`).
 
@@ -116,7 +117,7 @@ These patterns are load-bearing. Do not remove or restructure without understand
 | File | Purpose |
 |---|---|
 | `main.py` | 6-line shim: `from extraction import *` + calls `main()` |
-| `app.py` | Streamlit web UI (216 lines): upload, process, display results |
+| `app.py` | Streamlit web UI: upload, process, display results. Uses `tempfile.mkdtemp()` for uploads, sanitizes filenames. |
 
 ### extraction/ Package
 

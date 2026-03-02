@@ -1,3 +1,15 @@
 /mnt/data/poc_debug.csv
 /edge-agent/
 /mnt
+
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Temporary uploads (Streamlit)
+temp_uploads/
+
+# Python
+__pycache__/
+*.pyc

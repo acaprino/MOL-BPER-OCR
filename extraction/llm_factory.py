@@ -22,10 +22,12 @@ def create_chat_model(
     if provider == "openai":
         from langchain_openai import ChatOpenAI
 
-        kwargs = {"model": model}
-        if api_key:
-            kwargs["api_key"] = api_key
-        return ChatOpenAI(**kwargs)
+        key = api_key or os.getenv("OPENAI_API_KEY")
+        if not key:
+            raise ValueError(
+                "OpenAI API key required. Set OPENAI_API_KEY env var or pass api_key=."
+            )
+        return ChatOpenAI(model=model, api_key=key)
 
     if provider == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI

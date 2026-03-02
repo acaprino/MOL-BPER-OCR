@@ -104,6 +104,8 @@ def call_vlm_with_retry(
                 model=model,
                 schema=schema,
             )
+        except ValueError:
+            raise  # parsing/validation errors are not transient
         except Exception as e:
             last_err = e
             sleep_s = min(8.0, (2 ** i) * 0.8) + (0.05 * i)

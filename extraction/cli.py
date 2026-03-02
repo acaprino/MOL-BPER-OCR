@@ -32,6 +32,8 @@ def run_extraction_batch(
     *,
     api_key: Optional[str] = None,
     provider_name: Optional[str] = None,
+    model_main: Optional[str] = None,
+    model_anchor: Optional[str] = None,
     parallel: bool = True,
     max_workers: int = 4,
     on_complete: Optional[Callable[[str, Dict[str, Any]], None]] = None,
@@ -39,12 +41,12 @@ def run_extraction_batch(
 ) -> Dict[str, Dict[str, Any]]:
     """Run extraction on a batch of screenshot paths.
 
-    Shared by CLI (main) and Streamlit (app.py) — eliminates duplicated
-    ThreadPoolExecutor logic (fixes H-03).
+    Shared by CLI (main) and Streamlit (app.py). Callbacks (on_complete,
+    on_error) are invoked from the calling thread, not from worker threads.
     """
     effective_provider = provider_name or LLM_PROVIDER
-    main_model_name = get_model_main(effective_provider)
-    anchor_model_name = get_model_anchor(effective_provider)
+    main_model_name = model_main or get_model_main(effective_provider)
+    anchor_model_name = model_anchor or get_model_anchor(effective_provider)
 
     # LangChain ChatModels are thread-safe — shared across all workers
     main_model = create_chat_model(effective_provider, model=main_model_name, api_key=api_key)
