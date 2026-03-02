@@ -1,3 +1,5 @@
+from dotenv import load_dotenv; load_dotenv()  # noqa: E702
+
 import streamlit as st
 import logging
 import os
