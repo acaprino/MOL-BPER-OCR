@@ -4,19 +4,17 @@ import os
 from typing import Dict, Any, List, Tuple
 
 from PIL import Image
-from openai import OpenAI
+from langchain_core.language_models import BaseChatModel
 
 from extraction.config import (
     CONTENT_CROP,
     HEADER_IN_CONTENT,
     FIELD_RETRY_MAP,
     ANCHOR_CONF_MIN,
-    MODEL_MAIN,
-    MODEL_ANCHOR,
 )
 from extraction.fields import FIELD_KEYS
 from extraction.prompts import PROMPT, ANCHOR_PROMPT
-from extraction.schemas import RESPONSE_SCHEMA, ANCHOR_SCHEMA
+from extraction.schemas import ExtractionResponse, AnchorResponse
 from extraction.normalization import (
     normalize_tipo,
     is_nullish,
@@ -46,19 +44,24 @@ del _invalid_retry
 # Anchor extraction (NDG, Denominazione)
 # ============================================================
 
-def extract_anchors(client: OpenAI, content_img: Image.Image, screen_id: str) -> Dict[str, Any]:
+def extract_anchors(
+    anchor_model: BaseChatModel,
+    anchor_model_name: str,
+    content_img: Image.Image,
+    screen_id: str,
+) -> Dict[str, Any]:
     header_img = crop_relative(content_img, HEADER_IN_CONTENT)
     save_debug_crop(header_img, screen_id, "HEADER_IN_CONTENT")
 
     payload = img_to_png_bytes(header_img)
     out = call_vlm_with_retry(
-        client=client,
+        chat_model=anchor_model,
         image_bytes=payload,
         prompt=ANCHOR_PROMPT,
         screen_id=screen_id,
         attempt="ANCHOR_HEADER",
-        model=MODEL_ANCHOR,
-        schema=ANCHOR_SCHEMA,
+        model=anchor_model_name,
+        schema=AnchorResponse,
     )
 
     fields = out.get("fields", {})
@@ -125,7 +128,8 @@ def _postprocess_tipo(result: Dict[str, Any]) -> None:
 
 
 def _retry_low_confidence_fields(
-    client: OpenAI,
+    main_model: BaseChatModel,
+    main_model_name: str,
     content_img: Image.Image,
     screen_id: str,
     prompt_with_hint: str,
@@ -147,13 +151,13 @@ def _retry_low_confidence_fields(
         save_debug_crop(crop_img, screen_id, f"RETRY_{field_key}")
 
         retry_out = call_vlm_with_retry(
-            client=client,
+            chat_model=main_model,
             image_bytes=img_to_png_bytes(crop_img),
             prompt=prompt_with_hint,
             screen_id=screen_id,
             attempt=f"RETRY_{field_key}",
-            model=MODEL_MAIN,
-            schema=RESPONSE_SCHEMA,
+            model=main_model_name,
+            schema=ExtractionResponse,
         )
         attempts_meta.append(retry_out["_meta"])
 
@@ -170,11 +174,15 @@ def _retry_low_confidence_fields(
         )
 
 
-def _aggregate_meta(attempts_meta: List[Dict[str, Any]]) -> Dict[str, Any]:
+def _aggregate_meta(
+    attempts_meta: List[Dict[str, Any]],
+    main_model_name: str,
+    anchor_model_name: str,
+) -> Dict[str, Any]:
     """Sum tokens/cost across all VLM calls for one screen."""
     return {
-        "model_main": MODEL_MAIN,
-        "model_anchor": MODEL_ANCHOR,
+        "model_main": main_model_name,
+        "model_anchor": anchor_model_name,
         "calls": len(attempts_meta),
         "prompt_tokens": sum(int(m.get("prompt_tokens", 0) or 0) for m in attempts_meta),
         "completion_tokens": sum(int(m.get("completion_tokens", 0) or 0) for m in attempts_meta),
@@ -190,24 +198,30 @@ def _aggregate_meta(attempts_meta: List[Dict[str, Any]]) -> Dict[str, Any]:
 # Main extraction orchestrator
 # ============================================================
 
-def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
+def extract_from_screen(
+    main_model: BaseChatModel,
+    anchor_model: BaseChatModel,
+    main_model_name: str,
+    anchor_model_name: str,
+    path: str,
+) -> Dict[str, Any]:
     screen_id, content_img = _prepare_content_image(path)
 
     # 1) Anchor pass
-    anchors = extract_anchors(client, content_img, screen_id)
+    anchors = extract_anchors(anchor_model, anchor_model_name, content_img, screen_id)
 
     # 2) Main pass
     prompt_with_hint = _build_anchor_hint_prompt(anchors)
     payload = img_to_png_bytes(content_img)
 
     main_out = call_vlm_with_retry(
-        client=client,
+        chat_model=main_model,
         image_bytes=payload,
         prompt=prompt_with_hint,
         screen_id=screen_id,
         attempt="CONTENT_MAIN",
-        model=MODEL_MAIN,
-        schema=RESPONSE_SCHEMA,
+        model=main_model_name,
+        schema=ExtractionResponse,
     )
 
     attempts_meta: List[Dict[str, Any]] = [anchors["_meta"], main_out["_meta"]]
@@ -222,13 +236,13 @@ def extract_from_screen(client: OpenAI, path: str) -> Dict[str, Any]:
 
     # 5) Retry low-confidence fields
     _retry_low_confidence_fields(
-        client, content_img, screen_id, prompt_with_hint,
+        main_model, main_model_name, content_img, screen_id, prompt_with_hint,
         result, field_sources, attempts_meta,
     )
 
     # 6) Aggregate meta
     result["_attempts"] = attempts_meta
-    result["_meta_agg"] = _aggregate_meta(attempts_meta)
+    result["_meta_agg"] = _aggregate_meta(attempts_meta, main_model_name, anchor_model_name)
     result["_field_sources"] = field_sources
 
     # 7) Anchor gate status

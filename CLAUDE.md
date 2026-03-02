@@ -2,11 +2,13 @@
 
 ## Project Overview
 
-AI-powered data extraction from Italian banking screenshots using OpenAI Vision API (GPT-4o).
+AI-powered data extraction from Italian banking screenshots using multi-LLM Vision APIs
+(OpenAI GPT-4o, Google Gemini) via **LangChain**. A single `create_chat_model()` factory
+in `extraction/llm_factory.py` selects the provider based on `LLM_PROVIDER` env var.
 Extracts 18 structured fields from UI screenshots via a multi-pass VLM pipeline, evaluates
 accuracy against ground truth CSV, and reports per-field metrics and cost breakdowns.
 
-**Tech stack:** Python 3.8+, OpenAI Vision API, Pillow, Pandas, Streamlit
+**Tech stack:** Python 3.8+, LangChain (langchain-openai / langchain-google-genai), Pillow, Pandas, Streamlit
 **Entry points:** `main.py` (CLI batch), `app.py` (Streamlit web UI)
 
 ## Architecture
@@ -28,24 +30,36 @@ Both modes share `run_extraction_batch()` in `extraction/cli.py` — do not dupl
 
 ## Running the Project
 
-```bash
-# CLI mode — processes all screenshots in INPUT_DIR
-export OPENAI_API_KEY="sk-..."
-python main.py
+### OpenAI (default)
 
-# Streamlit mode — launches web UI on localhost:8501
-streamlit run app.py
+```bash
+export OPENAI_API_KEY="sk-..."
+python main.py                  # CLI batch mode
+streamlit run app.py            # Streamlit web UI
 ```
 
-**Required:** `OPENAI_API_KEY` must be set (or entered in Streamlit sidebar).
+### Google Gemini
+
+```bash
+export LLM_PROVIDER=gemini
+export GEMINI_API_KEY="AI..."
+python main.py                  # CLI batch mode
+streamlit run app.py            # Streamlit web UI
+```
+
+**Required:** `OPENAI_API_KEY` (or `GEMINI_API_KEY` if using Gemini) must be set (or entered in Streamlit sidebar).
 
 ## Configuration (Environment Variables)
 
 | Variable | Default | Description |
 |---|---|---|
-| `OPENAI_API_KEY` | *(required)* | OpenAI API credential |
-| `OPENAI_MODEL` | `gpt-4o` | Model for main extraction |
-| `OPENAI_MODEL_ANCHOR` | same as `OPENAI_MODEL` | Model for anchor pass |
+| `OPENAI_API_KEY` | *(required for openai)* | OpenAI API credential |
+| `OPENAI_MODEL` | `gpt-4o` | Model for main extraction (OpenAI) |
+| `OPENAI_MODEL_ANCHOR` | same as `OPENAI_MODEL` | Model for anchor pass (OpenAI) |
+| `LLM_PROVIDER` | `openai` | Provider: `openai` or `gemini` |
+| `GEMINI_API_KEY` | *(required for gemini)* | Google Gemini API credential |
+| `GEMINI_MODEL` | `gemini-3-flash-preview` | Model for main extraction (Gemini) |
+| `GEMINI_MODEL_ANCHOR` | same as `GEMINI_MODEL` | Model for anchor pass (Gemini) |
 | `INPUT_DIR` | `mnt/data` | Data directory (screenshots + ground truth) |
 | `SCREENSHOT_DIR` | same as `INPUT_DIR` | Screenshot location |
 | `PARALLEL_WORKERS` | `4` | Thread pool size |
@@ -60,7 +74,7 @@ streamlit run app.py
 ### Type Annotations
 All functions must have full type annotations on parameters and return types:
 ```python
-def call_vlm(client: OpenAI, image_bytes: bytes, ...) -> Dict[str, Any]: ...
+def call_vlm(chat_model: BaseChatModel, image_bytes: bytes, ...) -> Dict[str, Any]: ...
 def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image: ...
 ```
 
@@ -87,8 +101,8 @@ These patterns are load-bearing. Do not remove or restructure without understand
 1. **Multi-pass pipeline** — The anchor → main → retry pattern is critical for accuracy. Anchors gate main extraction; retries use field-specific crops. See `extraction/pipeline.py`.
 2. **Cost tracking** — Every VLM call must populate `_meta` with `estimated_cost_usd`, `prompt_tokens`, `completion_tokens`, `latency_ms`. Aggregated in `_meta_agg`. See `extraction/vlm_client.py`.
 3. **Environment-based config** — All configuration via `os.getenv()` with sensible defaults. No config files. See `extraction/config.py`.
-4. **Thread safety** — Each worker thread creates its own `OpenAI()` client. Never share clients across threads. See `extraction/cli.py:run_extraction_batch()`.
-5. **Structured output** — VLM calls use `json_schema` response format with `additionalProperties: False`. All fields explicitly defined. See `extraction/schemas.py`.
+4. **Thread safety** — LangChain ChatModel instances are thread-safe and shared across all workers. Created once in `run_extraction_batch()` before the thread pool. See `extraction/cli.py`.
+5. **Structured output** — VLM calls use LangChain's `.with_structured_output(PydanticModel)` which handles per-provider schema translation automatically. Pydantic models in `extraction/schemas.py`.
 6. **Field source tracking** — `_field_sources` dict records which pass (ANCHOR_HEADER, CONTENT_MAIN, RETRY_{field}) produced each field's final value.
 7. **Dataset mismatch guard** — `dataset_mismatch_guard()` detects when extracted NDG/DENOMINAZIONE differs from ground truth, preventing false negatives in evaluation. See `extraction/normalization.py`.
 8. **Shared batch runner** — `run_extraction_batch()` in `extraction/cli.py` is used by both `main()` and `app.py`. Do not re-implement batch/threading logic elsewhere.
@@ -111,11 +125,12 @@ These patterns are load-bearing. Do not remove or restructure without understand
 | `extraction/__init__.py` | Public API re-exports for backward compatibility |
 | `extraction/config.py` | Env-var config, crop constants, pricing, `get_screenshot_paths()` |
 | `extraction/fields.py` | `FIELD_KEYS` (18 fields), `CSV_TO_SCHEMA` mapping |
-| `extraction/schemas.py` | `RESPONSE_SCHEMA` and `ANCHOR_SCHEMA` (strict JSON schemas) |
+| `extraction/schemas.py` | Pydantic models: `ExtractionResponse`, `AnchorResponse`, `FieldResult`, `Soggetto` |
 | `extraction/prompts.py` | `PROMPT` and `ANCHOR_PROMPT` (Italian VLM prompts) |
 | `extraction/normalization.py` | Text normalization, `classify_field()`, `pick_best()`, `dataset_mismatch_guard()` |
 | `extraction/imaging.py` | `normalize_image()`, `crop_relative()`, `img_to_png_bytes()`, `save_debug_crop()` |
-| `extraction/vlm_client.py` | `call_vlm()`, `call_vlm_with_retry()`, `estimate_cost_usd()` |
+| `extraction/vlm_client.py` | `call_vlm()`, `call_vlm_with_retry()`, `estimate_cost_usd()` — LangChain structured output |
+| `extraction/llm_factory.py` | `create_chat_model()` — LangChain ChatModel factory (replaces providers/) |
 | `extraction/pipeline.py` | `extract_anchors()`, `extract_from_screen()` (main orchestrator) |
 | `extraction/evaluation.py` | `eval_outputs()`, `build_debug_report()`, `print_cost_summary()`, `load_ground_truth()` |
 | `extraction/cli.py` | `main()` CLI entry point, `run_extraction_batch()` shared by CLI and Streamlit |
@@ -150,10 +165,12 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 No `requirements.txt` exists. Inferred from imports:
 
 ```
-openai          # GPT-4o Vision API client
-pillow          # Image processing (PIL)
-pandas          # CSV/data handling
-streamlit       # Web UI
+langchain-core          # LangChain core abstractions (BaseChatModel, messages)
+langchain-openai        # LangChain OpenAI ChatModel
+pillow                  # Image processing (PIL)
+pandas                  # CSV/data handling
+streamlit               # Web UI
+langchain-google-genai  # (optional) LangChain Gemini ChatModel — required only if LLM_PROVIDER=gemini
 ```
 
 ## Missing Infrastructure

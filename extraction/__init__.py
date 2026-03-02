@@ -10,11 +10,16 @@ __all__ = [
     "CONTENT_CROP", "HEADER_IN_CONTENT", "FIELD_RETRY_MAP", "ANCHOR_CONF_MIN",
     "DEBUG_SAVE_CROPS", "DEBUG_CROP_DIR", "STOP_ON_ANCHOR_UNCERTAIN",
     "get_screenshot_paths",
+    "LLM_PROVIDER", "GEMINI_MODEL_MAIN", "GEMINI_MODEL_ANCHOR",
+    "get_model_main", "get_model_anchor", "PROVIDER_MODELS",
+    # LLM factory
+    "create_chat_model",
     # Fields
     "FIELD_KEYS", "CSV_TO_SCHEMA",
     # Prompts
     "PROMPT", "ANCHOR_PROMPT",
     # Schemas
+    "FieldResult", "Soggetto", "ExtractionResponse", "AnchorResponse",
     "RESPONSE_SCHEMA", "ANCHOR_SCHEMA",
     # Normalization
     "TIPO_MAPPING", "normalize_tipo", "is_nullish", "norm_text", "norm_number_str",
@@ -51,7 +56,16 @@ from extraction.config import (
     DEBUG_CROP_DIR,
     STOP_ON_ANCHOR_UNCERTAIN,
     get_screenshot_paths,
+    LLM_PROVIDER,
+    GEMINI_MODEL_MAIN,
+    GEMINI_MODEL_ANCHOR,
+    get_model_main,
+    get_model_anchor,
+    PROVIDER_MODELS,
 )
+
+# LLM factory
+from extraction.llm_factory import create_chat_model
 
 # Fields
 from extraction.fields import FIELD_KEYS, CSV_TO_SCHEMA
@@ -60,7 +74,14 @@ from extraction.fields import FIELD_KEYS, CSV_TO_SCHEMA
 from extraction.prompts import PROMPT, ANCHOR_PROMPT
 
 # Schemas
-from extraction.schemas import RESPONSE_SCHEMA, ANCHOR_SCHEMA
+from extraction.schemas import (
+    FieldResult,
+    Soggetto,
+    ExtractionResponse,
+    AnchorResponse,
+    RESPONSE_SCHEMA,
+    ANCHOR_SCHEMA,
+)
 
 # Normalization
 from extraction.normalization import (

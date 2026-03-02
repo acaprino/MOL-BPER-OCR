@@ -1,8 +1,8 @@
 # poc-data-extraction
 
-**Python 3.8+ | OpenAI GPT-4o Vision API | Pillow | Pandas | Streamlit**
+**Python 3.8+ | LangChain | OpenAI GPT-4o / Google Gemini | Pillow | Pandas | Streamlit**
 
-Estrazione automatica di dati strutturati da screenshot bancari italiani tramite pipeline VLM (Vision Language Model) multi-pass. Estrae 18 campi da ogni schermata, valuta l'accuratezza rispetto a un ground truth CSV e produce metriche per campo e breakdown dei costi.
+Estrazione automatica di dati strutturati da screenshot bancari italiani tramite pipeline VLM (Vision Language Model) multi-pass con **LangChain**. Supporta OpenAI e Google Gemini come provider tramite un'unica factory LangChain. Estrae 18 campi da ogni schermata, valuta l'accuratezza rispetto a un ground truth CSV e produce metriche per campo e breakdown dei costi.
 
 ## Cosa fa
 
@@ -13,28 +13,41 @@ Il sistema riceve screenshot di schermate bancarie e, attraverso tre passaggi VL
 ### Prerequisiti
 
 - Python 3.8+
-- Chiave API OpenAI con accesso a GPT-4o
+- Chiave API OpenAI **oppure** Google Gemini
 
 ### Setup
 
 ```bash
-pip install openai pillow pandas streamlit
+pip install langchain-core langchain-openai pillow pandas streamlit
 
-# Configurare la chiave API
+# (Opzionale) Per usare Google Gemini:
+pip install langchain-google-genai
+
+# Configurare le variabili d'ambiente
 cp .env.example .env
-# Editare .env e inserire la propria OPENAI_API_KEY
-export OPENAI_API_KEY="sk-..."
+# Editare .env e inserire le proprie chiavi API
 ```
 
-### Esecuzione
+### Esecuzione con OpenAI (default)
 
 ```bash
-# Modalita' CLI — processa tutti gli screenshot in INPUT_DIR
-python main.py
-
-# Modalita' Streamlit — web UI su localhost:8501
-streamlit run app.py
+export OPENAI_API_KEY="sk-..."
+python main.py                  # CLI batch
+streamlit run app.py            # Web UI su localhost:8501
 ```
+
+### Esecuzione con Google Gemini
+
+```bash
+export LLM_PROVIDER=gemini
+export GEMINI_API_KEY="AI..."
+python main.py                  # CLI batch
+streamlit run app.py            # Web UI su localhost:8501
+```
+
+### Cambio provider da Streamlit
+
+Nella sidebar della web UI si puo' selezionare il provider (OpenAI / Gemini) e il modello direttamente dall'interfaccia, senza modificare variabili d'ambiente.
 
 ## Architettura — Pipeline Multi-Pass
 
@@ -90,9 +103,13 @@ Tutte le variabili sono configurabili via environment. Vedi [`.env.example`](.en
 
 | Variabile | Default | Descrizione |
 |-----------|---------|-------------|
-| `OPENAI_API_KEY` | *(obbligatoria)* | Chiave API OpenAI |
-| `OPENAI_MODEL` | `gpt-4o` | Modello per estrazione principale |
-| `OPENAI_MODEL_ANCHOR` | come `OPENAI_MODEL` | Modello per il pass anchor |
+| `LLM_PROVIDER` | `openai` | Provider: `openai` o `gemini` |
+| `OPENAI_API_KEY` | *(obbligatoria per openai)* | Chiave API OpenAI |
+| `OPENAI_MODEL` | `gpt-4o` | Modello per estrazione principale (OpenAI) |
+| `OPENAI_MODEL_ANCHOR` | come `OPENAI_MODEL` | Modello per il pass anchor (OpenAI) |
+| `GEMINI_API_KEY` | *(obbligatoria per gemini)* | Chiave API Google Gemini |
+| `GEMINI_MODEL` | `gemini-3-flash-preview` | Modello per estrazione principale (Gemini) |
+| `GEMINI_MODEL_ANCHOR` | come `GEMINI_MODEL` | Modello per il pass anchor (Gemini) |
 | `INPUT_DIR` | `mnt/data` | Directory dati (screenshot + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `MAX_CALLS_PER_SCREEN` | `4` | Massimo chiamate VLM per screenshot |
@@ -160,8 +177,9 @@ poc-data-extraction/
     prompts.py             # Prompt italiano per VLM
     normalization.py       # Normalizzazione testo, classify_field, pick_best
     imaging.py             # Crop, resize, conversione immagini
-    vlm_client.py          # Client OpenAI con retry e cost tracking
-    pipeline.py            # Pipeline 3-pass (anchor → main → retry)
+    vlm_client.py          # LangChain structured output + retry
+    llm_factory.py         # LangChain ChatModel factory (create_chat_model)
+    pipeline.py            # Pipeline 3-pass (anchor -> main -> retry)
     evaluation.py          # Metriche accuratezza + debug report
     cli.py                 # Batch runner con ThreadPoolExecutor
   mnt/data/

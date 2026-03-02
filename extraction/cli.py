@@ -5,8 +5,7 @@ import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, Any, List, Optional, Tuple, Callable
 
-from openai import OpenAI
-
+from extraction.llm_factory import create_chat_model
 from extraction.config import (
     INPUT_DIR,
     GROUND_TRUTH_CSV,
@@ -14,6 +13,9 @@ from extraction.config import (
     PARALLEL_WORKERS,
     DEBUG_SAVE_CROPS,
     DEBUG_CROP_DIR,
+    LLM_PROVIDER,
+    get_model_main,
+    get_model_anchor,
     get_screenshot_paths,
 )
 from extraction.pipeline import extract_from_screen
@@ -29,6 +31,7 @@ def run_extraction_batch(
     paths: List[str],
     *,
     api_key: Optional[str] = None,
+    provider_name: Optional[str] = None,
     parallel: bool = True,
     max_workers: int = 4,
     on_complete: Optional[Callable[[str, Dict[str, Any]], None]] = None,
@@ -39,6 +42,14 @@ def run_extraction_batch(
     Shared by CLI (main) and Streamlit (app.py) — eliminates duplicated
     ThreadPoolExecutor logic (fixes H-03).
     """
+    effective_provider = provider_name or LLM_PROVIDER
+    main_model_name = get_model_main(effective_provider)
+    anchor_model_name = get_model_anchor(effective_provider)
+
+    # LangChain ChatModels are thread-safe — shared across all workers
+    main_model = create_chat_model(effective_provider, model=main_model_name, api_key=api_key)
+    anchor_model = create_chat_model(effective_provider, model=anchor_model_name, api_key=api_key)
+
     existing_paths = [p for p in paths if os.path.exists(p)]
     missing_paths = [p for p in paths if not os.path.exists(p)]
     for p in missing_paths:
@@ -47,9 +58,10 @@ def run_extraction_batch(
     outputs: Dict[str, Dict[str, Any]] = {}
 
     def _worker(path: str) -> Tuple[str, Dict[str, Any]]:
-        client = OpenAI(api_key=api_key) if api_key else OpenAI()
         screen_id = os.path.splitext(os.path.basename(path))[0]
-        return screen_id, extract_from_screen(client, path)
+        return screen_id, extract_from_screen(
+            main_model, anchor_model, main_model_name, anchor_model_name, path,
+        )
 
     if parallel and max_workers > 1 and len(existing_paths) > 1:
         print(f"Parallel enabled: workers={max_workers}, screens={len(existing_paths)}")
@@ -71,20 +83,22 @@ def run_extraction_batch(
                     else:
                         print(f"ERROR extracting {screen_id}: {e}")
     else:
-        client = OpenAI(api_key=api_key) if api_key else OpenAI()
         for p in existing_paths:
             screen_id = os.path.splitext(os.path.basename(p))[0]
             print(f"Extracting {screen_id} ...")
             if on_error:
                 try:
-                    outputs[screen_id] = extract_from_screen(client, p)
+                    outputs[screen_id] = extract_from_screen(
+                        main_model, anchor_model, main_model_name, anchor_model_name, p,
+                    )
                     if on_complete:
                         on_complete(screen_id, outputs[screen_id])
                 except Exception as e:
                     on_error(screen_id, e)
             else:
-                # No on_error callback: let exceptions propagate (original behavior)
-                outputs[screen_id] = extract_from_screen(client, p)
+                outputs[screen_id] = extract_from_screen(
+                    main_model, anchor_model, main_model_name, anchor_model_name, p,
+                )
                 if on_complete:
                     on_complete(screen_id, outputs[screen_id])
 

@@ -1,100 +1,67 @@
-"""JSON schemas for structured VLM output (strict mode)."""
+"""Pydantic models for structured VLM output (used by LangChain .with_structured_output())."""
 
-from typing import Dict, Any
+from typing import Optional, Union, List
+
+from pydantic import BaseModel, Field, create_model
 
 from extraction.fields import FIELD_KEYS
 
 # ============================================================
-# JSON Schemas (strict)
+# Field-level models
 # ============================================================
 
-RESPONSE_SCHEMA: Dict[str, Any] = {
-    "name": "bper_screen_extraction",
-    "strict": True,
-    "schema": {
-        "type": "object",
-        "additionalProperties": False,
-        "properties": {
-            "screen_id": {"type": "string"},
-            "attempt": {"type": "string"},
-            "fields": {
-                "type": "object",
-                "additionalProperties": False,
-                "properties": {
-                    k: {
-                        "type": ["object", "null"],
-                        "additionalProperties": False,
-                        "properties": {
-                            "value": {"type": ["string", "number", "integer", "null"]},
-                            "confidence": {"type": "number"},
-                            "evidence_text": {"type": ["string", "null"]},
-                            "section": {"type": ["string", "null"]},
-                        },
-                        "required": ["value", "confidence", "evidence_text", "section"],
-                    }
-                    for k in FIELD_KEYS
-                },
-                "required": FIELD_KEYS,
-            },
-            "soggetti": {
-                "type": "array",
-                "items": {
-                    "type": "object",
-                    "additionalProperties": False,
-                    "properties": {
-                        "ndg": {"type": ["string", "null"]},
-                        "denominazione": {"type": ["string", "null"]},
-                        "ruolo": {"type": ["string", "null"]},
-                        "confidence": {"type": "number"},
-                        "evidence_text": {"type": ["string", "null"]},
-                    },
-                    "required": ["ndg", "denominazione", "ruolo", "confidence", "evidence_text"],
-                },
-            },
-        },
-        "required": ["screen_id", "attempt", "fields", "soggetti"],
-    },
-}
 
-ANCHOR_SCHEMA: Dict[str, Any] = {
-    "name": "bper_anchor_extraction",
-    "strict": True,
-    "schema": {
-        "type": "object",
-        "additionalProperties": False,
-        "properties": {
-            "screen_id": {"type": "string"},
-            "attempt": {"type": "string"},
-            "fields": {
-                "type": "object",
-                "additionalProperties": False,
-                "properties": {
-                    "ndg": {
-                        "type": ["object", "null"],
-                        "additionalProperties": False,
-                        "properties": {
-                            "value": {"type": ["string", "number", "integer", "null"]},
-                            "confidence": {"type": "number"},
-                            "evidence_text": {"type": ["string", "null"]},
-                            "section": {"type": ["string", "null"]},
-                        },
-                        "required": ["value", "confidence", "evidence_text", "section"],
-                    },
-                    "denominazione": {
-                        "type": ["object", "null"],
-                        "additionalProperties": False,
-                        "properties": {
-                            "value": {"type": ["string", "number", "integer", "null"]},
-                            "confidence": {"type": "number"},
-                            "evidence_text": {"type": ["string", "null"]},
-                            "section": {"type": ["string", "null"]},
-                        },
-                        "required": ["value", "confidence", "evidence_text", "section"],
-                    },
-                },
-                "required": ["ndg", "denominazione"],
-            },
-        },
-        "required": ["screen_id", "attempt", "fields"],
-    },
-}
+class FieldResult(BaseModel):
+    value: Optional[Union[str, int, float]] = None
+    confidence: float = 0.0
+    evidence_text: Optional[str] = None
+    section: Optional[str] = None
+
+
+class Soggetto(BaseModel):
+    ndg: Optional[str] = None
+    denominazione: Optional[str] = None
+    ruolo: Optional[str] = None
+    confidence: float = 0.0
+    evidence_text: Optional[str] = None
+
+
+# ============================================================
+# Dynamic fields model (single source of truth via FIELD_KEYS)
+# ============================================================
+
+FieldsModel = create_model(
+    "FieldsModel",
+    **{k: (Optional[FieldResult], None) for k in FIELD_KEYS},
+)
+
+
+# ============================================================
+# Top-level response models
+# ============================================================
+
+
+class ExtractionResponse(BaseModel):
+    screen_id: str = ""
+    attempt: str = ""
+    fields: FieldsModel = Field(default_factory=FieldsModel)
+    soggetti: List[Soggetto] = Field(default_factory=list)
+
+
+class AnchorFields(BaseModel):
+    ndg: Optional[FieldResult] = None
+    denominazione: Optional[FieldResult] = None
+
+
+class AnchorResponse(BaseModel):
+    screen_id: str = ""
+    attempt: str = ""
+    fields: AnchorFields = Field(default_factory=AnchorFields)
+
+
+# ============================================================
+# Backward-compatible aliases
+# ============================================================
+
+RESPONSE_SCHEMA = ExtractionResponse
+ANCHOR_SCHEMA = AnchorResponse

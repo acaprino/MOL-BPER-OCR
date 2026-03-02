@@ -31,12 +31,40 @@ MODEL_MAIN = os.getenv("OPENAI_MODEL", "gpt-4o")
 MODEL_ANCHOR = os.getenv("OPENAI_MODEL_ANCHOR", MODEL_MAIN)
 
 # ============================================================
+# Provider selection
+# ============================================================
+
+LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "openai")
+
+# Gemini model selection
+GEMINI_MODEL_MAIN: str = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
+GEMINI_MODEL_ANCHOR: str = os.getenv("GEMINI_MODEL_ANCHOR", GEMINI_MODEL_MAIN)
+
+
+def get_model_main(provider_name: str = LLM_PROVIDER) -> str:
+    """Return the main extraction model for the given provider."""
+    return GEMINI_MODEL_MAIN if provider_name == "gemini" else MODEL_MAIN
+
+
+def get_model_anchor(provider_name: str = LLM_PROVIDER) -> str:
+    """Return the anchor extraction model for the given provider."""
+    return GEMINI_MODEL_ANCHOR if provider_name == "gemini" else MODEL_ANCHOR
+
+
+# Provider → model list (for Streamlit dropdown)
+PROVIDER_MODELS: Dict[str, List[str]] = {
+    "openai": ["gpt-4o", "gpt-4o-mini"],
+    "gemini": ["gemini-3-flash-preview"],
+}
+
+# ============================================================
 # Pricing (USD per 1M tokens)
 # ============================================================
 
 PRICING_PER_1M: Dict[str, Dict[str, float]] = {
-    "gpt-4o": {"input": 2.50, "output": 10.00},
-    "gpt-4o-mini": {"input": 0.15, "output": 0.60},
+    "gpt-4o":                  {"input": 2.50, "output": 10.00},
+    "gpt-4o-mini":             {"input": 0.15, "output": 0.60},
+    "gemini-3-flash-preview":  {"input": 0.50, "output": 3.00},
 }
 
 # ============================================================

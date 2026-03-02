@@ -65,17 +65,30 @@ st.markdown("""
 with st.sidebar:
     st.image("https://img.icons8.com/fluency/96/data-extraction.png", width=80)
     st.title("Settings")
-    
-    api_key = st.text_input("OpenAI API Key", type="password", value=os.getenv("OPENAI_API_KEY", ""))
-    model_choice = st.selectbox("Modello VLM", ["gpt-4o", "gpt-4o-mini"], index=0)
-    
+
+    # Provider selection
+    provider_choice = st.selectbox("Provider LLM", ["openai", "gemini"], index=0)
+
+    # API key (context-dependent)
+    if provider_choice == "openai":
+        api_key = st.text_input("OpenAI API Key", type="password",
+                                value=os.getenv("OPENAI_API_KEY", ""))
+    else:
+        api_key = st.text_input("Gemini API Key", type="password",
+                                value=os.getenv("GEMINI_API_KEY", ""))
+
+    # Model dropdown (filtered by provider)
+    from extraction.config import PROVIDER_MODELS
+    available_models = PROVIDER_MODELS.get(provider_choice, [])
+    model_choice = st.selectbox("Modello VLM", available_models, index=0)
+
     st.divider()
     st.markdown("### Istruzioni")
     st.info("1. Carica uno o più screenshot\n2. Carica il file CSV Ground Truth (opzionale)\n3. Clicca su 'Avvia Estrazione'")
 
 # --- HEADER ---
 st.markdown("<h1 style='text-align: center; color: #0068c9;'>🔍 AI Data Extractor Pro</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.2em;'>Trasforma i tuoi screenshot in dati strutturati con la potenza di GPT-4 Vision</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.2em;'>Trasforma i tuoi screenshot in dati strutturati con la potenza di AI Vision</p>", unsafe_allow_html=True)
 
 # --- CARICAMENTO FILE ---
 col1, col2 = st.columns(2)
@@ -131,6 +144,7 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
         all_results = run_extraction_batch(
             image_paths,
             api_key=api_key,
+            provider_name=provider_choice,
             parallel=True,
             max_workers=5,
             on_complete=_on_complete,
@@ -213,4 +227,4 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
 
 # --- FOOTER ---
 st.divider()
-st.markdown("<p style='text-align: center; color: gray;'>Powered by Streamlit & OpenAI</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: gray;'>Powered by Streamlit & AI Vision</p>", unsafe_allow_html=True)
