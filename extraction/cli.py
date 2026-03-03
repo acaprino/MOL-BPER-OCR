@@ -112,7 +112,18 @@ def main() -> None:
         raise FileNotFoundError(f"Ground truth CSV not found: {GROUND_TRUTH_CSV}")
 
     gt = load_ground_truth(GROUND_TRUTH_CSV)
-    screenshot_paths = get_screenshot_paths(gt)
+    
+    # Process all images in INPUT_DIR as requested by user
+    all_files = os.listdir(INPUT_DIR)
+    screenshot_paths = [
+        os.path.join(INPUT_DIR, f) for f in all_files 
+        if f.lower().endswith(('.png', '.jpg', '.jpeg'))
+    ]
+    screenshot_paths.sort() # Ensure consistent order
+    
+    if not screenshot_paths:
+        print(f"No images found in {INPUT_DIR}")
+        return
 
     outputs = run_extraction_batch(
         screenshot_paths,

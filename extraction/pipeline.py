@@ -298,7 +298,16 @@ def extract_from_screen(
     result["_meta_agg"] = _aggregate_meta(attempts_meta, main_model_name, anchor_model_name)
     result["_field_sources"] = field_sources
 
-    # 7) Status
+    # 7) Flatten soggetti for flat evaluation (CSV compatibility)
+    soggetti = result.get("soggetti", [])
+    for i, s in enumerate(soggetti[:4]):
+        idx = i + 1
+        conf = s.get("confidence", 0.0)
+        result["fields"][f"ndg_{idx}"] = {"value": s.get("ndg"), "confidence": conf, "section": "soggetti_table"}
+        result["fields"][f"denominazione_{idx}"] = {"value": s.get("denominazione"), "confidence": conf, "section": "soggetti_table"}
+        result["fields"][f"ruolo_{idx}"] = {"value": s.get("ruolo"), "confidence": conf, "section": "soggetti_table"}
+
+    # 8) Status
     ndg_field = result["fields"].get("ndg") or {}
     den_field = result["fields"].get("denominazione") or {}
     if ndg_field.get("value") is None or den_field.get("value") is None:

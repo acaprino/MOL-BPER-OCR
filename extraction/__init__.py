@@ -3,6 +3,11 @@
 Public API re-exports for backward compatibility with app.py and main.py.
 """
 
+import warnings
+# Suppress Pydantic V1 / LangChain compatibility warnings (mostly relevant for Python 3.14+)
+warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
+warnings.filterwarnings("ignore", category=UserWarning, module="langchain_core")
+
 __all__ = [
     # Config
     "INPUT_DIR", "GROUND_TRUTH_CSV", "PARALLEL_WORKERS", "PARALLEL_ENABLED",

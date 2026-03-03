@@ -30,19 +30,33 @@ def call_vlm(
 ) -> Dict[str, Any]:
     """Invoke LangChain ChatModel with structured output and return a dict."""
     base64_image = base64.b64encode(image_bytes).decode("utf-8")
-
-    messages = [
-        SystemMessage(content=prompt),
-        HumanMessage(content=[
-            {"type": "text", "text": "Estrai i campi richiesti dallo screenshot."},
-            {
-                "type": "image_url",
-                "image_url": {"url": f"data:image/png;base64,{base64_image}"},
-            },
-        ]),
-    ]
-
-    structured = chat_model.with_structured_output(schema, include_raw=True)
+    
+    if "gemini" in model.lower():
+        # Gemini often requires system instruction to be combined with the first human message
+        # for multimodal requests or specific formatting.
+        messages = [
+            HumanMessage(content=[
+                {"type": "text", "text": f"{prompt}\n\nEstrai i campi richiesti dallo screenshot."},
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/png;base64,{base64_image}"},
+                },
+            ]),
+        ]
+        # Use json_mode for Gemini preview models which often fail with function calling in multimodal
+        structured = chat_model.with_structured_output(schema, include_raw=True, method="json_mode")
+    else:
+        messages = [
+            SystemMessage(content=prompt),
+            HumanMessage(content=[
+                {"type": "text", "text": "Estrai i campi richiesti dallo screenshot."},
+                {
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/png;base64,{base64_image}"},
+                },
+            ]),
+        ]
+        structured = chat_model.with_structured_output(schema, include_raw=True)
 
     t0 = time.time()
     result = structured.invoke(messages)

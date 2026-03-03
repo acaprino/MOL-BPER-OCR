@@ -5,23 +5,30 @@ from typing import Dict, Any, List
 # ============================================================
 # Pathing & IO
 # ============================================================
-INPUT_DIR = os.getenv("INPUT_DIR", "mnt/data")
+INPUT_DIR = os.getenv("INPUT_DIR", "mnt/data").strip()
 GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, "dati.csv")
 
 PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "12"))
-PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1") == "1"
+PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1").strip() == "1"
 
 # ============================================================
 # Model Config
 # ============================================================
-LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai")
-LLM_MODEL = os.getenv("LLM_MODEL", "gpt-4o")
-LLM_MODEL_ANCHOR = os.getenv("LLM_MODEL_ANCHOR", LLM_MODEL)
-LLM_THINKING_LEVEL = os.getenv("LLM_THINKING_LEVEL", "medium")
+LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai").strip().lower()
+LLM_MODEL = os.getenv("LLM_MODEL", "gpt-4o").strip()
+LLM_MODEL_ANCHOR = os.getenv("LLM_MODEL_ANCHOR", LLM_MODEL).strip()
+LLM_THINKING_LEVEL = os.getenv("LLM_THINKING_LEVEL", "medium").strip().lower()
 
 PROVIDER_MODELS = {
     "openai": ["gpt-4o", "gpt-4o-mini", "o1", "o1-mini"],
-    "gemini": ["gemini-1.5-pro", "gemini-1.5-flash", "gemini-2.0-flash-exp", "gemini-2.0-flash-thinking-exp"],
+    "gemini": [
+        "gemini-1.5-pro",
+        "gemini-1.5-flash",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-exp",
+        "gemini-2.0-flash-thinking-exp",
+        "gemini-3-flash-preview",
+    ],
 }
 
 # Pricing (USD per 1M tokens)
@@ -33,6 +40,8 @@ PRICING_PER_1M = {
     "o1-mini": {"input": 1.10, "output": 4.40},
     "gemini-1.5-pro": {"input": 1.25, "output": 3.75},
     "gemini-1.5-flash": {"input": 0.075, "output": 0.30},
+    "gemini-2.0-flash": {"input": 0.10, "output": 0.40},
+    "gemini-3-flash-preview": {"input": 0.10, "output": 0.40},
 }
 
 # ============================================================
@@ -54,9 +63,18 @@ RETRY_AREAS = {
 }
 
 AREA_TO_FIELDS = {
-    "HEADER": ["ndg", "denominazione", "tipo", "stato", "fase", "evidenze"],
-    "BODY": ["n_fido", "rapporto", "descrizione", "scadenza", "importo_euro", "tipo_op"],
-    "FOOTER": ["note_della_richiesta"]
+    "HEADER": ["ndg", "denominazione", "tipo", "stato", "fase", "evidenze", "filiale_relazione", "ultima_validazione_scheda"],
+    "BODY": [
+        "n_fido", "rapporto", "descrizione", "scadenza", "importo_euro", "tipo_op",
+        "ndg_1", "denominazione_1", "ruolo_1",
+        "ndg_2", "denominazione_2", "ruolo_2",
+        "ndg_3", "denominazione_3", "ruolo_3",
+        "ndg_4", "denominazione_4", "ruolo_4",
+        "professione_principale", "retribuzione_annua_netta", "tipo_contratto", "numero_mensilita",
+        "dal", "datore_di_lavoro_anagrafica", "rating_ufficiale", "score_cgs",
+        "nr_altri_componenti_nucleo", "di_cui_percepiscono_reddito", "importo_totale_annuo_nucleo"
+    ],
+    "FOOTER": ["note_della_richiesta", "note_scheda_privati"]
 }
 
 # Map fields to their retry areas

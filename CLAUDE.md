@@ -43,7 +43,7 @@ streamlit run app.py            # Streamlit web UI
 ```bash
 export LLM_PROVIDER=gemini
 export LLM_API_KEY="AI..."
-export LLM_MODEL=gemini-3-flash-preview
+export LLM_MODEL=gemini-1.5-flash
 python main.py                  # CLI batch mode
 streamlit run app.py            # Streamlit web UI
 ```

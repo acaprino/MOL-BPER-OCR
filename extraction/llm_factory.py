@@ -24,7 +24,8 @@ def create_chat_model(
     Lazy imports ensure only the installed provider's package is loaded.
     Returned instances are thread-safe.
     """
-    provider = provider_name.lower()
+    provider = provider_name.strip().lower()
+    model = model.strip()
 
     key = (api_key or os.getenv("LLM_API_KEY") or "").strip()
     if not key:
@@ -54,15 +55,22 @@ def create_chat_model(
 
     if provider == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI
-
+        
         if model.startswith("gpt-"):
             raise ValueError(
                 f"Model {model!r} looks like an OpenAI model but provider is 'gemini'. "
-                f"Set LLM_MODEL to a Gemini model (e.g. 'gemini-3-flash-preview')."
+                f"Set LLM_MODEL to a Gemini model (e.g. 'gemini-1.5-flash')."
             )
-        kwargs = {}
+        kwargs = {
+            "safety_settings": {
+                "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
+                "HARM_CATEGORY_HATE_SPEECH": "BLOCK_NONE",
+                "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_NONE",
+                "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE",
+            }
+        }
         thinking_level = os.getenv("LLM_THINKING_LEVEL", "").strip().lower()
-        if thinking_level in ("low", "medium", "high"):
+        if thinking_level in ("low", "medium", "high") and "thinking" in model.lower():
             kwargs["thinking_level"] = thinking_level
         return ChatGoogleGenerativeAI(model=model, google_api_key=key, **kwargs)
 

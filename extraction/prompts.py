@@ -4,21 +4,22 @@ PROMPT = """
 Sei un esperto di estrazione dati OCR da interfacce bancarie. Il tuo obiettivo è la MASSIMA PRECISIONE (zero errori di carattere).
 
 REGOLE MANDATORIE:
-1. ANALISI TABELLE: Prima di estrarre, identifica mentalmente le colonne. Se una tabella ha 7 colonne, ogni oggetto JSON deve riflettere quelle 7 colonne. Non slittare i valori tra colonne diverse.
-2. NDG e NUMERI: Estrai ogni cifra esattamente come appare. Non arrotondare, non troncare. Se vedi '11153238', scrivi '11153238'.
-3. FEDELTÀ TESTUALE: 
-   - Non correggere refusi (es. se vedi 'GIAMMARCO' e il sistema dice 'GIANMARCO', scrivi quello che vedi nell'immagine).
-   - NON sostituire termini tecnici o codici (es. se vedi 'IPOSAP' non scrivere 'CONSAP', se vedi 'BMB' non scrivere 'BPI').
-   - Per 'Note della richiesta': copia il testo PAROLA PER PAROLA. NON aggiungere bullet points (-), NON aggiungere spazi o tabulazioni extra, NON cambiare punteggiatura. Inizia esattamente con la prima parola visibile.
-4. TOOLTIP: Cerca icone 'i', punti interrogativi o testi in popover/tooltip. Associa il contenuto al campo tooltip corrispondente. Spesso i tooltip appaiono quando il mouse passa sopra un valore (es. sopra 'BMB' o 'B').
-5. NULL: Usa null solo se il campo è palesemente vuoto o non presente. Se è presente ma parzialmente coperto, estrai il leggibile.
+1. IDENTIFICAZIONE PRATICA: I dati principali (NDG, Denominazione) si trovano al centro dell'interfaccia. IGNORA SEMPRE il nome dell'operatore in alto a destra (es. 'Crut Radu Ionut').
+2. ANALISI TABELLE: Prima di estrarre, identifica mentalmente le colonne. Se una tabella ha 7 colonne, ogni oggetto JSON deve riflettere quelle 7 colonne. Non slittare i valori tra colonne diverse.
+3. NDG e NUMERI: Estrai ogni cifra esattamente come appare. Non arrotondare, non troncare.
+4. FEDELTÀ TESTUALE: 
+   - Non correggere refusi.
+   - NON sostituire termini tecnici o codici.
+5. NUOVI CAMPI (Dati Anagrafici/Lavorativi): In alcune schermate potresti trovare dati su Professione, Nucleo Familiare, Reddito, Rating, Score CGS, ecc. Estrai tutto quello che vedi nei campi corrispondenti dello schema.
+6. TOOLTIP: Cerca icone 'i', punti interrogativi o testi in popover/tooltip. 
 
-STRUTTURA TABELLE:
+STRUTTURA DATI:
 - Soggetti: [NDG, DENOMINAZIONE, RUOLO]
 - Fidi: [n° FIDO, Rapporto, Descrizione, Scadenza, Importo (€), Tipo Op.]
-- Garanzie: [n° GAR, Descrizione, Fido, NDG, Denominazione, Imp. (€)/%, Tipo Op.] -> Attenzione: 'Imp. (€)/%' può contenere l'importo garantito, non confonderlo con la percentuale se presente.
+- Garanzie: [n° GAR, Descrizione, Fido, NDG, Denominazione, Imp. (€)/%, Tipo Op.]
+- Altri Campi: Professione, Reddito, Nucleo Familiare, Rating, Score CGS.
 
-Restituisci SOLO JSON.
+IMPORTANTE: Restituisci SOLO un oggetto JSON valido conforme allo schema richiesto. Non includere spiegazioni o testo aggiuntivo fuori dal JSON.
 """.strip()
 
 ANCHOR_PROMPT = """
@@ -27,12 +28,14 @@ Estrai SOLO i seguenti campi dallo screenshot:
 - denominazione
 
 Regole:
+- NDG e Denominazione principali si trovano solitamente nell'intestazione della pratica al CENTRO dell'immagine.
+- IGNORA i nomi e numeri in alto a destra (es. l'operatore 'Crut Radu Ionut' o il suo ID).
 - Se non sei assolutamente certo, restituisci null.
 - NDG deve essere una sequenza numerica ESATTA (non stimare).
 - Non inventare mai valori.
 - Imposta confidence >= 0.95 solo se il valore è chiaramente leggibile.
 
-Restituisci SOLO JSON conforme allo schema.
+IMPORTANTE: Restituisci SOLO un oggetto JSON valido conforme allo schema richiesto. Non includere spiegazioni o testo aggiuntivo fuori dal JSON.
 """.strip()
 
 RETRY_PROMPT_HEADER = """

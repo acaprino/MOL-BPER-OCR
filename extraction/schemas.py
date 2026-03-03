@@ -7,7 +7,7 @@ from extraction.fields import FIELD_KEYS
 # Field-level models
 # ============================================================
 class FieldResult(BaseModel):
-    value: Optional[Union[str, int, float]] = None
+    value: Optional[str] = None
     confidence: float = 0.0
     evidence_text: Optional[str] = None
     section: Optional[str] = None
@@ -52,8 +52,6 @@ FieldsModel = create_model(
 # Top-level response models
 # ============================================================
 class ExtractionResponse(BaseModel):
-    screen_id: str = ""
-    attempt: str = ""
     fields: FieldsModel = Field(default_factory=FieldsModel)
     soggetti: List[Soggetto] = Field(default_factory=list)
     fidi: List[Fido] = Field(default_factory=list)
@@ -64,8 +62,6 @@ class AnchorFields(BaseModel):
     denominazione: Optional[FieldResult] = None
 
 class AnchorResponse(BaseModel):
-    screen_id: str = ""
-    attempt: str = ""
     fields: AnchorFields = Field(default_factory=AnchorFields)
 
 # ============================================================
