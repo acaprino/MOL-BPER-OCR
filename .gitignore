@@ -4,3 +4,16 @@
 build/
 dist/
 *.spec
+
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Temporary uploads (Streamlit)
+temp_uploads/
+
+# Python
+__pycache__/
+*.pyc
+.venv/

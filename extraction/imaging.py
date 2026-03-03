@@ -1,0 +1,42 @@
+"""Image processing: normalize, crop, encode, debug save."""
+
+import io
+import os
+from typing import Tuple
+
+from PIL import Image, ImageEnhance, ImageFilter
+
+from extraction.config import DEBUG_SAVE_CROPS, DEBUG_CROP_DIR
+
+
+def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image:
+    w, h = img.size
+    scale = long_side / max(w, h)
+    if scale < 1.0:
+        img = img.resize((int(w * scale), int(h * scale)))
+    img = ImageEnhance.Contrast(img).enhance(1.05)
+    img = img.filter(ImageFilter.UnsharpMask(radius=1.2, percent=120, threshold=3))
+    return img
+
+
+def crop_relative(img: Image.Image, box: Tuple[float, float, float, float]) -> Image.Image:
+    w, h = img.size
+    l = int(box[0] * w)
+    t = int(box[1] * h)
+    r = int(box[2] * w)
+    b = int(box[3] * h)
+    return img.crop((l, t, r, b))
+
+
+def img_to_png_bytes(img: Image.Image) -> bytes:
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return buf.getvalue()
+
+
+def save_debug_crop(img: Image.Image, screen_id: str, name: str) -> None:
+    if not DEBUG_SAVE_CROPS:
+        return
+    os.makedirs(DEBUG_CROP_DIR, exist_ok=True)
+    out_path = os.path.join(DEBUG_CROP_DIR, f"{screen_id}__{name}.png")
+    img.save(out_path)

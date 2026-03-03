@@ -1,26 +1,26 @@
-import streamlit as st
-import os
-import io
-import json
-import pandas as pd
-from PIL import Image
-from openai import OpenAI
-import base64
-import time
+from dotenv import load_dotenv; load_dotenv()  # noqa: E702
 
-# Importiamo le funzioni dal file main.py esistente
-# Nota: Assicurati che main.py sia nella stessa cartella o accessibile
+import streamlit as st
+import logging
+import os
+import json
+import re
+import tempfile
+import pandas as pd
+
 try:
-    from main import (
-        extract_from_screen, 
-        load_ground_truth, 
-        eval_outputs, 
-        get_pred_value_for_gt_key,
+    from extraction import (
+        load_ground_truth,
         classify_field,
-        dataset_mismatch_guard
+        dataset_mismatch_guard,
+        run_extraction_batch,
+        CSV_TO_SCHEMA,
+        PROVIDER_MODELS,
     )
 except ImportError:
-    st.error("Errore: Impossibile importare le funzioni da main.py. Assicurati che il file sia presente.")
+    st.error("Errore: Impossibile importare le funzioni dal pacchetto extraction. Assicurati che sia presente.")
+
+logger = logging.getLogger(__name__)
 
 # --- CONFIGURAZIONE PAGINA ---
 st.set_page_config(
@@ -73,17 +73,26 @@ st.markdown("""
 with st.sidebar:
     st.image("https://img.icons8.com/fluency/96/data-extraction.png", width=80)
     st.title("Settings")
-    
-    api_key = st.text_input("OpenAI API Key", type="password", value=os.getenv("OPENAI_API_KEY", ""))
-    model_choice = st.selectbox("Modello VLM", ["gpt-4o", "gpt-4o-mini"], index=0)
-    
+
+    # Provider selection
+    provider_choice = st.selectbox("Provider LLM", ["openai", "gemini"], index=0)
+
+    # API key (do not pre-populate from env vars to avoid sending secrets to the browser)
+    api_key_input = st.text_input("LLM API Key", type="password",
+                                  placeholder="Lascia vuoto per usare env var LLM_API_KEY")
+    api_key = api_key_input or None
+
+    # Model dropdown (filtered by provider)
+    available_models = PROVIDER_MODELS.get(provider_choice, [])
+    model_choice = st.selectbox("Modello VLM", available_models, index=0)
+
     st.divider()
     st.markdown("### Istruzioni")
     st.info("1. Carica uno o più screenshot\n2. Carica il file CSV Ground Truth (opzionale)\n3. Clicca su 'Avvia Estrazione'")
 
 # --- HEADER ---
 st.markdown("<h1 style='text-align: center; color: #0068c9;'>🔍 AI Data Extractor Pro</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.2em;'>Trasforma i tuoi screenshot in dati strutturati con la potenza di GPT-4 Vision</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.2em;'>Trasforma i tuoi screenshot in dati strutturati con la potenza di AI Vision</p>", unsafe_allow_html=True)
 
 # --- CARICAMENTO FILE ---
 col1, col2 = st.columns(2)
@@ -103,18 +112,17 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
     elif not uploaded_images:
         st.warning("Carica almeno un'immagine per procedere.")
     else:
-        client = OpenAI(api_key=api_key)
-        
-        # Salvataggio temporaneo delle immagini caricate
-        temp_dir = "temp_uploads"
-        os.makedirs(temp_dir, exist_ok=True)
+        # Salvataggio temporaneo delle immagini caricate (session-scoped)
+        temp_dir = tempfile.mkdtemp(prefix="extraction_")
         image_paths = []
         for img_file in uploaded_images:
-            path = os.path.join(temp_dir, img_file.name)
+            # Sanitize filename to prevent path traversal
+            safe_name = re.sub(r'[^\w\-.]', '_', os.path.basename(img_file.name))
+            path = os.path.join(temp_dir, safe_name)
             with open(path, "wb") as f:
                 f.write(img_file.getbuffer())
             image_paths.append(path)
-        
+
         # Caricamento GT se presente
         gt_data = None
         if uploaded_csv:
@@ -132,49 +140,46 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
         # Progress bar
         progress_bar = st.progress(0)
         status_text = st.empty()
-        
-        all_results = {}
-        
-        # Parallel extraction logic
-        from concurrent.futures import ThreadPoolExecutor, as_completed
-        
-        def _worker_extract(path: str):
-            local_client = OpenAI(api_key=api_key)
-            screen_id_local = os.path.splitext(os.path.basename(path))[0]
-            return screen_id_local, extract_from_screen(local_client, path)
+        completed = [0]  # mutable counter for closure
 
-        with ThreadPoolExecutor(max_workers=5) as ex:
-            futs = {ex.submit(_worker_extract, p): p for p in image_paths}
-            completed = 0
-            for fut in as_completed(futs):
-                p = futs[fut]
-                filename = os.path.basename(p)
-                try:
-                    sid, result = fut.result()
-                    all_results[sid] = result
-                except Exception as e:
-                    st.error(f"Errore su {filename}: {e}")
-                
-                completed += 1
-                progress_bar.progress(completed / len(image_paths))
-                status_text.text(f"Completati {completed}/{len(image_paths)}...")
-        
+        def _on_complete(sid, result):
+            completed[0] += 1
+            progress_bar.progress(completed[0] / len(image_paths))
+            status_text.text(f"Completati {completed[0]}/{len(image_paths)}...")
+
+        def _on_error(sid, exc):
+            completed[0] += 1
+            progress_bar.progress(completed[0] / len(image_paths))
+            logger.exception("Extraction error for %s", sid)
+            st.error(f"Errore durante l'estrazione di {sid}. Controlla i log per dettagli.")
+
+        all_results = run_extraction_batch(
+            image_paths,
+            api_key=api_key,
+            provider_name=provider_choice,
+            model_main=model_choice,
+            parallel=True,
+            max_workers=5,
+            on_complete=_on_complete,
+            on_error=_on_error,
+        )
+
         status_text.success("Estrazione completata!")
-        
+
         # --- VISUALIZZAZIONE RISULTATI ---
         st.divider()
         st.header("📋 Risultati Estrazione")
-        
+
         for sid, res in all_results.items():
             with st.expander(f"Dettagli: {sid}", expanded=True):
                 c1, c2 = st.columns([1, 2])
-                
+
                 with c1:
                     # Mostra l'immagine
                     img_path = os.path.join(temp_dir, f"{sid}.png")
                     if os.path.exists(img_path):
                         st.image(img_path, use_column_width=True)
-                    
+
                     # Metriche screen
                     meta = res.get("_meta_agg", {})
                     st.markdown(f"""
@@ -189,38 +194,37 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
                     # Tabella risultati
                     fields_data = []
                     fields = res.get("fields", {})
-                    
+
                     # Confronto con GT se disponibile
                     gt_for_screen = gt_data.get(sid, {}) if gt_data else {}
                     mismatch = dataset_mismatch_guard(gt_for_screen, res) if gt_data else False
-                    
+
                     for f_key, f_val in fields.items():
+                        if not isinstance(f_val, dict):
+                            continue
                         pred_v = f_val.get("value")
                         conf = f_val.get("confidence", 0)
-                        
+
                         row = {
                             "Campo": f_key,
                             "Valore Predetto": pred_v,
                             "Confidenza": f"{conf:.2%}"
                         }
-                        
+
                         if gt_data:
-                            # Troviamo la chiave CSV corrispondente (approssimativa per visualizzazione)
-                            from main import CSV_TO_SCHEMA, FIELD_KEYS
                             inv_map = {v: k for k, v in CSV_TO_SCHEMA.items()}
                             csv_label = inv_map.get(f_key, f_key)
                             gt_v = gt_for_screen.get(csv_label)
-                            
+
                             row["Ground Truth"] = gt_v
                             status, reason = classify_field(gt_v, pred_v, field_key=f_key)
                             row["Status"] = status
                             row["Motivazione"] = reason
-                            
                         fields_data.append(row)
-                    
+
                     df_res = pd.DataFrame(fields_data)
                     st.table(df_res)
-                    
+
                     if mismatch:
                         st.warning("⚠️ Possibile mismatch rilevato tra screenshot e Ground Truth!")
 
@@ -236,4 +240,4 @@ if st.button("🚀 AVVIA ESTRAZIONE"):
 
 # --- FOOTER ---
 st.divider()
-st.markdown("<p style='text-align: center; color: gray;'>Powered by Streamlit & OpenAI</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: gray;'>Powered by Streamlit & AI Vision</p>", unsafe_allow_html=True)
