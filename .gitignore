@@ -1,3 +1,6 @@
 /mnt/data/poc_debug.csv
 /edge-agent/
 /mnt
+build/
+dist/
+*.spec

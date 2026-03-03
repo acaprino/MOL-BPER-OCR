@@ -52,6 +52,8 @@ PRICING_PER_1M = {
     "gpt-4o-2024-08-06": {"input": 2.50, "output": 10.00},
     "gpt-5.2": {"input": 1.75, "output": 14.00},
     "gpt-4o-mini": {"input": 0.15, "output": 0.60},
+    "o1": {"input": 15.00, "output": 60.00},
+    "o1-mini": {"input": 1.10, "output": 4.40},
 }
 
 # ------------------------------------------------------------
@@ -1094,7 +1096,7 @@ def load_ground_truth(csv_path: str) -> Dict[str, Dict[str, Any]]:
 
     return gt
 
-def eval_outputs(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]]) -> None:
+def eval_outputs(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]]) -> Dict[str, Any]:
     # Two metrics: raw and filtered (exclude dataset mismatch)
     total_raw = correct_raw = 0
     total_filt = correct_filt = 0
@@ -1146,6 +1148,13 @@ def eval_outputs(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any
     for k, (c, t) in sorted(per_field_filt.items(), key=lambda x: x[0]):
         print(f"  {k:40s} {c:3d}/{t:3d} = {(c/t):.2%}")
 
+    return {
+        "accuracy": acc_filt,
+        "acc_raw": acc_raw,
+        "acc_filt": acc_filt,
+        "per_field_filt": per_field_filt
+    }
+
 def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[str, Any]], out_csv_path: str):
     """
     Debug report with per-(screen, GT-key) rows.
@@ -1195,7 +1204,47 @@ def build_debug_report(outputs: Dict[str, Dict[str, Any]], gt: Dict[str, Dict[st
                 "_status": pred.get("_status"),
             })
 
-    pd.DataFrame(rows).to_csv(out_csv_path, index=False, encoding="utf-8")
+    pd.DataFrame(rows).to_csv(out_csv_path, index=False, encoding="utf-8-sig")
+
+def export_to_csv(outputs: Dict[str, Dict[str, Any]], out_csv_path: str):
+    """
+    Exports the extracted data to a flat CSV file.
+    """
+    rows = []
+    for scr, out in outputs.items():
+        fields = out.get("fields", {})
+        # Main fields
+        for f_key in FIELD_KEYS:
+            f_data = fields.get(f_key)
+            if isinstance(f_data, dict):
+                rows.append({
+                    "screen": scr,
+                    "category": "FIELD",
+                    "field": f_key,
+                    "value": f_data.get("value"),
+                    "confidence": f_data.get("confidence"),
+                    "evidence_text": f_data.get("evidence_text"),
+                    "section": f_data.get("section")
+                })
+        
+        # Tables
+        for tbl_name in ["soggetti", "fidi", "garanzie"]:
+            items = out.get(tbl_name, [])
+            for i, item in enumerate(items):
+                # item is a dict of fields
+                for k, v in item.items():
+                    if k == "confidence": continue # skip meta
+                    rows.append({
+                        "screen": scr,
+                        "category": tbl_name.upper(),
+                        "field": f"{tbl_name}[{i}].{k}",
+                        "value": v,
+                        "confidence": item.get("confidence"),
+                        "evidence_text": "",
+                        "section": ""
+                    })
+
+    pd.DataFrame(rows).to_csv(out_csv_path, index=False, encoding="utf-8-sig")
 
 def print_cost_summary(outputs: Dict[str, Dict[str, Any]]) -> None:
     print("\nCOST SUMMARY (per screen):")
