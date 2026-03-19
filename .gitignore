@@ -1,17 +1,23 @@
-/mnt/data/poc_debug.csv
-/edge-agent/
-/mnt
+# Build artifacts
 build/
 dist/
 *.spec
+
+# Old/unused package roots
+src/
+/edge-agent/
+
+# Data (screenshots + generated outputs)
+/mnt
 
 # Secrets
 .env
 .env.local
 .env.*.local
 
-# Temporary uploads (Streamlit)
+# Temporary uploads and test dirs
 temp_uploads/
+test_no_gt/
 
 # Python
 __pycache__/

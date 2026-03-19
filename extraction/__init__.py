@@ -35,12 +35,13 @@ __all__ = [
     # VLM client
     "estimate_cost_usd", "call_vlm", "call_vlm_with_retry",
     # Pipeline
-    "extract_anchors", "extract_from_screen",
+    "ExtractionPipeline", "extract_anchors", "extract_from_screen",
     # Evaluation
+    "Evaluator",
     "infer_screenshots_from_gt", "load_ground_truth", "eval_outputs",
     "build_debug_report", "print_cost_summary", "export_to_csv",
     # CLI
-    "main", "run_extraction_batch",
+    "BatchRunner", "main", "run_extraction_batch",
 ]
 
 # Config
@@ -108,10 +109,11 @@ from extraction.imaging import normalize_image, crop_relative, img_to_png_bytes
 from extraction.vlm_client import estimate_cost_usd, call_vlm, call_vlm_with_retry
 
 # Pipeline
-from extraction.pipeline import extract_anchors, extract_from_screen
+from extraction.pipeline import ExtractionPipeline, extract_anchors, extract_from_screen
 
 # Evaluation
 from extraction.evaluation import (
+    Evaluator,
     infer_screenshots_from_gt,
     load_ground_truth,
     eval_outputs,
@@ -121,4 +123,4 @@ from extraction.evaluation import (
 )
 
 # CLI
-from extraction.cli import main, run_extraction_batch
+from extraction.cli import BatchRunner, main, run_extraction_batch
