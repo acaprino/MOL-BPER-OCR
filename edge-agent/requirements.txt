@@ -1,0 +1,12 @@
+PyQt6>=6.4.0
+mss>=9.0.0
+pyscreenshot>=3.1; sys_platform == 'linux'
+Pillow>=10.0.0
+imagehash>=4.3.0
+requests>=2.31.0
+boto3>=1.35.0
+keyboard==0.13.5
+torch
+torchvision
+openai>=1.51.0
+openpyxl>=3.1.2

@@ -5,8 +5,7 @@ dist/
 
 # Old/unused package roots
 src/
-/edge-agent/
-
+edge-agent/assets/templates/bper
 # Data (screenshots + generated outputs)
 /mnt
 
