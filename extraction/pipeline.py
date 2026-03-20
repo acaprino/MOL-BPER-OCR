@@ -99,9 +99,10 @@ class ExtractionPipeline:
             "_meta": out["_meta"],
         }
 
-    def extract_from_screen(self, path: str) -> Dict[str, Any]:
-        """Full multi-pass extraction for a single screenshot path."""
-        screen_id, content_img = self._prepare_content_image(path)
+    def extract_from_image(self, img: Image.Image, screen_id: str) -> Dict[str, Any]:
+        """Full multi-pass extraction for a single PIL image."""
+        content_img = crop_relative(img, CONTENT_CROP)
+        save_debug_crop(content_img, screen_id, "CONTENT")
 
         # 1) Anchor pass
         anchors = self.extract_anchors(content_img, screen_id)
@@ -171,6 +172,13 @@ class ExtractionPipeline:
         )
 
         return result
+
+    def extract_from_screen(self, path: str) -> Dict[str, Any]:
+        """Full multi-pass extraction for a single screenshot path."""
+        img = Image.open(path).convert("RGB")
+        img = normalize_image(img)
+        screen_id = os.path.splitext(os.path.basename(path))[0]
+        return self.extract_from_image(img, screen_id)
 
     # --------------------------------------------------------
     # Private helpers

@@ -11,7 +11,6 @@ from pathlib import Path
 from typing import Optional, Set, Tuple, List, Dict, Any
 
 import imagehash
-import requests
 from PIL import Image
 from PyQt6 import QtCore
 from llm_router import PageRouter, MLPageRouter, LLMPageRouter, RouterResult  # type: ignore
@@ -22,9 +21,6 @@ except Exception:  # noqa: BLE001
     BPERPagePrototypeClassifier = None  # type: ignore
 
 from .base_capture_worker import BaseCaptureWorker
-from .. import __init__ as _pkg_init  # noqa: F401
-from .. import __init__  # to ensure package context
-# Use absolute import from project root to avoid relative import beyond top-level package
 from image_ops import preprocess_for_ocr, to_png8, to_webp_lossless
 
 # Nota: l'ordine delle pagine viene caricato dinamicamente dall'Excel
@@ -59,7 +55,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
             api_client: Optional[Any] = None,
             parent: Optional[QtCore.QObject] = None,
     ) -> None:
-        super().__init__(config, job_id_getter, api_client, parent)
+        super().__init__(config, job_id_getter, parent)
+        self.api_client = api_client
 
         # Stato dedup
         self._last_frame_hash: Optional[imagehash.ImageHash] = None
@@ -89,10 +86,6 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self.router: Optional[PageRouter] = None
         self._init_router()
         self._load_page_sequence()
-
-        # Dataset state
-        self._dataset_counts: dict[str, int] = {}
-        self._dataset_endpoint_enabled: bool = True  # verrà disabilitato se il backend non ha l'endpoint
 
         # Throttling routing su frame duplicati: ultimo tentativo eseguito
         self._last_route_attempt_ts: Optional[float] = None
@@ -626,108 +619,27 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Se abbiamo un api_client locale (lite), usiamolo direttamente
         if self.api_client and hasattr(self.api_client, "ingest_frame"):
             try:
-                buf = io.BytesIO()
-                img.save(buf, format="PNG")
+                # Passiamo l'immagine PIL direttamente (LocalExtractionClient ora la accetta)
                 self.api_client.ingest_frame(
                     job_id=job_id,
-                    image_bytes=buf.getvalue(),
+                    img=img,
                     page_no=page_index,
                     page_type=page_type,
                     confidence=confidence,
                     fields_json=json.dumps(fields or {})
                 )
-                self.tick.emit(f"✅ [LITE] Elaborazione locale completata: {filename}")
+                self.tick.emit(f"✅ Elaborazione locale completata: {filename}")
                 return
             except Exception as exc:
                 self.on_error(exc)
                 return
 
-        # Fallback SaaS (requests)
-        upload_fmt = (self.config.upload_format or "png").lower()
-        mime = "image/png"
-        if upload_fmt == "png8":
-            data = to_png8(img)
-        elif upload_fmt == "webp":
-            data = to_webp_lossless(img)
-            mime = "image/webp"
-        else:
-            buf = io.BytesIO()
-            img.save(buf, format="PNG")
-            data = buf.getvalue()
-            mime = "image/png"
-
-        files = {"file": (filename, io.BytesIO(data), mime)}
-        # Inoltra anche metadati utili (supportati dall'API): page_type, confidence, fields_json
-        data = {
-            "page": str(page_index),
-            "page_type": page_type,
-            "confidence": str(confidence or 0.0),
-            "fields_json": json.dumps(fields or {}),
-        }
-
-        base_url = self.config.api_base.rstrip("/")
-        url = f"{base_url}/jobs/{job_id}/frames"
-
-        try:
-            resp = requests.post(url, files=files, data=data, timeout=30)
-            resp.raise_for_status()
-        except Exception as exc:  # noqa: BLE001
-            self.on_error(exc)
-            return
-
-        self.tick.emit(
-            f"📸 Screenshot caricato: {filename} "
-            f"(page={page_index}, type={page_type})"
-        )
+        # Rimossa logica di upload remoto (SaaS/Sauron) per consolidamento locale.
+        self.tick.emit(f"[ERRORE] Client locale non configurato correttamente per {filename}")
 
     def _maybe_upload_dataset(self, job_id: str, img: Image.Image, page_type: str, score: float, fields: dict) -> None:
-        """Carica nel bucket dataset gli screenshot utili secondo le soglie configurate."""
-        if not self.config.dataset_enabled or not self._dataset_endpoint_enabled:
-            return
-        if score < float(self.config.dataset_confidence_threshold or 0.0):
-            return
-        cur = self._dataset_counts.get(page_type, 0)
-        if cur >= int(self.config.dataset_max_per_page or 0):
-            return
-
-        # Evita duplicati forti via pHash già gestito a monte; qui procedi all'upload
-        buf = io.BytesIO()
-        img.save(buf, format="PNG")
-        buf.seek(0)
-
-        filename = f"{page_type}-{uuid.uuid4().hex}.png"
-
-        files = {"file": (filename, buf, "image/png")}
-        data = {
-            "page_type": page_type,
-            "confidence": str(score),
-            "fields_json": json.dumps(fields or {}),
-        }
-
-        base_url = self.config.api_base.rstrip("/")
-        url = f"{base_url}/jobs/{job_id}/dataset-frames"
-
-        try:
-            resp = requests.post(url, files=files, data=data, timeout=30)
-            resp.raise_for_status()
-            self._dataset_counts[page_type] = cur + 1
-            self.tick.emit(f"🧩 Dataset frame salvato: {filename} ({page_type}, score={score:.2f})")
-        except requests.HTTPError as exc:  # tipo specifico per gestire 404
-            try:
-                status = getattr(exc.response, "status_code", None)
-            except Exception:
-                status = None
-            if status == 404:
-                # Backend non aggiornato con l'endpoint dataset: disabilita per la sessione e logga una sola volta
-                if self._dataset_endpoint_enabled:
-                    self._dataset_endpoint_enabled = False
-                    self.tick.emit(
-                        "[BPER] Avviso: endpoint /dataset-frames non disponibile (404). Upload dataset disabilitato per questa sessione.")
-                return
-            # altri errori HTTP: propaga come errore per visibilità
-            self.on_error(exc)
-        except Exception as exc:  # noqa: BLE001
-            self.on_error(exc)
+        """Logica di salvataggio dataset (disabilitata per consolidamento locale)."""
+        return
 
     # ------------------------------------------------------------------ helpers stabilità
 

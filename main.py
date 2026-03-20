@@ -8,4 +8,13 @@ from dotenv import load_dotenv; load_dotenv()  # noqa: E702
 from extraction import *  # noqa: F401,F403
 
 if __name__ == "__main__":
-    main()  # noqa: F405
+    import sys
+    from pathlib import Path
+    
+    # Se viene passato --gui, avvia l'Edge Agent
+    if "--gui" in sys.argv:
+        from edge_agent.edge_agent import main as gui_main
+        sys.exit(gui_main())
+    else:
+        # Altrimenti esegui la batch extraction standard
+        main()  # noqa: F405

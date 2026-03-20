@@ -6,10 +6,10 @@ import csv
 import io
 import os
 import sys
-import tempfile
 import threading
 import uuid
 from typing import Any, Dict, List, Optional
+from PIL import Image
 
 from PyQt6 import QtCore
 
@@ -65,7 +65,7 @@ class LocalExtractionClient(QtCore.QObject):
     def ingest_frame(
         self,
         job_id: str,
-        image_bytes: bytes,
+        img: Image.Image,
         page_no: int = 0,
         page_type: str = "",
         confidence: float = 0.0,
@@ -77,18 +77,20 @@ class LocalExtractionClient(QtCore.QObject):
         Called synchronously from BPERCaptureWorker._upload_page().
         Runs extraction in the caller's thread (capture QThread).
         """
-        # Save to temp file — pipeline works on file paths
-        with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
-            f.write(image_bytes)
-            tmp_path = f.name
+        screen_id = f"job_{job_id}_p{page_no}_{page_type}"
 
         try:
-            result = self._pipeline.extract_from_screen(tmp_path)
-        finally:
-            try:
-                os.unlink(tmp_path)
-            except Exception:
-                pass
+            # We use extract_from_image directly to avoid redundant normalize_image
+            # since the Edge Agent already pre-processed the image.
+            result = self._pipeline.extract_from_image(img, screen_id)
+        except Exception as e:
+            # Fallback error result
+            result = {
+                "screen_id": screen_id,
+                "fields": {},
+                "_status": "ERROR",
+                "_error": str(e)
+            }
 
         result["_page_type"] = page_type
         result["_page_no"] = page_no

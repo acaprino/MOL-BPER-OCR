@@ -1,9 +1,9 @@
 from .capture_tab import CaptureTab
 from .main_window import MainWindow
-from .results_tab import ResultsTab
+from .extraction_results_tab import ExtractionResultsTab
 
 __all__ = [
     "CaptureTab",
     "MainWindow",
-    "ResultsTab",
+    "ExtractionResultsTab",
 ]

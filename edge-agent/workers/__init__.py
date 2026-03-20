@@ -1,5 +1,9 @@
-# edge-agent/workers/__init__.py
+"""Package workers: thread di cattura e processing."""
 
-"""
-Package workers che contiene thread e processi dedicati.
-"""
+from .capture import BaseCaptureWorker, BPERCaptureWorker, DefaultCaptureWorker
+
+__all__ = [
+    "BaseCaptureWorker",
+    "BPERCaptureWorker",
+    "DefaultCaptureWorker",
+]

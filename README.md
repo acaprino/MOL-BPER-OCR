@@ -1,99 +1,128 @@
 # poc-data-extraction
 
-**Python 3.8+ | LangChain | OpenAI GPT-4o / Google Gemini | Pillow | Pandas | Streamlit**
+**Python 3.8+ | LangChain | OpenAI GPT-4o / Google Gemini | Pillow | Pandas | PyQt6**
 
-Estrazione automatica di dati strutturati da screenshot bancari italiani tramite pipeline VLM (Vision Language Model) multi-pass con **LangChain**. Supporta OpenAI e Google Gemini come provider tramite un'unica factory LangChain. Estrae 18 campi da ogni schermata, valuta l'accuratezza rispetto a un ground truth CSV e produce metriche per campo e breakdown dei costi.
+Estrazione automatica di dati strutturati da screenshot bancari italiani tramite pipeline VLM (Vision Language Model) multi-pass con **LangChain**. Supporta l'acquisizione in tempo reale tramite un **Edge Agent** (PyQt6) che si collega direttamente alla pipeline di estrazione locale. Estrae 18 campi da ogni schermata, valuta l'accuratezza rispetto a un ground truth CSV e produce metriche per campo e breakdown dei costi.
 
 ## Cosa fa
 
-Il sistema riceve screenshot di schermate bancarie e, attraverso tre passaggi VLM successivi (anchor, main, retry), estrae 18 campi strutturati con valori di confidenza. Ogni campo viene restituito con `value`, `confidence`, `evidence_text` e `section`. Il pipeline include un meccanismo di retry mirato per i campi con confidenza bassa o valore nullo.
+Il sistema riceve screenshot (da file o cattura in tempo reale) e, attraverso tre passaggi VLM successivi (anchor, main, retry), estrae i campi strutturati con valori di confidenza. Ogni campo viene restituito con `value`, `confidence`, `evidence_text` e `section`. Il pipeline include un meccanismo di retry mirato per i campi con confidenza bassa o valore nullo tramite ritagli (crop) specifici dell'immagine.
 
-## Quick Start
+## Stato Attuale
 
-### Prerequisiti
+Il sistema integra l'acquisizione automatica degli screenshot con l'estrazione intelligente, eliminando la necessità di microservizi esterni.
+Supporta i principali VLM sul mercato:
+- **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `o1`.
+- **Google Gemini**: `gemini-1.5-flash`, `gemini-1.5-pro`, `gemini-2.0-flash`, `gemini-3-flash-preview`.
 
-- Python 3.8+
-- Chiave API OpenAI **oppure** Google Gemini
+Caratteristiche principali:
+- **Edge Agent (GUI)**: Cattura screenshot in tempo reale da monitor selezionati, riconosce la pagina corrente e avvia l'estrazione locale.
+- **Parallelismo**: Supporta l'elaborazione simultanea di più immagini nella modalità CLI.
+- **Resilienza**: Meccanismo di "Anchor Check" per garantire che i dati estratti appartengano effettivamente al soggetto corretto.
+- **Retry Intelligente**: Esegue crop mirati delle aree dell'immagine dove l'estrazione iniziale è fallita.
+- **Valutazione Automatica**: Confronta i risultati con un file Ground Truth (`dati.csv`).
 
-### Setup
+## Scopo dei Componenti
 
+### Core Pipeline (`extraction/`)
+Il package `extraction` contiene tutta la logica di business, separata dall'interfaccia utente:
+- `pipeline.py`: Orchestratore principale dei 3 passaggi (Anchor -> Main -> Retry).
+- `llm_factory.py`: Gestisce la creazione dei modelli LangChain per i diversi provider.
+- `vlm_client.py`: Interfaccia di basso livello per le chiamate ai modelli con supporto per output strutturato (Pydantic).
+- `imaging.py`: Gestisce la manipolazione delle immagini (crop, normalizzazione, compressione).
+- `evaluation.py`: Calcola le metriche di accuratezza (OK, WRONG, MISSING) e genera i report di debug.
+- `schemas.py`: Definisce la struttura dati dei campi estratti e dei soggetti.
+- `config.py`: Centralizza tutte le costanti, le coordinate dei crop e le impostazioni ambientali.
+
+### Interfacce Utente
+- **Edge Agent (`main.py --gui`)**: Interfaccia principale per la cattura real-time e l'estrazione locale. Basata su **PyQt6**.
+- **Batch CLI (`main.py`)**: Ideale per processamenti batch massivi di file già salvati su disco.
+- **Desktop UI (`gui_app.py`)**: Applicazione nativa **Tkinter** per processing locale di file selezionati manualmente.
+
+---
+
+## Come Avviarlo
+
+### 1. Setup Ambiente
 ```bash
+# Installazione dipendenze
 pip install -r requirements.txt
 
-# Configurare le variabili d'ambiente
+# Configurazione (opzionale se si usa la GUI)
 cp .env.example .env
-# Editare .env e inserire le proprie chiavi API
+# Modificare .env con le proprie API Key
 ```
 
-### Esecuzione con OpenAI (default)
+### 2. Avvio interfacce
+
+#### Edge Agent (Consigliato)
+Per la cattura real-time e l'estrazione intelligente:
+```bash
+python main.py --gui
+```
+
+#### Batch CLI
+Per un processing veloce di tutti i file già presenti in `mnt/data/`:
+```bash
+python main.py
+```
+
+#### Desktop App (Tkinter)
+Per l'applicazione desktop nativa:
+```bash
+python gui_app.py
+```
+
+---
+
+## Generazione Eseguibile (.exe)
+
+È possibile pacchettizzare l'applicazione Desktop (`gui_app.py`) in un unico file eseguibile per Windows utilizzando **PyInstaller**.
+
+### Prerequisiti
+```bash
+pip install pyinstaller
+```
+
+### Build
+Per generare l'eseguibile, posizionarsi nella root del progetto e lanciare:
 
 ```bash
-export LLM_API_KEY="sk-..."
-python main.py                  # CLI batch
-streamlit run app.py            # Web UI su localhost:8501
+pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py
 ```
 
-### Esecuzione con Google Gemini
+**Note sulla build:**
+- `--onefile`: Crea un singolo file .exe (nella cartella `dist/`).
+- `--windowed`: Impedisce l'apertura della console all'avvio dell'app.
+- `--add-data "extraction;extraction"`: Include i moduli necessari del progetto.
+- `--collect-all`: Forza l'inclusione delle dipendenze dinamiche di LangChain.
 
-```bash
-export LLM_PROVIDER=gemini
-export LLM_API_KEY="AI..."
-export LLM_MODEL=gemini-1.5-flash
-python main.py                  # CLI batch
-streamlit run app.py            # Web UI su localhost:8501
-```
+L'eseguibile risultante si troverà nella cartella `dist/AI_Data_Extractor.exe`.
 
-### Cambio provider da Streamlit
+## I 18 campi estratti (Principali)
 
-Nella sidebar della web UI si puo' selezionare il provider (OpenAI / Gemini) e il modello direttamente dall'interfaccia, senza modificare variabili d'ambiente.
+Oltre ai dati dei soggetti (fino a 4 cointestatari con NDG e Ruolo), il sistema estrae:
 
-## Architettura — Pipeline Multi-Pass
-
-```
-Screenshot (.png)
-    |
-    v
-[normalize + crop contenuto]
-    |
-    +---> Pass 1: ANCHOR (crop header)
-    |         Estrae NDG + DENOMINAZIONE (conf >= 0.95)
-    |         Se incerto → ANCHOR_UNCERTAIN
-    |
-    +---> Pass 2: MAIN (crop contenuto intero)
-    |         Estrae tutti i 18 campi + soggetti
-    |         Con hint: "NDG atteso: ..., Denominazione attesa: ..."
-    |
-    +---> Pass 3: RETRY (crop mirati per campo)
-              Solo campi con value=null o confidence < 0.55
-              Ogni campo ha una regione di crop dedicata
-              Valore migliore selezionato via pick_best()
-    |
-    v
-Output JSON strutturato + _meta (costi, token, latenza)
-```
-
-## I 18 campi estratti
-
-| # | Campo | Descrizione |
-|---|-------|-------------|
-| 1 | `ndg` | Numero di Gestione |
-| 2 | `denominazione` | Nome del soggetto |
-| 3 | `tipo` | Tipo pratica (es. BPI Mutui) |
-| 4 | `evidenze` | Evidenze associate |
-| 5 | `filiale_relazione` | Filiale di relazione |
-| 6 | `ultima_validazione` | Data ultima validazione |
-| 7 | `professione_principale` | Professione principale |
-| 8 | `numero_mensilita` | Numero mensilita' |
-| 9 | `retribuzione_annua_netta` | Retribuzione annua netta |
-| 10 | `tipo_contratto` | Tipo di contratto |
-| 11 | `anagrafica` | Datore di lavoro / anagrafica |
-| 12 | `dal` | Data inizio |
-| 13 | `rating_ufficiale` | Rating ufficiale |
-| 14 | `score_cgs` | Score CGS |
-| 15 | `nr_altri_componenti_nucleo_familiare` | Numero altri componenti nucleo |
-| 16 | `di_cui_percepiscono_reddito` | Di cui percepiscono reddito |
-| 17 | `importo_totale_annuo_altri_componenti` | Importo totale annuo altri componenti |
-| 18 | `note` | Note libere |
+| # | Campo | Descrizione | Area Crop |
+|---|-------|-------------|-----------|
+| 1 | `ndg` | Numero di Gestione | HEADER |
+| 2 | `denominazione` | Nome del soggetto principale | HEADER |
+| 3 | `tipo` | Tipo pratica (es. BPI Mutui) | HEADER |
+| 4 | `evidenze` | Evidenze associate | HEADER |
+| 5 | `filiale_relazione` | Filiale di relazione | HEADER |
+| 6 | `ultima_validazione` | Data ultima validazione scheda | HEADER |
+| 7 | `professione_principale` | Professione principale | BODY |
+| 8 | `retribuzione_annua_netta` | Reddito annuo | BODY |
+| 9 | `tipo_contratto` | Tempo determ./indeterm. | BODY |
+| 10 | `numero_mensilita` | Numero mensilità | BODY |
+| 11 | `datore_di_lavoro` | Azienda / Anagrafica | BODY |
+| 12 | `dal` | Data inizio rapporto lavoro | BODY |
+| 13 | `rating_ufficiale` | Rating banca | BODY |
+| 14 | `score_cgs` | Score di credito | BODY |
+| 15 | `nr_componenti_nucleo` | Nucleo familiare | BODY |
+| 16 | `percepiscono_reddito` | Numero redditi in famiglia | BODY |
+| 17 | `importo_totale_annuo` | Reddito totale nucleo | BODY |
+| 18 | `note` | Note libere della richiesta | FOOTER |
 
 ## Configurazione
 
@@ -165,8 +194,11 @@ Le metriche sono calcolate in due varianti:
 
 ```
 poc-data-extraction/
-  main.py                  # Entry point CLI (shim)
-  app.py                   # Entry point Streamlit
+  main.py                  # Entry point (CLI o --gui)
+  gui_app.py               # Entry point Desktop (Tkinter)
+  edge-agent/              # Codice dell'Edge Agent (PyQt6)
+    edge_agent.py          # Entry point GUI
+    local_extraction_client.py # Ponte tra GUI e ExtractionPipeline
   extraction/
     __init__.py            # Re-export API pubblica
     config.py              # Configurazione env-var, crop, pricing

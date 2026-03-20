@@ -38,8 +38,8 @@ class CaptureTab(QWidget):
     - selezione modalità (BPER vs generico)
     - configurazione FPS e filtro finestra
     - avvio/arresto worker di cattura
-    - requeue job
     - export CSV
+    - forza scatto manuale (solo BPER)
     - log testuale in tempo reale
     """
 
@@ -101,13 +101,14 @@ class CaptureTab(QWidget):
         config_group.setLayout(config_layout)
         layout.addWidget(config_group)
 
-        # --- Box controlli cattura ---
+        # Box job (sostituiti pulsanti inutili per locale)
         controls_layout = QHBoxLayout()
 
         self.start_button = QPushButton("Start", self)
         self.stop_button = QPushButton("Stop", self)
-        self.requeue_button = QPushButton("Requeue job", self)
+        # self.requeue_button = QPushButton("Requeue job", self) # Inutile in locale
         self.export_button = QPushButton("Export CSV", self)
+        
         # Forza scatto: selezione pagina + bottone
         self.force_page_combo = QComboBox(self)
         self.force_page_combo.setEditable(False)
@@ -119,7 +120,7 @@ class CaptureTab(QWidget):
 
         controls_layout.addWidget(self.start_button)
         controls_layout.addWidget(self.stop_button)
-        controls_layout.addWidget(self.requeue_button)
+        # controls_layout.addWidget(self.requeue_button)
         controls_layout.addWidget(self.export_button)
         controls_layout.addWidget(self.force_page_combo)
         controls_layout.addWidget(self.force_capture_button)
@@ -137,7 +138,7 @@ class CaptureTab(QWidget):
         # Collegamenti segnali UI
         self.start_button.clicked.connect(self._on_start_capture)
         self.stop_button.clicked.connect(self._on_stop_capture)
-        self.requeue_button.clicked.connect(self._on_requeue_job)
+        # self.requeue_button.clicked.connect(self._on_requeue_job)
         self.export_button.clicked.connect(self._on_export_csv)
         self.force_capture_button.clicked.connect(self._on_force_capture)
 
@@ -309,26 +310,6 @@ class CaptureTab(QWidget):
         )
 
     # ------------------------------------------------------------------ Azioni backend
-
-    def _on_requeue_job(self) -> None:
-        if not self.job_id:
-            QMessageBox.warning(
-                self,
-                "Nessun job",
-                "Non è presente alcun job corrente da riaccodare.",
-            )
-            return
-
-        ok = self.api_client.requeue_job(self.job_id)
-        if ok:
-            self._log(f"Job {self.job_id} riaccodato con successo.")
-            QMessageBox.information(
-                self,
-                "Requeue completato",
-                f"Il job {self.job_id} è stato riaccodato.",
-            )
-        else:
-            self._log(f"[ERROR] Requeue fallito per job {self.job_id}.")
 
     def _on_export_csv(self) -> None:
         if not self.job_id:
