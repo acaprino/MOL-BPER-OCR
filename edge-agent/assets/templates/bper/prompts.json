@@ -1,0 +1,84 @@
+{
+  "pages": [
+    {
+      "name": "1 - Scheda Privati",
+      "hints": "Risultato della ricerca Scheda Privati con evidenza del nominativo corrispondente. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "2 - Scheda Privati (lavoratore autonomo)",
+      "hints": "Scheda Privati – lavoratore autonomo. In giallo i campi di interesse da acquisire. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "3 - Scheda Privati (lavoratore dipendente)",
+      "hints": "Scheda Privati – lavoratore dipendente. In giallo i campi di interesse da acquisire. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "4 - Scheda Privati - (entrate e uscite assenti)",
+      "hints": "Scheda Privati – evidenziata assenza di entrate/uscite extra. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "5 - Scheda Privati - (uscite presenti)",
+      "hints": "Scheda Privati – uscite presenti evidenziate da acquisire. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "6 - Scheda Privati",
+      "hints": "Scheda Privati – campo note evidenziato da acquisire. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "7 - Scheda Immobile",
+      "hints": "Risultato della ricerca con evidenza del nominativo corrispondente al codice. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "8 - Scheda Immobile",
+      "hints": "Scheda Immobile – pag. 1 di 8: numerose sezioni, in giallo campi/assenze da rilevare. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "9 - Scheda Immobile",
+      "hints": "Scheda Immobile – pag. 3 di 8: numerose sezioni, in giallo campi/assenze da rilevare. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "10 - Scheda Immobile",
+      "hints": "Scheda Immobile – pag. 6 di 8: numerose sezioni, in giallo campi/assenze da rilevare. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "11 - Scheda Immobile",
+      "hints": "Scheda Immobile – pag. 7 di 8: numerose sezioni, in giallo campi/assenze da rilevare. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "12 - PEF",
+      "hints": "PEF 3.0 – acquisire i dati nel riquadro rosso. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "13 - PEF",
+      "hints": "PEF – parte iniziale pagina: in rosso i dati da acquisire. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "14 - PEF",
+      "hints": "PEF – parte finale pagina: in rosso i dati da acquisire. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "15 - PEF",
+      "hints": "PEF – acquisire i dati nel riquadro rosso. Dati da acquisire.",
+      "fields": []
+    },
+    {
+      "name": "16 - PEF",
+      "hints": "PEF – parte iniziale pagina: in rosso i dati da acquisire. Dati da acquisire.",
+      "fields": []
+    }
+  ]
+}
