@@ -26,7 +26,7 @@ except Exception:
 
 from extraction.llm_factory import create_chat_model
 from extraction.pipeline import ExtractionPipeline
-from extraction.config import LLM_MODEL, LLM_MODEL_ANCHOR
+from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR
 
 
 class LocalExtractionClient(QtCore.QObject):
@@ -44,8 +44,8 @@ class LocalExtractionClient(QtCore.QObject):
     def __init__(self, parent: Optional[QtCore.QObject] = None) -> None:
         super().__init__(parent)
 
-        main_model = create_chat_model()
-        anchor_model = create_chat_model(model_override=LLM_MODEL_ANCHOR)
+        main_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL)
+        anchor_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL_ANCHOR)
         self._pipeline = ExtractionPipeline(
             main_model=main_model,
             anchor_model=anchor_model,
@@ -77,7 +77,8 @@ class LocalExtractionClient(QtCore.QObject):
         Called synchronously from BPERCaptureWorker._upload_page().
         Runs extraction in the caller's thread (capture QThread).
         """
-        screen_id = f"job_{job_id}_p{page_no}_{page_type}"
+        friendly = page_type.replace('_', ' ').title() if page_type else f"pagina {page_no}"
+        screen_id = f"{friendly} — pag. {page_no}"
 
         try:
             # We use extract_from_image directly to avoid redundant normalize_image

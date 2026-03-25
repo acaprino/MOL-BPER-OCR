@@ -90,6 +90,16 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Throttling routing su frame duplicati: ultimo tentativo eseguito
         self._last_route_attempt_ts: Optional[float] = None
 
+        # Contatore errori di cattura consecutivi (auto-stop oltre soglia)
+        self._consecutive_capture_errors: int = 0
+        self._MAX_CONSECUTIVE_CAPTURE_ERRORS: int = 5
+
+        # mss context singleton (creato una volta nel QThread, non in __init__)
+        self._mss_ctx: Optional[Any] = None
+
+        # Traccia l'ultima guidance "apri pagina X" emessa per non spammare
+        self._last_guidance_page: Optional[str] = None
+
     # ------------------------------------------------------------------ init classifier
 
     def _init_router(self) -> None:
@@ -195,6 +205,45 @@ class BPERCaptureWorker(BaseCaptureWorker):
             self.router = None
             self.on_error(exc)
             self.tick.emit("[BPER] Router disabilitato.")
+
+    # ------------------------------------------------------------------ lifecycle
+
+    def stop(self) -> None:
+        """Override: ferma il loop e rilascia il contesto mss."""
+        super().stop()
+        if self._mss_ctx is not None:
+            try:
+                self._mss_ctx.close()
+            except Exception:
+                pass
+            self._mss_ctx = None
+
+    # ------------------------------------------------------------------ helpers UI
+    @staticmethod
+    def _friendly_name(page_key: str) -> str:
+        """Converte una chiave tecnica di pagina in un nome leggibile per l'operatore.
+        Es. '09.7_scheda_privati_base' → 'Scheda Privati Base'
+        """
+        import re as _re
+        s = page_key.strip()
+        # Rimuovi prefisso numerico tipo "09.7_" o "09.7 "
+        s = _re.sub(r'^[0-9][0-9A-Za-z\.]*[_\s]+', '', s)
+        # Sostituisci separatori con spazio
+        s = s.replace('_', ' ').replace('-', ' ')
+        # Riduci spazi multipli e title-case
+        s = _re.sub(r'\s+', ' ', s).strip().title()
+        return s or page_key
+
+    def _next_pending_page(self) -> Optional[str]:
+        """Ritorna il nome friendly della prossima pagina non ancora acquisita."""
+        for name in self.page_sequence:
+            if name not in self.captured_page_types:
+                return self._friendly_name(name)
+        # Se page_sequence è vuota, usa valid_page_keys meno captured
+        remaining = self._valid_page_keys - self.captured_page_types
+        if remaining:
+            return self._friendly_name(next(iter(sorted(remaining))))
+        return None
 
     # ------------------------------------------------------------------ page sequence
     def _load_page_sequence(self) -> None:
@@ -318,7 +367,14 @@ class BPERCaptureWorker(BaseCaptureWorker):
             self.page_order = {name: i + 1 for i, name in enumerate(sorted(list(self._valid_page_keys)))}
 
             if self._valid_page_keys:
-                self.tick.emit(f"[BPER] Router pronto per {len(self._valid_page_keys)} tipi di pagina.")
+                total = len(self._valid_page_keys)
+                self.tick.emit(f"─── Schermate da acquisire: {total} ───")
+                for i, name in enumerate(sorted(self._valid_page_keys), 1):
+                    self.tick.emit(f"  {i:2}. {self._friendly_name(name)}")
+                self.tick.emit("──────────────────────────────────────")
+                first = self._next_pending_page()
+                if first:
+                    self.tick.emit(f"→ Prima schermata da aprire nel sistema BPER: «{first}»")
             else:
                 self.tick.emit("[BPER] Attenzione: nessuna pagina rilevata negli asset; funzionamento libero.")
         except Exception as exc:  # noqa: BLE001
@@ -453,26 +509,38 @@ class BPERCaptureWorker(BaseCaptureWorker):
         elapsed = now - self._candidate_since
         if elapsed < self.STABILITY_SECONDS:
             if not self._stability_log_sent:
+                friendly = self._friendly_name(page_type)
                 self.tick.emit(
-                    f"[BPER] in attesa stabilità {page_type} "
-                    f"({elapsed:.1f}s / {self.STABILITY_SECONDS:.1f}s, score={score:.3f})"
+                    f"⏳ Rilevata «{friendly}» — mantieni aperta la schermata "
+                    f"({self.STABILITY_SECONDS:.0f}s richiesti per la stabilità)"
                 )
                 self._stability_log_sent = True
             return
 
-        # Scatto & upload (includi metadati di routing per l'API)
+        # Scatto & upload
+        friendly = self._friendly_name(page_type)
+        n_captured = len(self.captured_page_types) + 1
+        n_total = len(self._valid_page_keys) or "?"
         self._upload_page(job_id, img, page_type, score, fields)
-        # Dataset: valuta se salvare
         try:
             self._maybe_upload_dataset(job_id, img, page_type, score, fields)
         except Exception as exc:  # noqa: BLE001
             self.on_error(exc)
         self.captured_page_types.add(page_type)
-
         self._reset_stability()
 
-        # Nessuno stop automatico per permettere catture multiple se necessario
-        # (L'utente fermerà la cattura manualmente)
+        # Calcola prossima pagina pendente
+        next_page = self._next_pending_page()
+        if next_page:
+            self.tick.emit(
+                f"✅ «{friendly}» acquisita [{n_captured}/{n_total}] "
+                f"→ apri nel sistema BPER: «{next_page}»"
+            )
+            self._last_guidance_page = next_page
+        else:
+            self.tick.emit(
+                f"✅ «{friendly}» acquisita [{n_captured}/{n_total}] — tutte le schermate completate!"
+            )
 
     # ------------------------------------------------------------------ screenshot & dedup
 
@@ -482,38 +550,49 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
         Usa config.monitor_index (1..N). Se l'indice non esiste, ripiega su monitor 1.
         """
-        try:
-            import mss  # type: ignore
-        except Exception as exc:  # noqa: BLE001
-            self.on_error(exc)
-            return None
+        # Inizializza il contesto mss una volta sola (non ad ogni frame)
+        if self._mss_ctx is None:
+            try:
+                import mss as _mss  # type: ignore
+                self._mss_ctx = _mss.mss()
+            except Exception as exc:  # noqa: BLE001
+                self.on_error(RuntimeError(f"mss non disponibile: {exc}"))
+                self._running = False
+                return None
 
         try:
-            with mss.mss() as sct:
-                monitors = sct.monitors  # [0]=all, [1..]=per-monitor
-                idx = int(self.config.monitor_index or 1)
-                if idx < 1 or idx >= len(monitors):
-                    idx = 1
-                mon = monitors[idx]
-                shot = sct.grab(mon)
-                # Convert BGRA to RGB
-                img = Image.frombytes('RGB', shot.size, shot.rgb)
-                # Preprocessing per OCR (scaling + unsharp + autocontrast)
-                try:
-                    img = preprocess_for_ocr(
-                        img,
-                        scale=self.config.image_scale,
-                        unsharp_amount=self.config.unsharp_amount,
-                        unsharp_radius=self.config.unsharp_radius,
-                        unsharp_threshold=self.config.unsharp_threshold,
-                        contrast_stretch=True,
-                    )
-                except Exception:
-                    # in caso di errori nel preprocessing, usa l'immagine originale
-                    pass
-                return img
+            sct = self._mss_ctx
+            monitors = sct.monitors  # [0]=all, [1..]=per-monitor
+            idx = int(self.config.monitor_index or 1)
+            if idx < 1 or idx >= len(monitors):
+                idx = 1
+            mon = monitors[idx]
+            shot = sct.grab(mon)
+            img = Image.frombytes('RGB', shot.size, shot.rgb)
+            try:
+                img = preprocess_for_ocr(
+                    img,
+                    scale=self.config.image_scale,
+                    unsharp_amount=self.config.unsharp_amount,
+                    unsharp_radius=self.config.unsharp_radius,
+                    unsharp_threshold=self.config.unsharp_threshold,
+                    contrast_stretch=True,
+                )
+            except Exception:
+                pass
+            self._consecutive_capture_errors = 0
+            return img
         except Exception as exc:  # noqa: BLE001
-            self.on_error(exc)
+            self._consecutive_capture_errors += 1
+            self.tick.emit(
+                f"[Cattura] Errore screenshot ({self._consecutive_capture_errors}/{self._MAX_CONSECUTIVE_CAPTURE_ERRORS}): {exc}"
+            )
+            if self._consecutive_capture_errors >= self._MAX_CONSECUTIVE_CAPTURE_ERRORS:
+                self.on_error(RuntimeError(
+                    f"Cattura fallita {self._consecutive_capture_errors} volte consecutive. "
+                    f"Ultimo errore: {exc}"
+                ))
+                self._running = False
             return None
 
     def _is_duplicate_frame(self, img: Image.Image) -> bool:
@@ -561,44 +640,35 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
             if res.page_type:
                 self.tick.emit(
-                    f"[BPER] match: {res.page_type} (score={res.confidence:.3f}, fields={len((res.fields or {}))})"
+                    f"[Router] Riconosciuta: «{self._friendly_name(res.page_type)}» (score={res.confidence:.3f})"
                 )
                 return res.page_type, float(res.confidence), dict(res.fields or {})
             else:
-                # Nessun match: prova a guidare l'operatore con la pagina attesa e gli hints
+                # Nessun match: guida l'operatore verso la schermata attesa
                 try:
-                    expected = None
-                    for name in self.page_sequence:
-                        if name not in self.captured_page_types:
-                            expected = name
-                            break
-                    guidance = "[BPER] nessun match dal router configurato."
-                    if expected:
-                        guidance += f" Atteso: '{expected}'."
-                        if isinstance(self.router, LLMPageRouter):
-                            hint = self.router.get_page_hints(expected) or ""
-                            if hint:
-                                guidance += f" Suggerimenti: {hint}"
-                            # prova ad aggiungere eventuale reason dall'ultimo debug
-                            dbg = self.router.get_last_debug()
-                            reason = (dbg.get("parsed", {}) or {}).get("reason")
-                            if reason:
-                                guidance += f" — Motivo (LLM): {reason}"
-                    self.tick.emit(guidance)
+                    next_page = self._next_pending_page()
+                    if next_page and next_page != self._last_guidance_page:
+                        self.tick.emit(
+                            f"🔍 Schermata non riconosciuta — "
+                            f"apri nel sistema BPER: «{next_page}»"
+                        )
+                        self._last_guidance_page = next_page
+                    elif not next_page:
+                        self.tick.emit("🔍 Schermata non riconosciuta.")
                 except Exception:
-                    self.tick.emit("[BPER] nessun match dal router configurato")
+                    self.tick.emit("🔍 Schermata non riconosciuta.")
                 # Fallback a ML se disponibile (modalità hybrid)
                 if self.classifier is not None:
                     label, score = self.classifier.classify(img)
                     if label is not None:
-                        self.tick.emit(f"[BPER-ML] fallback match: {label} (score={score:.3f})")
+                        self.tick.emit(f"[ML] Riconosciuta via fallback: «{self._friendly_name(label)}» (score={score:.3f})")
                         return label, float(score or 0.0), {}
                 return None, 0.0, {}
 
         # Fallback: solo ML classifier
         label, score = self.classifier.classify(img) if self.classifier else (None, 0.0)
         if label is not None:
-            self.tick.emit(f"[BPER-ML] match: {label} (score={score:.3f})")
+            self.tick.emit(f"[ML] Riconosciuta: «{self._friendly_name(label)}» (score={score:.3f})")
         return label, float(score or 0.0), {}
 
     # ------------------------------------------------------------------ upload

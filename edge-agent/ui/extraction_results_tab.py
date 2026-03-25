@@ -30,6 +30,24 @@ class ExtractionResultsTab(QWidget):
     automaticamente ad ogni frame processato.
     """
 
+    @staticmethod
+    def _friendly_name(page_key: str) -> str:
+        import re as _re
+        s = page_key.strip()
+        s = _re.sub(r'^[0-9][0-9A-Za-z\.]*[_\s]+', '', s)
+        s = s.replace('_', ' ').replace('-', ' ')
+        s = _re.sub(r'\s+', ' ', s).strip().title()
+        return s or page_key
+
+    @staticmethod
+    def _status_icon(status: str) -> str:
+        mapping = {
+            "OK": "✅",
+            "ANCHOR_UNCERTAIN": "⚠️",
+            "ERROR": "❌",
+        }
+        return mapping.get(status.upper(), "•") if status else "•"
+
     def __init__(
         self,
         extraction_client: Any,
@@ -78,11 +96,11 @@ class ExtractionResultsTab(QWidget):
 
         # Left: captured pages
         self.pages_tree = QTreeWidget(self)
-        self.pages_tree.setHeaderLabels(["Screen", "Tipo pagina", "Status", "NDG"])
-        self.pages_tree.setColumnWidth(0, 150)
-        self.pages_tree.setColumnWidth(1, 130)
-        self.pages_tree.setColumnWidth(2, 80)
-        self.pages_tree.setColumnWidth(3, 120)
+        self.pages_tree.setHeaderLabels(["Schermata", "NDG — Denominazione", "Stato", "Costo"])
+        self.pages_tree.setColumnWidth(0, 180)
+        self.pages_tree.setColumnWidth(1, 200)
+        self.pages_tree.setColumnWidth(2, 60)
+        self.pages_tree.setColumnWidth(3, 80)
         self.pages_tree.itemActivated.connect(self._on_page_activated)
         splitter.addWidget(self.pages_tree)
 
@@ -142,11 +160,18 @@ class ExtractionResultsTab(QWidget):
         self._results = self._client.get_results(job_id)
         self.pages_tree.clear()
         for r in self._results:
-            screen_id = str(r.get("screen_id") or "?")
-            page_type = str(r.get("_page_type") or "")
+            page_type = str(r.get("_page_type") or r.get("screen_id") or "?")
+            friendly = self._friendly_name(page_type)
+            fields = r.get("fields") or {}
+            ndg = str((fields.get("ndg") or {}).get("value") or "")
+            denom = str((fields.get("denominazione") or {}).get("value") or "")
+            ndg_denom = " — ".join(filter(None, [ndg, denom])) or "–"
             status = str(r.get("_status") or "")
-            ndg = str(((r.get("fields") or {}).get("ndg") or {}).get("value") or "")
-            item = QTreeWidgetItem([screen_id, page_type, status, ndg])
+            icon = self._status_icon(status)
+            meta = r.get("_meta_agg") or {}
+            cost = meta.get("estimated_cost_usd", 0.0)
+            cost_str = f"${cost:.4f}" if cost else "–"
+            item = QTreeWidgetItem([friendly, ndg_denom, icon, cost_str])
             item.setData(0, QtCore.Qt.ItemDataRole.UserRole, r)
             self.pages_tree.addTopLevelItem(item)
 
@@ -156,23 +181,32 @@ class ExtractionResultsTab(QWidget):
             self._show_result(result)
 
     def _show_result(self, result: dict) -> None:
-        # Populate fields table
+        # Populate fields table — skip nullish values, show only filled fields first
         self.fields_tree.clear()
-        for key, field_data in (result.get("fields") or {}).items():
-            if not isinstance(field_data, dict):
-                continue
+        fields = result.get("fields") or {}
+        filled = [(k, v) for k, v in fields.items() if isinstance(v, dict) and v.get("value") not in (None, "")]
+        empty = [(k, v) for k, v in fields.items() if isinstance(v, dict) and v.get("value") in (None, "")]
+        for key, field_data in filled + empty:
             value = str(field_data.get("value") or "")
             conf = field_data.get("confidence")
             conf_str = f"{conf:.2f}" if isinstance(conf, (int, float)) else ""
-            self.fields_tree.addTopLevelItem(QTreeWidgetItem([key, value, conf_str]))
+            label = self._friendly_name(key)
+            item = QTreeWidgetItem([label, value, conf_str])
+            if not value:
+                from PyQt6.QtGui import QColor
+                item.setForeground(1, QColor(180, 180, 180))
+            self.fields_tree.addTopLevelItem(item)
 
         # Show meta summary + raw JSON
         meta = result.get("_meta_agg") or {}
         cost = meta.get("estimated_cost_usd", 0.0)
         tokens = meta.get("total_tokens", 0)
         latency = meta.get("latency_ms", 0)
+        page_type = self._friendly_name(str(result.get("_page_type") or ""))
+        status = result.get("_status", "")
         self.raw_text.setPlainText(
-            f"Cost: ${cost:.6f}  |  Tokens: {tokens}  |  Latency: {latency}ms\n\n"
+            f"Schermata: {page_type}  |  Stato: {status}\n"
+            f"Costo: ${cost:.6f}  |  Token: {tokens}  |  Latenza: {latency}ms\n\n"
             + json.dumps(result, indent=2, ensure_ascii=False, default=str)
         )
 

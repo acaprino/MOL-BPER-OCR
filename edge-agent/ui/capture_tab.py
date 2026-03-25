@@ -59,6 +59,7 @@ class CaptureTab(QWidget):
         self.job_id: Optional[str] = None
         self._overlay: Optional[CaptureBorderOverlay] = None
         self._debug_tab: Optional[QtWidgets.QWidget] = debug_tab
+        self._n_results: int = 0
 
         self._init_ui()
 
@@ -153,19 +154,12 @@ class CaptureTab(QWidget):
         self.log_text.ensureCursorVisible()
 
     def _create_job_id(self) -> Optional[str]:
-        """
-        Crea un nuovo job lato backend tramite /jobs/start.
-
-        Ritorna:
-            job_id (str) oppure None in caso di errore.
-        """
-        self._log("Richiesta creazione nuovo job tramite API...")
+        """Avvia un nuovo job locale e ritorna il job_id."""
         job_id = self.api_client.start_job()
         if not job_id:
-            self._log("[ERROR] Impossibile creare un nuovo job via /jobs/start.")
+            self._log("[ERROR] Impossibile creare un nuovo job.")
             return None
-
-        self._log(f"Nuovo job creato: {job_id}")
+        self._log(f"Nuovo job avviato: {job_id}")
         return job_id
 
     def _make_job_id_getter(self) -> Callable[[], Optional[str]]:
@@ -190,7 +184,13 @@ class CaptureTab(QWidget):
             return
 
         self.job_id = job_id
-        self.job_label.setText(f"Job corrente: {self.job_id}")
+        self._n_results = 0
+        self.job_label.setText(f"Job: {self.job_id[:8]}…  |  Acquisite: 0")
+        # Connetti result_ready per aggiornare il contatore
+        try:
+            self.api_client.result_ready.connect(self._on_result_ready_count)
+        except Exception:
+            pass
 
         # Aggiorna la config dai controlli UI
         self.config.update_from_ui(
@@ -285,6 +285,10 @@ class CaptureTab(QWidget):
             self._log(f"[ERROR] Errore in stop_capture: {exc}")
         finally:
             self.worker = None
+            try:
+                self.api_client.result_ready.disconnect(self._on_result_ready_count)
+            except Exception:
+                pass
             self._log("Cattura arrestata.")
             self.start_button.setEnabled(True)
             self.stop_button.setEnabled(False)
@@ -303,11 +307,6 @@ class CaptureTab(QWidget):
 
     def _on_worker_error(self, exc: Exception) -> None:
         self._log(f"[WORKER ERROR] {type(exc).__name__}: {exc}")
-        QMessageBox.critical(
-            self,
-            "Errore worker",
-            f"Si è verificato un errore nel worker di cattura:\n{exc}",
-        )
 
     # ------------------------------------------------------------------ Azioni backend
 
@@ -350,6 +349,11 @@ class CaptureTab(QWidget):
                 "Errore scrittura",
                 f"Errore durante la scrittura del file:\n{e}",
             )
+
+    def _on_result_ready_count(self, job_id: str, _result: dict) -> None:
+        if job_id == self.job_id:
+            self._n_results += 1
+            self.job_label.setText(f"Job: {self.job_id[:8]}…  |  Acquisite: {self._n_results}")
 
     # ------------------------------------------------------------------ API pubblica
 
