@@ -28,6 +28,9 @@ from image_ops import preprocess_for_ocr, to_png8, to_webp_lossless
 # Manteniamo una costante di riserva vuota.
 PAGE_ORDER_FALLBACK: Dict[str, int] = {}
 
+# Pagine catch-all che il router può restituire ma che non devono essere acquisite
+_SKIP_PAGE_TYPES: frozenset = frozenset({"99 - Altro / Non riconosciuto"})
+
 
 class BPERCaptureWorker(BaseCaptureWorker):
     """
@@ -363,8 +366,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
             # Costruisci insieme chiavi valide: asset OR nomi da prompts.json
             self._valid_page_keys = set(self._available_page_keys) | set(prompts_page_names)
 
-            self.page_sequence = []
-            self.page_order = {name: i + 1 for i, name in enumerate(sorted(list(self._valid_page_keys)))}
+            self.page_sequence = pages
+            self.page_order = {name: i + 1 for i, name in enumerate(self.page_sequence)}
 
             if self._valid_page_keys:
                 total = len(self._valid_page_keys)
@@ -485,8 +488,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._last_route_attempt_ts = time.time()
         page_type, score, fields = self._detect_page(img)
 
-        if page_type is None:
-            # Nessuna pagina riconosciuta -> reset stabilità
+        if page_type is None or page_type in _SKIP_PAGE_TYPES:
+            # Nessuna pagina riconosciuta (o pagina catch-all) -> reset stabilità
             self._reset_stability()
             return
 

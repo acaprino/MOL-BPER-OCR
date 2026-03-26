@@ -222,6 +222,12 @@ class LLMPageRouter(PageRouter):
                 page_type = data.get("page_type") if isinstance(data, dict) else None
                 confidence = float(data.get("confidence", 0.0)) if isinstance(data, dict) else 0.0
                 reason = data.get("reason") if isinstance(data, dict) else None
+                # Validate page_type against known page names; reject hallucinated values
+                if page_type is not None:
+                    known_pages = [p.get("name") for p in self._spec.get("pages", []) if p.get("name")]
+                    if page_type not in known_pages:
+                        low_map = {n.lower(): n for n in known_pages}
+                        page_type = low_map.get(str(page_type).lower())
                 # salva debug
                 self._last_debug = {
                     "provider": self.provider,
