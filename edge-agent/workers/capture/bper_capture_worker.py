@@ -29,7 +29,7 @@ from image_ops import preprocess_for_ocr, to_png8, to_webp_lossless
 PAGE_ORDER_FALLBACK: Dict[str, int] = {}
 
 # Pagine catch-all che il router può restituire ma che non devono essere acquisite
-_SKIP_PAGE_TYPES: frozenset = frozenset({"99 - Altro / Non riconosciuto"})
+_SKIP_PAGE_TYPES: frozenset = frozenset({"Altro / Non riconosciuto"})
 
 
 class BPERCaptureWorker(BaseCaptureWorker):

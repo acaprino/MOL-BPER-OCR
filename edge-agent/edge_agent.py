@@ -34,6 +34,15 @@ def main() -> int:
     app.setApplicationName("Edge Agent")
     app.setOrganizationName("Tri-tech solutions")
 
+    try:
+        from qt_material import apply_stylesheet
+        from PyQt6.QtCore import Qt
+        is_dark = app.styleHints().colorScheme() == Qt.ColorScheme.Dark
+        theme = "dark_cyan.xml" if is_dark else "dark_cyan.xml"
+        apply_stylesheet(app, theme=theme)
+    except ImportError:
+        pass
+
     # Carica configurazione
     config_path = Path(__file__).parent / "config.ini"
     config = AgentConfig(config_path)

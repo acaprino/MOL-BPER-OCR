@@ -6,8 +6,9 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/mnt" />
       <excludeFolder url="file://$MODULE_DIR$/edge-agent" />
+      <excludeFolder url="file://$MODULE_DIR$/venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.14 (poc-data-extraction)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13 (poc-data-extraction)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

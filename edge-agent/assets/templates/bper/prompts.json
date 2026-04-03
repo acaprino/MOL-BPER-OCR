@@ -1,93 +1,28 @@
 {
   "pages": [
     {
-      "name": "0 - Lista Pratiche BStore",
-      "hints": "Pagina lista pratiche del sistema BPER. Barra di navigazione superiore con tab tipo 'Nuova Pratica', 'BStore Pratiche' o simili. Sezione 'Filtri Attivi' con etichette filtro attive. Tabella principale intitolata 'Pratiche in attesa lavorazione in BStore' con colonne: ADD, NDG, Numero, Denominazione, Tipo, Stato, Fase, Creazione, Evidenze. Pulsante blu 'ESPORTA IN EXCEL' in alto a destra. Nessun form di dettaglio singola pratica visibile. Assenza di sezioni 'SCHEDA PUNTUALE', 'ENTRATE CONTINUATIVE', 'PEF', 'Immobile N°'.",
+      "name": "Risultato ricerca",
+      "hints": "Pagina del sistema BPER che mostra l'elenco delle pratiche o il dettaglio iniziale di una pratica. Può presentarsi in due forme: (1) Vista lista pratiche: header BPER con tab di navigazione 'BStore Pratiche' attivo, sezione 'Filtri Attivi', tabella con colonne ADD/NDG/Numero/Denominazione/Tipo/Stato/Fase/Creazione/Evidenze; le righe possono essere non selezionate, una selezionata/evidenziata, oppure mostrare colonne con date e dati documentali; pulsante 'ESPORTA IN EXCEL' blu. (2) Vista intestazione dettaglio pratica: header BPER con logo, sidebar di navigazione blu a sinistra, banner colorato con dati identificativi della pratica (NDG, tipo, stato), tabella soggetti compatta nella parte superiore.",
       "fields": []
     },
     {
-      "name": "1 - Scheda Privati",
-      "hints": "Pagina dei risultati di ricerca anagrafica. Layout molto scarno: logo BPER in alto a sinistra, barra di ricerca centrale, menu di navigazione a sinistra. Una sola riga di risultato visibile con il nome del soggetto evidenziato e un pulsante arancione 'Continua' o 'Scheda privata'. Nessuna sezione o campo di form visibile.",
+      "name": "Elenco Soggetti",
+      "hints": "Pagina di dettaglio pratica BPER con la sezione soggetti espansa e completamente visibile. Sidebar blu di navigazione a sinistra. Banner pratica in alto. Tabella soggetti prominente con più righe compilate: ruolo, denominazione, NDG, quote. Possibile indicatore rosso o avviso visibile su una riga o campo della tabella soggetti.",
       "fields": []
     },
     {
-      "name": "2 - Scheda Privati (lavoratore autonomo)",
-      "hints": "SCHEDA PUNTUALE di un privato lavoratore autonomo. Intestazione: nome del soggetto + etichetta 'SCHEDA PUNTUALE'. Due riquadri di metadati: 'Ultima modifica' e 'Ultima validazione' con date. Sezione principale 'ENTRATE CONTINUATIVE' con sotto-sezione 'LAVORO AUTONOMO' visibile. Campi presenti: tipo contratto, retribuzione annua netta, numero mensilità, datore di lavoro. Nessun sotto-titolo 'DIPENDENTE'.",
+      "name": "Gestione Fidi e Garanzie",
+      "hints": "Pagina di dettaglio pratica BPER con sezione relativa a garanzie, cespiti, immobili oppure dati economici e finanziari. Sidebar blu a sinistra. Banner pratica in alto. Tabella soggetti visibile nella parte superiore. Nella parte centrale o inferiore: campi relativi a garanzie/immobili/cespiti oppure campi numerici/economici quali importi, rate, scadenze. Nessun indicatore di errore rosso prominente sulla tabella soggetti.",
       "fields": []
     },
     {
-      "name": "3 - Scheda Privati (lavoratore dipendente)",
-      "hints": "SCHEDA PUNTUALE di un privato lavoratore dipendente. Stessa struttura di intestazione con 'SCHEDA PUNTUALE' e riquadri Ultima modifica/Ultima validazione. Sotto-titolo 'DIPENDENTE PRIVATO GENERO' visibile. Campo 'TIPO CONTRATTO: TEMPO INDETERMINATO' presente. Campi: retribuzione annua netta, numero mensilità, datore di lavoro, professione secondaria.",
+      "name": "Note da Richiesta",
+      "hints": "Pagina di dettaglio pratica BPER con sezione documentale, checklist allegati oppure area note/testo libero prominente. Sidebar blu a sinistra. Banner pratica in alto. Tabella soggetti nella parte superiore. Nella parte inferiore o centrale: elenco documenti con checklist e allegati, oppure grande area di testo con note narrative, motivazioni o commenti alla pratica.",
       "fields": []
     },
     {
-      "name": "4 - Scheda Privati - (entrate e uscite assenti)",
-      "hints": "Parte inferiore della SCHEDA PUNTUALE privato. Sezioni visibili in ordine: DATORE DI LAVORO (con campo ANAGRAFICA), RATING UFFICIALE, RECEPISCE CANALIZZAZIONE PRESSO LA BANCA, TITOLARE DI CARTE DI CREDITO/SALVO. Sotto: sezione 'ALTRE ENTRATE CONTINUATIVE' e sezione 'USCITE CONTINUATIVE' entrambe VUOTE (nessuna voce elencata). Sezione SITUAZIONE FAMILIARE in basso.",
-      "fields": []
-    },
-    {
-      "name": "5 - Scheda Privati - (uscite presenti)",
-      "hints": "Parte inferiore della SCHEDA PUNTUALE privato con uscite presenti. Sezione 'ALTRE ENTRATE CONTINUATIVE' in cima. Sezione 'USCITE CONTINUATIVE' con almeno una riga 'USCITA CONTINUATIVA 1' compilata (campi importo, scadenza, durata visibili). Sezione SITUAZIONE FAMILIARE e NOTE CONCLUSIVE sotto.",
-      "fields": []
-    },
-    {
-      "name": "6 - Scheda Privati",
-      "hints": "Parte inferiore della SCHEDA PUNTUALE privato con note conclusive. Sezione 'NOTE CONCLUSIVE' con una grande area di testo contenente note narrative. Sopra: sezioni USCITE CONTINUATIVE e SITUAZIONE FAMILIARE visibili. La sezione NOTE CONCLUSIVE con testo lungo è l'elemento distintivo rispetto alle altre varianti di Scheda Privati.",
-      "fields": []
-    },
-    {
-      "name": "7 - Scheda Immobile",
-      "hints": "Pagina di ricerca e risultati immobile. Mostra 'Stai cercando su: BPER BANCA' con menù a tendina. Checkboxes 'CERCA SOGGETTI' e 'CERCA IMMOBILI'. Una riga di risultato con nome proprietà e indirizzo fisico. Pulsante arancione 'Continua'. Nessun form di dettaglio immobile visibile.",
-      "fields": []
-    },
-    {
-      "name": "8 - Scheda Immobile",
-      "hints": "SCHEDA PUNTUALE di un immobile. Intestazione prominente: 'Immobile N° XXXXXXX' in colore teal/verde. Due riquadri: 'Ultima modifica' e 'Ultima validazione'. Prima sezione: 'INDICAZIONI IMMOBILE' con sotto-sezione 'CARATTERISTICHE IMMOBILE' (campi: superficie mq, nr imm, ubicazione). Nessuna sezione VALUTAZIONE visibile in primo piano.",
-      "fields": []
-    },
-    {
-      "name": "9 - Scheda Immobile",
-      "hints": "Sezione di valutazione immobile. Intestazione sezione: 'VALUTAZIONE IMMOBILE'. Pulsante 'Scheda Perito ABF' in alto a destra. Campi visibili: tipologia, destinazione commerciale, patrimoni, data, scadenza accertamento valore immobile. Nessuna intestazione 'Immobile N°' in evidenza.",
-      "fields": []
-    },
-    {
-      "name": "10 - Scheda Immobile",
-      "hints": "Sezione dati costruzione e catasto geografico dell'immobile. Campi visibili in cima: DATA FINE LAVORI, INIZIO COSTRUZIONE/RISTRUTTURAZIONE, VALORE FINE LAVORI. Sezione 'COORDINATE CATASTO E GEOGRAFICHE' con sotto-sezioni: COORDINATE GEOGRAFICHE (codice comune, latitudine, longitudine) e COORDINATE CATASTALI con righe di coordinate.",
-      "fields": []
-    },
-    {
-      "name": "11 - Scheda Immobile",
-      "hints": "Sezione particella catastale e proprietà dell'immobile. Riga in cima con valori 'FOGLIO / PART. / SUB. / CAT.'. Sezione 'PROPRIETA' E ALTRI DIRITTI REALI' con tabella contenente colonne NDG, ANAGRAFICA, TIPO, QUOTA %, EXT. Sezione 'RAGING FISCO' / 'REDDITI NETTI IN RAGGIO ACCESSO' in fondo con pulsante 'Non disponibile'.",
-      "fields": []
-    },
-    {
-      "name": "12 - PEF",
-      "hints": "Formulario PEF (Piano Economico Finanziario). Barra di navigazione superiore con tab: 'Fido', 'Dettaglio Fido' (ATTIVO), 'Garanzie', 'Comunicant'. Sub-tab 'Dettagli' ATTIVO (non Condizioni né Piano Finanziario). Campi del form: Numero Finanziamento, Sottogruppo, Descrizione Oggetto bene, Rapporto LTV, Tipo ammortamento, Periodicità, Importo rata ammortamento.",
-      "fields": []
-    },
-    {
-      "name": "13 - PEF",
-      "hints": "Formulario PEF. Tab superiore 'Dettaglio Fido' attivo. Sub-tab 'Condizioni' ATTIVO (non Dettagli). Due sezioni visibili: 'PREAMMORTAMENTO' (campi: Tasso, Spread, Indice, Tasso minimo) e 'AMMORTAMENTO' (stessi campi + Tasso di ingresso, Spread D.P., Fine tasso di ingresso, Opzione, Spread II, Contributo). 'Simulazione Pricing' in fondo.",
-      "fields": []
-    },
-    {
-      "name": "14 - PEF",
-      "hints": "Formulario PEF. Tab 'Condizioni' attivo, pagina scorsa verso il basso. Sezione 'ALTRE CONDIZIONI' con campi: Penale estinzione/decurtazione anticipata calcolata, Penale estinzione/decurtazione anticipata prevista, Spese istruttorie (€), Spese perizia da tariffare (€), Note alle condizioni. Area testo 'Condizioni particolari per cui si richiede l'Approvazione'. Pulsanti '← Indietro' e 'Procedi →' visibili in fondo.",
-      "fields": []
-    },
-    {
-      "name": "15 - PEF",
-      "hints": "Formulario PEF con tab 'Garanzie' ATTIVO nella barra di navigazione superiore (non Dettaglio Fido). Sezione 'Dati Garanzie' con campi: N° Gar, Tipo (IPOTECA), Descrizione (IPOTECA DI PRIMO GRADO), Specifica, Secondo Stato, Importo (€). I sub-tab Dettagli/Condizioni/Piano Finanziario NON sono visibili.",
-      "fields": []
-    },
-    {
-      "name": "16 - PEF",
-      "hints": "Pagina Centrale Rischi / rapporti altre banche. Due riquadri 'CR Assente': 'Dati del Contratto Rischio' e 'Banche del gruppo BPER'. Tabella 'Altre Banche' con colonne: Autoliquidanti, ScadET, ScadMT, Revoca, Sofferenze, Pron.Cont., Firma C.I.S, Firma PMI, Totale Banca. Righe: ALTRA SOC FINANZIARIA, FINANZIARIA, BANCA. Riga 'Differenza Accertato CR' in fondo. URL contiene 'rapporti_altre_banche'.",
-      "fields": []
-    },
-    {
-      "name": "99 - Altro / Non riconosciuto",
-      "hints": "Qualsiasi pagina che NON corrisponde chiaramente a nessuna delle definizioni precedenti. Pagine di login, home, caricamento, messaggi di errore, popup di conferma, o qualsiasi schermata non appartenente alle categorie Scheda Privati, Scheda Immobile o PEF. Usa questa categoria come fallback quando la corrispondenza con le altre pagine è ambigua o incerta.",
+      "name": "Altro / Non riconosciuto",
+      "hints": "Qualsiasi pagina che NON corrisponde chiaramente a nessuna delle definizioni precedenti. Pagine di login, home, caricamento, messaggi di errore, popup di conferma, o qualsiasi schermata non appartenente alle categorie identificate. Usa questa categoria come fallback quando la corrispondenza con le altre pagine è ambigua o incerta.",
       "fields": []
     }
   ]

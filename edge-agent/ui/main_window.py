@@ -9,6 +9,7 @@ from config import AgentConfig
 from local_extraction_client import LocalExtractionClient
 
 from .capture_tab import CaptureTab
+from .data_table_tab import DataTableTab
 from .debug_tab import DebugTab
 from .extraction_results_tab import ExtractionResultsTab
 
@@ -34,7 +35,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.config = config
         self.extraction_client = LocalExtractionClient(parent=self)
 
-        self.setWindowTitle("Edge Agent – Cattura & IE")
+        self.setWindowTitle("BPER Edge Agent")
         self._init_ui()
 
     # ------------------------------------------------------------------ UI setup
@@ -62,8 +63,15 @@ class MainWindow(QtWidgets.QMainWindow):
             parent=self,
         )
 
+        # Tab dati estratti (spreadsheet)
+        self.data_tab = DataTableTab(
+            extraction_client=self.extraction_client,
+            parent=self,
+        )
+
         self.tabs.addTab(self.capture_tab, "Cattura")
         self.tabs.addTab(self.results_tab, "Risultati")
+        self.tabs.addTab(self.data_tab, "Dati Estratti")
         if self.debug_tab is not None:
             self.tabs.addTab(self.debug_tab, "Debug LLM")
 
@@ -72,12 +80,14 @@ class MainWindow(QtWidgets.QMainWindow):
     # ------------------------------------------------------------------ Eventi
 
     def _on_tab_changed(self, index: int) -> None:
-        if index == 1:
-            job_id = None
-            if hasattr(self.capture_tab, "get_current_job_id"):
-                job_id = self.capture_tab.get_current_job_id()
-            if job_id and hasattr(self.results_tab, "set_job_id"):
+        job_id = None
+        if hasattr(self.capture_tab, "get_current_job_id"):
+            job_id = self.capture_tab.get_current_job_id()
+        if job_id:
+            if index == 1 and hasattr(self.results_tab, "set_job_id"):
                 self.results_tab.set_job_id(job_id)
+            elif index == 2 and hasattr(self.data_tab, "set_job_id"):
+                self.data_tab.set_job_id(job_id)
 
     # ------------------------------------------------------------------ Chiusura finestra
 

@@ -30,6 +30,9 @@ from workers.capture import (
 
 from .overlay import CaptureBorderOverlay
 
+# Pagine catch-all da escludere dal combo "Acquisisci ora"
+_SKIP_PAGE_TYPES_UI: frozenset = frozenset({"Altro / Non riconosciuto"})
+
 
 class CaptureTab(QWidget):
     """
@@ -69,7 +72,7 @@ class CaptureTab(QWidget):
         layout = QVBoxLayout(self)
 
         # --- Box configurazione ---
-        config_group = QGroupBox("Configurazione cattura", self)
+        config_group = QGroupBox("Impostazioni", self)
         config_layout = QGridLayout(config_group)
 
         # Modalità (BPER / default)
@@ -80,13 +83,13 @@ class CaptureTab(QWidget):
         self.mode_combo.setCurrentIndex(0)
 
         # FPS
-        fps_label = QLabel("FPS:", config_group)
+        fps_label = QLabel("Velocità acquisizione (fps):", config_group)
         self.fps_spin = QSpinBox(config_group)
         self.fps_spin.setRange(1, 10)
         self.fps_spin.setValue(self.config.fps)
 
         # Filtro finestra (titolo contiene)
-        win_label = QLabel("Filtro finestra (titolo contiene):", config_group)
+        win_label = QLabel("Titolo finestra da monitorare:", config_group)
         self.window_filter_edit = QLineEdit(config_group)
         self.window_filter_edit.setText(self.config.window_title_contains)
 
@@ -105,19 +108,19 @@ class CaptureTab(QWidget):
         # Box job (sostituiti pulsanti inutili per locale)
         controls_layout = QHBoxLayout()
 
-        self.start_button = QPushButton("Start", self)
-        self.stop_button = QPushButton("Stop", self)
+        self.start_button = QPushButton("▶  Avvia", self)
+        self.stop_button = QPushButton("■  Ferma", self)
         # self.requeue_button = QPushButton("Requeue job", self) # Inutile in locale
-        self.export_button = QPushButton("Export CSV", self)
-        
+        self.export_button = QPushButton("⬇️  Esporta CSV", self)
+
         # Forza scatto: selezione pagina + bottone
         self.force_page_combo = QComboBox(self)
         self.force_page_combo.setEditable(False)
         self.force_page_combo.setEnabled(False)
-        self.force_capture_button = QPushButton("Forza scatto", self)
+        self.force_capture_button = QPushButton("📷  Acquisisci ora", self)
         self.force_capture_button.setEnabled(False)
 
-        self.job_label = QLabel("Job corrente: –", self)
+        self.job_label = QLabel("Sessione: –", self)
 
         controls_layout.addWidget(self.start_button)
         controls_layout.addWidget(self.stop_button)
@@ -131,6 +134,7 @@ class CaptureTab(QWidget):
         layout.addLayout(controls_layout)
 
         # --- Box log ---
+        layout.addWidget(QLabel("Registro attività:", self))
         self.log_text = QTextEdit(self)
         self.log_text.setReadOnly(True)
         self.log_text.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
@@ -147,6 +151,23 @@ class CaptureTab(QWidget):
         self.stop_button.setEnabled(False)
 
     # ------------------------------------------------------------------ Helpers
+
+    @staticmethod
+    def _load_bper_page_names() -> list:
+        """Legge i nomi delle pagine BPER direttamente da prompts.json."""
+        try:
+            import json
+            from pathlib import Path
+            root = Path(__file__).resolve().parents[1]
+            prompts_path = root / "assets" / "templates" / "bper" / "prompts.json"
+            spec = json.loads(prompts_path.read_text(encoding="utf-8"))
+            return [
+                p["name"]
+                for p in spec.get("pages", [])
+                if isinstance(p.get("name"), str) and p["name"] not in _SKIP_PAGE_TYPES_UI
+            ]
+        except Exception:
+            return []
 
     def _log(self, message: str) -> None:
         ts = datetime.now().strftime("%H:%M:%S")
@@ -185,7 +206,7 @@ class CaptureTab(QWidget):
 
         self.job_id = job_id
         self._n_results = 0
-        self.job_label.setText(f"Job: {self.job_id[:8]}…  |  Acquisite: 0")
+        self.job_label.setText("Sessione attiva  |  Acquisite: 0")
         # Connetti result_ready per aggiornare il contatore
         try:
             self.api_client.result_ready.connect(self._on_result_ready_count)
@@ -210,19 +231,20 @@ class CaptureTab(QWidget):
                 parent=self,
             )
             self._log("Avvio cattura in modalità BPER.")
-            # Popola combo pagine e abilita i controlli di forzatura
-            try:
-                # type: ignore[attr-defined]
-                pages = list(getattr(worker, "page_sequence", []) or [])
-                self.force_page_combo.clear()
-                for name in pages:
-                    self.force_page_combo.addItem(name)
-                can_force = len(pages) > 0 and hasattr(worker, "force_capture")
-                self.force_page_combo.setEnabled(can_force)
-                self.force_capture_button.setEnabled(can_force)
-            except Exception:
-                self.force_page_combo.setEnabled(False)
-                self.force_capture_button.setEnabled(False)
+            # Popola combo pagine da prompts.json (source of truth),
+            # con fallback a page_sequence del worker se prompts.json non è leggibile
+            pages = self._load_bper_page_names()
+            if not pages:
+                pages = [
+                    p for p in list(getattr(worker, "page_sequence", []) or [])
+                    if p not in _SKIP_PAGE_TYPES_UI
+                ]
+            self.force_page_combo.clear()
+            for name in pages:
+                self.force_page_combo.addItem(name)
+            can_force = len(pages) > 0 and hasattr(worker, "force_capture")
+            self.force_page_combo.setEnabled(can_force)
+            self.force_capture_button.setEnabled(can_force)
         else:
             worker = DefaultCaptureWorker(
                 config=self.config,
@@ -353,7 +375,7 @@ class CaptureTab(QWidget):
     def _on_result_ready_count(self, job_id: str, _result: dict) -> None:
         if job_id == self.job_id:
             self._n_results += 1
-            self.job_label.setText(f"Job: {self.job_id[:8]}…  |  Acquisite: {self._n_results}")
+            self.job_label.setText(f"Sessione attiva  |  Acquisite: {self._n_results}")
 
     # ------------------------------------------------------------------ API pubblica
 

@@ -42,9 +42,9 @@ class ExtractionResultsTab(QWidget):
     @staticmethod
     def _status_icon(status: str) -> str:
         mapping = {
-            "OK": "✅",
-            "ANCHOR_UNCERTAIN": "⚠️",
-            "ERROR": "❌",
+            "OK": "✅ Completata",
+            "ANCHOR_UNCERTAIN": "⚠️ Parziale",
+            "ERROR": "❌ Errore",
         }
         return mapping.get(status.upper(), "•") if status else "•"
 
@@ -74,7 +74,7 @@ class ExtractionResultsTab(QWidget):
         # Top row: job selector + refresh + export
         top_row = QHBoxLayout()
 
-        top_row.addWidget(QLabel("Job:", self))
+        top_row.addWidget(QLabel("Sessione:", self))
         self.job_combo = QComboBox(self)
         self.job_combo.currentTextChanged.connect(self._on_job_changed)
         top_row.addWidget(self.job_combo)
@@ -96,7 +96,7 @@ class ExtractionResultsTab(QWidget):
 
         # Left: captured pages
         self.pages_tree = QTreeWidget(self)
-        self.pages_tree.setHeaderLabels(["Schermata", "NDG — Denominazione", "Stato", "Costo"])
+        self.pages_tree.setHeaderLabels(["Schermata", "NDG — Denominazione", "Stato", "Analisi"])
         self.pages_tree.setColumnWidth(0, 180)
         self.pages_tree.setColumnWidth(1, 200)
         self.pages_tree.setColumnWidth(2, 60)
@@ -109,7 +109,7 @@ class ExtractionResultsTab(QWidget):
         right_layout = QVBoxLayout(right)
 
         self.fields_tree = QTreeWidget(right)
-        self.fields_tree.setHeaderLabels(["Campo", "Valore", "Confidence"])
+        self.fields_tree.setHeaderLabels(["Campo", "Valore", "Affidabilità"])
         self.fields_tree.setColumnWidth(0, 220)
         self.fields_tree.setColumnWidth(1, 200)
         right_layout.addWidget(self.fields_tree, stretch=2)
