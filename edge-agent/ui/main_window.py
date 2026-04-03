@@ -29,10 +29,11 @@ class MainWindow(QtWidgets.QMainWindow):
     e sincronizza automaticamente il job_id tra le due tab.
     """
 
-    def __init__(self, config: AgentConfig, parent: Optional[QtWidgets.QWidget] = None):
+    def __init__(self, config: AgentConfig, show_debug: bool = False, parent: Optional[QtWidgets.QWidget] = None):
         super().__init__(parent)
 
         self.config = config
+        self._show_debug = show_debug
         self.extraction_client = LocalExtractionClient(parent=self)
 
         self.setWindowTitle("BPER Edge Agent")
@@ -44,9 +45,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.tabs = QtWidgets.QTabWidget(self)
         self.setCentralWidget(self.tabs)
 
-        # Tab opzionale di debug LLM
+        # Tab opzionale di debug LLM (visibile solo con --debug)
         self.debug_tab = None
-        if getattr(self.config, "show_llm_debug_tab", False):
+        if self._show_debug:
             self.debug_tab = DebugTab(parent=self)
 
         # Tab di cattura

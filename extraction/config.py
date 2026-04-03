@@ -83,7 +83,9 @@ for area, fields in AREA_TO_FIELDS.items():
     for f in fields:
         FIELD_RETRY_MAP[f] = area
 
+
 # Debug
+DEBUG_MODE = os.getenv("DEBUG_MODE", "0").strip() == "1"
 DEBUG_SAVE_CROPS = os.getenv("DEBUG_SAVE_CROPS", "0") == "1"
 DEBUG_CROP_DIR = os.path.join(INPUT_DIR, "debug_crops")
 

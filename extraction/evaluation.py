@@ -169,7 +169,12 @@ def build_debug_report(
                 "_status": pred.get("_status"),
             })
 
-    pd.DataFrame(rows).to_csv(out_csv_path, index=False, encoding="utf-8-sig")
+    pd.DataFrame(rows).to_csv(
+        out_csv_path,
+        index=False,
+        encoding="utf-8-sig",
+        sep=";",
+    )
 
 # ============================================================
 # Export to CSV
@@ -178,19 +183,38 @@ def export_to_csv(outputs: Dict[str, Dict[str, Any]], out_csv_path: str) -> None
     """Exports the extracted data to a flat CSV file."""
     rows = []
     for scr, out in outputs.items():
-        fields = out.get("fields", {})
-        for f_key in FIELD_KEYS:
-            f_data = fields.get(f_key)
-            if isinstance(f_data, dict):
+        canonical_fields = out.get("canonical_fields") or []
+        if canonical_fields:
+            for entry in canonical_fields:
                 rows.append({
                     "screen": scr,
                     "category": "FIELD",
-                    "field": f_key,
-                    "value": f_data.get("value"),
-                    "confidence": f_data.get("confidence"),
-                    "evidence_text": f_data.get("evidence_text"),
-                    "section": f_data.get("section"),
+                    "field": entry.get("display_name") or entry.get("schema_key"),
+                    "schema_key": entry.get("schema_key"),
+                    "page_key": entry.get("page_key"),
+                    "page_name": entry.get("page_name"),
+                    "value": entry.get("value"),
+                    "confidence": entry.get("confidence"),
+                    "evidence_text": entry.get("evidence_text"),
+                    "section": entry.get("section"),
                 })
+        else:
+            fields = out.get("fields", {})
+            for f_key in FIELD_KEYS:
+                f_data = fields.get(f_key)
+                if isinstance(f_data, dict):
+                    rows.append({
+                        "screen": scr,
+                        "category": "FIELD",
+                        "field": f_key,
+                        "schema_key": f_key,
+                        "page_key": None,
+                        "page_name": None,
+                        "value": f_data.get("value"),
+                        "confidence": f_data.get("confidence"),
+                        "evidence_text": f_data.get("evidence_text"),
+                        "section": f_data.get("section"),
+                    })
 
         for tbl_name in ["soggetti", "fidi", "garanzie"]:
             for i, item in enumerate(out.get(tbl_name, [])):
@@ -207,7 +231,12 @@ def export_to_csv(outputs: Dict[str, Dict[str, Any]], out_csv_path: str) -> None
                         "section": "",
                     })
 
-    pd.DataFrame(rows).to_csv(out_csv_path, index=False, encoding="utf-8-sig")
+    pd.DataFrame(rows).to_csv(
+        out_csv_path,
+        index=False,
+        encoding="utf-8-sig",
+        sep=";",
+    )
 
 # ============================================================
 # Cost summary

@@ -1,5 +1,10 @@
 """Field key definitions and CSV-to-schema mappings."""
-from typing import Dict, List
+from typing import Dict, List, Optional
+from extraction.field_definitions import (
+    resolve_display_name,
+    resolve_field_page_key,
+)
+from extraction.page_definitions import get_canonical_page_name
 
 # ============================================================
 # Target fields
@@ -109,3 +114,25 @@ _GARANZIE_KEY_MAP: Dict[str, str] = {
     "IMP. (€)/%": "importo_percentuale",
     "TIPO OP.": "tipo_op"
 }
+
+def get_canonical_field_display_name(schema_key: str) -> str:
+    """Return the canonical client display name for a schema key."""
+    resolved = resolve_display_name(schema_key)
+    return resolved or schema_key
+
+
+def get_canonical_field_page_key(schema_key: str) -> Optional[str]:
+    """Return the canonical client page key for a schema key, if known."""
+    return resolve_field_page_key(schema_key)
+
+def get_canonical_field_metadata(schema_key: str) -> Dict[str, Optional[str]]:
+    """Return canonical backend metadata for a schema key."""
+    display_name = get_canonical_field_display_name(schema_key)
+    page_key = get_canonical_field_page_key(schema_key)
+    page_name = get_canonical_page_name(page_key) if page_key else None
+    return {
+        "schema_key": schema_key,
+        "display_name": display_name,
+        "page_key": page_key,
+        "page_name": page_name,
+    }

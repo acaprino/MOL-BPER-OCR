@@ -11,6 +11,8 @@ from extraction.config import (
     GROUND_TRUTH_CSV,
     PARALLEL_ENABLED,
     PARALLEL_WORKERS,
+    ANCHOR_CONF_MIN,
+    DEBUG_MODE,
     DEBUG_SAVE_CROPS,
     DEBUG_CROP_DIR,
     LLM_PROVIDER,
@@ -26,6 +28,128 @@ from extraction.evaluation import (
     Evaluator,
 )
 
+def _debug_log(message: str) -> None:
+    """Print debug logs only when DEBUG_MODE=1."""
+    if DEBUG_MODE:
+        print(f"[DEBUG] {message}")
+
+def _has_meaningful_value(value: Any) -> bool:
+    """Return True when a field value is materially present."""
+    if value is None:
+        return False
+    if isinstance(value, str):
+        return value.strip() != ""
+    return True
+
+
+def _extract_page_key(output: Dict[str, Any]) -> Optional[str]:
+    """Return the canonical page key, if available."""
+    for entry in output.get("canonical_fields") or []:
+        page_key = entry.get("page_key")
+        if page_key:
+            return str(page_key)
+    return None
+
+
+def _output_score(output: Dict[str, Any]) -> Tuple[int, float]:
+    """Score an extraction result by filled fields and confidence sum."""
+    entries = output.get("canonical_fields") or []
+    if not entries:
+        entries = [
+            {
+                "value": field_data.get("value"),
+                "confidence": field_data.get("confidence"),
+            }
+            for field_data in (output.get("fields", {}) or {}).values()
+            if isinstance(field_data, dict)
+        ]
+
+    filled_fields = 0
+    confidence_sum = 0.0
+    for entry in entries:
+        if _has_meaningful_value(entry.get("value")):
+            filled_fields += 1
+            confidence_sum += float(entry.get("confidence", 0.0) or 0.0)
+
+    return filled_fields, confidence_sum
+
+
+def _is_confident_output(output: Dict[str, Any]) -> bool:
+    """Return True when the result is safe enough to keep as primary."""
+    fields = output.get("fields", {}) or {}
+    ndg = fields.get("ndg") or {}
+    denominazione = fields.get("denominazione") or {}
+
+    return (
+        output.get("_status") == "OK"
+        and _has_meaningful_value(ndg.get("value"))
+        and _has_meaningful_value(denominazione.get("value"))
+        and float(ndg.get("confidence", 0.0) or 0.0) >= ANCHOR_CONF_MIN
+        and float(denominazione.get("confidence", 0.0) or 0.0) >= ANCHOR_CONF_MIN
+    )
+
+
+def _deduplicate_same_page_outputs(
+    outputs: Dict[str, Dict[str, Any]],
+    screen_order: List[str],
+) -> Dict[str, Dict[str, Any]]:
+    """Keep one result per canonical page, using later screenshots only as fallback."""
+    deduped: Dict[str, Dict[str, Any]] = {}
+    chosen_screen_by_page: Dict[str, str] = {}
+
+    for screen_id in screen_order:
+        output = outputs.get(screen_id)
+        if output is None:
+            continue
+
+        page_key = _extract_page_key(output)
+        if not page_key:
+            deduped[screen_id] = output
+            continue
+
+        current_screen_id = chosen_screen_by_page.get(page_key)
+        if current_screen_id is None:
+            chosen_screen_by_page[page_key] = screen_id
+            deduped[screen_id] = output
+            continue
+
+        current_output = deduped[current_screen_id]
+        current_confident = _is_confident_output(current_output)
+        candidate_confident = _is_confident_output(output)
+
+        if current_confident:
+            _debug_log(
+                f"Dedup keep-safe-first page_key={page_key}: "
+                f"{current_screen_id} kept, {screen_id} discarded"
+            )
+            continue
+
+        if not current_confident and candidate_confident:
+            deduped.pop(current_screen_id, None)
+            chosen_screen_by_page[page_key] = screen_id
+            deduped[screen_id] = output
+            _debug_log(
+                f"Dedup fallback page_key={page_key}: "
+                f"{current_screen_id} replaced by {screen_id}"
+            )
+            continue
+
+        if _output_score(output) > _output_score(current_output):
+            deduped.pop(current_screen_id, None)
+            chosen_screen_by_page[page_key] = screen_id
+            deduped[screen_id] = output
+            _debug_log(
+                f"Dedup better-score page_key={page_key}: "
+                f"{current_screen_id} replaced by {screen_id}"
+            )
+            continue
+
+        _debug_log(
+            f"Dedup keep-existing page_key={page_key}: "
+            f"{current_screen_id} kept, {screen_id} discarded"
+        )
+
+    return deduped
 
 # ============================================================
 # BatchRunner class
@@ -55,9 +179,30 @@ class BatchRunner:
         self._max_workers = max_workers
 
         # LangChain ChatModels are thread-safe — shared across all workers
-        main_model = create_chat_model(effective_provider, model=self._main_model_name, api_key=api_key)
-        anchor_model = create_chat_model(effective_provider, model=self._anchor_model_name, api_key=api_key)
-        self._pipeline = ExtractionPipeline(main_model, anchor_model, self._main_model_name, self._anchor_model_name)
+        main_model = create_chat_model(
+            effective_provider,
+            model=self._main_model_name,
+            api_key=api_key,
+        )
+        anchor_model = create_chat_model(
+            effective_provider,
+            model=self._anchor_model_name,
+            api_key=api_key,
+        )
+        self._pipeline = ExtractionPipeline(
+            main_model,
+            anchor_model,
+            self._main_model_name,
+            self._anchor_model_name,
+        )
+        _debug_log(
+            "BatchRunner init: "
+            f"provider={effective_provider}, "
+            f"model_main={self._main_model_name}, "
+            f"model_anchor={self._anchor_model_name}, "
+            f"parallel={self._parallel}, "
+            f"max_workers={self._max_workers}"
+        )
 
     def run(
         self,
@@ -72,13 +217,19 @@ class BatchRunner:
                 print(f"Warning: File not found {p}")
 
         outputs: Dict[str, Dict[str, Any]] = {}
+        _debug_log(
+            f"Batch start: requested_paths={len(paths)}, existing_paths={len(existing_paths)}"
+        )
 
         def _worker(path: str) -> Tuple[str, Dict[str, Any]]:
             screen_id = os.path.splitext(os.path.basename(path))[0]
+            _debug_log(f"Extracting screen_id={screen_id} path={path}")
             return screen_id, self._pipeline.extract_from_screen(path)
 
         if self._parallel and self._max_workers > 1 and len(existing_paths) > 1:
-            print(f"Parallel enabled: workers={self._max_workers}, screens={len(existing_paths)}")
+            print(
+                f"Parallel enabled: workers={self._max_workers}, screens={len(existing_paths)}"
+            )
             with ThreadPoolExecutor(max_workers=self._max_workers) as ex:
                 futs = {ex.submit(_worker, p): p for p in existing_paths}
                 for fut in as_completed(futs):
@@ -87,11 +238,13 @@ class BatchRunner:
                     try:
                         sid, out = fut.result()
                         outputs[sid] = out
+                        _debug_log(f"Completed screen_id={sid}")
                         if on_complete:
                             on_complete(sid, out)
                         else:
                             print(f"Done {sid}")
                     except Exception as e:
+                        _debug_log(f"Error screen_id={screen_id}: {e}")
                         if on_error:
                             on_error(screen_id, e)
                         else:
@@ -102,16 +255,25 @@ class BatchRunner:
                 print(f"Extracting {screen_id} ...")
                 try:
                     outputs[screen_id] = self._pipeline.extract_from_screen(p)
+                    _debug_log(f"Completed screen_id={screen_id}")
                     if on_complete:
                         on_complete(screen_id, outputs[screen_id])
                 except Exception as e:
+                    _debug_log(f"Error screen_id={screen_id}: {e}")
                     if on_error:
                         on_error(screen_id, e)
                     else:
                         raise
 
-        return outputs
+        # TEMP TEST: keep all outputs until page_key mapping is validated
+        # screen_order = [
+        #     os.path.splitext(os.path.basename(path))[0]
+        #     for path in existing_paths
+        # ]
+        # outputs = _deduplicate_same_page_outputs(outputs, screen_order)
 
+        _debug_log(f"Batch completed: outputs={len(outputs)}")
+        return outputs
 
 # ============================================================
 # Backward-compatible module-level wrapper

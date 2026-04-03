@@ -48,7 +48,8 @@ def main() -> int:
     config = AgentConfig(config_path)
 
     # Crea e mostra finestra principale
-    window = MainWindow(config)
+    show_debug = "--debug" in sys.argv
+    window = MainWindow(config, show_debug=show_debug)
     window.show()
 
     # Entra nel loop eventi Qt

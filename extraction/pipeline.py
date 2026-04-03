@@ -5,6 +5,8 @@ from typing import Dict, Any, List, Tuple, Set
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from PIL import Image, ImageEnhance
 from langchain_core.language_models import BaseChatModel
+from extraction.canonical_mapping import build_canonical_field_entries
+
 
 from extraction.config import (
     CONTENT_CROP,
@@ -162,6 +164,10 @@ class ExtractionPipeline:
             result["fields"][f"ndg_{idx}"] = {"value": s.get("ndg"), "confidence": conf, "section": "soggetti_table"}
             result["fields"][f"denominazione_{idx}"] = {"value": s.get("denominazione"), "confidence": conf, "section": "soggetti_table"}
             result["fields"][f"ruolo_{idx}"] = {"value": s.get("ruolo"), "confidence": conf, "section": "soggetti_table"}
+        
+        result["canonical_fields"] = build_canonical_field_entries(
+            result.get("fields", {})
+        )    
 
         # 8) Status
         ndg_field = result["fields"].get("ndg") or {}
