@@ -31,3 +31,10 @@ class DebugTab(QtWidgets.QWidget):
         except Exception:
             # Non deve mai bloccare l'app
             pass
+
+    def append_log(self, msg: str) -> None:
+        try:
+            self.text.append(msg)
+            self.text.ensureCursorVisible()
+        except Exception:
+            pass
