@@ -260,8 +260,11 @@ class CaptureTab(QWidget):
         worker.error.connect(self._on_worker_error)
         # Debug LLM: collega se tab presente
         try:
-            if self._debug_tab is not None and hasattr(self._debug_tab, "append_json"):
-                worker.llm_debug.connect(self._debug_tab.append_json)
+            if self._debug_tab is not None:
+                if hasattr(self._debug_tab, "append_json"):
+                    worker.llm_debug.connect(self._debug_tab.append_json)
+                if hasattr(self._debug_tab, "append_log"):
+                    worker.tick.connect(self._debug_tab.append_log)
         except Exception:
             pass
 
