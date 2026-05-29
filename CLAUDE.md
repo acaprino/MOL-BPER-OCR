@@ -117,12 +117,12 @@ The edge-agent is configured via `edge-agent/config.ini`, not env vars.
 | `LLM_MODEL_ANCHOR` | same as `LLM_MODEL` | Model for the anchor pass |
 | `INPUT_DIR` | `mnt/data` | Data directory (screenshots + ground truth) |
 | `SCREENSHOT_DIR` | *(unused)* | Declared historically but not read anywhere in code (inert) |
-| `PARALLEL_WORKERS` | `12` | Thread pool size |
+| `PARALLEL_WORKERS` | `4` | Thread pool size |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
 | `MAX_CALLS_PER_SCREEN` | `4` | Max VLM calls per screen |
 | `ANCHOR_CONF_MIN` | `0.95` | Minimum confidence for anchor acceptance |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Stop processing if anchor confidence is low |
-| `LLM_THINKING_LEVEL` | `medium` | Thinking budget `low`/`medium`/`high`; applied only to models whose name contains `thinking` |
+| `LLM_THINKING_LEVEL` | *(unset)* | Thinking budget `low`/`medium`/`high`; applied only to models whose name contains `thinking` |
 | `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to disk |
 
 ## Testing & Validation
@@ -338,7 +338,7 @@ Versions are loosely bounded, not strictly pinned.
 langchain-core          # LangChain core abstractions (BaseChatModel, messages)
 langchain-openai        # LangChain OpenAI ChatModel
 langchain-google-genai  # LangChain Gemini ChatModel (required if LLM_PROVIDER=gemini)
-pillow / Pillow>=10.0.0 # Image processing (PIL) -- listed TWICE in requirements.txt (dedupe candidate)
+Pillow>=10.0.0          # Image processing (PIL)
 pandas                  # CSV/data handling
 python-dotenv           # Auto-loads .env at startup (main.py, gui_app.py, edge_agent.py)
 openpyxl>=3.1.2         # Excel read (edge-agent/workers/capture/bper_capture_worker.py)
@@ -357,7 +357,7 @@ requests>=2.31.0       # Remote upload in DefaultCaptureWorker (generic mode onl
 ```
 
 **Present in `requirements.txt` but unused / orphaned** (no importer in current code -- removal
-candidates): `streamlit`, `keyboard==0.13.5`, `boto3>=1.35.0`.
+candidates): `streamlit`.
 
 ## Missing Infrastructure
 
