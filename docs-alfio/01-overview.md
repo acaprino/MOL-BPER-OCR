@@ -1,68 +1,68 @@
 # poc-data-extraction
 
-This project uses Vision Language Models (VLMs) -- large language models that can interpret images -- to extract structured data from screenshots of the BPER Italian banking application. It targets a specific credit management workflow where operators navigate nine distinct screens, each containing fields like customer IDs, loan details, guarantees, and subject tables. The extracted data is validated against ground truth, scored for accuracy, and reported with per-field metrics and cost breakdowns.
+Questo progetto usa i Vision Language Model (VLM) -- modelli linguistici di grandi dimensioni in grado di interpretare le immagini -- per estrarre dati strutturati dagli screenshot dell'applicativo bancario italiano BPER. Si rivolge a uno specifico flusso di gestione del credito, in cui gli operatori navigano nove schermate distinte, ciascuna contenente campi come codici cliente, dettagli dei fidi, garanzie e tabelle di soggetti. I dati estratti vengono validati rispetto alla ground truth, valutati per accuratezza e riportati con metriche per campo e dettaglio dei costi.
 
-The project is a proof of concept. It demonstrates that LLM-based screen reading can replace manual data entry for BPER banking operations, providing three separate interfaces to the same underlying extraction engine.
+Il progetto è un proof of concept (prototipo). Dimostra che la lettura delle schermate basata su LLM può sostituire l'inserimento manuale dei dati nelle operazioni bancarie di BPER, offrendo tre interfacce distinte sullo stesso motore di estrazione sottostante.
 
 ```mermaid
 mindmap
   root((poc-data-extraction))
-    Extraction Engine
-      Multi-pass VLM pipeline
-      Anchor identification
-      Retry with targeted crops
-      Structured output via Pydantic
-    Banking Domain
-      BPER credit management screens
-      40+ field definitions
-      Subjects, loans, guarantees
-      Italian-language prompts
-    User Interfaces
-      CLI batch processing
-      Tkinter desktop GUI
-      PyQt6 edge agent
-    Accuracy Evaluation
-      Ground truth comparison
-      Per-field classification
-      Cost and token tracking
-    Screen Intelligence
-      DINOv2 ML page classifier
-      LLM-based page routing
-      Frame deduplication
+    Motore di estrazione
+      Pipeline VLM multi-pass
+      Identificazione anchor
+      Retry con ritagli mirati
+      Output strutturato via Pydantic
+    Dominio bancario
+      Schermate gestione credito BPER
+      45 definizioni di campo
+      Soggetti, fidi, garanzie
+      Prompt in italiano
+    Interfacce utente
+      Elaborazione a lotti via CLI
+      GUI desktop Tkinter
+      Edge agent PyQt6
+    Valutazione accuratezza
+      Confronto con ground truth
+      Classificazione per campo
+      Tracciamento costi e token
+    Intelligenza sulle schermate
+      Classificatore pagine ML DINOv2
+      Riconoscimento pagina basato su LLM
+      Deduplica dei frame
 ```
 
-## What It Does
+## Cosa fa
 
-You point it at screenshots of the BPER banking application, and it gives you back structured JSON containing every field it can read -- customer NDG numbers, names, loan amounts, guarantee details, employment data, free-text notes, and more. It does this through a multi-pass pipeline: first it reads the header to lock down the customer identity (the "anchor pass"), then it reads the full screen content (the "main pass"), and finally it re-reads any areas where confidence was low or values were missing (the "retry pass"). Each pass uses a different image crop and a specialized Italian-language prompt.
+Lo indirizzi verso gli screenshot dell'applicativo bancario BPER e ti restituisce un JSON strutturato che contiene ogni campo che riesce a leggere -- numeri NDG dei clienti, nomi, importi dei fidi, dettagli delle garanzie, dati lavorativi, note in testo libero e altro ancora. Lo fa attraverso una pipeline multi-pass: prima legge l'intestazione per fissare l'identità del cliente (il "passaggio anchor"), poi legge l'intero contenuto della schermata (il "passaggio principale") e infine rilegge le aree dove la confidenza era bassa o i valori mancavano (il "passaggio di retry"). Ogni passaggio usa un ritaglio diverso dell'immagine e un prompt specializzato in italiano.
 
-The project also includes an edge agent -- a desktop application that watches the operator's screen in real time, automatically detects which BPER page is currently displayed, waits for stability, and triggers extraction without the operator needing to save screenshots manually.
+Il progetto include anche un edge agent -- un'applicazione desktop che osserva lo schermo dell'operatore in tempo reale, rileva automaticamente quale pagina BPER è attualmente visualizzata, attende la stabilità e avvia l'estrazione senza che l'operatore debba salvare gli screenshot manualmente.
 
-## Who It's For
+## A chi è rivolto
 
-**Banking operations personnel** who work with the BPER credit management application and need to extract structured data from its screens. The CLI and GUI tools let you process batches of saved screenshots. The edge agent sits alongside the banking application and captures data as you work.
+**Personale operativo della banca** che lavora con l'applicativo di gestione del credito di BPER e ha bisogno di estrarre dati strutturati dalle sue schermate. Gli strumenti CLI e GUI permettono di elaborare lotti di screenshot salvati. L'edge agent si affianca all'applicativo bancario e cattura i dati mentre lavori.
 
-**Developers building document-to-data pipelines** who want to understand how to combine Vision LLMs with image preprocessing, multi-pass extraction, structured output, and accuracy evaluation. The codebase demonstrates patterns for LangChain structured output with both OpenAI and Google Gemini providers, targeted image cropping strategies, and confidence-gated field merging.
+**Sviluppatori che costruiscono pipeline da documento a dati** che vogliono capire come combinare i Vision LLM con il pre-trattamento delle immagini, l'estrazione multi-pass, l'output strutturato e la valutazione dell'accuratezza. Il codice mostra pattern per l'output strutturato di LangChain sia con il provider OpenAI sia con Google Gemini, strategie di ritaglio mirato delle immagini e fusione dei campi vincolata dalla confidenza.
 
-## How It's Built
+## Com'è costruito
 
-Python throughout. The extraction engine (`extraction/` package) uses LangChain to talk to OpenAI GPT-4o or Google Gemini models, Pydantic for structured output schemas, and Pillow for image normalization and cropping. The CLI runs parallel extraction with `ThreadPoolExecutor`. The Tkinter GUI (`gui_app.py`) wraps the same batch runner in a desktop window. The PyQt6 edge agent (`edge-agent/`) adds live screen capture via `mss`, frame deduplication via perceptual hashing (`imagehash`), and ML-based page classification using Facebook's DINOv2 model loaded through PyTorch. There is no database -- everything runs in memory with CSV files for ground truth and JSON files for output. For a complete breakdown, see [Tech Stack](03-tech-stack.md).
+Python ovunque. Il motore di estrazione (package `extraction/`) usa LangChain per dialogare con i modelli OpenAI GPT-4o o Google Gemini, Pydantic per gli schemi di output strutturato e Pillow per la normalizzazione e il ritaglio delle immagini. La CLI esegue l'estrazione in parallelo con `ThreadPoolExecutor`. La GUI Tkinter (`gui_app.py`) incapsula lo stesso runner a lotti in una finestra desktop. L'edge agent PyQt6 (`edge-agent/`) aggiunge la cattura dal vivo dello schermo via `mss`, la deduplica dei frame tramite perceptual hashing (`imagehash`) e la classificazione delle pagine basata su ML usando il modello DINOv2 di Facebook caricato tramite PyTorch. Non c'è alcun database -- tutto gira in memoria, con file CSV per la ground truth e file JSON per l'output. Per un'analisi completa, vedi [Tech Stack](03-tech-stack.md).
 
-## Project at a Glance
+## Il progetto in sintesi
 
-| Attribute | Value |
+| Attributo | Valore |
 |---|---|
-| Language | Python 3.8+ (3.13 observed in compiled bytecode) |
-| LLM Providers | OpenAI (GPT-4o, GPT-4o-mini, o1) and Google Gemini (1.5/2.0/3.x Flash and Pro) |
-| LLM Framework | LangChain (langchain-core, langchain-openai, langchain-google-genai) |
-| UI Frameworks | Tkinter (gui_app.py), PyQt6 + qt-material (edge-agent/) |
-| ML Framework | PyTorch + torchvision (DINOv2 ViT-S/14 for page classification) |
-| Project Type | Proof of concept -- multi-interface application (CLI, desktop GUI, live capture agent) |
-| Database | None. In-memory dicts; CSV ground truth; JSON output files |
-| Test Suite | None |
-| CI/CD | None |
-| Entry Points | `main.py` (CLI/edge-agent), `gui_app.py` (Tkinter), `edge-agent/edge_agent.py` (direct) |
-| Key Directories | `extraction/` (core engine), `edge-agent/` (live capture agent), `mnt/data/` (test data, gitignored) |
+| Linguaggio | Python 3.8+ (3.13 osservato nel bytecode compilato) |
+| Provider LLM | OpenAI (GPT-4o, GPT-4o-mini, o1) e Google Gemini (1.5/2.0/3.x Flash e Pro) |
+| Framework LLM | LangChain (langchain-core, langchain-openai, langchain-google-genai) |
+| Framework UI | Tkinter (gui_app.py), PyQt6 + qt-material (edge-agent/) |
+| Framework ML | PyTorch + torchvision (DINOv2 ViT-S/14 per la classificazione delle pagine) |
+| Tipo di progetto | Proof of concept (prototipo) -- applicazione multi-interfaccia (CLI, GUI desktop, agente di cattura dal vivo) |
+| Database | Nessuno. Dizionari in memoria; ground truth CSV; file JSON di output |
+| Suite di test | Nessuna |
+| CI/CD | Nessuna |
+| Entry point | `main.py` (CLI/edge-agent), `gui_app.py` (Tkinter), `edge-agent/edge_agent.py` (diretto) |
+| Directory principali | `extraction/` (motore core), `edge-agent/` (agente di cattura dal vivo), `mnt/data/` (dati di test, esclusi da git) |
 
-## Where to Go Next
+## Dove andare adesso
 
-The rest of this codebase map drills down from this overview. Start with [Features](02-features.md) for a tour of what the project actually does, then [Architecture](04-architecture.md) for how the pieces fit together. If you want to run it immediately, jump to [Getting Started](07-getting-started.md). For the entity shapes referenced above (FieldResult, Soggetto, ExtractionResponse), see [Data Model](06-data-model.md). The honest list of things this project does not yet have answers for lives in [Open Questions](08-open-questions.md).
+Il resto di questa mappa del codice approfondisce questa panoramica. Inizia da [Funzionalità](02-features.md) per una panoramica di ciò che il progetto fa davvero, poi [Architettura](04-architecture.md) per come si incastrano i pezzi. Se vuoi eseguirlo subito, salta a [Getting Started](07-getting-started.md). Per le strutture delle entità citate sopra (FieldResult, Soggetto, ExtractionResponse), vedi [Data Model](06-data-model.md). L'elenco onesto delle questioni a cui questo progetto non ha ancora una risposta vive in [Domande Aperte](08-open-questions.md).

@@ -1,272 +1,272 @@
-# Project Anatomy
+# Anatomia del progetto
 
-This document is the practical map for configuring, running, and navigating `poc-data-extraction`. It covers every directory, configuration file, environment variable, runnable command, and startup behavior -- the things you need on day one to stop guessing and start working. For high-level design, see [Architecture](04-architecture.md); for step-by-step setup, see [Getting Started](07-getting-started.md).
+Questo documento è la mappa pratica per configurare, eseguire e orientarsi in `poc-data-extraction`. Copre ogni directory, file di configurazione, variabile d'ambiente, comando eseguibile e comportamento di avvio -- ciò che serve fin dal primo giorno per smettere di tirare a indovinare e iniziare a lavorare. Per il design ad alto livello, vedi [Architettura](04-architecture.md); per il setup passo per passo, vedi [Come iniziare](07-getting-started.md).
 
-## Directory Tree
+## Albero delle directory
 
 ```
 poc-data-extraction/
-  main.py                              # CLI entry point; --gui flag launches edge-agent
-  gui_app.py                           # Standalone Tkinter desktop GUI for manual extraction
-  requirements.txt                     # All Python dependencies (extraction + edge-agent combined)
-  .env.example                         # Environment variable template (committed)
-  .env                                 # Actual env vars with API keys (gitignored)
-  .gitignore                           # Excludes .env, __pycache__, /mnt, build/, dist/, .venv/
-  CLAUDE.md                            # Comprehensive project documentation (276 lines)
-  README.md                            # Italian-language README with usage guide
-  prompts_immagini.txt                 # Reference-only image generation prompts (unused by pipeline)
-  extraction/                          # Core Python package: all extraction business logic
-    __init__.py                        # Public API re-exports (46 symbols in __all__)
-    config.py                          # Env-var config, crop coordinates, pricing tables, helpers
-    fields.py                          # FIELD_KEYS list (40+ fields), CSV_TO_SCHEMA mapping
-    field_definitions.py               # Canonical field definitions (display_name, page_key)
-    page_definitions.py                # Canonical page names, aliases, sheet ordering
-    canonical_mapping.py               # Converts extracted fields to canonical backend entries
-    schemas.py                         # Pydantic models: ExtractionResponse, AnchorResponse, etc.
-    prompts.py                         # Italian VLM prompts (PROMPT, ANCHOR_PROMPT, retry prompts)
-    normalization.py                   # Text normalization, field classification, pick_best
+  main.py                              # Entry point CLI; il flag --gui avvia l'edge-agent
+  gui_app.py                           # GUI desktop Tkinter standalone per estrazione manuale
+  requirements.txt                     # Tutte le dipendenze Python (extraction + edge-agent insieme)
+  .env.example                         # Template delle variabili d'ambiente (committato)
+  .env                                 # Variabili d'ambiente reali con le API key (in gitignore)
+  .gitignore                           # Esclude .env, __pycache__, /mnt, build/, dist/, .venv/
+  CLAUDE.md                            # Documentazione completa del progetto (276 righe)
+  README.md                            # README in italiano con guida all'uso
+  prompts_immagini.txt                 # Prompt di generazione immagini solo di riferimento (non usati dalla pipeline)
+  extraction/                          # Package Python centrale: tutta la logica di business dell'estrazione
+    __init__.py                        # Re-export dell'API pubblica (46 simboli in __all__)
+    config.py                          # Config da env-var, coordinate di ritaglio, tabelle di pricing, helper
+    fields.py                          # Lista FIELD_KEYS (40+ campi), mappatura CSV_TO_SCHEMA
+    field_definitions.py               # Definizioni canoniche dei campi (display_name, page_key)
+    page_definitions.py                # Nomi canonici delle pagine, alias, ordinamento dei fogli
+    canonical_mapping.py               # Converte i campi estratti in voci canoniche per il backend
+    schemas.py                         # Modelli Pydantic: ExtractionResponse, AnchorResponse, ecc.
+    prompts.py                         # Prompt VLM in italiano (PROMPT, ANCHOR_PROMPT, prompt di retry)
+    normalization.py                   # Normalizzazione testo, classificazione campi, pick_best
     imaging.py                         # normalize_image, crop_relative, img_to_png_bytes
     vlm_client.py                      # call_vlm, call_vlm_with_retry, estimate_cost_usd
-    llm_factory.py                     # create_chat_model -- ChatModel factory (OpenAI/Gemini)
-    pipeline.py                        # ExtractionPipeline: anchor -> main -> retry multi-pass
+    llm_factory.py                     # create_chat_model -- factory ChatModel (OpenAI/Gemini)
+    pipeline.py                        # ExtractionPipeline: multi-pass anchor -> main -> retry
     evaluation.py                      # Evaluator, eval_outputs, debug_report, cost_summary
-    cli.py                             # BatchRunner, run_extraction_batch, main() CLI entry
-  edge-agent/                          # PyQt6 desktop agent for live screen capture
-    __init__.py                        # Empty package marker
-    edge_agent.py                      # App entry point: loads .env, AgentConfig, MainWindow
-    config.py                          # AgentConfig class: loads config.ini
-    config.ini                         # INI config with 6 sections (agent, api, minio, llm, dataset, debug)
-    local_extraction_client.py         # LocalExtractionClient: bridges capture to extraction pipeline
+    cli.py                             # BatchRunner, run_extraction_batch, entry point CLI main()
+  edge-agent/                          # Agente desktop PyQt6 per la cattura dello schermo dal vivo
+    __init__.py                        # Marcatore di package vuoto
+    edge_agent.py                      # Entry point dell'app: carica .env, AgentConfig, MainWindow
+    config.py                          # Classe AgentConfig: carica config.ini
+    config.ini                         # Config INI con 6 sezioni (agent, api, minio, llm, dataset, debug)
+    local_extraction_client.py         # LocalExtractionClient: collega la cattura alla pipeline di estrazione
     llm_router.py                      # PageRouter, MLPageRouter, LLMPageRouter
-    page_classifier.py                 # BPERPagePrototypeClassifier (DINOv2 + cosine similarity)
+    page_classifier.py                 # BPERPagePrototypeClassifier (DINOv2 + similarità coseno)
     image_ops.py                       # preprocess_for_ocr, to_png8, to_webp_lossless
-    ui/                                # PyQt6 UI components
-      main_window.py                   # MainWindow: 4 tabs (Cattura/Risultati/Dati/Debug)
-      capture_tab.py                   # CaptureTab: start/stop, FPS, force capture, log
-      extraction_results_tab.py        # Pages tree, fields table, raw JSON, CSV export
-      data_table_tab.py                # Spreadsheet view, column rename, CSV/Excel export
-      debug_tab.py                     # Raw LLM router JSON debug output
-      overlay.py                       # CaptureBorderOverlay: red border on captured monitor
-    workers/capture/                   # Screenshot capture workers (QThread-based)
-      base_capture_worker.py           # BaseCaptureWorker(QThread): FPS loop, signals
-      bper_capture_worker.py           # BPERCaptureWorker: dedup, routing, stability
-      default_capture_worker.py        # DefaultCaptureWorker: generic remote upload mode
-    assets/templates/bper/             # BPER-specific detection assets
-      prompts.json                     # LLM router page definitions (5 pages)
-      bper_page_prototypes.json        # Cached DINOv2 prototype embeddings
-      screen 1-9.png                   # Prototype images for ML page matching
-      transitions/                     # ~25 transition state screenshots for detection training
-  mnt/data/                            # Test data directory (gitignored via /mnt)
-    screen 1-9.png                     # 9 BPER banking screenshots for testing
-    dati.csv                           # Ground truth dataset
-  .idea/                               # PyCharm project config (not gitignored, but not essential)
-  .claude/                             # Claude AI assistant settings
-  .venv/                               # Python virtual environment (gitignored)
+    ui/                                # Componenti UI PyQt6
+      main_window.py                   # MainWindow: 4 tab (Cattura/Risultati/Dati/Debug)
+      capture_tab.py                   # CaptureTab: start/stop, FPS, cattura forzata, log
+      extraction_results_tab.py        # Albero pagine, tabella campi, JSON grezzo, export CSV
+      data_table_tab.py                # Vista a foglio di calcolo, rinomina colonne, export CSV/Excel
+      debug_tab.py                     # Output di debug JSON grezzo del router LLM
+      overlay.py                       # CaptureBorderOverlay: bordo rosso sul monitor catturato
+    workers/capture/                   # Worker di cattura screenshot (basati su QThread)
+      base_capture_worker.py           # BaseCaptureWorker(QThread): loop FPS, segnali
+      bper_capture_worker.py           # BPERCaptureWorker: deduplica, routing, stabilità
+      default_capture_worker.py        # DefaultCaptureWorker: modalità generica di upload remoto
+    assets/templates/bper/             # Asset di riconoscimento specifici per BPER
+      prompts.json                     # Definizioni pagina del router LLM (5 pagine)
+      bper_page_prototypes.json        # Embedding dei prototipi DINOv2 in cache
+      screen 1-9.png                   # Immagini prototipo per il matching ML delle pagine
+      transitions/                     # ~25 screenshot di stati di transizione per l'addestramento del riconoscimento
+  mnt/data/                            # Directory dei dati di test (in gitignore tramite /mnt)
+    screen 1-9.png                     # 9 screenshot bancari BPER per i test
+    dati.csv                           # Dataset di ground truth
+  .idea/                               # Config di progetto PyCharm (non in gitignore, ma non essenziale)
+  .claude/                             # Impostazioni dell'assistente Claude AI
+  .venv/                               # Ambiente virtuale Python (in gitignore)
 ```
 
-## Configuration Files
+## File di configurazione
 
-### Application Configuration
+### Configurazione dell'applicazione
 
-**`extraction/config.py`** -- The central configuration module for the extraction pipeline. Reads all environment variables at import time via `os.getenv()` and exposes them as module-level constants. Contains crop coordinates (`CONTENT_CROP`, `HEADER_IN_CONTENT`, `RETRY_AREAS`), LLM pricing tables (`PRICING_PER_1M`), field-to-retry-area mapping (`FIELD_RETRY_MAP`, `AREA_TO_FIELDS`), and the `get_screenshot_paths()` helper. Committed. Works out of the box with defaults; see the Environment Variables section below for tuning.
+**`extraction/config.py`** -- Il modulo di configurazione centrale per la pipeline di estrazione. Legge tutte le variabili d'ambiente all'import tramite `os.getenv()` e le espone come costanti a livello di modulo. Contiene le coordinate di ritaglio (`CONTENT_CROP`, `HEADER_IN_CONTENT`, `RETRY_AREAS`), le tabelle di pricing degli LLM (`PRICING_PER_1M`), la mappatura campo-area di retry (`FIELD_RETRY_MAP`, `AREA_TO_FIELDS`) e l'helper `get_screenshot_paths()`. Committato. Funziona out of the box con i default; vedi la sezione Variabili d'ambiente più avanti per la regolazione.
 
-**`edge-agent/config.ini`** -- INI-format configuration for the edge-agent desktop application. Six sections: `[agent]` (FPS, router mode, monitor index, preprocessing parameters), `[api]` (base URL), `[minio]` (endpoint, credentials, bucket), `[llm]` (provider, model, timeout, API key), `[dataset]` (collection settings for future CNN), and `[debug]` (LLM debug tab toggle). Loaded by `AgentConfig` in `edge-agent/config.py`. Committed to the repository. **Warning:** line 23 of this file contains a plaintext OpenAI API key. This is a credential leak in the git history.
+**`edge-agent/config.ini`** -- Configurazione in formato INI per l'applicazione desktop edge-agent. Sei sezioni: `[agent]` (FPS, modalità router, indice monitor, parametri di preprocessing), `[api]` (URL di base), `[minio]` (endpoint, credenziali, bucket), `[llm]` (provider, model, timeout, API key), `[dataset]` (impostazioni di raccolta per una futura CNN) e `[debug]` (toggle del tab di debug LLM). Caricato da `AgentConfig` in `edge-agent/config.py`. Committato nel repository. **Attenzione:** la riga 23 di questo file contiene una API key OpenAI in chiaro. È una fuga di credenziali nella history git.
 
-**`.env.example`** -- Template for the `.env` file. Lists every environment variable the extraction pipeline recognizes, with commented explanations in Italian. Copy this to `.env` and fill in `LLM_API_KEY` before running. Committed.
+**`.env.example`** -- Template per il file `.env`. Elenca ogni variabile d'ambiente riconosciuta dalla pipeline di estrazione, con spiegazioni in italiano nei commenti. Copia questo file in `.env` e compila `LLM_API_KEY` prima di eseguire. Committato.
 
-**`.env`** -- The actual environment file loaded by `python-dotenv` at startup. Contains real API keys. Gitignored -- never committed.
+**`.env`** -- Il file d'ambiente effettivo caricato da `python-dotenv` all'avvio. Contiene le API key reali. In gitignore -- mai committato.
 
-### Dependency and Build Configuration
+### Configurazione di dipendenze e build
 
-**`requirements.txt`** -- All Python dependencies for both the extraction pipeline and edge-agent, combined in a single file. Minimally pinned (most packages unpinned, a few with `>=` lower bounds). Includes `torch` and `torchvision` for ML page classification, `PyQt6` for the edge-agent GUI, and `streamlit` (though the Streamlit entry point `app.py` does not exist on this branch). Committed.
+**`requirements.txt`** -- Tutte le dipendenze Python sia per la pipeline di estrazione sia per l'edge-agent, combinate in un unico file. Versioni fissate al minimo (la maggior parte dei pacchetti non è pinnata, alcuni hanno limiti inferiori `>=`). Include `torch` e `torchvision` per la classificazione ML delle pagine, `PyQt6` per la GUI dell'edge-agent e `streamlit` (anche se l'entry point Streamlit `app.py` non esiste su questo branch). Committato.
 
-### Detection Assets
+### Asset di riconoscimento
 
-**`edge-agent/assets/templates/bper/prompts.json`** -- Defines 5 BPER page types (Risultato ricerca, Elenco Soggetti, Gestione Fidi e Garanzie, Note da Richiesta, Altro / Non riconosciuto) with Italian-language `hints` used by the LLM page router. Committed.
+**`edge-agent/assets/templates/bper/prompts.json`** -- Definisce 5 tipi di pagina BPER (Risultato ricerca, Elenco Soggetti, Gestione Fidi e Garanzie, Note da Richiesta, Altro / Non riconosciuto) con `hints` in italiano usati dal router pagina LLM. Committato.
 
-**`edge-agent/assets/templates/bper/bper_page_prototypes.json`** -- Pre-computed DINOv2 ViT-S/14 embeddings (384 dimensions) for each prototype page. Used by `BPERPagePrototypeClassifier` in ML page routing mode. Committed.
+**`edge-agent/assets/templates/bper/bper_page_prototypes.json`** -- Embedding DINOv2 ViT-S/14 pre-calcolati (384 dimensioni) per ogni pagina prototipo. Usati da `BPERPagePrototypeClassifier` in modalità di riconoscimento pagina ML. Committato.
 
-### Editor and IDE
+### Editor e IDE
 
-**`.idea/`** -- PyCharm project configuration. The `.iml` file references Python 3.13 and excludes `.venv/`, `mnt/`, and `edge-agent/` from indexing. Committed but not essential for development.
+**`.idea/`** -- Configurazione di progetto PyCharm. Il file `.iml` fa riferimento a Python 3.13 ed esclude `.venv/`, `mnt/` ed `edge-agent/` dall'indicizzazione. Committato ma non essenziale per lo sviluppo.
 
-**`.claude/settings.local.json`** -- Claude AI assistant permission rules. Not relevant to application operation.
+**`.claude/settings.local.json`** -- Regole di permesso dell'assistente Claude AI. Non rilevanti per il funzionamento dell'applicazione.
 
-### Git Configuration
+### Configurazione Git
 
-**`.gitignore`** -- Excludes `build/`, `dist/`, `*.spec` (PyInstaller artifacts), `/mnt` (test data), `.env` and `.env.local` (secrets), `temp_uploads/`, `test_no_gt/`, `__pycache__/`, `*.pyc`, and `.venv/`. Committed.
+**`.gitignore`** -- Esclude `build/`, `dist/`, `*.spec` (artefatti PyInstaller), `/mnt` (dati di test), `.env` e `.env.local` (segreti), `temp_uploads/`, `test_no_gt/`, `__pycache__/`, `*.pyc` e `.venv/`. Committato.
 
-## Environment Variables
+## Variabili d'ambiente
 
-Every environment variable is read in `extraction/config.py` at module import time via `os.getenv()`, except for `LLM_API_KEY` and the legacy key variables which are read in `extraction/llm_factory.py` and `edge-agent/workers/capture/bper_capture_worker.py`. The `.env` file is loaded by `python-dotenv` at the top of `main.py` (line 7), `edge-agent/edge_agent.py` (line 11), and `edge-agent/local_extraction_client.py` (line 23).
+Ogni variabile d'ambiente viene letta in `extraction/config.py` all'import del modulo tramite `os.getenv()`, eccetto `LLM_API_KEY` e le variabili di chiave legacy, che vengono lette in `extraction/llm_factory.py` e `edge-agent/workers/capture/bper_capture_worker.py`. Il file `.env` viene caricato da `python-dotenv` in cima a `main.py` (riga 7), `edge-agent/edge_agent.py` (riga 11) e `edge-agent/local_extraction_client.py` (riga 23).
 
-To set up a local environment, copy the template and edit:
+Per impostare un ambiente locale, copia il template e modificalo:
 
 ```bash
 cp .env.example .env
-# Edit .env -- at minimum, set LLM_API_KEY
+# Modifica .env -- come minimo, imposta LLM_API_KEY
 ```
 
-### Required Variables
+### Variabili obbligatorie
 
-| Variable | Purpose | Read in | Default |
+| Variabile | Scopo | Letta in | Default |
 |----------|---------|---------|---------|
-| `LLM_API_KEY` | API credential for OpenAI or Google Gemini, depending on `LLM_PROVIDER` | `extraction/llm_factory.py` (line 30) | None -- **must be set** |
+| `LLM_API_KEY` | Credenziale API per OpenAI o Google Gemini, a seconda di `LLM_PROVIDER` | `extraction/llm_factory.py` (riga 30) | Nessuno -- **deve essere impostata** |
 
-### Optional Variables -- LLM Configuration
+### Variabili opzionali -- Configurazione LLM
 
-| Variable | Purpose | Read in | Default |
+| Variabile | Scopo | Letta in | Default |
 |----------|---------|---------|---------|
-| `LLM_PROVIDER` | LLM provider selection: `openai` or `gemini` | `extraction/config.py` (line 17) | `openai` |
-| `LLM_MODEL` | Model name for the main extraction pass | `extraction/config.py` (line 18) | `gpt-4o` |
-| `LLM_MODEL_ANCHOR` | Model name for the anchor pass (NDG + denominazione) | `extraction/config.py` (line 19) | Same as `LLM_MODEL` |
-| `LLM_THINKING_LEVEL` | Gemini 2.0+/3.x thinking budget: `low`, `medium`, or `high`. Only applies when model name contains "thinking". | `extraction/config.py` (line 20, unused constant), `extraction/llm_factory.py` (line 72, the live check) | Effectively unset. The `medium` default in `config.py` is dead code; `llm_factory.py` reads the env var with an empty default. |
+| `LLM_PROVIDER` | Selezione del provider LLM: `openai` o `gemini` | `extraction/config.py` (riga 17) | `openai` |
+| `LLM_MODEL` | Nome del modello per il passaggio di estrazione principale | `extraction/config.py` (riga 18) | `gpt-4o` |
+| `LLM_MODEL_ANCHOR` | Nome del modello per il passaggio anchor (NDG + denominazione) | `extraction/config.py` (riga 19) | Uguale a `LLM_MODEL` |
+| `LLM_THINKING_LEVEL` | Thinking budget per Gemini 2.0+/3.x: `low`, `medium` o `high`. Si applica solo quando il nome del modello contiene "thinking". | `extraction/config.py` (riga 20, costante inutilizzata), `extraction/llm_factory.py` (riga 72, il controllo effettivo) | Di fatto non impostata. Il default `medium` in `config.py` è codice morto; `llm_factory.py` legge la env var con un default vuoto. |
 
-### Optional Variables -- Execution
+### Variabili opzionali -- Esecuzione
 
-| Variable | Purpose | Read in | Default |
+| Variabile | Scopo | Letta in | Default |
 |----------|---------|---------|---------|
-| `INPUT_DIR` | Directory containing screenshots and ground truth CSV | `extraction/config.py` (line 8) | `mnt/data` |
-| `PARALLEL_WORKERS` | Thread pool size for batch extraction | `extraction/config.py` (line 11) | `12` in code; `.env.example` says `4` |
-| `PARALLEL_ENABLED` | Enable parallel processing (`1`) or serial (`0`) | `extraction/config.py` (line 12) | `1` |
-| `MAX_CALLS_PER_SCREEN` | Maximum VLM API calls per screenshot (anchor + main + retries) | `extraction/config.py` (line 50) | `4` |
-| `ANCHOR_CONF_MIN` | Minimum confidence threshold for accepting anchor NDG/denominazione | `extraction/config.py` (line 52) | `0.95` |
-| `STOP_ON_ANCHOR_UNCERTAIN` | Stop processing a screen if both anchors are null (`1` to enable) | `extraction/config.py` (line 51) | `0` (disabled) |
+| `INPUT_DIR` | Directory contenente gli screenshot e il CSV di ground truth | `extraction/config.py` (riga 8) | `mnt/data` |
+| `PARALLEL_WORKERS` | Dimensione del thread pool per l'estrazione batch | `extraction/config.py` (riga 11) | `12` nel codice; `.env.example` indica `4` |
+| `PARALLEL_ENABLED` | Abilita l'elaborazione parallela (`1`) o seriale (`0`) | `extraction/config.py` (riga 12) | `1` |
+| `MAX_CALLS_PER_SCREEN` | Numero massimo di chiamate API VLM per screenshot (anchor + main + retry) | `extraction/config.py` (riga 50) | `4` |
+| `ANCHOR_CONF_MIN` | Soglia minima di confidenza per accettare NDG/denominazione dell'anchor | `extraction/config.py` (riga 52) | `0.95` |
+| `STOP_ON_ANCHOR_UNCERTAIN` | Interrompe l'elaborazione di uno screen se entrambi gli anchor sono null (`1` per abilitare) | `extraction/config.py` (riga 51) | `0` (disabilitato) |
 
-### Optional Variables -- Debug
+### Variabili opzionali -- Debug
 
-| Variable | Purpose | Read in | Default |
+| Variabile | Scopo | Letta in | Default |
 |----------|---------|---------|---------|
-| `DEBUG_MODE` | Enable verbose debug logging in CLI batch runs | `extraction/config.py` (line 88) | `0` (disabled) |
-| `DEBUG_SAVE_CROPS` | Save intermediate crop images to disk for inspection | `extraction/config.py` (line 89) | `0` (disabled) |
+| `DEBUG_MODE` | Abilita il logging di debug verboso nelle esecuzioni batch CLI | `extraction/config.py` (riga 88) | `0` (disabilitato) |
+| `DEBUG_SAVE_CROPS` | Salva su disco le immagini di ritaglio intermedie per l'ispezione | `extraction/config.py` (riga 89) | `0` (disabilitato) |
 
-### Legacy / Deprecated Variables
+### Variabili legacy / deprecate
 
-| Variable | Purpose | Read in | Default |
+| Variabile | Scopo | Letta in | Default |
 |----------|---------|---------|---------|
-| `OPENAI_API_KEY` | Legacy OpenAI key; used as fallback when `LLM_API_KEY` is unset | `extraction/llm_factory.py` (line 34), `gui_app.py` (line 24), `edge-agent/workers/capture/bper_capture_worker.py` (line 122) | None |
-| `GEMINI_API_KEY` | Legacy Gemini key; used as fallback when `LLM_API_KEY` is unset | `extraction/llm_factory.py` (line 34) | None |
-| `SCREENSHOT_DIR` | Documented in `.env.example` (line 17) and `CLAUDE.md` (line 113) but **never read by any Python code**. Has no effect. | Nowhere | N/A |
+| `OPENAI_API_KEY` | Chiave OpenAI legacy; usata come fallback quando `LLM_API_KEY` non è impostata | `extraction/llm_factory.py` (riga 34), `gui_app.py` (riga 24), `edge-agent/workers/capture/bper_capture_worker.py` (riga 122) | Nessuno |
+| `GEMINI_API_KEY` | Chiave Gemini legacy; usata come fallback quando `LLM_API_KEY` non è impostata | `extraction/llm_factory.py` (riga 34) | Nessuno |
+| `SCREENSHOT_DIR` | Documentata in `.env.example` (riga 17) e `CLAUDE.md` (riga 113) ma **mai letta da alcun codice Python**. Non ha effetto. | Da nessuna parte | N/D |
 
-### Known Default Discrepancies
+### Discrepanze note nei default
 
-Two variables have defaults that differ between code and documentation:
+Due variabili hanno default che differiscono tra codice e documentazione:
 
-- **`PARALLEL_WORKERS`**: Code default is `12` (`extraction/config.py` line 11). The `.env.example` template and `CLAUDE.md` both say `4`. If you rely on the default without setting the variable, you get 12 workers.
-- **`LLM_THINKING_LEVEL`**: `extraction/config.py` line 20 stores a `medium` default into a module-level constant, but that constant is not actually consumed anywhere. The gate that matters is in `extraction/llm_factory.py` line 72, which re-reads `os.getenv("LLM_THINKING_LEVEL", "")` with an empty default and only applies it when both the value is in `{low, medium, high}` and the model name contains `thinking` (line 73). So in practice, if you leave the env var unset (as `.env.example` and `CLAUDE.md` suggest), thinking mode stays off regardless of what `config.py` says. The docs and code disagree on the surface but behave identically at runtime.
+- **`PARALLEL_WORKERS`**: il default nel codice è `12` (`extraction/config.py` riga 11). Il template `.env.example` e `CLAUDE.md` indicano entrambi `4`. Se ti affidi al default senza impostare la variabile, ottieni 12 worker.
+- **`LLM_THINKING_LEVEL`**: `extraction/config.py` riga 20 memorizza un default `medium` in una costante a livello di modulo, ma quella costante non viene di fatto consumata da nessuna parte. Il gate che conta è in `extraction/llm_factory.py` riga 72, che rilegge `os.getenv("LLM_THINKING_LEVEL", "")` con un default vuoto e lo applica solo quando sia il valore è in `{low, medium, high}` sia il nome del modello contiene `thinking` (riga 73). Quindi in pratica, se lasci la env var non impostata (come suggeriscono `.env.example` e `CLAUDE.md`), la modalità thinking resta disattivata indipendentemente da ciò che dice `config.py`. La documentazione e il codice divergono in superficie ma a runtime si comportano in modo identico.
 
-## Scripts and Executables
+## Script ed eseguibili
 
-This project has no Makefile, no npm scripts, and no formal build system. All commands are invoked directly with Python.
+Questo progetto non ha Makefile, né script npm, né un sistema di build formale. Tutti i comandi vengono invocati direttamente con Python.
 
-### Development Commands
+### Comandi di sviluppo
 
-| Command | What it does | When to use it |
+| Comando | Cosa fa | Quando usarlo |
 |---------|-------------|----------------|
-| `pip install -r requirements.txt` | Install all dependencies (extraction + edge-agent + ML) | First-time setup or after pulling new deps |
-| `cp .env.example .env` | Create local env file from template | First-time setup |
+| `pip install -r requirements.txt` | Installa tutte le dipendenze (extraction + edge-agent + ML) | Setup iniziale o dopo aver scaricato nuove dipendenze |
+| `cp .env.example .env` | Crea il file env locale dal template | Setup iniziale |
 
-### Running the Application
+### Esecuzione dell'applicazione
 
-| Command | What it does | When to use it |
+| Comando | Cosa fa | Quando usarlo |
 |---------|-------------|----------------|
-| `python main.py` | CLI batch extraction: processes all `.png`/`.jpg` in `INPUT_DIR`, evaluates against ground truth, saves JSON + debug CSV | Batch processing of saved screenshots |
-| `python main.py --gui` | Launch the edge-agent PyQt6 desktop application for live screen capture | Real-time extraction from a running BPER application |
-| `python gui_app.py` | Launch the Tkinter desktop GUI for manual file selection and extraction | One-off extraction without ground truth evaluation |
-| `python edge-agent/edge_agent.py` | Launch edge-agent directly (without going through `main.py`) | Alternative to `--gui` flag, useful for development |
-| `python edge-agent/edge_agent.py --debug` | Launch edge-agent with the LLM debug tab visible | Inspecting LLM router prompt/response JSON |
+| `python main.py` | Estrazione batch da CLI: elabora tutti i `.png`/`.jpg` in `INPUT_DIR`, valuta rispetto alla ground truth, salva JSON + CSV di debug | Elaborazione batch di screenshot salvati |
+| `python main.py --gui` | Avvia l'applicazione desktop PyQt6 edge-agent per la cattura dello schermo dal vivo | Estrazione in tempo reale da un'applicazione BPER in esecuzione |
+| `python gui_app.py` | Avvia la GUI desktop Tkinter per la selezione manuale dei file e l'estrazione | Estrazione estemporanea senza valutazione di ground truth |
+| `python edge-agent/edge_agent.py` | Avvia l'edge-agent direttamente (senza passare per `main.py`) | Alternativa al flag `--gui`, utile per lo sviluppo |
+| `python edge-agent/edge_agent.py --debug` | Avvia l'edge-agent con il tab di debug LLM visibile | Ispezione del prompt/risposta JSON del router LLM |
 
-### Build and Packaging
+### Build e packaging
 
-| Command | What it does | When to use it |
+| Comando | Cosa fa | Quando usarlo |
 |---------|-------------|----------------|
-| `pip install pyinstaller` | Install PyInstaller for `.exe` packaging | Before building a standalone executable |
-| `pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py` | Build a standalone Windows `.exe` from `gui_app.py` | Distributing the Tkinter GUI as a single file |
+| `pip install pyinstaller` | Installa PyInstaller per il packaging `.exe` | Prima di costruire un eseguibile standalone |
+| `pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py` | Costruisce un `.exe` Windows standalone da `gui_app.py` | Distribuzione della GUI Tkinter come file unico |
 
-The resulting `.exe` lands in `dist/AI_Data_Extractor.exe`. This is documented in `README.md` (line 91).
+L'`.exe` risultante finisce in `dist/AI_Data_Extractor.exe`. Questo è documentato in `README.md` (riga 91).
 
-### Output Files
+### File di output
 
-CLI batch extraction (`python main.py`) generates these files in the `INPUT_DIR` directory:
+L'estrazione batch da CLI (`python main.py`) genera questi file nella directory `INPUT_DIR`:
 
-| File | Contents |
+| File | Contenuto |
 |------|----------|
-| `poc_outputs_improved.json` | Full extraction results for all screenshots |
-| `poc_debug_improved.csv` | Per-field accuracy breakdown against ground truth |
+| `poc_outputs_improved.json` | Risultati completi di estrazione per tutti gli screenshot |
+| `poc_debug_improved.csv` | Dettaglio dell'accuratezza per campo rispetto alla ground truth |
 
-The Tkinter GUI (`gui_app.py`) writes to the current working directory:
+La GUI Tkinter (`gui_app.py`) scrive nella directory di lavoro corrente:
 
-| File | Contents |
+| File | Contenuto |
 |------|----------|
-| `poc_outputs_gui.json` | Extraction results JSON |
-| `poc_results_gui.csv` | Extracted data in CSV format |
-| `poc_debug_gui.csv` | Debug report (only when ground truth CSV is provided) |
+| `poc_outputs_gui.json` | JSON dei risultati di estrazione |
+| `poc_results_gui.csv` | Dati estratti in formato CSV |
+| `poc_debug_gui.csv` | Report di debug (solo quando viene fornito un CSV di ground truth) |
 
-When `DEBUG_SAVE_CROPS=1`, intermediate crop images are saved to `{INPUT_DIR}/debug_crops/`.
+Quando `DEBUG_SAVE_CROPS=1`, le immagini di ritaglio intermedie vengono salvate in `{INPUT_DIR}/debug_crops/`.
 
-## Startup and Boot Sequence
+## Avvio e sequenza di boot
 
-### CLI Batch Mode (`python main.py`)
+### Modalità batch CLI (`python main.py`)
 
-1. `main.py` (line 7): `python-dotenv` loads `.env` from the project root.
-2. `main.py` (line 8): `from extraction import *` triggers `extraction/__init__.py`, which imports `extraction/config.py`. All environment variables are read into module-level constants at this point.
-3. `extraction/cli.py::main()` (line 315): Checks that `mnt/data/dati.csv` (or whatever `GROUND_TRUTH_CSV` resolves to) exists; raises `FileNotFoundError` if missing.
-4. Loads ground truth via `load_ground_truth()` from `extraction/evaluation.py`.
-5. Discovers all `.png`/`.jpg`/`.jpeg` files in `INPUT_DIR`.
-6. Creates a `BatchRunner` (line 333), which internally calls `create_chat_model()` twice (once for the main model, once for the anchor model) and constructs an `ExtractionPipeline`.
-7. Runs extraction in parallel via `ThreadPoolExecutor` (or serial if `PARALLEL_ENABLED=0`).
-8. Saves JSON to `poc_outputs_improved.json`, evaluates accuracy, saves debug CSV, prints cost summary.
+1. `main.py` (riga 7): `python-dotenv` carica `.env` dalla root del progetto.
+2. `main.py` (riga 8): `from extraction import *` innesca `extraction/__init__.py`, che importa `extraction/config.py`. A questo punto tutte le variabili d'ambiente vengono lette in costanti a livello di modulo.
+3. `extraction/cli.py::main()` (riga 315): verifica che `mnt/data/dati.csv` (o qualunque sia il valore risolto di `GROUND_TRUTH_CSV`) esista; solleva `FileNotFoundError` se manca.
+4. Carica la ground truth tramite `load_ground_truth()` da `extraction/evaluation.py`.
+5. Individua tutti i file `.png`/`.jpg`/`.jpeg` in `INPUT_DIR`.
+6. Crea un `BatchRunner` (riga 333), che internamente chiama `create_chat_model()` due volte (una per il modello principale, una per il modello anchor) e costruisce un'`ExtractionPipeline`.
+7. Esegue l'estrazione in parallelo tramite `ThreadPoolExecutor` (oppure in serie se `PARALLEL_ENABLED=0`).
+8. Salva il JSON in `poc_outputs_improved.json`, valuta l'accuratezza, salva il CSV di debug, stampa il riepilogo dei costi.
 
-### Edge-Agent Mode (`python main.py --gui`)
+### Modalità edge-agent (`python main.py --gui`)
 
-1. `main.py` (line 7): `python-dotenv` loads `.env`.
-2. `main.py` (line 16): Inserts `edge-agent/` directory into `sys.path`.
-3. `edge-agent/edge_agent.py::main()` (line 24): Creates `QApplication`.
-4. Applies `qt-material` dark_cyan theme (line 38-43); gracefully degrades if the package is missing.
-5. Loads `edge-agent/config.ini` into `AgentConfig` (line 48).
-6. Creates `MainWindow`, which creates `LocalExtractionClient` (line 37 in `edge-agent/ui/main_window.py`). The client calls `create_chat_model()` twice and builds an `ExtractionPipeline`.
-7. `MainWindow` creates four tabs: CaptureTab, ExtractionResultsTab, DataTableTab, and optionally DebugTab (if `--debug` flag is present).
-8. Enters the Qt event loop (`app.exec()`).
+1. `main.py` (riga 7): `python-dotenv` carica `.env`.
+2. `main.py` (riga 16): inserisce la directory `edge-agent/` in `sys.path`.
+3. `edge-agent/edge_agent.py::main()` (riga 24): crea `QApplication`.
+4. Applica il tema `qt-material` dark_cyan (righe 38-43); degrada con grazia se il pacchetto manca.
+5. Carica `edge-agent/config.ini` in `AgentConfig` (riga 48).
+6. Crea `MainWindow`, che crea `LocalExtractionClient` (riga 37 in `edge-agent/ui/main_window.py`). Il client chiama `create_chat_model()` due volte e costruisce un'`ExtractionPipeline`.
+7. `MainWindow` crea quattro tab: CaptureTab, ExtractionResultsTab, DataTableTab e, opzionalmente, DebugTab (se è presente il flag `--debug`).
+8. Entra nel loop di eventi Qt (`app.exec()`).
 
-### Tkinter GUI Mode (`python gui_app.py`)
+### Modalità GUI Tkinter (`python gui_app.py`)
 
-1. Imports `extraction` package (line 6), which triggers `.env` loading and config parsing.
-2. Creates a `tk.Tk()` window with two tabs (Configurazione & Log, Risultati).
-3. Pre-populates the API key field from `LLM_API_KEY` or `OPENAI_API_KEY` environment variables (line 24).
-4. Waits for user interaction -- no extraction runs until the user selects files and clicks the start button.
+1. Importa il package `extraction` (riga 6), che innesca il caricamento di `.env` e il parsing della config.
+2. Crea una finestra `tk.Tk()` con due tab (Configurazione & Log, Risultati).
+3. Pre-popola il campo API key dalle variabili d'ambiente `LLM_API_KEY` o `OPENAI_API_KEY` (riga 24).
+4. Attende l'interazione dell'utente -- nessuna estrazione viene eseguita finché l'utente non seleziona i file e clicca il pulsante di avvio.
 
-### Configuration Load Order
+### Ordine di caricamento della configurazione
 
-Configuration is loaded in this order, where later values do not override earlier ones (each source fills in its own scope):
+La configurazione viene caricata in quest'ordine, dove i valori successivi non sovrascrivono quelli precedenti (ogni sorgente riempie il proprio ambito):
 
-1. `python-dotenv` reads `.env` and sets OS-level environment variables.
-2. `extraction/config.py` reads those environment variables via `os.getenv()` at import time.
-3. For edge-agent only: `AgentConfig` reads `edge-agent/config.ini` for agent-specific settings (FPS, router mode, monitor index, etc.). The INI file has its own `[llm]` section with provider/model/api_key, which is used for the page router -- separate from the extraction pipeline's env-var configuration.
+1. `python-dotenv` legge `.env` e imposta le variabili d'ambiente a livello di OS.
+2. `extraction/config.py` legge quelle variabili d'ambiente tramite `os.getenv()` all'import.
+3. Solo per l'edge-agent: `AgentConfig` legge `edge-agent/config.ini` per le impostazioni specifiche dell'agente (FPS, modalità router, indice monitor, ecc.). Il file INI ha una propria sezione `[llm]` con provider/model/api_key, usata per il router pagina -- separata dalla configurazione da env-var della pipeline di estrazione.
 
-### How to Verify the App Is Running
+### Come verificare che l'app sia in esecuzione
 
-- **CLI**: The console prints `Parallel enabled: workers=N, screens=N` and then `Done screen 1`, `Done screen 2`, etc. as each screen completes. A full run ends with accuracy metrics and cost summary.
-- **Edge-agent**: The MainWindow appears with the "Cattura" tab. Clicking "Avvia" starts the capture worker. A red border overlay appears on the captured monitor. The log area shows FPS tick messages and page detection results.
-- **Tkinter GUI**: The window opens with the "Configurazione & Log" tab. The API key field should show masked characters if `LLM_API_KEY` is set in the environment.
+- **CLI**: la console stampa `Parallel enabled: workers=N, screens=N` e poi `Done screen 1`, `Done screen 2`, ecc. man mano che ogni screen viene completato. Un'esecuzione completa termina con le metriche di accuratezza e il riepilogo dei costi.
+- **Edge-agent**: appare la MainWindow con il tab "Cattura". Cliccando "Avvia" si avvia il worker di cattura. Un overlay con bordo rosso appare sul monitor catturato. L'area di log mostra i messaggi di tick FPS e i risultati del riconoscimento pagina.
+- **GUI Tkinter**: la finestra si apre con il tab "Configurazione & Log". Il campo API key dovrebbe mostrare caratteri mascherati se `LLM_API_KEY` è impostata nell'ambiente.
 
-## Ports, URLs, and Service Endpoints
+## Porte, URL ed endpoint dei servizi
 
-This project operates primarily as a local application that calls external LLM APIs. It does not expose any HTTP servers in normal operation.
+Questo progetto opera principalmente come un'applicazione locale che chiama API LLM esterne. Non espone alcun server HTTP nel funzionamento normale.
 
-### External API Endpoints
+### Endpoint API esterni
 
-| Service | URL | Used by |
+| Servizio | URL | Usato da |
 |---------|-----|---------|
-| OpenAI API | `https://api.openai.com/v1` | `extraction/llm_factory.py` (via `langchain-openai`), `edge-agent/config.ini` (line 20) |
-| Google Gemini API | `https://generativelanguage.googleapis.com` | `extraction/llm_factory.py` (via `langchain-google-genai`) |
+| OpenAI API | `https://api.openai.com/v1` | `extraction/llm_factory.py` (tramite `langchain-openai`), `edge-agent/config.ini` (riga 20) |
+| Google Gemini API | `https://generativelanguage.googleapis.com` | `extraction/llm_factory.py` (tramite `langchain-google-genai`) |
 
-### Internal References (edge-agent config.ini)
+### Riferimenti interni (edge-agent config.ini)
 
-| Port | URL | Purpose | Status |
+| Porta | URL | Scopo | Stato |
 |------|-----|---------|--------|
-| 8081 | `http://localhost:8081` | API base URL in `edge-agent/config.ini` `[api]` section (line 10) | **Unused in local-only mode**. The `DefaultCaptureWorker` references this for remote upload, but `BPERCaptureWorker` with `LocalExtractionClient` bypasses it entirely. |
-| 9000 | `http://localhost:9000` | MinIO/S3 endpoint in `edge-agent/config.ini` `[minio]` section (line 13) | **Unused**. `_maybe_upload_dataset()` in the capture worker is a no-op. The MinIO integration is stubbed out. |
+| 8081 | `http://localhost:8081` | URL di base dell'API nella sezione `[api]` di `edge-agent/config.ini` (riga 10) | **Inutilizzato in modalità local-only**. Il `DefaultCaptureWorker` vi fa riferimento per l'upload remoto, ma `BPERCaptureWorker` con `LocalExtractionClient` lo aggira completamente. |
+| 9000 | `http://localhost:9000` | Endpoint MinIO/S3 nella sezione `[minio]` di `edge-agent/config.ini` (riga 13) | **Inutilizzato**. `_maybe_upload_dataset()` nel worker di cattura è un no-op. L'integrazione MinIO è ridotta a uno stub. |
 
-### DINOv2 Model Download
+### Download del modello DINOv2
 
-On first run of the ML page classifier, `torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14')` downloads the DINOv2 ViT-S/14 model from GitHub/PyTorch Hub. This requires internet access the first time; subsequent runs use the cached model in `~/.cache/torch/hub/`.
+Alla prima esecuzione del classificatore ML delle pagine, `torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14')` scarica il modello DINOv2 ViT-S/14 da GitHub/PyTorch Hub. Questo richiede l'accesso a internet la prima volta; le esecuzioni successive usano il modello in cache in `~/.cache/torch/hub/`.

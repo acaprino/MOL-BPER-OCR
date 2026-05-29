@@ -1,62 +1,62 @@
-# Configuration and Usage Guide
+# Guida alla configurazione e all'uso
 
-This guide walks through configuring poc-data-extraction from a fresh clone to a working extraction run, covers the day-to-day commands you will actually type, and documents the error messages you will encounter when something breaks. The project has two independent configuration systems -- environment variables (`.env`) for the core extraction pipeline, and an INI file (`edge-agent/config.ini`) for the desktop capture agent -- and understanding which one controls what saves real debugging time.
+Questa guida accompagna la configurazione di poc-data-extraction da un clone pulito fino a un'esecuzione di estrazione funzionante, copre i comandi di tutti i giorni che digiterai davvero e documenta i messaggi di errore in cui ti imbatterai quando qualcosa si rompe. Il progetto ha due sistemi di configurazione indipendenti -- variabili d'ambiente (`.env`) per la pipeline di estrazione principale, e un file INI (`edge-agent/config.ini`) per l'agente desktop di cattura -- e capire quale dei due controlla cosa fa risparmiare tempo reale di debugging.
 
-## Configuration Walkthrough
+## Procedura di configurazione
 
-### Step 1: Install Dependencies
+### Passo 1: Installare le dipendenze
 
 ```bash
 pip install -r requirements.txt
 ```
 
-The `requirements.txt` at the project root (`D:\Projects\poc-data-extraction\requirements.txt`) covers both the extraction pipeline and the edge-agent. Two heavy dependencies deserve attention:
+Il `requirements.txt` alla radice del progetto (`D:\Projects\poc-data-extraction\requirements.txt`) copre sia la pipeline di estrazione sia l'edge-agent. Due dipendenze pesanti meritano attenzione:
 
-- **torch / torchvision** -- required only for the ML page classifier in the edge-agent. If you skip them, the classifier degrades to `DISABLED` mode and the agent still runs (it falls back to the LLM router). Install takes significant disk space.
-- **PyQt6 / qt-material** -- required only for the edge-agent GUI (`main.py --gui` or `edge-agent/edge_agent.py`). Not needed for CLI batch mode.
+- **torch / torchvision** -- necessarie solo per il classificatore ML delle pagine nell'edge-agent. Se le ometti, il classificatore degrada in modalità `DISABLED` e l'agente continua comunque a funzionare (ricade sul router pagina LLM). L'installazione occupa molto spazio su disco.
+- **PyQt6 / qt-material** -- necessarie solo per la GUI dell'edge-agent (`main.py --gui` o `edge-agent/edge_agent.py`). Non servono per la modalità batch da CLI.
 
-If you only need CLI batch extraction, a minimal install works:
+Se ti serve solo l'estrazione batch da CLI, funziona un'installazione minimale:
 
 ```bash
 pip install langchain-core langchain-openai langchain-google-genai pillow pandas python-dotenv
 ```
 
-### Step 2: Create the .env File
+### Passo 2: Creare il file .env
 
 ```bash
 cp .env.example .env
 ```
 
-The template lives at `D:\Projects\poc-data-extraction\.env.example`. One value is mandatory -- everything else has working defaults.
+Il template si trova in `D:\Projects\poc-data-extraction\.env.example`. Un solo valore è obbligatorio -- tutto il resto ha default funzionanti.
 
-**You must set:**
+**Devi impostare:**
 
-| Variable | What to put here |
+| Variabile | Cosa inserire qui |
 |----------|-----------------|
-| `LLM_API_KEY` | Your OpenAI or Google Gemini API key |
+| `LLM_API_KEY` | La tua chiave API OpenAI o Google Gemini |
 
-**You can leave as defaults:**
+**Puoi lasciare i default:**
 
-| Variable | Default | Why it is fine |
+| Variabile | Default | Perché va bene |
 |----------|---------|---------------|
-| `LLM_PROVIDER` | `openai` | Works if your key is an OpenAI key |
-| `LLM_MODEL` | `gpt-4o` | Best accuracy for extraction |
-| `INPUT_DIR` | `mnt/data` | Standard data directory location |
-| `PARALLEL_WORKERS` | `4` (in .env.example) | Good for most machines |
-| `MAX_CALLS_PER_SCREEN` | `4` | Balances accuracy vs. cost |
-| `ANCHOR_CONF_MIN` | `0.95` | High bar for anchor acceptance is intentional |
+| `LLM_PROVIDER` | `openai` | Funziona se la tua chiave è una chiave OpenAI |
+| `LLM_MODEL` | `gpt-4o` | Migliore accuratezza per l'estrazione |
+| `INPUT_DIR` | `mnt/data` | Posizione standard della directory dei dati |
+| `PARALLEL_WORKERS` | `4` (in .env.example) | Adatto alla maggior parte delle macchine |
+| `MAX_CALLS_PER_SCREEN` | `4` | Bilancia accuratezza e costo |
+| `ANCHOR_CONF_MIN` | `0.95` | L'asticella alta per l'accettazione dell'anchor è intenzionale |
 
-**Important default discrepancy:** The code in `extraction/config.py` (line 11) defaults `PARALLEL_WORKERS` to `12` when the env var is unset. The `.env.example` template sets it to `4`. If you create `.env` from the template, you get 4 workers. If you skip creating `.env` entirely, you get 12. Set it explicitly to avoid surprises.
+**Importante discrepanza nei default:** Il codice in `extraction/config.py` (riga 11) imposta come default `PARALLEL_WORKERS` a `12` quando la variabile d'ambiente non è definita. Il template `.env.example` la imposta a `4`. Se crei `.env` dal template, ottieni 4 worker. Se salti del tutto la creazione di `.env`, ne ottieni 12. Impostala esplicitamente per evitare sorprese.
 
-### Step 3: Prepare Test Data
+### Passo 3: Preparare i dati di test
 
-The CLI batch mode expects screenshots and a ground truth CSV in `INPUT_DIR` (default: `mnt/data/`). This directory is gitignored (`/mnt` in `.gitignore`), so it will not be present after cloning.
+La modalità batch da CLI si aspetta gli screenshot e un CSV di ground truth in `INPUT_DIR` (default: `mnt/data/`). Questa directory è in gitignore (`/mnt` in `.gitignore`), quindi non sarà presente dopo il clone.
 
 ```bash
 mkdir -p mnt/data
 ```
 
-Place your BPER banking screenshots (`.png` or `.jpg`) in `mnt/data/`. For accuracy evaluation, also provide `mnt/data/dati.csv` -- a CSV with three columns:
+Colloca i tuoi screenshot bancari BPER (`.png` o `.jpg`) in `mnt/data/`. Per la valutazione dell'accuratezza, fornisci anche `mnt/data/dati.csv` -- un CSV con tre colonne:
 
 ```
 Fotogramma,Denominazione da attribuire,Valore rilevato
@@ -65,11 +65,11 @@ screen 1,DENOMINAZIONE,"TICCHI SERENA"
 screen 1,Tipo,BPI Mutui
 ```
 
-The CSV loader in `extraction/evaluation.py` (function `_find_column()`, line 26) auto-detects alternative column names: `Screenshot`/`Screen`/`screen` for the screen column, `Valore`/`Value` for values, `Campo`/`Field` for keys.
+Il loader del CSV in `extraction/evaluation.py` (funzione `_find_column()`, riga 26) rileva automaticamente nomi di colonna alternativi: `Screenshot`/`Screen`/`screen` per la colonna della schermata, `Valore`/`Value` per i valori, `Campo`/`Field` per le chiavi.
 
-### Step 4: Configure the Edge Agent (Optional)
+### Passo 4: Configurare l'Edge Agent (opzionale)
 
-The edge-agent has its own configuration file at `D:\Projects\poc-data-extraction\edge-agent\config.ini`. This is a standard INI file with six sections. The most important settings to review:
+L'edge-agent ha il proprio file di configurazione in `D:\Projects\poc-data-extraction\edge-agent\config.ini`. È un normale file INI con sei sezioni. Le impostazioni più importanti da rivedere:
 
 ```ini
 [agent]
@@ -82,25 +82,25 @@ model = gpt-4o-mini
 api_key = <your-key>  # or leave blank and rely on .env LLM_API_KEY
 ```
 
-**Security note:** The committed `config.ini` contains an API key on line 23. Replace it with your own key or clear it and rely on the `.env` file instead. The edge-agent loads `.env` from the project root at startup (`edge-agent/edge_agent.py`, lines 9-12), and the `LLMPageRouter` falls back to `OPENAI_API_KEY` and `LLM_API_KEY` environment variables (`bper_capture_worker.py`, line 122).
+**Nota di sicurezza:** Il `config.ini` committato contiene una chiave API alla riga 23. Sostituiscila con la tua oppure cancellala e affidati invece al file `.env`. L'edge-agent carica `.env` dalla radice del progetto all'avvio (`edge-agent/edge_agent.py`, righe 9-12), e il `LLMPageRouter` ricade sulle variabili d'ambiente `OPENAI_API_KEY` e `LLM_API_KEY` (`bper_capture_worker.py`, riga 122).
 
-### Configuration Load Order
+### Ordine di caricamento della configurazione
 
-Values resolve in this priority (first one wins):
+I valori si risolvono con questa priorità (vince il primo):
 
-1. `.env` file -- loaded by `python-dotenv` at the top of `main.py` (line 7) and `edge-agent/edge_agent.py` (line 11)
-2. `extraction/config.py` -- reads `os.getenv()` at import time with hardcoded defaults
-3. `edge-agent/config.ini` -- read by `AgentConfig.__init__()` in `edge-agent/config.py` (line 109)
+1. File `.env` -- caricato da `python-dotenv` in cima a `main.py` (riga 7) e `edge-agent/edge_agent.py` (riga 11)
+2. `extraction/config.py` -- legge `os.getenv()` al momento dell'import con default cablati nel codice
+3. `edge-agent/config.ini` -- letto da `AgentConfig.__init__()` in `edge-agent/config.py` (riga 109)
 
-The extraction pipeline only reads environment variables. The edge-agent reads both `.env` (for `LLM_API_KEY`) and `config.ini` (for agent-specific settings like FPS, router mode, monitor index).
+La pipeline di estrazione legge solo le variabili d'ambiente. L'edge-agent legge sia `.env` (per `LLM_API_KEY`) sia `config.ini` (per impostazioni specifiche dell'agente come FPS, modalità del router, indice del monitor).
 
-## Environment Profiles
+## Profili d'ambiente
 
-This project has no formal environment profiles (no `NODE_ENV`, no staging/production split). All configuration flows through a single `.env` file and the edge-agent's `config.ini`.
+Questo progetto non ha profili d'ambiente formali (niente `NODE_ENV`, nessuna separazione staging/produzione). Tutta la configurazione passa attraverso un unico file `.env` e il `config.ini` dell'edge-agent.
 
-### Switching Between Providers
+### Passare da un provider all'altro
 
-Toggle between OpenAI and Gemini by changing two variables in `.env`:
+Alterna tra OpenAI e Gemini cambiando due variabili in `.env`:
 
 **OpenAI (default):**
 ```
@@ -116,87 +116,87 @@ LLM_API_KEY=AI...
 LLM_MODEL=gemini-2.0-flash
 ```
 
-The factory in `extraction/llm_factory.py` validates provider-model combinations and raises `ValueError` if they mismatch (e.g., a `gpt-` model with `gemini` provider, or vice versa).
+La factory in `extraction/llm_factory.py` valida le combinazioni provider-modello e solleva `ValueError` se non corrispondono (es. un modello `gpt-` con provider `gemini`, o viceversa).
 
-### Debug Mode vs. Normal Mode
+### Modalità debug vs. modalità normale
 
-Enable debug output by setting two variables in `.env`:
+Abilita l'output di debug impostando due variabili in `.env`:
 
 ```
 DEBUG_MODE=1
 DEBUG_SAVE_CROPS=1
 ```
 
-`DEBUG_MODE` (read in `extraction/config.py`, line 88) enables verbose `[DEBUG]` log lines from `BatchRunner` in `extraction/cli.py`. `DEBUG_SAVE_CROPS` (line 89) writes every intermediate crop image to `{INPUT_DIR}/debug_crops/` via `save_debug_crop()` in `extraction/imaging.py` (line 37).
+`DEBUG_MODE` (letta in `extraction/config.py`, riga 88) abilita righe di log `[DEBUG]` verbose da `BatchRunner` in `extraction/cli.py`. `DEBUG_SAVE_CROPS` (riga 89) scrive ogni immagine di ritaglio intermedia in `{INPUT_DIR}/debug_crops/` tramite `save_debug_crop()` in `extraction/imaging.py` (riga 37).
 
-For the edge-agent, debug output is controlled in `config.ini`:
+Per l'edge-agent, l'output di debug è controllato in `config.ini`:
 
 ```ini
 [debug]
 show_llm_tab = true
 ```
 
-This shows the LLM debug tab in the edge-agent UI, exposing raw prompt/response pairs from the page router. You can also launch with `--debug` flag: `python edge-agent/edge_agent.py --debug`.
+Questo mostra la scheda di debug LLM nell'interfaccia dell'edge-agent, esponendo le coppie grezze prompt/risposta del router pagina. Puoi anche avviare con il flag `--debug`: `python edge-agent/edge_agent.py --debug`.
 
-## Configuration Recipes
+## Ricette di configurazione
 
-### Use a cheaper model for faster iteration
+### Usare un modello più economico per iterare più velocemente
 
 In `.env`:
 ```
 LLM_MODEL=gpt-4o-mini
 ```
 
-Or for Gemini:
+Oppure per Gemini:
 ```
 LLM_PROVIDER=gemini
 LLM_MODEL=gemini-2.0-flash
 ```
 
-Supported models are listed in `extraction/config.py` lines 22-32 (`PROVIDER_MODELS` dict):
+I modelli supportati sono elencati in `extraction/config.py` righe 22-32 (dict `PROVIDER_MODELS`):
 - OpenAI: `gpt-4o`, `gpt-4o-mini`, `o1`, `o1-mini`
 - Gemini: `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-exp`, `gemini-2.0-flash-thinking-exp`, `gemini-3-flash-preview`
 
-### Use a different model for the anchor pass
+### Usare un modello diverso per il passaggio anchor
 
-The anchor pass extracts only NDG and DENOMINAZIONE from the header strip. You can assign a faster/cheaper model to it while keeping the main extraction on a stronger model:
+Il passaggio anchor estrae solo NDG e DENOMINAZIONE dalla striscia di intestazione. Puoi assegnargli un modello più veloce/economico mantenendo l'estrazione principale su un modello più potente:
 
 ```
 LLM_MODEL=gpt-4o
 LLM_MODEL_ANCHOR=gpt-4o-mini
 ```
 
-If `LLM_MODEL_ANCHOR` is unset, it defaults to whatever `LLM_MODEL` is (`extraction/config.py`, line 19).
+Se `LLM_MODEL_ANCHOR` non è impostata, ricade su qualunque sia `LLM_MODEL` (`extraction/config.py`, riga 19).
 
-### Point to a different screenshot directory
+### Puntare a una directory di screenshot diversa
 
 ```
 INPUT_DIR=path/to/my/screenshots
 ```
 
-The ground truth CSV is expected at `{INPUT_DIR}/dati.csv` (`extraction/config.py`, line 9). Output files also land in `INPUT_DIR`:
-- `poc_outputs_improved.json` -- extraction results
-- `poc_debug_improved.csv` -- per-field debug report
+Il CSV di ground truth è atteso in `{INPUT_DIR}/dati.csv` (`extraction/config.py`, riga 9). Anche i file di output finiscono in `INPUT_DIR`:
+- `poc_outputs_improved.json` -- risultati dell'estrazione
+- `poc_debug_improved.csv` -- report di debug per singolo campo
 
-### Disable parallel processing
+### Disabilitare l'elaborazione parallela
 
 ```
 PARALLEL_ENABLED=0
 ```
 
-This forces sequential extraction, one screenshot at a time. Useful for debugging or when hitting API rate limits. Defined in `extraction/config.py`, line 12.
+Questo forza l'estrazione sequenziale, uno screenshot alla volta. Utile per il debug o quando si incontrano i limiti di frequenza delle API. Definito in `extraction/config.py`, riga 12.
 
-### Reduce VLM calls per screenshot
+### Ridurre le chiamate VLM per screenshot
 
 ```
 MAX_CALLS_PER_SCREEN=2
 ```
 
-The pipeline always uses 2 calls minimum (1 anchor + 1 main). Retry passes consume additional calls. Setting this to `2` disables all retries. The default of `4` allows up to 2 retry areas. Defined in `extraction/config.py`, line 50.
+La pipeline usa sempre 2 chiamate minimo (1 anchor + 1 principale). I passaggi di retry consumano chiamate aggiuntive. Impostando questo valore a `2` si disabilitano tutti i retry. Il default di `4` consente fino a 2 aree di retry. Definito in `extraction/config.py`, riga 50.
 
-### Enable Gemini thinking mode
+### Abilitare la modalità thinking di Gemini
 
-For Gemini 3+ "thinking" models:
+Per i modelli "thinking" di Gemini 3+:
 
 ```
 LLM_PROVIDER=gemini
@@ -204,11 +204,11 @@ LLM_MODEL=gemini-2.0-flash-thinking-exp
 LLM_THINKING_LEVEL=low
 ```
 
-Valid values: `low`, `medium`, `high`. The thinking level is only applied when the model name contains "thinking" (`extraction/llm_factory.py`, line 73). Note: `extraction/config.py` line 20 also stores a `medium` default, but that constant is never consumed -- `llm_factory.py` reads the env var directly with an empty default. If you do not set the variable in `.env`, thinking mode stays off.
+Valori validi: `low`, `medium`, `high`. Il livello di thinking viene applicato solo quando il nome del modello contiene "thinking" (`extraction/llm_factory.py`, riga 73). Nota: `extraction/config.py` riga 20 memorizza anche un default `medium`, ma quella costante non viene mai consumata -- `llm_factory.py` legge la variabile d'ambiente direttamente con un default vuoto. Se non imposti la variabile in `.env`, la modalità thinking resta disattivata.
 
-### Switch the edge-agent page router
+### Cambiare il router pagina dell'edge-agent
 
-In `edge-agent/config.ini`, section `[agent]`:
+In `edge-agent/config.ini`, sezione `[agent]`:
 
 ```ini
 # ML-only (requires torch):
@@ -221,9 +221,9 @@ router = llm
 router = hybrid
 ```
 
-The ML router uses DINOv2 prototype matching (`edge-agent/page_classifier.py`). The LLM router uses OpenAI Vision (`edge-agent/llm_router.py`). Hybrid tries LLM first and falls back to ML on failure.
+Il router ML usa il prototype matching DINOv2 (`edge-agent/page_classifier.py`). Il router LLM usa OpenAI Vision (`edge-agent/llm_router.py`). La modalità hybrid prova prima l'LLM e ricade sull'ML in caso di fallimento.
 
-### Change the captured monitor
+### Cambiare il monitor catturato
 
 In `edge-agent/config.ini`:
 
@@ -232,29 +232,29 @@ In `edge-agent/config.ini`:
 monitor_index = 2
 ```
 
-Uses 1-based indexing (mss convention). If the index is out of range, it falls back to monitor 1 (`bper_capture_worker.py`, lines 569-571).
+Usa l'indicizzazione a partire da 1 (convenzione mss). Se l'indice è fuori intervallo, ricade sul monitor 1 (`bper_capture_worker.py`, righe 569-571).
 
-### Stop processing on uncertain anchors
+### Interrompere l'elaborazione su anchor incerti
 
 ```
 STOP_ON_ANCHOR_UNCERTAIN=1
 ```
 
-When enabled, if both NDG and DENOMINAZIONE come back null from the anchor pass, the pipeline stops immediately and returns status `ANCHOR_UNCERTAIN` instead of proceeding to the main pass. This saves API costs on unreadable screenshots. Defined in `extraction/config.py`, line 51; checked in `extraction/pipeline.py`, line 112.
+Quando abilitato, se sia NDG che DENOMINAZIONE tornano nulli dal passaggio anchor, la pipeline si ferma immediatamente e restituisce lo stato `ANCHOR_UNCERTAIN` invece di procedere al passaggio principale. Questo risparmia costi API sugli screenshot illeggibili. Definito in `extraction/config.py`, riga 51; controllato in `extraction/pipeline.py`, riga 112.
 
-## Common Operations
+## Operazioni comuni
 
-### Run CLI batch extraction
+### Eseguire l'estrazione batch da CLI
 
 ```bash
 python main.py
 ```
 
-Processes all `.png`/`.jpg`/`.jpeg` files in `INPUT_DIR`, runs the multi-pass pipeline on each, evaluates against ground truth, and prints accuracy metrics and cost summary. Outputs:
-- `mnt/data/poc_outputs_improved.json` -- full extraction results
-- `mnt/data/poc_debug_improved.csv` -- per-field debug comparison
+Elabora tutti i file `.png`/`.jpg`/`.jpeg` in `INPUT_DIR`, esegue su ciascuno la pipeline multi-passaggio, valuta rispetto al ground truth e stampa le metriche di accuratezza e il riepilogo dei costi. Output:
+- `mnt/data/poc_outputs_improved.json` -- risultati completi dell'estrazione
+- `mnt/data/poc_debug_improved.csv` -- confronto di debug per singolo campo
 
-Expected console output includes:
+L'output atteso in console include:
 ```
 Parallel enabled: workers=4, screens=9
 Done screen 1
@@ -269,72 +269,72 @@ COST SUMMARY (per screen):
 TOTAL: calls=27  tokens=112000  cost=$0.3150
 ```
 
-### Launch the edge-agent GUI
+### Avviare la GUI dell'edge-agent
 
 ```bash
 python main.py --gui
 ```
 
-Or directly:
+Oppure direttamente:
 
 ```bash
 cd edge-agent
 python edge_agent.py
 ```
 
-The `--debug` flag enables the LLM debug tab:
+Il flag `--debug` abilita la scheda di debug LLM:
 
 ```bash
 python edge-agent/edge_agent.py --debug
 ```
 
-### Launch the Tkinter desktop GUI
+### Avviare la GUI desktop Tkinter
 
 ```bash
 python gui_app.py
 ```
 
-This standalone GUI (`D:\Projects\poc-data-extraction\gui_app.py`) provides file selection, provider/model dropdown, and a results viewer. It reads `LLM_API_KEY` from the environment but also has an API key input field in the UI (line 24).
+Questa GUI autonoma (`D:\Projects\poc-data-extraction\gui_app.py`) fornisce la selezione dei file, un menu a tendina provider/modello e un visualizzatore dei risultati. Legge `LLM_API_KEY` dall'ambiente ma ha anche un campo di input per la chiave API nell'interfaccia (riga 24).
 
-### Build a Windows executable
+### Compilare un eseguibile Windows
 
 ```bash
 pip install pyinstaller
 pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py
 ```
 
-Output lands in `dist/AI_Data_Extractor.exe`. This packages the Tkinter GUI only, not the edge-agent.
+L'output finisce in `dist/AI_Data_Extractor.exe`. Questo impacchetta solo la GUI Tkinter, non l'edge-agent.
 
-### View debug crops
+### Visualizzare i ritagli di debug
 
-Set `DEBUG_SAVE_CROPS=1` in `.env`, then run extraction. Crop images are saved to `{INPUT_DIR}/debug_crops/` with filenames like `screen 1__CONTENT.png`, `screen 1__HEADER_IN_CONTENT.png`, `screen 1__RETRY_HEADER.png`. This helps verify that the pipeline's crop coordinates are landing on the right regions.
+Imposta `DEBUG_SAVE_CROPS=1` in `.env`, poi esegui l'estrazione. Le immagini dei ritagli vengono salvate in `{INPUT_DIR}/debug_crops/` con nomi come `screen 1__CONTENT.png`, `screen 1__HEADER_IN_CONTENT.png`, `screen 1__RETRY_HEADER.png`. Questo aiuta a verificare che le coordinate di ritaglio della pipeline cadano sulle regioni corrette.
 
-### Export results from the edge-agent
+### Esportare i risultati dall'edge-agent
 
-In the edge-agent UI:
-1. **Risultati tab** -- click CSV export to save per-field results
-2. **Dati tab** -- spreadsheet view with CSV and Excel export (Excel via `openpyxl`)
+Nell'interfaccia dell'edge-agent:
+1. **Scheda Risultati** -- clicca sull'esportazione CSV per salvare i risultati per singolo campo
+2. **Scheda Dati** -- vista a foglio di calcolo con esportazione CSV ed Excel (Excel tramite `openpyxl`)
 
-The `LocalExtractionClient.export_csv()` method (`edge-agent/local_extraction_client.py`, line 112) generates flat CSV with `{field}_value` and `{field}_conf` columns.
+Il metodo `LocalExtractionClient.export_csv()` (`edge-agent/local_extraction_client.py`, riga 112) genera un CSV piatto con colonne `{field}_value` e `{field}_conf`.
 
-## Troubleshooting
+## Risoluzione dei problemi
 
 ### "API key required. Set LLM_API_KEY env var or pass api_key="
 
-**Symptom:** `ValueError: API key required. Set LLM_API_KEY env var or pass api_key=.`
+**Sintomo:** `ValueError: API key required. Set LLM_API_KEY env var or pass api_key=.`
 
-**Cause:** No API key was found. The factory in `extraction/llm_factory.py` (line 42) checks `LLM_API_KEY`, then falls back to legacy vars `OPENAI_API_KEY` / `GEMINI_API_KEY` (lines 30-38). All were empty.
+**Causa:** Nessuna chiave API è stata trovata. La factory in `extraction/llm_factory.py` (riga 42) controlla `LLM_API_KEY`, poi ricade sulle variabili legacy `OPENAI_API_KEY` / `GEMINI_API_KEY` (righe 30-38). Erano tutte vuote.
 
-**Fix:** Set `LLM_API_KEY` in your `.env` file. Verify the file is in the project root and that `python-dotenv` is installed (`pip install python-dotenv`). If using the Tkinter GUI, you can also paste the key directly into the API Key field.
+**Soluzione:** Imposta `LLM_API_KEY` nel tuo file `.env`. Verifica che il file sia nella radice del progetto e che `python-dotenv` sia installato (`pip install python-dotenv`). Se usi la GUI Tkinter, puoi anche incollare la chiave direttamente nel campo API Key.
 
-### "Unknown provider" or model-provider mismatch
+### "Unknown provider" o discrepanza modello-provider
 
-**Symptom:** `ValueError: Unknown provider: 'xyz'. Available: ['openai', 'gemini']`
-or: `ValueError: Model 'gemini-2.0-flash' looks like a Gemini model but provider is 'openai'.`
+**Sintomo:** `ValueError: Unknown provider: 'xyz'. Available: ['openai', 'gemini']`
+oppure: `ValueError: Model 'gemini-2.0-flash' looks like a Gemini model but provider is 'openai'.`
 
-**Cause:** `LLM_PROVIDER` does not match the model name, or is set to something other than `openai` or `gemini`. Validation is in `extraction/llm_factory.py`, lines 49-53 and 59-62.
+**Causa:** `LLM_PROVIDER` non corrisponde al nome del modello, o è impostata su qualcosa di diverso da `openai` o `gemini`. La validazione è in `extraction/llm_factory.py`, righe 49-53 e 59-62.
 
-**Fix:** Ensure `LLM_PROVIDER` and `LLM_MODEL` are consistent:
+**Soluzione:** Assicurati che `LLM_PROVIDER` e `LLM_MODEL` siano coerenti:
 ```
 # OpenAI models: gpt-4o, gpt-4o-mini, o1, o1-mini
 LLM_PROVIDER=openai
@@ -347,82 +347,82 @@ LLM_MODEL=gemini-2.0-flash
 
 ### "Ground truth CSV not found"
 
-**Symptom:** `FileNotFoundError: Ground truth CSV not found: mnt/data/dati.csv`
+**Sintomo:** `FileNotFoundError: Ground truth CSV not found: mnt/data/dati.csv`
 
-**Cause:** The CLI entry point (`extraction/cli.py`, line 316) requires `dati.csv` to exist at `{INPUT_DIR}/dati.csv`. The `mnt/` directory is gitignored and not present after a fresh clone.
+**Causa:** L'entry point della CLI (`extraction/cli.py`, riga 316) richiede che `dati.csv` esista in `{INPUT_DIR}/dati.csv`. La directory `mnt/` è in gitignore e non è presente dopo un clone pulito.
 
-**Fix:** Either create the directory and provide the CSV:
+**Soluzione:** Crea la directory e fornisci il CSV:
 ```bash
 mkdir -p mnt/data
 # copy your dati.csv and screenshot files here
 ```
 
-Or change `INPUT_DIR` in `.env` to point to wherever your data lives:
+Oppure cambia `INPUT_DIR` in `.env` per puntare al punto in cui risiedono i tuoi dati:
 ```
 INPUT_DIR=path/to/my/data
 ```
 
 ### "Cannot find column in CSV"
 
-**Symptom:** `ValueError: Cannot find screen column in CSV. Columns=['Col1', 'Col2', ...]`
+**Sintomo:** `ValueError: Cannot find screen column in CSV. Columns=['Col1', 'Col2', ...]`
 
-**Cause:** The ground truth CSV does not contain any of the expected column names. The loader in `extraction/evaluation.py` (function `_find_column()`, line 26) looks for specific candidates:
-- Screen column: `Screenshot`, `Fotogramma`, `Screen`, `screen`
-- Value column: `Valore rilevato`, `Valore rilevato ` (with trailing space), `Valore`, `Value`
-- Key column: `Denominazione da attribuire`, `Denominazione`, `Campo`, `Field`
+**Causa:** Il CSV di ground truth non contiene nessuno dei nomi di colonna attesi. Il loader in `extraction/evaluation.py` (funzione `_find_column()`, riga 26) cerca candidati specifici:
+- Colonna della schermata: `Screenshot`, `Fotogramma`, `Screen`, `screen`
+- Colonna del valore: `Valore rilevato`, `Valore rilevato ` (con spazio finale), `Valore`, `Value`
+- Colonna della chiave: `Denominazione da attribuire`, `Denominazione`, `Campo`, `Field`
 
-**Fix:** Rename your CSV columns to match one of the expected names. The most common format is:
+**Soluzione:** Rinomina le colonne del tuo CSV per farle corrispondere a uno dei nomi attesi. Il formato più comune è:
 ```csv
 Fotogramma,Denominazione da attribuire,Valore rilevato
 ```
 
 ### "No images found in INPUT_DIR"
 
-**Symptom:** Console prints `No images found in mnt/data` and exits without processing.
+**Sintomo:** La console stampa `No images found in mnt/data` ed esce senza elaborare.
 
-**Cause:** No `.png`, `.jpg`, or `.jpeg` files exist in the configured `INPUT_DIR`. The file discovery is in `extraction/cli.py`, lines 322-327.
+**Causa:** Nessun file `.png`, `.jpg` o `.jpeg` esiste nell'`INPUT_DIR` configurato. La scoperta dei file è in `extraction/cli.py`, righe 322-327.
 
-**Fix:** Place screenshot files in the `INPUT_DIR` directory. Verify the path: `ls mnt/data/*.png`
+**Soluzione:** Colloca i file degli screenshot nella directory `INPUT_DIR`. Verifica il percorso: `ls mnt/data/*.png`
 
 ### "No JSON object found in model response"
 
-**Symptom:** `ValueError: No JSON object found in model response: '...'`
+**Sintomo:** `ValueError: No JSON object found in model response: '...'`
 
-**Cause:** The Gemini model returned free-form text instead of JSON. This happens with the Gemini freeform path in `extraction/vlm_client.py` (line 39) when newer Gemini models (2.0+) produce responses without a valid JSON object. This is a `ValueError`, so the retry logic does not retry it -- it fails immediately (line 252-253).
+**Causa:** Il modello Gemini ha restituito testo in forma libera invece di JSON. Questo accade con il percorso freeform di Gemini in `extraction/vlm_client.py` (riga 39) quando i modelli Gemini più recenti (2.0+) producono risposte senza un oggetto JSON valido. Si tratta di un `ValueError`, quindi la logica di retry non lo riprova -- fallisce immediatamente (righe 252-253).
 
-**Fix:** Try a different Gemini model. `gemini-1.5-flash` and `gemini-1.5-pro` use the schema-based JSON mode which is more reliable. For 2.0+ models, the code falls back to freeform JSON parsing which is inherently less stable.
+**Soluzione:** Prova un modello Gemini diverso. `gemini-1.5-flash` e `gemini-1.5-pro` usano la modalità JSON basata su schema, che è più affidabile. Per i modelli 2.0+, il codice ricade sul parsing JSON in forma libera, intrinsecamente meno stabile.
 
-### "Pydantic validation failed" or "Structured output parsing failed"
+### "Pydantic validation failed" o "Structured output parsing failed"
 
-**Symptom:** `ValueError: Pydantic validation failed for screen 1/CONTENT_MAIN: ...` or `ValueError: Structured output parsing failed for screen 1/CONTENT_MAIN: ...`
+**Sintomo:** `ValueError: Pydantic validation failed for screen 1/CONTENT_MAIN: ...` oppure `ValueError: Structured output parsing failed for screen 1/CONTENT_MAIN: ...`
 
-**Cause:** The LLM returned JSON that does not match the expected Pydantic schema. OpenAI structured output parsing failure is caught at `extraction/vlm_client.py`, lines 199-202. Gemini freeform validation failure is at lines 95-98.
+**Causa:** L'LLM ha restituito JSON che non corrisponde allo schema Pydantic atteso. Il fallimento del parsing dell'output strutturato OpenAI viene catturato in `extraction/vlm_client.py`, righe 199-202. Il fallimento della validazione freeform di Gemini è alle righe 95-98.
 
-**Fix:** These errors are non-retriable by design. They typically indicate the model struggled with the image. Options: try a more capable model (`gpt-4o` instead of `gpt-4o-mini`), or check that the screenshot is a valid BPER banking screen.
+**Soluzione:** Questi errori sono non ripetibili per scelta progettuale. Tipicamente indicano che il modello ha avuto difficoltà con l'immagine. Opzioni: prova un modello più capace (`gpt-4o` invece di `gpt-4o-mini`), oppure verifica che lo screenshot sia una schermata bancaria BPER valida.
 
 ### "mss non disponibile"
 
-**Symptom:** Edge-agent stops with `RuntimeError: mss non disponibile: ...`
+**Sintomo:** L'edge-agent si ferma con `RuntimeError: mss non disponibile: ...`
 
-**Cause:** The `mss` screenshot library failed to initialize. This error is raised in `edge-agent/workers/capture/bper_capture_worker.py`, line 562. Common on environments without a display server.
+**Causa:** La libreria di screenshot `mss` non è riuscita a inizializzarsi. Questo errore viene sollevato in `edge-agent/workers/capture/bper_capture_worker.py`, riga 562. Comune negli ambienti privi di display server.
 
-**Fix:** Ensure you are running on a machine with a display. On Windows, this should work out of the box. On Linux, ensure X11 or Wayland is running. Install `mss` if missing: `pip install mss>=9.0.0`.
+**Soluzione:** Assicurati di eseguire su una macchina con un display. Su Windows dovrebbe funzionare immediatamente. Su Linux, assicurati che X11 o Wayland siano in esecuzione. Installa `mss` se manca: `pip install mss>=9.0.0`.
 
 ### "Cattura fallita N volte consecutive"
 
-**Symptom:** Edge-agent auto-stops with `RuntimeError: Cattura fallita 5 volte consecutive. Ultimo errore: ...`
+**Sintomo:** L'edge-agent si ferma automaticamente con `RuntimeError: Cattura fallita 5 volte consecutive. Ultimo errore: ...`
 
-**Cause:** Five consecutive screenshot captures failed. The counter is in `bper_capture_worker.py`, lines 589-598. This usually means the configured monitor index does not exist.
+**Causa:** Cinque catture di screenshot consecutive sono fallite. Il contatore è in `bper_capture_worker.py`, righe 589-598. Di solito significa che l'indice del monitor configurato non esiste.
 
-**Fix:** Check `monitor_index` in `edge-agent/config.ini`. Set it to `1` for the primary monitor. If you have multiple monitors, use `2`, `3`, etc. The index is 1-based per `mss` convention.
+**Soluzione:** Controlla `monitor_index` in `edge-agent/config.ini`. Impostalo a `1` per il monitor primario. Se hai più monitor, usa `2`, `3`, ecc. L'indice parte da 1 secondo la convenzione `mss`.
 
-### ML classifier disabled / torch import failure
+### Classificatore ML disabilitato / fallimento dell'import di torch
 
-**Symptom:** Edge-agent log shows `[BPER-ML] import_error: ...` or `[BPER] Router disabilitato.`
+**Sintomo:** Il log dell'edge-agent mostra `[BPER-ML] import_error: ...` oppure `[BPER] Router disabilitato.`
 
-**Cause:** `torch` or `torchvision` failed to import. The `page_classifier.py` is designed to degrade gracefully -- it sets itself to `DISABLED` mode and `classify()` returns `(None, 0.0)`. See `edge-agent/page_classifier.py`, lines 137-165.
+**Causa:** `torch` o `torchvision` non sono riusciti a importarsi. `page_classifier.py` è progettato per degradare con grazia -- si imposta in modalità `DISABLED` e `classify()` restituisce `(None, 0.0)`. Vedi `edge-agent/page_classifier.py`, righe 137-165.
 
-**Fix:** If you need ML page classification, install PyTorch: `pip install torch torchvision`. If you do not need it, switch to the LLM router in `config.ini`:
+**Soluzione:** Se ti serve la classificazione ML delle pagine, installa PyTorch: `pip install torch torchvision`. Se non ti serve, passa al router LLM in `config.ini`:
 ```ini
 [agent]
 router = llm
@@ -430,27 +430,27 @@ router = llm
 
 ### "LLM client non inizializzato (manca API key o import OpenAI fallito)"
 
-**Symptom:** Edge-agent LLM debug tab shows this error. Page routing returns no matches.
+**Sintomo:** La scheda di debug LLM dell'edge-agent mostra questo errore. Il riconoscimento pagina non restituisce corrispondenze.
 
-**Cause:** The `LLMPageRouter` in `edge-agent/llm_router.py` (line 148) could not create an OpenAI client. Either the `openai` package is not installed, or no API key was provided.
+**Causa:** Il `LLMPageRouter` in `edge-agent/llm_router.py` (riga 148) non è riuscito a creare un client OpenAI. O il pacchetto `openai` non è installato, oppure non è stata fornita alcuna chiave API.
 
-**Fix:** Ensure `openai` is installed (`pip install openai>=1.51.0`). Set the API key in either `edge-agent/config.ini` under `[llm] api_key = ...` or in `.env` as `LLM_API_KEY=...` or `OPENAI_API_KEY=...`.
+**Soluzione:** Assicurati che `openai` sia installato (`pip install openai>=1.51.0`). Imposta la chiave API in `edge-agent/config.ini` sotto `[llm] api_key = ...` oppure in `.env` come `LLM_API_KEY=...` o `OPENAI_API_KEY=...`.
 
-### Rate limits and transient API errors
+### Limiti di frequenza ed errori API transitori
 
-**Symptom:** Extraction is slow with intermittent failures, then eventually succeeds or fails after retries.
+**Sintomo:** L'estrazione è lenta con fallimenti intermittenti, poi alla fine riesce o fallisce dopo i retry.
 
-**Cause:** The retry logic in `extraction/vlm_client.py` (function `call_vlm_with_retry`, lines 240-258) handles transient errors with exponential backoff: `min(8.0, 2^i * 0.8) + 0.05*i` seconds, up to 3 retries. `ValueError` exceptions (parsing failures) are not retried.
+**Causa:** La logica di retry in `extraction/vlm_client.py` (funzione `call_vlm_with_retry`, righe 240-258) gestisce gli errori transitori con backoff esponenziale: `min(8.0, 2^i * 0.8) + 0.05*i` secondi, fino a 3 retry. Le eccezioni `ValueError` (fallimenti di parsing) non vengono ripetute.
 
-**Fix:** Reduce `PARALLEL_WORKERS` to lower concurrent API calls. If using a free-tier API key, set `PARALLEL_WORKERS=1` and `PARALLEL_ENABLED=0`.
+**Soluzione:** Riduci `PARALLEL_WORKERS` per abbassare le chiamate API concorrenti. Se usi una chiave API di livello gratuito, imposta `PARALLEL_WORKERS=1` e `PARALLEL_ENABLED=0`.
 
-### Deprecation warning: "OPENAI_API_KEY is deprecated. Use LLM_API_KEY instead."
+### Avviso di deprecazione: "OPENAI_API_KEY is deprecated. Use LLM_API_KEY instead."
 
-**Symptom:** `DeprecationWarning: OPENAI_API_KEY is deprecated. Use LLM_API_KEY instead.`
+**Sintomo:** `DeprecationWarning: OPENAI_API_KEY is deprecated. Use LLM_API_KEY instead.`
 
-**Cause:** You have `OPENAI_API_KEY` or `GEMINI_API_KEY` set in your environment but not `LLM_API_KEY`. The factory in `extraction/llm_factory.py` (lines 36-40) still accepts the legacy names but warns about them.
+**Causa:** Hai `OPENAI_API_KEY` o `GEMINI_API_KEY` impostate nel tuo ambiente ma non `LLM_API_KEY`. La factory in `extraction/llm_factory.py` (righe 36-40) accetta ancora i nomi legacy ma avvisa al riguardo.
 
-**Fix:** Rename the variable in your `.env`:
+**Soluzione:** Rinomina la variabile nel tuo `.env`:
 ```
 # Before:
 OPENAI_API_KEY=sk-...
@@ -459,24 +459,24 @@ OPENAI_API_KEY=sk-...
 LLM_API_KEY=sk-...
 ```
 
-## Quick Reference
+## Riferimento rapido
 
-| Task | Command | Notes |
+| Attività | Comando | Note |
 |------|---------|-------|
-| Install dependencies | `pip install -r requirements.txt` | Full install including edge-agent |
-| Create config | `cp .env.example .env` | Then set `LLM_API_KEY` |
-| Run CLI batch extraction | `python main.py` | Needs screenshots in `INPUT_DIR` + `dati.csv` |
-| Launch edge-agent | `python main.py --gui` | PyQt6 live capture + extraction |
-| Launch edge-agent (direct) | `python edge-agent/edge_agent.py` | Same as above, skips main.py shim |
-| Launch edge-agent (debug) | `python edge-agent/edge_agent.py --debug` | Shows LLM debug tab |
-| Launch Tkinter GUI | `python gui_app.py` | Standalone desktop app |
-| Switch to Gemini | Set `LLM_PROVIDER=gemini` and `LLM_MODEL=gemini-2.0-flash` in `.env` | Also change `LLM_API_KEY` to Gemini key |
-| Enable debug crops | Set `DEBUG_SAVE_CROPS=1` in `.env` | Crops saved to `{INPUT_DIR}/debug_crops/` |
-| Disable parallelism | Set `PARALLEL_ENABLED=0` in `.env` | Sequential processing |
-| Build Windows .exe | `pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py` | Packages Tkinter GUI only |
-| Change edge-agent router | Set `router = ml` or `llm` or `hybrid` in `edge-agent/config.ini` | ML requires torch |
-| Change capture monitor | Set `monitor_index = N` in `edge-agent/config.ini` | 1-based index |
+| Installare le dipendenze | `pip install -r requirements.txt` | Installazione completa incluso l'edge-agent |
+| Creare la configurazione | `cp .env.example .env` | Poi imposta `LLM_API_KEY` |
+| Eseguire l'estrazione batch da CLI | `python main.py` | Servono screenshot in `INPUT_DIR` + `dati.csv` |
+| Avviare l'edge-agent | `python main.py --gui` | Cattura dal vivo + estrazione con PyQt6 |
+| Avviare l'edge-agent (diretto) | `python edge-agent/edge_agent.py` | Come sopra, salta lo shim main.py |
+| Avviare l'edge-agent (debug) | `python edge-agent/edge_agent.py --debug` | Mostra la scheda di debug LLM |
+| Avviare la GUI Tkinter | `python gui_app.py` | App desktop autonoma |
+| Passare a Gemini | Imposta `LLM_PROVIDER=gemini` e `LLM_MODEL=gemini-2.0-flash` in `.env` | Cambia anche `LLM_API_KEY` con la chiave Gemini |
+| Abilitare i ritagli di debug | Imposta `DEBUG_SAVE_CROPS=1` in `.env` | Ritagli salvati in `{INPUT_DIR}/debug_crops/` |
+| Disabilitare il parallelismo | Imposta `PARALLEL_ENABLED=0` in `.env` | Elaborazione sequenziale |
+| Compilare il .exe Windows | `pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py` | Impacchetta solo la GUI Tkinter |
+| Cambiare il router dell'edge-agent | Imposta `router = ml` o `llm` o `hybrid` in `edge-agent/config.ini` | ML richiede torch |
+| Cambiare il monitor di cattura | Imposta `monitor_index = N` in `edge-agent/config.ini` | Indice a partire da 1 |
 
 ---
 
-Cross-references: [Project Anatomy](09-project-anatomy.md) for the full catalog of environment variables, config files, and their locations. [Getting Started](07-getting-started.md) for initial setup and first run. [Tech Stack](03-tech-stack.md) for dependency details and version constraints.
+Riferimenti incrociati: [Anatomia del progetto](09-project-anatomy.md) per il catalogo completo delle variabili d'ambiente, dei file di configurazione e delle loro posizioni. [Per iniziare](07-getting-started.md) per il setup iniziale e la prima esecuzione. [Tech Stack](03-tech-stack.md) per i dettagli sulle dipendenze e i vincoli di versione.

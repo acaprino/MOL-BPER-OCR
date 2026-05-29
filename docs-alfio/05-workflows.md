@@ -1,52 +1,52 @@
-# Workflows
+# Workflow
 
-This project has three distinct user-facing workflows and one core system workflow that underpins all of them. The **CLI batch extraction** runs all screenshots through the multi-pass pipeline and evaluates accuracy against ground truth. The **edge-agent live capture** monitors a screen in real time, detects BPER banking pages, and extracts data as operators navigate. The **Tkinter desktop GUI** provides a graphical interface for ad-hoc extraction runs. At the heart of each sits the **multi-pass extraction pipeline**, the shared engine that turns a single screenshot into structured banking data.
+Questo progetto ha tre distinti workflow rivolti all'utente e un workflow di sistema centrale che li accomuna tutti. La **estrazione batch da CLI** fa passare tutti gli screenshot attraverso la pipeline multi-pass e valuta l'accuratezza rispetto alla ground truth. La **cattura dal vivo dell'edge-agent** monitora uno schermo in tempo reale, riconosce le pagine bancarie BPER ed estrae i dati man mano che gli operatori navigano. La **GUI desktop Tkinter** fornisce un'interfaccia grafica per esecuzioni di estrazione estemporanee. Al cuore di ognuno c'è la **pipeline di estrazione multi-pass**, il motore condiviso che trasforma un singolo screenshot in dati bancari strutturati.
 
-## CLI Batch Extraction
+## Estrazione batch da CLI
 
-The most common development workflow. An operator runs `python main.py` to process every screenshot in the input directory, evaluate accuracy against a ground truth CSV, and produce cost reports.
+È il workflow di sviluppo più comune. Un operatore esegue `python main.py` per elaborare ogni screenshot nella directory di input, valutare l'accuratezza rispetto a un CSV di ground truth e produrre i report di costo.
 
 ### Flowchart
 
 ```mermaid
 flowchart TD
-    A["python main.py"] --> B["Load .env via python-dotenv"]
-    B --> C["cli.main(): Load ground truth CSV"]
-    C --> D{"CSV exists?"}
-    D -- No --> E["Raise FileNotFoundError"]
-    D -- Yes --> F["Discover .png/.jpg files in INPUT_DIR"]
-    F --> G{"Images found?"}
-    G -- No --> H["Print 'No images found', return"]
-    G -- Yes --> I["Create BatchRunner with LLM models"]
-    I --> J{"PARALLEL_ENABLED and workers > 1?"}
-    J -- Yes --> K["ThreadPoolExecutor: parallel extract_from_screen"]
-    J -- No --> L["Sequential extract_from_screen"]
-    K --> M["Collect outputs dict"]
+    A["python main.py"] --> B["Carica .env tramite python-dotenv"]
+    B --> C["cli.main(): carica CSV di ground truth"]
+    C --> D{"CSV esiste?"}
+    D -- No --> E["Solleva FileNotFoundError"]
+    D -- Yes --> F["Trova file .png/.jpg in INPUT_DIR"]
+    F --> G{"Immagini trovate?"}
+    G -- No --> H["Stampa 'Nessuna immagine trovata', ritorna"]
+    G -- Yes --> I["Crea BatchRunner con i modelli LLM"]
+    I --> J{"PARALLEL_ENABLED e workers > 1?"}
+    J -- Yes --> K["ThreadPoolExecutor: extract_from_screen in parallelo"]
+    J -- No --> L["extract_from_screen sequenziale"]
+    K --> M["Raccoglie dict di output"]
     L --> M
-    M --> N["Save poc_outputs_improved.json"]
-    N --> O["Evaluator.eval: compute RAW + FILTERED accuracy"]
-    O --> P["Save poc_debug_improved.csv"]
-    P --> Q["Print cost summary"]
-    Q --> R["Done"]
+    M --> N["Salva poc_outputs_improved.json"]
+    N --> O["Evaluator.eval: calcola accuratezza RAW + FILTERED"]
+    O --> P["Salva poc_debug_improved.csv"]
+    P --> Q["Stampa riepilogo costi"]
+    Q --> R["Fine"]
 ```
 
-### Walkthrough
+### Spiegazione passo per passo
 
-1. **Entry point.** `main.py` loads environment variables via `python-dotenv`, then imports everything from the `extraction` package. When run without flags, it calls `main()` from `extraction/cli.py` (line 314).
+1. **Entry point.** `main.py` carica le variabili d'ambiente tramite `python-dotenv`, poi importa tutto dal package `extraction`. Quando viene eseguito senza flag, invoca `main()` da `extraction/cli.py` (riga 314).
 
-2. **Ground truth loading.** `cli.main()` checks for `mnt/data/dati.csv` (the path is built from `INPUT_DIR` in `extraction/config.py`, line 9). The function `load_ground_truth()` in `extraction/evaluation.py` (line 33) reads the CSV with pandas, mapping each screen name to a dict of field-name/value pairs. It tolerates several column name variants for the screen, key, and value columns.
+2. **Caricamento della ground truth.** `cli.main()` verifica la presenza di `mnt/data/dati.csv` (il percorso è costruito a partire da `INPUT_DIR` in `extraction/config.py`, riga 9). La funzione `load_ground_truth()` in `extraction/evaluation.py` (riga 33) legge il CSV con pandas, mappando ogni nome di screen a un dict di coppie nome-campo/valore. Tollera diverse varianti dei nomi delle colonne per le colonne screen, key e value.
 
-3. **Image discovery.** All `.png`, `.jpg`, and `.jpeg` files in `INPUT_DIR` are collected and sorted alphabetically (`extraction/cli.py`, lines 322-327).
+3. **Individuazione delle immagini.** Tutti i file `.png`, `.jpg` e `.jpeg` in `INPUT_DIR` vengono raccolti e ordinati alfabeticamente (`extraction/cli.py`, righe 322-327).
 
-4. **BatchRunner initialization.** `BatchRunner.__init__()` (`extraction/cli.py`, line 158) calls `create_chat_model()` from `extraction/llm_factory.py` twice -- once for the main extraction model, once for the anchor model. Both LangChain `ChatModel` instances are thread-safe and shared across all workers. They feed into a single `ExtractionPipeline` instance.
+4. **Inizializzazione del BatchRunner.** `BatchRunner.__init__()` (`extraction/cli.py`, riga 158) chiama `create_chat_model()` da `extraction/llm_factory.py` due volte -- una per il modello di estrazione principale, una per il modello anchor. Entrambe le istanze `ChatModel` di LangChain sono thread-safe e condivise tra tutti i worker. Confluiscono in un'unica istanza di `ExtractionPipeline`.
 
-5. **Parallel or sequential execution.** `BatchRunner.run()` (line 207) checks `PARALLEL_ENABLED` and the worker count. If parallel, it uses `ThreadPoolExecutor` with up to `PARALLEL_WORKERS` threads (default 12 in code, `extraction/config.py` line 11). Each thread calls `ExtractionPipeline.extract_from_screen()` for one image. Callbacks `on_complete` and `on_error` fire on the calling thread.
+5. **Esecuzione parallela o sequenziale.** `BatchRunner.run()` (riga 207) controlla `PARALLEL_ENABLED` e il numero di worker. Se in parallelo, usa `ThreadPoolExecutor` con un massimo di `PARALLEL_WORKERS` thread (default 12 nel codice, `extraction/config.py` riga 11). Ogni thread chiama `ExtractionPipeline.extract_from_screen()` per un'immagine. Le callback `on_complete` e `on_error` scattano sul thread chiamante.
 
-6. **Output persistence.** Results are saved as JSON to `mnt/data/poc_outputs_improved.json` (`extraction/cli.py`, lines 337-340).
+6. **Persistenza dell'output.** I risultati vengono salvati come JSON in `mnt/data/poc_outputs_improved.json` (`extraction/cli.py`, righe 337-340).
 
-7. **Evaluation.** `Evaluator.eval()` delegates to `eval_outputs()` in `extraction/evaluation.py` (line 74), which compares each predicted field value against ground truth using `classify_field()` from `extraction/normalization.py` (line 113). Fields are classified as OK, WRONG, MISSING, HALLUCINATED, or OK_NULL. A `dataset_mismatch_guard()` check filters out screens where the NDG or Denominazione do not match (suggesting a wrong ground truth row).
+7. **Valutazione.** `Evaluator.eval()` delega a `eval_outputs()` in `extraction/evaluation.py` (riga 74), che confronta ogni valore di campo predetto rispetto alla ground truth usando `classify_field()` da `extraction/normalization.py` (riga 113). I campi vengono classificati come OK, WRONG, MISSING, HALLUCINATED o OK_NULL. Un controllo `dataset_mismatch_guard()` filtra gli screen in cui NDG o Denominazione non corrispondono (segnalando una riga di ground truth errata).
 
-8. **Reporting.** `build_debug_report()` writes a semicolon-delimited CSV with per-(screen, field) rows. `print_cost_summary()` outputs per-screen token counts and estimated USD costs.
+8. **Reportistica.** `build_debug_report()` scrive un CSV delimitato da punto e virgola con una riga per ogni coppia (screen, campo). `print_cost_summary()` stampa il conteggio dei token per screen e i costi stimati in USD.
 
 ### Sequence Diagram
 
@@ -67,83 +67,83 @@ sequenceDiagram
     cli->>BR: BatchRunner(parallel, max_workers)
     BR->>BR: create_chat_model() x2
     cli->>BR: run(screenshot_paths)
-    loop Each screenshot (parallel)
+    loop Ogni screenshot (parallelo)
         BR->>EP: extract_from_screen(path)
         EP->>VLM: call_vlm_with_retry (anchor)
-        VLM->>LLM: API call with image
+        VLM->>LLM: Chiamata API con immagine
         LLM-->>VLM: AnchorResponse JSON
         EP->>VLM: call_vlm_with_retry (main)
-        VLM->>LLM: API call with image
+        VLM->>LLM: Chiamata API con immagine
         LLM-->>VLM: ExtractionResponse JSON
-        EP->>EP: retry areas (if needed)
-        EP-->>BR: result dict
+        EP->>EP: aree di retry (se necessario)
+        EP-->>BR: dict risultato
     end
-    BR-->>cli: outputs dict
-    cli->>cli: Save JSON
+    BR-->>cli: dict di output
+    cli->>cli: Salva JSON
     cli->>Eval: eval(outputs)
-    Eval-->>cli: accuracy metrics
+    Eval-->>cli: metriche di accuratezza
     cli->>Eval: build_debug_report()
     cli->>Eval: print_cost_summary()
 ```
 
-### Error Handling
+### Gestione degli errori
 
-- **Missing CSV**: `FileNotFoundError` raised immediately at `extraction/cli.py` line 316.
-- **Missing images**: A warning prints but execution continues with remaining files (line 218).
-- **LLM API transient errors**: `call_vlm_with_retry()` in `extraction/vlm_client.py` (line 229) retries up to 3 times with exponential backoff (`min(8.0, 2^i * 0.8) + 0.05*i` seconds). `ValueError` from parsing failures is re-raised immediately -- no retry.
-- **Individual screen failure**: In parallel mode, exceptions from one screen are caught and reported via `on_error` callback; other screens continue (line 246).
+- **CSV mancante**: `FileNotFoundError` sollevata immediatamente in `extraction/cli.py` riga 316.
+- **Immagini mancanti**: viene stampato un avviso ma l'esecuzione continua con i file rimanenti (riga 218).
+- **Errori transitori delle API LLM**: `call_vlm_with_retry()` in `extraction/vlm_client.py` (riga 229) riprova fino a 3 volte con backoff esponenziale (`min(8.0, 2^i * 0.8) + 0.05*i` secondi). Un `ValueError` dovuto a fallimenti di parsing viene risollevato immediatamente -- nessun retry.
+- **Fallimento di un singolo screen**: in modalità parallela, le eccezioni di uno screen vengono catturate e segnalate tramite la callback `on_error`; gli altri screen proseguono (riga 246).
 
 ---
 
-## Multi-Pass Extraction Pipeline
+## Pipeline di estrazione multi-pass
 
-The core system workflow shared by every interface. Given a single screenshot, it produces structured data through three passes: anchor, main, and conditional retry.
+Il workflow di sistema centrale condiviso da ogni interfaccia. Dato un singolo screenshot, produce dati strutturati attraverso tre passaggi: anchor, principale e retry condizionale.
 
 ### Flowchart
 
 ```mermaid
 flowchart TD
-    A["Input: PIL Image + screen_id"] --> B["Crop sidebar: CONTENT_CROP (0.18, 0.12, 0.98, 0.98)"]
-    B --> C["ANCHOR PASS: crop header strip (0.00, 0.00, 1.00, 0.22)"]
-    C --> D["VLM call with ANCHOR_PROMPT -> AnchorResponse"]
-    D --> E{"Both anchors null AND STOP_ON_ANCHOR_UNCERTAIN?"}
-    E -- Yes --> F["Return ANCHOR_UNCERTAIN status"]
-    E -- No --> G["MAIN PASS: full content image"]
-    G --> H["Build prompt with anchor hints"]
-    H --> I["VLM call with PROMPT -> ExtractionResponse"]
-    I --> J["Merge anchors into main result"]
-    J --> K["Normalize 'tipo' field"]
-    K --> L{"Any null/low-confidence fields in RETRY_AREAS?"}
-    L -- No --> O["Coherence check"]
-    L -- Yes --> M["RETRY PASS: crop + enhance + parallel VLM calls per area"]
-    M --> N["Merge retries via pick_best()"]
+    A["Input: PIL Image + screen_id"] --> B["Ritaglia sidebar: CONTENT_CROP (0.18, 0.12, 0.98, 0.98)"]
+    B --> C["PASSAGGIO ANCHOR: ritaglia striscia header (0.00, 0.00, 1.00, 0.22)"]
+    C --> D["Chiamata VLM con ANCHOR_PROMPT -> AnchorResponse"]
+    D --> E{"Entrambi gli anchor null E STOP_ON_ANCHOR_UNCERTAIN?"}
+    E -- Yes --> F["Ritorna stato ANCHOR_UNCERTAIN"]
+    E -- No --> G["PASSAGGIO PRINCIPALE: immagine contenuto completa"]
+    G --> H["Costruisce prompt con suggerimenti anchor"]
+    H --> I["Chiamata VLM con PROMPT -> ExtractionResponse"]
+    I --> J["Unisce gli anchor nel risultato principale"]
+    J --> K["Normalizza campo 'tipo'"]
+    K --> L{"Campi null/bassa confidenza in RETRY_AREAS?"}
+    L -- No --> O["Controllo di coerenza"]
+    L -- Yes --> M["PASSAGGIO DI RETRY: ritaglio + enhance + chiamate VLM parallele per area"]
+    M --> N["Unisce i retry tramite pick_best()"]
     N --> O
-    O --> P["Flatten soggetti for CSV"]
-    P --> Q["Build canonical field entries"]
-    Q --> R["Aggregate metadata: tokens, cost, latency"]
-    R --> S["Set _status: OK or ANCHOR_UNCERTAIN"]
-    S --> T["Return result dict"]
+    O --> P["Appiattisce i soggetti per il CSV"]
+    P --> Q["Costruisce le voci di campo canoniche"]
+    Q --> R["Aggrega i metadati: token, costo, latenza"]
+    R --> S["Imposta _status: OK o ANCHOR_UNCERTAIN"]
+    S --> T["Ritorna dict risultato"]
 ```
 
-### Walkthrough
+### Spiegazione passo per passo
 
-1. **Image normalization.** `extract_from_screen()` in `extraction/pipeline.py` (line 182) opens the image, converts to RGB, and calls `normalize_image()` from `extraction/imaging.py` (line 12). This resizes the long side to 1800px, applies slight contrast enhancement (1.05x), and runs an unsharp mask.
+1. **Normalizzazione dell'immagine.** `extract_from_screen()` in `extraction/pipeline.py` (riga 182) apre l'immagine, la converte in RGB e chiama `normalize_image()` da `extraction/imaging.py` (riga 12). Questo ridimensiona il lato lungo a 1800px, applica un leggero potenziamento del contrasto (1.05x) ed esegue una unsharp mask.
 
-2. **Content crop.** The BPER sidebar is removed by cropping to `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` via `crop_relative()` (`extraction/imaging.py`, line 22). All subsequent operations use this cropped image.
+2. **Ritaglio del contenuto.** La sidebar BPER viene rimossa ritagliando a `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` tramite `crop_relative()` (`extraction/imaging.py`, riga 22). Tutte le operazioni successive usano questa immagine ritagliata.
 
-3. **Anchor pass (Pass 1).** `extract_anchors()` (line 70) crops the header strip at `HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)` and sends it to the VLM with `ANCHOR_PROMPT` from `extraction/prompts.py` (line 25). The schema is `AnchorResponse`, which only has `ndg` and `denominazione` fields. Confidence below `ANCHOR_CONF_MIN` (default 0.95, `extraction/config.py` line 52) causes the value to be zeroed out while retaining the confidence score.
+3. **Passaggio anchor (Passaggio 1).** `extract_anchors()` (riga 70) ritaglia la striscia header a `HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)` e la invia al VLM con `ANCHOR_PROMPT` da `extraction/prompts.py` (riga 25). Lo schema è `AnchorResponse`, che ha solo i campi `ndg` e `denominazione`. Una confidenza inferiore a `ANCHOR_CONF_MIN` (default 0.95, `extraction/config.py` riga 52) fa azzerare il valore mantenendo però il punteggio di confidenza.
 
-4. **Anchor gate.** If `STOP_ON_ANCHOR_UNCERTAIN` is enabled and both anchor values are null, the pipeline returns early with status `ANCHOR_UNCERTAIN` (line 112-124).
+4. **Gate dell'anchor.** Se `STOP_ON_ANCHOR_UNCERTAIN` è abilitato ed entrambi i valori anchor sono null, la pipeline ritorna anticipatamente con stato `ANCHOR_UNCERTAIN` (righe 112-124).
 
-5. **Main pass (Pass 2).** `extract_from_image()` builds a prompt by appending anchor hints ("NDG atteso: ...", "Denominazione attesa: ...") to the base `PROMPT` (`extraction/prompts.py`, line 3). The full content image is sent with schema `ExtractionResponse`, which returns all 40+ fields plus soggetti, fidi, and garanzie lists.
+5. **Passaggio principale (Passaggio 2).** `extract_from_image()` costruisce un prompt aggiungendo suggerimenti anchor ("NDG atteso: ...", "Denominazione attesa: ...") al `PROMPT` di base (`extraction/prompts.py`, riga 3). L'immagine completa del contenuto viene inviata con lo schema `ExtractionResponse`, che restituisce tutti i 40+ campi più le liste soggetti, fidi e garanzie.
 
-6. **Merge and post-process.** High-confidence anchor values override the main pass values (line 212-216). The `tipo` field is normalized through `normalize_tipo()` in `extraction/normalization.py` (line 17), mapping common variants like "mutui spesa" to "BPI Mutui".
+6. **Unione e post-elaborazione.** I valori anchor ad alta confidenza prevalgono sui valori del passaggio principale (righe 212-216). Il campo `tipo` viene normalizzato tramite `normalize_tipo()` in `extraction/normalization.py` (riga 17), mappando varianti comuni come "mutui spesa" in "BPI Mutui".
 
-7. **Retry pass (Pass 3).** `_retry_areas()` (line 243) scans `AREA_TO_FIELDS` in `extraction/config.py` (line 65) to find fields that are null or below 0.60 confidence. For each affected area (HEADER, BODY, FOOTER), it crops the corresponding region from `RETRY_AREAS`, applies contrast/sharpness enhancement, and sends it with an area-specific prompt from `FIELD_RETRY_PROMPTS`. Retries run in parallel via `ThreadPoolExecutor`. Results merge through `pick_best()` (`extraction/normalization.py`, line 87), which chooses whichever value has higher confidence or is non-null. The total number of VLM calls per screen is capped at `MAX_CALLS_PER_SCREEN` (default 4, minus 2 for anchor and main).
+7. **Passaggio di retry (Passaggio 3).** `_retry_areas()` (riga 243) scansiona `AREA_TO_FIELDS` in `extraction/config.py` (riga 65) per trovare campi null o sotto la confidenza 0.60. Per ogni area interessata (HEADER, BODY, FOOTER), ritaglia la regione corrispondente da `RETRY_AREAS`, applica un potenziamento di contrasto/nitidezza e la invia con un prompt specifico per area da `FIELD_RETRY_PROMPTS`. I retry vengono eseguiti in parallelo tramite `ThreadPoolExecutor`. I risultati si uniscono tramite `pick_best()` (`extraction/normalization.py`, riga 87), che sceglie il valore con la confidenza più alta o quello non-null. Il numero totale di chiamate VLM per screen è limitato a `MAX_CALLS_PER_SCREEN` (default 4, meno 2 per anchor e principale).
 
-8. **Coherence check.** `_coherence_check()` (line 312) applies tooltip-based corrections. If `tooltip_evidenze_b` has a value and the `evidenze` field looks numeric or null, it gets overridden to "B". Similarly, `tooltip_descrizione_bmb` can set `tipo` to "BMB".
+8. **Controllo di coerenza.** `_coherence_check()` (riga 312) applica correzioni basate sui tooltip. Se `tooltip_evidenze_b` ha un valore e il campo `evidenze` appare numerico o null, viene sovrascritto a "B". Analogamente, `tooltip_descrizione_bmb` può impostare `tipo` a "BMB".
 
-9. **Output assembly.** Soggetti are flattened into numbered fields (`ndg_1`, `denominazione_1`, `ruolo_1`, etc.) for CSV compatibility (line 160-166). Canonical field entries are built via `build_canonical_field_entries()` in `extraction/canonical_mapping.py`. Metadata across all attempts is aggregated into `_meta_agg`.
+9. **Assemblaggio dell'output.** I soggetti vengono appiattiti in campi numerati (`ndg_1`, `denominazione_1`, `ruolo_1`, ecc.) per la compatibilità con il CSV (righe 160-166). Le voci di campo canoniche vengono costruite tramite `build_canonical_field_entries()` in `extraction/canonical_mapping.py`. I metadati di tutti i tentativi vengono aggregati in `_meta_agg`.
 
 ### Sequence Diagram
 
@@ -161,202 +161,202 @@ sequenceDiagram
     EP->>Img: crop_relative(CONTENT_CROP)
     EP->>Img: crop_relative(HEADER_IN_CONTENT)
     EP->>VLM: call_vlm_with_retry(anchor_model, header_img, ANCHOR_PROMPT)
-    VLM->>LLM: Structured output request
+    VLM->>LLM: Richiesta output strutturato
     LLM-->>VLM: AnchorResponse
-    VLM-->>EP: anchor dict with _meta
+    VLM-->>EP: dict anchor con _meta
     EP->>VLM: call_vlm_with_retry(main_model, content_img, PROMPT + hints)
-    VLM->>LLM: Structured output request
+    VLM->>LLM: Richiesta output strutturato
     LLM-->>VLM: ExtractionResponse
-    VLM-->>EP: main dict with _meta
-    EP->>EP: merge anchors, normalize tipo
-    EP->>EP: identify retry areas (null/low-conf fields)
-    loop Each retry area (parallel)
+    VLM-->>EP: dict main con _meta
+    EP->>EP: unisce gli anchor, normalizza tipo
+    EP->>EP: identifica aree di retry (campi null/bassa confidenza)
+    loop Ogni area di retry (parallelo)
         EP->>Img: crop_relative(RETRY_AREAS[area])
         EP->>VLM: call_vlm_with_retry(main_model, crop, FIELD_RETRY_PROMPT)
-        VLM->>LLM: Structured output request
+        VLM->>LLM: Richiesta output strutturato
         LLM-->>VLM: ExtractionResponse
-        VLM-->>EP: retry dict
+        VLM-->>EP: dict retry
         EP->>Norm: pick_best(current, candidate)
     end
-    EP->>EP: coherence check (tooltips)
+    EP->>EP: controllo di coerenza (tooltip)
     EP->>Canon: build_canonical_field_entries(fields)
-    EP-->>Caller: result dict
+    EP-->>Caller: dict risultato
 ```
 
-### Error Handling
+### Gestione degli errori
 
-- **Retry area failure**: Caught per-area; a warning prints and the main-pass results are preserved (`extraction/pipeline.py`, lines 289-291).
-- **Gemini free-form JSON**: For Gemini 2.0+ models, `_call_vlm_gemini_freeform()` in `extraction/vlm_client.py` (line 47) injects the JSON schema into the prompt and parses the response manually. If Pydantic validation fails, a `ValueError` is raised with the raw JSON snippet.
-- **OpenAI structured output**: Uses LangChain's `.with_structured_output()` with `include_raw=True`. If `parsing_error` is present in the result, a `ValueError` is raised (line 199).
+- **Fallimento di un'area di retry**: catturato per area; viene stampato un avviso e i risultati del passaggio principale vengono preservati (`extraction/pipeline.py`, righe 289-291).
+- **JSON in formato libero di Gemini**: per i modelli Gemini 2.0+, `_call_vlm_gemini_freeform()` in `extraction/vlm_client.py` (riga 47) inietta lo schema JSON nel prompt e analizza la risposta manualmente. Se la validazione Pydantic fallisce, viene sollevato un `ValueError` con il frammento JSON grezzo.
+- **Output strutturato di OpenAI**: usa `.with_structured_output()` di LangChain con `include_raw=True`. Se nel risultato è presente `parsing_error`, viene sollevato un `ValueError` (riga 199).
 
 ---
 
-## Edge-Agent Live Capture
+## Cattura dal vivo dell'edge-agent
 
-The real-time workflow for banking operators. A PyQt6 desktop application captures the operator's screen, detects which BPER page is displayed, waits for stability, then runs extraction automatically.
+Il workflow in tempo reale per gli operatori bancari. Un'applicazione desktop PyQt6 cattura lo schermo dell'operatore, riconosce quale pagina BPER è visualizzata, attende la stabilità, poi esegue l'estrazione automaticamente.
 
 ### Flowchart
 
 ```mermaid
 flowchart TD
-    A["python main.py --gui"] --> B["Load .env, create AgentConfig from config.ini"]
-    B --> C["Launch PyQt6 MainWindow with 4 tabs"]
-    C --> D["User clicks 'Avvia' on CaptureTab"]
-    D --> E["Start BPERCaptureWorker QThread"]
-    E --> F["FPS loop: _capture_once()"]
-    F --> G["Capture monitor screenshot via mss"]
+    A["python main.py --gui"] --> B["Carica .env, crea AgentConfig da config.ini"]
+    B --> C["Avvia PyQt6 MainWindow con 4 tab"]
+    C --> D["L'utente clicca 'Avvia' su CaptureTab"]
+    D --> E["Avvia QThread BPERCaptureWorker"]
+    E --> F["Loop FPS: _capture_once()"]
+    F --> G["Cattura screenshot del monitor tramite mss"]
     G --> H{"Screenshot OK?"}
-    H -- No --> I{"5 consecutive errors?"}
-    I -- Yes --> J["Auto-stop worker"]
+    H -- No --> I{"5 errori consecutivi?"}
+    I -- Yes --> J["Arresto automatico del worker"]
     I -- No --> F
-    H -- Yes --> K["Preprocess: scale, unsharp, contrast"]
-    K --> L["Dedup check via pHash"]
-    L --> M{"Duplicate frame?"}
-    M -- Yes --> N{"Throttle interval elapsed?"}
+    H -- Yes --> K["Preprocessing: scale, unsharp, contrasto"]
+    K --> L["Controllo di deduplica tramite pHash"]
+    L --> M{"Frame duplicato?"}
+    M -- Yes --> N{"Intervallo di throttle trascorso?"}
     N -- No --> F
-    N -- Yes --> O["Detect page via router"]
+    N -- Yes --> O["Riconosce pagina tramite router"]
     M -- No --> O
-    O --> P{"Page recognized?"}
-    P -- No --> Q["Reset stability, guide operator"]
+    O --> P{"Pagina riconosciuta?"}
+    P -- No --> Q["Reset stabilità, guida l'operatore"]
     Q --> F
-    P -- Yes --> R{"Same page as candidate?"}
-    R -- No --> S["Set new candidate, reset timer"]
+    P -- Yes --> R{"Stessa pagina del candidato?"}
+    R -- No --> S["Imposta nuovo candidato, resetta timer"]
     S --> F
-    R -- Yes --> T{"Stable for 2+ seconds?"}
+    R -- Yes --> T{"Stabile da 2+ secondi?"}
     T -- No --> F
     T -- Yes --> U["LocalExtractionClient.ingest_frame()"]
     U --> V["ExtractionPipeline.extract_from_image()"]
-    V --> W["Emit result_ready signal"]
-    W --> X["UI tabs update: Results + Data"]
-    X --> Y["Guide operator to next page"]
+    V --> W["Emette segnale result_ready"]
+    W --> X["Aggiornamento tab UI: Risultati + Dati"]
+    X --> Y["Guida l'operatore alla pagina successiva"]
     Y --> F
 ```
 
-### Walkthrough
+### Spiegazione passo per passo
 
-1. **Launch.** `main.py --gui` (line 16) adds `edge-agent/` to `sys.path` and calls `edge_agent.main()`. This loads `.env`, creates an `AgentConfig` from `edge-agent/config.ini` (`edge-agent/config.py`, line 51), applies the qt-material theme, and opens `MainWindow` (`edge-agent/ui/main_window.py`).
+1. **Avvio.** `main.py --gui` (riga 16) aggiunge `edge-agent/` a `sys.path` e chiama `edge_agent.main()`. Questo carica `.env`, crea un `AgentConfig` da `edge-agent/config.ini` (`edge-agent/config.py`, riga 51), applica il tema qt-material e apre `MainWindow` (`edge-agent/ui/main_window.py`).
 
-2. **MainWindow setup.** The window creates a `LocalExtractionClient` (`edge-agent/local_extraction_client.py`, line 32) which initializes its own `ExtractionPipeline` with LLM models. It then creates four tabs: Cattura (capture), Risultati (results), Dati Estratti (data table), and optionally Debug LLM.
+2. **Setup di MainWindow.** La finestra crea un `LocalExtractionClient` (`edge-agent/local_extraction_client.py`, riga 32) che inizializza la propria `ExtractionPipeline` con i modelli LLM. Crea poi quattro tab: Cattura (capture), Risultati (results), Dati Estratti (data table) e, opzionalmente, Debug LLM.
 
-3. **Start capture.** The user clicks "Avvia" in `CaptureTab` (`edge-agent/ui/capture_tab.py`). This starts a `BPERCaptureWorker` as a `QThread`. The base class `BaseCaptureWorker` (`edge-agent/workers/capture/base_capture_worker.py`, line 39) runs a loop calling `_capture_once()` at the configured FPS (default 1).
+3. **Avvio della cattura.** L'utente clicca "Avvia" in `CaptureTab` (`edge-agent/ui/capture_tab.py`). Questo avvia un `BPERCaptureWorker` come `QThread`. La classe base `BaseCaptureWorker` (`edge-agent/workers/capture/base_capture_worker.py`, riga 39) esegue un loop che chiama `_capture_once()` agli FPS configurati (default 1).
 
-4. **Screenshot capture.** `_capture_screenshot()` (`edge-agent/workers/capture/bper_capture_worker.py`, line 550) uses `mss` for fast cross-platform monitor capture. The monitor index comes from `config.ini`. The raw screenshot is preprocessed via `preprocess_for_ocr()` from `edge-agent/image_ops.py`.
+4. **Cattura dello screenshot.** `_capture_screenshot()` (`edge-agent/workers/capture/bper_capture_worker.py`, riga 550) usa `mss` per una cattura del monitor veloce e cross-platform. L'indice del monitor proviene da `config.ini`. Lo screenshot grezzo viene preprocessato tramite `preprocess_for_ocr()` da `edge-agent/image_ops.py`.
 
-5. **Frame deduplication.** `_is_duplicate_frame()` (line 601) computes a perceptual hash (pHash) via `imagehash.phash()` on a 256x256 resize. If the Hamming distance from the last frame is within `DEDUP_HASH_THRESHOLD` (default 3), the frame is considered a duplicate. Duplicate frames can still be routed, but only after a configurable throttle interval (`route_retry_seconds`, default 1.0s).
+5. **Deduplica dei frame.** `_is_duplicate_frame()` (riga 601) calcola un hash percettivo (pHash) tramite `imagehash.phash()` su un ridimensionamento a 256x256. Se la distanza di Hamming dall'ultimo frame rientra in `DEDUP_HASH_THRESHOLD` (default 3), il frame è considerato un duplicato. I frame duplicati possono comunque essere instradati, ma solo dopo un intervallo di throttle configurabile (`route_retry_seconds`, default 1.0s).
 
-6. **Page detection.** `_detect_page()` (line 628) delegates to the configured `PageRouter`. Three strategies are available via `config.ini [agent] router`:
-   - **ml**: `MLPageRouter` wraps `BPERPagePrototypeClassifier` (DINOv2 ViT-S/14 cosine similarity against prototype embeddings).
-   - **llm**: `LLMPageRouter` sends the screenshot to OpenAI Vision with a system prompt listing the known BPER pages.
-   - **hybrid**: Tries LLM first, falls back to ML if LLM returns no match.
+6. **Riconoscimento della pagina.** `_detect_page()` (riga 628) delega al `PageRouter` configurato. Sono disponibili tre strategie tramite `config.ini [agent] router`:
+   - **ml**: `MLPageRouter` incapsula `BPERPagePrototypeClassifier` (similarità coseno DINOv2 ViT-S/14 rispetto agli embedding dei prototipi).
+   - **llm**: `LLMPageRouter` invia lo screenshot a OpenAI Vision con un system prompt che elenca le pagine BPER note.
+   - **hybrid**: prova prima LLM, ricade su ML se LLM non restituisce alcuna corrispondenza.
 
-7. **Stability check.** The same page type must be detected for `STABILITY_SECONDS` (2.0s, line 49) before extraction triggers. A new page resets the timer.
+7. **Controllo di stabilità.** Lo stesso tipo di pagina deve essere riconosciuto per `STABILITY_SECONDS` (2.0s, riga 49) prima che scatti l'estrazione. Una nuova pagina resetta il timer.
 
-8. **Extraction.** `_upload_page()` (line 679) calls `LocalExtractionClient.ingest_frame()` which delegates to `ExtractionPipeline.extract_from_image()`. The result is stored in memory (thread-safe via `threading.Lock`) and emitted as a Qt signal `result_ready`.
+8. **Estrazione.** `_upload_page()` (riga 679) chiama `LocalExtractionClient.ingest_frame()` che delega a `ExtractionPipeline.extract_from_image()`. Il risultato viene memorizzato in memoria (thread-safe tramite `threading.Lock`) ed emesso come segnale Qt `result_ready`.
 
-9. **UI update.** The `result_ready` signal connects to `ExtractionResultsTab` (pages tree, fields table, raw JSON, CSV export) and `DataTableTab` (spreadsheet view with CSV/Excel export). The worker also emits guidance messages telling the operator which BPER page to open next.
+9. **Aggiornamento della UI.** Il segnale `result_ready` si collega a `ExtractionResultsTab` (albero delle pagine, tabella dei campi, JSON grezzo, export CSV) e a `DataTableTab` (vista a foglio di calcolo con export CSV/Excel). Il worker emette inoltre messaggi di guida che indicano all'operatore quale pagina BPER aprire successivamente.
 
 ### Sequence Diagram
 
 ```mermaid
 sequenceDiagram
-    participant Op as Operator
+    participant Op as Operatore
     participant UI as MainWindow / CaptureTab
     participant CW as BPERCaptureWorker (QThread)
     participant Router as PageRouter (LLM/ML)
     participant LEC as LocalExtractionClient
     participant EP as ExtractionPipeline
-    participant Tabs as Results + Data Tabs
+    participant Tabs as Tab Risultati + Dati
 
-    Op->>UI: Click "Avvia"
+    Op->>UI: Clicca "Avvia"
     UI->>CW: start_capture()
-    loop FPS tick
-        CW->>CW: _capture_screenshot() via mss
-        CW->>CW: _is_duplicate_frame() via pHash
+    loop Tick FPS
+        CW->>CW: _capture_screenshot() tramite mss
+        CW->>CW: _is_duplicate_frame() tramite pHash
         CW->>Router: route(image)
         Router-->>CW: RouterResult(page_type, confidence)
-        alt Page recognized and stable 2s
+        alt Pagina riconosciuta e stabile 2s
             CW->>LEC: ingest_frame(job_id, img, page_type)
             LEC->>EP: extract_from_image(img, screen_id)
-            EP-->>LEC: result dict
-            LEC-->>Tabs: result_ready signal
-            Tabs->>Tabs: Update UI
-            CW->>UI: tick("Next page: X")
-        else Page not recognized
-            CW->>UI: tick("Open page X in BPER")
+            EP-->>LEC: dict risultato
+            LEC-->>Tabs: segnale result_ready
+            Tabs->>Tabs: Aggiorna UI
+            CW->>UI: tick("Pagina successiva: X")
+        else Pagina non riconosciuta
+            CW->>UI: tick("Apri pagina X in BPER")
         end
     end
-    Op->>UI: Click "Ferma"
+    Op->>UI: Clicca "Ferma"
     UI->>CW: stop()
 ```
 
-### Error Handling
+### Gestione degli errori
 
-- **mss failure**: If the screenshot library cannot initialize, a `RuntimeError` is emitted and the worker stops (`bper_capture_worker.py`, line 563).
-- **Consecutive capture errors**: After 5 failures in a row (`_MAX_CONSECUTIVE_CAPTURE_ERRORS`), the worker auto-stops (line 593).
-- **torch unavailable**: `BPERPagePrototypeClassifier` import is wrapped in a try/except. If it fails, ML classification degrades to `DISABLED` mode and the worker continues without page detection (line 19-21).
-- **LLM router failure**: `LLMPageRouter.route()` catches all exceptions with a 2-attempt backoff. On total failure, it returns `RouterResult(None, 0.0, {})` (line 246-258).
-- **Extraction error**: `LocalExtractionClient.ingest_frame()` catches pipeline exceptions and returns a fallback result with `_status: "ERROR"` (line 87-93).
+- **Fallimento di mss**: se la libreria di screenshot non riesce a inizializzarsi, viene emesso un `RuntimeError` e il worker si arresta (`bper_capture_worker.py`, riga 563).
+- **Errori di cattura consecutivi**: dopo 5 fallimenti di fila (`_MAX_CONSECUTIVE_CAPTURE_ERRORS`), il worker si arresta automaticamente (riga 593).
+- **torch non disponibile**: l'import di `BPERPagePrototypeClassifier` è racchiuso in un try/except. Se fallisce, la classificazione ML degrada in modalità `DISABLED` e il worker continua senza riconoscimento pagina (righe 19-21).
+- **Fallimento del router LLM**: `LLMPageRouter.route()` cattura tutte le eccezioni con un backoff a 2 tentativi. In caso di fallimento totale, restituisce `RouterResult(None, 0.0, {})` (righe 246-258).
+- **Errore di estrazione**: `LocalExtractionClient.ingest_frame()` cattura le eccezioni della pipeline e restituisce un risultato di fallback con `_status: "ERROR"` (righe 87-93).
 
 ---
 
-## Accuracy Evaluation
+## Valutazione dell'accuratezza
 
-Runs after batch extraction in the CLI workflow. Compares extracted values against ground truth and reports per-field accuracy.
+Viene eseguita dopo l'estrazione batch nel workflow CLI. Confronta i valori estratti rispetto alla ground truth e riporta l'accuratezza per ogni campo.
 
 ### Flowchart
 
 ```mermaid
 flowchart TD
-    A["eval_outputs(outputs, gt)"] --> B["For each screen in ground truth"]
-    B --> C["Get predicted output for screen"]
-    C --> D{"Output exists?"}
+    A["eval_outputs(outputs, gt)"] --> B["Per ogni screen nella ground truth"]
+    B --> C["Ottiene l'output predetto per lo screen"]
+    C --> D{"L'output esiste?"}
     D -- No --> B
-    D -- Yes --> E["dataset_mismatch_guard: check NDG/Denominazione match"]
-    E --> F["For each GT field"]
-    F --> G["Map CSV key to schema key via CSV_TO_SCHEMA"]
-    G --> H{"Schema key found?"}
+    D -- Yes --> E["dataset_mismatch_guard: verifica corrispondenza NDG/Denominazione"]
+    E --> F["Per ogni campo della GT"]
+    F --> G["Mappa la chiave CSV alla chiave schema tramite CSV_TO_SCHEMA"]
+    G --> H{"Chiave schema trovata?"}
     H -- No --> F
-    H -- Yes --> I["Get predicted value from output fields"]
+    H -- Yes --> I["Ottiene il valore predetto dai campi di output"]
     I --> J["classify_field(gt_val, pred_val)"]
-    J --> K{"Status?"}
-    K -- "OK / OK_NULL" --> L["Increment correct count"]
-    K -- "WRONG / MISSING / HALLUCINATED" --> M["Increment total only"]
-    L --> N{"Dataset mismatch?"}
+    J --> K{"Stato?"}
+    K -- "OK / OK_NULL" --> L["Incrementa conteggio corretti"]
+    K -- "WRONG / MISSING / HALLUCINATED" --> M["Incrementa solo il totale"]
+    L --> N{"Mismatch del dataset?"}
     M --> N
-    N -- No --> O["Include in FILTERED metrics"]
-    N -- Yes --> P["RAW only (excluded from FILTERED)"]
+    N -- No --> O["Includi nelle metriche FILTERED"]
+    N -- Yes --> P["Solo RAW (escluso da FILTERED)"]
     O --> F
     P --> F
-    F --> Q["Compute RAW and FILTERED accuracy"]
-    Q --> R["Print per-field breakdown"]
-    R --> S["Return metrics dict"]
+    F --> Q["Calcola accuratezza RAW e FILTERED"]
+    Q --> R["Stampa il dettaglio per campo"]
+    R --> S["Ritorna dict di metriche"]
 ```
 
-### Walkthrough
+### Spiegazione passo per passo
 
-1. **Field classification.** `classify_field()` in `extraction/normalization.py` (line 113) handles five cases: both null (`OK_NULL`), GT present but prediction null (`MISSING`), GT null but prediction present (`HALLUCINATED`), and both present (compared via `norm_text()` or `norm_number_str()` depending on the field type). For long text fields (>20 chars), a fuzzy match with `SequenceMatcher` at threshold 0.85 is used.
+1. **Classificazione dei campi.** `classify_field()` in `extraction/normalization.py` (riga 113) gestisce cinque casi: entrambi null (`OK_NULL`), GT presente ma predizione null (`MISSING`), GT null ma predizione presente (`HALLUCINATED`), ed entrambi presenti (confrontati tramite `norm_text()` o `norm_number_str()` a seconda del tipo di campo). Per i campi di testo lungo (>20 caratteri), si usa un fuzzy match con `SequenceMatcher` a soglia 0.85.
 
-2. **Dataset mismatch guard.** `dataset_mismatch_guard()` (line 174) compares the NDG and Denominazione from ground truth against the predicted values. If they do not match, the entire screen is excluded from FILTERED metrics. This catches cases where the ground truth CSV row does not correspond to the actual screenshot.
+2. **Guardia contro il mismatch del dataset.** `dataset_mismatch_guard()` (riga 174) confronta l'NDG e la Denominazione della ground truth rispetto ai valori predetti. Se non corrispondono, l'intero screen viene escluso dalle metriche FILTERED. Questo intercetta i casi in cui la riga del CSV di ground truth non corrisponde allo screenshot reale.
 
-3. **Debug CSV.** `build_debug_report()` (`extraction/evaluation.py`, line 125) writes a detailed per-(screen, GT-key) CSV with columns for ground truth value, predicted value, confidence, evidence text, status, reason, source attempt (which pipeline pass produced the value), and cost metadata.
+3. **CSV di debug.** `build_debug_report()` (`extraction/evaluation.py`, riga 125) scrive un CSV dettagliato per ogni coppia (screen, chiave-GT) con colonne per valore di ground truth, valore predetto, confidenza, testo di evidenza, stato, motivazione, tentativo di origine (quale passaggio della pipeline ha prodotto il valore) e metadati di costo.
 
-4. **CSV-to-schema mapping.** The `CSV_TO_SCHEMA` dict in `extraction/fields.py` (line 56) maps Italian column headers from the ground truth CSV to internal schema keys. It handles variants like "Denom." and "DENOMINAZIONE" both mapping to "denominazione".
+4. **Mappatura CSV-schema.** Il dict `CSV_TO_SCHEMA` in `extraction/fields.py` (riga 56) mappa le intestazioni di colonna italiane del CSV di ground truth alle chiavi schema interne. Gestisce varianti come "Denom." e "DENOMINAZIONE" che mappano entrambe a "denominazione".
 
 ---
 
-## Background Processes
+## Processi in background
 
-This project has no persistent background processes, scheduled tasks, or message queues. All work is triggered by user action:
+Questo progetto non ha processi in background persistenti, attività schedulate o code di messaggi. Tutto il lavoro è innescato da un'azione dell'utente:
 
-- **CLI**: Single-run batch process. Exits after printing results.
-- **Edge-agent**: The `BPERCaptureWorker` QThread runs continuously while the user has capture active, but it is started and stopped explicitly by the operator. No work happens when capture is paused.
-- **Tkinter GUI**: Extraction runs in a background `threading.Thread` but only when the user clicks "Avvia Estrazione". The thread terminates after processing completes.
+- **CLI**: processo batch a esecuzione singola. Termina dopo aver stampato i risultati.
+- **Edge-agent**: il QThread `BPERCaptureWorker` gira di continuo mentre l'utente ha la cattura attiva, ma viene avviato e arrestato esplicitamente dall'operatore. Quando la cattura è in pausa non avviene alcun lavoro.
+- **GUI Tkinter**: l'estrazione gira in un `threading.Thread` in background, ma solo quando l'utente clicca "Avvia Estrazione". Il thread termina al completamento dell'elaborazione.
 
-The `_maybe_upload_dataset()` method on `BPERCaptureWorker` (`bper_capture_worker.py`, line 713) is a stub that returns immediately -- dataset upload to MinIO/S3 is disabled. The MinIO configuration in `config.ini` is present but unused in the current codebase.
+Il metodo `_maybe_upload_dataset()` su `BPERCaptureWorker` (`bper_capture_worker.py`, riga 713) è uno stub che ritorna immediatamente -- l'upload del dataset su MinIO/S3 è disabilitato. La configurazione MinIO in `config.ini` è presente ma inutilizzata nel codebase attuale.
 
-## See Also
+## Vedi anche
 
-- [Architecture](04-architecture.md) -- the component diagram and layer description that underpin these flows
-- [Data Model](06-data-model.md) -- the Pydantic schemas and result dicts that each pass produces and mutates
-- [Features](02-features.md) -- the user-facing capabilities (multi-pass pipeline, multi-provider LLM, edge agent) that these workflows implement
-- [Configuration Guide](10-configuration-guide.md) -- how to tune `PARALLEL_WORKERS`, `MAX_CALLS_PER_SCREEN`, and the edge-agent router from outside the code
+- [Architettura](04-architecture.md) -- il diagramma dei componenti e la descrizione dei livelli che sostengono questi flussi
+- [Modello dei dati](06-data-model.md) -- gli schemi Pydantic e i dict di risultato che ogni passaggio produce e modifica
+- [Funzionalità](02-features.md) -- le capacità rivolte all'utente (pipeline multi-pass, LLM multi-provider, edge agent) che questi workflow implementano
+- [Guida alla configurazione](10-configuration-guide.md) -- come regolare `PARALLEL_WORKERS`, `MAX_CALLS_PER_SCREEN` e il router pagina dell'edge-agent dall'esterno del codice

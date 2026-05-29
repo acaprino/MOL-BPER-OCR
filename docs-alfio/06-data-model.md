@@ -1,8 +1,8 @@
-# Data Model
+# Modello dei dati
 
-This project has no database. Every piece of data lives in one of four places: Pydantic models that constrain what the VLM is allowed to return, Python dictionaries that carry the result of an extraction through the pipeline, a CSV file that holds the ground truth for accuracy evaluation, and JSON files on disk that persist the batch output. The domain itself is narrow -- a single BPER credit-management "practice" made of one anagraphic header, up to four subjects, a list of credit lines, a list of guarantees, and a long free-text note. Everything else is metadata about how that data was obtained.
+Questo progetto non ha un database. Ogni dato risiede in uno di quattro posti: i modelli Pydantic che vincolano ciò che il VLM è autorizzato a restituire, i dizionari Python che trasportano il risultato di un'estrazione lungo la pipeline, un file CSV che contiene il ground truth per la valutazione dell'accuratezza e i file JSON su disco che persistono l'output dell'elaborazione a lotti (batch). Il dominio in sé è ristretto: una singola "pratica" di gestione del credito BPER composta da un'intestazione anagrafica, fino a quattro soggetti, un elenco di linee di credito, un elenco di garanzie e una lunga nota in testo libero. Tutto il resto sono metadati su come quel dato è stato ottenuto.
 
-## Entity Relationship Diagram
+## Diagramma entità-relazione
 
 ```mermaid
 erDiagram
@@ -99,68 +99,68 @@ erDiagram
     }
 ```
 
-Read this diagram as three layers. The top layer (`GROUND_TRUTH_CSV`, `GT_CELL`, `FIELD_KEY`, `CANONICAL_FIELD`, `CANONICAL_PAGE`) is static reference data, baked into code and CSV. The middle layer (`EXTRACTION_RESPONSE`, `ANCHOR_RESPONSE`, `FIELD_RESULT`, `SOGGETTO`, `FIDO`, `GARANZIA`) is the Pydantic contract between the pipeline and the LLM. The bottom layer (`PIPELINE_OUTPUT`, `CANONICAL_ENTRY`, `META_AGG`, `POC_OUTPUTS_JSON`, `POC_DEBUG_CSV`) is the runtime result shape that gets persisted and evaluated.
+Leggi questo diagramma come tre livelli. Il livello superiore (`GROUND_TRUTH_CSV`, `GT_CELL`, `FIELD_KEY`, `CANONICAL_FIELD`, `CANONICAL_PAGE`) è dato di riferimento statico, integrato nel codice e nel CSV. Il livello intermedio (`EXTRACTION_RESPONSE`, `ANCHOR_RESPONSE`, `FIELD_RESULT`, `SOGGETTO`, `FIDO`, `GARANZIA`) è il contratto Pydantic tra la pipeline e l'LLM. Il livello inferiore (`PIPELINE_OUTPUT`, `CANONICAL_ENTRY`, `META_AGG`, `POC_OUTPUTS_JSON`, `POC_DEBUG_CSV`) è la forma del risultato a runtime che viene persistita e valutata.
 
 ## FieldResult
 
-The atomic unit of extraction. Every single value the VLM returns is wrapped in one of these. It holds the raw string the model read plus three pieces of introspection that the evaluation and retry logic rely on.
+L'unità atomica dell'estrazione. Ogni singolo valore restituito dal VLM è incapsulato in uno di questi. Contiene la stringa grezza letta dal modello più tre elementi di introspezione su cui si basano la logica di valutazione e di retry.
 
-Defined in `extraction/schemas.py` lines 9-13:
+Definito in `extraction/schemas.py` righe 9-13:
 
-- `value: Optional[str]` -- the extracted text, or `None` when the field is absent on screen
-- `confidence: float` -- the model's self-reported confidence from 0.0 to 1.0
-- `evidence_text: Optional[str]` -- a short quote from the image used to justify the value (helpful for debug CSV rows)
-- `section: Optional[str]` -- the UI section name where the value was found (e.g. `soggetti_table`)
+- `value: Optional[str]` -- il testo estratto, oppure `None` quando il campo è assente sullo schermo
+- `confidence: float` -- la confidenza autodichiarata dal modello, da 0.0 a 1.0
+- `evidence_text: Optional[str]` -- una breve citazione dall'immagine usata per giustificare il valore (utile per le righe del CSV di debug)
+- `section: Optional[str]` -- il nome della sezione UI in cui è stato trovato il valore (es. `soggetti_table`)
 
-The confidence score drives two decisions. First, `ExtractionPipeline.extract_anchors()` (`extraction/pipeline.py` lines 91-96) zeroes out the NDG and Denominazione anchors if their confidence is below `ANCHOR_CONF_MIN` (default 0.95, `extraction/config.py` line 52). Second, `ExtractionPipeline._retry_areas()` (`extraction/pipeline.py` lines 254-257) triggers a retry pass for any field with confidence below 0.60.
+Il punteggio di confidenza guida due decisioni. Primo, `ExtractionPipeline.extract_anchors()` (`extraction/pipeline.py` righe 91-96) azzera gli anchor NDG e Denominazione se la loro confidenza è inferiore ad `ANCHOR_CONF_MIN` (default 0.95, `extraction/config.py` riga 52). Secondo, `ExtractionPipeline._retry_areas()` (`extraction/pipeline.py` righe 254-257) attiva un passaggio di retry per ogni campo con confidenza inferiore a 0.60.
 
 ## FieldsModel
 
-A single flat container that holds one `Optional[FieldResult]` per schema key. It isn't written by hand -- it is built dynamically at import time by `create_model()` from Pydantic, using the contents of `FIELD_KEYS` as the source of truth (`extraction/schemas.py` lines 46-49). Add a new entry to `FIELD_KEYS` in `extraction/fields.py` and the Pydantic model gains that field automatically.
+Un singolo contenitore piatto che contiene un `Optional[FieldResult]` per ogni chiave dello schema. Non viene scritto a mano: è costruito dinamicamente al momento dell'import da `create_model()` di Pydantic, usando il contenuto di `FIELD_KEYS` come unica fonte di verità (`extraction/schemas.py` righe 46-49). Aggiungi una nuova voce a `FIELD_KEYS` in `extraction/fields.py` e il modello Pydantic acquisisce automaticamente quel campo.
 
-`FIELD_KEYS` currently has 45 entries (count them in `extraction/fields.py` lines 12-54) covering:
+`FIELD_KEYS` ha attualmente 45 voci (contale in `extraction/fields.py` righe 12-54) che coprono:
 
-- **Header fields** of the Risultato Ricerca page: `ndg`, `denominazione`, `tipo`, `stato`, `fase`, `creazione`, `evidenze`, `filiale_relazione`
-- **Fidi row fields**: `n_fido`, `rapporto`, `descrizione`, `scadenza`, `importo_euro`, `tipo_op`
-- **Free text**: `note_della_richiesta`
-- **Tooltip fields** that exist only on hover: `tooltip_descrizione_bmb`, `tooltip_evidenze_b`, `tooltip_descrizione_m_consap`, `tooltip_descrizione_consap_dr_bis`, `tooltip_descrizione_ipoteca`
-- **Flattened Soggetti** for CSV compatibility: `ndg_1..4`, `denominazione_1..4`, `ruolo_1..4`
-- **Private-customer fields** from screens 4 and 5: `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda`
+- **Campi di intestazione** della pagina Risultato Ricerca: `ndg`, `denominazione`, `tipo`, `stato`, `fase`, `creazione`, `evidenze`, `filiale_relazione`
+- **Campi delle righe Fidi**: `n_fido`, `rapporto`, `descrizione`, `scadenza`, `importo_euro`, `tipo_op`
+- **Testo libero**: `note_della_richiesta`
+- **Campi tooltip** che esistono solo al passaggio del mouse: `tooltip_descrizione_bmb`, `tooltip_evidenze_b`, `tooltip_descrizione_m_consap`, `tooltip_descrizione_consap_dr_bis`, `tooltip_descrizione_ipoteca`
+- **Soggetti appiattiti** per compatibilità con il CSV: `ndg_1..4`, `denominazione_1..4`, `ruolo_1..4`
+- **Campi del cliente privato** dalle schermate 4 e 5: `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda`
 
-The flattened Soggetti are a workaround. The VLM returns subjects as a structured list (see `Soggetto` below), but the ground truth CSV has them as separate columns. After the main pass, `ExtractionPipeline.extract_from_image()` copies the first four soggetti into these flat keys (`extraction/pipeline.py` lines 160-166) so the evaluator can compare them column-by-column.
+I Soggetti appiattiti sono un espediente. Il VLM restituisce i soggetti come lista strutturata (vedi `Soggetto` più sotto), ma il CSV di ground truth li ha come colonne separate. Dopo il passaggio principale, `ExtractionPipeline.extract_from_image()` copia i primi quattro soggetti in queste chiavi piatte (`extraction/pipeline.py` righe 160-166) così che il valutatore possa confrontarli colonna per colonna.
 
 ## Soggetto, Fido, Garanzia
 
-The three table entities represented as Pydantic `BaseModel` classes in `extraction/schemas.py` lines 15-41. Unlike the flat fields above, these live as ordered `List[...]` inside `ExtractionResponse` and can grow to arbitrary length.
+Le tre entità tabellari rappresentate come classi Pydantic `BaseModel` in `extraction/schemas.py` righe 15-41. A differenza dei campi piatti visti sopra, queste vivono come `List[...]` ordinate dentro `ExtractionResponse` e possono crescere a lunghezza arbitraria.
 
-**Soggetto** (lines 15-20) is a person or legal entity tied to the credit practice. The domain fields are `ndg`, `denominazione`, and `ruolo`. Typical roles are "TITOLARE", "COOBBLIGATO", "GARANTE". One screen can list several subjects in a table.
+**Soggetto** (righe 15-20) è una persona o un'entità giuridica legata alla pratica di credito. I campi di dominio sono `ndg`, `denominazione` e `ruolo`. I ruoli tipici sono "TITOLARE", "COOBBLIGATO", "GARANTE". Una schermata può elencare diversi soggetti in una tabella.
 
-**Fido** (lines 22-30) is a credit line: `n_fido` (the credit line number), `rapporto` (the underlying account), `descrizione` (human-readable product description), `scadenza` (expiry date), `importo_euro` (amount), and `tipo_op` (operation type, e.g. BMB). All string-typed because the VLM returns raw OCR text -- numeric validation happens later in `classify_field()` via `norm_number_str()` (`extraction/normalization.py`).
+**Fido** (righe 22-30) è una linea di credito: `n_fido` (il numero della linea di credito), `rapporto` (il conto sottostante), `descrizione` (descrizione del prodotto leggibile), `scadenza` (data di scadenza), `importo_euro` (importo) e `tipo_op` (tipo di operazione, es. BMB). Tutti tipizzati come stringa perché il VLM restituisce testo OCR grezzo: la validazione numerica avviene più tardi in `classify_field()` tramite `norm_number_str()` (`extraction/normalization.py`).
 
-**Garanzia** (lines 32-41) is a collateral record: `n_gar` (guarantee number), `descrizione`, `fido` (the credit line it backs), `ndg`/`denominazione` (the subject providing it), `importo_percentuale`, and `tipo_op`. Note that a Garanzia contains its own `ndg` and `denominazione` -- these are denormalized joins, not foreign keys, because the VLM extracts them directly from the on-screen table rather than looking them up.
+**Garanzia** (righe 32-41) è un record di garanzia collaterale: `n_gar` (numero della garanzia), `descrizione`, `fido` (la linea di credito che garantisce), `ndg`/`denominazione` (il soggetto che la fornisce), `importo_percentuale` e `tipo_op`. Da notare che una Garanzia contiene il proprio `ndg` e `denominazione` -- sono join denormalizzati, non chiavi esterne, perché il VLM li estrae direttamente dalla tabella a schermo anziché cercarli.
 
-All three share the common `confidence: float` and `evidence_text: Optional[str]` trailing fields.
+Tutte e tre condividono i campi finali comuni `confidence: float` ed `evidence_text: Optional[str]`.
 
-## ExtractionResponse and AnchorResponse
+## ExtractionResponse e AnchorResponse
 
-The top-level Pydantic models that LangChain's `.with_structured_output()` validates against. Two exist because the pipeline makes two different kinds of VLM calls with two different prompts.
+I modelli Pydantic di primo livello rispetto ai quali `.with_structured_output()` di LangChain valida. Ne esistono due perché la pipeline effettua due tipi diversi di chiamate VLM con due prompt diversi.
 
-**`ExtractionResponse`** (`extraction/schemas.py` lines 54-58) is the full schema sent on the main pass and the retry passes. It has:
+**`ExtractionResponse`** (`extraction/schemas.py` righe 54-58) è lo schema completo inviato nel passaggio principale e nei passaggi di retry. Contiene:
 
-- `fields: FieldsModel` -- all 45 scalar fields
+- `fields: FieldsModel` -- tutti i 45 campi scalari
 - `soggetti: List[Soggetto]`
 - `fidi: List[Fido]`
 - `garanzie: List[Garanzia]`
 
-**`AnchorResponse`** (`extraction/schemas.py` lines 60-65) is a deliberately narrow schema for the first pass. It wraps an `AnchorFields` model that holds only `ndg` and `denominazione`, both `Optional[FieldResult]`. A narrow schema forces the model to focus on just the two identity fields from the header strip, reduces token count, and lets the pipeline enforce a high confidence gate before anything else runs. See the anchor pass discussion in [Workflows](05-workflows.md).
+**`AnchorResponse`** (`extraction/schemas.py` righe 60-65) è uno schema deliberatamente ristretto per il primo passaggio. Incapsula un modello `AnchorFields` che contiene solo `ndg` e `denominazione`, entrambi `Optional[FieldResult]`. Uno schema ristretto costringe il modello a concentrarsi solo sui due campi identificativi della striscia di intestazione, riduce il conteggio dei token e consente alla pipeline di applicare un'elevata soglia di confidenza prima che venga eseguito qualsiasi altro passaggio. Vedi la discussione sul passaggio anchor in [Workflow](05-workflows.md).
 
-Both classes have the backward-compatible aliases `RESPONSE_SCHEMA` and `ANCHOR_SCHEMA` at the bottom of the file (`extraction/schemas.py` lines 70-71).
+Entrambe le classi hanno gli alias retrocompatibili `RESPONSE_SCHEMA` e `ANCHOR_SCHEMA` in fondo al file (`extraction/schemas.py` righe 70-71).
 
-## Canonical Field Metadata
+## Metadati dei campi canonici
 
-`CANONICAL_FIELD_DEFINITIONS` in `extraction/field_definitions.py` lines 5-186 is the bridge between the compact snake_case schema keys used in code and the human-facing labels the client cares about. Every entry in `FIELD_KEYS` should have a matching entry here; if one is missing the display name falls back to the schema key itself (`extraction/fields.py` lines 118-121).
+`CANONICAL_FIELD_DEFINITIONS` in `extraction/field_definitions.py` righe 5-186 è il ponte tra le chiavi compatte snake_case usate nel codice e le etichette comprensibili a cui tiene il cliente. Ogni voce in `FIELD_KEYS` dovrebbe avere una voce corrispondente qui; se ne manca una, il nome visualizzato ricade sulla chiave dello schema stessa (`extraction/fields.py` righe 118-121).
 
-Each entry is shaped like this:
+Ogni voce ha questa forma:
 
 ```python
 "n_fido": {
@@ -169,13 +169,13 @@ Each entry is shaped like this:
 },
 ```
 
-The `display_name` is the exact Italian label the BPER banking application shows on screen. The `page_key` is a foreign key into the canonical page table (see next section), and it determines which of four sheets a field ends up on when the edge-agent exports to Excel via `DataTableTab`.
+Il `display_name` è l'esatta etichetta italiana che l'applicazione bancaria BPER mostra a schermo. La `page_key` è una chiave esterna verso la tabella delle pagine canoniche (vedi sezione successiva) e determina su quale dei quattro fogli finisce un campo quando l'edge-agent esporta in Excel tramite `DataTableTab`.
 
-Beside the definitions, the same file carries `FIELD_LABEL_ALIASES` (lines 188-235), a reverse lookup from normalized lowercase labels back to schema keys. `normalize_field_label()` (lines 238-240) trims, lowercases, and collapses whitespace so a CSV column like `"n° FIDO"` resolves to `"n_fido"` regardless of spacing or case. Two public helpers use this: `resolve_schema_key()` (lines 243-246) for going from label to key, and `resolve_display_name()` / `resolve_field_page_key()` (lines 249-262) for the reverse lookup.
+Accanto alle definizioni, lo stesso file porta `FIELD_LABEL_ALIASES` (righe 188-235), una ricerca inversa dalle etichette minuscole normalizzate alle chiavi dello schema. `normalize_field_label()` (righe 238-240) elimina spazi iniziali/finali, mette in minuscolo e comprime gli spazi così che una colonna CSV come `"n° FIDO"` si risolva in `"n_fido"` indipendentemente da spaziatura o maiuscole/minuscole. La usano due helper pubblici: `resolve_schema_key()` (righe 243-246) per passare dall'etichetta alla chiave, e `resolve_display_name()` / `resolve_field_page_key()` (righe 249-262) per la ricerca inversa.
 
-## Canonical Pages
+## Pagine canoniche
 
-The four pages of the BPER credit-management workflow that this project extracts from. Defined in `extraction/page_definitions.py` lines 5-10:
+Le quattro pagine del workflow di gestione del credito BPER da cui questo progetto estrae. Definite in `extraction/page_definitions.py` righe 5-10:
 
 | page_key | display_name |
 |----------|--------------|
@@ -184,13 +184,13 @@ The four pages of the BPER credit-management workflow that this project extracts
 | `gestione_fidi_e_garanzie` | Gestione Fidi e Garanzie |
 | `note_da_richiesta` | Note da Richiesta |
 
-`PAGE_NAME_ALIASES` (lines 12-21) maps common label variants back to the canonical key, and `normalize_page_label()` (lines 31-33) does the same case/spacing cleanup as its field-level counterpart. `PAGE_SHEET_ORDER` (lines 23-28) freezes the ordering used when `build_canonical_field_entries()` sorts its output, which is how the Excel export keeps its sheets in a consistent order.
+`PAGE_NAME_ALIASES` (righe 12-21) mappa le varianti comuni delle etichette di nuovo sulla chiave canonica, e `normalize_page_label()` (righe 31-33) esegue la stessa pulizia di maiuscole/minuscole e spaziatura della sua controparte a livello di campo. `PAGE_SHEET_ORDER` (righe 23-28) congela l'ordinamento usato quando `build_canonical_field_entries()` ordina il proprio output, ed è così che l'esportazione Excel mantiene i fogli in un ordine coerente.
 
-Note: the brief and code both speak of "nine" BPER screens (the prototype images in `edge-agent/assets/templates/bper/` and `mnt/data/screen 1-9.png`). The page model has only four canonical pages because several raw screens map to the same canonical page -- e.g. two Fidi screens both feed `gestione_fidi_e_garanzie`. The edge-agent uses a separate 5-page definition in `edge-agent/assets/templates/bper/prompts.json` for its LLM router, which is unrelated to the canonical page model used by the extraction pipeline.
+Nota: sia il brief che il codice parlano di "nove" schermate BPER (le immagini prototipo in `edge-agent/assets/templates/bper/` e `mnt/data/screen 1-9.png`). Il modello delle pagine ha solo quattro pagine canoniche perché diverse schermate grezze mappano sulla stessa pagina canonica -- es. due schermate Fidi alimentano entrambe `gestione_fidi_e_garanzie`. L'edge-agent usa una definizione separata a 5 pagine in `edge-agent/assets/templates/bper/prompts.json` per il proprio router pagina, che non è collegata al modello delle pagine canoniche usato dalla pipeline di estrazione.
 
-## CanonicalEntry and the canonical_fields List
+## CanonicalEntry e la lista canonical_fields
 
-After the pipeline finishes, `ExtractionPipeline.extract_from_image()` calls `build_canonical_field_entries()` from `extraction/canonical_mapping.py` (lines 20-42). This walks the extracted `fields` dict, looks up each schema key via `get_canonical_field_metadata()` (`extraction/fields.py` lines 128-138), and produces a flat list of entries:
+Dopo che la pipeline termina, `ExtractionPipeline.extract_from_image()` chiama `build_canonical_field_entries()` da `extraction/canonical_mapping.py` (righe 20-42). Questo percorre il dict `fields` estratto, cerca ogni chiave dello schema tramite `get_canonical_field_metadata()` (`extraction/fields.py` righe 128-138) e produce una lista piatta di voci:
 
 ```python
 {
@@ -205,28 +205,28 @@ After the pipeline finishes, `ExtractionPipeline.extract_from_image()` calls `bu
 }
 ```
 
-The list is sorted by a composite key `(page_index, display_name, schema_key)` from `_canonical_entry_sort_key()` (lines 8-18). The result lives under `output["canonical_fields"]` and is what the edge-agent UI renders in `ExtractionResultsTab` and exports via `DataTableTab`.
+La lista è ordinata per una chiave composta `(page_index, display_name, schema_key)` da `_canonical_entry_sort_key()` (righe 8-18). Il risultato risiede sotto `output["canonical_fields"]` ed è ciò che l'interfaccia dell'edge-agent rende in `ExtractionResultsTab` ed esporta tramite `DataTableTab`.
 
-## Pipeline Output Dict
+## Dict di output della pipeline
 
-The runtime dictionary that `ExtractionPipeline.extract_from_image()` (`extraction/pipeline.py` lines 104-180) returns. It starts life as a `model_dump()` of an `ExtractionResponse` and gets decorated in place with pipeline metadata. Shape:
+Il dizionario a runtime che `ExtractionPipeline.extract_from_image()` (`extraction/pipeline.py` righe 104-180) restituisce. Nasce come `model_dump()` di un `ExtractionResponse` e viene decorato sul posto con i metadati della pipeline. Forma:
 
-| Key | Type | Source |
+| Chiave | Tipo | Origine |
 |-----|------|--------|
-| `fields` | dict of schema_key to FieldResult-shaped dict | from the main pass, merged with anchor and retry results |
-| `soggetti` | list of Soggetto-shaped dicts | from the main pass, possibly overwritten by BODY retry |
-| `fidi` | list of Fido-shaped dicts | same |
-| `garanzie` | list of Garanzia-shaped dicts | same |
-| `canonical_fields` | list of CanonicalEntry dicts | built after all passes via `build_canonical_field_entries()` |
-| `_attempts` | list of per-call `_meta` dicts | appended by every `call_vlm_with_retry()` invocation |
-| `_meta_agg` | aggregated cost and latency | built by `ExtractionPipeline._aggregate_meta()` lines 330-340 |
-| `_field_sources` | dict of schema_key to attempt name | tracks which pass won each field (CONTENT_MAIN, ANCHOR_HEADER, RETRY_HEADER, RETRY_BODY, RETRY_FOOTER) |
-| `_status` | `"OK"` or `"ANCHOR_UNCERTAIN"` | set at the end based on whether NDG and Denominazione are both present |
-| `screen_id` | string | the basename of the screenshot without extension |
+| `fields` | dict da schema_key a dict in forma FieldResult | dal passaggio principale, unito ai risultati anchor e di retry |
+| `soggetti` | lista di dict in forma Soggetto | dal passaggio principale, eventualmente sovrascritta dal retry BODY |
+| `fidi` | lista di dict in forma Fido | idem |
+| `garanzie` | lista di dict in forma Garanzia | idem |
+| `canonical_fields` | lista di dict CanonicalEntry | costruita dopo tutti i passaggi tramite `build_canonical_field_entries()` |
+| `_attempts` | lista di dict `_meta` per ogni chiamata | aggiunta da ogni invocazione di `call_vlm_with_retry()` |
+| `_meta_agg` | costo e latenza aggregati | costruito da `ExtractionPipeline._aggregate_meta()` righe 330-340 |
+| `_field_sources` | dict da schema_key a nome del tentativo | traccia quale passaggio ha vinto per ciascun campo (CONTENT_MAIN, ANCHOR_HEADER, RETRY_HEADER, RETRY_BODY, RETRY_FOOTER) |
+| `_status` | `"OK"` o `"ANCHOR_UNCERTAIN"` | impostato alla fine in base alla presenza di entrambi NDG e Denominazione |
+| `screen_id` | string | il basename dello screenshot senza estensione |
 
-The underscore-prefixed keys are a deliberate convention: they are extraction metadata, not extracted data, and they get filtered out of the Excel export but kept in the JSON output for debugging.
+Le chiavi con prefisso underscore sono una convenzione deliberata: sono metadati dell'estrazione, non dati estratti, e vengono filtrate via dall'esportazione Excel ma mantenute nell'output JSON per il debug.
 
-Each `_attempts[i]` entry is a dict built by `call_vlm_with_retry()` in `extraction/vlm_client.py`. Its shape (lines 107-116, 167-176, and 214-223 -- there are three code paths for OpenAI structured, Gemini legacy, and Gemini free-form):
+Ogni voce `_attempts[i]` è un dict costruito da `call_vlm_with_retry()` in `extraction/vlm_client.py`. La sua forma (righe 107-116, 167-176 e 214-223 -- ci sono tre percorsi di codice per OpenAI structured, Gemini legacy e Gemini free-form):
 
 ```python
 {
@@ -241,21 +241,21 @@ Each `_attempts[i]` entry is a dict built by `call_vlm_with_retry()` in `extract
 }
 ```
 
-`_meta_agg` then sums `calls`, `prompt_tokens`, `completion_tokens`, `total_tokens`, `estimated_cost_usd`, and `latency_ms` across all attempts, while carrying through `model_main` and `model_anchor` as flat strings for the cost report (`extraction/evaluation.py` lines 244-258).
+`_meta_agg` somma poi `calls`, `prompt_tokens`, `completion_tokens`, `total_tokens`, `estimated_cost_usd` e `latency_ms` su tutti i tentativi, mantenendo `model_main` e `model_anchor` come stringhe piatte per il report dei costi (`extraction/evaluation.py` righe 244-258).
 
-## Ground Truth CSV
+## CSV di ground truth
 
-The evaluation reference file. The path is `mnt/data/dati.csv` by default, resolved from `GROUND_TRUTH_CSV` in `extraction/config.py` line 9. The file is gitignored and has to be supplied manually at run time.
+Il file di riferimento per la valutazione. Il percorso predefinito è `mnt/data/dati.csv`, risolto da `GROUND_TRUTH_CSV` in `extraction/config.py` riga 9. Il file è in gitignore e deve essere fornito manualmente al momento dell'esecuzione.
 
-`load_ground_truth()` in `extraction/evaluation.py` lines 33-69 reads it into a nested dict shaped `{ screen_name: { csv_column_label: value, ... }, ... }`. The loader is tolerant: it searches for the screen column among `["Screenshot", "Fotogramma", "Screen", "screen"]`, the value column among `["Valore rilevato", "Valore rilevato ", "Valore", "Value"]`, and the key column among `["Denominazione da attribuire", "Denominazione", "Campo", "Field"]` (lines 38-52). The helper `_find_column()` (lines 26-31) raises `ValueError` if none match, listing the columns it actually found so you can fix the CSV.
+`load_ground_truth()` in `extraction/evaluation.py` righe 33-69 lo legge in un dict annidato con forma `{ screen_name: { csv_column_label: value, ... }, ... }`. Il loader è tollerante: cerca la colonna della schermata tra `["Screenshot", "Fotogramma", "Screen", "screen"]`, la colonna del valore tra `["Valore rilevato", "Valore rilevato ", "Valore", "Value"]` e la colonna della chiave tra `["Denominazione da attribuire", "Denominazione", "Campo", "Field"]` (righe 38-52). L'helper `_find_column()` (righe 26-31) solleva `ValueError` se nessuna corrisponde, elencando le colonne effettivamente trovate così da poter correggere il CSV.
 
-Each row of the CSV becomes one `GT_CELL` -- a triple of (screen_name, csv_column_label, value). The loader skips rows whose key is blank or the string `"nan"`, and normalizes missing values to the empty string. Screens and keys are kept as-is (lowercased only in the evaluator), so ordering and duplicate handling follow pandas defaults.
+Ogni riga del CSV diventa una `GT_CELL` -- una tripla di (screen_name, csv_column_label, value). Il loader salta le righe la cui chiave è vuota o pari alla stringa `"nan"`, e normalizza i valori mancanti alla stringa vuota. Schermate e chiavi sono mantenute così come sono (messe in minuscolo solo nel valutatore), quindi l'ordinamento e la gestione dei duplicati seguono i default di pandas.
 
-The bridge from CSV columns to schema keys lives in `CSV_TO_SCHEMA` in `extraction/fields.py` lines 56-100. It's a plain Python dict: keys are Italian BPER column labels (including stray-space variants like `"Evidenze "` and `"Valore rilevato "`), values are schema keys. When `eval_outputs()` iterates ground truth, it only considers rows whose CSV key is present in this mapping (`extraction/evaluation.py` lines 87-90) -- unmapped columns are silently ignored, which lets you add extra diagnostic columns to the CSV without breaking evaluation.
+Il ponte dalle colonne del CSV alle chiavi dello schema risiede in `CSV_TO_SCHEMA` in `extraction/fields.py` righe 56-100. È un semplice dict Python: le chiavi sono le etichette italiane delle colonne BPER (incluse le varianti con spazio di troppo come `"Evidenze "` e `"Valore rilevato "`), i valori sono chiavi dello schema. Quando `eval_outputs()` itera sul ground truth, considera solo le righe la cui chiave CSV è presente in questa mappatura (`extraction/evaluation.py` righe 87-90) -- le colonne non mappate vengono ignorate silenziosamente, il che consente di aggiungere colonne diagnostiche extra al CSV senza rompere la valutazione.
 
-## JSON Output File
+## File di output JSON
 
-`mnt/data/poc_outputs_improved.json` is the single persistence artefact of a CLI batch run. It is written as a dict keyed by `screen_id`, where every value is a full Pipeline Output dict:
+`mnt/data/poc_outputs_improved.json` è l'unico artefatto di persistenza di un'esecuzione batch da CLI. È scritto come un dict con chiave `screen_id`, dove ogni valore è un dict completo di output della pipeline:
 
 ```json
 {
@@ -278,47 +278,47 @@ The bridge from CSV columns to schema keys lives in `CSV_TO_SCHEMA` in `extracti
 }
 ```
 
-The write happens in `cli.main()` (`extraction/cli.py` lines 337-340) using `json.dump(..., ensure_ascii=False, indent=2)`. The file replaces the previous run on every execution -- there is no run history or versioning. The accompanying debug CSV `mnt/data/poc_debug_improved.csv` is a flat semicolon-delimited file, one row per (screen, GT key) pair, written by `build_debug_report()` in `extraction/evaluation.py` lines 125-177. Its columns include the predicted value, the GT value, the classification status, the retry source for that field, and the per-screen cost aggregate.
+La scrittura avviene in `cli.main()` (`extraction/cli.py` righe 337-340) usando `json.dump(..., ensure_ascii=False, indent=2)`. Il file sostituisce l'esecuzione precedente a ogni avvio -- non c'è cronologia delle esecuzioni né versionamento. Il CSV di debug che lo accompagna, `mnt/data/poc_debug_improved.csv`, è un file piatto delimitato da punto e virgola, una riga per ogni coppia (schermata, chiave GT), scritto da `build_debug_report()` in `extraction/evaluation.py` righe 125-177. Le sue colonne includono il valore predetto, il valore GT, lo stato di classificazione, l'origine del retry per quel campo e l'aggregato di costo per schermata.
 
-## Data Flow Patterns
+## Pattern di flusso dei dati
 
 ### Create
-Data only enters the system in two ways. From the **ground truth CSV**, loaded once at the start of a batch run by `load_ground_truth()`. From **PIL Image objects**, either read from disk via `Image.open(path).convert("RGB")` in `ExtractionPipeline.extract_from_screen()` (`extraction/pipeline.py` lines 182-187) or received in memory from the edge-agent capture worker via `LocalExtractionClient.ingest_frame()`. There is no direct user input into the data model itself.
+I dati entrano nel sistema solo in due modi. Dal **CSV di ground truth**, caricato una volta all'inizio di un'esecuzione batch da `load_ground_truth()`. Da **oggetti PIL Image**, letti dal disco tramite `Image.open(path).convert("RGB")` in `ExtractionPipeline.extract_from_screen()` (`extraction/pipeline.py` righe 182-187) oppure ricevuti in memoria dal capture worker dell'edge-agent tramite `LocalExtractionClient.ingest_frame()`. Non esiste alcun input utente diretto nel modello dei dati stesso.
 
 ### Read
-The ground truth dict is read by `eval_outputs()`, `build_debug_report()`, and the accuracy summary printer. The JSON output file is read by the Tkinter GUI and the edge-agent UI when the user opens a previous run. The `canonical_fields` list is read by the edge-agent UI tabs to populate the pages tree, the fields table, and the spreadsheet view.
+Il dict di ground truth è letto da `eval_outputs()`, `build_debug_report()` e dallo stampatore del riepilogo di accuratezza. Il file di output JSON è letto dalla GUI Tkinter e dall'interfaccia dell'edge-agent quando l'utente apre un'esecuzione precedente. La lista `canonical_fields` è letta dalle schede dell'interfaccia dell'edge-agent per popolare l'albero delle pagine, la tabella dei campi e la vista a foglio di calcolo.
 
 ### Update
-The only mutable data is the Pipeline Output dict during a single extraction. Five mutation points, all in `extraction/pipeline.py`:
+L'unico dato mutabile è il dict di output della pipeline durante una singola estrazione. Cinque punti di mutazione, tutti in `extraction/pipeline.py`:
 
-1. `_merge_anchors()` (lines 211-216) overwrites `fields["ndg"]` and `fields["denominazione"]` with the anchor-pass result when the anchor has a non-null value.
-2. `_postprocess_tipo()` (lines 219-223) rewrites `fields["tipo"]["value"]` through `normalize_tipo()` from `extraction/normalization.py`.
-3. `_retry_areas()` (lines 243-309) iterates unconfident fields and calls `merge_field_sources()` from `extraction/normalization.py` line 96 to swap in better values. The helper uses `pick_best()` to pick between current and candidate based on null-ness and confidence, and updates `field_sources` when the candidate wins.
-4. `_merge_tables()` (lines 225-241) replaces `soggetti`, `fidi`, or `garanzie` wholesale if the BODY retry returns more rows or higher-average confidence.
-5. `_coherence_check()` (lines 311-328) cross-wires tooltip fields back into their target fields -- if `tooltip_evidenze_b` is populated but `evidenze` is null or a bare number, it overwrites `evidenze` with `"B"`.
+1. `_merge_anchors()` (righe 211-216) sovrascrive `fields["ndg"]` e `fields["denominazione"]` con il risultato del passaggio anchor quando l'anchor ha un valore non nullo.
+2. `_postprocess_tipo()` (righe 219-223) riscrive `fields["tipo"]["value"]` tramite `normalize_tipo()` da `extraction/normalization.py`.
+3. `_retry_areas()` (righe 243-309) itera sui campi poco confidenti e chiama `merge_field_sources()` da `extraction/normalization.py` riga 96 per inserire valori migliori. L'helper usa `pick_best()` per scegliere tra valore corrente e candidato in base a null-ità e confidenza, e aggiorna `field_sources` quando vince il candidato.
+4. `_merge_tables()` (righe 225-241) sostituisce `soggetti`, `fidi` o `garanzie` per intero se il retry BODY restituisce più righe o una confidenza media più alta.
+5. `_coherence_check()` (righe 311-328) reincrocia i campi tooltip nei loro campi target -- se `tooltip_evidenze_b` è popolato ma `evidenze` è nullo o un semplice numero, sovrascrive `evidenze` con `"B"`.
 
-Once `extract_from_image()` returns, the dict is effectively frozen -- the only downstream "mutation" is the flat Soggetti copy done inside the same function at lines 160-166.
+Una volta che `extract_from_image()` ritorna, il dict è di fatto congelato -- l'unica "mutazione" a valle è la copia piatta dei Soggetti effettuata dentro la stessa funzione alle righe 160-166.
 
 ### Delete
-None. There is no deletion. The CLI overwrites `poc_outputs_improved.json` on each run, the edge-agent keeps results in memory until the user closes the window, and the ground truth CSV is never touched by code. The commented-out `_deduplicate_same_page_outputs()` in `extraction/cli.py` lines 92-152 could drop duplicate-page outputs from a batch, but it is currently disabled via a commented call at lines 268-274.
+Nessuna. Non c'è alcuna cancellazione. La CLI sovrascrive `poc_outputs_improved.json` a ogni esecuzione, l'edge-agent mantiene i risultati in memoria finché l'utente non chiude la finestra, e il CSV di ground truth non viene mai toccato dal codice. La funzione commentata `_deduplicate_same_page_outputs()` in `extraction/cli.py` righe 92-152 potrebbe scartare dal batch gli output con pagina duplicata, ma è attualmente disabilitata tramite una chiamata commentata alle righe 268-274.
 
-## Validation
+## Validazione
 
-Validation is layered and almost entirely runtime. There are no schema migrations, no SQL constraints, no form validators.
+La validazione è a livelli e quasi interamente a runtime. Non ci sono migrazioni di schema, vincoli SQL o validatori di form.
 
-**Pydantic structured output** is the first and strictest layer. When the pipeline calls LangChain with `.with_structured_output(ExtractionResponse)`, the LLM response has to deserialize into the full nested Pydantic tree or a `ValidationError` is raised inside `call_vlm_with_retry()`. For newer Gemini models that reject complex `response_schema`, `_call_vlm_gemini_freeform()` in `extraction/vlm_client.py` lines 47-119 takes the free-form JSON back, strips Markdown fences via `_extract_json_str()`, and runs `schema.model_validate_json()` manually. Either way, every field in every returned record is a typed `FieldResult`.
+**L'output strutturato Pydantic** è il primo e più rigoroso livello. Quando la pipeline chiama LangChain con `.with_structured_output(ExtractionResponse)`, la risposta dell'LLM deve deserializzarsi nell'intero albero Pydantic annidato, altrimenti viene sollevato un `ValidationError` dentro `call_vlm_with_retry()`. Per i modelli Gemini più recenti che rifiutano `response_schema` complessi, `_call_vlm_gemini_freeform()` in `extraction/vlm_client.py` righe 47-119 riprende il JSON in forma libera, rimuove i delimitatori Markdown tramite `_extract_json_str()` ed esegue manualmente `schema.model_validate_json()`. In ogni caso, ogni campo di ogni record restituito è un `FieldResult` tipizzato.
 
-**Confidence gating** is the second layer. The anchor pass zeroes out low-confidence NDG and Denominazione below `ANCHOR_CONF_MIN = 0.95` (`extraction/pipeline.py` lines 91-96). The retry logic flags any field below 0.60 for a second look (`extraction/pipeline.py` line 255). If `STOP_ON_ANCHOR_UNCERTAIN` is set and both anchors are null, the pipeline short-circuits and returns `_status = "ANCHOR_UNCERTAIN"` without running the main pass (`extraction/pipeline.py` lines 112-124).
+**Il gating sulla confidenza** è il secondo livello. Il passaggio anchor azzera NDG e Denominazione poco confidenti sotto `ANCHOR_CONF_MIN = 0.95` (`extraction/pipeline.py` righe 91-96). La logica di retry segnala qualsiasi campo sotto 0.60 per una seconda verifica (`extraction/pipeline.py` riga 255). Se `STOP_ON_ANCHOR_UNCERTAIN` è impostato ed entrambi gli anchor sono nulli, la pipeline va in corto circuito e restituisce `_status = "ANCHOR_UNCERTAIN"` senza eseguire il passaggio principale (`extraction/pipeline.py` righe 112-124).
 
-**Ground-truth-time validation** happens during evaluation. `classify_field()` in `extraction/normalization.py` lines 113-148 emits one of five statuses -- `OK`, `OK_NULL`, `MISSING`, `HALLUCINATED`, `WRONG` -- for every (predicted, expected) pair. Numeric fields (`importo_euro`, `ndg`, `n_fido`) go through `norm_number_str()` for type-tolerant comparison. Long text fields (>20 characters) use `difflib.SequenceMatcher` with a 0.85 ratio threshold for fuzzy matching. `dataset_mismatch_guard()` lines 174-189 is a sanity check that flags entire screens where the NDG or Denominazione differs heavily between GT and prediction, suggesting the operator aligned the CSV to the wrong screenshot. Those screens still appear in the RAW accuracy number but are excluded from the FILTERED number that gets printed as the headline metric.
+**La validazione al momento del ground truth** avviene durante la valutazione. `classify_field()` in `extraction/normalization.py` righe 113-148 emette uno di cinque stati -- `OK`, `OK_NULL`, `MISSING`, `HALLUCINATED`, `WRONG` -- per ogni coppia (predetto, atteso). I campi numerici (`importo_euro`, `ndg`, `n_fido`) passano per `norm_number_str()` per un confronto tollerante al tipo. I campi di testo lungo (>20 caratteri) usano `difflib.SequenceMatcher` con una soglia di rapporto 0.85 per il fuzzy matching. `dataset_mismatch_guard()` righe 174-189 è un controllo di coerenza che segnala intere schermate in cui NDG o Denominazione differiscono pesantemente tra GT e predizione, suggerendo che l'operatore ha allineato il CSV allo screenshot sbagliato. Quelle schermate compaiono comunque nel numero di accuratezza RAW ma sono escluse dal numero FILTERED che viene stampato come metrica di punta.
 
-**Dataset mismatch** is a sixth status that only `build_debug_report()` uses (`extraction/evaluation.py` line 149). It rewrites the per-cell status to `"DATASET_MISMATCH"` when the whole screen trips the guard, so when you read the debug CSV you can tell "this row was wrong" from "this whole screen was comparing against the wrong GT row".
+**Dataset mismatch** è un sesto stato che usa solo `build_debug_report()` (`extraction/evaluation.py` riga 149). Riscrive lo stato per singola cella in `"DATASET_MISMATCH"` quando l'intera schermata fa scattare il guard, così che leggendo il CSV di debug si possa distinguere "questa riga era sbagliata" da "questa intera schermata stava confrontando con la riga GT sbagliata".
 
-There is no validation on the edge-agent side beyond what the pipeline itself enforces. `RouterResult` (`edge-agent/llm_router.py` lines 27-34) is a `dataclass`, not a Pydantic model, and its `fields: Dict[str, Any]` is passed through untyped.
+Sul lato edge-agent non c'è alcuna validazione oltre a quella imposta dalla pipeline stessa. `RouterResult` (`edge-agent/llm_router.py` righe 27-34) è una `dataclass`, non un modello Pydantic, e il suo `fields: Dict[str, Any]` viene passato senza tipizzazione.
 
-## Cross-References
+## Riferimenti incrociati
 
-- [Architecture](04-architecture.md) -- how the data layer sits between the VLM client and the evaluation/export layers
-- [Features](02-features.md) -- the user-facing behaviours that consume these structures
-- [Workflows](05-workflows.md) -- the end-to-end flow that creates and reads this data, including the multi-pass pipeline mutations described here
-- [Getting Started](07-getting-started.md) -- how to supply the ground truth CSV and inspect the JSON output
+- [Architettura](04-architecture.md) -- come il livello dati si colloca tra il client VLM e i livelli di valutazione/esportazione
+- [Funzionalità](02-features.md) -- i comportamenti rivolti all'utente che consumano queste strutture
+- [Workflow](05-workflows.md) -- il flusso end-to-end che crea e legge questi dati, incluse le mutazioni della pipeline multi-passaggio qui descritte
+- [Per iniziare](07-getting-started.md) -- come fornire il CSV di ground truth e ispezionare l'output JSON

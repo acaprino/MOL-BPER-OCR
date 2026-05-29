@@ -1,27 +1,27 @@
-# Getting Started
+# Per iniziare
 
-This is a proof-of-concept Python application that extracts structured data from Italian BPER banking screenshots using vision language models (GPT-4o, Gemini) through LangChain. Before you touch anything, understand that the project has three separate interfaces -- a CLI batch tool, a Tkinter desktop GUI, and a PyQt6 edge-agent with live screen capture -- all sharing the same `extraction/` core package. There are no tests, no CI, no Docker, and no linter configuration. The codebase is functional but intentionally rough around the edges as a POC.
+Questa è un'applicazione Python proof of concept (prototipo) che estrae dati strutturati da screenshot bancari BPER italiani usando modelli di linguaggio visivo (GPT-4o, Gemini) tramite LangChain. Prima di mettere mano a qualsiasi cosa, tieni presente che il progetto ha tre interfacce separate -- uno strumento batch da CLI, una GUI desktop Tkinter e un edge-agent PyQt6 con cattura dal vivo dello schermo -- che condividono tutte lo stesso pacchetto core `extraction/`. Non ci sono test, niente CI, niente Docker e nessuna configurazione di linter. Il codebase è funzionante ma volutamente grezzo nei dettagli, trattandosi di un POC.
 
-## Prerequisites
+## Prerequisiti
 
-**Required:**
-- Python 3.8 or higher (the team has been running 3.13 based on compiled .pyc artifacts)
-- An OpenAI API key (for the default `gpt-4o` provider) *or* a Google Gemini API key
-- Git (the repo uses `develop` as the working branch, `master` as main)
+**Richiesti:**
+- Python 3.8 o superiore (il team ha usato la 3.13 a giudicare dagli artefatti .pyc compilati)
+- Una chiave API OpenAI (per il provider predefinito `gpt-4o`) *oppure* una chiave API Google Gemini
+- Git (il repo usa `develop` come branch di lavoro, `master` come principale)
 
-**Required for edge-agent ML page classification:**
-- PyTorch and torchvision (DINOv2 model downloads automatically on first run from Facebook Research's torch hub)
+**Richiesti per la classificazione pagina ML dell'edge-agent:**
+- PyTorch e torchvision (il modello DINOv2 viene scaricato automaticamente al primo avvio dal torch hub di Facebook Research)
 
-**Optional:**
-- PyInstaller (only if you need to build a standalone `.exe` of the Tkinter GUI)
+**Facoltativi:**
+- PyInstaller (solo se devi compilare un `.exe` autonomo della GUI Tkinter)
 
-**Platform notes:**
-- The `mss` library handles cross-platform screenshot capture. On Linux, `pyscreenshot>=3.1` is pulled in as a fallback (see the platform marker in `requirements.txt` line 11: `pyscreenshot>=3.1; sys_platform == 'linux'`).
-- The edge-agent overlay (`edge-agent/ui/overlay.py`) uses PyQt6 window flags that behave differently across Windows and Linux. Development has been on Windows.
+**Note sulla piattaforma:**
+- La libreria `mss` gestisce la cattura degli screenshot multipiattaforma. Su Linux, `pyscreenshot>=3.1` viene incluso come fallback (vedi il marker di piattaforma in `requirements.txt` riga 11: `pyscreenshot>=3.1; sys_platform == 'linux'`).
+- L'overlay dell'edge-agent (`edge-agent/ui/overlay.py`) usa flag di finestra PyQt6 che si comportano diversamente tra Windows e Linux. Lo sviluppo è avvenuto su Windows.
 
 ## Setup
 
-**1. Clone and switch to the working branch:**
+**1. Clona e passa al branch di lavoro:**
 
 ```bash
 git clone <repo-url> poc-data-extraction
@@ -29,7 +29,7 @@ cd poc-data-extraction
 git checkout develop
 ```
 
-**2. Create a virtual environment and install dependencies:**
+**2. Crea un ambiente virtuale e installa le dipendenze:**
 
 ```bash
 python -m venv .venv
@@ -38,203 +38,203 @@ source .venv/bin/activate        # Linux/macOS
 pip install -r requirements.txt
 ```
 
-The single `requirements.txt` covers both the extraction pipeline and the edge-agent. Dependencies like `torch` and `torchvision` are large (~2 GB). If you only need the CLI batch tool, you can skip them -- the ML page classifier in the edge-agent gracefully degrades to `DISABLED` mode when torch is unavailable (`edge-agent/page_classifier.py`).
+L'unico `requirements.txt` copre sia la pipeline di estrazione sia l'edge-agent. Dipendenze come `torch` e `torchvision` sono pesanti (~2 GB). Se ti serve solo lo strumento batch da CLI, puoi ometterle: il classificatore di pagina ML dell'edge-agent degrada in modo controllato alla modalità `DISABLED` quando torch non è disponibile (`edge-agent/page_classifier.py`).
 
-**3. Configure environment variables:**
+**3. Configura le variabili d'ambiente:**
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and set at minimum:
+Apri `.env` e imposta come minimo:
 
 ```
 LLM_API_KEY=sk-your-openai-key-here
 ```
 
-For Gemini, also change:
+Per Gemini, cambia anche:
 
 ```
 LLM_PROVIDER=gemini
 LLM_MODEL=gemini-2.0-flash
 ```
 
-Every other variable has a sensible default. See `.env.example` for the full list.
+Ogni altra variabile ha un valore predefinito sensato. Vedi `.env.example` per l'elenco completo.
 
-**4. Add test data:**
+**4. Aggiungi i dati di test:**
 
-The `mnt/data/` directory is gitignored. You need the 9 BPER banking screenshots (`screen 1.png` through `screen 9.png`) and the ground truth CSV (`dati.csv`) placed in `mnt/data/`. Ask the team for these files -- they contain real banking UI screenshots.
+La directory `mnt/data/` è esclusa da git. Servono i 9 screenshot bancari BPER (da `screen 1.png` a `screen 9.png`) e la ground truth CSV (`dati.csv`) collocati in `mnt/data/`. Richiedi questi file al team: contengono screenshot reali dell'interfaccia bancaria.
 
 ```bash
 mkdir -p mnt/data
-# Copy screen 1.png ... screen 9.png and dati.csv into mnt/data/
+# Copia screen 1.png ... screen 9.png e dati.csv in mnt/data/
 ```
 
-**5. Run the CLI batch extraction:**
+**5. Esegui l'estrazione batch da CLI:**
 
 ```bash
 python main.py
 ```
 
-This loads the ground truth CSV, processes all PNGs in `mnt/data/`, and prints accuracy metrics and a cost summary to the console. Outputs are saved to `mnt/data/poc_outputs_improved.json` and `mnt/data/poc_debug_improved.csv`.
+Questo carica la ground truth CSV, elabora tutti i PNG in `mnt/data/` e stampa su console le metriche di accuratezza e un riepilogo dei costi. Gli output vengono salvati in `mnt/data/poc_outputs_improved.json` e `mnt/data/poc_debug_improved.csv`.
 
-**6. Launch the edge-agent (PyQt6 GUI):**
+**6. Avvia l'edge-agent (GUI PyQt6):**
 
 ```bash
 python main.py --gui
 ```
 
-Or directly:
+Oppure direttamente:
 
 ```bash
 cd edge-agent
 python edge_agent.py
 ```
 
-**7. Launch the Tkinter desktop GUI:**
+**7. Avvia la GUI desktop Tkinter:**
 
 ```bash
 python gui_app.py
 ```
 
-This one lets you enter your API key in the UI, pick files manually, and select provider/model from a dropdown.
+Questa ti permette di inserire la chiave API nell'interfaccia, scegliere i file manualmente e selezionare provider/modello da un menu a discesa.
 
-## Key Files to Read First
+## File chiave da leggere per primi
 
-Read these in order. Each builds on the previous one.
+Leggili in questo ordine. Ciascuno si basa sul precedente.
 
-1. **`extraction/config.py`** -- All environment variable handling, crop coordinates, pricing tables, and the `FIELD_RETRY_MAP`. This is where you learn what knobs exist and what the defaults actually are (note: `PARALLEL_WORKERS` defaults to `12` in code despite docs saying `4`).
+1. **`extraction/config.py`** -- Tutta la gestione delle variabili d'ambiente, le coordinate di ritaglio, le tabelle di prezzo e la `FIELD_RETRY_MAP`. Qui scopri quali manopole esistono e quali sono davvero i valori predefiniti (nota: `PARALLEL_WORKERS` ha valore predefinito `12` nel codice nonostante la documentazione dica `4`).
 
-2. **`extraction/fields.py`** -- The `FIELD_KEYS` list defines every field the system extracts (40+ fields). `CSV_TO_SCHEMA` maps Italian ground truth column names to schema keys. This is the data contract between the VLM output and the evaluation system.
+2. **`extraction/fields.py`** -- L'elenco `FIELD_KEYS` definisce ogni campo che il sistema estrae (oltre 40 campi). `CSV_TO_SCHEMA` mappa i nomi delle colonne italiane della ground truth alle chiavi di schema. Questo è il contratto dati tra l'output del VLM e il sistema di valutazione.
 
-3. **`extraction/schemas.py`** -- Pydantic models (`ExtractionResponse`, `AnchorResponse`, `FieldResult`, `Soggetto`, `Fido`, `Garanzia`) that define the structured output the VLM must produce. `FieldsModel` is dynamically generated from `FIELD_KEYS` at import time.
+3. **`extraction/schemas.py`** -- Modelli Pydantic (`ExtractionResponse`, `AnchorResponse`, `FieldResult`, `Soggetto`, `Fido`, `Garanzia`) che definiscono l'output strutturato che il VLM deve produrre. `FieldsModel` viene generato dinamicamente da `FIELD_KEYS` in fase di import.
 
-4. **`extraction/pipeline.py`** -- The `ExtractionPipeline` class orchestrates the three-pass extraction (anchor, main, retry). This is the core algorithm. Understanding `extract_from_image()` is essential before changing anything.
+4. **`extraction/pipeline.py`** -- La classe `ExtractionPipeline` orchestra l'estrazione a tre passaggi (anchor, principale, retry). Questo è l'algoritmo centrale. Comprendere `extract_from_image()` è essenziale prima di cambiare qualsiasi cosa.
 
-5. **`extraction/vlm_client.py`** -- How LLM calls actually happen: LangChain structured output for OpenAI, free-form JSON with manual Pydantic parsing for newer Gemini models. Retry logic with exponential backoff lives here.
+5. **`extraction/vlm_client.py`** -- Come avvengono effettivamente le chiamate LLM: output strutturato LangChain per OpenAI, JSON in forma libera con parsing manuale Pydantic per i modelli Gemini più recenti. Qui vive la logica di retry con backoff esponenziale.
 
-6. **`extraction/prompts.py`** -- The Italian-language prompts (`PROMPT`, `ANCHOR_PROMPT`) sent to the VLM. These are highly tuned to the BPER banking UI layout and directly affect extraction accuracy.
+6. **`extraction/prompts.py`** -- I prompt in lingua italiana (`PROMPT`, `ANCHOR_PROMPT`) inviati al VLM. Sono finemente calibrati sul layout dell'interfaccia bancaria BPER e influenzano direttamente l'accuratezza dell'estrazione.
 
-7. **`extraction/evaluation.py`** -- Ground truth loading, per-field accuracy classification (OK/WRONG/MISSING/HALLUCINATED/OK_NULL), and the RAW vs FILTERED metrics split. Read this to understand how results are measured.
+7. **`extraction/evaluation.py`** -- Caricamento della ground truth, classificazione dell'accuratezza per campo (OK/WRONG/MISSING/HALLUCINATED/OK_NULL) e la suddivisione tra metriche RAW e FILTERED. Leggi questo per capire come vengono misurati i risultati.
 
-8. **`extraction/cli.py`** -- The `BatchRunner` class and `main()` function. Shows how models are created once and shared across a `ThreadPoolExecutor`. Also contains the commented-out `_deduplicate_same_page_outputs()` function.
+8. **`extraction/cli.py`** -- La classe `BatchRunner` e la funzione `main()`. Mostra come i modelli vengono creati una sola volta e condivisi su un `ThreadPoolExecutor`. Contiene anche la funzione commentata `_deduplicate_same_page_outputs()`.
 
-9. **`edge-agent/edge_agent.py`** and **`edge-agent/config.ini`** -- The PyQt6 entry point and its INI-based configuration. The edge-agent has its own config system separate from `.env` variables.
+9. **`edge-agent/edge_agent.py`** e **`edge-agent/config.ini`** -- L'entry point PyQt6 e la sua configurazione basata su INI. L'edge-agent ha un proprio sistema di configurazione separato dalle variabili `.env`.
 
-10. **`CLAUDE.md`** -- The project's own internal documentation. Comprehensive at 276 lines, covering architecture, conventions, and constraints. Some references are outdated (e.g., `app.py` Streamlit entry point no longer exists).
+10. **`CLAUDE.md`** -- La documentazione interna del progetto stesso. Esaustiva con le sue 276 righe, copre architettura, convenzioni e vincoli. Alcuni riferimenti sono superati (es. l'entry point Streamlit `app.py` non esiste più).
 
-## Where Things Live
+## Dove si trovano le cose
 
-**To understand the extraction logic:**
-Look in `extraction/pipeline.py` for the multi-pass orchestration. The three passes (anchor, main, retry) are methods on `ExtractionPipeline`. Crop coordinates are in `extraction/config.py` (`CONTENT_CROP`, `HEADER_IN_CONTENT`, `RETRY_AREAS`).
+**Per capire la logica di estrazione:**
+Guarda in `extraction/pipeline.py` per l'orchestrazione multi-passaggio. I tre passaggi (anchor, principale, retry) sono metodi di `ExtractionPipeline`. Le coordinate di ritaglio sono in `extraction/config.py` (`CONTENT_CROP`, `HEADER_IN_CONTENT`, `RETRY_AREAS`).
 
-**To add or modify an extracted field:**
-Start in `extraction/fields.py` -- add the key to `FIELD_KEYS` and add the ground truth mapping to `CSV_TO_SCHEMA`. Then add field metadata in `extraction/field_definitions.py` (display name and page assignment). The Pydantic schema in `extraction/schemas.py` auto-generates from `FIELD_KEYS`, so no change needed there.
+**Per aggiungere o modificare un campo estratto:**
+Parti da `extraction/fields.py` -- aggiungi la chiave a `FIELD_KEYS` e aggiungi la mappatura della ground truth a `CSV_TO_SCHEMA`. Poi aggiungi i metadati del campo in `extraction/field_definitions.py` (nome visualizzato e assegnazione di pagina). Lo schema Pydantic in `extraction/schemas.py` si auto-genera da `FIELD_KEYS`, quindi lì non serve alcuna modifica.
 
-**To change how LLM calls are made:**
-`extraction/vlm_client.py` handles all VLM communication. `extraction/llm_factory.py` is the factory that creates LangChain `ChatModel` instances. Provider-specific behavior (OpenAI structured output vs Gemini freeform JSON) is in `vlm_client.py`.
+**Per cambiare come vengono fatte le chiamate LLM:**
+`extraction/vlm_client.py` gestisce tutta la comunicazione VLM. `extraction/llm_factory.py` è la factory che crea le istanze di `ChatModel` LangChain. Il comportamento specifico del provider (output strutturato OpenAI vs JSON in forma libera Gemini) è in `vlm_client.py`.
 
-**To modify the VLM prompts:**
-`extraction/prompts.py` contains `PROMPT` (main pass), `ANCHOR_PROMPT` (header-only pass), and `FIELD_RETRY_PROMPTS` (per-area retry prompts). These are in Italian and tuned to BPER UI terminology.
+**Per modificare i prompt del VLM:**
+`extraction/prompts.py` contiene `PROMPT` (passaggio principale), `ANCHOR_PROMPT` (passaggio sulla sola intestazione) e `FIELD_RETRY_PROMPTS` (prompt di retry per area). Sono in italiano e calibrati sulla terminologia dell'interfaccia BPER.
 
-**To change image preprocessing:**
-`extraction/imaging.py` handles normalization (resize, contrast, unsharp mask) and cropping for the extraction pipeline. `edge-agent/image_ops.py` handles preprocessing for the live capture path (separate logic).
+**Per cambiare la pre-elaborazione delle immagini:**
+`extraction/imaging.py` gestisce la normalizzazione (ridimensionamento, contrasto, unsharp mask) e il ritaglio per la pipeline di estrazione. `edge-agent/image_ops.py` gestisce la pre-elaborazione per il percorso di cattura dal vivo (logica separata).
 
-**To work on the edge-agent UI:**
-Tab implementations are in `edge-agent/ui/` -- `capture_tab.py` (start/stop capture), `extraction_results_tab.py` (results display), `data_table_tab.py` (spreadsheet export), `debug_tab.py` (LLM router debug). The main window assembles them in `edge-agent/ui/main_window.py`.
+**Per lavorare sull'interfaccia dell'edge-agent:**
+Le implementazioni delle schede sono in `edge-agent/ui/` -- `capture_tab.py` (avvio/stop cattura), `extraction_results_tab.py` (visualizzazione risultati), `data_table_tab.py` (esportazione a foglio di calcolo), `debug_tab.py` (debug del router LLM). La finestra principale le assembla in `edge-agent/ui/main_window.py`.
 
-**To change page detection in the edge-agent:**
-`edge-agent/llm_router.py` has `LLMPageRouter` (OpenAI Vision) and `MLPageRouter` (DINOv2 cosine similarity). The router mode is set in `edge-agent/config.ini` under `[agent] router=`. Page prototypes and LLM definitions are in `edge-agent/assets/templates/bper/`.
+**Per cambiare il riconoscimento pagina nell'edge-agent:**
+`edge-agent/llm_router.py` ha `LLMPageRouter` (OpenAI Vision) e `MLPageRouter` (similarità del coseno DINOv2). La modalità del router si imposta in `edge-agent/config.ini` sotto `[agent] router=`. I prototipi di pagina e le definizioni LLM sono in `edge-agent/assets/templates/bper/`.
 
-**To change how accuracy is evaluated:**
-`extraction/evaluation.py` for the evaluation framework. `extraction/normalization.py` for the `classify_field()` function and text normalization logic used for comparison.
+**Per cambiare come viene valutata l'accuratezza:**
+`extraction/evaluation.py` per il framework di valutazione. `extraction/normalization.py` per la funzione `classify_field()` e la logica di normalizzazione del testo usata per il confronto.
 
-## Common Tasks
+## Attività comuni
 
-### Run CLI batch extraction and see accuracy
+### Eseguire l'estrazione batch da CLI e vedere l'accuratezza
 
 ```bash
 python main.py
 ```
 
-This requires `mnt/data/dati.csv` (ground truth) and screenshot PNGs in `mnt/data/`. It prints per-field accuracy (RAW and FILTERED metrics) and a cost summary to stdout. Outputs go to `mnt/data/poc_outputs_improved.json`.
+Questo richiede `mnt/data/dati.csv` (ground truth) e i PNG degli screenshot in `mnt/data/`. Stampa su stdout l'accuratezza per campo (metriche RAW e FILTERED) e un riepilogo dei costi. Gli output finiscono in `mnt/data/poc_outputs_improved.json`.
 
-To enable debug output:
+Per abilitare l'output di debug:
 
 ```bash
 DEBUG_MODE=1 python main.py
 ```
 
-To save intermediate crop images:
+Per salvare le immagini di ritaglio intermedie:
 
 ```bash
 DEBUG_SAVE_CROPS=1 python main.py
 ```
 
-Crops are saved to `mnt/data/debug_crops/`.
+I ritagli vengono salvati in `mnt/data/debug_crops/`.
 
-### Switch LLM providers
+### Cambiare provider LLM
 
-Edit `.env`:
+Modifica `.env`:
 
 ```bash
-# For Gemini
+# Per Gemini
 LLM_PROVIDER=gemini
 LLM_API_KEY=AI...
 LLM_MODEL=gemini-2.0-flash
 ```
 
-Or use environment variables directly:
+Oppure usa direttamente le variabili d'ambiente:
 
 ```bash
 LLM_PROVIDER=gemini LLM_API_KEY=AI... LLM_MODEL=gemini-2.0-flash python main.py
 ```
 
-The `gui_app.py` Tkinter interface also lets you pick provider and model from a dropdown at runtime.
+Anche l'interfaccia Tkinter `gui_app.py` permette di scegliere provider e modello da un menu a discesa a runtime.
 
-### Build a standalone Windows executable
+### Compilare un eseguibile Windows autonomo
 
 ```bash
 pip install pyinstaller
 pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py
 ```
 
-The `.exe` appears in `dist/AI_Data_Extractor.exe`. This packages only the Tkinter GUI, not the edge-agent.
+L'`.exe` compare in `dist/AI_Data_Extractor.exe`. Questo impacchetta solo la GUI Tkinter, non l'edge-agent.
 
-### Test a single screenshot manually
+### Testare manualmente un singolo screenshot
 
-There is no single-image CLI command. The fastest path is to place one image in `mnt/data/`, ensure the ground truth CSV has matching rows, and run `python main.py`. Or use `gui_app.py` to select individual files through the file browser.
+Non esiste un comando CLI per singola immagine. Il percorso più rapido è collocare un'immagine in `mnt/data/`, assicurarsi che la ground truth CSV abbia righe corrispondenti ed eseguire `python main.py`. Oppure usare `gui_app.py` per selezionare singoli file tramite l'esploratore file.
 
-### Export edge-agent results to CSV/Excel
+### Esportare i risultati dell'edge-agent in CSV/Excel
 
-In the edge-agent GUI, the Data Table tab (`edge-agent/ui/data_table_tab.py`) provides CSV and Excel export buttons. The `LocalExtractionClient.export_csv()` method (`edge-agent/local_extraction_client.py`) handles the export logic. Excel export uses `openpyxl`.
+Nella GUI dell'edge-agent, la scheda Dati Estratti (`edge-agent/ui/data_table_tab.py`) fornisce i pulsanti di esportazione CSV ed Excel. Il metodo `LocalExtractionClient.export_csv()` (`edge-agent/local_extraction_client.py`) gestisce la logica di esportazione. L'esportazione Excel usa `openpyxl`.
 
-## Gotchas
+## Trabocchetti
 
-**PARALLEL_WORKERS default mismatch.** The code in `extraction/config.py` line 11 defaults to `12`, but `.env.example` and `CLAUDE.md` both say `4`. If you run without `.env`, you get 12 parallel workers, which may overwhelm rate limits on a free-tier API key.
+**Disallineamento del valore predefinito di PARALLEL_WORKERS.** Il codice in `extraction/config.py` riga 11 ha valore predefinito `12`, ma sia `.env.example` sia `CLAUDE.md` dicono `4`. Se esegui senza `.env`, ottieni 12 worker paralleli, che possono saturare i rate limit di una chiave API di fascia gratuita.
 
-**LLM_THINKING_LEVEL looks inconsistent but is functionally unset.** `extraction/config.py` line 20 stores a `medium` default into a module-level constant, but that constant is not consumed anywhere. The live check in `extraction/llm_factory.py` line 72 re-reads the env var with an empty default, so leaving it unset (as `.env.example` and `CLAUDE.md` both do) keeps thinking mode off. This only affects Gemini models whose name contains "thinking".
+**LLM_THINKING_LEVEL sembra incoerente ma di fatto non è impostato.** `extraction/config.py` riga 20 memorizza un valore predefinito `medium` in una costante a livello di modulo, ma quella costante non viene usata da nessuna parte. Il controllo attivo in `extraction/llm_factory.py` riga 72 rilegge la variabile d'ambiente con valore predefinito vuoto, quindi lasciarla non impostata (come fanno sia `.env.example` sia `CLAUDE.md`) tiene disattivata la modalità thinking. Questo riguarda solo i modelli Gemini il cui nome contiene "thinking".
 
-**The `mnt/` directory is gitignored.** You will not get test data from the repo. The ground truth CSV (`mnt/data/dati.csv`) and all 9 screenshot PNGs must be obtained separately. Without these, `python main.py` raises `FileNotFoundError`.
+**La directory `mnt/` è esclusa da git.** Non otterrai i dati di test dal repo. La ground truth CSV (`mnt/data/dati.csv`) e tutti i 9 PNG degli screenshot devono essere reperiti separatamente. Senza di essi, `python main.py` solleva `FileNotFoundError`.
 
-**API key in committed config file.** The file `edge-agent/config.ini` line 23 contains what appears to be a real OpenAI API key in the `[llm]` section. This key is committed to version control. Verify with the team whether it needs rotation.
+**Chiave API in un file di configurazione committato.** Il file `edge-agent/config.ini` riga 23 contiene quella che sembra essere una chiave API OpenAI reale nella sezione `[llm]`. Questa chiave è committata nel controllo di versione. Verifica con il team se vada ruotata.
 
-**Missing Streamlit app.** `CLAUDE.md` references `app.py` as a Streamlit web UI entry point, and `streamlit` is in `requirements.txt`, but no `app.py` exists in the repository. The Streamlit interface was either removed or never committed to this branch.
+**App Streamlit mancante.** `CLAUDE.md` fa riferimento a `app.py` come entry point dell'interfaccia web Streamlit, e `streamlit` è in `requirements.txt`, ma nessun `app.py` esiste nel repository. L'interfaccia Streamlit è stata rimossa oppure non è mai stata committata su questo branch.
 
-**edge-agent has its own config system.** The extraction pipeline uses `.env` environment variables (`extraction/config.py`). The edge-agent uses `edge-agent/config.ini` parsed by `edge-agent/config.py`. These are separate systems -- changing `.env` does not affect the edge-agent's LLM router settings, and vice versa. The edge-agent does load `.env` for the extraction pipeline's `LLM_API_KEY`, but router LLM settings come from `config.ini`.
+**L'edge-agent ha un proprio sistema di configurazione.** La pipeline di estrazione usa le variabili d'ambiente `.env` (`extraction/config.py`). L'edge-agent usa `edge-agent/config.ini` analizzato da `edge-agent/config.py`. Sono sistemi separati: cambiare `.env` non influisce sulle impostazioni del router LLM dell'edge-agent, e viceversa. L'edge-agent carica comunque `.env` per la `LLM_API_KEY` della pipeline di estrazione, ma le impostazioni LLM del router provengono da `config.ini`.
 
-**Deduplication is disabled.** `_deduplicate_same_page_outputs()` in `extraction/cli.py` (lines 268-275) is implemented but commented out. The batch runner currently keeps all outputs, even if multiple screenshots map to the same canonical page.
+**La deduplica è disabilitata.** `_deduplicate_same_page_outputs()` in `extraction/cli.py` (righe 268-275) è implementata ma commentata. Il batch runner attualmente mantiene tutti gli output, anche se più screenshot mappano alla stessa pagina canonica.
 
-**Config loads at import time.** `extraction/config.py` reads environment variables at module import, which happens when `main.py` does `from extraction import *`. If you set env vars after import, they will not take effect. The `.env` file must be loaded before the extraction package is imported -- `main.py` handles this correctly with `load_dotenv()` before the import.
+**La configurazione viene caricata in fase di import.** `extraction/config.py` legge le variabili d'ambiente all'import del modulo, cosa che avviene quando `main.py` esegue `from extraction import *`. Se imposti le variabili d'ambiente dopo l'import, non avranno effetto. Il file `.env` deve essere caricato prima che il pacchetto extraction venga importato -- `main.py` gestisce correttamente questo con `load_dotenv()` prima dell'import.
 
-**Italian field names are load-bearing.** Field keys like `professione_principale`, `retribuzione_annua_netta`, and `denominazione` are not translatable -- they must match the BPER banking domain schema. The VLM prompts are also in Italian. Do not translate them.
+**I nomi dei campi italiani sono parte portante.** Chiavi di campo come `professione_principale`, `retribuzione_annua_netta` e `denominazione` non sono traducibili: devono corrispondere allo schema del dominio bancario BPER. Anche i prompt del VLM sono in italiano. Non tradurli.
 
-**torch is a heavy optional dependency.** The `requirements.txt` includes `torch` and `torchvision` for the edge-agent's ML page classifier. These are ~2 GB downloads. If you only need the CLI extraction, you can skip them. The ML classifier degrades gracefully to `DISABLED` mode (`edge-agent/page_classifier.py`), and the edge-agent can use `router = llm` in `config.ini` instead.
+**torch è una dipendenza opzionale pesante.** Il `requirements.txt` include `torch` e `torchvision` per il classificatore di pagina ML dell'edge-agent. Si tratta di download da ~2 GB. Se ti serve solo l'estrazione da CLI, puoi ometterli. Il classificatore ML degrada in modo controllato alla modalità `DISABLED` (`edge-agent/page_classifier.py`), e l'edge-agent può usare `router = llm` in `config.ini` come alternativa.
 
-## See Also
+## Vedi anche
 
-- [Tech Stack](03-tech-stack.md) -- detailed breakdown of each dependency, version constraints, and what is optional
-- [Project Anatomy](09-project-anatomy.md) -- the complete environment variable table and configuration file catalog
-- [Configuration Guide](10-configuration-guide.md) -- recipes for switching providers, enabling debug crops, and troubleshooting common errors
-- [Workflows](05-workflows.md) -- step-by-step flows for the CLI batch, edge-agent capture, and multi-pass pipeline
-- [Open Questions](08-open-questions.md) -- discrepancies and unresolved decisions that will affect your first change
+- [Stack tecnologico](03-tech-stack.md) -- analisi dettagliata di ogni dipendenza, vincoli di versione e cosa è opzionale
+- [Anatomia del progetto](09-project-anatomy.md) -- la tabella completa delle variabili d'ambiente e il catalogo dei file di configurazione
+- [Guida alla configurazione](10-configuration-guide.md) -- ricette per cambiare provider, abilitare i ritagli di debug e risolvere errori comuni
+- [Workflow](05-workflows.md) -- flussi passo passo per il batch da CLI, la cattura dell'edge-agent e la pipeline multi-passaggio
+- [Domande aperte](08-open-questions.md) -- discrepanze e decisioni irrisolte che influenzeranno la tua prima modifica

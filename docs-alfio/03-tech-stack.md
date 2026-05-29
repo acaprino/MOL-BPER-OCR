@@ -1,127 +1,127 @@
 # Tech Stack
 
-This is a Python-only project built around LangChain for multi-LLM integration, Pillow for image processing, and Pydantic for structured output validation. It talks to cloud Vision-Language Models (OpenAI GPT-4o, Google Gemini) to extract structured data from banking screenshots, with no local database -- everything lives in memory or flat files. The desktop UIs use two different toolkits: Tkinter for the standalone GUI and PyQt6 for the edge-agent.
+Questo è un progetto interamente in Python, costruito attorno a LangChain per l'integrazione multi-LLM, Pillow per l'elaborazione delle immagini e Pydantic per la validazione dell'output strutturato. Dialoga con Vision-Language Model in cloud (OpenAI GPT-4o, Google Gemini) per estrarre dati strutturati dagli screenshot bancari, senza alcun database locale -- tutto vive in memoria o in file piatti. Le UI desktop usano due toolkit diversi: Tkinter per la GUI standalone e PyQt6 per l'edge-agent.
 
-## Languages
+## Linguaggi
 
-| Language | Version | Where Configured |
+| Linguaggio | Versione | Dove è configurato |
 |----------|---------|-----------------|
-| Python | 3.8+ required; 3.13 observed in compiled `.pyc` files | No `pyproject.toml` or `setup.py` exists. The `.pyc` bytecodes in `__pycache__/` (e.g., `extraction/__pycache__/fields.cpython-313.pyc`) confirm the dev environment runs 3.13. |
+| Python | 3.8+ richiesto; 3.13 osservato nei file `.pyc` compilati | Non esiste alcun `pyproject.toml` o `setup.py`. Il bytecode `.pyc` in `__pycache__/` (es. `extraction/__pycache__/fields.cpython-313.pyc`) conferma che l'ambiente di sviluppo gira su 3.13. |
 
-There is no explicit Python version pin anywhere in the repository. The code uses `from __future__ import annotations` in some edge-agent modules (`edge-agent/edge_agent.py`, `edge-agent/local_extraction_client.py`, `edge-agent/llm_router.py`, `edge-agent/page_classifier.py`) for forward-compatible type hints, and Python 3.10+ union syntax (`float | None`) appears in `edge-agent/config.py` line 39 -- so 3.10 is the practical floor despite the docs claiming 3.8+.
+Non c'è alcun vincolo esplicito sulla versione di Python in nessun punto del repository. Il codice usa `from __future__ import annotations` in alcuni moduli dell'edge-agent (`edge-agent/edge_agent.py`, `edge-agent/local_extraction_client.py`, `edge-agent/llm_router.py`, `edge-agent/page_classifier.py`) per type hint forward-compatible, e la sintassi delle union di Python 3.10+ (`float | None`) appare in `edge-agent/config.py` alla riga 39 -- quindi 3.10 è il minimo pratico, nonostante la documentazione dichiari 3.8+.
 
-## Frameworks
+## Framework
 
 ### LangChain (langchain-core, langchain-openai, langchain-google-genai)
 
-The central abstraction for all LLM communication. `extraction/llm_factory.py` uses a factory function `create_chat_model()` that lazy-imports either `langchain_openai.ChatOpenAI` or `langchain_google_genai.ChatGoogleGenerativeAI` depending on the configured provider. The pipeline calls LangChain's `.with_structured_output()` on the resulting model to get Pydantic-validated JSON directly from the LLM response (`extraction/vlm_client.py` lines 147, 193). No version pins are specified in `requirements.txt`.
+L'astrazione centrale per tutta la comunicazione con gli LLM. `extraction/llm_factory.py` usa una funzione factory `create_chat_model()` che importa in modo lazy `langchain_openai.ChatOpenAI` oppure `langchain_google_genai.ChatGoogleGenerativeAI` a seconda del provider configurato. La pipeline chiama `.with_structured_output()` di LangChain sul modello risultante per ottenere JSON validato da Pydantic direttamente dalla risposta dell'LLM (`extraction/vlm_client.py` righe 147, 193). In `requirements.txt` non è specificato alcun vincolo di versione.
 
 ### PyQt6 (>= 6.4.0)
 
-Drives the edge-agent desktop application. The entry point is `edge-agent/edge_agent.py`, which creates a `QApplication`, applies a Material Design theme via `qt-material`, and launches a `MainWindow` with four tabs (Cattura, Risultati, Dati, Debug). Worker threads subclass `QThread` and communicate with the UI via `pyqtSignal`. Configured in `requirements.txt` line 8.
+Guida l'applicazione desktop edge-agent. L'entry point è `edge-agent/edge_agent.py`, che crea una `QApplication`, applica un tema Material Design tramite `qt-material` e avvia una `MainWindow` con quattro schede (Cattura, Risultati, Dati, Debug). I thread worker estendono `QThread` e comunicano con la UI tramite `pyqtSignal`. Configurato in `requirements.txt` riga 8.
 
-### Tkinter (standard library)
+### Tkinter (libreria standard)
 
-Provides the standalone desktop GUI in `gui_app.py`. This is a simpler interface: file picker, provider/model selection, batch extraction trigger, and results treeview. No external dependency required -- it ships with Python.
+Fornisce la GUI desktop standalone in `gui_app.py`. È un'interfaccia più semplice: selezione file, scelta provider/modello, avvio dell'estrazione a lotti e treeview dei risultati. Non richiede dipendenze esterne -- è inclusa in Python.
 
 ### qt-material (>= 2.14)
 
-Theming library for the PyQt6 app. Applied in `edge-agent/edge_agent.py` lines 38-43 with the `dark_cyan.xml` theme. Falls back gracefully if not installed (`except ImportError: pass`).
+Libreria di theming per l'app PyQt6. Applicata in `edge-agent/edge_agent.py` righe 38-43 con il tema `dark_cyan.xml`. Degrada con grazia se non è installata (`except ImportError: pass`).
 
-## Key Dependencies
+## Dipendenze principali
 
-### LLM Integration
+### Integrazione LLM
 
-| Dependency | Role | Configured In |
+| Dipendenza | Ruolo | Configurata in |
 |-----------|------|---------------|
-| `langchain-core` | Base abstractions (`BaseChatModel`, `HumanMessage`, `SystemMessage`) | `requirements.txt` line 1; used throughout `extraction/vlm_client.py`, `extraction/llm_factory.py` |
-| `langchain-openai` | `ChatOpenAI` wrapper for OpenAI API | `requirements.txt` line 2; lazy-imported in `extraction/llm_factory.py` line 47 |
-| `langchain-google-genai` | `ChatGoogleGenerativeAI` wrapper for Gemini API | `requirements.txt` line 3; lazy-imported in `extraction/llm_factory.py` line 57 |
-| `openai` (>= 1.51.0) | Used directly (not through LangChain) by the edge-agent's `LLMPageRouter` for page classification via Vision API | `requirements.txt` line 19; `edge-agent/llm_router.py` line 23 |
-| `pydantic` | Transitive via LangChain. All extraction schemas (`FieldResult`, `ExtractionResponse`, `AnchorResponse`) are Pydantic `BaseModel` subclasses. `FieldsModel` is dynamically generated via `create_model()`. | `extraction/schemas.py` |
+| `langchain-core` | Astrazioni di base (`BaseChatModel`, `HumanMessage`, `SystemMessage`) | `requirements.txt` riga 1; usata in tutto `extraction/vlm_client.py`, `extraction/llm_factory.py` |
+| `langchain-openai` | Wrapper `ChatOpenAI` per l'API OpenAI | `requirements.txt` riga 2; importata in modo lazy in `extraction/llm_factory.py` riga 47 |
+| `langchain-google-genai` | Wrapper `ChatGoogleGenerativeAI` per l'API Gemini | `requirements.txt` riga 3; importata in modo lazy in `extraction/llm_factory.py` riga 57 |
+| `openai` (>= 1.51.0) | Usata direttamente (non tramite LangChain) dal `LLMPageRouter` dell'edge-agent per la classificazione delle pagine via Vision API | `requirements.txt` riga 19; `edge-agent/llm_router.py` riga 23 |
+| `pydantic` | Transitiva via LangChain. Tutti gli schemi di estrazione (`FieldResult`, `ExtractionResponse`, `AnchorResponse`) sono sottoclassi di `BaseModel` Pydantic. `FieldsModel` è generato dinamicamente via `create_model()`. | `extraction/schemas.py` |
 
-### Image Processing
+### Elaborazione delle immagini
 
-| Dependency | Role | Configured In |
+| Dipendenza | Ruolo | Configurata in |
 |-----------|------|---------------|
-| `Pillow` (>= 10.0.0) | Core image operations: resize, crop, contrast enhancement, unsharp mask, format conversion | `requirements.txt` lines 4, 12 (listed twice); `extraction/imaging.py`, `edge-agent/image_ops.py` |
-| `imagehash` (>= 4.3.0) | Perceptual hashing (pHash) for frame deduplication in the capture worker. Hamming distance <= threshold means "same frame" | `requirements.txt` line 13; `edge-agent/workers/capture/bper_capture_worker.py` line 8 |
+| `Pillow` (>= 10.0.0) | Operazioni core sulle immagini: resize, ritaglio, miglioramento del contrasto, unsharp mask, conversione di formato | `requirements.txt` righe 4, 12 (elencata due volte); `extraction/imaging.py`, `edge-agent/image_ops.py` |
+| `imagehash` (>= 4.3.0) | Perceptual hashing (pHash) per la deduplica dei frame nel worker di cattura. Distanza di Hamming <= soglia significa "stesso frame" | `requirements.txt` riga 13; `edge-agent/workers/capture/bper_capture_worker.py` riga 8 |
 
-### Machine Learning (Page Classification)
+### Machine Learning (classificazione delle pagine)
 
-| Dependency | Role | Configured In |
+| Dipendenza | Ruolo | Configurata in |
 |-----------|------|---------------|
-| `torch` | PyTorch runtime for DINOv2 ViT-S/14 feature extraction. Loaded via `torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14')` | `requirements.txt` line 17; `edge-agent/page_classifier.py` line 203 |
-| `torchvision` | Provides `transforms` (Resize, CenterCrop, Normalize) for image preprocessing before DINOv2 | `requirements.txt` line 18; `edge-agent/page_classifier.py` line 162 |
+| `torch` | Runtime PyTorch per l'estrazione delle feature DINOv2 ViT-S/14. Caricato via `torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14')` | `requirements.txt` riga 17; `edge-agent/page_classifier.py` riga 203 |
+| `torchvision` | Fornisce le `transforms` (Resize, CenterCrop, Normalize) per il pre-trattamento delle immagini prima di DINOv2 | `requirements.txt` riga 18; `edge-agent/page_classifier.py` riga 162 |
 
-Both are optional. If `torch` fails to import (missing DLL, incompatible environment), the classifier enters DISABLED mode and `classify()` returns `(None, 0.0)`. The application continues to work with LLM-only routing. See `edge-agent/page_classifier.py` lines 153-170.
+Entrambe sono opzionali. Se `torch` non riesce a importarsi (DLL mancante, ambiente incompatibile), il classificatore entra in modalità DISABLED e `classify()` restituisce `(None, 0.0)`. L'applicazione continua a funzionare con il solo riconoscimento via LLM. Vedi `edge-agent/page_classifier.py` righe 153-170.
 
-### Data Handling
+### Gestione dei dati
 
-| Dependency | Role | Configured In |
+| Dipendenza | Ruolo | Configurata in |
 |-----------|------|---------------|
-| `pandas` | CSV reading for ground truth (`pd.read_csv`), DataFrame construction for debug reports and exports (`pd.DataFrame.to_csv`) | `requirements.txt` line 5; `extraction/evaluation.py` |
-| `openpyxl` (>= 3.1.2) | Excel export from the DataTableTab in the edge-agent UI | `requirements.txt` line 20 |
+| `pandas` | Lettura del CSV per la ground truth (`pd.read_csv`), costruzione di DataFrame per i report di debug e le esportazioni (`pd.DataFrame.to_csv`) | `requirements.txt` riga 5; `extraction/evaluation.py` |
+| `openpyxl` (>= 3.1.2) | Esportazione Excel dalla DataTableTab nella UI dell'edge-agent | `requirements.txt` riga 20 |
 
-### Utilities
+### Utility
 
-| Dependency | Role | Configured In |
+| Dipendenza | Ruolo | Configurata in |
 |-----------|------|---------------|
-| `python-dotenv` | Loads `.env` file at startup. Called in `main.py` line 7, `edge-agent/edge_agent.py` line 11, and `edge-agent/local_extraction_client.py` line 23 | `requirements.txt` line 7 |
-| `mss` (>= 9.0.0) | Fast cross-platform monitor screenshot capture for the edge-agent | `requirements.txt` line 10; used by `BaseCaptureWorker` |
-| `pyscreenshot` (>= 3.1) | Linux-only fallback screenshot library. Conditional install: `sys_platform == 'linux'` | `requirements.txt` line 11 |
-| `requests` (>= 2.31.0) | HTTP calls in `DefaultCaptureWorker` (the generic, non-BPER capture mode) | `requirements.txt` line 14 |
+| `python-dotenv` | Carica il file `.env` all'avvio. Chiamata in `main.py` riga 7, `edge-agent/edge_agent.py` riga 11 e `edge-agent/local_extraction_client.py` riga 23 | `requirements.txt` riga 7 |
+| `mss` (>= 9.0.0) | Cattura veloce e cross-platform degli screenshot del monitor per l'edge-agent | `requirements.txt` riga 10; usata da `BaseCaptureWorker` |
+| `pyscreenshot` (>= 3.1) | Libreria di fallback per gli screenshot solo su Linux. Installazione condizionale: `sys_platform == 'linux'` | `requirements.txt` riga 11 |
+| `requests` (>= 2.31.0) | Chiamate HTTP in `DefaultCaptureWorker` (la modalità di cattura generica, non-BPER) | `requirements.txt` riga 14 |
 
-### Dormant / Stubbed Dependencies
+### Dipendenze dormienti / abbozzate
 
-| Dependency | Status | Notes |
+| Dipendenza | Stato | Note |
 |-----------|--------|-------|
-| `boto3` (>= 1.35.0) | Listed in `requirements.txt` line 15. `edge-agent/config.ini` has a `[minio]` section. The dataset upload path (`_maybe_upload_dataset`) is a no-op in current code. | Likely planned for S3/MinIO frame storage. |
-| `keyboard` (== 0.13.5) | Pinned exactly in `requirements.txt` line 16. No active usage found in any source file. | Probably a leftover from a removed hotkey feature. |
-| `streamlit` | Listed in `requirements.txt` line 6. Referenced in `CLAUDE.md` as `app.py`. No `app.py` exists in the repo. | Was likely a Streamlit web UI that was removed or never committed to this branch. |
+| `boto3` (>= 1.35.0) | Elencata in `requirements.txt` riga 15. `edge-agent/config.ini` ha una sezione `[minio]`. Il percorso di upload del dataset (`_maybe_upload_dataset`) è un no-op nel codice attuale. | Probabilmente previsto per l'archiviazione dei frame su S3/MinIO. |
+| `keyboard` (== 0.13.5) | Pinnata in modo esatto in `requirements.txt` riga 16. Nessun uso attivo trovato in alcun file sorgente. | Probabilmente un residuo di una funzionalità di hotkey rimossa. |
+| `streamlit` | Elencata in `requirements.txt` riga 6. Citata in `CLAUDE.md` come `app.py`. Nel repo non esiste alcun `app.py`. | Era probabilmente una UI web Streamlit rimossa o mai committata in questo branch. |
 
-## Infrastructure
+## Infrastruttura
 
-There is no database. All state lives in Python dicts during a run.
+Non c'è alcun database. Tutto lo stato vive in dizionari Python durante un'esecuzione.
 
-| Component | Role | Status |
+| Componente | Ruolo | Stato |
 |-----------|------|--------|
-| Ground truth CSV (`mnt/data/dati.csv`) | Stores expected field values per screenshot for accuracy evaluation | Gitignored (`/mnt` in `.gitignore` line 9). Must be provided externally. |
-| Output JSON (`mnt/data/poc_outputs_improved.json`) | Batch extraction results | Written by `extraction/cli.py` line 339 |
-| Debug CSV (`mnt/data/poc_debug_improved.csv`) | Per-field accuracy breakdown | Written by `extraction/cli.py` line 346 |
-| MinIO / S3 | Object storage for captured frames | Configured in `edge-agent/config.ini` lines 12-16 (endpoint `localhost:9000`). Upload code is stubbed -- not active. |
-| OpenAI API | Cloud LLM for extraction + page routing | Accessed via LangChain (`langchain-openai`) and directly (`openai` SDK) |
-| Google Gemini API | Alternative cloud LLM for extraction | Accessed via LangChain (`langchain-google-genai`) |
-| DINOv2 (Facebook Research) | Pre-trained vision model downloaded on first run via `torch.hub` | `edge-agent/page_classifier.py` line 203. Cached locally by PyTorch Hub. |
+| Ground truth CSV (`mnt/data/dati.csv`) | Conserva i valori attesi dei campi per ogni screenshot, per la valutazione dell'accuratezza | Escluso da git (`/mnt` in `.gitignore` riga 9). Deve essere fornito esternamente. |
+| JSON di output (`mnt/data/poc_outputs_improved.json`) | Risultati dell'estrazione a lotti | Scritto da `extraction/cli.py` riga 339 |
+| CSV di debug (`mnt/data/poc_debug_improved.csv`) | Dettaglio dell'accuratezza per campo | Scritto da `extraction/cli.py` riga 346 |
+| MinIO / S3 | Object storage per i frame catturati | Configurato in `edge-agent/config.ini` righe 12-16 (endpoint `localhost:9000`). Il codice di upload è abbozzato -- non attivo. |
+| API OpenAI | LLM in cloud per l'estrazione + il riconoscimento delle pagine | Accessibile via LangChain (`langchain-openai`) e direttamente (SDK `openai`) |
+| API Google Gemini | LLM in cloud alternativo per l'estrazione | Accessibile via LangChain (`langchain-google-genai`) |
+| DINOv2 (Facebook Research) | Modello visivo pre-addestrato scaricato al primo avvio via `torch.hub` | `edge-agent/page_classifier.py` riga 203. Messo in cache localmente da PyTorch Hub. |
 
-## Dev Tools
+## Strumenti di sviluppo
 
-| Tool | Purpose | Configuration |
+| Strumento | Scopo | Configurazione |
 |------|---------|--------------|
-| PyInstaller | Packaging `gui_app.py` as a standalone `.exe` | Documented in `README.md`. No `.spec` file is committed (`.gitignore` excludes `*.spec`). |
+| PyInstaller | Pacchettizzazione di `gui_app.py` come `.exe` standalone | Documentato in `README.md`. Nessun file `.spec` è committato (`.gitignore` esclude `*.spec`). |
 
-Notably absent:
+Notevolmente assenti:
 
-- **No linter or formatter configuration.** No `ruff.toml`, `.flake8`, `pyproject.toml [tool.black]`, or similar.
-- **No test framework.** No `pytest.ini`, `tests/` directory, or test files anywhere in the repo.
-- **No CI/CD pipeline.** No `.github/workflows/`, `Jenkinsfile`, or equivalent.
-- **No type checking config.** No `mypy.ini` or `py.typed` markers, despite heavy use of type annotations.
+- **Nessuna configurazione di linter o formatter.** Nessun `ruff.toml`, `.flake8`, `pyproject.toml [tool.black]` o simili.
+- **Nessun framework di test.** Nessun `pytest.ini`, directory `tests/` o file di test in alcun punto del repo.
+- **Nessuna pipeline CI/CD.** Nessun `.github/workflows/`, `Jenkinsfile` o equivalente.
+- **Nessuna configurazione di type checking.** Nessun `mypy.ini` o marker `py.typed`, nonostante l'uso intensivo delle annotazioni di tipo.
 
-## Dependency Management
+## Gestione delle dipendenze
 
-Dependencies are managed through a single `requirements.txt` at the project root (`D:\Projects\poc-data-extraction\requirements.txt`). There is no `pyproject.toml`, `setup.py`, `setup.cfg`, or `Pipfile`.
+Le dipendenze sono gestite tramite un unico `requirements.txt` nella radice del progetto (`D:\Projects\poc-data-extraction\requirements.txt`). Non c'è alcun `pyproject.toml`, `setup.py`, `setup.cfg` o `Pipfile`.
 
-**Pinning strategy:** Most dependencies use minimal or no version constraints. Only a few specify minimums (e.g., `PyQt6>=6.4.0`, `openai>=1.51.0`). One dependency is hard-pinned: `keyboard==0.13.5`. The LangChain packages (`langchain-core`, `langchain-openai`, `langchain-google-genai`) and `pillow` (at the top of the file) have no version constraint at all, while `Pillow>=10.0.0` appears again lower in the file as a duplicate with a floor.
+**Strategia di pinning:** La maggior parte delle dipendenze usa vincoli di versione minimi o assenti. Solo alcune specificano un minimo (es. `PyQt6>=6.4.0`, `openai>=1.51.0`). Una dipendenza è pinnata in modo rigido: `keyboard==0.13.5`. I pacchetti LangChain (`langchain-core`, `langchain-openai`, `langchain-google-genai`) e `pillow` (in cima al file) non hanno alcun vincolo di versione, mentre `Pillow>=10.0.0` appare di nuovo più in basso nel file come duplicato con un minimo.
 
-**No lockfile exists.** There is no `requirements.lock`, `pip-compile` output, or `poetry.lock`. Builds are not reproducible across environments without manual intervention.
+**Non esiste alcun lockfile.** Non c'è alcun `requirements.lock`, output di `pip-compile` o `poetry.lock`. Le build non sono riproducibili tra ambienti diversi senza intervento manuale.
 
-**Virtual environment:** A `.venv/` directory is present (gitignored). Standard `pip install -r requirements.txt` is the documented setup path.
+**Ambiente virtuale:** È presente una directory `.venv/` (esclusa da git). Il percorso di setup documentato è il classico `pip install -r requirements.txt`.
 
-**Edge-agent dependencies are combined** into the same `requirements.txt` as the extraction core. There is no separation between the CLI tool's needs (LangChain, pandas) and the desktop agent's needs (PyQt6, torch, mss). Installing everything is required regardless of which interface you plan to use.
+**Le dipendenze dell'edge-agent sono combinate** nello stesso `requirements.txt` del core di estrazione. Non c'è separazione tra le esigenze dello strumento CLI (LangChain, pandas) e quelle dell'agente desktop (PyQt6, torch, mss). È necessario installare tutto, indipendentemente da quale interfaccia intendi usare.
 
-## See Also
+## Vedi anche
 
-- [Architecture](04-architecture.md) -- how these packages wire together at runtime and which modules talk to which APIs
-- [Project Anatomy](09-project-anatomy.md) -- the complete catalog of configuration files and environment variables these dependencies consume
-- [Getting Started](07-getting-started.md) -- installation walkthrough and the minimal subset you need for CLI-only work
-- [Open Questions](08-open-questions.md) -- unresolved issues around `boto3`, `keyboard`, and `streamlit` dependencies with no active callers
+- [Architettura](04-architecture.md) -- come questi pacchetti si collegano a runtime e quali moduli dialogano con quali API
+- [Anatomia del progetto](09-project-anatomy.md) -- il catalogo completo dei file di configurazione e delle variabili d'ambiente che queste dipendenze consumano
+- [Getting Started](07-getting-started.md) -- guida all'installazione e il sottoinsieme minimo necessario per il lavoro solo via CLI
+- [Domande Aperte](08-open-questions.md) -- problemi irrisolti attorno alle dipendenze `boto3`, `keyboard` e `streamlit` senza chiamanti attivi
