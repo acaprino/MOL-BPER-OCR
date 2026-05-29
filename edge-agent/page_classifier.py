@@ -4,7 +4,7 @@ from __future__ import annotations
 page_classifier.py
 
 Classificatore ML per le pagine BPER basato su prototipi di embedding
-(MobileNetV3-Small + cosine similarity).
+(DINOv2 ViT-S/14 + cosine similarity).
 
 Importantissimo:
     - Se torch/torchvision non sono disponibili o non si caricano (es. DLL mancanti
@@ -43,7 +43,7 @@ class Prototype:
 
 class BPERPagePrototypeClassifier:
     """
-    Classificatore pagina BPER basato su prototipi e MobileNetV3-Small.
+    Classificatore pagina BPER basato su prototipi e DINOv2 ViT-S/14.
 
     Modalità operative:
         - NORMAL: torch/torchvision disponibili → estrazione feature reale

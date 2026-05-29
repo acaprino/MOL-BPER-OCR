@@ -8,7 +8,7 @@ from typing import Dict, Any, List
 INPUT_DIR = os.getenv("INPUT_DIR", "mnt/data").strip()
 GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, "dati.csv")
 
-PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "12"))
+PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "4"))
 PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1").strip() == "1"
 
 # ============================================================
@@ -17,7 +17,7 @@ PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1").strip() == "1"
 LLM_PROVIDER = os.getenv("LLM_PROVIDER", "openai").strip().lower()
 LLM_MODEL = os.getenv("LLM_MODEL", "gpt-4o").strip()
 LLM_MODEL_ANCHOR = os.getenv("LLM_MODEL_ANCHOR", LLM_MODEL).strip()
-LLM_THINKING_LEVEL = os.getenv("LLM_THINKING_LEVEL", "medium").strip().lower()
+LLM_THINKING_LEVEL = os.getenv("LLM_THINKING_LEVEL", "").strip().lower()
 
 PROVIDER_MODELS = {
     "openai": ["gpt-4o", "gpt-4o-mini", "o1", "o1-mini"],
@@ -28,6 +28,7 @@ PROVIDER_MODELS = {
         "gemini-2.0-flash-exp",
         "gemini-2.0-flash-thinking-exp",
         "gemini-3-flash-preview",
+        "gemini-3.1-flash-lite-preview",
     ],
 }
 
@@ -41,7 +42,10 @@ PRICING_PER_1M = {
     "gemini-1.5-pro": {"input": 1.25, "output": 3.75},
     "gemini-1.5-flash": {"input": 0.075, "output": 0.30},
     "gemini-2.0-flash": {"input": 0.10, "output": 0.40},
+    "gemini-2.0-flash-exp": {"input": 0.10, "output": 0.40},
+    "gemini-2.0-flash-thinking-exp": {"input": 0.10, "output": 0.40},
     "gemini-3-flash-preview": {"input": 0.10, "output": 0.40},
+    "gemini-3.1-flash-lite-preview": {"input": 0.25, "output": 1.50},
 }
 
 # ============================================================

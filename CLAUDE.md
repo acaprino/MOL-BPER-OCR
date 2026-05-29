@@ -8,8 +8,8 @@ in `extraction/llm_factory.py` selects the provider based on `LLM_PROVIDER` env 
 Extracts structured fields from BPER banking UI screenshots via a multi-pass VLM pipeline,
 evaluates accuracy against ground truth CSV, and reports per-field metrics and cost breakdowns.
 
-**Tech stack:** Python 3.8+, LangChain (langchain-openai / langchain-google-genai), Pillow, Pandas, Streamlit, PyQt6
-**Entry points:** `main.py` (CLI batch), `app.py` (Streamlit web UI), `edge-agent/edge_agent.py` (PyQt6 desktop)
+**Tech stack:** Python 3.8+, LangChain (langchain-openai / langchain-google-genai), Pillow, Pandas, Tkinter (stdlib), PyQt6
+**Entry points:** `main.py` (CLI batch; `--gui` launches the Edge Agent), `gui_app.py` (Tkinter desktop GUI), `edge-agent/edge_agent.py` (PyQt6 Edge Agent)
 
 ## Architecture
 
@@ -19,18 +19,18 @@ Each screenshot goes through three stages in `extract_from_screen()` / `extract_
 
 1. **Anchor extraction** — `extract_anchors()` crops the header region and extracts only NDG + DENOMINAZIONE with high confidence (>= 0.95). Gates further processing.
 2. **Main extraction** — Full content crop sent to VLM with anchor hints ("NDG atteso: {value}"). Extracts all fields + soggetti array in one call.
-3. **Conditional retry** — Only retries fields that are nullish or low confidence (< 0.55). Each field has a dedicated crop region in `FIELD_RETRY_MAP`. Best value selected via `pick_best()`.
+3. **Conditional retry** — Only retries fields that are nullish or low confidence (< 0.60). Each field has a dedicated crop region in `FIELD_RETRY_MAP`. Best value selected via `pick_best()`.
 
-`extract_from_screen(path)` — used by CLI/Streamlit; normalizes the image internally.
+`extract_from_screen(path)` — used by CLI/Tkinter GUI; normalizes the image internally.
 `extract_from_image(img, screen_id)` — used by `LocalExtractionClient`; image already preprocessed by edge-agent.
 
 ### Three Modes
 
 - **CLI** (`python main.py`): Batch-processes all screens in `INPUT_DIR`, outputs JSON results, prints accuracy metrics and cost summary.
-- **Streamlit** (`streamlit run app.py`): Web UI with file upload, per-screen results display, confidence tables, and JSON export.
-- **Edge Agent** (`python edge-agent/edge_agent.py`): PyQt6 desktop app for live-screen capture. Captures BPER screens in real time, detects page type, and runs extraction locally via `LocalExtractionClient`.
+- **Tkinter GUI** (`python gui_app.py`): Desktop app with file upload, provider/model selection, per-screen results, and CSV/JSON export. Imports `run_extraction_batch()` from the `extraction` package.
+- **Edge Agent** (`python edge-agent/edge_agent.py`, or `python main.py --gui`): PyQt6 desktop app for live-screen capture. Captures BPER screens in real time, detects page type, and runs extraction locally via `LocalExtractionClient`.
 
-Both CLI and Streamlit share `run_extraction_batch()` in `extraction/cli.py` — do not duplicate the `ThreadPoolExecutor` logic.
+Both CLI and the Tkinter GUI share `run_extraction_batch()` in `extraction/cli.py` — do not duplicate the `ThreadPoolExecutor` logic.
 
 ### Edge Agent Architecture
 
@@ -55,7 +55,7 @@ BPERCaptureWorker (QThread)
 **Detection hook:** `hasattr(api_client, "ingest_frame")` — BPERCaptureWorker detects `LocalExtractionClient` and calls it directly (synchronously, in the capture QThread).
 
 **Page routing modes** (configured in `edge-agent/config.ini` `router=`):
-- `ml` — `MLPageRouter` wraps `BPERPagePrototypeClassifier` (MobileNetV3, prototype matching)
+- `ml` — `MLPageRouter` wraps `BPERPagePrototypeClassifier` (DINOv2 ViT-S/14, prototype matching)
 - `llm` — `LLMPageRouter` uses OpenAI Vision; reads page definitions from `assets/templates/bper/prompts.json`
 - `hybrid` — tries LLM first, falls back to ML
 
@@ -86,8 +86,8 @@ The extractor is bound to **9 BPER banking screens** (`mnt/data/screen 1.png` �
 ```bash
 export LLM_API_KEY="sk-..."
 python main.py                        # CLI batch mode
-streamlit run app.py                  # Streamlit web UI
-python edge-agent/edge_agent.py       # Edge Agent desktop UI
+python gui_app.py                     # Tkinter desktop GUI
+python edge-agent/edge_agent.py       # Edge Agent desktop UI (or: python main.py --gui)
 ```
 
 ### Google Gemini
@@ -99,7 +99,7 @@ export LLM_MODEL=gemini-1.5-flash
 python main.py
 ```
 
-**Required:** `LLM_API_KEY` must be set (or entered in Streamlit sidebar).
+**Required:** `LLM_API_KEY` must be set (or entered in the Tkinter GUI; falls back to `OPENAI_API_KEY`).
 
 ## Configuration (Environment Variables)
 
@@ -110,13 +110,13 @@ python main.py
 | `LLM_MODEL` | `gpt-4o` | Model for main extraction |
 | `LLM_MODEL_ANCHOR` | same as `LLM_MODEL` | Model for anchor pass |
 | `INPUT_DIR` | `mnt/data` | Data directory (screenshots + ground truth) |
-| `SCREENSHOT_DIR` | same as `INPUT_DIR` | Screenshot location |
-| `PARALLEL_WORKERS` | `4` | Thread pool size |
+| `SCREENSHOT_DIR` | *(unused)* | Declared historically but not read anywhere in code (inert) |
+| `PARALLEL_WORKERS` | `12` | Thread pool size |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
 | `MAX_CALLS_PER_SCREEN` | `4` | Max VLM calls per screen |
 | `ANCHOR_CONF_MIN` | `0.95` | Minimum confidence for anchor acceptance |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Stop processing if anchor confidence is low |
-| `LLM_THINKING_LEVEL` | *(unset)* | Gemini 3+ thinking budget: `low`, `medium`, or `high` |
+| `LLM_THINKING_LEVEL` | `medium` | Thinking budget `low`/`medium`/`high`; only applied to models whose name contains `thinking` |
 | `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to disk |
 
 Edge Agent is configured via `edge-agent/config.ini` (not env vars).
@@ -143,7 +143,7 @@ Code sections are delimited with:
 
 ### Language Policy
 - **English:** Code, variable names, function names, imports, commit messages, comments
-- **Italian:** VLM prompts (extraction context requires Italian), field keys (banking domain terms like `professione_principale`), PyQt6/Streamlit UI strings, CSV column headers
+- **Italian:** VLM prompts (extraction context requires Italian), field keys (banking domain terms like `professione_principale`), PyQt6/Tkinter UI strings, CSV column headers
 - Do not translate Italian field keys — they must match the banking domain schema
 
 ## Architectural Constraints
@@ -158,7 +158,7 @@ These patterns are load-bearing. Do not remove or restructure without understand
     - Retry logic in `call_vlm_with_retry()` only retries transient errors; `ValueError` (parsing failures) is re-raised immediately.
 6. **Field source tracking** — `_field_sources` dict records which pass (ANCHOR_HEADER, CONTENT_MAIN, RETRY_{field}) produced each field's final value.
 7. **Dataset mismatch guard** — `dataset_mismatch_guard()` detects when extracted NDG/DENOMINAZIONE differs from ground truth, preventing false negatives in evaluation. See `extraction/normalization.py`.
-8. **Shared batch runner** — `run_extraction_batch()` in `extraction/cli.py` is used by both `main()` and `app.py`. Accepts optional `model_main`/`model_anchor` overrides (used by Streamlit dropdown). Callbacks (`on_complete`, `on_error`) are invoked from the calling thread, not from worker threads. Do not re-implement batch/threading logic elsewhere.
+8. **Shared batch runner** — `run_extraction_batch()` in `extraction/cli.py` is used by both `main()` and the Tkinter GUI (`gui_app.py`). Accepts optional `model_main`/`model_anchor` overrides (used by the GUI provider/model dropdown). Callbacks (`on_complete`, `on_error`) are invoked from the calling thread, not from worker threads. Do not re-implement batch/threading logic elsewhere.
 9. **Screenshot path resolution** — `get_screenshot_paths()` in `extraction/config.py` replaces the old pattern of mutating a global `SCREENSHOTS` list. Use this function; do not reintroduce a mutable global.
 10. **Startup assertions** — `if/raise` guards at module load time catch naming drift between dictionaries. `FIELD_RETRY_MAP` keys are validated against `FIELD_KEYS` in `extraction/pipeline.py`; `_FIELD_COMPARATORS` keys are validated against `FIELD_KEYS` in `extraction/normalization.py`. These run under `python -O` (unlike `assert`).
 11. **Edge-agent local-only** — `LocalExtractionClient` is the only client used by the edge-agent. There is no remote API backend. `BPERCaptureWorker._upload_page()` detects `LocalExtractionClient` via `hasattr(api_client, "ingest_frame")`. Do not re-introduce remote upload logic.
@@ -170,8 +170,8 @@ These patterns are load-bearing. Do not remove or restructure without understand
 
 | File | Purpose |
 |---|---|
-| `main.py` | Shim: loads `.env` via `python-dotenv`, then `from extraction import *` + calls `main()` |
-| `app.py` | Streamlit web UI: upload, process, display results. Uses `tempfile.mkdtemp()` for uploads, sanitizes filenames. |
+| `main.py` | Shim: loads `.env` via `python-dotenv`, then `from extraction import *`; `python main.py` runs the CLI, `python main.py --gui` launches the Edge Agent |
+| `gui_app.py` | Tkinter desktop GUI: upload screenshots, pick provider/model, process, display results, export CSV/JSON. Imports `run_extraction_batch` from `extraction`. |
 | `edge-agent/edge_agent.py` | PyQt6 desktop app entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow`. |
 
 ### extraction/ Package
@@ -189,7 +189,7 @@ These patterns are load-bearing. Do not remove or restructure without understand
 | `extraction/llm_factory.py` | `create_chat_model()` — LangChain ChatModel factory (replaces providers/) |
 | `extraction/pipeline.py` | `ExtractionPipeline`: `extract_from_image()`, `extract_from_screen()` |
 | `extraction/evaluation.py` | `eval_outputs()`, `build_debug_report()`, `print_cost_summary()`, `load_ground_truth()` |
-| `extraction/cli.py` | `main()` CLI entry point, `run_extraction_batch()` shared by CLI and Streamlit |
+| `extraction/cli.py` | `main()` CLI entry point, `run_extraction_batch()` shared by CLI and the Tkinter GUI |
 
 ### edge-agent/ Package
 
@@ -198,9 +198,9 @@ These patterns are load-bearing. Do not remove or restructure without understand
 | `edge-agent/edge_agent.py` | App entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow` |
 | `edge-agent/local_extraction_client.py` | `LocalExtractionClient(QObject)`: bridge to `ExtractionPipeline`; exposes `start_job()`, `ingest_frame()`, `export_csv()`, `result_ready` signal |
 | `edge-agent/config.py` | `AgentConfig`: loads `config.ini`; FPS, router mode, preprocessing params, monitor index |
-| `edge-agent/llm_router.py` | `LLMPageRouter` (OpenAI Vision), `MLPageRouter` (MobileNetV3), `PageRouter` base |
+| `edge-agent/llm_router.py` | `LLMPageRouter` (OpenAI Vision), `MLPageRouter` (DINOv2 ViT-S/14), `PageRouter` base |
 | `edge-agent/image_ops.py` | `preprocess_for_ocr()`, `to_png8()`, `to_webp_lossless()` — capture preprocessing |
-| `edge-agent/page_classifier.py` | `BPERPagePrototypeClassifier` — ML prototype matching for page detection |
+| `edge-agent/page_classifier.py` | `BPERPagePrototypeClassifier` — DINOv2 ViT-S/14 (384-dim) prototype matching for page detection |
 | `edge-agent/ui/main_window.py` | `MainWindow`: creates `LocalExtractionClient`, `CaptureTab`, `ExtractionResultsTab` |
 | `edge-agent/ui/capture_tab.py` | `CaptureTab`: start/stop controls, FPS/filter, force-capture, log |
 | `edge-agent/ui/extraction_results_tab.py` | `ExtractionResultsTab`: pages tree, fields table, raw JSON, CSV export |
@@ -235,25 +235,33 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 
 ## Dependencies
 
-Pinned in `requirements.txt` (extraction pipeline):
+All dependencies live in a single root `requirements.txt` — there is **no** `edge-agent/requirements.txt`. Versions are only loosely bounded (not strictly pinned).
 
+**Extraction pipeline:**
 ```
 langchain-core          # LangChain core abstractions (BaseChatModel, messages)
 langchain-openai        # LangChain OpenAI ChatModel
 langchain-google-genai  # LangChain Gemini ChatModel (required if LLM_PROVIDER=gemini)
-pillow                  # Image processing (PIL)
+pillow / Pillow>=10.0.0 # Image processing (PIL) — listed TWICE in requirements.txt (duplicate; should be deduped)
 pandas                  # CSV/data handling
-streamlit               # Web UI
-python-dotenv           # Auto-loads .env at startup (main.py and app.py)
+python-dotenv           # Auto-loads .env at startup (main.py, gui_app.py, edge_agent.py)
+openpyxl>=3.1.2         # Excel read (edge-agent/workers/capture/bper_capture_worker.py)
 ```
 
-Edge-agent additional deps in `edge-agent/requirements.txt`:
+**Edge Agent (PyQt6 live capture):**
 ```
-PyQt6                   # Desktop UI framework
-imagehash               # pHash for frame dedup
-mss                     # Fast screenshot capture
-openai                  # LLM page router (gpt-4o-mini)
+PyQt6>=6.4.0            # Desktop UI framework
+qt-material>=2.14       # PyQt6 Material theme (edge-agent/edge_agent.py)
+mss>=9.0.0              # Fast screenshot capture
+pyscreenshot>=3.1       # Screenshot fallback (Linux only)
+imagehash>=4.3.0        # pHash for frame dedup
+torch, torchvision      # DINOv2 ViT-S/14 ML page classifier (edge-agent/page_classifier.py)
+openai>=1.51.0          # LLM page router (gpt-4o-mini)
+requests>=2.31.0        # Remote upload in DefaultCaptureWorker (generic mode only)
 ```
+
+**Present in `requirements.txt` but unused / orphaned** (no importer in current code — removal candidates):
+`streamlit`, `keyboard==0.13.5`, `boto3>=1.35.0`.
 
 ## Missing Infrastructure
 
@@ -270,6 +278,6 @@ There is no automated test suite. To verify changes manually:
 1. **Run extraction:** `python main.py` — should complete without errors
 2. **Check accuracy:** Output includes per-field accuracy breakdown (RAW + FILTERED metrics). Compare against baseline.
 3. **Check costs:** `print_cost_summary()` outputs per-screen token counts and USD costs. Verify no regressions.
-4. **Streamlit smoke test:** `streamlit run app.py` — upload a screenshot, verify results display correctly.
+4. **Tkinter GUI smoke test:** `python gui_app.py` — upload a screenshot, verify results display correctly.
 5. **Ground truth eval:** `eval_outputs()` classifies each field as OK / WRONG / MISSING / HALLUCINATED / OK_NULL.
 6. **Edge-agent smoke test:** `python edge-agent/edge_agent.py` — start capture in BPER mode, verify `ingest_frame()` is called and results appear in the Risultati tab.

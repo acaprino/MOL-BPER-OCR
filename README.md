@@ -214,7 +214,7 @@ poc-data-extraction/
     cli.py                 # Batch runner con ThreadPoolExecutor
   mnt/data/
     dati.csv               # Ground truth
-    screen *.png           # Screenshot di test (5 immagini)
+    screen *.png           # Screenshot di test (9 immagini)
   .env.example             # Template variabili d'ambiente
 ```
 
