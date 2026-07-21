@@ -41,9 +41,24 @@ def _find_column(df_columns: list, candidates: List[str], label: str) -> str:
             return c
     raise ValueError(f"Cannot find {label} column in CSV. Columns={df_columns}")
 
+def _read_gt_csv(csv_path: str) -> pd.DataFrame:
+    """Read the ground-truth CSV tolerant of separator and encoding.
+
+    Italian-Excel exports are frequently ``;``-separated and cp1252-encoded,
+    while the pipeline's own exports are ``;``-separated utf-8-sig. ``sep=None``
+    with the python engine sniffs ``,`` vs ``;``; encodings are tried in order.
+    """
+    for encoding in ("utf-8-sig", "cp1252", "latin-1"):
+        try:
+            return pd.read_csv(csv_path, sep=None, engine="python", encoding=encoding)
+        except (UnicodeDecodeError, pd.errors.ParserError):
+            continue
+    return pd.read_csv(csv_path)  # last resort: pandas defaults
+
+
 def load_ground_truth(csv_path: str) -> Dict[str, Dict[str, Any]]:
     """Load ground truth CSV. Returns: { "screen 1": { "NDG": "...", ... }, ... }"""
-    df = pd.read_csv(csv_path)
+    df = _read_gt_csv(csv_path)
     df.columns = [str(c).strip() for c in df.columns]
 
     screen_col = _find_column(

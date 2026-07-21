@@ -55,6 +55,12 @@ MAX_CALLS_PER_SCREEN = int(os.getenv("MAX_CALLS_PER_SCREEN", "4"))
 STOP_ON_ANCHOR_UNCERTAIN = os.getenv("STOP_ON_ANCHOR_UNCERTAIN", "0") == "1"
 ANCHOR_CONF_MIN = float(os.getenv("ANCHOR_CONF_MIN", "0.95"))
 
+# Upper bound on the long side of an image entering extract_from_image().
+# The CLI path already normalizes to 1800px; this only clamps oversized raw
+# frames on the edge-agent path so a full-resolution capture cannot blow up
+# image-token cost and payload size. Purely dimensional (no enhancement).
+MAX_IMAGE_LONG_SIDE = int(os.getenv("MAX_IMAGE_LONG_SIDE", "2000"))
+
 # Crops (relative coordinates 0.0-1.0: left, top, right, bottom)
 CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)
 HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)

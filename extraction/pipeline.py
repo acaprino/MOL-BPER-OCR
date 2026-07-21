@@ -13,6 +13,7 @@ from extraction.config import (
     HEADER_IN_CONTENT,
     ANCHOR_CONF_MIN,
     MAX_CALLS_PER_SCREEN,
+    MAX_IMAGE_LONG_SIDE,
     STOP_ON_ANCHOR_UNCERTAIN,
     RETRY_AREAS,
     AREA_TO_FIELDS,
@@ -33,6 +34,7 @@ from extraction.normalization import (
 )
 from extraction.imaging import (
     normalize_image,
+    clamp_long_side,
     crop_relative,
     img_to_png_bytes,
     save_debug_crop,
@@ -102,6 +104,9 @@ class ExtractionPipeline:
 
     def extract_from_image(self, img: Image.Image, screen_id: str) -> Dict[str, Any]:
         """Full multi-pass extraction for a single PIL image."""
+        # Bound oversized raw frames (edge-agent path skips normalize_image);
+        # no-op for the already-normalized CLI path.
+        img = clamp_long_side(img, MAX_IMAGE_LONG_SIDE)
         content_img = crop_relative(img, CONTENT_CROP)
         save_debug_crop(content_img, screen_id, "CONTENT")
 

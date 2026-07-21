@@ -17,6 +17,11 @@ src/
 temp_uploads/
 test_no_gt/
 
+# Generated extraction outputs (may contain banking PII)
+poc_outputs*.json
+poc_results*.csv
+poc_debug*.csv
+
 # Python
 __pycache__/
 *.pyc

@@ -1,25 +1,47 @@
 """Pydantic models for structured VLM output (used by LangChain .with_structured_output())."""
+import math
 from typing import Optional, Union, List, Dict, Any
-from pydantic import BaseModel, Field, create_model
+from pydantic import BaseModel, Field, create_model, field_validator
+
 from extraction.fields import FIELD_KEYS
 
 # ============================================================
 # Field-level models
 # ============================================================
-class FieldResult(BaseModel):
+class _ConfidenceModel(BaseModel):
+    """Base that clamps a model-supplied ``confidence`` into [0.0, 1.0].
+
+    VLMs occasionally emit NaN/inf or out-of-range confidences; left raw they
+    silently flip pick_best() and the retry gate. Normalizing at the parse
+    boundary keeps every downstream comparison well-behaved.
+    """
+
+    @field_validator("confidence", check_fields=False)
+    @classmethod
+    def _clamp_confidence(cls, v: Any) -> float:
+        try:
+            f = float(v)
+        except (TypeError, ValueError):
+            return 0.0
+        if math.isnan(f) or math.isinf(f):
+            return 0.0
+        return min(1.0, max(0.0, f))
+
+
+class FieldResult(_ConfidenceModel):
     value: Optional[str] = None
     confidence: float = 0.0
     evidence_text: Optional[str] = None
     section: Optional[str] = None
 
-class Soggetto(BaseModel):
+class Soggetto(_ConfidenceModel):
     ndg: Optional[str] = None
     denominazione: Optional[str] = None
     ruolo: Optional[str] = None
     confidence: float = 0.0
     evidence_text: Optional[str] = None
 
-class Fido(BaseModel):
+class Fido(_ConfidenceModel):
     n_fido: Optional[str] = None
     rapporto: Optional[str] = None
     descrizione: Optional[str] = None
@@ -29,7 +51,7 @@ class Fido(BaseModel):
     confidence: float = 0.0
     evidence_text: Optional[str] = None
 
-class Garanzia(BaseModel):
+class Garanzia(_ConfidenceModel):
     n_gar: Optional[str] = None
     descrizione: Optional[str] = None
     fido: Optional[str] = None

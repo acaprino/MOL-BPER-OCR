@@ -19,6 +19,20 @@ def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image:
     return img
 
 
+def clamp_long_side(img: Image.Image, max_side: int) -> Image.Image:
+    """Downscale so the long side is at most ``max_side``. No-op if already smaller.
+
+    Dimension-only guard (no contrast/sharpen) for the raw extract_from_image
+    path, which intentionally skips normalize_image().
+    """
+    w, h = img.size
+    longest = max(w, h)
+    if max_side > 0 and longest > max_side:
+        scale = max_side / longest
+        img = img.resize((int(w * scale), int(h * scale)))
+    return img
+
+
 def crop_relative(img: Image.Image, box: Tuple[float, float, float, float]) -> Image.Image:
     w, h = img.size
     l = int(box[0] * w)
