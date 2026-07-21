@@ -87,13 +87,12 @@ class ExtractionPipeline:
         ndg = safe_field(fields, "ndg")
         den = safe_field(fields, "denominazione")
 
-        # Gate: zero-out low-confidence anchors
+        # Gate: zero-out low-confidence anchors on the returned copies.
+        # (Must mutate ndg/den directly — they are the values returned below.)
         if ndg.get("confidence", 0.0) < ANCHOR_CONF_MIN:
-            safe_set_field(fields, "ndg", value=None, confidence=ndg.get("confidence", 0.0),
-                           evidence_text=ndg.get("evidence_text"), section=ndg.get("section"))
+            ndg["value"] = None
         if den.get("confidence", 0.0) < ANCHOR_CONF_MIN:
-            safe_set_field(fields, "denominazione", value=None, confidence=den.get("confidence", 0.0),
-                           evidence_text=den.get("evidence_text"), section=den.get("section"))
+            den["value"] = None
 
         return {
             "ndg": ndg,
@@ -110,7 +109,7 @@ class ExtractionPipeline:
         anchors = self.extract_anchors(content_img, screen_id)
 
         if STOP_ON_ANCHOR_UNCERTAIN:
-            if anchors["ndg"]["value"] is None and anchors["denominazione"]["value"] is None:
+            if is_nullish(anchors["ndg"]["value"]) and is_nullish(anchors["denominazione"]["value"]):
                 return {
                     "screen_id": screen_id,
                     "fields": {},
@@ -173,7 +172,7 @@ class ExtractionPipeline:
         ndg_field = result["fields"].get("ndg") or {}
         den_field = result["fields"].get("denominazione") or {}
         result["_status"] = (
-            "OK" if ndg_field.get("value") is not None and den_field.get("value") is not None
+            "OK" if not is_nullish(ndg_field.get("value")) and not is_nullish(den_field.get("value"))
             else "ANCHOR_UNCERTAIN"
         )
 
@@ -202,16 +201,16 @@ class ExtractionPipeline:
     @staticmethod
     def _build_anchor_hint_prompt(anchors: Dict[str, Any]) -> str:
         hints: List[str] = []
-        if anchors["ndg"]["value"]:
+        if not is_nullish(anchors["ndg"]["value"]):
             hints.append(f"NDG atteso: {anchors['ndg']['value']}")
-        if anchors["denominazione"]["value"]:
+        if not is_nullish(anchors["denominazione"]["value"]):
             hints.append(f"Denominazione attesa: {anchors['denominazione']['value']}")
         return PROMPT + ("\n\n" + "\n".join(hints) if hints else "")
 
     @staticmethod
     def _merge_anchors(result: Dict[str, Any], anchors: Dict[str, Any], field_sources: Dict[str, str]) -> None:
         for k in ("ndg", "denominazione"):
-            if anchors[k]["value"] is not None:
+            if not is_nullish(anchors[k]["value"]):
                 result["fields"][k] = anchors[k]
                 field_sources[k] = "ANCHOR_HEADER"
 
@@ -261,6 +260,12 @@ class ExtractionPipeline:
 
         allowed_retries = max(0, MAX_CALLS_PER_SCREEN - 2)  # 1 anchor + 1 main already done
         areas_to_retry_list = sorted(areas_to_retry)[:allowed_retries]
+
+        # No retry budget left (e.g. MAX_CALLS_PER_SCREEN <= 2): keep main-pass
+        # results. Guarding here avoids ThreadPoolExecutor(max_workers=0), which
+        # raises ValueError.
+        if not areas_to_retry_list:
+            return
 
         def _do_retry(area_name: str) -> Tuple[str, Dict[str, Any]]:
             crop_img = crop_relative(content_img, RETRY_AREAS[area_name])

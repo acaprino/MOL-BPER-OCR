@@ -177,7 +177,7 @@ In `.env`:
 MAX_CALLS_PER_SCREEN=4
 ```
 
-Risultato: limita il totale di chiamate VLM per screenshot. Una chiamata anchor e una main si spendono sempre; il passaggio di retry riceve `MAX_CALLS_PER_SCREEN - 2` retry per area (`extraction/pipeline.py:262`). Con `2` i retry sono disabilitati del tutto. Default `4` (`extraction/config.py:54`).
+Risultato: limita il totale di chiamate VLM per screenshot. Una chiamata anchor e una main si spendono sempre; il passaggio di retry riceve `MAX_CALLS_PER_SCREEN - 2` retry per area (`extraction/pipeline.py:262`). Con `2` (o meno) i retry sono disabilitati del tutto: si eseguono solo anchor + main, senza crash. Default `4` (`extraction/config.py:54`).
 
 ### Passare l'edge-agent al riconoscimento pagina ML
 

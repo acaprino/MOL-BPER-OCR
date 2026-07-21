@@ -174,7 +174,11 @@ class BatchRunner:
     ) -> None:
         effective_provider = provider_name or LLM_PROVIDER
         self._main_model_name = model_main or LLM_MODEL
-        self._anchor_model_name = model_anchor or LLM_MODEL_ANCHOR
+        # Fall back to the selected main model (not the env anchor) so a caller
+        # that only picks a main model — e.g. the GUI provider dropdown — keeps
+        # anchor and main on the same provider. The env anchor override still
+        # applies when no explicit main model is passed (the CLI path).
+        self._anchor_model_name = model_anchor or model_main or LLM_MODEL_ANCHOR
         self._parallel = parallel
         self._max_workers = max_workers
 

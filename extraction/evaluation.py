@@ -11,7 +11,18 @@ from extraction.normalization import (
     classify_field,
     dataset_mismatch_guard,
     get_pred_value_for_gt_key,
+    escape_csv_formula,
 )
+
+# ============================================================
+# CSV writing
+# ============================================================
+def _write_csv(rows: List[Dict[str, Any]], out_csv_path: str) -> None:
+    """Write rows to an Excel-friendly CSV, neutralizing formula injection."""
+    df = pd.DataFrame(rows)
+    for col in df.columns:
+        df[col] = df[col].map(escape_csv_formula)
+    df.to_csv(out_csv_path, index=False, encoding="utf-8-sig", sep=";")
 
 # ============================================================
 # Screenshot path inference
@@ -169,12 +180,7 @@ def build_debug_report(
                 "_status": pred.get("_status"),
             })
 
-    pd.DataFrame(rows).to_csv(
-        out_csv_path,
-        index=False,
-        encoding="utf-8-sig",
-        sep=";",
-    )
+    _write_csv(rows, out_csv_path)
 
 # ============================================================
 # Export to CSV
@@ -231,12 +237,7 @@ def export_to_csv(outputs: Dict[str, Dict[str, Any]], out_csv_path: str) -> None
                         "section": "",
                     })
 
-    pd.DataFrame(rows).to_csv(
-        out_csv_path,
-        index=False,
-        encoding="utf-8-sig",
-        sep=";",
-    )
+    _write_csv(rows, out_csv_path)
 
 # ============================================================
 # Cost summary

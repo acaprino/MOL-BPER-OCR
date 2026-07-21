@@ -27,6 +27,7 @@ except Exception:
 from extraction.llm_factory import create_chat_model
 from extraction.pipeline import ExtractionPipeline
 from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR
+from extraction.normalization import escape_csv_formula
 
 
 class LocalExtractionClient(QtCore.QObject):
@@ -138,7 +139,8 @@ class LocalExtractionClient(QtCore.QObject):
                 + [(fields.get(k) or {}).get("value", "") for k in all_field_keys]
                 + [(fields.get(k) or {}).get("confidence", "") for k in all_field_keys]
             )
-            writer.writerow(row)
+            # Neutralize CSV/formula injection on untrusted OCR values
+            writer.writerow([escape_csv_formula(c) for c in row])
 
         return output.getvalue()
 

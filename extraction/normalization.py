@@ -54,6 +54,18 @@ def norm_number_str(x: Any) -> str:
     except:
         return s.strip()
 
+def escape_csv_formula(value: Any) -> Any:
+    """Neutralize CSV/formula injection (CWE-1236).
+
+    Extracted values are untrusted OCR content and the exports are opened in
+    Excel. Prefix any string a spreadsheet would evaluate as a formula
+    (leading =, +, -, @, tab, or CR) with a single quote so it renders as text.
+    Non-string values pass through unchanged.
+    """
+    if isinstance(value, str) and value[:1] in ("=", "+", "-", "@", "\t", "\r"):
+        return "'" + value
+    return value
+
 # ============================================================
 # Field handling
 # ============================================================
