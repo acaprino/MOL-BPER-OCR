@@ -19,6 +19,7 @@ from extraction.config import (
     LLM_MODEL,
     LLM_MODEL_ANCHOR,
 )
+from extraction.imaging import screen_id_from_path
 from extraction.pipeline import ExtractionPipeline
 from extraction.evaluation import (
     load_ground_truth,
@@ -223,7 +224,7 @@ class BatchRunner:
         )
 
         def _worker(path: str) -> Tuple[str, Dict[str, Any]]:
-            screen_id = os.path.splitext(os.path.basename(path))[0]
+            screen_id = screen_id_from_path(path)
             _debug_log(f"Extracting screen_id={screen_id} path={path}")
             return screen_id, self._pipeline.extract_from_screen(path)
 
@@ -235,7 +236,7 @@ class BatchRunner:
                 futs = {ex.submit(_worker, p): p for p in existing_paths}
                 for fut in as_completed(futs):
                     p = futs[fut]
-                    screen_id = os.path.splitext(os.path.basename(p))[0]
+                    screen_id = screen_id_from_path(p)
                     try:
                         sid, out = fut.result()
                         outputs[sid] = out
@@ -252,7 +253,7 @@ class BatchRunner:
                             print(f"ERROR extracting {screen_id}: {e}")
         else:
             for p in existing_paths:
-                screen_id = os.path.splitext(os.path.basename(p))[0]
+                screen_id = screen_id_from_path(p)
                 print(f"Extracting {screen_id} ...")
                 try:
                     outputs[screen_id] = self._pipeline.extract_from_screen(p)

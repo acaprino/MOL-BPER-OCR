@@ -19,6 +19,15 @@ def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image:
     return img
 
 
+def screen_id_from_path(path: str) -> str:
+    """Derive the screen_id (basename without extension) used as the GT join key.
+
+    Single source of truth: the same derivation is the join key in evaluation,
+    so all call sites must agree.
+    """
+    return os.path.splitext(os.path.basename(path))[0]
+
+
 def clamp_long_side(img: Image.Image, max_side: int) -> Image.Image:
     """Downscale so the long side is at most ``max_side``. No-op if already smaller.
 

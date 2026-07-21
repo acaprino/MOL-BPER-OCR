@@ -40,18 +40,23 @@ def norm_text(x: Any) -> str:
 def norm_number_str(x: Any) -> str:
     if x is None:
         return ""
-    s = str(x).strip()
-    # Remove currency, spaces, dots (thousands), replace comma with dot
-    s = s.replace("€", "").replace(" ", "")
-    if "," in s and "." in s:
+    s = str(x).strip().replace("€", "").replace(" ", "")
+    neg = s.startswith("-")
+    if "," in s:
+        # Italian format: comma is the decimal separator, dots are thousands.
+        s = s.replace(".", "").replace(",", ".")
+    elif s.count(".") > 1:
+        # Multiple dots, no comma -> all thousands separators (e.g. 1.234.567).
         s = s.replace(".", "")
-    s = s.replace(",", ".")
-    # Final cleanup: keep only digits and one dot
+    # A single dot with no comma is genuinely ambiguous (thousands vs decimal);
+    # left untouched so a plain decimal like "36177.00" is not corrupted.
     s = re.sub(r"[^\d.]", "", s)
     try:
-        if not s: return ""
-        return f"{float(s):.2f}"
-    except:
+        if not s:
+            return ""
+        val = float(s)
+        return f"{-val:.2f}" if neg else f"{val:.2f}"
+    except ValueError:
         return s.strip()
 
 def escape_csv_formula(value: Any) -> Any:
@@ -114,6 +119,10 @@ def merge_field_sources(
     candidate: Dict[str, Any],
     candidate_source: str,
 ) -> Dict[str, Any]:
+    # Contract: pick_best() must return one of its two inputs by identity (never
+    # a copy/merge). Source attribution relies on the `chosen is candidate`
+    # check below — if pick_best ever returns a new dict, sources silently freeze
+    # on the current value.
     chosen = pick_best(current, candidate)
     if chosen is candidate:
         field_sources[field_key] = candidate_source

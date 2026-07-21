@@ -31,13 +31,13 @@ FIELD_KEYS: List[str] = [
     "tooltip_descrizione_consap_dr_bis",
     "tooltip_descrizione_ipoteca",
 
-    # Soggetti piatti (per compatibilità CSV screen 2)
+    # Flattened soggetti (CSV compatibility, screens 2-3)
     "ndg_1", "denominazione_1", "ruolo_1",
     "ndg_2", "denominazione_2", "ruolo_2",
     "ndg_3", "denominazione_3", "ruolo_3",
     "ndg_4", "denominazione_4", "ruolo_4",
 
-    # Nuovi campi screen 4 e 5
+    # New fields for screens 4 and 5
     "dal",
     "datore_di_lavoro_anagrafica",
     "di_cui_percepiscono_reddito",

@@ -1,5 +1,4 @@
 """Multi-pass extraction pipeline: anchor -> main -> conditional retry."""
-import os
 import re
 from typing import Dict, Any, List, Tuple, Set
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -12,6 +11,7 @@ from extraction.config import (
     CONTENT_CROP,
     HEADER_IN_CONTENT,
     ANCHOR_CONF_MIN,
+    RETRY_CONF_MIN,
     MAX_CALLS_PER_SCREEN,
     MAX_IMAGE_LONG_SIDE,
     STOP_ON_ANCHOR_UNCERTAIN,
@@ -38,6 +38,7 @@ from extraction.imaging import (
     crop_relative,
     img_to_png_bytes,
     save_debug_crop,
+    screen_id_from_path,
 )
 from extraction.vlm_client import call_vlm_with_retry
 
@@ -187,7 +188,7 @@ class ExtractionPipeline:
         """Full multi-pass extraction for a single screenshot path."""
         img = Image.open(path).convert("RGB")
         img = normalize_image(img)
-        screen_id = os.path.splitext(os.path.basename(path))[0]
+        screen_id = screen_id_from_path(path)
         return self.extract_from_image(img, screen_id)
 
     # --------------------------------------------------------
@@ -232,8 +233,6 @@ class ExtractionPipeline:
                 result[tbl] = new_data
             elif len(new_data) == len(old_data) and new_conf > old_conf:
                 result[tbl] = new_data
-            elif len(old_data) == 0 and len(new_data) > 0:
-                result[tbl] = new_data
 
     def _retry_areas(
         self,
@@ -247,7 +246,7 @@ class ExtractionPipeline:
         for area, fields in AREA_TO_FIELDS.items():
             for f in fields:
                 field_data = safe_field(result["fields"], f)
-                if is_nullish(field_data.get("value")) or field_data.get("confidence", 0.0) < 0.60:
+                if is_nullish(field_data.get("value")) or field_data.get("confidence", 0.0) < RETRY_CONF_MIN:
                     areas_to_retry.add(area)
                     break
 

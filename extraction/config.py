@@ -1,6 +1,5 @@
 """Configuration constants and environment variable handling."""
 import os
-from typing import Dict
 
 # ============================================================
 # Pathing & IO
@@ -54,6 +53,8 @@ PRICING_PER_1M = {
 MAX_CALLS_PER_SCREEN = int(os.getenv("MAX_CALLS_PER_SCREEN", "4"))
 STOP_ON_ANCHOR_UNCERTAIN = os.getenv("STOP_ON_ANCHOR_UNCERTAIN", "0") == "1"
 ANCHOR_CONF_MIN = float(os.getenv("ANCHOR_CONF_MIN", "0.95"))
+# Confidence below which a field marks its area for a retry pass.
+RETRY_CONF_MIN = float(os.getenv("RETRY_CONF_MIN", "0.60"))
 
 # Upper bound on the long side of an image entering extract_from_image().
 # The CLI path already normalizes to 1800px; this only clamps oversized raw
@@ -65,7 +66,7 @@ MAX_IMAGE_LONG_SIDE = int(os.getenv("MAX_IMAGE_LONG_SIDE", "2000"))
 CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)
 HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)
 
-# Retry crops mirati (raggruppati per aree funzionali)
+# Targeted retry crops (grouped by functional area)
 RETRY_AREAS = {
     "HEADER": (0.00, 0.00, 1.00, 0.35),  # ndg, den, tipo, stato, fase, evidenze
     "BODY": (0.00, 0.25, 1.00, 0.75),    # fidi, garanzie, soggetti
@@ -86,12 +87,6 @@ AREA_TO_FIELDS = {
     ],
     "FOOTER": ["note_della_richiesta", "note_scheda_privati"]
 }
-
-# Map fields to their retry areas
-FIELD_RETRY_MAP: Dict[str, str] = {}
-for area, fields in AREA_TO_FIELDS.items():
-    for f in fields:
-        FIELD_RETRY_MAP[f] = area
 
 
 # Debug

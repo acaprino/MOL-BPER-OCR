@@ -1,10 +1,12 @@
-"""LangChain ChatModel factory — replaces extraction/providers/ package."""
+"""LangChain ChatModel factory — the single provider-selection point."""
 
 import os
 import warnings
 from typing import Optional
 
 from langchain_core.language_models import BaseChatModel
+
+from extraction.config import LLM_THINKING_LEVEL
 
 # Legacy env vars — checked as fallback so existing deployments keep working.
 _LEGACY_KEY_VARS = {
@@ -61,6 +63,9 @@ def create_chat_model(
                 f"Model {model!r} looks like an OpenAI model but provider is 'gemini'. "
                 f"Set LLM_MODEL to a Gemini model (e.g. 'gemini-1.5-flash')."
             )
+        # Safety filters disabled by design: inputs are legitimate banking-UI
+        # OCR screenshots, and the default filters produce spurious refusals on
+        # them. Accepted risk — the only provider-side content filter is off.
         kwargs = {
             "safety_settings": {
                 "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
@@ -69,9 +74,8 @@ def create_chat_model(
                 "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE",
             }
         }
-        thinking_level = os.getenv("LLM_THINKING_LEVEL", "").strip().lower()
-        if thinking_level in ("low", "medium", "high") and "thinking" in model.lower():
-            kwargs["thinking_level"] = thinking_level
+        if LLM_THINKING_LEVEL in ("low", "medium", "high") and "thinking" in model.lower():
+            kwargs["thinking_level"] = LLM_THINKING_LEVEL
         return ChatGoogleGenerativeAI(model=model, google_api_key=key, **kwargs)
 
     raise ValueError(f"Unknown provider: {provider_name!r}. Available: ['openai', 'gemini']")

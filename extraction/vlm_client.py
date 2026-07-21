@@ -19,7 +19,7 @@ _GEMINI_JSON_SCHEMA_MODELS = ("gemini-1.5",)
 
 
 def estimate_cost_usd(model: str, prompt_tokens: int, completion_tokens: int) -> float:
-    """Backward-compatible cost helper (used by evaluation and other modules)."""
+    """Estimate USD cost from token counts; returns 0.0 for models absent from PRICING_PER_1M."""
     p = PRICING_PER_1M.get(model)
     if not p:
         return 0.0
