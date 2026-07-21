@@ -1,6 +1,6 @@
 """Pydantic models for structured VLM output (used by LangChain .with_structured_output())."""
 import math
-from typing import Optional, Union, List, Dict, Any
+from typing import Optional, List, Any
 from pydantic import BaseModel, Field, create_model, field_validator
 
 from extraction.fields import FIELD_KEYS

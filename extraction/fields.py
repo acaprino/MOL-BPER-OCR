@@ -99,22 +99,6 @@ CSV_TO_SCHEMA: Dict[str, str] = {
     "Ultima validazione scheda privati": "ultima_validazione_scheda",
 }
 
-_SOGGETTI_KEY_MAP: Dict[str, str] = {
-    "NDG": "ndg",
-    "DENOMINAZIONE": "denominazione",
-    "RUOLO": "ruolo"
-}
-
-_GARANZIE_KEY_MAP: Dict[str, str] = {
-    "N° GAR": "n_gar",
-    "DESCRIZIONE": "descrizione",
-    "FIDO": "fido",
-    "NDG": "ndg",
-    "DENOMINAZIONE": "denominazione",
-    "IMP. (€)/%": "importo_percentuale",
-    "TIPO OP.": "tipo_op"
-}
-
 def get_canonical_field_display_name(schema_key: str) -> str:
     """Return the canonical client display name for a schema key."""
     resolved = resolve_display_name(schema_key)

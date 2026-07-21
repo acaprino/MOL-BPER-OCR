@@ -1,6 +1,6 @@
 """extraction — AI-powered data extraction from banking screenshots.
 
-Public API re-exports for backward compatibility with app.py and main.py.
+Public API re-exports for backward compatibility with main.py and gui_app.py.
 """
 
 import warnings
@@ -14,7 +14,6 @@ __all__ = [
     "MAX_CALLS_PER_SCREEN", "PRICING_PER_1M",
     "CONTENT_CROP", "HEADER_IN_CONTENT", "FIELD_RETRY_MAP", "ANCHOR_CONF_MIN",
     "DEBUG_SAVE_CROPS", "DEBUG_CROP_DIR", "STOP_ON_ANCHOR_UNCERTAIN",
-    "get_screenshot_paths",
     "LLM_PROVIDER", "LLM_MODEL", "LLM_MODEL_ANCHOR", "LLM_THINKING_LEVEL",
     "PROVIDER_MODELS",
     # LLM factory
@@ -38,7 +37,7 @@ __all__ = [
     "ExtractionPipeline", "extract_anchors", "extract_from_screen",
     # Evaluation
     "Evaluator",
-    "infer_screenshots_from_gt", "load_ground_truth", "eval_outputs",
+    "load_ground_truth", "eval_outputs",
     "build_debug_report", "print_cost_summary", "export_to_csv",
     # CLI
     "BatchRunner", "main", "run_extraction_batch",
@@ -59,7 +58,6 @@ from extraction.config import (
     DEBUG_SAVE_CROPS,
     DEBUG_CROP_DIR,
     STOP_ON_ANCHOR_UNCERTAIN,
-    get_screenshot_paths,
     LLM_PROVIDER,
     LLM_MODEL,
     LLM_MODEL_ANCHOR,
@@ -114,7 +112,6 @@ from extraction.pipeline import ExtractionPipeline, extract_anchors, extract_fro
 # Evaluation
 from extraction.evaluation import (
     Evaluator,
-    infer_screenshots_from_gt,
     load_ground_truth,
     eval_outputs,
     build_debug_report,

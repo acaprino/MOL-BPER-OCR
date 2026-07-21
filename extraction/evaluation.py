@@ -1,13 +1,8 @@
 """Ground truth loading, accuracy evaluation, debug reporting, and cost summary."""
-import os
-import json
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List
 import pandas as pd
-from extraction.config import get_screenshot_paths
 from extraction.fields import FIELD_KEYS, CSV_TO_SCHEMA
 from extraction.normalization import (
-    norm_text,
-    norm_number_str,
     classify_field,
     dataset_mismatch_guard,
     get_pred_value_for_gt_key,
@@ -23,13 +18,6 @@ def _write_csv(rows: List[Dict[str, Any]], out_csv_path: str) -> None:
     for col in df.columns:
         df[col] = df[col].map(escape_csv_formula)
     df.to_csv(out_csv_path, index=False, encoding="utf-8-sig", sep=";")
-
-# ============================================================
-# Screenshot path inference
-# ============================================================
-def infer_screenshots_from_gt(gt: Dict[str, Dict[str, Any]], base_dir: str = ".") -> List[str]:
-    """Backward-compatible alias for get_screenshot_paths()."""
-    return get_screenshot_paths(gt, base_dir=base_dir)
 
 # ============================================================
 # Ground truth loader

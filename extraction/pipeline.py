@@ -195,15 +195,6 @@ class ExtractionPipeline:
     # --------------------------------------------------------
 
     @staticmethod
-    def _prepare_content_image(path: str) -> Tuple[str, Image.Image]:
-        img = Image.open(path).convert("RGB")
-        img = normalize_image(img)
-        screen_id = os.path.splitext(os.path.basename(path))[0]
-        content_img = crop_relative(img, CONTENT_CROP)
-        save_debug_crop(content_img, screen_id, "CONTENT")
-        return screen_id, content_img
-
-    @staticmethod
     def _build_anchor_hint_prompt(anchors: Dict[str, Any]) -> str:
         hints: List[str] = []
         if not is_nullish(anchors["ndg"]["value"]):

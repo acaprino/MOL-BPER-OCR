@@ -2,7 +2,6 @@ langchain-core
 langchain-openai
 langchain-google-genai
 pandas
-streamlit
 python-dotenv
 PyQt6>=6.4.0
 qt-material>=2.14

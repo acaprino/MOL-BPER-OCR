@@ -22,9 +22,6 @@ from extraction.config import (
 from extraction.pipeline import ExtractionPipeline
 from extraction.evaluation import (
     load_ground_truth,
-    eval_outputs,
-    build_debug_report,
-    print_cost_summary,
     Evaluator,
 )
 
@@ -297,8 +294,9 @@ def run_extraction_batch(
 ) -> Dict[str, Dict[str, Any]]:
     """Backward-compatible wrapper — delegates to BatchRunner.
 
-    Shared by CLI (main) and Streamlit (app.py). Callbacks (on_complete,
-    on_error) are invoked from the calling thread, not from worker threads.
+    Shared by the CLI (main) and the Tkinter GUI (gui_app.py). Callbacks
+    (on_complete, on_error) are invoked from the calling thread, not from
+    worker threads.
     """
     runner = BatchRunner(
         api_key=api_key,

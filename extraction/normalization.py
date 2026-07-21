@@ -2,7 +2,7 @@
 import re
 from difflib import SequenceMatcher
 from typing import Dict, Any, Optional, Tuple, List
-from extraction.fields import CSV_TO_SCHEMA, FIELD_KEYS, _SOGGETTI_KEY_MAP
+from extraction.fields import CSV_TO_SCHEMA
 
 # ============================================================
 # Post-processing (categorical mapping)

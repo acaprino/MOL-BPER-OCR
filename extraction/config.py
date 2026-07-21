@@ -1,6 +1,6 @@
 """Configuration constants and environment variable handling."""
 import os
-from typing import Dict, Any, List
+from typing import Dict
 
 # ============================================================
 # Pathing & IO
@@ -98,18 +98,3 @@ for area, fields in AREA_TO_FIELDS.items():
 DEBUG_MODE = os.getenv("DEBUG_MODE", "0").strip() == "1"
 DEBUG_SAVE_CROPS = os.getenv("DEBUG_SAVE_CROPS", "0") == "1"
 DEBUG_CROP_DIR = os.path.join(INPUT_DIR, "debug_crops")
-
-# ============================================================
-# Helpers
-# ============================================================
-def get_screenshot_paths(gt: Dict[str, Any], base_dir: str = ".") -> List[str]:
-    import re
-    names = sorted(gt.keys(), key=lambda s: (re.sub(r"\D+", "", s) or "0", s))
-    paths = []
-    for name in names:
-        ext = os.path.splitext(name)[1].lower()
-        if ext in (".png", ".jpg", ".jpeg"):
-            paths.append(os.path.join(base_dir, name))
-        else:
-            paths.append(os.path.join(base_dir, f"{name}.png"))
-    return paths
