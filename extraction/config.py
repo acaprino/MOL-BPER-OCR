@@ -73,6 +73,9 @@ RETRY_AREAS = {
     "FOOTER": (0.00, 0.65, 1.00, 1.00),  # note_della_richiesta
 }
 
+# Declaration order defines retry priority (most important first): the pipeline
+# retries weak areas in this order under the per-screen call budget, so HEADER
+# must stay first. Do not alphabetize.
 AREA_TO_FIELDS = {
     "HEADER": ["ndg", "denominazione", "tipo", "stato", "fase", "evidenze", "filiale_relazione", "ultima_validazione_scheda"],
     "BODY": [

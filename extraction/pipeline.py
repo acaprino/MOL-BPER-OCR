@@ -254,7 +254,11 @@ class ExtractionPipeline:
             return
 
         allowed_retries = max(0, MAX_CALLS_PER_SCREEN - 2)  # 1 anchor + 1 main already done
-        areas_to_retry_list = sorted(areas_to_retry)[:allowed_retries]
+        # Select in priority order (HEADER first), NOT alphabetically: HEADER
+        # owns the identity/status fields that drive _status and the mismatch
+        # guard, so it must be retried before the budget runs out instead of
+        # being dropped by a sort. AREA_TO_FIELDS declaration order = priority.
+        areas_to_retry_list = [a for a in AREA_TO_FIELDS if a in areas_to_retry][:allowed_retries]
 
         # No retry budget left (e.g. MAX_CALLS_PER_SCREEN <= 2): keep main-pass
         # results. Guarding here avoids ThreadPoolExecutor(max_workers=0), which
