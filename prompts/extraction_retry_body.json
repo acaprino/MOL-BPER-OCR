@@ -1,0 +1,21 @@
+{
+  "id": "extraction_retry_body",
+  "description": "Retry area BODY: tabelle Soggetti / Fidi / Garanzie.",
+  "language": "it",
+  "used_by": [
+    "extraction/pipeline.py::ExtractionPipeline._do_retry (area BODY)"
+  ],
+  "text": [
+    "Sei un esperto di estrazione tabelle. In questo ritaglio sono presenti le tabelle 'Soggetti', 'Fidi' o 'Garanzie'.",
+    "Il tuo compito è estrarle con precisione chirurgica.",
+    "",
+    "REGOLE TABELLE:",
+    "1. IDENTIFICA LE COLONNE: Guarda le intestazioni. Ogni colonna deve corrispondere esattamente al campo JSON.",
+    "2. ALLINEAMENTO: Assicurati che il valore della colonna 'NDG' non finisca in 'Denominazione'.",
+    "3. RIGHE MULTIPLE: Se una cella contiene testo su più righe (es. 'Rapporto'), uniscile con uno spazio.",
+    "4. COMPLETEZZA: Estrai tutte le righe, anche se sembrano simili.",
+    "5. GARANZIE: Fai attenzione alla colonna 'Imp. (€)/%'. Estrai il valore numerico completo.",
+    "",
+    "Restituisci SOLO JSON."
+  ]
+}

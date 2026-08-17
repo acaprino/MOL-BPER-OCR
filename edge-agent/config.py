@@ -47,9 +47,6 @@ class AgentConfig:
     DEFAULT_DEDUP_THRESHOLD = 3
     # Intervallo minimo tra tentativi di routing su frame duplicati (per evitare blocchi)
     DEFAULT_ROUTE_RETRY_SECONDS = 1.0
-    # Sequenza ridotta alle sole pagine richieste (derivate da CSV allegato)
-    DEFAULT_REQUIRED_PAGES_ONLY = False
-    DEFAULT_REQUIRED_PAGES_CSV = ""
 
     def __init__(self, config_path: Optional[Path] = None):
         """
@@ -79,9 +76,6 @@ class AgentConfig:
         self.upload_format: str = self.DEFAULT_UPLOAD_FORMAT
         self.dedup_threshold: int = self.DEFAULT_DEDUP_THRESHOLD
         self.route_retry_seconds: float = self.DEFAULT_ROUTE_RETRY_SECONDS
-        # Sequenza filtrata
-        self.required_pages_only: bool = self.DEFAULT_REQUIRED_PAGES_ONLY
-        self.required_pages_csv: str = self.DEFAULT_REQUIRED_PAGES_CSV
 
         self.api_base: str = self.DEFAULT_API_BASE
 
@@ -211,10 +205,6 @@ class AgentConfig:
                     self.route_retry_seconds = self.DEFAULT_ROUTE_RETRY_SECONDS
             except Exception:
                 self.route_retry_seconds = self.DEFAULT_ROUTE_RETRY_SECONDS
-            # Sequenza filtrata su CSV
-            rpo_val = agent_section.get("required_pages_only", str(self.DEFAULT_REQUIRED_PAGES_ONLY))
-            self.required_pages_only = str(rpo_val).strip().lower() in {"1", "true", "yes", "on"}
-            self.required_pages_csv = agent_section.get("required_pages_csv", self.DEFAULT_REQUIRED_PAGES_CSV).strip()
 
         # --- Sezione [llm] ---
         llm_section = parser["llm"] if "llm" in parser else {}
@@ -352,8 +342,6 @@ class AgentConfig:
             "upload_format": self.upload_format,
             "dedup_threshold": str(self.dedup_threshold),
             "route_retry_seconds": str(self.route_retry_seconds),
-            "required_pages_only": "true" if self.required_pages_only else "false",
-            "required_pages_csv": self.required_pages_csv,
         }
 
         parser["api"] = {

@@ -1,0 +1,15 @@
+{
+  "id": "extraction_json_schema_instruction",
+  "description": "Coda appesa al prompt per i Gemini recenti in modalita' free-form, dove lo schema JSON va iniettato nel testo invece che passato come response_schema.",
+  "language": "it",
+  "placeholders": [
+    "schema"
+  ],
+  "used_by": [
+    "extraction/vlm_client.py::_call_vlm_gemini_freeform"
+  ],
+  "text": [
+    "Rispondi ESCLUSIVAMENTE con un oggetto JSON valido che rispetti esattamente questo schema JSON:",
+    "{schema}"
+  ]
+}

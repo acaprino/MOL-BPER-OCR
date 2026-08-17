@@ -68,7 +68,20 @@ def main() -> int:
     # ui.main_window → local_extraction_client → extraction.config fotografa
     # le env var (provider/modello/chiave) a import time, e il pre-flight
     # può crearle/caricarle proprio al primo avvio.
-    from ui.main_window import MainWindow
+    # Da bundle windowed un'eccezione qui ucciderebbe il processo senza finestra:
+    # il caso concreto è un catalogo prompts/ illeggibile in entrambe le copie.
+    try:
+        from ui.main_window import MainWindow
+    except Exception as exc:  # noqa: BLE001
+        import traceback
+        traceback.print_exc()
+        QtWidgets.QMessageBox.critical(
+            None, "Edge Agent",
+            "Avvio non riuscito: i componenti dell'applicazione non sono "
+            f"caricabili.\n\nDettaglio: {exc}\n\n"
+            "Se hai modificato i file in prompts/, ripristina il pacchetto originale.",
+        )
+        return 1
 
     show_debug = "--debug" in sys.argv
     window = MainWindow(config, show_debug=show_debug)

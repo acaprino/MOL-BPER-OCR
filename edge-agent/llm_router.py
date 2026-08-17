@@ -12,6 +12,7 @@ fallisce la chiamata, ritorna (None, 0.0, {}).
 """
 
 import json
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Optional
@@ -87,6 +88,7 @@ class LLMPageRouter(PageRouter):
         self.timeout = int(timeout)
         self._spec: Dict[str, Any] = {}
         self._load_spec()
+        self._load_prompt_templates()
 
         self._client = None
         self._last_debug: Dict[str, Any] = {}
@@ -106,29 +108,51 @@ class LLMPageRouter(PageRouter):
         except Exception:  # noqa: BLE001
             self._spec = {"pages": [], "fields": {}}
 
+    def _load_prompt_templates(self) -> None:
+        """
+        Carica i template del router dal catalogo prompts/.
+
+        L'import resta dentro il costruttore, non a livello di modulo: così un
+        catalogo illeggibile solleva qui dentro, dove _init_router() del capture
+        worker lo cattura e disabilita il solo router, invece di far fallire
+        l'import di questo modulo (che avviene lungo la catena ui.main_window e
+        porterebbe giù l'intera app).
+        """
+        # prompt_store sta nella root del repo: stessa convenzione di
+        # local_extraction_client.py, così il modulo non dipende dall'ordine
+        # con cui altri moduli hanno sistemato sys.path.
+        import app_paths  # type: ignore
+
+        root = str(app_paths.project_root())
+        if not app_paths.is_frozen() and root not in sys.path:
+            sys.path.insert(0, root)
+
+        from prompt_store import get_part
+
+        self._tpl_system = get_part("page_router_system", "base")
+        self._tpl_system_expected = get_part("page_router_system", "expected_page")
+        self._tpl_user_header = get_part("page_router_user", "header")
+        self._tpl_user_expected = get_part("page_router_user", "expected_page")
+        self._tpl_user_page_line = get_part("page_router_user", "page_line")
+        self._tpl_user_footer = get_part("page_router_user", "footer")
+
     def _build_system_prompt(self) -> str:
         pages = [p.get("name") for p in self._spec.get("pages", []) if p.get("name")]
         expected_txt = (
-            f" La pagina attesa è '{self._expected_page}'. Conferma se l'immagine corrisponde davvero;"
-            " in caso contrario, indica quale pagina è realmente e spiega brevemente il motivo in 'reason'."
+            self._tpl_system_expected.format(expected_page=self._expected_page)
             if self._expected_page else ""
         )
-        return (
-            "Sei un assistente che classifica schermate dell'app BPER. "
-            "Identifica la pagina tra queste: " + ", ".join(pages) + ". "
-            "Rispondi solo JSON con chiavi: page_type (string), confidence (0..1), reason (string opzionale)."
-            + expected_txt
-        )
+        return self._tpl_system.format(pages=", ".join(pages)) + expected_txt
 
     def _build_user_prompt(self) -> str:
-        lines = ["Istruzioni per il riconoscimento pagina:"]
+        lines = [self._tpl_user_header]
         if self._expected_page:
-            lines.append(f"PAGINA ATTESA: {self._expected_page}")
+            lines.append(self._tpl_user_expected.format(expected_page=self._expected_page))
         for p in self._spec.get("pages", []):
             name = p.get("name", "")
             hints = p.get("hints", "")
-            lines.append(f"- {name}: {hints}")
-        lines.append("Formato di risposta: JSON puro, senza testo extra.")
+            lines.append(self._tpl_user_page_line.format(name=name, hints=hints))
+        lines.append(self._tpl_user_footer)
         return "\n".join(lines)
 
     def set_expected_page(self, name: Optional[str]) -> None:

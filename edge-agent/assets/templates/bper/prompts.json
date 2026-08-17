@@ -2,6 +2,7 @@
   "pages": [
     {
       "name": "Risultato ricerca",
+      "order": 1, "template": "screen 1",
       "hints": "Pagina BStore Pratiche — lista pratiche nello stato base. Tab 'BStore Pratiche' attivo, sezione 'Filtri Attivi' visibile, pulsante 'ESPORTA IN EXCEL' blu. Scrollbar orizzontale della tabella posizionata completamente a sinistra: colonne visibili sono ADD, NDG, Numero, Denominazione, Tipo, Stato, Fase, Creazione, Evidenze. Una riga è selezionata/evidenziata in blu o arancione. Nessun tooltip popup attivo. Nessuna sidebar di navigazione blu a sinistra (elemento che distingue questa vista dalle pagine di dettaglio pratica).",
       "fields": [
         "NDG",
@@ -14,6 +15,7 @@
     },
     {
       "name": "Risultato ricerca - Colonne estese",
+      "order": 2, "template": "screen 2",
       "hints": "Pagina BStore Pratiche — lista pratiche con la tabella scorsa orizzontalmente verso destra fino alla posizione centrale. Tab 'BStore Pratiche' attivo, sezione 'Filtri Attivi', pulsante 'ESPORTA IN EXCEL'. Le colonne base (ADD, NDG, ecc.) sono parzialmente o completamente uscite dalla vista; sono ora visibili colonne di tipo assegnazione e date quali Assegnato, Data Elic., Recapito o simili. La riga selezionata è ancora evidenziata. Nessun tooltip popup attivo. Stesso layout senza sidebar a sinistra.",
       "fields": [
         "Creazione"
@@ -21,6 +23,7 @@
     },
     {
       "name": "Risultato ricerca - Tooltip mostrata",
+      "order": 3, "template": "screen 3",
       "hints": "Pagina BStore Pratiche — lista pratiche con scrollbar orizzontale della tabella posizionata a destra e un tooltip popup attivo su una cella. Tab 'BStore Pratiche' attivo, sezione 'Filtri Attivi', pulsante 'ESPORTA IN EXCEL'. Colonne visibili a carattere prevalentemente temporale: Data-Ass, Data 1, Data 2, Dati 3, Anno X, Evidenze o simili. Il tratto distintivo rispetto alle altre varianti 'Risultato ricerca' è la presenza di un popup tooltip galleggiante visibile su una cella della riga selezionata, tipicamente nella colonna Evidenze o nell'ultima colonna visibile.",
       "fields": [
         "Evidenze",
@@ -29,6 +32,7 @@
     },
     {
       "name": "Elenco Soggetti",
+      "order": 4, "template": "screen 4",
       "hints": "Pagina di dettaglio pratica BPER con la sezione soggetti espansa e completamente visibile. Sidebar blu di navigazione a sinistra. Banner pratica in alto con dati identificativi (NDG, tipo, stato). Tabella soggetti prominente nella parte centrale/superiore del contenuto principale: più righe compilate con ruolo, denominazione, NDG, quote. Possibile indicatore rosso o avviso visibile su una riga della tabella soggetti. Nessun tooltip sui campi finanziari. Il discriminante rispetto a 'Gestione Fidi e Garanzie' è l'assenza di sezioni finanziarie (importi, rate, garanzie) e la centralità della tabella soggetti.",
       "fields": [
         "NDG (riga 1)",
@@ -45,6 +49,7 @@
     },
     {
       "name": "Gestione Fidi e Garanzie",
+      "order": 5, "template": "screen 5",
       "hints": "Pagina di dettaglio pratica BPER con sezione garanzie/fidi nello stato base, senza tooltip attivi. Sidebar blu a sinistra. Banner pratica in alto. Tabella soggetti compatta nella parte superiore. Nella parte centrale e inferiore: tabella fidi con colonne (filiale relazione, numero fido, rapporto, descrizione, scadenza, importo, tipo operazione) e tabella garanzie con le relative righe. Nessun popup tooltip galleggiante visibile sui campi descrittivi. Distinguibile dalle varianti con tooltip per l'assenza di qualsiasi popup testuale sovrapposto al layout.",
       "fields": [
         "n° FIDO",
@@ -71,6 +76,7 @@
     },
     {
       "name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+      "order": 6, "template": "screen 6",
       "hints": "Pagina di dettaglio pratica BPER con sezione garanzie/fidi e tooltip attivo sul campo 'Descrizione' nella tabella fidi. Sidebar blu a sinistra. Banner pratica in alto. Tabella soggetti compatta nella parte superiore. Stesso layout base di 'Gestione Fidi e Garanzie'. Tratto distintivo: popup tooltip testuale visibile nella sezione fidi (parte centrale del layout), ancorato alla colonna 'Descrizione' di una riga della tabella fidi. Il popup riporta il testo descrittivo esteso del fido/operazione.",
       "fields": [
         "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%"
@@ -78,6 +84,7 @@
     },
     {
       "name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
+      "order": 7, "template": "screen 7",
       "hints": "Pagina di dettaglio pratica BPER con sezione garanzie/fidi e tooltip attivo sul campo 'Descrizione' nella tabella garanzie, ancorato alla prima riga della tabella garanzie. Sidebar blu a sinistra. Banner pratica in alto. Tabella soggetti compatta nella parte superiore. Stesso layout base di 'Gestione Fidi e Garanzie'. Tratto distintivo: popup tooltip testuale visibile nella sezione garanzie (parte inferiore del layout), posizionato in alto nella tabella garanzie — il popup appare vicino alla prima riga. Distinguibile dalla variante 'riga 2' per la posizione più alta del popup all'interno della sezione garanzie.",
       "fields": [
         "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS"
@@ -85,6 +92,7 @@
     },
     {
       "name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+      "order": 8, "template": "screen 8",
       "hints": "Pagina di dettaglio pratica BPER con sezione garanzie/fidi e tooltip attivo sul campo 'Descrizione' nella tabella garanzie, ancorato alla seconda riga della tabella garanzie. Sidebar blu a sinistra. Banner pratica in alto. Tabella soggetti compatta nella parte superiore. Stesso layout base di 'Gestione Fidi e Garanzie'. Tratto distintivo: popup tooltip testuale visibile nella sezione garanzie (parte inferiore del layout), posizionato più in basso nella tabella garanzie rispetto alla variante 'riga 1' — il popup appare vicino alla seconda riga. Il contenuto del tooltip è dello stesso tipo ma si riferisce a una garanzia diversa.",
       "fields": [
         "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."
@@ -92,6 +100,7 @@
     },
     {
       "name": "Note da Richiesta",
+      "order": 9, "template": "screen 9",
       "hints": "Pagina di dettaglio pratica BPER con area note o sezione documentale prominente. Sidebar blu a sinistra. Banner pratica in alto. Tabella soggetti nella parte superiore in forma compatta. Nella parte centrale o inferiore: grande area di testo con note narrative, motivazioni, commenti alla pratica, oppure elenco documenti con checklist e allegati. L'elemento caratterizzante è un blocco testuale esteso o una lista di documenti con indicatori di completamento che occupa la maggior parte dello spazio del contenuto visibile, assenza di campi finanziari numerici prominenti.",
       "fields": [
         "Note della richiesta"
@@ -99,6 +108,7 @@
     },
     {
       "name": "Altro / Non riconosciuto",
+      "catchall": true,
       "hints": "Qualsiasi pagina che NON corrisponde chiaramente a nessuna delle definizioni precedenti. Pagine di login, home, caricamento, messaggi di errore, popup di conferma, o qualsiasi schermata non appartenente alle categorie identificate. Usa questa categoria come fallback quando la corrispondenza con le altre pagine è ambigua o incerta.",
       "fields": []
     }

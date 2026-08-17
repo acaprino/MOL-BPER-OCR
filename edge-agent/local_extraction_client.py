@@ -29,8 +29,11 @@ except Exception:
 
 from extraction.llm_factory import create_chat_model
 from extraction.pipeline import ExtractionPipeline
-from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR
+from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR, PARALLEL_WORKERS
 from extraction.normalization import escape_csv_formula
+from prompt_store import catalog_source
+
+from extraction_pool import DaemonThreadPool
 
 
 class LocalExtractionClient(QtCore.QObject):
@@ -43,19 +46,34 @@ class LocalExtractionClient(QtCore.QObject):
     Compatible surface: start_job(), ingest_frame(), requeue_job(), export_csv().
     """
 
-    result_ready = QtCore.pyqtSignal(str, dict)  # (job_id, result)
+    result_ready = QtCore.pyqtSignal(str, dict)   # (job_id, result)
+    frame_queued = QtCore.pyqtSignal(str, str)    # (job_id, page_type)
 
-    def __init__(self, parent: Optional[QtCore.QObject] = None) -> None:
+    def __init__(
+        self,
+        parent: Optional[QtCore.QObject] = None,
+        pipeline: Optional[ExtractionPipeline] = None,
+    ) -> None:
         super().__init__(parent)
 
-        main_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL)
-        anchor_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL_ANCHOR)
-        self._pipeline = ExtractionPipeline(
-            main_model=main_model,
-            anchor_model=anchor_model,
-            main_model_name=LLM_MODEL,
-            anchor_model_name=LLM_MODEL_ANCHOR,
-        )
+        # Which prompt catalog is live: without this line a redirected or
+        # tampered prompts/ folder leaves no trace in edge-agent.log.
+        print(f"[PROMPTS] catalog loaded from {catalog_source()}")
+
+        if pipeline is None:
+            main_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL)
+            anchor_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL_ANCHOR)
+            pipeline = ExtractionPipeline(
+                main_model=main_model,
+                anchor_model=anchor_model,
+                main_model_name=LLM_MODEL,
+                anchor_model_name=LLM_MODEL_ANCHOR,
+            )
+        self._pipeline = pipeline
+
+        # Extraction runs on a daemon pool; the shared-pipeline pattern matches
+        # BatchRunner (extraction/cli.py): one pipeline, N worker threads.
+        self._pool = DaemonThreadPool(max_workers=max(1, int(PARALLEL_WORKERS)))
 
         self._results: Dict[str, List[Dict[str, Any]]] = {}
         self._lock = threading.Lock()
@@ -75,26 +93,38 @@ class LocalExtractionClient(QtCore.QObject):
         confidence: float = 0.0,
         fields_json: str = "{}",
     ) -> None:
-        """
-        Process an image through ExtractionPipeline and store the result.
+        """Enqueue a frame for background extraction and return immediately.
 
-        Called synchronously from BPERCaptureWorker._upload_page().
-        Runs extraction in the caller's thread (capture QThread).
+        Called from the capture QThread; extraction runs on the internal
+        daemon pool so the capture loop is never blocked.
         """
-        friendly = page_type.replace('_', ' ').title() if page_type else f"pagina {page_no}"
-        screen_id = f"{friendly} — pag. {page_no}"
+        self.frame_queued.emit(job_id, page_type)
+        self._pool.submit(
+            self._process_frame, job_id, img, page_no, page_type, confidence, fields_json
+        )
+
+    def _process_frame(
+        self,
+        job_id: str,
+        img: Image.Image,
+        page_no: int,
+        page_type: str,
+        confidence: float,
+        fields_json: str,
+    ) -> None:
+        """Pool worker: run the pipeline and publish the result."""
+        screen_id = page_type if page_type else f"pagina {page_no}"
 
         try:
-            # We use extract_from_image directly to avoid redundant normalize_image
-            # since the Edge Agent already pre-processed the image.
+            # extract_from_image (not extract_from_screen): the Edge Agent has
+            # already pre-processed the image, normalize_image would be redundant.
             result = self._pipeline.extract_from_image(img, screen_id)
-        except Exception as e:
-            # Fallback error result
+        except Exception as e:  # noqa: BLE001
             result = {
                 "screen_id": screen_id,
                 "fields": {},
                 "_status": "ERROR",
-                "_error": str(e)
+                "_error": str(e),
             }
 
         result["_page_type"] = page_type
@@ -102,16 +132,23 @@ class LocalExtractionClient(QtCore.QObject):
         result["_page_confidence"] = confidence
 
         with self._lock:
-            if job_id not in self._results:
-                self._results[job_id] = []
-            self._results[job_id].append(result)
+            self._results.setdefault(job_id, []).append(result)
 
-        # Qt signal is thread-safe across QThread boundaries
+        # Qt signal is thread-safe across thread boundaries
         self.result_ready.emit(job_id, dict(result))
 
     def requeue_job(self, job_id: str) -> bool:
         """No-op stub for local mode."""
         return True
+
+    def pending_extractions(self) -> int:
+        """Number of queued frames not yet being processed."""
+        return self._pool.pending()
+
+    def shutdown(self) -> None:
+        """Stop the pool: queued frames are discarded; running tasks cannot
+        block process exit (daemon threads)."""
+        self._pool.stop()
 
     def export_csv(self, job_id: str, schema: str = "flat") -> Optional[str]:
         """Export extraction results for a job as CSV text."""

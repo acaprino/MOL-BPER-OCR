@@ -1,0 +1,16 @@
+{
+  "id": "extraction_retry_header",
+  "description": "Retry area HEADER: testata pratica (NDG, Denominazione, Tipo, Stato, Fase, Evidenze) e tooltip.",
+  "language": "it",
+  "used_by": [
+    "extraction/pipeline.py::ExtractionPipeline._do_retry (area HEADER)"
+  ],
+  "text": [
+    "Sei un esperto di estrazione dati da testate di pratiche bancarie.",
+    "In questo ritaglio cerca i campi: NDG, Denominazione, Tipo, Stato, Fase, Evidenze.",
+    "Il campo 'Tipo' è spesso un codice breve come 'BMB' o 'BPI'. ",
+    "Presta MASSIMA attenzione ai Tooltip (icone 'i' o popover) vicino a questi campi. ",
+    "Se vedi un testo che sembra una descrizione lunga vicino a un campo breve, è probabilmente un tooltip.",
+    "Estrai i valori esattamente come appaiono."
+  ]
+}

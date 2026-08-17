@@ -123,7 +123,7 @@ Ordinati per valore di apprendimento: dal contratto dati verso l'orchestrazione 
 | Per fare questo… | Guarda qui |
 |---|---|
 | Aggiungere o rinominare un campo estratto | `extraction/fields.py` (`FIELD_KEYS`, `CSV_TO_SCHEMA`), poi `extraction/field_definitions.py` (`CANONICAL_FIELD_DEFINITIONS`, `FIELD_LABEL_ALIASES`) ed `extraction/config.py` (`AREA_TO_FIELDS`) |
-| Cambiare cosa viene chiesto al VLM | `extraction/prompts.py` (`PROMPT`, `ANCHOR_PROMPT`, `FIELD_RETRY_PROMPTS`) - in italiano per scelta |
+| Cambiare cosa viene chiesto al VLM | `prompts/*.json` (`extraction_main`, `extraction_anchor`, `extraction_retry_*`) - in italiano per scelta, caricati da `prompt_store.py`; se aggiungi un `{placeholder}` aggiorna anche `CATALOG` |
 | Regolare le regioni di ritaglio | `extraction/config.py` (`CONTENT_CROP`, `HEADER_IN_CONTENT`, `RETRY_AREAS`) |
 | Aggiungere un modello o correggere i prezzi | `extraction/config.py` (`PROVIDER_MODELS`, `PRICING_PER_1M`) |
 | Cambiare la selezione provider/chiave | `extraction/llm_factory.py` (`create_chat_model()`) - l'unica factory LLM |

@@ -151,6 +151,7 @@ All defaults verified against `extraction/config.py`.
 | `LLM_THINKING_LEVEL` | *(unset)* | Thinking budget `low`/`medium`/`high`; applied only to models whose name contains `thinking` |
 | `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `extraction/cli.py` (`config.py:92`) |
 | `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to `INPUT_DIR/debug_crops` |
+| `PROMPTS_DIR` | *(unset)* | Override the prompt catalog directory (read in `prompt_store.py`, not `config.py`); default is `prompts/` at the repo root, or next to the exe when frozen. An explicit override fails closed: no fallback to the bundled copy |
 
 ### Secrets policy
 
@@ -169,7 +170,9 @@ All defaults verified against `extraction/config.py`.
 
 ## Testing & Validation
 
-There is no automated test suite. To verify changes manually:
+A pytest suite lives in `tests/` (`python -m pytest tests`) covering the page registry, the capture
+stability tracker, the daemon thread pool and the prompt catalog; the extraction pipeline itself is
+still untested. To verify changes manually:
 
 1. **Run extraction:** `python main.py` -- should complete without errors (needs `LLM_API_KEY`
    and a local `mnt/data/dati.csv`).
@@ -268,6 +271,32 @@ downstream effects.
 12. **Edge-agent preprocessing** -- `BPERCaptureWorker` preprocesses via
     `image_ops.preprocess_for_ocr()` before calling `ingest_frame()`, so `LocalExtractionClient` calls
     `extract_from_image()` (not `extract_from_screen()`), bypassing `normalize_image()`.
+13. **Prompts are data** -- every LLM prompt lives in `prompts/*.json` (one file per prompt) and is
+    read once at import by the root-level `prompt_store.py`, then served from memory. Do not re-add
+    prompt literals to Python: `extraction/prompts.py`, `vlm_client.py`, `pipeline.py` and the
+    edge-agent `llm_router.py` all resolve theirs through the store. The store is stdlib-only and
+    lives outside `extraction/` on purpose, so the edge-agent router can read a prompt without
+    importing LangChain. Notes:
+    - `CATALOG` declares, per prompt id, the `parts` the code looks up and the `{placeholder}`
+      fields it formats. Both are validated at load, so a stray brace fails at startup instead of
+      raising `KeyError` mid-capture; write `{{` for a literal brace. Adding a prompt or a
+      placeholder means updating `CATALOG` and the JSON file together.
+    - **Fail-fast is deliberate, and asymmetric with the page catalog.** A corrupt prompt is worse
+      than a missing file: the pipeline would keep running and emit wrong fields that look right.
+      `edge-agent/assets/templates/bper/prompts.json` does the opposite and degrades to an empty
+      spec, because a missed page detection is visible to the operator. Keep that asymmetry.
+    - Candidate directories are tried in order and the first that *loads* wins, so a damaged
+      editable copy next to the exe falls back to the bundled one. `bootstrap._ensure_files()`
+      re-seeds `prompts/` from the bundle only when it is missing or empty, never overwriting
+      hand-edited files. `catalog_source()` reports which copy is live; it is logged by
+      `LocalExtractionClient.__init__()` and by the CLI.
+    - There is deliberately no reload: consumers bind their prompts to module constants at import,
+      so a partial reload would update some and not others.
+    - `llm_router.py` imports the store *lazily* (inside `_load_prompt_templates()`) so an unreadable
+      catalog raises inside `_init_router()`'s handler, disabling only the router, instead of
+      failing the `ui.main_window` import chain and taking the app down. This is **not** about the
+      bootstrap order of constraint 3: `llm_router` is only reachable via `ui.main_window`, which is
+      already imported after `run_preflight()`.
 
 ## Code Conventions
 
@@ -342,6 +371,7 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 | `gui_app.py` | Tkinter GUI: upload screenshots, pick provider/model, process, display, export CSV/JSON. Imports `run_extraction_batch` from `extraction`. Does not load `.env`. |
 | `edge-agent/edge_agent.py` | PyQt6 entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow`. `--debug` adds the Debug LLM tab. |
 | `run_edge_agent.bat` | Windows launcher: bootstraps/self-heals `.venv` (Python 3.13, then 3.12), installs `requirements.txt`, starts the edge-agent. |
+| `prompt_store.py` | Prompt catalog loader shared by `extraction/` and the edge-agent router. Stdlib-only and deliberately outside `extraction/`, so reading a prompt does not import LangChain. `CATALOG`, `get_text()`, `get_part()`, `catalog_source()`. |
 
 ### `extraction/` package (core engine)
 
@@ -354,7 +384,7 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 | `page_definitions.py` | Canonical page names and label resolution |
 | `canonical_mapping.py` | `build_canonical_field_entries()` for client-facing output |
 | `schemas.py` | Pydantic models: `ExtractionResponse`, `AnchorResponse`, `FieldResult`, `Soggetto` |
-| `prompts.py` | `PROMPT`, `ANCHOR_PROMPT`, area retry prompts (Italian) |
+| `prompts.py` | `PROMPT`, `ANCHOR_PROMPT`, area retry prompts (Italian) -- constants resolved from the catalog via the root-level `prompt_store` |
 | `normalization.py` | Text normalization, `classify_field()`, `pick_best()`, `dataset_mismatch_guard()` |
 | `imaging.py` | `normalize_image()`, `crop_relative()`, `img_to_png_bytes()`, `save_debug_crop()` |
 | `vlm_client.py` | `call_vlm()`, `call_vlm_with_retry()`, `estimate_cost_usd()` -- LangChain structured output |
@@ -388,6 +418,8 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 |---|---|
 | `mnt/data/dati.csv` | Ground-truth dataset -- **expected here but absent from repo and git** (`/mnt` gitignored); required by the CLI |
 | `mnt/data/screen *.png` | Test banking screenshots (9 BPER images, force-tracked in git) |
+| `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `prompt_store.py` |
+| `edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
 | `prompts_immagini.txt` | Image-generation prompts (reference only, not used by the pipeline) |
 
 ### Documentation

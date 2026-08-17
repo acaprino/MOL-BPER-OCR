@@ -78,9 +78,13 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo [INFO] Copio config e asset nella cartella portable...
+echo [INFO] Copio config, prompt e asset nella cartella portable...
 copy /y "edge-agent\config.ini" "dist\EdgeAgent\config.ini" >nul
 xcopy /e /i /y "edge-agent\assets" "dist\EdgeAgent\assets" >nul
+rem Prompt LLM modificabili senza rebuild: questa copia ha la precedenza sul bundle.
+rem Solo i .json: la cartella sorgente non deve poter spedire altri file nello zip.
+if not exist "dist\EdgeAgent\prompts" mkdir "dist\EdgeAgent\prompts"
+copy /y "prompts\*.json" "dist\EdgeAgent\prompts" >nul
 
 rem Template .env SENZA chiave (fonte unica: edge-agent\defaults\env.template);
 rem la chiave viene chiesta al primo avvio.

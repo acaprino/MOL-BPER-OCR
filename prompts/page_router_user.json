@@ -1,0 +1,19 @@
+{
+  "id": "page_router_user",
+  "description": "Messaggio utente del router di pagina LLM. Il testo finale e' l'unione delle parti: header, expected_page (se nota), una riga page_line per ogni pagina del catalogo, footer.",
+  "language": "it",
+  "placeholders": [
+    "expected_page",
+    "name",
+    "hints"
+  ],
+  "used_by": [
+    "edge-agent/llm_router.py::LLMPageRouter._build_user_prompt"
+  ],
+  "parts": {
+    "header": "Istruzioni per il riconoscimento pagina:",
+    "expected_page": "PAGINA ATTESA: {expected_page}",
+    "page_line": "- {name}: {hints}",
+    "footer": "Formato di risposta: JSON puro, senza testo extra."
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "id": "extraction_anchor",
+  "description": "Passata anchor: estrae solo ndg e denominazione dal crop dell'intestazione.",
+  "language": "it",
+  "used_by": [
+    "extraction/pipeline.py::ExtractionPipeline.extract_anchors"
+  ],
+  "text": [
+    "Estrai SOLO i seguenti campi dallo screenshot:",
+    "- ndg",
+    "- denominazione",
+    "",
+    "Regole:",
+    "- NDG e Denominazione principali si trovano solitamente nell'intestazione della pratica al CENTRO dell'immagine.",
+    "- IGNORA i nomi e numeri in alto a destra (l'operatore connesso e il suo ID, accanto all'icona utente).",
+    "- Se non sei assolutamente certo, restituisci null.",
+    "- NDG deve essere una sequenza numerica ESATTA (non stimare).",
+    "- Non inventare mai valori.",
+    "- Imposta confidence >= 0.95 solo se il valore è chiaramente leggibile.",
+    "",
+    "IMPORTANTE: Restituisci SOLO un oggetto JSON valido conforme allo schema richiesto. Non includere spiegazioni o testo aggiuntivo fuori dal JSON."
+  ]
+}

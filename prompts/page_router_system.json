@@ -1,0 +1,16 @@
+{
+  "id": "page_router_system",
+  "description": "System prompt del router di pagina LLM: elenca le pagine note e impone la risposta JSON. La parte 'expected_page' viene appesa solo quando il worker ha suggerito la pagina attesa.",
+  "language": "it",
+  "placeholders": [
+    "pages",
+    "expected_page"
+  ],
+  "used_by": [
+    "edge-agent/llm_router.py::LLMPageRouter._build_system_prompt"
+  ],
+  "parts": {
+    "base": "Sei un assistente che classifica schermate dell'app BPER. Identifica la pagina tra queste: {pages}. Rispondi solo JSON con chiavi: page_type (string), confidence (0..1), reason (string opzionale).",
+    "expected_page": " La pagina attesa è '{expected_page}'. Conferma se l'immagine corrisponde davvero; in caso contrario, indica quale pagina è realmente e spiega brevemente il motivo in 'reason'."
+  }
+}

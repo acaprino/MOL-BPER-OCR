@@ -11,11 +11,16 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from pydantic import BaseModel
 
 from extraction.config import PRICING_PER_1M
+from prompt_store import get_text
 
 # Gemini models that support response_schema in json_mode (small schemas only).
 # Newer models (2.0+, 3.x) reject response_schema for complex schemas —
 # we fall back to free-form JSON + manual Pydantic validation.
 _GEMINI_JSON_SCHEMA_MODELS = ("gemini-1.5",)
+
+# Prompt catalog entries resolved once at import (see prompt_store.py).
+_USER_INSTRUCTION = get_text("extraction_user_instruction")
+_JSON_SCHEMA_INSTRUCTION = get_text("extraction_json_schema_instruction")
 
 
 def estimate_cost_usd(model: str, prompt_tokens: int, completion_tokens: int) -> float:
@@ -61,11 +66,7 @@ def _call_vlm_gemini_freeform(
     structure to produce.
     """
     schema_json = json.dumps(schema.model_json_schema(), ensure_ascii=False)
-    full_prompt = (
-        f"{prompt}\n\n"
-        f"Rispondi ESCLUSIVAMENTE con un oggetto JSON valido che rispetti "
-        f"esattamente questo schema JSON:\n{schema_json}"
-    )
+    full_prompt = f"{prompt}\n\n{_JSON_SCHEMA_INSTRUCTION.format(schema=schema_json)}"
     messages = [
         HumanMessage(content=[
             {"type": "text", "text": full_prompt},
@@ -140,7 +141,7 @@ def call_vlm(
         if use_schema_mode:
             messages = [
                 HumanMessage(content=[
-                    {"type": "text", "text": f"{prompt}\n\nEstrai i campi richiesti dallo screenshot."},
+                    {"type": "text", "text": f"{prompt}\n\n{_USER_INSTRUCTION}"},
                     {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}},
                 ]),
             ]
@@ -186,7 +187,7 @@ def call_vlm(
     messages = [
         SystemMessage(content=prompt),
         HumanMessage(content=[
-            {"type": "text", "text": "Estrai i campi richiesti dallo screenshot."},
+            {"type": "text", "text": _USER_INSTRUCTION},
             {"type": "image_url", "image_url": {"url": f"data:image/png;base64,{base64_image}"}},
         ]),
     ]
@@ -249,8 +250,11 @@ def call_vlm_with_retry(
                 model=model,
                 schema=schema,
             )
-        except ValueError:
-            raise  # parsing/validation errors are not transient
+        except (ValueError, KeyError, IndexError):
+            # Parse failures and malformed prompt templates (a stray brace makes
+            # str.format raise KeyError/IndexError) are permanent: retrying them
+            # only burns the backoff.
+            raise
         except Exception as e:
             last_err = e
             sleep_s = min(8.0, (2 ** i) * 0.8) + (0.05 * i)
