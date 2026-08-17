@@ -66,12 +66,21 @@ vista, con un solo export. Tutto il resto va nei log.
 6. **Logica pura fuori dalla UI.** Consolidamento ed export vivono in due moduli senza
    Qt sotto `edge-agent/`, come `stability.py` e `page_registry.py`, e hanno i loro test.
 
-### Perché non dentro `extraction/`
+### Perché in `edge-agent/` e non dentro `extraction/`
 
-`import extraction.normalization` esegue `extraction/__init__.py`, che a riga 68 importa
-`llm_factory` e quindi LangChain. È lo stesso vincolo per cui `prompt_store.py` vive
-alla radice del repo e non dentro `extraction/` (CLAUDE.md, vincolo 13). Moduli nuovi
-dentro `extraction/` trascinerebbero LangChain nei test dell'edge-agent.
+Sono concern dell'edge-agent e seguono il pattern dei moduli puri già presenti lì
+(`stability.py`, `page_registry.py`, `extraction_pool.py`), ognuno con il proprio test.
+`extraction/` è il motore di estrazione condiviso da CLI, GUI Tkinter ed edge-agent:
+consolidare per pratica è una scelta di presentazione dell'edge-agent, non una regola
+del motore.
+
+Nota di onestà sul costo: i due moduli importano comunque `pick_best`, `is_nullish` e
+`norm_number_str` da `extraction.normalization`, e questo esegue `extraction/__init__.py`,
+che a riga 68 importa `llm_factory` e quindi LangChain. Collocarli in `edge-agent/` non
+evita quella dipendenza — nessuna collocazione lo farebbe, Python esegue sempre l'`__init__`
+del package. Il riuso di `pick_best` vale il costo (CLAUDE.md, principio 5: una sola
+semantica di merge), e i test girano nel `.venv`, dove LangChain è installato, esattamente
+come già fa `tests/test_local_extraction_client.py`.
 
 ### Perché non dentro `LocalExtractionClient` o nella tab
 
@@ -99,11 +108,31 @@ def consolidate(results: Sequence[Dict[str, Any]]) -> List[PracticeRecord]: ...
 ```
 
 **Raggruppamento.** Per ogni risultato in ordine di arrivo si legge
-`fields["ndg"]["value"]` e lo si normalizza con `norm_number_str()`
-(`normalization.py:40`), la stessa funzione che `dataset_mismatch_guard()` usa per
-confrontare gli NDG. Se non nullish (`is_nullish()`, `normalization.py:28`) è la chiave
-di gruppo e diventa "ultima pratica vista". Se nullish, il frame va all'ultima pratica
-vista; se non ne esiste ancora nessuna finisce in un buffer di attesa.
+`fields["ndg"]["value"]`. Se non nullish (`is_nullish()`, `normalization.py:28`) viene
+normalizzato e diventa la chiave di gruppo, oltre che "ultima pratica vista". Se nullish,
+il frame va all'ultima pratica vista; se non ne esiste ancora nessuna finisce in un
+buffer di attesa.
+
+**Normalizzazione dell'NDG: non si riusa `norm_number_str()`.** È un normalizzatore di
+*quantità*, non di identificativi, e su un NDG produce risultati sbagliati (verificato):
+
+| Input | `norm_number_str()` | Necessario |
+|---|---|---|
+| `12345` | `12345.00` | `12345` |
+| `12.345` | `12.35` | `12345` |
+| `0012345` | `12345.00` | `12345` |
+| `12345/A` | `12345.00` | `12345A` |
+
+Il punto viene letto come separatore decimale, quindi lo stesso NDG scritto con e senza
+separatore delle migliaia finirebbe in **due pratiche diverse**, e un suffisso non
+numerico verrebbe silenziosamente troncato, fondendo pratiche distinte. Si usa invece una
+normalizzazione da identificativo, locale al modulo: si tengono i soli caratteri
+alfanumerici, si porta a maiuscolo, e se il risultato è tutto cifre si tolgono gli zeri
+iniziali. Un NDG illeggibile resta `None`.
+
+`dataset_mismatch_guard()` (`normalization.py:206`) usa `norm_number_str()` sugli NDG e
+ha lo stesso difetto, ma è codice di valutazione contro la ground truth e fuori dallo
+scopo di questo lavoro: non viene toccato.
 
 **Buffer iniziale.** Il buffer confluisce nella prima pratica identificata. Se la
 sessione finisce senza mai un NDG leggibile, il buffer diventa un unico record con
@@ -168,8 +197,21 @@ il resto, così le colonne continuano a raggrupparsi per pagina senza buchi.
 
 **Valori.** Tutti scritti come testo, come deciso escludendo i tipi nativi: i valori OCR
 non sono garantiti parsabili e una data mal interpretata è peggio di una data come
-stringa. `escape_csv_formula()` applicato a ogni valore, colmando la lacuna di
-`data_table_tab.py:349`. Un campo non rilevato lascia la cella vuota.
+stringa. Un campo non rilevato lascia la cella vuota.
+
+**Neutralizzazione delle formule.** In xlsx si forza `cell.data_type = "s"` dopo
+l'assegnazione, **non** si usa `escape_csv_formula()`. Verificato con openpyxl 3.1.5:
+
+| Scrittura | `data_type` | Valore riletto |
+|---|---|---|
+| `cell.value = "=1+1"` | `f` | `=1+1` valutato come formula |
+| `cell.value = "'=1+1"` | `s` | `'=1+1` — l'apostrofo resta nella stringa |
+| `cell.value = "=1+1"` poi `data_type = "s"` | `s` | `=1+1` come testo |
+
+L'apostrofo è la convenzione del CSV, non dell'xlsx: in un foglio salvato da openpyxl
+resta visibile all'utente. Inoltre `escape_csv_formula()` prefissa anche `-` e `+`
+(`normalization.py:70`), quindi un importo negativo diventerebbe `'-1.234,00`. Forzare
+il tipo cella preserva il valore identico e lo rende inerte.
 
 ### 3. `ui/data_table_tab.py` (riscritto)
 
@@ -215,8 +257,8 @@ sono informazione.
 - frame nullish prima di qualsiasi NDG confluisce nella prima pratica identificata
 - sessione senza alcun NDG leggibile produce un solo record con `ndg=None`
 - conflitto di valori risolto per confidenza; non-nullo batte nullo ad alta confidenza
-- NDG scritti in formati diversi ("12345" e "12.345") si uniscono, coerentemente con
-  `norm_number_str()`
+- NDG scritti in formati diversi (`12345`, `12.345`, `0012345`) si uniscono
+- NDG con suffisso non numerico (`12345/A`) resta distinto da `12345`
 
 `tests/test_excel_export.py` (rilegge il workbook con openpyxl):
 - riga 1 contiene i 4 nomi di pagina su celle unite, nell'ordine `PAGE_SHEET_ORDER`
