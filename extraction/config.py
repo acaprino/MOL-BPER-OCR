@@ -28,6 +28,7 @@ PROVIDER_MODELS = {
         "gemini-2.0-flash-thinking-exp",
         "gemini-3-flash-preview",
         "gemini-3.1-flash-lite-preview",
+        "gemini-3.6-flash",
     ],
 }
 
@@ -45,6 +46,8 @@ PRICING_PER_1M = {
     "gemini-2.0-flash-thinking-exp": {"input": 0.10, "output": 0.40},
     "gemini-3-flash-preview": {"input": 0.10, "output": 0.40},
     "gemini-3.1-flash-lite-preview": {"input": 0.25, "output": 1.50},
+    # Prezzo introduttivo fino al 2026-12-31; dal 2027-01-01 diventa 1.50/7.50
+    "gemini-3.6-flash": {"input": 0.75, "output": 3.75},
 }
 
 # ============================================================

@@ -28,8 +28,10 @@ from PyQt6.QtWidgets import (
 # Canonical display names fallback (used when canonical_fields is absent)
 # ---------------------------------------------------------------------------
 
-_EXTRACTION_ROOT = Path(__file__).resolve().parents[2]
-if str(_EXTRACTION_ROOT) not in sys.path:
+import app_paths
+
+_EXTRACTION_ROOT = app_paths.project_root()
+if not app_paths.is_frozen() and str(_EXTRACTION_ROOT) not in sys.path:
     sys.path.insert(0, str(_EXTRACTION_ROOT))
 
 try:

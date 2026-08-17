@@ -157,9 +157,8 @@ class CaptureTab(QWidget):
         """Legge i nomi delle pagine BPER direttamente da prompts.json."""
         try:
             import json
-            from pathlib import Path
-            root = Path(__file__).resolve().parents[1]
-            prompts_path = root / "assets" / "templates" / "bper" / "prompts.json"
+            import app_paths
+            prompts_path = app_paths.templates_dir() / "prompts.json"
             spec = json.loads(prompts_path.read_text(encoding="utf-8"))
             return [
                 p["name"]

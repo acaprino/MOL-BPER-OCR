@@ -14,13 +14,16 @@ from PIL import Image
 from PyQt6 import QtCore
 
 # Add project root to sys.path so extraction package is importable
-_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if _PROJECT_ROOT not in sys.path:
+# (solo da sorgente: nel bundle il package è già nell'archivio PyInstaller)
+import app_paths
+
+_PROJECT_ROOT = str(app_paths.project_root())
+if not app_paths.is_frozen() and _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
 try:
     from dotenv import load_dotenv
-    load_dotenv(os.path.join(_PROJECT_ROOT, ".env"))
+    load_dotenv(app_paths.env_file())
 except Exception:
     pass
 

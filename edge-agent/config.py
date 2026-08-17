@@ -1,8 +1,9 @@
 """Modulo per la gestione della configurazione dell'agente."""
 
 import configparser
+import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Tuple
 
 
 class AgentConfig:
@@ -25,6 +26,8 @@ class AgentConfig:
     DEFAULT_ROUTER_MODE = "ml"  # ml | llm | hybrid
     DEFAULT_LLM_PROVIDER = "openai"
     DEFAULT_LLM_MODEL = "gpt-4o-mini"
+    DEFAULT_GEMINI_MODEL = "gemini-3.6-flash"
+    GEMINI_OPENAI_COMPAT_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
     DEFAULT_LLM_TIMEOUT = 60
     DEFAULT_DATASET_ENABLED = True
     DEFAULT_DATASET_BUCKET = "page-dataset"
@@ -94,6 +97,10 @@ class AgentConfig:
         self.llm_model: str = self.DEFAULT_LLM_MODEL
         self.llm_timeout: int = self.DEFAULT_LLM_TIMEOUT
         self.llm_api_key: str = ""  # può arrivare dall'env OPENAI_API_KEY/LLM_API_KEY
+        # Traccia quali voci [llm] sono state scritte esplicitamente nell'INI:
+        # i valori espliciti sono autoritativi in resolve_llm_settings().
+        self._ini_has_llm_base_url: bool = False
+        self._ini_has_llm_model: bool = False
 
         # Dataset (raccolta per futura CNN)
         self.dataset_enabled: bool = self.DEFAULT_DATASET_ENABLED
@@ -215,6 +222,8 @@ class AgentConfig:
             self.llm_provider = llm_section.get("provider", self.DEFAULT_LLM_PROVIDER)
             self.llm_base_url = llm_section.get("base_url", self.llm_base_url)
             self.llm_model = llm_section.get("model", self.DEFAULT_LLM_MODEL)
+            self._ini_has_llm_base_url = bool((llm_section.get("base_url") or "").strip())
+            self._ini_has_llm_model = bool((llm_section.get("model") or "").strip())
             try:
                 self.llm_timeout = int(llm_section.get("timeout", str(self.DEFAULT_LLM_TIMEOUT)))
             except ValueError:
@@ -271,6 +280,37 @@ class AgentConfig:
                 "secret_key",
                 self.DEFAULT_MINIO_SECRET_KEY,
             )
+
+    # ------------------------------------------------------------------ risoluzione LLM
+
+    def resolve_llm_settings(self) -> Tuple[str, str, str]:
+        """
+        Risolve (api_key, base_url, model) per il router LLM in base al provider.
+
+        I valori espliciti in config.ini sono autoritativi; i default per
+        provider si applicano solo alle voci assenti o vuote. Catena chiavi:
+        api_key INI se non vuota, poi env (gemini: GEMINI_API_KEY →
+        GOOGLE_API_KEY → LLM_API_KEY; openai: OPENAI_API_KEY → LLM_API_KEY).
+        """
+        provider = (self.llm_provider or "openai").lower()
+        if provider == "gemini":
+            api_key = (
+                self.llm_api_key
+                or os.getenv("GEMINI_API_KEY")
+                or os.getenv("GOOGLE_API_KEY")
+                or os.getenv("LLM_API_KEY", "")
+            )
+            base_url = self.llm_base_url if self._ini_has_llm_base_url else self.GEMINI_OPENAI_COMPAT_BASE_URL
+            model = self.llm_model if self._ini_has_llm_model else self.DEFAULT_GEMINI_MODEL
+        else:
+            api_key = (
+                self.llm_api_key
+                or os.getenv("OPENAI_API_KEY")
+                or os.getenv("LLM_API_KEY", "")
+            )
+            base_url = self.llm_base_url if self._ini_has_llm_base_url else "https://api.openai.com/v1"
+            model = self.llm_model if self._ini_has_llm_model else self.DEFAULT_LLM_MODEL
+        return api_key, base_url, model
 
     # ------------------------------------------------------------------ aggiornamento da UI
 

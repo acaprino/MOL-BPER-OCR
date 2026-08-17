@@ -51,7 +51,14 @@ def torch_cache_dir() -> Path:
 
 
 def bundled_defaults_dir() -> Path:
-    """Cartella dei file default inclusi nel bundle (via datas PyInstaller)."""
+    """Cartella dei file default (bundle: datas PyInstaller; sorgente: edge-agent/defaults)."""
     if is_frozen():
         return Path(getattr(sys, "_MEIPASS", app_dir())) / "defaults"
-    return app_dir()
+    return app_dir() / "defaults"
+
+
+def bundled_assets_dir() -> Path:
+    """Copia degli asset inclusa nel bundle, usata per il seed al primo avvio."""
+    if is_frozen():
+        return Path(getattr(sys, "_MEIPASS", app_dir())) / "assets"
+    return app_dir() / "assets"
