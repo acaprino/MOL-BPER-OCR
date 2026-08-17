@@ -93,12 +93,16 @@ BPERCaptureWorker (QThread)
 
 - **Detection hook:** `BPERCaptureWorker._upload_page()` detects `LocalExtractionClient` via
   `hasattr(api_client, "ingest_frame")` and calls it directly (synchronously, in the capture QThread).
-- **Page routing modes** (set in `edge-agent/config.ini` `router=`; the code default is `ml`,
-  `config.ini` currently ships `router=llm`):
+- **Page routing modes** (set in `edge-agent/config.ini` `router=`; both the code default and
+  the shipped `config.ini` are `ml`):
   - `ml` -- `MLPageRouter` wraps `BPERPagePrototypeClassifier` (DINOv2 ViT-S/14, 384-dim, prototype
     matching via cosine similarity). Degrades gracefully to disabled if torch is unavailable.
-  - `llm` -- `LLMPageRouter` uses OpenAI Vision (`gpt-4o-mini` per config.ini); reads page
-    definitions from `assets/templates/bper/prompts.json`.
+    First run downloads the DINOv2 weights (~84MB) via torch.hub (needs internet once).
+  - `llm` -- `LLMPageRouter` via the OpenAI client, provider-aware: `_resolve_llm_settings()`
+    in `bper_capture_worker.py` picks key/endpoint/model from `[llm] provider` (config.ini ships
+    `gemini` + `gemini-3.6-flash` through Google's OpenAI-compatible endpoint); reads page
+    definitions from `assets/templates/bper/prompts.json`. Router failures are logged in the
+    capture feed (deduped per distinct error).
   - `hybrid` -- tries LLM first, falls back to ML.
 
 ## Running the Project
@@ -151,10 +155,12 @@ All defaults verified against `extraction/config.py`.
 
 - **Never commit API keys.** An OpenAI key was once committed at `edge-agent/config.ini` `[llm]
   api_key`; on 2026-07-21 it was scrubbed from the entire git history (`git filter-repo`,
-  force-pushed) and the line now holds the placeholder `REDACTED_OPENAI_API_KEY`.
-- Router key precedence: `config.ini [llm] api_key` → `OPENAI_API_KEY` → `LLM_API_KEY`
-  (`bper_capture_worker.py:122`). The env fallback only triggers when the INI value is blank --
-  leave `api_key` empty in the INI to use env keys.
+  force-pushed). The line now ships blank; `AgentConfig` also treats any `REDACTED*` value as
+  empty (a leftover placeholder once shadowed the env keys and silently broke the LLM router).
+- Router key precedence (`_resolve_llm_settings()` in `bper_capture_worker.py`, provider-aware):
+  `config.ini [llm] api_key` first if non-blank; else for `gemini` `GEMINI_API_KEY` →
+  `GOOGLE_API_KEY` → `LLM_API_KEY`, for `openai` `OPENAI_API_KEY` → `LLM_API_KEY`.
+  Leave `api_key` empty in the INI to use env keys.
 - `AgentConfig.save()` re-persists `llm_api_key` back into `config.ini`
   (`edge-agent/config.py:326-332`; currently uncalled). Do not wire it up with a real key loaded.
 - Real keys belong in `.env` (gitignored; template in `.env.example`).
@@ -354,7 +360,7 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 |---|---|
 | `local_extraction_client.py` | `LocalExtractionClient(QObject)`: bridge to `ExtractionPipeline`; `start_job()`, `ingest_frame()`, `export_csv()`, `result_ready` signal |
 | `config.py` | `AgentConfig`: loads `config.ini` (FPS, router mode, preprocessing params, monitor index) |
-| `llm_router.py` | `LLMPageRouter` (OpenAI Vision), `MLPageRouter` (DINOv2 ViT-S/14), `PageRouter` base |
+| `llm_router.py` | `LLMPageRouter` (OpenAI client, provider-aware endpoint/key/model), `MLPageRouter` (DINOv2 ViT-S/14), `PageRouter` base |
 | `image_ops.py` | `preprocess_for_ocr()`, `to_png8()`, `to_webp_lossless()` -- capture preprocessing |
 | `page_classifier.py` | `BPERPagePrototypeClassifier` -- DINOv2 ViT-S/14 (384-dim) prototype matching |
 | `ui/main_window.py` | `MainWindow`: creates `LocalExtractionClient` and the Cattura / Risultati / Dati Estratti tabs (+ Debug LLM with `--debug`) |
