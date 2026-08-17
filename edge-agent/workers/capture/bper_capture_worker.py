@@ -22,6 +22,7 @@ except Exception:  # noqa: BLE001
 
 from .base_capture_worker import BaseCaptureWorker
 from image_ops import preprocess_for_ocr, to_png8, to_webp_lossless
+import app_paths
 
 # Nota: l'ordine delle pagine viene caricato dinamicamente dall'Excel
 # "Guida pagine ITA .xlsx" se presente; in fallback dall'ordine in prompts.json.
@@ -148,8 +149,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
         try:
             # Struttura attesa:
             #   <root_edge_agent>/assets/templates/bper/...
-            root = Path(__file__).resolve().parents[2]
-            templates_dir = root / "assets" / "templates" / "bper"
+            templates_dir = app_paths.templates_dir()
 
             mode = (self.config.router_mode or "ml").lower()
             if mode == "llm":
@@ -285,8 +285,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
     def _load_page_sequence(self) -> None:
         """Carica la sequenza pagine dall'Excel; fallback a prompts.json."""
         try:
-            root = Path(__file__).resolve().parents[2]
-            bper_dir = root / "assets" / "templates" / "bper"
+            bper_dir = app_paths.templates_dir()
             xlsx_path = bper_dir / "Guida pagine ITA .xlsx"
             pages: List[str] = []
             prompts_page_names: Set[str] = set()
