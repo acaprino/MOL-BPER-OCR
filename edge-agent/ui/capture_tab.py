@@ -30,9 +30,6 @@ from workers.capture import (
 
 from .overlay import CaptureBorderOverlay
 
-# Pagine catch-all da escludere dal combo "Acquisisci ora"
-_SKIP_PAGE_TYPES_UI: frozenset = frozenset({"Altro / Non riconosciuto"})
-
 
 class CaptureTab(QWidget):
     """
@@ -63,8 +60,17 @@ class CaptureTab(QWidget):
         self._overlay: Optional[CaptureBorderOverlay] = None
         self._debug_tab: Optional[QtWidgets.QWidget] = debug_tab
         self._n_results: int = 0
+        self._n_queued: int = 0
 
         self._init_ui()
+
+        # Connessioni uniche al client (vive quanto la finestra): i contatori
+        # filtrano per job_id, quindi nessun connect/disconnect per sessione.
+        try:
+            self.api_client.result_ready.connect(self._on_result_ready_count)
+            self.api_client.frame_queued.connect(self._on_frame_queued)
+        except Exception:
+            pass
 
     # ------------------------------------------------------------------ UI setup
 
@@ -153,18 +159,13 @@ class CaptureTab(QWidget):
     # ------------------------------------------------------------------ Helpers
 
     @staticmethod
-    def _load_bper_page_names() -> list:
-        """Legge i nomi delle pagine BPER direttamente da prompts.json."""
+    def _load_bper_page_names(router_mode: str) -> list:
+        """Nomi pagina acquisibili dal registro (per il combo 'Acquisisci ora')."""
         try:
-            import json
             import app_paths
-            prompts_path = app_paths.templates_dir() / "prompts.json"
-            spec = json.loads(prompts_path.read_text(encoding="utf-8"))
-            return [
-                p["name"]
-                for p in spec.get("pages", [])
-                if isinstance(p.get("name"), str) and p["name"] not in _SKIP_PAGE_TYPES_UI
-            ]
+            from page_registry import PageRegistry
+            registry = PageRegistry.load(app_paths.templates_dir() / "prompts.json")
+            return registry.names(router_mode)
         except Exception:
             return []
 
@@ -205,12 +206,8 @@ class CaptureTab(QWidget):
 
         self.job_id = job_id
         self._n_results = 0
-        self.job_label.setText("Sessione attiva  |  Acquisite: 0")
-        # Connetti result_ready per aggiornare il contatore
-        try:
-            self.api_client.result_ready.connect(self._on_result_ready_count)
-        except Exception:
-            pass
+        self._n_queued = 0
+        self._update_session_label()
 
         # Aggiorna la config dai controlli UI
         self.config.update_from_ui(
@@ -230,14 +227,8 @@ class CaptureTab(QWidget):
                 parent=self,
             )
             self._log("Avvio cattura in modalità BPER.")
-            # Popola combo pagine da prompts.json (source of truth),
-            # con fallback a page_sequence del worker se prompts.json non è leggibile
-            pages = self._load_bper_page_names()
-            if not pages:
-                pages = [
-                    p for p in list(getattr(worker, "page_sequence", []) or [])
-                    if p not in _SKIP_PAGE_TYPES_UI
-                ]
+            # Popola combo pagine dal registro (prompts.json, source of truth)
+            pages = self._load_bper_page_names(self.config.router_mode)
             self.force_page_combo.clear()
             for name in pages:
                 self.force_page_combo.addItem(name)
@@ -305,20 +296,18 @@ class CaptureTab(QWidget):
         try:
             self.worker.stop()
             if not self.worker.wait(5000):
-                # Worker bloccato in una chiamata lunga (es. estrazione VLM):
-                # senza terminate il processo sopravvive headless alla finestra.
-                self._log("[WARN] Worker ancora attivo dopo 5s: chiusura forzata.")
-                self.worker.terminate()
-                self.worker.wait(2000)
+                # Il loop di cattura non esegue più lavoro lungo: se accade,
+                # è un bug da indagare, non da mascherare con terminate().
+                self._log("[WARN] Worker di cattura ancora attivo dopo 5s.")
         except Exception as exc:  # noqa: BLE001
             self._log(f"[ERROR] Errore in stop_capture: {exc}")
         finally:
             self.worker = None
-            try:
-                self.api_client.result_ready.disconnect(self._on_result_ready_count)
-            except Exception:
-                pass
-            self._log("Cattura arrestata.")
+            in_flight = self._n_queued - self._n_results
+            if in_flight > 0:
+                self._log(f"Cattura arrestata. Estrazioni ancora in corso: {in_flight} (proseguono in background).")
+            else:
+                self._log("Cattura arrestata.")
             self.start_button.setEnabled(True)
             self.stop_button.setEnabled(False)
             self.force_page_combo.setEnabled(False)
@@ -379,10 +368,23 @@ class CaptureTab(QWidget):
                 f"Errore durante la scrittura del file:\n{e}",
             )
 
-    def _on_result_ready_count(self, job_id: str, _result: dict) -> None:
+    def _update_session_label(self) -> None:
+        self.job_label.setText(
+            f"Sessione attiva  |  Acquisite: {self._n_queued}  |  Estratte: {self._n_results}"
+        )
+
+    def _on_frame_queued(self, job_id: str, _page_type: str) -> None:
+        if job_id == self.job_id:
+            self._n_queued += 1
+            self._update_session_label()
+
+    def _on_result_ready_count(self, job_id: str, result: dict) -> None:
         if job_id == self.job_id:
             self._n_results += 1
-            self.job_label.setText(f"Sessione attiva  |  Acquisite: {self._n_results}")
+            self._update_session_label()
+            page = str(result.get("_page_type") or result.get("screen_id") or "?")
+            status = str(result.get("_status") or "OK")
+            self._log(f"✅ Estrazione completata: «{page}» (stato: {status})")
 
     # ------------------------------------------------------------------ API pubblica
 

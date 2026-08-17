@@ -98,4 +98,8 @@ class MainWindow(QtWidgets.QMainWindow):
                 self.capture_tab.stop_capture()
         except Exception:
             pass
+        try:
+            self.extraction_client.shutdown()
+        except Exception:
+            pass
         super().closeEvent(event)

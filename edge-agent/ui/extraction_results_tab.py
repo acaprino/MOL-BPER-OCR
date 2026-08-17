@@ -31,13 +31,14 @@ class ExtractionResultsTab(QWidget):
     """
 
     @staticmethod
-    def _friendly_name(page_key: str) -> str:
+    def _field_label(field_key: str) -> str:
+        """Chiave campo (snake_case) -> etichetta leggibile per la colonna 'Campo'."""
         import re as _re
-        s = page_key.strip()
+        s = field_key.strip()
         s = _re.sub(r'^[0-9][0-9A-Za-z\.]*[_\s]+', '', s)
         s = s.replace('_', ' ').replace('-', ' ')
         s = _re.sub(r'\s+', ' ', s).strip().title()
-        return s or page_key
+        return s or field_key
 
     @staticmethod
     def _status_icon(status: str) -> str:
@@ -160,8 +161,7 @@ class ExtractionResultsTab(QWidget):
         self._results = self._client.get_results(job_id)
         self.pages_tree.clear()
         for r in self._results:
-            page_type = str(r.get("_page_type") or r.get("screen_id") or "?")
-            friendly = self._friendly_name(page_type)
+            friendly = str(r.get("_page_type") or r.get("screen_id") or "?")
             fields = r.get("fields") or {}
             ndg = str((fields.get("ndg") or {}).get("value") or "")
             denom = str((fields.get("denominazione") or {}).get("value") or "")
@@ -190,7 +190,7 @@ class ExtractionResultsTab(QWidget):
             value = str(field_data.get("value") or "")
             conf = field_data.get("confidence")
             conf_str = f"{conf:.2f}" if isinstance(conf, (int, float)) else ""
-            label = self._friendly_name(key)
+            label = self._field_label(key)
             item = QTreeWidgetItem([label, value, conf_str])
             if not value:
                 from PyQt6.QtGui import QColor
@@ -202,7 +202,7 @@ class ExtractionResultsTab(QWidget):
         cost = meta.get("estimated_cost_usd", 0.0)
         tokens = meta.get("total_tokens", 0)
         latency = meta.get("latency_ms", 0)
-        page_type = self._friendly_name(str(result.get("_page_type") or ""))
+        page_type = str(result.get("_page_type") or "")
         status = result.get("_status", "")
         self.raw_text.setPlainText(
             f"Schermata: {page_type}  |  Stato: {status}\n"
