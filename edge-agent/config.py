@@ -221,6 +221,10 @@ class AgentConfig:
                 self.llm_timeout = self.DEFAULT_LLM_TIMEOUT
             # Rimuovi spazi accidentali attorno alla chiave
             self.llm_api_key = (llm_section.get("api_key", "") or "").strip()
+            # I placeholder di bonifica (es. REDACTED_OPENAI_API_KEY) non sono chiavi:
+            # trattali come vuoto così scatta il fallback su OPENAI_API_KEY/LLM_API_KEY.
+            if self.llm_api_key.upper().startswith("REDACTED"):
+                self.llm_api_key = ""
 
         # --- Sezione [dataset] ---
         dataset_section = parser["dataset"] if "dataset" in parser else {}
