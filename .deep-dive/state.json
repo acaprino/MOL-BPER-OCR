@@ -1,0 +1,17 @@
+{
+  "target": "extraction/",
+  "status": "in_progress",
+  "flags": {
+    "critical": false,
+    "comments": false,
+    "docs_only": false,
+    "phase": null,
+    "depth": "lite"
+  },
+  "current_phase": 5,
+  "status_note": "lite run for team-review pipeline; phases 1,2,5 complete; 07-final-report skipped (pipeline consumes phase files directly)",
+  "completed_phases": [1, 2, 5],
+  "files_created": ["state.json", "01-structure.md", "02-interfaces.md", "05-risks.md"],
+  "started_at": "2026-07-21T10:22:46Z",
+  "invoked_by": "agent-teams:team-review"
+}
