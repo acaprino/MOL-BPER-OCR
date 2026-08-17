@@ -177,8 +177,8 @@ All defaults verified against `extraction/config.py`.
 ## Testing & Validation
 
 A pytest suite lives in `tests/` (`python -m pytest tests`) covering the page registry, the capture
-stability tracker, the daemon thread pool and the prompt catalog; the extraction pipeline itself is
-still untested. Dev dependencies for the suite install via `pip install -r requirements-dev.txt`. To
+stability tracker, the daemon thread pool, the async local-extraction client and the prompt catalog;
+the extraction pipeline itself is still untested. Dev dependencies for the suite install via `pip install -r requirements-dev.txt`. To
 verify changes manually:
 
 1. **Run extraction:** `python main.py` -- should complete without errors (needs `LLM_API_KEY`

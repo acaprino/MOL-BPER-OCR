@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import time
 import uuid
-from typing import Optional, Set, Tuple, List, Dict, Any
+from typing import Optional, Set, Tuple, List, Any
 
 import imagehash
 from PIL import Image
@@ -273,7 +273,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 hint = f" → apri nel sistema BPER: «{nxt}»" if nxt else ""
                 self.tick.emit(f"ℹ️ «{page.name}» già acquisita{hint}")
                 self._last_already_captured = page.name
-            self._tracker.reset()
+            self._tracker.observe(None, time.time())
             return
 
         prev_candidate = self._tracker.candidate

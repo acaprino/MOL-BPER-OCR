@@ -30,6 +30,8 @@ class BaseCaptureWorker(QtCore.QThread):
         self.job_id_getter = job_id_getter
 
         self._running = False
+        # Latch: uno stop() arrivato durante l'init lunga del subclass non va perso
+        self._stop_requested: bool = False
         self._capture_fps = config.fps or 1
 
     # =====================================================================
@@ -42,7 +44,7 @@ class BaseCaptureWorker(QtCore.QThread):
 
         Chiama _capture_once() n volte al secondo (fps configurato).
         """
-        self._running = True
+        self._running = not self._stop_requested
         delay = 1.0 / float(self._capture_fps)
 
         self.tick.emit(f"[Worker] Avviato (FPS={self._capture_fps})")
@@ -70,6 +72,7 @@ class BaseCaptureWorker(QtCore.QThread):
 
     def stop(self):
         self._running = False
+        self._stop_requested = True
 
     # =====================================================================
     # Metodi da implementare nei worker specifici

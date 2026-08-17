@@ -43,7 +43,8 @@ class LocalExtractionClient(QtCore.QObject):
 
     Uses ExtractionPipeline to process each captured frame locally,
     stores results in memory, and emits result_ready when done.
-    Compatible surface: start_job(), ingest_frame(), requeue_job(), export_csv().
+    Compatible surface: start_job(), ingest_frame(), requeue_job(), export_csv(),
+    frame_queued (signal), shutdown(), pending_extractions().
     """
 
     result_ready = QtCore.pyqtSignal(str, dict)   # (job_id, result)
