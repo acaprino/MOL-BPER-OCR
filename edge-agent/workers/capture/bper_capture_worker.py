@@ -2,12 +2,9 @@
 
 from __future__ import annotations
 
-import io
 import json
-import re
 import time
 import uuid
-from pathlib import Path
 from typing import Optional, Set, Tuple, List, Dict, Any
 
 import imagehash
@@ -21,16 +18,10 @@ except Exception:  # noqa: BLE001
     BPERPagePrototypeClassifier = None  # type: ignore
 
 from .base_capture_worker import BaseCaptureWorker
-from image_ops import preprocess_for_ocr, to_png8, to_webp_lossless
+from image_ops import preprocess_for_ocr
 import app_paths
-
-# Nota: l'ordine delle pagine viene caricato dinamicamente dall'Excel
-# "Guida pagine ITA .xlsx" se presente; in fallback dall'ordine in prompts.json.
-# Manteniamo una costante di riserva vuota.
-PAGE_ORDER_FALLBACK: Dict[str, int] = {}
-
-# Pagine catch-all che il router può restituire ma che non devono essere acquisite
-_SKIP_PAGE_TYPES: frozenset = frozenset({"Altro / Non riconosciuto"})
+from page_registry import PageDef, PageRegistry
+from stability import StabilityTracker
 
 
 class BPERCaptureWorker(BaseCaptureWorker):
@@ -41,13 +32,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
         - cattura screenshot full-screen
         - dedup frame via pHash
         - riconoscimento pagina con BPERPagePrototypeClassifier (MobileNetV3 + prototipi)
-        - logica di stabilità temporale
+        - logica di stabilità (conteggio + permanenza, tollera 1 frame anomalo)
         - upload screenshot solo quando la pagina è stabile
-        - stop automatico quando tutte le pagine previste sono acquisite
     """
-
-    # secondi di stabilità richiesti perché una pagina sia considerata “ferma”
-    STABILITY_SECONDS = 2.0
 
     # soglia di “uguale” per dedup frame (distanza Hamming su pHash)
     DEDUP_HASH_THRESHOLD = 3
@@ -65,25 +52,15 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Stato dedup
         self._last_frame_hash: Optional[imagehash.ImageHash] = None
 
-        # Stato di stabilità
-        self._candidate_page_type: Optional[str] = None
-        self._candidate_since: Optional[float] = None
-        self._stability_log_sent: bool = False
+        # Stabilità pagina (macchina a stati pura, vedi stability.py)
+        self._tracker = StabilityTracker()
 
-        # Pagine già acquisite in questo job
+        # Pagine già acquisite in questo job (nomi canonici dal registro)
         self.captured_page_types: Set[str] = set()
 
-        # Sequenza attesa e mapping ordine pagina→indice
-        self.page_sequence: List[str] = []
-        self.page_order: Dict[str, int] = {}
-        # Cache chiavi disponibili negli asset (basenames dei file .png/.jpg)
-        self._available_page_keys: Set[str] = set()
-        # Unione di chiavi valide (asset + nomi pagina in prompts.json)
-        self._valid_page_keys: Set[str] = set()
-        # Per evitare log ripetuti su riferimenti non risolvibili
-        self._skipped_unknown_pages: Set[str] = set()
-        # Nomi pagina definiti in prompts.json (per normalizzazione)
-        self._prompts_page_names: Set[str] = set()
+        # Registro pagine: caricato in run() nel thread worker
+        self.registry: PageRegistry = PageRegistry.empty()
+        self._acquirable_names: List[str] = []
 
         # Routing (ML o LLM): l'inizializzazione vera avviene in run(), nel
         # thread worker — il caricamento DINOv2 non deve congelare la UI.
@@ -101,8 +78,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # mss context singleton (creato una volta nel QThread, non in __init__)
         self._mss_ctx: Optional[Any] = None
 
-        # Traccia l'ultima guidance "apri pagina X" emessa per non spammare
+        # Anti-spam log: ultima guida emessa e ultima pagina "già acquisita"
         self._last_guidance_page: Optional[str] = None
+        self._last_already_captured: Optional[str] = None
 
         # Ultimo errore router già loggato (per non ripeterlo a ogni frame)
         self._last_router_error: Optional[str] = None
@@ -203,11 +181,11 @@ class BPERCaptureWorker(BaseCaptureWorker):
     # ------------------------------------------------------------------ lifecycle
 
     def run(self) -> None:
-        """Inizializza router e sequenza pagine nel thread worker, poi entra nel loop."""
+        """Inizializza router e registro pagine nel thread worker, poi entra nel loop."""
         if not self._router_ready:
             self.tick.emit("[Worker] Inizializzazione riconoscimento in corso...")
             self._init_router()
-            self._load_page_sequence()
+            self._load_registry()
             self._router_ready = True
         super().run()
 
@@ -221,233 +199,38 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 pass
             self._mss_ctx = None
 
-    # ------------------------------------------------------------------ helpers UI
-    @staticmethod
-    def _friendly_name(page_key: str) -> str:
-        """Converte una chiave tecnica di pagina in un nome leggibile per l'operatore.
-        Es. '09.7_scheda_privati_base' → 'Scheda Privati Base'
-        """
-        import re as _re
-        s = page_key.strip()
-        # Rimuovi prefisso numerico tipo "09.7_" o "09.7 "
-        s = _re.sub(r'^[0-9][0-9A-Za-z\.]*[_\s]+', '', s)
-        # Sostituisci separatori con spazio
-        s = s.replace('_', ' ').replace('-', ' ')
-        # Riduci spazi multipli e title-case
-        s = _re.sub(r'\s+', ' ', s).strip().title()
-        return s or page_key
+    # ------------------------------------------------------------------ page registry
 
-    def _next_pending_page(self) -> Optional[str]:
-        """Ritorna il nome friendly della prossima pagina non ancora acquisita."""
-        for name in self.page_sequence:
-            if name not in self.captured_page_types:
-                return self._friendly_name(name)
-        # Se page_sequence è vuota, usa valid_page_keys meno captured
-        remaining = self._valid_page_keys - self.captured_page_types
-        if remaining:
-            return self._friendly_name(next(iter(sorted(remaining))))
-        return None
-
-    # ------------------------------------------------------------------ page sequence
-    def _load_page_sequence(self) -> None:
-        """Carica la sequenza pagine dall'Excel; fallback a prompts.json."""
+    def _load_registry(self) -> None:
+        """Carica il registro pagine da prompts.json e annuncia la sequenza."""
         try:
-            bper_dir = app_paths.templates_dir()
-            xlsx_path = bper_dir / "Guida pagine ITA .xlsx"
-            pages: List[str] = []
-            prompts_page_names: Set[str] = set()
-
-            # Prepara l'elenco delle chiavi disponibili dagli asset (basenames senza estensione)
-            try:
-                avail = set()
-                for p in bper_dir.iterdir():
-                    if p.is_file() and p.suffix.lower() in {".png", ".jpg", ".jpeg"}:
-                        avail.add(p.stem.strip())
-                self._available_page_keys = avail
-            except Exception:
-                self._available_page_keys = set()
-            # 1) Excel
-            if xlsx_path.exists():
-                try:
-                    from openpyxl import load_workbook  # type: ignore
-                    wb = load_workbook(filename=str(xlsx_path), read_only=True)
-                    ws = wb.active
-                    # raccogli dalla prima colonna non vuota saltando la riga header
-                    first_row = True
-                    for row in ws.iter_rows(min_row=1, values_only=True):
-                        if not row:
-                            continue
-                        name = (row[0] or "").strip() if isinstance(row[0], str) else row[0]
-                        if first_row:
-                            # salta header comune (es. "pagina"/"name")
-                            first_row = False
-                            # se sembra già una key valida conosciuta, non saltare
-                            if name and isinstance(name, str) and name.isidentifier():
-                                pages.append(name)
-                            continue
-                        if isinstance(name, str) and name:
-                            pages.append(name)
-                    wb.close()
-                except Exception as exc:
-                    self.on_error(exc)
-            # 2) prompts.json (sempre letto per definire l'insieme di nomi validi)
-            try:
-                spec = json.loads((bper_dir / "prompts.json").read_text(encoding="utf-8"))
-                for p in spec.get("pages", []):
-                    name = p.get("name")
-                    if isinstance(name, str) and name:
-                        prompts_page_names.add(name.strip())
-
-                # Se l'Excel non fornisce pagine, usa i nomi dal prompts come fallback
-                if not pages:
-                    pages = list(prompts_page_names)
-            except Exception:
-                pass
-
-            # Memorizza in attributo per normalizzazione successiva
-            self._prompts_page_names = set(prompts_page_names)
-
-            # Limita la sequenza alle sole pagine presenti nel CSV fornito
-            # Attivazione se:
-            #  - config.required_pages_only = true
-            #  - OPPURE è specificato un percorso CSV esistente
-            #  - OPPURE esiste un file Nomenclatura.csv nella cartella bper
-            csv_path_value = (getattr(self.config, "required_pages_csv", "") or "").strip()
-            use_csv = False
-            csv_path = None
-            if csv_path_value:
-                csv_path = Path(csv_path_value)
-                if not csv_path.is_absolute():
-                    candidate = bper_dir / csv_path
-                    if candidate.exists():
-                        csv_path = candidate
-                use_csv = csv_path.exists()
-            else:
-                # Fallback: cerca Nomenclatura.csv nella cartella bper
-                default_csv = bper_dir / "Nomenclatura.csv"
-                if default_csv.exists():
-                    csv_path = default_csv
-                    use_csv = True
-            if getattr(self.config, "required_pages_only", False) or use_csv:
-                if csv_path and csv_path.exists():
-                    try:
-                        import csv
-                        req_pages: List[str] = []
-                        with csv_path.open("r", encoding="utf-8") as f:
-                            reader = csv.DictReader(f)
-                            # supporto anche a CSV senza header: fallback a prima colonna
-                            if not reader.fieldnames:
-                                # leggi grezzo
-                                f.seek(0)
-                                for line in f:
-                                    part = (line.split(",", 1)[0] or "").strip()
-                                    if part and part.lower() != "schermata":
-                                        req_pages.append(part)
-                            else:
-                                # tollera varianti del nome colonna (case/whitespace)
-                                field_schermata = None
-                                for fn in reader.fieldnames:
-                                    if fn.strip().lower() == "schermata":
-                                        field_schermata = fn
-                                        break
-                                for row in reader:
-                                    name = (row.get(field_schermata) or "").strip() if field_schermata else ""
-                                    if name and name.lower() != "schermata":
-                                        req_pages.append(name)
-                        if req_pages:
-                            pages = req_pages
-                            self.tick.emit(f"[BPER] Sequenza limitata alle pagine richieste da CSV ({len(req_pages)} voci).")
-                        else:
-                            self.tick.emit("[BPER] CSV pagine richieste vuoto: nessuna voce caricata, uso sequenza standard.")
-                    except Exception as exc:
-                        self.on_error(exc)
-
-            # Costruisci insieme chiavi valide: asset OR nomi da prompts.json
-            self._valid_page_keys = set(self._available_page_keys) | set(prompts_page_names)
-
-            self.page_sequence = pages
-            self.page_order = {name: i + 1 for i, name in enumerate(self.page_sequence)}
-
-            if self._valid_page_keys:
-                total = len(self._valid_page_keys)
-                self.tick.emit(f"─── Schermate da acquisire: {total} ───")
-                for i, name in enumerate(sorted(self._valid_page_keys), 1):
-                    self.tick.emit(f"  {i:2}. {self._friendly_name(name)}")
-                self.tick.emit("──────────────────────────────────────")
-                first = self._next_pending_page()
-                if first:
-                    self.tick.emit(f"→ Prima schermata da aprire nel sistema BPER: «{first}»")
-            else:
-                self.tick.emit("[BPER] Attenzione: nessuna pagina rilevata negli asset; funzionamento libero.")
+            self.registry = PageRegistry.load(app_paths.templates_dir() / "prompts.json")
         except Exception as exc:  # noqa: BLE001
             self.on_error(exc)
-            self.page_sequence = []
-            self.page_order = dict(PAGE_ORDER_FALLBACK)
+            self.registry = PageRegistry.empty()
+            self.tick.emit("[BPER] prompts.json non valido: acquisizione libera senza sequenza.")
 
-    def _normalize_page_label(self, label: str) -> str:
-        """
-        Normalizza un'etichetta proveniente dall'Excel verso una chiave coerente con:
-        - i basenames dei file in assets/templates/bper (preferito)
-        - altrimenti la stringa pulita originale
+        mode = (self.config.router_mode or "ml").lower()
+        pages = self.registry.acquirable(mode)
+        self._acquirable_names = [p.name for p in pages]
 
-        Regole:
-        - strip
-        - normalizza spazi multipli a singolo spazio
-        - confronta case-insensitive con le chiavi disponibili
-        - se non trovato, prova best-match via difflib
-        - se esiste un prefisso numerico (es. "09.7_" o "09.7 "), usalo per matchare tra disponibili
-        """
-        try:
-            import difflib
+        if pages:
+            self.tick.emit(f"─── Schermate da acquisire: {len(pages)} ───")
+            for i, page in enumerate(pages, 1):
+                self.tick.emit(f"  {i:2}. {page.name}")
+            self.tick.emit("──────────────────────────────────────")
+            first = self._next_pending_page()
+            if first:
+                self.tick.emit(f"→ Prima schermata da aprire nel sistema BPER: «{first}»")
+        else:
+            self.tick.emit("[BPER] Attenzione: nessuna pagina definita; funzionamento libero.")
 
-            s = re.sub(r"\s+", " ", label).strip()
-            if not s:
-                return s
-
-            # Prepara insiemi di ricerca
-            avail = set(self._available_page_keys)
-            prompt_names = set(getattr(self, "_prompts_page_names", set()))
-            union_names = avail | prompt_names
-
-            # 1) match esatto sugli asset o sui nomi da prompts
-            if s in union_names:
-                return s
-
-            # 2) match case-insensitive
-            low_map = {k.lower(): k for k in union_names}
-            if s.lower() in low_map:
-                mapped = low_map[s.lower()]
-                if mapped != s:
-                    self.tick.emit(f"[BPER] Mappo Excel→asset: '{s}' → '{mapped}' (case-insensitive)")
-                return mapped
-
-            # 3) se c'è un prefisso numerico tipo 09.7_PEF... prova per prefisso
-            m = re.match(r"^([0-9][0-9A-Za-z\.]*)", s)
-            if m:
-                pref = m.group(1)
-                # normalizza separatori comuni
-                candidates = [k for k in union_names if k.startswith(pref)]
-                if candidates:
-                    # scegli la più simile globalmente
-                    best = difflib.get_close_matches(s, candidates, n=1, cutoff=0.0)
-                    mapped = best[0] if best else candidates[0]
-                    if mapped != s:
-                        self.tick.emit(f"[BPER] Mappo Excel→asset per prefisso: '{s}' → '{mapped}'")
-                    return mapped
-
-            # 4) best-effort globale tra tutti gli asset
-            if union_names:
-                best = difflib.get_close_matches(s, list(union_names), n=1, cutoff=0.6)
-                if best:
-                    mapped = best[0]
-                    if mapped != s:
-                        self.tick.emit(f"[BPER] Mappo Excel→asset (similarità): '{s}' → '{mapped}'")
-                    return mapped
-
-            # 5) nessun mapping: ritorna la stringa pulita
-            return s
-        except Exception:
-            return label
+    def _next_pending_page(self) -> Optional[str]:
+        """Nome canonico della prossima pagina non ancora acquisita."""
+        for name in self._acquirable_names:
+            if name not in self.captured_page_types:
+                return name
+        return None
 
     # ------------------------------------------------------------------ core loop
 
@@ -457,93 +240,71 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
             - legge job_id
             - cattura screenshot
-            - dedup via pHash
-            - riconosce pagina con ML
-            - applica logica di stabilità
-            - eventuale upload screenshot
+            - dedup via pHash (con throttling del routing sui duplicati)
+            - riconosce pagina via router e la risolve nel registro
+            - applica la macchina a stati di stabilità
+            - accoda il frame stabile per l'estrazione in background
         """
         job_id = self.job_id_getter()
         if not job_id:
-            # Nessun job attivo: non fa nulla
             return
 
-        # Cattura frame raw: il preprocess (costoso) avviene solo se il frame
-        # supera dedup e throttling, non su ogni grab.
         raw = self._grab_raw()
         if raw is None:
             return
 
-        # Dedup basato su pHash con throttling: se frame duplicato, prova il routing
-        # solo a intervalli regolari per evitare che un primo fallimento blocchi tutto.
         is_dup = self._is_duplicate_frame(raw)
         if is_dup:
             now_ts = time.time()
             min_interval = float(getattr(self.config, "route_retry_seconds", 1.0) or 1.0)
             if self._last_route_attempt_ts is not None and (now_ts - self._last_route_attempt_ts) < min_interval:
-                # Salta questo ciclo ma non bloccare per sempre: verrà ritentato dopo min_interval
-                # (utile quando l'LLM non riconosce al primo colpo una schermata statica)
                 return
 
-        # Riconoscimento pagina tramite router (LLM/ML)
         self._last_route_attempt_ts = time.time()
         img = self._preprocess(raw)
-        page_type, score, fields = self._detect_page(img)
+        label, score, fields = self._detect_page(img)
+        page = self.registry.resolve(label)
 
-        if page_type is None or page_type in _SKIP_PAGE_TYPES:
-            # Nessuna pagina riconosciuta (o pagina catch-all) -> reset stabilità
-            self._reset_stability()
+        # Pagina già acquisita: non riacquisire (con l'estrazione asincrona una
+        # ri-acquisizione costerebbe una seconda estrazione completa).
+        if page is not None and page.name in self.captured_page_types:
+            if self._last_already_captured != page.name:
+                nxt = self._next_pending_page()
+                hint = f" → apri nel sistema BPER: «{nxt}»" if nxt else ""
+                self.tick.emit(f"ℹ️ «{page.name}» già acquisita{hint}")
+                self._last_already_captured = page.name
+            self._tracker.reset()
             return
 
-        # Gestione stabilità temporale
-        now = time.time()
-        if self._candidate_page_type != page_type:
-            # Nuovo candidato
-            self._candidate_page_type = page_type
-            self._candidate_since = now
-            self._stability_log_sent = False
-            # Log discreto
-            # self.tick.emit(f"[BPER-ML] rilevato: {page_type} (score={score:.3f})")
+        prev_candidate = self._tracker.candidate
+        ready = self._tracker.observe(page.name if page else None, time.time())
+
+        if page is not None and self._tracker.candidate == page.name and prev_candidate != page.name:
+            self.tick.emit(
+                f"⏳ Rilevata «{page.name}» — mantieni aperta la schermata "
+                f"({self._tracker.config.min_seconds:.0f}s richiesti per la stabilità)"
+            )
+
+        if ready is None or page is None:
             return
 
-        # Candidato invariato: verifichiamo da quanto tempo
-        if self._candidate_since is None:
-            self._candidate_since = now
-            return
-
-        elapsed = now - self._candidate_since
-        if elapsed < self.STABILITY_SECONDS:
-            if not self._stability_log_sent:
-                friendly = self._friendly_name(page_type)
-                self.tick.emit(
-                    f"⏳ Rilevata «{friendly}» — mantieni aperta la schermata "
-                    f"({self.STABILITY_SECONDS:.0f}s richiesti per la stabilità)"
-                )
-                self._stability_log_sent = True
-            return
-
-        # Scatto & upload
-        friendly = self._friendly_name(page_type)
         n_captured = len(self.captured_page_types) + 1
-        n_total = len(self._valid_page_keys) or "?"
-        self._upload_page(job_id, img, page_type, score, fields)
-        try:
-            self._maybe_upload_dataset(job_id, img, page_type, score, fields)
-        except Exception as exc:  # noqa: BLE001
-            self.on_error(exc)
-        self.captured_page_types.add(page_type)
-        self._reset_stability()
+        n_total: Any = len(self._acquirable_names) or "?"
+        self._upload_page(job_id, img, page, score, fields)
+        self.captured_page_types.add(page.name)
+        self._tracker.reset()
+        self._last_already_captured = None
 
-        # Calcola prossima pagina pendente
         next_page = self._next_pending_page()
         if next_page:
             self.tick.emit(
-                f"✅ «{friendly}» acquisita [{n_captured}/{n_total}] "
+                f"✅ «{page.name}» acquisita [{n_captured}/{n_total}] "
                 f"→ apri nel sistema BPER: «{next_page}»"
             )
             self._last_guidance_page = next_page
         else:
             self.tick.emit(
-                f"✅ «{friendly}» acquisita [{n_captured}/{n_total}] — tutte le schermate completate!"
+                f"✅ «{page.name}» acquisita [{n_captured}/{n_total}] — tutte le schermate completate!"
             )
 
     # ------------------------------------------------------------------ screenshot & dedup
@@ -652,8 +413,10 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 pass
 
             if res.page_type:
+                resolved = self.registry.resolve(res.page_type)
+                shown = resolved.name if resolved else res.page_type
                 self.tick.emit(
-                    f"[Router] Riconosciuta: «{self._friendly_name(res.page_type)}» (score={res.confidence:.3f})"
+                    f"[Router] Riconosciuta: «{shown}» (score={res.confidence:.3f})"
                 )
                 return res.page_type, float(res.confidence), dict(res.fields or {})
             else:
@@ -681,71 +444,63 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 if self.classifier is not None and isinstance(self.router, LLMPageRouter):
                     label, score = self.classifier.classify(img)
                     if label is not None:
-                        self.tick.emit(f"[ML] Riconosciuta via fallback: «{self._friendly_name(label)}» (score={score:.3f})")
+                        resolved = self.registry.resolve(label)
+                        shown = resolved.name if resolved else label
+                        self.tick.emit(f"[ML] Riconosciuta via fallback: «{shown}» (score={score:.3f})")
                         return label, float(score or 0.0), {}
                 return None, 0.0, {}
 
         # Fallback: solo ML classifier
         label, score = self.classifier.classify(img) if self.classifier else (None, 0.0)
         if label is not None:
-            self.tick.emit(f"[ML] Riconosciuta: «{self._friendly_name(label)}» (score={score:.3f})")
+            resolved = self.registry.resolve(label)
+            shown = resolved.name if resolved else label
+            self.tick.emit(f"[ML] Riconosciuta: «{shown}» (score={score:.3f})")
         return label, float(score or 0.0), {}
 
     # ------------------------------------------------------------------ upload
 
-    def _upload_page(self, job_id: str, img: Image.Image, page_type: str, confidence: float = 0.0,
-                     fields: Optional[dict] = None) -> None:
-        """
-        Esegue l'upload dello screenshot per una pagina riconosciuta.
-        """
-        page_index = self.page_order.get(page_type, 0)
-
-        if page_index > 0:
-            filename = f"{page_index:02d}-{page_type}.png"
+    def _upload_page(
+        self,
+        job_id: str,
+        img: Image.Image,
+        page: PageDef,
+        confidence: float = 0.0,
+        fields: Optional[dict] = None,
+    ) -> None:
+        """Accoda lo screenshot di una pagina riconosciuta per l'estrazione."""
+        if page.order > 0:
+            filename = f"{page.order:02d}-{page.slug}.png"
         else:
-            # Per pagine extra o non ordinate
-            filename = f"{page_type}-{uuid.uuid4().hex}.png"
+            filename = f"{page.slug}-{uuid.uuid4().hex}.png"
 
-        # Se abbiamo un api_client locale (lite), usiamolo direttamente
         if self.api_client and hasattr(self.api_client, "ingest_frame"):
             try:
-                # Passiamo l'immagine PIL direttamente (LocalExtractionClient ora la accetta)
                 self.api_client.ingest_frame(
                     job_id=job_id,
                     img=img,
-                    page_no=page_index,
-                    page_type=page_type,
+                    page_no=page.order,
+                    page_type=page.name,
                     confidence=confidence,
-                    fields_json=json.dumps(fields or {})
+                    fields_json=json.dumps(fields or {}),
                 )
-                self.tick.emit(f"✅ Elaborazione locale completata: {filename}")
+                self.tick.emit(f"📤 In coda per estrazione: {filename}")
                 return
-            except Exception as exc:
+            except Exception as exc:  # noqa: BLE001
                 self.on_error(exc)
                 return
 
-        # Rimossa logica di upload remoto (SaaS/Sauron) per consolidamento locale.
         self.tick.emit(f"[ERRORE] Client locale non configurato correttamente per {filename}")
-
-    def _maybe_upload_dataset(self, job_id: str, img: Image.Image, page_type: str, score: float, fields: dict) -> None:
-        """Logica di salvataggio dataset (disabilitata per consolidamento locale)."""
-        return
-
-    # ------------------------------------------------------------------ helpers stabilità
-
-    def _reset_stability(self) -> None:
-        self._candidate_page_type = None
-        self._candidate_since = None
-        self._stability_log_sent = False
 
     # ------------------------------------------------------------------ forza scatto manuale
     @QtCore.pyqtSlot(str)
     def force_capture(self, page_name: str) -> None:
         """
-        Forza lo scatto e l'upload dell'immagine corrente come se fosse la pagina indicata.
+        Forza lo scatto e l'accodamento dell'immagine corrente come pagina indicata.
 
-        Usa la normalizzazione per mappare il nome passato a una chiave valida.
-        Non richiede stabilità né match del router. Aggiunge la pagina a `captured_page_types`.
+        Il nome arriva dal combo della UI (nomi canonici del registro); accetta
+        anche uno stem template ("screen 5"). Non richiede stabilità né match
+        del router. Aggiunge la pagina a `captured_page_types`.
         """
         try:
             if not self._router_ready:
@@ -757,29 +512,20 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 self.tick.emit("[BPER] Forza scatto: nessun job attivo.")
                 return
 
+            page = self.registry.resolve(page_name)
+            if page is None:
+                self.tick.emit(f"[BPER] Forza scatto: pagina sconosciuta: '{page_name}'.")
+                return
+
             img = self._capture_screenshot()
             if img is None:
                 self.tick.emit("[BPER] Forza scatto: nessuno screenshot disponibile.")
                 return
 
-            key = self._normalize_page_label(page_name or "").strip()
-            if not key:
-                self.tick.emit(f"[BPER] Forza scatto: nome pagina vuoto/non valido ('{page_name}').")
-                return
-
-            # Verifica che la pagina sia tra quelle riconosciute (asset/prompts)
-            if self._valid_page_keys and key not in self._valid_page_keys:
-                self.tick.emit(f"[BPER] Forza scatto: pagina non presente negli asset/prompts: '{key}'.")
-                return
-
-            # Esegue upload con conf=0 e senza fields
-            self._upload_page(job_id, img, key, 0.0, {})
-            try:
-                self._maybe_upload_dataset(job_id, img, key, 0.0, {})
-            except Exception as exc:  # noqa: BLE001
-                self.on_error(exc)
-            self.captured_page_types.add(key)
-            self._reset_stability()
-            self.tick.emit(f"[BPER] Forza scatto completato per '{key}'.")
+            self._upload_page(job_id, img, page, 0.0, {})
+            self.captured_page_types.add(page.name)
+            self._tracker.reset()
+            self._last_already_captured = None
+            self.tick.emit(f"[BPER] Forza scatto completato per «{page.name}».")
         except Exception as exc:  # noqa: BLE001
             self.on_error(exc)
