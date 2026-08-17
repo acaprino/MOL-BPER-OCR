@@ -18,7 +18,7 @@ You hand the engine an image and get back one record holding every field it coul
 
 The two entry methods differ by design: `extract_from_screen(path)` (CLI, Tkinter GUI) normalizes the image first; `extract_from_image(img, screen_id)` (edge-agent) skips `normalize_image()` because the frame was already preprocessed upstream.
 
-Prompts live in **`extraction/prompts.py`** (`PROMPT`, `ANCHOR_PROMPT`, `FIELD_RETRY_PROMPTS`) and are written in Italian on purpose: the screens, labels, and banking terms are Italian, and the field keys (`professione_principale`, `filiale_relazione`, …) are load-bearing domain vocabulary that must not be translated.
+Prompts live in **`prompts/*.json`** (one file per prompt) and are loaded once at startup by `prompt_store.py`, which sits at the repo root, outside `extraction/`, so reading a prompt does not pull in LangChain; `extraction/prompts.py` only exposes the historical constants (`PROMPT`, `ANCHOR_PROMPT`, `FIELD_RETRY_PROMPTS`) read from the catalog. They are written in Italian on purpose: the screens, labels, and banking terms are Italian, and the field keys (`professione_principale`, `filiale_relazione`, …) are load-bearing domain vocabulary that must not be translated.
 
 ### Provider-agnostic LLM backend
 

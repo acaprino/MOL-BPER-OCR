@@ -123,7 +123,7 @@ Ordered by learning value: from the data contract outward to orchestration and U
 | To do this… | Look here |
 |---|---|
 | Add or rename an extracted field | `extraction/fields.py` (`FIELD_KEYS`, `CSV_TO_SCHEMA`), then `extraction/field_definitions.py` (`CANONICAL_FIELD_DEFINITIONS`, `FIELD_LABEL_ALIASES`) and `extraction/config.py` (`AREA_TO_FIELDS`) |
-| Change what the VLM is asked to extract | `extraction/prompts.py` (`PROMPT`, `ANCHOR_PROMPT`, `FIELD_RETRY_PROMPTS`) - Italian by design |
+| Change what the VLM is asked to extract | `prompts/*.json` (`extraction_main`, `extraction_anchor`, `extraction_retry_*`) - Italian by design, loaded by `prompt_store.py`; adding a `{placeholder}` means updating `CATALOG` too |
 | Adjust crop regions | `extraction/config.py` (`CONTENT_CROP`, `HEADER_IN_CONTENT`, `RETRY_AREAS`) |
 | Add a model or fix pricing | `extraction/config.py` (`PROVIDER_MODELS`, `PRICING_PER_1M`) |
 | Change provider/key selection | `extraction/llm_factory.py` (`create_chat_model()`) - the single LLM factory |
@@ -177,7 +177,7 @@ In the *Cattura* tab, choose BPER mode and press *Avvia*. Each frame is preproce
 2. Map the ground-truth CSV label in `CSV_TO_SCHEMA` (`extraction/fields.py`).
 3. Add `display_name` + `page_key` in `CANONICAL_FIELD_DEFINITIONS` and the alias in `FIELD_LABEL_ALIASES` (`extraction/field_definitions.py`) so canonical export and the UI page grouping pick it up.
 4. Assign it to a retry area in `AREA_TO_FIELDS` (`extraction/config.py:69-82`) if it should be re-attempted when null/low-confidence.
-5. Describe it in the Italian prompt (`extraction/prompts.py`) so the model knows to look for it.
+5. Describe it in the Italian prompt (`prompts/extraction_main.json`) so the model knows to look for it.
 
 ### Debug a wrong extraction
 

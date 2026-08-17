@@ -177,7 +177,7 @@ Nella tab *Cattura*, scegli la modalità BPER e premi *Avvia*. Ogni frame viene 
 2. Mappa l'etichetta del CSV di ground truth in `CSV_TO_SCHEMA` (`extraction/fields.py`).
 3. Aggiungi `display_name` + `page_key` in `CANONICAL_FIELD_DEFINITIONS` e l'alias in `FIELD_LABEL_ALIASES` (`extraction/field_definitions.py`), così l'export canonico e il raggruppamento per pagina della UI lo intercettano.
 4. Assegnalo a un'area di retry in `AREA_TO_FIELDS` (`extraction/config.py:69-82`) se va ritentato quando è nullo o a bassa confidenza.
-5. Descrivilo nel prompt italiano (`extraction/prompts.py`), così il modello sa di doverlo cercare.
+5. Descrivilo nel prompt italiano (`prompts/extraction_main.json`), così il modello sa di doverlo cercare.
 
 ### Fare debug di un'estrazione sbagliata
 

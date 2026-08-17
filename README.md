@@ -228,6 +228,8 @@ poc-data-extraction/
   gui_app.py               # Entry point Desktop (Tkinter)
   run_edge_agent.bat       # Launcher Windows: bootstrap .venv + avvio Edge Agent
   requirements.txt         # Unico file dipendenze (core + edge-agent)
+  prompt_store.py          # Loader del catalogo prompt (solo stdlib), condiviso da core ed Edge Agent
+  prompts/                 # Catalogo prompt LLM: un file JSON per prompt, letto all'avvio
   edge-agent/              # Edge Agent (PyQt6)
     edge_agent.py          # Entry point GUI
     config.py / config.ini # Configurazione agent (fps, router, monitor, [llm])
@@ -246,7 +248,7 @@ poc-data-extraction/
     page_definitions.py    # Nomi canonici delle pagine
     canonical_mapping.py   # build_canonical_field_entries() per output client
     schemas.py             # Pydantic models per output strutturato
-    prompts.py             # Prompt italiano per VLM (main, anchor, retry per area)
+    prompts.py             # Costanti dei prompt VLM, lette dal catalogo prompts/
     normalization.py       # Normalizzazione testo, classify_field, pick_best
     imaging.py             # Crop, resize, conversione immagini
     vlm_client.py          # LangChain structured output + retry + costi

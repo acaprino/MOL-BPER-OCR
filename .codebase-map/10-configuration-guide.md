@@ -136,6 +136,20 @@ INPUT_DIR=C:\data\bper_screens
 
 Result: the CLI lists `*.png`/`*.jpg`/`*.jpeg` from that directory (`extraction/cli.py:322-327`), expects `dati.csv` inside it (`extraction/config.py:9`), and writes `poc_outputs_improved.json` / `poc_debug_improved.csv` there (`extraction/cli.py:337,345`). Set it before launching.
 
+### Edit a prompt, or point at a different catalog
+
+Prompts no longer live in code: they sit in `prompts/`, one JSON file per prompt, read and validated once at startup by `prompt_store.py`. To change what the model is asked, edit the JSON and restart; no Python change, no rebuild. In the portable package the copy next to the exe wins over the one inside the bundle.
+
+To work against a separate catalog (prompt A/B, local experiments), in `.env`:
+
+```
+PROMPTS_DIR=C:\work\alternative_prompts
+```
+
+Result: that directory becomes the **only** candidate (`prompt_store.py:222`), with no fallback to the repo or bundled catalog: if it is incomplete or malformed, startup fails on purpose. The directory actually loaded is printed as `[PROMPTS] catalog loaded from ...` by the CLI and by `LocalExtractionClient`.
+
+Two constraints when editing a JSON: braces are meaningful only in the prompts the code formats (`extraction_json_schema_instruction`, `extraction_anchor_hints`, `page_router_system`, `page_router_user`) and must be doubled (`{{`) when you want them literal; adding a new `{placeholder}` also means adding it to `CATALOG` in `prompt_store.py`.
+
 ### Enable debug logging and save crop images
 
 In `.env`:
@@ -310,6 +324,21 @@ ValueError: Unknown provider: 'azure'. Available: ['openai', 'gemini']
 
 **Fix:** change them together, picking from `PROVIDER_MODELS` (`extraction/config.py:22-33`).
 
+### Prompt catalog fails to load
+
+**Symptom:** at startup, before any model call (`prompt_store.py`):
+
+```
+prompt_store.PromptStoreError: no usable prompt catalog (set PROMPTS_DIR to point at a valid one):
+  cannot read ...\prompts\extraction_main.json: Expecting ',' delimiter: line 8 column 5
+prompt_store.PromptStoreError: prompt 'page_router_system': unknown placeholder(s) ['"page_type"']; ...
+prompt_store.PromptStoreError: ... is missing prompt(s): extraction_anchor
+```
+
+**Cause:** a catalog JSON is malformed, missing, or contains an unexpected brace in a prompt the code formats. The failure is deliberate and immediate: a corrupt prompt would not stop the pipeline, it would make it emit wrong fields that look right.
+
+**Fix:** correct the file named in the message (double literal braces, `{{`); declare any new `{placeholder}` in `CATALOG` inside `prompt_store.py`. From source, `git checkout prompts/` restores the catalog. In the portable package, delete the `prompts/` folder next to the exe: the loader uses the bundled copy and bootstrap re-seeds it on the next start.
+
 ### Model response could not be parsed
 
 **Symptom:** one of (`extraction/vlm_client.py:39,44,95-98,199-203`):
@@ -413,6 +442,8 @@ Cannot happen from this project: it opens **no** ports. The `http://localhost:80
 | Use Gemini | `LLM_PROVIDER=gemini` + `LLM_MODEL=gemini-1.5-flash` | Provider and model must match |
 | Cheaper anchor pass | `LLM_MODEL_ANCHOR=gpt-4o-mini` | Defaults to `LLM_MODEL` |
 | Change data dir | `INPUT_DIR=...` | Before launch; `dati.csv` must live inside it |
+| Edit a prompt | edit `prompts/<id>.json` | No rebuild; new `{placeholder}`s must be declared in `CATALOG` |
+| Alternative prompt catalog | `PROMPTS_DIR=...` | Becomes the only candidate: no fallback, fails closed |
 | Debug logs / crops | `DEBUG_MODE=1` / `DEBUG_SAVE_CROPS=1` | Crops go to `INPUT_DIR/debug_crops` |
 | Sequential run | `PARALLEL_ENABLED=0` | Easier to read output / isolate failures |
 | Cap cost per screen | `MAX_CALLS_PER_SCREEN=N` | Retries get `N - 2` calls |

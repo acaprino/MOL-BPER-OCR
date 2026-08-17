@@ -68,6 +68,8 @@ poc-data-extraction/
   main.py                       # Entry: .env load + CLI batch; --gui dispatches to the edge-agent
   gui_app.py                    # Entry: standalone Tkinter GUI (no load_dotenv - see Configuration)
   run_edge_agent.bat            # Windows launcher: venv bootstrap + edge-agent start
+  prompt_store.py               # Prompt catalog loader (stdlib-only), shared by extraction/ and edge-agent/
+  prompts/                      # LLM prompt catalog: one JSON file per prompt, read once at startup
   requirements.txt              # Single flat dependency list for everything
 
   extraction/                   # ── Core engine (no UI, no Qt) ──
@@ -78,7 +80,7 @@ poc-data-extraction/
     page_definitions.py         # 4 canonical page keys, aliases, PAGE_SHEET_ORDER
     canonical_mapping.py        # build_canonical_field_entries() - client-facing rows
     schemas.py                  # Pydantic: FieldResult, Soggetto, Fido, Garanzia, responses
-    prompts.py                  # Italian VLM prompts (main, anchor, 3 area-retry)
+    prompts.py                  # VLM prompt constants, resolved from the prompts/ catalog at import
     normalization.py            # is_nullish, pick_best, classify_field, dataset_mismatch_guard
     imaging.py                  # normalize_image, crop_relative, PNG encoding, debug crops
     vlm_client.py               # call_vlm / call_vlm_with_retry, per-call cost estimation

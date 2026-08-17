@@ -8,7 +8,7 @@ This is a Python-only proof-of-concept that treats the vision LLM as a swappable
 |----------|---------|------------------|
 | Python | 3.8+ claimed (`CLAUDE.md`, `README.md`); 3.12/3.13 in practice | No `pyproject.toml` exists, so nothing declares a version formally. `run_edge_agent.bat` lines 50-52 probe for Python 3.13, then 3.12 (torch wheel availability drives the preference), and the committed bytecode in `extraction/__pycache__/` is CPython 3.13. Treat 3.12+ as the real target. |
 
-Python is the only implementation language. The codebase deliberately mixes two *natural* languages, though: code, identifiers, comments, and commit messages are English, while VLM prompts (**`extraction/prompts.py`**), field keys (`professione_principale`, `filiale_relazione`, ...), GUI strings, and CSV headers are Italian, because the extraction target is the Italian BPER banking UI and the field keys are load-bearing domain terms that must match the ground-truth CSV (`extraction/fields.py`, `CSV_TO_SCHEMA`). Do not translate them.
+Python is the only implementation language. The codebase deliberately mixes two *natural* languages, though: code, identifiers, comments, and commit messages are English, while VLM prompts (**`prompts/*.json`**), field keys (`professione_principale`, `filiale_relazione`, ...), GUI strings, and CSV headers are Italian, because the extraction target is the Italian BPER banking UI and the field keys are load-bearing domain terms that must match the ground-truth CSV (`extraction/fields.py`, `CSV_TO_SCHEMA`). Do not translate them.
 
 ## Frameworks
 

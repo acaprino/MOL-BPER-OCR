@@ -8,7 +8,7 @@ Questo è un proof of concept interamente in Python che tratta il vision LLM com
 |----------|---------|-----------------|
 | Python | 3.8+ dichiarato (`CLAUDE.md`, `README.md`); 3.12/3.13 nella pratica | Non esiste alcun `pyproject.toml`, quindi nulla dichiara formalmente una versione. `run_edge_agent.bat` (righe 50-52) cerca prima Python 3.13, poi 3.12 (la preferenza è guidata dalla disponibilità delle wheel di torch), e il bytecode committato in `extraction/__pycache__/` è CPython 3.13. Considera 3.12+ il target reale. |
 
-Python è l'unico linguaggio di implementazione. La codebase mescola però deliberatamente due lingue *naturali*: codice, identificatori, commenti e messaggi di commit sono in inglese, mentre i prompt VLM (**`extraction/prompts.py`**), le chiavi di campo (`professione_principale`, `filiale_relazione`, …), le stringhe delle GUI e le intestazioni CSV sono in italiano, perché il target dell'estrazione è la UI bancaria italiana di BPER e le chiavi di campo sono termini di dominio portanti che devono combaciare con il CSV di ground truth (`extraction/fields.py`, `CSV_TO_SCHEMA`). Non tradurle.
+Python è l'unico linguaggio di implementazione. La codebase mescola però deliberatamente due lingue *naturali*: codice, identificatori, commenti e messaggi di commit sono in inglese, mentre i prompt VLM (**`prompts/*.json`**), le chiavi di campo (`professione_principale`, `filiale_relazione`, …), le stringhe delle GUI e le intestazioni CSV sono in italiano, perché il target dell'estrazione è la UI bancaria italiana di BPER e le chiavi di campo sono termini di dominio portanti che devono combaciare con il CSV di ground truth (`extraction/fields.py`, `CSV_TO_SCHEMA`). Non tradurle.
 
 ## Framework
 

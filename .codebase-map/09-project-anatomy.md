@@ -19,6 +19,8 @@ poc-data-extraction/
   run_edge_agent.bat           # Windows launcher: self-healing .venv bootstrap (prefers Python 3.13) + edge-agent start
   claude_.bat                  # Dev helper (untracked): launches Claude Code with the agent-teams flag
   requirements.txt             # Single dependency list for everything (loosely bounded, not pinned)
+  prompt_store.py              # Prompt catalog loader: stdlib-only, outside extraction/ so reading a prompt skips LangChain
+  prompts/                     # LLM prompt catalog: one JSON per prompt, read and validated once at startup
   .env.example                 # Committed env-var template (Italian comments); copy to .env
   .env                         # Local secrets (gitignored, present locally)
   .gitignore                   # Ignores .env*, /mnt, .venv/, build/, dist/, *.spec, src/, temp_uploads/, test_no_gt/
@@ -34,7 +36,7 @@ poc-data-extraction/
     page_definitions.py        # Canonical page keys/names and sheet order (4 pages)
     canonical_mapping.py       # build_canonical_field_entries() - client-facing output shape
     schemas.py                 # Pydantic models: ExtractionResponse, AnchorResponse, FieldResult, …
-    prompts.py                 # Italian VLM prompts: main, anchor, 3 area-retry prompts
+    prompts.py                 # VLM prompt constants (main, anchor, 3 area-retry) read from prompts/*.json
     normalization.py           # Text normalization, classify_field(), pick_best(), dataset_mismatch_guard()
     imaging.py                 # normalize_image(), crop_relative(), PNG encoding, debug-crop saving
     vlm_client.py              # call_vlm() / call_vlm_with_retry(), cost estimation, Gemini schema paths
@@ -136,6 +138,7 @@ All pipeline variables are read via `os.getenv()` **at module import time** in `
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | no | `1` = abort a screen early when both anchors are null | `extraction/config.py:55` |
 | `DEBUG_MODE` | `0` | no | Verbose `[DEBUG]` logging in the batch runner. **Undocumented** in `.env.example` and `CLAUDE.md` - code is the only source | `extraction/config.py:92` |
 | `DEBUG_SAVE_CROPS` | `0` | no | Save intermediate crop images to `INPUT_DIR/debug_crops` | `extraction/config.py:93-94` |
+| `PROMPTS_DIR` | *(unset)* | no | Alternative prompt-catalog directory. The one pipeline variable read **outside** `config.py`; when set it is the only candidate, with no fallback to the bundled copy | `prompt_store.py:222` |
 
 Two non-variables worth knowing: `SCREENSHOT_DIR` appears in `CLAUDE.md`'s table but nowhere in code (grep confirms: it is inert), and the edge-agent itself takes **no** dedicated env vars; it is configured by `config.ini`, falling back to `OPENAI_API_KEY`/`LLM_API_KEY` only for the router key.
 

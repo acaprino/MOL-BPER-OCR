@@ -1,7 +1,7 @@
 # Context Brief
 
 ## Project Profile
-- **Project type / domain:** Proof-of-concept desktop/CLI tooling for AI-powered data extraction (Vision-LLM) in the Italian banking domain. Targets screenshots of the BPER credit-management application ("BStore Pratiche" / PEF pages). Signals: `README.md` line 5, `extraction/prompts.py` (Italian banking prompts), `edge-agent/assets/templates/bper/prompts.json` (BPER page definitions), field vocabulary (`ndg`, `fido`, `garanzie` in `extraction/fields.py`). Confidence: **high**.
+- **Project type / domain:** Proof-of-concept desktop/CLI tooling for AI-powered data extraction (Vision-LLM) in the Italian banking domain. Targets screenshots of the BPER credit-management application ("BStore Pratiche" / PEF pages). Signals: `README.md` line 5, `prompts/*.json` (Italian banking prompts), `edge-agent/assets/templates/bper/prompts.json` (BPER page definitions), field vocabulary (`ndg`, `fido`, `garanzie` in `extraction/fields.py`). Confidence: **high**.
 - **Primary audience (USER-CONFIRMED 2026-07-21):** the developers and engineers who work on this project (Tri-tech solutions). The documentation produced by this pipeline is TECHNICAL documentation for them — calibrate depth, vocabulary, and detail to a professional software engineer maintaining/extending this codebase. (Supporting signals: evaluation harness, cost tracking, debug reports in `extraction/evaluation.py`; org name "Tri-tech solutions" in `edge-agent/edge_agent.py` line 35.)
 - **Secondary audiences (context only, NOT the documentation target):** bank operators use the Italian-language PyQt6 edge-agent UI (`edge-agent/workers/capture/bper_capture_worker.py` lines 516-546), and a separate plain-language Italian docs layer already exists for non-technical stakeholders (`docs/`). Writers should NOT calibrate `.codebase-map/` documents to these audiences — the operator/stakeholder need is already served elsewhere. The 00-executive-summary still follows its plain-language format, but everything else is developer-facing.
 - **Register (USER-CONFIRMED):** technical, precise, developer-oriented. Write in English (matching the codebase's code/comment language policy), preserving Italian domain terms verbatim (field keys like `professione_principale`, UI strings, prompt content) — do not translate them. Favor precision and depth over accessibility; file:line citations expected.
@@ -61,6 +61,8 @@ poc-data-extraction/
 ├── requirements.txt            # Single dependency list for everything
 ├── .env.example                # Env var template (committed); .env is gitignored but present locally
 ├── CLAUDE.md / README.md       # AI-assistant guide / project README (Italian)
+├── prompt_store.py             # Prompt catalog loader (stdlib-only), shared by extraction/ and edge-agent/
+├── prompts/                    # LLM prompt catalog: one JSON per prompt, validated at load
 ├── extraction/                 # Core engine package (no UI code)
 │   ├── __init__.py             # Public API re-exports (__all__, backward-compat)
 │   ├── config.py               # Env-var config, crop coords, pricing table, retry-area maps
@@ -69,7 +71,7 @@ poc-data-extraction/
 │   ├── page_definitions.py     # Canonical page keys/names, aliases, sheet order
 │   ├── canonical_mapping.py    # build_canonical_field_entries() for client-facing output
 │   ├── schemas.py              # Pydantic models (ExtractionResponse, AnchorResponse, ...)
-│   ├── prompts.py              # Italian VLM prompts: main, anchor, 3 area-retry prompts
+│   ├── prompts.py              # VLM prompt constants read from prompts/*.json at import
 │   ├── normalization.py        # is_nullish, norm_*, pick_best, classify_field, mismatch guard
 │   ├── imaging.py              # normalize_image, crop_relative, PNG encoding, debug crops
 │   ├── vlm_client.py           # call_vlm / call_vlm_with_retry, cost estimation, Gemini paths
@@ -142,7 +144,7 @@ Pydantic models in `extraction/schemas.py` (used with LangChain `.with_structure
   4. Conditional retry: any area (HEADER/BODY/FOOTER, `AREA_TO_FIELDS` in `config.py`) containing a nullish or `<0.60`-confidence field is retried with a dedicated crop (`RETRY_AREAS`), extra contrast/sharpness enhancement, and an area-specific Italian prompt (`FIELD_RETRY_PROMPTS`); retries run in a nested ThreadPoolExecutor and are capped at `MAX_CALLS_PER_SCREEN - 2`; per-field winner chosen by `pick_best()` (non-null beats null; ties → higher confidence); table lists merged by row-count-then-confidence in `_merge_tables()`.
   5. Coherence check: repairs `evidenze`→"B" and `tipo`→"BMB" from their tooltip fields (`_coherence_check()`).
   6. Aggregate `_meta_agg`, flatten first 4 soggetti to `ndg_1..4`/`denominazione_1..4`/`ruolo_1..4`, build `canonical_fields`, set `_status`.
-- **Key files:** `extraction/pipeline.py`, `extraction/config.py`, `extraction/prompts.py`, `extraction/vlm_client.py`, `extraction/normalization.py`.
+- **Key files:** `extraction/pipeline.py`, `extraction/config.py`, `prompts/*.json` (+ `prompt_store.py`), `extraction/vlm_client.py`, `extraction/normalization.py`.
 
 ### 3. Edge-agent live capture (BPER mode)
 - **Trigger:** `python edge-agent/edge_agent.py` (or `python main.py --gui` or `run_edge_agent.bat`) → "Avvia" in CaptureTab.
@@ -205,6 +207,7 @@ All read via `os.getenv()` with defaults (grep across repo; definitions in `extr
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | no | Early-exit toggle, `config.py:55` |
 | `DEBUG_MODE` | `0` | no | Verbose `[DEBUG]` logging in `cli.py`; **not listed in `.env.example` or CLAUDE.md's table**, `config.py:92` |
 | `DEBUG_SAVE_CROPS` | `0` | no | Save intermediate crops to `INPUT_DIR/debug_crops`, `config.py:93` |
+| `PROMPTS_DIR` | *(unset)* | no | Alternative prompt-catalog directory; read outside `config.py`, in `prompt_store.py:222`, and fails closed (no bundle fallback) |
 
 Note: CLAUDE.md documents `SCREENSHOT_DIR` as inert/historical; it does not appear anywhere in code (grep confirms).
 

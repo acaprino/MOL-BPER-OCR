@@ -136,6 +136,20 @@ INPUT_DIR=C:\data\bper_screens
 
 Risultato: la CLI elenca `*.png`/`*.jpg`/`*.jpeg` da quella directory (`extraction/cli.py:322-327`), si aspetta `dati.csv` al suo interno (`extraction/config.py:9`) e vi scrive `poc_outputs_improved.json` / `poc_debug_improved.csv` (`extraction/cli.py:337,345`). Da impostare prima del lancio.
 
+### Modificare i prompt o puntare a un catalogo alternativo
+
+I prompt non stanno più nel codice: vivono in `prompts/`, un file JSON per prompt, letti e validati una volta all'avvio da `prompt_store.py`. Per cambiare cosa viene chiesto al modello si edita il JSON e si riavvia; non serve toccare Python né ricompilare. Nel pacchetto portable vale la copia accanto all'exe, che ha la precedenza su quella inclusa nel bundle.
+
+Per lavorare su un catalogo separato (A/B di prompt, prove locali), in `.env`:
+
+```
+PROMPTS_DIR=C:\lavoro\prompt_alternativi
+```
+
+Risultato: quella directory diventa l'**unico** candidato (`prompt_store.py:222`), senza fallback sul catalogo del repo o del bundle: se è incompleta o malformata l'avvio fallisce, di proposito. La directory effettivamente caricata viene stampata come `[PROMPTS] catalog loaded from ...` dalla CLI e da `LocalExtractionClient`.
+
+Due vincoli quando si edita un JSON: le graffe sono significative solo nei prompt che il codice formatta (`extraction_json_schema_instruction`, `extraction_anchor_hints`, `page_router_system`, `page_router_user`) e vanno raddoppiate (`{{`) se servono letterali; aggiungere un nuovo `{placeholder}` richiede anche una riga in `CATALOG` dentro `prompt_store.py`.
+
 ### Abilitare log di debug e salvataggio dei crop
 
 In `.env`:
@@ -310,6 +324,21 @@ ValueError: Unknown provider: 'azure'. Available: ['openai', 'gemini']
 
 **Soluzione:** cambiali insieme, scegliendo da `PROVIDER_MODELS` (`extraction/config.py:22-33`).
 
+### Catalogo dei prompt non caricabile
+
+**Sintomo:** all'avvio, prima di qualsiasi chiamata al modello (`prompt_store.py`):
+
+```
+prompt_store.PromptStoreError: no usable prompt catalog (set PROMPTS_DIR to point at a valid one):
+  cannot read ...\prompts\extraction_main.json: Expecting ',' delimiter: line 8 column 5
+prompt_store.PromptStoreError: prompt 'page_router_system': unknown placeholder(s) ['"page_type"']; ...
+prompt_store.PromptStoreError: ... is missing prompt(s): extraction_anchor
+```
+
+**Causa:** un JSON del catalogo è malformato, manca, oppure contiene una graffa non prevista in un prompt che il codice formatta. Il fallimento è voluto e immediato: un prompt corrotto non blocca la pipeline, la fa produrre campi sbagliati che sembrano giusti.
+
+**Soluzione:** correggi il file indicato nel messaggio (raddoppia le graffe letterali, `{{`); dichiara ogni nuovo `{placeholder}` in `CATALOG` dentro `prompt_store.py`. Da sorgente, `git checkout prompts/` ripristina il catalogo. Nel pacchetto portable basta cancellare la cartella `prompts/` accanto all'exe: il loader usa la copia dentro il bundle e il bootstrap la risemina al riavvio successivo.
+
 ### Risposta del modello non parsabile
 
 **Sintomo:** uno tra (`extraction/vlm_client.py:39,44,95-98,199-203`):
@@ -413,6 +442,8 @@ Non può accadere da questo progetto -- non apre **nessuna** porta. Le voci `htt
 | Usare Gemini | `LLM_PROVIDER=gemini` + `LLM_MODEL=gemini-1.5-flash` | Provider e modello devono concordare |
 | Anchor più economico | `LLM_MODEL_ANCHOR=gpt-4o-mini` | Default = `LLM_MODEL` |
 | Cambiare directory dati | `INPUT_DIR=...` | Prima del lancio; `dati.csv` deve stare al suo interno |
+| Modificare un prompt | edita `prompts/<id>.json` | Nessun rebuild; nuovi `{placeholder}` vanno dichiarati in `CATALOG` |
+| Catalogo prompt alternativo | `PROMPTS_DIR=...` | Diventa l'unico candidato: nessun fallback, fallisce chiuso |
 | Log / crop di debug | `DEBUG_MODE=1` / `DEBUG_SAVE_CROPS=1` | I crop finiscono in `INPUT_DIR/debug_crops` |
 | Esecuzione sequenziale | `PARALLEL_ENABLED=0` | Output più leggibile / guasti isolabili |
 | Limitare il costo per schermata | `MAX_CALLS_PER_SCREEN=N` | I retry ricevono `N - 2` chiamate |
