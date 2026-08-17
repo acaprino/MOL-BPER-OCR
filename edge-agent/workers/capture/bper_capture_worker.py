@@ -103,6 +103,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Traccia l'ultima guidance "apri pagina X" emessa per non spammare
         self._last_guidance_page: Optional[str] = None
 
+        # Ultimo errore router già loggato (per non ripeterlo a ogni frame)
+        self._last_router_error: Optional[str] = None
+
     # ------------------------------------------------------------------ init classifier
 
     def _init_router(self) -> None:
@@ -647,7 +650,13 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 )
                 return res.page_type, float(res.confidence), dict(res.fields or {})
             else:
-                # Nessun match: guida l'operatore verso la schermata attesa
+                # Nessun match: se il router riporta un errore (es. 401 API key),
+                # rendilo visibile nel log invece di fallire in silenzio.
+                reason = getattr(res, "reason", None)
+                if reason and reason != self._last_router_error:
+                    self.tick.emit(f"[Router] Errore riconoscimento: {reason}")
+                    self._last_router_error = reason
+                # Guida l'operatore verso la schermata attesa
                 try:
                     next_page = self._next_pending_page()
                     if next_page and next_page != self._last_guidance_page:
