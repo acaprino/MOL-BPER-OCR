@@ -37,8 +37,21 @@ DINOV2_WEIGHTS_FILENAME = "dinov2_vits14_pretrain.pth"
 DINOV2_WEIGHTS_SHA256 = "b938bf1bc15cd2ec0feacfe3a1bb553fe8ea9ca46a7e1d8d00217f29aef60cd9"
 
 # Tuning condiviso del classificatore BPER
-DEFAULT_CROP_ROI = (0.0, 0.12, 1.0, 0.30)
-DEFAULT_SIMILARITY_THRESHOLD = 0.70
+#
+# ROI sull'area applicativa, non sulla cromatura del browser. La ROI precedente
+# (0.0, 0.12, 1.0, 0.30) inquadrava la barra delle tab: sui template stessi
+# riconosceva 5 pagine su 9, e su un frame a schermo intero 1 su 9.
+DEFAULT_CROP_ROI = (0.0, 0.20, 1.0, 0.98)
+
+# Soglia sul punteggio *centrato* (vedi _refresh_proto_matrix). Sui coseni
+# grezzi qualunque soglia era inutile: pagine diverse dello stesso applicativo
+# condividono quasi tutti i pixel e stavano tutte fra 0.91 e 1.00, con margini
+# di 0.003 fra la prima e la seconda. Togliendo la componente comune il margine
+# medio sale a circa 0.11 e un rifiuto torna esprimibile.
+DEFAULT_SIMILARITY_THRESHOLD = 0.35
+
+# Lato del quadrato dato in pasto a DINOv2. Multiplo di 14 (patch size).
+EMBED_SIDE = 224
 
 # Sottocartelle del dataset che NON sono pagine (escluse dai prototipi)
 _EXCLUDED_SUBDIRS = {"transitions"}
@@ -89,6 +102,24 @@ def _scan_dataset_images(templates_dir: Path) -> Dict[str, List[Path]]:
     return page_images
 
 
+def embedding_geometry(crop_roi: Optional[Tuple[float, float, float, float]] = None) -> str:
+    """Identita' del modo in cui un embedding viene prodotto.
+
+    Fa parte della chiave di cache insieme all'hash del dataset. Prototipi e
+    query devono essere immersi nello stesso modo: una cache indicizzata solo sul
+    contenuto dei file continuerebbe a servire vettori costruiti con una ROI o un
+    resize precedenti mentre le query usano i nuovi, e ogni punteggio diventa
+    priva di senso senza che nulla lo segnali.
+    """
+    roi = DEFAULT_CROP_ROI if crop_roi is None else crop_roi
+    return (
+        f"model={DINOV2_MODEL_NAME}"
+        f"|roi={tuple(round(float(v), 4) for v in roi) if roi else None}"
+        f"|resize={EMBED_SIDE}x{EMBED_SIDE}-squash"
+        f"|score=centered-cosine"
+    )
+
+
 def cache_is_valid(templates_dir: Path, cache_path: Optional[Path] = None) -> bool:
     """
     True se la cache prototipi esiste ed è coerente col dataset corrente.
@@ -101,6 +132,8 @@ def cache_is_valid(templates_dir: Path, cache_path: Optional[Path] = None) -> bo
         return False
     try:
         data = json.loads(cache.read_text(encoding="utf-8"))
+        if data.get("geometry") != embedding_geometry():
+            return False
         page_images = _scan_dataset_images(templates_dir)
         return data.get("dataset_hash") == BPERPagePrototypeClassifier._compute_dataset_hash(page_images)
     except Exception:
@@ -210,6 +243,8 @@ class BPERPagePrototypeClassifier:
         self.prototypes: Dict[str, Prototype] = {}
         self._proto_labels: List[str] = []
         self._proto_matrix = None  # torch.Tensor [N, D] su CPU
+        self._proto_matrix_centered = None  # [N, D], centroide sottratto
+        self._proto_mean = None  # [D], centroide dei prototipi
 
         # Provo a caricare torch in maniera difensiva
         self._lazy_init_torch()
@@ -289,12 +324,20 @@ class BPERPagePrototypeClassifier:
         self.model = self.model.to(self.device)
         self.model.eval()
 
-        # DINOv2 lavora meglio con multipli di 14 (patch size)
-        # 224 è perfetto (14 * 16)
+        # Resize non conservativo delle proporzioni (squash), senza CenterCrop:
+        # T.Resize(int) scala il lato CORTO, quindi su una ROI larga il
+        # CenterCrop che seguiva teneva solo il quadrato centrale. Con la vecchia
+        # ROI erano 224 px su 1555, cioe' il 14% della larghezza: al
+        # classificatore arrivava un pezzo di barra delle tab e nessun contenuto
+        # di pagina. Schiacciare l'intera ROI nel quadrato conserva tutto, e le
+        # 9 pagine differiscono per la disposizione del contenuto, non per le
+        # proporzioni.
         self.transform = T.Compose(
             [
-                T.Resize(224, interpolation=T.InterpolationMode.BICUBIC),
-                T.CenterCrop(224),
+                T.Resize(
+                    (EMBED_SIDE, EMBED_SIDE),
+                    interpolation=T.InterpolationMode.BICUBIC,
+                ),
                 T.ToTensor(),
                 T.Normalize(
                     mean=[0.485, 0.456, 0.406],
@@ -338,12 +381,16 @@ class BPERPagePrototypeClassifier:
 
         page_images = self._list_dataset_images()
         current_hash = self._compute_dataset_hash(page_images)
+        current_geometry = embedding_geometry(self.crop_roi)
 
         if self.cache_path.exists():
             try:
                 with self.cache_path.open("r", encoding="utf-8") as f:
                     data = json.load(f)
-                if data.get("dataset_hash") == current_hash:
+                if (
+                    data.get("dataset_hash") == current_hash
+                    and data.get("geometry") == current_geometry
+                ):
                     self._load_prototypes_from_cache(data)
                     return
             except Exception:
@@ -405,10 +452,21 @@ class BPERPagePrototypeClassifier:
         self._refresh_proto_matrix()
 
     def _refresh_proto_matrix(self) -> None:
-        """Aggiorna la matrice [N, D] di prototipi e la lista etichette."""
+        """Aggiorna la matrice [N, D] di prototipi, il centroide e le etichette.
+
+        Oltre alla matrice grezza calcola quella *centrata*: sottratto il
+        centroide dei prototipi, ogni vettore conserva solo cio' che distingue
+        quella pagina dalle altre. Sulle pagine di uno stesso applicativo la
+        componente condivisa domina il coseno (similarita' fra pagine diverse fra
+        0.91 e 1.00, margini di 0.003 fra prima e seconda): togliendola il
+        vincitore non cambia ma il margine medio passa a circa 0.11, e la soglia
+        di rifiuto torna a significare qualcosa.
+        """
         if self._disabled:
             self._proto_labels = []
             self._proto_matrix = None
+            self._proto_matrix_centered = None
+            self._proto_mean = None
             return
 
         torch = self._torch
@@ -417,6 +475,8 @@ class BPERPagePrototypeClassifier:
         if not self.prototypes:
             self._proto_labels = []
             self._proto_matrix = None
+            self._proto_matrix_centered = None
+            self._proto_mean = None
             return
 
         labels = sorted(self.prototypes.keys())
@@ -426,6 +486,18 @@ class BPERPagePrototypeClassifier:
         self._proto_labels = labels
         self._proto_matrix = mat
 
+        # Con un solo prototipo il centroide coincide col prototipo e la
+        # differenza e' il vettore nullo: si resta sul coseno grezzo.
+        if len(labels) < 2:
+            self._proto_mean = None
+            self._proto_matrix_centered = None
+            return
+
+        self._proto_mean = mat.mean(dim=0)
+        self._proto_matrix_centered = torch.nn.functional.normalize(
+            mat - self._proto_mean, p=2, dim=1
+        )
+
     def _save_prototypes_to_cache(self, dataset_hash: str) -> None:
         """Serializza i prototipi in JSON."""
         if self._disabled:
@@ -433,6 +505,7 @@ class BPERPagePrototypeClassifier:
 
         data = {
             "dataset_hash": dataset_hash,
+            "geometry": embedding_geometry(self.crop_roi),
             "created_at": int(time.time()),
             "prototypes": {},
         }
@@ -559,7 +632,11 @@ class BPERPagePrototypeClassifier:
         torch = self._torch
         assert torch is not None
 
-        proto_mat = self._proto_matrix  # [N, D] su CPU
+        if self._proto_matrix_centered is not None and self._proto_mean is not None:
+            proto_mat = self._proto_matrix_centered
+            emb = torch.nn.functional.normalize(emb - self._proto_mean, p=2, dim=0)
+        else:
+            proto_mat = self._proto_matrix  # [N, D] su CPU
         sims = torch.mv(proto_mat, emb)  # [N]
 
         best_idx = int(torch.argmax(sims).item())

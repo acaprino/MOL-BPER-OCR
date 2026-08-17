@@ -18,6 +18,7 @@ except Exception:  # noqa: BLE001
     BPERPagePrototypeClassifier = None  # type: ignore
 
 from .base_capture_worker import BaseCaptureWorker
+from frame_normalize import find_window_rect, normalize_frame
 from image_ops import preprocess_for_ocr
 import app_paths
 from page_registry import PageDef, PageRegistry
@@ -29,11 +30,12 @@ class BPERCaptureWorker(BaseCaptureWorker):
     Worker di cattura per l'applicativo BPER.
 
     Funzionalità:
-        - cattura screenshot full-screen
+        - cattura screenshot del monitor intero
+        - riporta l'inquadratura sulla finestra applicativa (frame_normalize)
         - dedup frame via pHash
-        - riconoscimento pagina con BPERPagePrototypeClassifier (MobileNetV3 + prototipi)
+        - riconoscimento pagina con BPERPagePrototypeClassifier (DINOv2 ViT-S/14 + prototipi)
         - logica di stabilità (conteggio + permanenza, tollera 1 frame anomalo)
-        - upload screenshot solo quando la pagina è stabile
+        - accodamento per estrazione solo quando la pagina è stabile
     """
 
     # soglia di “uguale” per dedup frame (distanza Hamming su pHash)
@@ -335,6 +337,15 @@ class BPERCaptureWorker(BaseCaptureWorker):
             mon = monitors[idx]
             shot = sct.grab(mon)
             img = Image.frombytes('RGB', shot.size, shot.rgb)
+            # Riporta l'inquadratura sulla finestra applicativa: i prototipi del
+            # router e il CONTENT_CROP della pipeline sono tarati su screenshot
+            # di finestra, e su un frame a schermo intero le stesse coordinate
+            # relative cadono su contenuto diverso.
+            img = normalize_frame(
+                img,
+                mon,
+                lambda: find_window_rect(getattr(self.config, "window_title_contains", "")),
+            )
             self._consecutive_capture_errors = 0
             return img
         except Exception as exc:  # noqa: BLE001
