@@ -62,6 +62,15 @@ if exist "dist\EdgeAgent" (
     exit /b 1
 )
 
+rem Guardia segreti: mai spedire una api_key scritta nell'INI (finirebbe nello
+rem zip in 2 copie, una invisibile dentro _internal). Vale anche per i REDACTED.
+findstr /r /c:"^api_key *= *[^ ]" "edge-agent\config.ini" >nul 2>&1
+if not errorlevel 1 (
+    echo [ERRORE] edge-agent\config.ini contiene una api_key valorizzata:
+    echo          svuotala prima di creare il pacchetto.
+    exit /b 1
+)
+
 echo [INFO] Build EdgeAgent in corso (alcuni minuti: include torch)...
 ".venv\Scripts\python.exe" -m PyInstaller edge_agent.spec --noconfirm
 if errorlevel 1 (
@@ -73,13 +82,9 @@ echo [INFO] Copio config e asset nella cartella portable...
 copy /y "edge-agent\config.ini" "dist\EdgeAgent\config.ini" >nul
 xcopy /e /i /y "edge-agent\assets" "dist\EdgeAgent\assets" >nul
 
-rem Template .env SENZA chiave: la chiave viene chiesta al primo avvio.
-(
-    echo # Configurazione Edge Agent
-    echo LLM_PROVIDER=gemini
-    echo LLM_MODEL=gemini-3.6-flash
-    echo LLM_API_KEY=
-) > "dist\EdgeAgent\.env"
+rem Template .env SENZA chiave (fonte unica: edge-agent\defaults\env.template);
+rem la chiave viene chiesta al primo avvio.
+copy /y "edge-agent\defaults\env.template" "dist\EdgeAgent\.env" >nul
 
 echo [INFO] Creo lo zip finale (puo' richiedere qualche minuto)...
 for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyy-MM-dd"') do set BUILD_DATE=%%i

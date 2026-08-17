@@ -3,12 +3,14 @@ Pre-flight di avvio per utenti non tecnici.
 
 Eseguito da edge_agent.main() prima di creare la MainWindow:
 verifica i file essenziali, la chiave API (dialog al primo avvio),
-i pesi DINOv2 (download con progresso al primo avvio) e fa il warm-up
-del classificatore. Ogni problema è spiegato con un dialog in italiano.
+i pesi DINOv2 (download con progresso e checksum al primo avvio) e il
+warm-up del classificatore (saltato quando pesi e cache sono già validi).
+Ogni problema è spiegato con un dialog in italiano.
 """
 
 from __future__ import annotations
 
+import hashlib
 import os
 import shutil
 import urllib.request
@@ -18,11 +20,16 @@ from typing import Optional
 from PyQt6 import QtCore, QtWidgets
 
 import app_paths
+import page_classifier
+from config import AgentConfig
+from page_classifier import (
+    DINOV2_WEIGHTS_FILENAME,
+    DINOV2_WEIGHTS_SHA256,
+    DINOV2_WEIGHTS_URL,
+)
 
-# Pesi DINOv2 ViT-S/14 (stesso URL usato da torch.hub per 'dinov2_vits14')
-DINOV2_WEIGHTS_URL = "https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth"
-DINOV2_WEIGHTS_FILENAME = "dinov2_vits14_pretrain.pth"
-
+# Fallback estremo se il template su disco non è leggibile:
+# la fonte canonica è edge-agent/defaults/env.template.
 ENV_TEMPLATE = (
     "# Configurazione Edge Agent\n"
     "LLM_PROVIDER=gemini\n"
@@ -37,17 +44,32 @@ _KEY_ENV_VARS = ("LLM_API_KEY", "GEMINI_API_KEY", "GOOGLE_API_KEY")
 # Helpers puri (testabili senza Qt)
 # ============================================================
 
+def _env_template_text() -> str:
+    """Testo del template .env: file canonico in defaults/, fallback embedded."""
+    try:
+        tpl = app_paths.bundled_defaults_dir() / "env.template"
+        if tpl.exists():
+            return tpl.read_text(encoding="utf-8")
+    except Exception:  # noqa: BLE001
+        pass
+    return ENV_TEMPLATE
+
+
 def _save_env_key(env_path: Path, key: str) -> None:
     """
     Salva LLM_API_KEY nel .env indicato, preservando le altre righe.
 
     Se il file non esiste viene creato dal template; se la riga esiste
-    viene sostituita, altrimenti appesa.
+    viene sostituita, altrimenti appesa. Rifiuta chiavi multi-riga: una
+    newline nel valore diventerebbe una entry .env arbitraria.
     """
+    if "\r" in key or "\n" in key:
+        raise ValueError("la chiave non può contenere andate a capo")
+
     if env_path.exists():
         lines = env_path.read_text(encoding="utf-8").splitlines()
     else:
-        lines = ENV_TEMPLATE.strip("\n").splitlines()
+        lines = _env_template_text().strip("\n").splitlines()
 
     replaced = False
     for i, line in enumerate(lines):
@@ -59,6 +81,19 @@ def _save_env_key(env_path: Path, key: str) -> None:
         lines.append(f"LLM_API_KEY={key}")
 
     env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def _sanitize_key_input(raw: str) -> Optional[str]:
+    """
+    Normalizza l'input del dialog chiave: strip, tollera 'LLM_API_KEY=...'
+    incollato per intero. Ritorna None se l'input non è una chiave valida.
+    """
+    key = (raw or "").strip()
+    if key.upper().startswith("LLM_API_KEY="):
+        key = key.split("=", 1)[1].strip()
+    if not key or any(c in key for c in "\r\n="):
+        return None
+    return key
 
 
 def _has_api_key() -> bool:
@@ -76,6 +111,23 @@ def _weights_present() -> bool:
     return (_torch_hub_dir() / "checkpoints" / DINOV2_WEIGHTS_FILENAME).exists()
 
 
+def _hub_repo_present() -> bool:
+    """True se torch.hub ha già in cache il codice del repo DINOv2."""
+    try:
+        return any(_torch_hub_dir().glob("facebookresearch_dinov2_*"))
+    except Exception:  # noqa: BLE001
+        return False
+
+
+def _recognition_ready() -> bool:
+    """True se pesi, repo hub e cache prototipi sono già pronti: warm-up inutile."""
+    return (
+        _weights_present()
+        and _hub_repo_present()
+        and page_classifier.cache_is_valid(app_paths.templates_dir())
+    )
+
+
 # ============================================================
 # Step di pre-flight (con UI)
 # ============================================================
@@ -89,7 +141,7 @@ def _ensure_torch_home() -> None:
 
 
 def _ensure_files(parent: Optional[QtWidgets.QWidget]) -> bool:
-    """Verifica file essenziali; ricrea config.ini dal default se manca."""
+    """Verifica file essenziali; ricrea config.ini e asset dal bundle se mancano."""
     base = app_paths.app_dir()
     try:
         probe = base / ".write_probe"
@@ -104,6 +156,13 @@ def _ensure_files(parent: Optional[QtWidgets.QWidget]) -> bool:
         )
         return False
 
+    if str(base).startswith("\\\\"):
+        QtWidgets.QMessageBox.warning(
+            parent, "Edge Agent",
+            "L'applicazione è su un percorso di rete: la chiave API salvata "
+            "qui è leggibile da chiunque acceda alla cartella condivisa.",
+        )
+
     cfg = app_paths.config_ini()
     if not cfg.exists():
         default_cfg = app_paths.bundled_defaults_dir() / "config.ini"
@@ -117,11 +176,28 @@ def _ensure_files(parent: Optional[QtWidgets.QWidget]) -> bool:
             return False
 
     tdir = app_paths.templates_dir()
-    prompts = tdir / "prompts.json"
-    has_pngs = tdir.exists() and any(
-        p.suffix.lower() in {".png", ".jpg", ".jpeg"} for p in tdir.iterdir() if p.is_file()
-    )
-    if not prompts.exists() or not has_pngs:
+
+    def _assets_ok() -> bool:
+        return (
+            (tdir / "prompts.json").exists()
+            and tdir.exists()
+            and any(
+                p.suffix.lower() in {".png", ".jpg", ".jpeg"}
+                for p in tdir.iterdir() if p.is_file()
+            )
+        )
+
+    # Seed dal bundle: rende avviabile anche un bundle prodotto dal solo spec
+    # (senza le copie top-level di build_exe.bat) e ripara cancellazioni accidentali.
+    if not _assets_ok() and app_paths.is_frozen():
+        bundled = app_paths.bundled_assets_dir()
+        if bundled.exists():
+            try:
+                shutil.copytree(bundled, app_paths.app_dir() / "assets", dirs_exist_ok=True)
+            except Exception:  # noqa: BLE001
+                pass
+
+    if not _assets_ok():
         QtWidgets.QMessageBox.critical(
             parent, "Edge Agent",
             "Cartella degli asset incompleta:\n"
@@ -132,27 +208,44 @@ def _ensure_files(parent: Optional[QtWidgets.QWidget]) -> bool:
     return True
 
 
-def _ensure_api_key(parent: Optional[QtWidgets.QWidget]) -> bool:
-    """Carica il .env locale; se la chiave manca la chiede con un dialog e la salva."""
-    env_path = app_paths.env_file()
+def _load_local_env() -> None:
+    """Carica il .env locale nel processo (best-effort, senza override)."""
     try:
         from dotenv import load_dotenv
+        env_path = app_paths.env_file()
         if env_path.exists():
             load_dotenv(env_path, override=False)
     except Exception:  # noqa: BLE001
         pass
 
+
+def _ensure_api_key(parent: Optional[QtWidgets.QWidget]) -> bool:
+    """Carica il .env locale; se la chiave manca la chiede con un dialog e la salva."""
+    _load_local_env()
+    env_path = app_paths.env_file()
+
     while not _has_api_key():
-        key, ok = QtWidgets.QInputDialog.getText(
+        raw, ok = QtWidgets.QInputDialog.getText(
             parent,
             "Configurazione iniziale",
             "Primo avvio: incolla la chiave API Gemini\n"
             "(viene salvata su questo computer e non verrà più richiesta):",
+            QtWidgets.QLineEdit.EchoMode.Password,
         )
-        if ok and key.strip():
-            key = key.strip()
+        if ok:
+            key = _sanitize_key_input(raw)
+            if key is None:
+                QtWidgets.QMessageBox.warning(
+                    parent, "Edge Agent",
+                    "La chiave inserita non è valida (vuota o con caratteri "
+                    "non ammessi): riprova.",
+                )
+                continue
             try:
                 _save_env_key(env_path, key)
+                # Carica anche provider/modello del template appena scritto:
+                # extraction li legge dall'ambiente del processo.
+                _load_local_env()
             except Exception as exc:  # noqa: BLE001
                 QtWidgets.QMessageBox.warning(
                     parent, "Edge Agent",
@@ -175,7 +268,7 @@ def _ensure_api_key(parent: Optional[QtWidgets.QWidget]) -> bool:
 
 
 class _WeightsDownloadWorker(QtCore.QThread):
-    """Scarica i pesi DINOv2 nella cache torch con progresso (byte scaricati/totali)."""
+    """Scarica i pesi DINOv2 nella cache torch, con progresso e verifica SHA-256."""
 
     progress = QtCore.pyqtSignal(int, int)
     finished_ok = QtCore.pyqtSignal()
@@ -193,6 +286,7 @@ class _WeightsDownloadWorker(QtCore.QThread):
         tmp = self.dest.with_suffix(".part")
         try:
             self.dest.parent.mkdir(parents=True, exist_ok=True)
+            sha = hashlib.sha256()
             with urllib.request.urlopen(DINOV2_WEIGHTS_URL, timeout=60) as resp:
                 total = int(resp.headers.get("Content-Length") or 0)
                 done = 0
@@ -204,8 +298,13 @@ class _WeightsDownloadWorker(QtCore.QThread):
                         if not chunk:
                             break
                         f.write(chunk)
+                        sha.update(chunk)
                         done += len(chunk)
                         self.progress.emit(done, total)
+            # Integrità: blocca payload corrotti/sostituiti (proxy TLS, captive
+            # portal salvato come .pth) prima che diventino la cache permanente.
+            if sha.hexdigest() != DINOV2_WEIGHTS_SHA256:
+                raise ValueError("checksum dei componenti non valido (download corrotto o intercettato)")
             tmp.replace(self.dest)
             self.finished_ok.emit()
         except Exception as exc:  # noqa: BLE001
@@ -287,79 +386,118 @@ def _ensure_weights(parent: Optional[QtWidgets.QWidget]) -> bool:
     return True
 
 
-def _warmup_classifier(parent: Optional[QtWidgets.QWidget]) -> None:
+def _warmup_classifier(parent: Optional[QtWidgets.QWidget]) -> bool:
     """
-    Inizializza una volta il classificatore DINO (best-effort, in thread).
+    Prepara il riconoscimento: scarica l'eventuale codice repo di torch.hub
+    mancante, carica il modello e costruisce la cache dei prototipi.
 
-    Scarica l'eventuale codice repo di torch.hub mancante e costruisce la
-    cache dei prototipi, così la prima cattura è immediata. Un fallimento
-    non blocca l'avvio: il router degrada come da comportamento esistente.
+    Ritorna False solo se l'utente sceglie Esci; Annulla e "Continua senza"
+    lasciano proseguire l'avvio (il router degrada come da comportamento esistente).
     """
-    dlg = QtWidgets.QProgressDialog(
-        "Preparo il riconoscimento automatico...", None, 0, 0, parent,
-    )
-    dlg.setWindowTitle("Configurazione iniziale")
-    dlg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
-    dlg.setMinimumDuration(0)
-
-    result: dict = {}
-    loop = QtCore.QEventLoop()
-
-    class _Warmup(QtCore.QThread):
-        def run(self) -> None:  # noqa: D102
-            try:
-                from page_classifier import BPERPagePrototypeClassifier
-                clf = BPERPagePrototypeClassifier(
-                    templates_dir=app_paths.templates_dir(),
-                    crop_roi=(0.0, 0.12, 1.0, 0.30),
-                    similarity_threshold=0.70,
-                    device="cpu",
-                )
-                info = clf.info()
-                if info.get("disabled"):
-                    result["error"] = str(info.get("import_error") or "classificatore disabilitato")
-            except Exception as exc:  # noqa: BLE001
-                result["error"] = str(exc)
-
-    worker = _Warmup()
-    worker.finished.connect(loop.quit)
-    worker.start()
-    loop.exec()
-    worker.wait(5000)
-    dlg.close()
-
-    if result.get("error"):
-        QtWidgets.QMessageBox.warning(
-            parent, "Edge Agent",
-            "Riconoscimento automatico non disponibile:\n"
-            f"{result['error']}\n\nLo scatto manuale resta utilizzabile.",
+    while True:
+        dlg = QtWidgets.QProgressDialog(
+            "Preparo il riconoscimento automatico...", "Annulla", 0, 0, parent,
         )
+        dlg.setWindowTitle("Configurazione iniziale")
+        dlg.setWindowModality(QtCore.Qt.WindowModality.ApplicationModal)
+        dlg.setMinimumDuration(0)
+
+        result: dict = {}
+        cancelled: dict = {}
+        loop = QtCore.QEventLoop()
+
+        class _Warmup(QtCore.QThread):
+            def run(self) -> None:  # noqa: D102
+                try:
+                    from page_classifier import (
+                        BPERPagePrototypeClassifier,
+                        DEFAULT_CROP_ROI,
+                        DEFAULT_SIMILARITY_THRESHOLD,
+                    )
+                    clf = BPERPagePrototypeClassifier(
+                        templates_dir=app_paths.templates_dir(),
+                        crop_roi=DEFAULT_CROP_ROI,
+                        similarity_threshold=DEFAULT_SIMILARITY_THRESHOLD,
+                        device="cpu",
+                    )
+                    info = clf.info()
+                    if info.get("disabled"):
+                        result["error"] = str(info.get("import_error") or "classificatore disabilitato")
+                except Exception as exc:  # noqa: BLE001
+                    result["error"] = str(exc)
+
+        def on_cancel() -> None:
+            cancelled["v"] = True
+            loop.quit()
+
+        worker = _Warmup()
+        worker.finished.connect(loop.quit)
+        dlg.canceled.connect(on_cancel)
+        worker.start()
+        loop.exec()
+        dlg.close()
+
+        if cancelled.get("v"):
+            # Il thread di warm-up finisce in background; la cache che produce
+            # verrà comunque riusata dal worker di cattura.
+            return True
+
+        worker.wait(5000)
+        if not result.get("error"):
+            return True
+
+        box = QtWidgets.QMessageBox(parent)
+        box.setWindowTitle("Edge Agent")
+        box.setIcon(QtWidgets.QMessageBox.Icon.Warning)
+        box.setText(
+            "Preparazione del riconoscimento non riuscita.\n"
+            f"Dettaglio: {result['error']}\n\n"
+            "Se la rete aziendale blocca github.com questo passaggio non può "
+            "completarsi: contatta l'assistenza.\n"
+            "Senza il riconoscimento automatico lo scatto manuale resta disponibile."
+        )
+        box.addButton("Riprova", QtWidgets.QMessageBox.ButtonRole.AcceptRole)
+        skip = box.addButton("Continua senza", QtWidgets.QMessageBox.ButtonRole.DestructiveRole)
+        quit_btn = box.addButton("Esci", QtWidgets.QMessageBox.ButtonRole.RejectRole)
+        box.exec()
+        clicked = box.clickedButton()
+        if clicked is quit_btn:
+            return False
+        if clicked is skip:
+            return True
+        # Riprova: il while riesegue il warm-up
 
 
 # ============================================================
 # Entry point del pre-flight
 # ============================================================
 
-def run_preflight(parent: Optional[QtWidgets.QWidget] = None) -> bool:
+def run_preflight(parent: Optional[QtWidgets.QWidget] = None) -> Optional[AgentConfig]:
     """
     Esegue i controlli di ambiente e il setup di primo avvio.
 
-    Ritorna False se l'utente sceglie di uscire; True se l'agent può partire.
+    Ritorna la AgentConfig caricata se l'agent può partire, None se l'utente
+    sceglie di uscire. In modalità smoke (EDGE_AGENT_SMOKE=1) salta i passaggi
+    interattivi e i download così il processo termina sempre da solo.
     """
     _ensure_torch_home()
     if not _ensure_files(parent):
-        return False
-    if not _ensure_api_key(parent):
-        return False
+        return None
 
-    # Pesi e warm-up servono solo se il router usa il classificatore ML
-    try:
-        from config import AgentConfig
-        router_mode = (AgentConfig(app_paths.config_ini()).router_mode or "ml").lower()
-    except Exception:  # noqa: BLE001
-        router_mode = "ml"
+    config = AgentConfig(app_paths.config_ini())
+
+    if os.getenv("EDGE_AGENT_SMOKE") == "1":
+        _load_local_env()
+        return config
+
+    if not _ensure_api_key(parent):
+        return None
+
+    router_mode = (config.router_mode or "ml").lower()
     if router_mode in {"ml", "hybrid"}:
         if not _ensure_weights(parent):
-            return False
-        _warmup_classifier(parent)
-    return True
+            return None
+        if not _recognition_ready():
+            if not _warmup_classifier(parent):
+                return None
+    return config

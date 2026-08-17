@@ -18,6 +18,10 @@ src/
 temp_uploads/
 test_no_gt/
 
+# Runtime-regenerated caches
+edge-agent/assets/templates/bper/bper_page_prototypes.json
+edge-agent/edge-agent.log
+
 # Generated extraction outputs (may contain banking PII)
 poc_outputs*.json
 poc_results*.csv

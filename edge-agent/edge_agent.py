@@ -10,9 +10,13 @@ import app_paths
 # Da bundle windowed (console=False) sys.stdout/stderr sono None: qualunque
 # print (torch.hub, tqdm, warning) manderebbe in crash chi scrive. Redirigiamo
 # su un file di log accanto all'exe, utile anche per la diagnostica remota.
+# Append con tetto di dimensione: "w" cancellerebbe il log del run precedente,
+# che è l'unico artefatto diagnostico recuperabile da un utente remoto.
 if sys.stdout is None or sys.stderr is None:
     try:
-        _log = open(app_paths.app_dir() / "edge-agent.log", "w", encoding="utf-8", buffering=1)
+        _log_path = app_paths.app_dir() / "edge-agent.log"
+        _mode = "w" if (_log_path.exists() and _log_path.stat().st_size > 1_000_000) else "a"
+        _log = open(_log_path, _mode, encoding="utf-8", buffering=1)
     except Exception:
         _log = open(os.devnull, "w", encoding="utf-8")
     if sys.stdout is None:
@@ -28,9 +32,6 @@ try:
 except Exception:
     pass
 
-# Use an absolute import from the app root (same level as `workers/`).
-from image_ops import preprocess_for_ocr, to_png8, to_webp_lossless
-
 from PyQt6 import QtCore, QtWidgets
 
 
@@ -39,7 +40,7 @@ def main() -> int:
     Funzione principale dell'applicazione.
 
     Inizializza Qt, esegue il pre-flight (verifica ambiente / primo avvio),
-    carica la configurazione e mostra la finestra principale.
+    quindi mostra la finestra principale con la configurazione caricata.
 
     Returns:
         Exit code restituito da QApplication.exec().
@@ -59,14 +60,15 @@ def main() -> int:
 
     # Pre-flight: file, chiave API, pesi DINOv2, warm-up. Esce se l'utente rinuncia.
     import bootstrap
-    if not bootstrap.run_preflight(None):
+    config = bootstrap.run_preflight(None)
+    if config is None:
         return 1
 
-    # Import pesanti (LangChain/torch via MainWindow) solo a pre-flight superato.
-    from config import AgentConfig
+    # VINCOLO: questo import deve restare DOPO run_preflight(). La catena
+    # ui.main_window → local_extraction_client → extraction.config fotografa
+    # le env var (provider/modello/chiave) a import time, e il pre-flight
+    # può crearle/caricarle proprio al primo avvio.
     from ui.main_window import MainWindow
-
-    config = AgentConfig(app_paths.config_ini())
 
     show_debug = "--debug" in sys.argv
     window = MainWindow(config, show_debug=show_debug)

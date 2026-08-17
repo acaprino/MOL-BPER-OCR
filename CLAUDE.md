@@ -98,11 +98,12 @@ BPERCaptureWorker (QThread)
   - `ml` -- `MLPageRouter` wraps `BPERPagePrototypeClassifier` (DINOv2 ViT-S/14, 384-dim, prototype
     matching via cosine similarity). Degrades gracefully to disabled if torch is unavailable.
     First run downloads the DINOv2 weights (~84MB) via torch.hub (needs internet once).
-  - `llm` -- `LLMPageRouter` via the OpenAI client, provider-aware: `_resolve_llm_settings()`
-    in `bper_capture_worker.py` picks key/endpoint/model from `[llm] provider` (config.ini ships
-    `gemini` + `gemini-3.6-flash` through Google's OpenAI-compatible endpoint); reads page
-    definitions from `assets/templates/bper/prompts.json`. Router failures are logged in the
-    capture feed (deduped per distinct error).
+  - `llm` -- `LLMPageRouter` via the OpenAI client, provider-aware:
+    `AgentConfig.resolve_llm_settings()` (`edge-agent/config.py`) picks key/endpoint/model from
+    `[llm] provider`; explicit INI values are authoritative, provider defaults fill only blank
+    entries (config.ini ships `gemini` + `gemini-3.6-flash` through Google's OpenAI-compatible
+    endpoint); reads page definitions from `assets/templates/bper/prompts.json`. Router failures
+    are logged in the capture feed (deduped per distinct error).
   - `hybrid` -- tries LLM first, falls back to ML.
 
 ## Running the Project
@@ -157,10 +158,11 @@ All defaults verified against `extraction/config.py`.
   api_key`; on 2026-07-21 it was scrubbed from the entire git history (`git filter-repo`,
   force-pushed). The line now ships blank; `AgentConfig` also treats any `REDACTED*` value as
   empty (a leftover placeholder once shadowed the env keys and silently broke the LLM router).
-- Router key precedence (`_resolve_llm_settings()` in `bper_capture_worker.py`, provider-aware):
-  `config.ini [llm] api_key` first if non-blank; else for `gemini` `GEMINI_API_KEY` →
-  `GOOGLE_API_KEY` → `LLM_API_KEY`, for `openai` `OPENAI_API_KEY` → `LLM_API_KEY`.
-  Leave `api_key` empty in the INI to use env keys.
+- Router key precedence (`AgentConfig.resolve_llm_settings()` in `edge-agent/config.py`,
+  provider-aware): `config.ini [llm] api_key` first if non-blank; else for `gemini`
+  `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY`, for `openai` `OPENAI_API_KEY` →
+  `LLM_API_KEY`. Leave `api_key` empty in the INI to use env keys -- `build_exe.bat` refuses
+  to package a config.ini with a non-blank `api_key`.
 - `AgentConfig.save()` re-persists `llm_api_key` back into `config.ini`
   (`edge-agent/config.py:326-332`; currently uncalled). Do not wire it up with a real key loaded.
 - Real keys belong in `.env` (gitignored; template in `.env.example`).
@@ -229,7 +231,10 @@ downstream effects.
    reports can under-count. See `extraction/vlm_client.py`.
 3. **Environment-based config** -- all configuration via `os.getenv()` with sensible defaults,
    read at *import time* in `extraction/config.py`. Env (or `.env`) must be populated before
-   importing `extraction`.
+   importing `extraction`. In the edge-agent this is why `edge_agent.main()` imports
+   `ui.main_window` (which transitively imports `extraction`) only *after*
+   `bootstrap.run_preflight()` has created/loaded the local `.env` -- do not hoist that import
+   to module scope.
 4. **Thread safety** -- LangChain ChatModel instances are treated as thread-safe and shared across
    all workers. Created once in `BatchRunner.__init__()` before the thread pool. See
    `extraction/cli.py`.

@@ -1,15 +1,19 @@
 # -*- mode: python ; coding: utf-8 -*-
 """PyInstaller spec: pacchetto portable EdgeAgent (onedir, senza console).
 
-Build: .venv\\Scripts\\python.exe -m PyInstaller edge_agent.spec --noconfirm
-(oppure build_exe.bat, che copia anche config/asset accanto all'exe).
+Pipeline supportata: build_exe.bat (build + copie top-level + zip datato).
+Lo spec da solo produce comunque un bundle avviabile: config.ini, env.template
+e assets sono nei datas e il bootstrap li semina accanto all'exe al primo avvio.
 """
 
 from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
-# config.ini di default dentro il bundle: il bootstrap lo ricopia accanto
-# all'exe se l'utente lo cancella per errore.
-datas = [("edge-agent/config.ini", "defaults")]
+# Default dentro il bundle: il bootstrap li semina/ripristina accanto all'exe.
+datas = [
+    ("edge-agent/config.ini", "defaults"),
+    ("edge-agent/defaults/env.template", "defaults"),
+    ("edge-agent/assets", "assets"),
+]
 # qt_material carica template XML/CSS da file: vanno raccolti esplicitamente.
 datas += collect_data_files("qt_material")
 
@@ -25,7 +29,9 @@ a = Analysis(
     hiddenimports=hiddenimports,
     hookspath=[],
     runtime_hooks=[],
-    excludes=["tkinter", "matplotlib", "IPython", "streamlit", "pytest"],
+    # pyarrow: extra opzionale di pandas mai importato dal progetto (81MB).
+    # NON escludere scipy: imagehash.phash lo importa lazy a runtime.
+    excludes=["tkinter", "matplotlib", "IPython", "streamlit", "pytest", "pyarrow"],
     noarchive=False,
 )
 
