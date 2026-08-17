@@ -104,8 +104,7 @@ poc-data-extraction/
 │                               #   but absent from working tree (dir is gitignored via /mnt)
 ├── docs/                 # Italian narrative documentation layer (INDEX + docs 00-12)
 ├── .codebase-map/              # Auto-generated codebase map (this file lives in _internal/)
-├── .claude/                    # Claude Code local settings only
-└── prompts_immagini.txt        # Image-generation prompts (reference only, unused by code)
+└── .claude/                    # Claude Code local settings only
 ```
 
 ## Key Entry Points

@@ -26,7 +26,6 @@ poc-data-extraction/
   .gitignore                   # Ignores .env*, /mnt, .venv/, build/, dist/, *.spec, src/, temp_uploads/, test_no_gt/
   CLAUDE.md                    # AI-assistant project guide (has some drift vs. code - noted inline below)
   README.md                    # Italian README, incl. the PyInstaller build recipe
-  prompts_immagini.txt         # Image-generation prompts, reference only - no code reads it
 
   extraction/                  # Core engine package - pipeline, evaluation, no UI code
     __init__.py                # Public API re-exports (the `from extraction import *` surface)
