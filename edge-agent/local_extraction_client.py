@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import csv
-import io
 import os
 import sys
 import threading
@@ -30,10 +28,49 @@ except Exception:
 from extraction.llm_factory import create_chat_model
 from extraction.pipeline import ExtractionPipeline
 from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR, PARALLEL_WORKERS
-from extraction.normalization import escape_csv_formula
 from prompt_store import catalog_source
 
 from extraction_pool import DaemonThreadPool
+
+
+# ============================================================
+# Diagnostics
+# ============================================================
+
+
+def _log_extraction(job_id: str, result: Dict[str, Any]) -> None:
+    """Print the per-frame diagnostics to stdout.
+
+    In the windowed bundle stdout is edge-agent.log (edge_agent.py:15-25). This
+    is the only place confidence, cost and field provenance survive now that the
+    diagnostic tab is gone: the UI shows business data only.
+    """
+    meta = result.get("_meta_agg") or {}
+    sources = result.get("_field_sources") or {}
+
+    print(
+        f"[EXTRACT] job={job_id} screen={result.get('screen_id')!r} "
+        f"page={result.get('_page_type')!r} status={result.get('_status')} "
+        f"calls={meta.get('calls', 0)} tokens={meta.get('total_tokens', 0)} "
+        f"cost=${float(meta.get('estimated_cost_usd', 0.0) or 0.0):.6f} "
+        f"latency={meta.get('latency_ms', 0)}ms"
+    )
+
+    error = result.get("_error")
+    if error:
+        print(f"[EXTRACT]   error: {error}")
+
+    for key, payload in (result.get("fields") or {}).items():
+        if not isinstance(payload, dict):
+            continue
+        value = payload.get("value")
+        if value is None or str(value).strip() == "":
+            continue
+        confidence = payload.get("confidence") or 0.0
+        print(
+            f"[EXTRACT]   {key}={value!r} conf={float(confidence):.2f} "
+            f"src={sources.get(key, '?')}"
+        )
 
 
 class LocalExtractionClient(QtCore.QObject):
@@ -43,8 +80,8 @@ class LocalExtractionClient(QtCore.QObject):
 
     Uses ExtractionPipeline to process each captured frame locally,
     stores results in memory, and emits result_ready when done.
-    Compatible surface: start_job(), ingest_frame(), requeue_job(), export_csv(),
-    frame_queued (signal), shutdown(), pending_extractions().
+    Compatible surface: start_job(), ingest_frame(), requeue_job(),
+    get_results(), frame_queued (signal), shutdown(), pending_extractions().
     """
 
     result_ready = QtCore.pyqtSignal(str, dict)   # (job_id, result)
@@ -132,6 +169,8 @@ class LocalExtractionClient(QtCore.QObject):
         result["_page_no"] = page_no
         result["_page_confidence"] = confidence
 
+        _log_extraction(job_id, result)
+
         with self._lock:
             self._results.setdefault(job_id, []).append(result)
 
@@ -150,40 +189,6 @@ class LocalExtractionClient(QtCore.QObject):
         """Stop the pool: queued frames are discarded; running tasks cannot
         block process exit (daemon threads)."""
         self._pool.stop()
-
-    def export_csv(self, job_id: str, schema: str = "flat") -> Optional[str]:
-        """Export extraction results for a job as CSV text."""
-        results = self.get_results(job_id)
-        if not results:
-            return None
-
-        # Collect union of all field keys across results
-        all_field_keys: List[str] = []
-        for r in results:
-            for k in (r.get("fields") or {}).keys():
-                if k not in all_field_keys:
-                    all_field_keys.append(k)
-
-        header = (
-            ["screen_id", "_page_type", "_status"]
-            + [f"{k}_value" for k in all_field_keys]
-            + [f"{k}_conf" for k in all_field_keys]
-        )
-
-        output = io.StringIO()
-        writer = csv.writer(output)
-        writer.writerow(header)
-        for r in results:
-            fields = r.get("fields") or {}
-            row = (
-                [r.get("screen_id", ""), r.get("_page_type", ""), r.get("_status", "")]
-                + [(fields.get(k) or {}).get("value", "") for k in all_field_keys]
-                + [(fields.get(k) or {}).get("confidence", "") for k in all_field_keys]
-            )
-            # Neutralize CSV/formula injection on untrusted OCR values
-            writer.writerow([escape_csv_formula(c) for c in row])
-
-        return output.getvalue()
 
     # ------------------------------------------------------------------ Data access
 
