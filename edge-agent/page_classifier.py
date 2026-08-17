@@ -25,6 +25,87 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 
+# ============================================================
+# Costanti DINOv2 (unica definizione: bootstrap e router le importano da qui)
+# ============================================================
+# Ref pinnato a un commit: evita la chiamata di rete di torch.hub per risolvere
+# il branch (bloccante dietro proxy) e congela il codice remoto a una revisione nota.
+DINOV2_HUB_REPO = "facebookresearch/dinov2:7764ea0f912e53c92e82eb78a2a1631e92725fc8"
+DINOV2_MODEL_NAME = "dinov2_vits14"
+DINOV2_WEIGHTS_URL = "https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth"
+DINOV2_WEIGHTS_FILENAME = "dinov2_vits14_pretrain.pth"
+DINOV2_WEIGHTS_SHA256 = "b938bf1bc15cd2ec0feacfe3a1bb553fe8ea9ca46a7e1d8d00217f29aef60cd9"
+
+# Tuning condiviso del classificatore BPER
+DEFAULT_CROP_ROI = (0.0, 0.12, 1.0, 0.30)
+DEFAULT_SIMILARITY_THRESHOLD = 0.70
+
+# Sottocartelle del dataset che NON sono pagine (escluse dai prototipi)
+_EXCLUDED_SUBDIRS = {"transitions"}
+
+
+def _scan_dataset_images(templates_dir: Path) -> Dict[str, List[Path]]:
+    """
+    Scansiona templates_dir e costruisce {page_type: [path_img, ...]}.
+
+    Unisce immagini in root (page_type = stem del file) e sottocartelle
+    (page_type = nome cartella), escludendo le sottocartelle non-pagina.
+    """
+    page_images: Dict[str, List[Path]] = {}
+
+    root_imgs = sorted(
+        p
+        for p in templates_dir.glob("*")
+        if p.is_file()
+        and p.suffix.lower() in {".png", ".jpg", ".jpeg", ".bmp"}
+    )
+    for img_path in root_imgs:
+        page_type = img_path.stem
+        if page_type not in page_images:
+            page_images[page_type] = []
+        page_images[page_type].append(img_path)
+
+    subdirs = [
+        d for d in templates_dir.iterdir()
+        if d.is_dir() and d.name.lower() not in _EXCLUDED_SUBDIRS
+    ]
+    for subdir in sorted(subdirs):
+        imgs = sorted(
+            p
+            for p in subdir.glob("*")
+            if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".bmp"}
+        )
+        if imgs:
+            if subdir.name not in page_images:
+                page_images[subdir.name] = []
+            page_images[subdir.name].extend(imgs)
+
+    if not page_images:
+        raise RuntimeError(
+            f"Nessuna immagine trovata in {templates_dir} "
+            "(né in root, né in sottocartelle)."
+        )
+
+    return page_images
+
+
+def cache_is_valid(templates_dir: Path, cache_path: Optional[Path] = None) -> bool:
+    """
+    True se la cache prototipi esiste ed è coerente col dataset corrente.
+
+    Non importa torch: usabile dal pre-flight per decidere se saltare il warm-up.
+    """
+    templates_dir = Path(templates_dir)
+    cache = Path(cache_path) if cache_path else templates_dir / "bper_page_prototypes.json"
+    if not cache.exists():
+        return False
+    try:
+        data = json.loads(cache.read_text(encoding="utf-8"))
+        page_images = _scan_dataset_images(templates_dir)
+        return data.get("dataset_hash") == BPERPagePrototypeClassifier._compute_dataset_hash(page_images)
+    except Exception:
+        return False
+
 
 @dataclass
 class Prototype:
@@ -200,7 +281,7 @@ class BPERPagePrototypeClassifier:
 
         # Carichiamo DINOv2 Small tramite TorchHub
         # 'dinov2_vits14' è la versione Small, bilanciata per l'edge
-        self.model = torch.hub.load('facebookresearch/dinov2', 'dinov2_vits14')
+        self.model = torch.hub.load(DINOV2_HUB_REPO, DINOV2_MODEL_NAME)
 
         # L'embedding dimension per ViT-S/14 è 384
         self.embedding_dim = 384
@@ -223,63 +304,25 @@ class BPERPagePrototypeClassifier:
         )
 
     def _list_dataset_images(self) -> Dict[str, List[Path]]:
-        """
-        Scansiona templates_dir e costruisce:
-            {page_type: [path_img1, ...]}
-        Unisce immagini in root e immagini in sottocartelle.
-        """
-        page_images: Dict[str, List[Path]] = {}
-
-        # 1) Immagini direttamente in root
-        root_imgs = sorted(
-            p
-            for p in self.templates_dir.glob("*")
-            if p.is_file()
-            and p.suffix.lower() in {".png", ".jpg", ".jpeg", ".bmp"}
-        )
-        for img_path in root_imgs:
-            page_type = img_path.stem
-            if page_type not in page_images:
-                page_images[page_type] = []
-            page_images[page_type].append(img_path)
-
-        # 2) Sottocartelle (ogni sottocartella è un page_type che raggruppa più immagini)
-        subdirs = [d for d in self.templates_dir.iterdir() if d.is_dir()]
-        for subdir in sorted(subdirs):
-            imgs = sorted(
-                p
-                for p in subdir.glob("*")
-                if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".bmp"}
-            )
-            if imgs:
-                if subdir.name not in page_images:
-                    page_images[subdir.name] = []
-                page_images[subdir.name].extend(imgs)
-
-        if not page_images:
-            raise RuntimeError(
-                f"Nessuna immagine trovata in {self.templates_dir} "
-                "(né in root, né in sottocartelle)."
-            )
-
-        return page_images
+        """Scansiona templates_dir; vedi _scan_dataset_images (funzione condivisa)."""
+        return _scan_dataset_images(self.templates_dir)
 
     @staticmethod
     def _compute_dataset_hash(page_images: Dict[str, List[Path]]) -> str:
         """
-        Hash stabile basato su (path, size, mtime) di tutte le immagini,
-        usato per invalidare la cache prototipi.
+        Hash stabile basato su nome file + digest del contenuto: sopravvive a
+        clone, spostamenti della cartella ed estrazioni zip (path e mtime no).
         """
         h = hashlib.sha1()
         for page_type in sorted(page_images.keys()):
             for p in sorted(page_images[page_type]):
                 try:
-                    stat = p.stat()
-                except FileNotFoundError:
+                    content_digest = hashlib.sha1(p.read_bytes()).hexdigest()
+                except (FileNotFoundError, OSError):
                     continue
-                h.update(str(p).encode("utf-8"))
-                h.update(str(stat.st_size).encode("utf-8"))
-                h.update(str(int(stat.st_mtime)).encode("utf-8"))
+                h.update(page_type.encode("utf-8"))
+                h.update(p.name.encode("utf-8"))
+                h.update(content_digest.encode("utf-8"))
         return h.hexdigest()
 
     def _load_or_build_prototypes(self) -> None:

@@ -40,16 +40,20 @@ class PageRouter:
 
 
 class MLPageRouter(PageRouter):
-    """Wrapper del classificatore a prototipi esistente."""
+    """Wrapper del classificatore a prototipi: ne è l'unico proprietario."""
 
-    def __init__(self, templates_dir: Path) -> None:
+    def __init__(self, templates_dir: Path, classifier: Optional[Any] = None) -> None:
         # Import lazily per non forzare torch su ambienti senza supporto
-        from page_classifier import BPERPagePrototypeClassifier  # type: ignore
+        from page_classifier import (  # type: ignore
+            BPERPagePrototypeClassifier,
+            DEFAULT_CROP_ROI,
+            DEFAULT_SIMILARITY_THRESHOLD,
+        )
 
-        self.classifier = BPERPagePrototypeClassifier(
+        self.classifier = classifier or BPERPagePrototypeClassifier(
             templates_dir=templates_dir,
-            crop_roi=(0.0, 0.12, 1.0, 0.30),
-            similarity_threshold=0.70,
+            crop_roi=DEFAULT_CROP_ROI,
+            similarity_threshold=DEFAULT_SIMILARITY_THRESHOLD,
             device="cpu",
         )
 

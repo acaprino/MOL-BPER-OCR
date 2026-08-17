@@ -85,11 +85,11 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Nomi pagina definiti in prompts.json (per normalizzazione)
         self._prompts_page_names: Set[str] = set()
 
-        # Inizializza routing (ML o LLM)
+        # Routing (ML o LLM): l'inizializzazione vera avviene in run(), nel
+        # thread worker — il caricamento DINOv2 non deve congelare la UI.
         self.classifier: Optional[Any] = None
         self.router: Optional[PageRouter] = None
-        self._init_router()
-        self._load_page_sequence()
+        self._router_ready: bool = False
 
         # Throttling routing su frame duplicati: ultimo tentativo eseguito
         self._last_route_attempt_ts: Optional[float] = None
@@ -109,41 +109,6 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
     # ------------------------------------------------------------------ init classifier
 
-    def _resolve_llm_settings(self) -> Tuple[str, str, str]:
-        """
-        Risolve (api_key, base_url, model) del router LLM in base al provider configurato.
-
-        Con provider=gemini usa l'endpoint OpenAI-compatibile di Google e le chiavi
-        GEMINI_API_KEY/GOOGLE_API_KEY/LLM_API_KEY; con openai la catena classica
-        OPENAI_API_KEY/LLM_API_KEY. La api_key in config.ini, se presente, vince sempre.
-        """
-        import os
-
-        provider = (self.config.llm_provider or "openai").lower()
-        if provider == "gemini":
-            api_key = (
-                self.config.llm_api_key
-                or os.getenv("GEMINI_API_KEY")
-                or os.getenv("GOOGLE_API_KEY")
-                or os.getenv("LLM_API_KEY", "")
-            )
-            base_url = self.config.llm_base_url or ""
-            if not base_url or "api.openai.com" in base_url:
-                base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
-            model = self.config.llm_model or ""
-            if not model or model.lower().startswith("gpt"):
-                env_model = os.getenv("LLM_MODEL", "")
-                model = env_model if env_model.lower().startswith("gemini") else "gemini-3.6-flash"
-        else:
-            api_key = (
-                self.config.llm_api_key
-                or os.getenv("OPENAI_API_KEY")
-                or os.getenv("LLM_API_KEY", "")
-            )
-            base_url = self.config.llm_base_url or "https://api.openai.com/v1"
-            model = self.config.llm_model
-        return api_key, base_url, model
-
     def _init_router(self) -> None:
         """Inizializza il router pagina in base a config.router_mode."""
         try:
@@ -154,7 +119,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
             mode = (self.config.router_mode or "ml").lower()
             if mode == "llm":
                 prompts_path = templates_dir / "prompts.json"
-                api_key, base_url, model = self._resolve_llm_settings()
+                api_key, base_url, model = self.config.resolve_llm_settings()
                 self.router = LLMPageRouter(
                     prompts_path=prompts_path,
                     provider=self.config.llm_provider,
@@ -177,7 +142,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
             elif mode == "hybrid":
                 # per ora: usa LLM, altrimenti fallback su ML
                 prompts_path = templates_dir / "prompts.json"
-                api_key, base_url, model = self._resolve_llm_settings()
+                api_key, base_url, model = self.config.resolve_llm_settings()
                 self.router = LLMPageRouter(
                     prompts_path=prompts_path,
                     provider=self.config.llm_provider,
@@ -200,27 +165,20 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 # In parallelo inizializza ML per fallback, se disponibile
                 if BPERPagePrototypeClassifier is not None:
                     try:
+                        from page_classifier import DEFAULT_CROP_ROI, DEFAULT_SIMILARITY_THRESHOLD
                         self.classifier = BPERPagePrototypeClassifier(
                             templates_dir=templates_dir,
-                            crop_roi=(0.0, 0.12, 1.0, 0.30),
-                            similarity_threshold=0.70,
+                            crop_roi=DEFAULT_CROP_ROI,
+                            similarity_threshold=DEFAULT_SIMILARITY_THRESHOLD,
                             device="cpu",
                         )
                     except Exception:
                         self.classifier = None
             else:
-                # ML
-                if BPERPagePrototypeClassifier is not None:
-                    try:
-                        self.classifier = BPERPagePrototypeClassifier(
-                            templates_dir=templates_dir,
-                            crop_roi=(0.0, 0.12, 1.0, 0.30),  # fascia alta (header + tab)
-                            similarity_threshold=0.70,
-                            device="cpu",
-                        )
-                    except Exception:
-                        self.classifier = None
+                # ML: MLPageRouter è l'unico proprietario del classificatore
+                # (una sola istanza DINOv2, condivisa per log/diagnostica)
                 self.router = MLPageRouter(templates_dir)
+                self.classifier = self.router.classifier
                 if self.classifier is not None:
                     try:
                         info = self.classifier.info()
@@ -243,6 +201,15 @@ class BPERCaptureWorker(BaseCaptureWorker):
             self.tick.emit("[BPER] Router disabilitato.")
 
     # ------------------------------------------------------------------ lifecycle
+
+    def run(self) -> None:
+        """Inizializza router e sequenza pagine nel thread worker, poi entra nel loop."""
+        if not self._router_ready:
+            self.tick.emit("[Worker] Inizializzazione riconoscimento in corso...")
+            self._init_router()
+            self._load_page_sequence()
+            self._router_ready = True
+        super().run()
 
     def stop(self) -> None:
         """Override: ferma il loop e rilascia il contesto mss."""
@@ -500,14 +467,15 @@ class BPERCaptureWorker(BaseCaptureWorker):
             # Nessun job attivo: non fa nulla
             return
 
-        # Cattura screenshot
-        img = self._capture_screenshot()
-        if img is None:
+        # Cattura frame raw: il preprocess (costoso) avviene solo se il frame
+        # supera dedup e throttling, non su ogni grab.
+        raw = self._grab_raw()
+        if raw is None:
             return
 
         # Dedup basato su pHash con throttling: se frame duplicato, prova il routing
         # solo a intervalli regolari per evitare che un primo fallimento blocchi tutto.
-        is_dup = self._is_duplicate_frame(img)
+        is_dup = self._is_duplicate_frame(raw)
         if is_dup:
             now_ts = time.time()
             min_interval = float(getattr(self.config, "route_retry_seconds", 1.0) or 1.0)
@@ -518,6 +486,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
         # Riconoscimento pagina tramite router (LLM/ML)
         self._last_route_attempt_ts = time.time()
+        img = self._preprocess(raw)
         page_type, score, fields = self._detect_page(img)
 
         if page_type is None or page_type in _SKIP_PAGE_TYPES:
@@ -579,11 +548,12 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
     # ------------------------------------------------------------------ screenshot & dedup
 
-    def _capture_screenshot(self) -> Optional[Image.Image]:
+    def _grab_raw(self) -> Optional[Image.Image]:
         """
-        Cattura screenshot del monitor configurato (mss – veloce e cross‑platform).
+        Cattura il frame raw del monitor configurato (mss – veloce e cross‑platform).
 
         Usa config.monitor_index (1..N). Se l'indice non esiste, ripiega su monitor 1.
+        Nessun preprocess: serve solo per dedup; il preprocess è in _preprocess().
         """
         # Inizializza il contesto mss una volta sola (non ad ogni frame)
         if self._mss_ctx is None:
@@ -604,17 +574,6 @@ class BPERCaptureWorker(BaseCaptureWorker):
             mon = monitors[idx]
             shot = sct.grab(mon)
             img = Image.frombytes('RGB', shot.size, shot.rgb)
-            try:
-                img = preprocess_for_ocr(
-                    img,
-                    scale=self.config.image_scale,
-                    unsharp_amount=self.config.unsharp_amount,
-                    unsharp_radius=self.config.unsharp_radius,
-                    unsharp_threshold=self.config.unsharp_threshold,
-                    contrast_stretch=True,
-                )
-            except Exception:
-                pass
             self._consecutive_capture_errors = 0
             return img
         except Exception as exc:  # noqa: BLE001
@@ -629,6 +588,25 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 ))
                 self._running = False
             return None
+
+    def _preprocess(self, img: Image.Image) -> Image.Image:
+        """Applica il preprocess OCR (scala, unsharp, contrasto); best-effort."""
+        try:
+            return preprocess_for_ocr(
+                img,
+                scale=self.config.image_scale,
+                unsharp_amount=self.config.unsharp_amount,
+                unsharp_radius=self.config.unsharp_radius,
+                unsharp_threshold=self.config.unsharp_threshold,
+                contrast_stretch=True,
+            )
+        except Exception:  # noqa: BLE001
+            return img
+
+    def _capture_screenshot(self) -> Optional[Image.Image]:
+        """Frame già preprocessato (usato dal forza scatto)."""
+        raw = self._grab_raw()
+        return None if raw is None else self._preprocess(raw)
 
     def _is_duplicate_frame(self, img: Image.Image) -> bool:
         """
@@ -698,8 +676,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
                         self.tick.emit("🔍 Schermata non riconosciuta.")
                 except Exception:
                     self.tick.emit("🔍 Schermata non riconosciuta.")
-                # Fallback a ML se disponibile (modalità hybrid)
-                if self.classifier is not None:
+                # Fallback a ML solo in modalità hybrid: se il router È già il
+                # classificatore ML, riclassificare lo stesso frame è identico.
+                if self.classifier is not None and isinstance(self.router, LLMPageRouter):
                     label, score = self.classifier.classify(img)
                     if label is not None:
                         self.tick.emit(f"[ML] Riconosciuta via fallback: «{self._friendly_name(label)}» (score={score:.3f})")
@@ -769,6 +748,10 @@ class BPERCaptureWorker(BaseCaptureWorker):
         Non richiede stabilità né match del router. Aggiunge la pagina a `captured_page_types`.
         """
         try:
+            if not self._router_ready:
+                self.tick.emit("[BPER] Forza scatto: inizializzazione in corso, riprova tra qualche secondo.")
+                return
+
             job_id = self.job_id_getter()
             if not job_id:
                 self.tick.emit("[BPER] Forza scatto: nessun job attivo.")
