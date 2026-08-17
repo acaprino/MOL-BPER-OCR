@@ -18,7 +18,7 @@ except Exception:  # noqa: BLE001
     BPERPagePrototypeClassifier = None  # type: ignore
 
 from .base_capture_worker import BaseCaptureWorker
-from frame_normalize import find_window_rect, normalize_frame
+from frame_normalize import UNCHANGED, find_window_rect, normalize_frame
 from image_ops import preprocess_for_ocr
 import app_paths
 from page_registry import PageDef, PageRegistry
@@ -86,6 +86,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
         # Ultimo errore router già loggato (per non ripeterlo a ogni frame)
         self._last_router_error: Optional[str] = None
+
+        # Ultima strategia di inquadratura annunciata (una riga per strategia)
+        self._last_framing_strategy: Optional[str] = None
 
     # ------------------------------------------------------------------ init classifier
 
@@ -341,11 +344,13 @@ class BPERCaptureWorker(BaseCaptureWorker):
             # router e il CONTENT_CROP della pipeline sono tarati su screenshot
             # di finestra, e su un frame a schermo intero le stesse coordinate
             # relative cadono su contenuto diverso.
-            img = normalize_frame(
+            full_size = img.size
+            img, strategy = normalize_frame(
                 img,
                 mon,
                 lambda: find_window_rect(getattr(self.config, "window_title_contains", "")),
             )
+            self._announce_framing(strategy, full_size, img.size)
             self._consecutive_capture_errors = 0
             return img
         except Exception as exc:  # noqa: BLE001
@@ -360,6 +365,38 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 ))
                 self._running = False
             return None
+
+    def _announce_framing(
+        self,
+        strategy: str,
+        full_size: Tuple[int, int],
+        framed_size: Tuple[int, int],
+    ) -> None:
+        """Dichiara nel feed quale strategia ha inquadrato il frame.
+
+        Una volta sola per strategia: a 3 FPS una riga per frame seppellirebbe il
+        log. UNCHANGED e' l'unica che vale un avviso, perche' significa che al
+        classificatore arriva un monitor intero mentre i prototipi sono
+        screenshot di finestra, ed e' un fallimento che altrimenti si legge solo
+        come pagina sbagliata con punteggio mediocre.
+        """
+        if strategy == self._last_framing_strategy:
+            return
+        self._last_framing_strategy = strategy
+
+        w, h = full_size
+        fw, fh = framed_size
+        if strategy == UNCHANGED:
+            self.tick.emit(
+                f"⚠️ Inquadratura non normalizzata (unchanged): il frame resta {w}x{h}. "
+                f"Nessuna finestra col titolo «{getattr(self.config, 'window_title_contains', '')}» "
+                "e nessuno sfondo uniforme attorno: il riconoscimento pagina lavora "
+                "fuori distribuzione e sbaglierà."
+            )
+        else:
+            self.tick.emit(
+                f"[Inquadratura] {strategy}: {w}x{h} → {fw}x{fh}"
+            )
 
     def _preprocess(self, img: Image.Image) -> Image.Image:
         """Applica il preprocess OCR (scala, unsharp, contrasto); best-effort."""

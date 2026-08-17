@@ -25,6 +25,14 @@ from PIL import Image, ImageChops
 # Rect in coordinate dello schermo virtuale, come le restituisce GetWindowRect.
 Rect = Tuple[int, int, int, int]
 
+# Strategia che ha prodotto l'inquadratura, riportata da normalize_frame().
+# UNCHANGED non e' un dettaglio: significa che al classificatore arriva un frame
+# che sappiamo fuori distribuzione, la condizione che faceva riconoscere 1 pagina
+# su 9. Va detta a voce, non lasciata deducibile dai punteggi.
+WINDOW_RECT = "window-rect"
+CONTENT_RECT = "content-rect"
+UNCHANGED = "unchanged"
+
 # Scostamento massimo di luminanza perche' due pixel contino come stesso colore.
 _COLOR_TOLERANCE = 24
 
@@ -146,8 +154,14 @@ def normalize_frame(
     img: Image.Image,
     monitor: Dict[str, int],
     window_rect_provider: Callable[[], Optional[Rect]],
-) -> Image.Image:
-    """Frame ritagliato sull'applicativo: finestra dal sistema, poi contenuto."""
+) -> Tuple[Image.Image, str]:
+    """Frame ritagliato sull'applicativo: finestra dal sistema, poi contenuto.
+
+    Restituisce anche quale strategia ha agito (WINDOW_RECT / CONTENT_RECT /
+    UNCHANGED). Il chiamante deve poterlo dire: UNCHANGED lascia passare un frame
+    a schermo intero, e le coordinate relative a valle cadono su contenuto
+    diverso da quello su cui sono tarate.
+    """
     try:
         window_rect = window_rect_provider()
     except Exception:  # noqa: BLE001 — un provider di sistema non deve fermare la cattura
@@ -156,10 +170,10 @@ def normalize_frame(
     if window_rect is not None:
         cropped = crop_to_rect(img, monitor, window_rect)
         if cropped is not img:
-            return cropped
+            return cropped, WINDOW_RECT
 
     content_rect = detect_app_rect(img)
     if content_rect is not None:
-        return img.crop(content_rect)
+        return img.crop(content_rect), CONTENT_RECT
 
-    return img
+    return img, UNCHANGED

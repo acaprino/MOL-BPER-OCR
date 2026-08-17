@@ -35,7 +35,7 @@ def _live_frame(template: Path, scale: float = 1.0) -> Image.Image:
 
 def _as_worker_sees_it(frame: Image.Image) -> Image.Image:
     """The worker's own order: normalize the framing, then preprocess for OCR."""
-    normalized = normalize_frame(frame, MONITOR, window_rect_provider=lambda: None)
+    normalized, _strategy = normalize_frame(frame, MONITOR, window_rect_provider=lambda: None)
     return preprocess_for_ocr(
         normalized,
         scale=None,

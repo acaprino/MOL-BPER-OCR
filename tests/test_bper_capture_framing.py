@@ -73,10 +73,47 @@ def test_grab_raw_crops_the_monitor_down_to_the_app_window():
     assert grabbed.size == WINDOW_SIZE
 
 
-def test_grab_raw_keeps_the_full_frame_when_no_window_can_be_located():
+def _maximized_app() -> Image.Image:
     filled = Image.new("RGB", (MONITOR["width"], MONITOR["height"]), "white")
     filled.paste(Image.new("RGB", (MONITOR["width"], 60), (10, 40, 90)), (0, 0))
+    return filled
 
-    grabbed = _worker(filled)._grab_raw()
+
+def test_grab_raw_keeps_the_full_frame_when_no_window_can_be_located():
+    grabbed = _worker(_maximized_app())._grab_raw()
 
     assert grabbed.size == (MONITOR["width"], MONITOR["height"])
+
+
+def _ticks_from(worker: Any, frames: int) -> list:
+    captured: list = []
+    worker.tick.connect(captured.append)
+    for _ in range(frames):
+        worker._grab_raw()
+    return captured
+
+
+def test_grab_raw_announces_which_framing_strategy_ran():
+    """The operator must be able to read the framing decision, not infer it.
+
+    A frame that was never cropped is out of distribution for the classifier,
+    and the only symptom is a plausible-looking but wrong page at a mediocre
+    score. That is unreadable from the capture feed unless the decision is
+    stated.
+    """
+    ticks = _ticks_from(_worker(_monitor_with_window()), 1)
+
+    assert any("content-rect" in t for t in ticks), ticks
+
+
+def test_the_framing_announcement_is_not_repeated_every_frame():
+    # At 3 FPS a per-frame line would bury the feed.
+    ticks = _ticks_from(_worker(_monitor_with_window()), 4)
+
+    assert len([t for t in ticks if "content-rect" in t]) == 1
+
+
+def test_grab_raw_warns_when_the_frame_is_passed_through_uncropped():
+    ticks = _ticks_from(_worker(_maximized_app()), 1)
+
+    assert any("unchanged" in t for t in ticks), ticks

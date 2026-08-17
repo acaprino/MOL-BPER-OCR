@@ -2,7 +2,14 @@
 
 from PIL import Image
 
-from frame_normalize import crop_to_rect, detect_app_rect, normalize_frame
+from frame_normalize import (
+    CONTENT_RECT,
+    UNCHANGED,
+    WINDOW_RECT,
+    crop_to_rect,
+    detect_app_rect,
+    normalize_frame,
+)
 
 # mss reports monitors as left/top/width/height in virtual-screen coordinates.
 MONITOR = {"left": 0, "top": 0, "width": 800, "height": 600}
@@ -66,28 +73,38 @@ def test_normalize_frame_prefers_the_window_rect_over_content_detection():
     win = Image.new("RGB", (420, 300), "white")
     frame = _desktop_with_window(win, (120, 80))
 
-    normalized = normalize_frame(
+    normalized, strategy = normalize_frame(
         frame, MONITOR, window_rect_provider=lambda: (200, 100, 400, 250)
     )
 
     assert normalized.size == (200, 150)
+    assert strategy == WINDOW_RECT
 
 
 def test_normalize_frame_falls_back_to_content_detection_without_a_window_rect():
     win = Image.new("RGB", (420, 300), "white")
     frame = _desktop_with_window(win, (120, 80))
 
-    normalized = normalize_frame(frame, MONITOR, window_rect_provider=lambda: None)
+    normalized, strategy = normalize_frame(frame, MONITOR, window_rect_provider=lambda: None)
 
     assert normalized.size == (420, 300)
+    assert strategy == CONTENT_RECT
 
 
 def test_normalize_frame_keeps_the_frame_when_nothing_can_be_located():
+    """The give-up branch must be nameable.
+
+    It hands the classifier a frame that is known to be out of distribution,
+    which is the exact condition that made recognition score 1 page out of 9.
+    Silently returning the frame leaves that diagnosable only by reading the
+    scores, so the caller has to be able to say which branch ran.
+    """
     frame = _maximized_app()
 
-    normalized = normalize_frame(frame, MONITOR, window_rect_provider=lambda: None)
+    normalized, strategy = normalize_frame(frame, MONITOR, window_rect_provider=lambda: None)
 
     assert normalized.size == frame.size
+    assert strategy == UNCHANGED
 
 
 def test_normalize_frame_survives_a_window_rect_provider_that_raises():
@@ -97,6 +114,7 @@ def test_normalize_frame_survives_a_window_rect_provider_that_raises():
     def boom():
         raise OSError("user32 unavailable")
 
-    normalized = normalize_frame(frame, MONITOR, window_rect_provider=boom)
+    normalized, strategy = normalize_frame(frame, MONITOR, window_rect_provider=boom)
 
     assert normalized.size == (420, 300)
+    assert strategy == CONTENT_RECT
