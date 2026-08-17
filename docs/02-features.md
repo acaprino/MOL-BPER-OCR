@@ -18,7 +18,7 @@ Consegni al motore un'immagine e ricevi un record con ogni campo che è riuscito
 
 I due metodi di ingresso differiscono per scelta progettuale: `extract_from_screen(path)` (CLI, GUI Tkinter) prima normalizza l'immagine; `extract_from_image(img, screen_id)` (edge-agent) salta `normalize_image()` perché il frame è già stato pre-elaborato a monte.
 
-I prompt vivono in **`extraction/prompts.py`** (`PROMPT`, `ANCHOR_PROMPT`, `FIELD_RETRY_PROMPTS`) e sono scritti in italiano di proposito: le schermate, le etichette e i termini bancari sono italiani, e le chiavi di campo (`professione_principale`, `filiale_relazione`, …) sono vocabolario di dominio portante che non va tradotto.
+I prompt vivono in **`prompts/*.json`** (un file per prompt) e vengono caricati una sola volta all'avvio da `prompt_store.py` (nella root, fuori da `extraction/`, così leggere un prompt non tira dentro LangChain); `extraction/prompts.py` si limita a esporre le costanti storiche (`PROMPT`, `ANCHOR_PROMPT`, `FIELD_RETRY_PROMPTS`) lette dal catalogo. Sono scritti in italiano di proposito: le schermate, le etichette e i termini bancari sono italiani, e le chiavi di campo (`professione_principale`, `filiale_relazione`, …) sono vocabolario di dominio portante che non va tradotto.
 
 ### Backend LLM indipendente dal provider
 

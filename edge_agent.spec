@@ -13,6 +13,9 @@ datas = [
     ("edge-agent/config.ini", "defaults"),
     ("edge-agent/defaults/env.template", "defaults"),
     ("edge-agent/assets", "assets"),
+    # Catalogo prompt LLM: il loader preferisce la copia accanto all'exe
+    # (creata da build_exe.bat) e usa questa come fallback.
+    ("prompts/*.json", "prompts"),
 ]
 # qt_material carica template XML/CSS da file: vanno raccolti esplicitamente.
 datas += collect_data_files("qt_material")

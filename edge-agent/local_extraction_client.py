@@ -31,6 +31,7 @@ from extraction.llm_factory import create_chat_model
 from extraction.pipeline import ExtractionPipeline
 from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR, PARALLEL_WORKERS
 from extraction.normalization import escape_csv_formula
+from prompt_store import catalog_source
 
 from extraction_pool import DaemonThreadPool
 
@@ -54,6 +55,10 @@ class LocalExtractionClient(QtCore.QObject):
         pipeline: Optional[ExtractionPipeline] = None,
     ) -> None:
         super().__init__(parent)
+
+        # Which prompt catalog is live: without this line a redirected or
+        # tampered prompts/ folder leaves no trace in edge-agent.log.
+        print(f"[PROMPTS] catalog loaded from {catalog_source()}")
 
         if pipeline is None:
             main_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL)

@@ -25,6 +25,7 @@ from extraction.evaluation import (
     load_ground_truth,
     Evaluator,
 )
+from prompt_store import catalog_source
 
 def _debug_log(message: str) -> None:
     """Print debug logs only when DEBUG_MODE=1."""
@@ -332,6 +333,8 @@ def main() -> None:
     if not screenshot_paths:
         print(f"No images found in {INPUT_DIR}")
         return
+
+    print(f"[PROMPTS] catalog loaded from {catalog_source()}")
 
     runner = BatchRunner(parallel=PARALLEL_ENABLED, max_workers=PARALLEL_WORKERS)
     outputs = runner.run(screenshot_paths)

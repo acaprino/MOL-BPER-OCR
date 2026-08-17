@@ -1,0 +1,16 @@
+{
+  "id": "extraction_retry_footer",
+  "description": "Retry area FOOTER: campo 'Note della richiesta', copia letterale.",
+  "language": "it",
+  "used_by": [
+    "extraction/pipeline.py::ExtractionPipeline._do_retry (area FOOTER)"
+  ],
+  "text": [
+    "Sei un esperto di estrazione testi lunghi. In questo ritaglio cerca il campo 'Note della richiesta'.",
+    "Copia il testo PAROLA PER PAROLA. ",
+    "Non riassumere, non cambiare la punteggiatura, non aggiungere nulla.",
+    "Se il testo è troncato dal ritaglio, scrivi solo quello che vedi.",
+    "",
+    "Restituisci SOLO JSON."
+  ]
+}

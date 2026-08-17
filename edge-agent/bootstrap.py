@@ -205,6 +205,20 @@ def _ensure_files(parent: Optional[QtWidgets.QWidget]) -> bool:
             "ripristina il pacchetto originale.",
         )
         return False
+
+    # Catalogo prompt: stesso seed dal bundle degli asset, così una cancellazione
+    # accidentale si ripara da sola. Non è bloccante come gli asset perché
+    # prompt_store ripiega comunque sulla copia dentro il bundle; e non tocchiamo
+    # una cartella già popolata, per non sovrascrivere i prompt editati a mano.
+    pdir = app_paths.prompts_dir()
+    if app_paths.is_frozen() and not (pdir.is_dir() and any(pdir.glob("*.json"))):
+        bundled_prompts = app_paths.bundled_prompts_dir()
+        if bundled_prompts.exists():
+            try:
+                shutil.copytree(bundled_prompts, pdir, dirs_exist_ok=True)
+            except Exception:  # noqa: BLE001
+                pass
+
     return True
 
 

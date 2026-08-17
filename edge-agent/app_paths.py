@@ -57,6 +57,18 @@ def bundled_defaults_dir() -> Path:
     return app_dir() / "defaults"
 
 
+def prompts_dir() -> Path:
+    """Catalogo dei prompt LLM modificabile (accanto all'exe da bundle, root del repo da sorgente)."""
+    return project_root() / "prompts"
+
+
+def bundled_prompts_dir() -> Path:
+    """Copia del catalogo prompt inclusa nel bundle, usata per il seed al primo avvio."""
+    if is_frozen():
+        return Path(getattr(sys, "_MEIPASS", app_dir())) / "prompts"
+    return project_root() / "prompts"
+
+
 def bundled_assets_dir() -> Path:
     """Copia degli asset inclusa nel bundle, usata per il seed al primo avvio."""
     if is_frozen():

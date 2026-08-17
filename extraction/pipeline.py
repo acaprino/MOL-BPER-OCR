@@ -24,6 +24,7 @@ from extraction.prompts import (
     ANCHOR_PROMPT,
     FIELD_RETRY_PROMPTS
 )
+from prompt_store import get_part
 from extraction.schemas import ExtractionResponse, AnchorResponse
 from extraction.normalization import (
     normalize_tipo,
@@ -41,6 +42,10 @@ from extraction.imaging import (
     screen_id_from_path,
 )
 from extraction.vlm_client import call_vlm_with_retry
+
+# Hint lines appended to the main-pass prompt with the anchor values already read.
+ANCHOR_HINT_NDG = get_part("extraction_anchor_hints", "ndg")
+ANCHOR_HINT_DENOMINAZIONE = get_part("extraction_anchor_hints", "denominazione")
 
 
 # ============================================================
@@ -199,9 +204,9 @@ class ExtractionPipeline:
     def _build_anchor_hint_prompt(anchors: Dict[str, Any]) -> str:
         hints: List[str] = []
         if not is_nullish(anchors["ndg"]["value"]):
-            hints.append(f"NDG atteso: {anchors['ndg']['value']}")
+            hints.append(ANCHOR_HINT_NDG.format(value=anchors["ndg"]["value"]))
         if not is_nullish(anchors["denominazione"]["value"]):
-            hints.append(f"Denominazione attesa: {anchors['denominazione']['value']}")
+            hints.append(ANCHOR_HINT_DENOMINAZIONE.format(value=anchors["denominazione"]["value"]))
         return PROMPT + ("\n\n" + "\n".join(hints) if hints else "")
 
     @staticmethod

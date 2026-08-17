@@ -1,0 +1,9 @@
+{
+  "id": "extraction_user_instruction",
+  "description": "Messaggio utente che accompagna l'immagine in ogni chiamata VLM (OpenAI e Gemini in schema mode).",
+  "language": "it",
+  "used_by": [
+    "extraction/vlm_client.py::call_vlm"
+  ],
+  "text": "Estrai i campi richiesti dallo screenshot."
+}
