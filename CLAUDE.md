@@ -91,9 +91,10 @@ BPERCaptureWorker (QThread)
                                            ├── Anchor pass (header crop → NDG + DENOMINAZIONE)
                                            ├── Main pass (full content → all fields)
                                            └── Retry pass (low-confidence fields only)
-                                       → stores result → emits result_ready(job_id, result)
-                                                             ├── ExtractionResultsTab (Risultati)
+                                       → logs diagnostics → stores result
+                                       → emits result_ready(job_id, result)
                                                              └── DataTableTab (Dati Estratti)
+                                                                     └── consolidate() → one row per practice
 ```
 
 - **Detection hook:** `BPERCaptureWorker._upload_page()` detects `LocalExtractionClient` via
@@ -177,8 +178,9 @@ All defaults verified against `extraction/config.py`.
 ## Testing & Validation
 
 A pytest suite lives in `tests/` (`python -m pytest tests`) covering the page registry, the capture
-stability tracker, the daemon thread pool, the async local-extraction client and the prompt catalog;
-the extraction pipeline itself is still untested. Dev dependencies for the suite install via `pip install -r requirements-dev.txt`. To
+stability tracker, the daemon thread pool, the async local-extraction client, the prompt catalog,
+practice consolidation and the Excel writer; the extraction pipeline itself is still untested.
+Dev dependencies for the suite install via `pip install -r requirements-dev.txt`. To
 verify changes manually:
 
 1. **Run extraction:** `python main.py` -- should complete without errors (needs `LLM_API_KEY`
@@ -191,7 +193,8 @@ verify changes manually:
 5. **Ground-truth eval:** `eval_outputs()` classifies each field as OK / WRONG / MISSING /
    HALLUCINATED / OK_NULL.
 6. **Edge-agent smoke test:** `python edge-agent/edge_agent.py` -- start capture in BPER mode, verify
-   `ingest_frame()` is called and results appear in the Risultati and Dati Estratti tabs.
+   `ingest_frame()` is called and that one screen's worth of capture yields **one** row in Dati
+   Estratti, not one per frame; export the workbook and check the two-level header.
 
 ## Working Principles
 
@@ -306,6 +309,25 @@ downstream effects.
       failing the `ui.main_window` import chain and taking the app down. This is **not** about the
       bootstrap order of constraint 3: `llm_router` is only reachable via `ui.main_window`, which is
       already imported after `run_preflight()`.
+14. **Edge-agent shows business data only** -- the UI presents the 45 canonical fields, one row per
+    consolidated practice. Confidence, status, cost, tokens, latency and field provenance go to
+    `edge-agent.log` via `_log_extraction()`, never back into a tab. Notes:
+    - **One row = one practice.** The router recognises 9 screens but they are variants of the 4
+      canonical pages (`PAGE_SHEET_ORDER`) of a single practice: a scrolled table or an open tooltip
+      carries 1-6 useful fields. `consolidate()` groups frames by normalized NDG (a frame whose NDG
+      was not read attaches to the most recent practice; frames before the first readable NDG wait
+      in a buffer) and merges fields with `pick_best()` -- do not write a second merge semantics.
+    - **`normalize_ndg()` is not `norm_number_str()`.** The latter is a *quantity* normalizer: it
+      turns `12.345` into `12.35` (splitting one practice across two rows) and `12345/A` into
+      `12345.00` (merging two distinct practices). An NDG is an identifier.
+      `dataset_mismatch_guard()` still uses `norm_number_str()` on NDGs and has the same flaw; it is
+      ground-truth evaluation code and was left alone.
+    - **In xlsx, neutralize formulas with `cell.data_type = "s"`, never `escape_csv_formula()`.**
+      The apostrophe is the CSV convention and stays visible in a spreadsheet cell, and the function
+      also prefixes `-` and `+`, which would corrupt every negative amount.
+    - Column order pins `ndg` and `denominazione` first: the canonical sort orders display names by
+      codepoint, which would put `Creazione` first and NDG sixth, so the frozen panes would anchor
+      two arbitrary columns.
 
 ## Code Conventions
 
@@ -406,7 +428,9 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 
 | Module | Purpose |
 |---|---|
-| `local_extraction_client.py` | `LocalExtractionClient(QObject)`: bridge to `ExtractionPipeline`; `start_job()`, `ingest_frame()` (enqueues on the daemon pool, returns immediately), `export_csv()`, `shutdown()`; `result_ready`/`frame_queued` signals |
+| `local_extraction_client.py` | `LocalExtractionClient(QObject)`: bridge to `ExtractionPipeline`; `start_job()`, `ingest_frame()` (enqueues on the daemon pool, returns immediately), `get_results()`, `shutdown()`; `result_ready`/`frame_queued` signals; logs per-frame diagnostics via `_log_extraction()` |
+| `practice_consolidation.py` | `PracticeRecord`/`consolidate()`: groups captured frames by normalized NDG and merges their fields with `pick_best()`; `normalize_ndg()` |
+| `excel_export.py` | `ColumnSpec`, `build_columns()`, `write_workbook()`, `export_results()` -- formatted openpyxl workbook, two-level header, one row per practice |
 | `extraction_pool.py` | `DaemonThreadPool`: background extraction workers; daemon so window close kills the process |
 | `config.py` | `AgentConfig`: loads `config.ini` (FPS, router mode, preprocessing params, monitor index) |
 | `llm_router.py` | `LLMPageRouter` (OpenAI client, provider-aware endpoint/key/model), `MLPageRouter` (DINOv2 ViT-S/14), `PageRouter` base |
@@ -414,10 +438,9 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 | `page_classifier.py` | `BPERPagePrototypeClassifier` -- DINOv2 ViT-S/14 (384-dim) prototype matching |
 | `page_registry.py` | `PageDef`/`PageRegistry`: canonical page identity, template mapping, capture order from `prompts.json` |
 | `stability.py` | `StabilityTracker`: count+time stability gate with miss tolerance |
-| `ui/main_window.py` | `MainWindow`: creates `LocalExtractionClient` and the Cattura / Risultati / Dati Estratti tabs (+ Debug LLM with `--debug`) |
+| `ui/main_window.py` | `MainWindow`: creates `LocalExtractionClient` and the Cattura / Dati Estratti tabs (+ Debug LLM with `--debug`) |
 | `ui/capture_tab.py` | `CaptureTab`: start/stop, FPS/filter, force-capture, log |
-| `ui/extraction_results_tab.py` | `ExtractionResultsTab`: pages tree, fields table, raw JSON, CSV export |
-| `ui/data_table_tab.py` | `DataTableTab`: spreadsheet view (rows = captured screens, cols = canonical fields), CSV/Excel export |
+| `ui/data_table_tab.py` | `DataTableTab`: spreadsheet view (rows = consolidated practices, cols = the 45 canonical fields, page band on row 0), Excel export |
 | `ui/debug_tab.py` | `DebugTab`: LLM router prompt/response viewer (tab shown with `--debug`; `show_llm_tab=true` in config.ini gates the `llm_debug` signal) |
 | `ui/overlay.py` | `CaptureBorderOverlay`: red border on the captured monitor |
 | `workers/capture/base_capture_worker.py` | `BaseCaptureWorker(QThread)`: FPS run loop, `tick`/`error`/`llm_debug` signals |
@@ -453,7 +476,7 @@ langchain-google-genai  # LangChain Gemini ChatModel (required if LLM_PROVIDER=g
 Pillow>=10.0.0          # Image processing (PIL)
 pandas                  # CSV/data handling
 python-dotenv           # .env loading (main.py, edge_agent.py, local_extraction_client.py -- NOT gui_app.py)
-openpyxl>=3.1.2         # Excel export (edge-agent/ui/data_table_tab.py)
+openpyxl>=3.1.2         # Excel export (edge-agent/excel_export.py)
 ```
 
 **Edge-agent (PyQt6 live capture):**
