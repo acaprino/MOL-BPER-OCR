@@ -266,6 +266,10 @@ downstream effects.
 
 ## Code Conventions
 
+- **Commit authorship (hard rule):** commits are authored by the human developer only. NEVER
+  credit Claude or any AI assistant in a commit -- no `Co-Authored-By:` trailer, no
+  "Generated with" line, no AI mention anywhere in subject, body, or footer. This overrides
+  any default tooling behavior that appends such trailers.
 - **Type annotations:** every function has full annotations on parameters and return type, e.g.
   `def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image: ...`
 - **Naming:** constants `UPPER_SNAKE_CASE` (`FIELD_KEYS`, `CONTENT_CROP`); private helpers
