@@ -38,7 +38,7 @@ Replace the `.env.example:5` placeholder (`LLM_API_KEY=your-api-key-here`) with 
 
 **Step 5: Put the data where the CLI looks for it.** The CLI reads screenshots and the ground-truth CSV from `INPUT_DIR`, default `mnt/data` (`extraction/config.py:8`); the ground-truth path is derived from it as `mnt/data/dati.csv` (`extraction/config.py:9`). **`dati.csv` is not in the repository** (`/mnt` is gitignored; only the 9 `screen *.png` files were force-added), and the CLI hard-fails without it (`extraction/cli.py:315-316`); see Troubleshooting. Obtain the file separately and place it in `mnt/data/` before running `python main.py`. The Tkinter GUI and the edge-agent do not need it.
 
-**Step 6: Edge-agent only: supply the router key.** The page router in `llm` mode needs an OpenAI key of its own. `edge-agent/config.ini:23` currently holds the placeholder `api_key = REDACTED_OPENAI_API_KEY` (a real key was scrubbed from git history), so the router will not work until you supply a real key locally. Prefer leaving the INI value blank and relying on the environment fallback; see the recipe below.
+**Step 6: Edge-agent in `llm` mode only: supply the router key.** Not needed with the shipped configuration, which uses `router = ml` and makes no network call to recognize a page. Only needed if you switch to `router = llm` or `hybrid`. In that case `[llm] api_key` in the shipped `config.ini` is deliberately **blank** and the key is picked up from the environment according to the provider; see the recipe below.
 
 ### Order dependencies that bite
 
@@ -188,10 +188,12 @@ Result: when the anchor pass cannot read NDG and DENOMINAZIONE, the pipeline ret
 In `.env`:
 
 ```bash
-MAX_CALLS_PER_SCREEN=4
+MAX_CALLS_PER_SCREEN=5
 ```
 
-Result: limits total VLM calls per screenshot. One anchor and one main call are always spent; the retry pass gets `MAX_CALLS_PER_SCREEN - 2` area retries (`extraction/pipeline.py:262`). Default `4` (`extraction/config.py:54`).
+Result: limits total VLM calls per screenshot. One anchor and one main call are always spent; the retry pass gets `MAX_CALLS_PER_SCREEN - 2` retries, one per weak area (`extraction/pipeline.py:261`).
+
+The default is **derived**, not written: `2 + len(AREA_TO_FIELDS)` = `5` (`extraction/config.py:102-103`). Lowering it does not trim cost evenly: it cuts the areas at the **tail** of `AREA_TO_FIELDS` declaration order, which is HEADER, BODY, FOOTER. At `4` only two areas can be retried and `FOOTER` never is; since `FOOTER` owns `note_della_richiesta`, a notes page loses exactly the field it is captured for. Rationale in [ADR 0004](../docs/adr/0004-budget-retry-derivato-dalle-aree.md).
 
 ### Switch the edge-agent to ML page detection
 
@@ -201,7 +203,9 @@ In `edge-agent/config.ini`, `[agent]` section:
 router = ml
 ```
 
-Result: DINOv2 prototype matching replaces the per-frame OpenAI Vision call: no router API key or cost. Requires `torch`/`torchvision`; if unavailable the classifier reports DISABLED and never matches (`edge-agent/page_classifier.py:50`).
+Result: DINOv2 prototype matching replaces the per-frame VLM call: no router API key or cost. This is the setting in force, both as the code default and in the shipped `config.ini` ([ADR 0005](../docs/adr/0005-router-ml-invece-di-router-llm.md)). Requires `torch`/`torchvision`; if unavailable the classifier reports DISABLED and never matches.
+
+Matching runs on the application-area ROI `DEFAULT_CROP_ROI = (0.0, 0.20, 1.0, 0.98)` (`edge-agent/page_classifier.py:44`), squashed to 224x224, with a **centered** cosine and threshold `0.35` (`:51`). Three values not to touch lightly: they are the outcome of a measurement, and the previous configuration recognized 1 page out of 9 in the field ([ADR 0002](../docs/adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md)). Change any of them and the prototype cache invalidates itself, because `embedding_geometry()` is part of its key ([ADR 0003](../docs/adr/0003-chiave-cache-prototipi-con-geometria.md)): the next start rebuilds the 9 prototypes.
 
 ### Configure which monitor the edge-agent captures
 
@@ -215,11 +219,19 @@ Result: `mss` grabs monitor 2 (1-based). Read at `edge-agent/config.py:163-167` 
 
 ### Supply the edge-agent's router API key
 
-Key precedence for the LLM page router: `config.ini [llm] api_key` → `OPENAI_API_KEY` env → `LLM_API_KEY` env (`edge-agent/workers/capture/bper_capture_worker.py:122`).
+Only needed with `router = llm` or `hybrid`. Resolution happens in `AgentConfig.resolve_llm_settings()` (`edge-agent/config.py`) and is **provider-aware**: explicit `config.ini [llm]` values are authoritative, provider defaults fill only blank entries.
 
-Recommended: leave `api_key` in the INI **blank** and let the router pick up `LLM_API_KEY` from your `.env`. The INI is tracked in git, so any key you paste there is one commit away from leaking.
+Key precedence:
 
-> **Security note:** an OpenAI key was previously committed in `edge-agent/config.ini` and has been scrubbed from git history; line 23 now holds the placeholder `REDACTED_OPENAI_API_KEY`. The router treats the placeholder as a (useless) key and initializes with it, so routing silently fails until you replace it locally with a freshly-rotated key or blank it out and use the env fallback. Never commit a real key to this file.
+| provider | order |
+|---|---|
+| any | `config.ini [llm] api_key` when non-blank |
+| `gemini` | then `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY` |
+| `openai` | then `OPENAI_API_KEY` → `LLM_API_KEY` |
+
+The shipped `config.ini` uses `provider = gemini`, `model = gemini-3.6-flash` and Google's OpenAI-compatible endpoint, with a **blank** `api_key`: the key comes from the environment. Leave it blank. The INI is tracked in git, so any key pasted there is one commit away from leaking, and `build_exe.bat` refuses to package a `config.ini` with a non-blank `api_key`.
+
+> **Security note:** an OpenAI key was previously committed in `edge-agent/config.ini` and has been scrubbed from git history; the line now ships blank. `AgentConfig` additionally treats any value starting with `REDACTED` as empty: a leftover placeholder once shadowed the env keys and silently broke the router. Rotation of the exposed key is still to be confirmed. Never commit a real key to this file.
 
 ## Common Operations
 
@@ -387,9 +399,11 @@ Cattura fallita 5 volte consecutive. Ultimo errore: ...
 LLM client non inizializzato (manca API key o import OpenAI fallito)
 ```
 
-**Cause:** the router has no usable OpenAI key. This is the expected state out of the box, because `edge-agent/config.ini:23` contains the `REDACTED_OPENAI_API_KEY` placeholder, which the worker passes through as if it were a key. The router is resilient by design: it returns "no match" instead of raising, so the failure is silent in the normal UI.
+**Cause:** the router has no usable key for the configured provider. The router is resilient by design: it returns "no match" instead of raising, so the failure is silent in the normal UI.
 
-**Fix:** blank the `api_key` line in `config.ini` and set `LLM_API_KEY` (or `OPENAI_API_KEY`) in the root `.env`: the worker falls back to env vars only when the INI value is empty (`bper_capture_worker.py:122`). The startup log line `[BPER-LLM] Router LLM inizializzato (model=..., pages=..., api_key=yes|no)` (`bper_capture_worker.py:139-141`) tells you whether a key was found, but not whether it is valid.
+**Fix:** leave the `api_key` line in `config.ini` blank and set the key in the root `.env` under the name the provider expects: with `provider = gemini` any of `GEMINI_API_KEY`, `GOOGLE_API_KEY` or `LLM_API_KEY`; with `provider = openai`, `OPENAI_API_KEY` or `LLM_API_KEY`. The env fallback fires only when the INI value is blank, and a value starting with `REDACTED` counts as blank. The startup log line `[BPER-LLM] Router LLM inizializzato (provider=..., model=..., pages=..., api_key=yes|no)` tells you whether a key was found, but not whether it is valid.
+
+Before chasing the key, check you actually need the LLM router: the shipped configuration is `router = ml`, which uses no keys.
 
 ### Edge-agent: ML page detection silently does nothing
 
@@ -398,6 +412,23 @@ LLM client non inizializzato (manca API key o import OpenAI fallito)
 **Cause:** `torch`/`torchvision` failed to import, so `BPERPagePrototypeClassifier` runs in DISABLED mode and returns no classification (`edge-agent/page_classifier.py:50,158`). A related error, `FileNotFoundError: templates_dir non trovato: ...` (`edge-agent/page_classifier.py:143`), means `edge-agent/assets/templates/bper/` is missing.
 
 **Fix:** install torch/torchvision (Python 3.13 or 3.12; 3.14 has no wheels, which is why the launcher avoids it, `run_edge_agent.bat:47-52`), or switch `router = llm`.
+
+### Edge-agent: the same wrong page is recognized over and over
+
+**Symptom:** the router recognizes a page on every frame, with a plausible score but always the same name, whatever is on screen. After the first capture the log loops:
+
+```
+[Router] Riconosciuta: «Note da Richiesta» (score=0.848)
+ℹ️ «Note da Richiesta» già acquisita → apri nel sistema BPER: «Risultato ricerca»
+```
+
+and the screen it asks for is the one the operator already has open. The session stalls with one page out of nine acquired, and the exported CSV holds one page's fields under another page's name.
+
+**Cause:** framing mismatch between the prototypes and the frame. The prototypes are *window* screenshots; if the classifier receives a whole monitor, the relative ROIs land on different content and the choice among the 9 pages becomes arbitrary. The defect is self-reinforcing: the mislabelled page enters `captured_page_types`, and from then on every frame hits the "already captured" early return.
+
+**How to confirm:** compare the extracted values against the reference screenshots in `mnt/data`. If they match a **different** page from the one in the log, extraction is working and the problem is routing.
+
+**Fix:** check that framing normalization is actually engaging. `_grab_raw()` brings the frame back to the application window (`edge-agent/frame_normalize.py`), first via the window title using `window_title_contains` in `config.ini`, then inferred from the desktop background. If the window title does not contain the configured substring **and** the desktop around the window is not uniform (other windows visible at the corners), both strategies give up and the frame passes through whole-monitor: align `window_title_contains` with the real window title. Full context in [ADR 0001](../docs/adr/0001-normalizzazione-inquadratura-frame.md).
 
 ### Launcher: no suitable Python / broken venv
 

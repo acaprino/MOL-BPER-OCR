@@ -1,0 +1,121 @@
+# How It Works -- poc-data-extraction
+
+Estratto da `CLAUDE.md` per contenerne la dimensione. Descrive il funzionamento interno della
+pipeline di estrazione, i tre modi di esecuzione e il flusso di cattura dell'edge-agent.
+Le regole non negoziabili che ne derivano restano in `CLAUDE.md` sotto *Architectural Constraints*.
+
+## Multi-pass extraction pipeline
+
+Each screenshot is processed in three stages by `ExtractionPipeline` in `extraction/pipeline.py`
+(`extract_from_screen()` / `extract_from_image()`):
+
+1. **Anchor pass** -- `extract_anchors()` crops the header region and extracts only NDG +
+   DENOMINAZIONE. A confidence gate (`>= 0.95`, `ANCHOR_CONF_MIN`) nulls the `value` of any anchor
+   read below the threshold, and it **is** effective: `safe_field()` returns a fresh dict
+   (`normalization.py:77-86`) and the gate mutates those same dicts in place before returning them
+   (`pipeline.py:98-103`). Below threshold the value reaches neither `_merge_anchors()` nor the
+   main-pass hint, so the model-reported confidence is a binary switch here, not a soft signal.
+   With `STOP_ON_ANCHOR_UNCERTAIN=1` the pipeline exits early when both anchor *values* are null.
+2. **Main pass** -- the full content crop is sent to the VLM together with anchor hints
+   (`extraction_anchor_hints`, framed as non-authoritative clues the model must verify against the
+   image). Extracts all scalar fields plus the soggetti / fidi / garanzie arrays in one call.
+3. **Conditional retry** -- an area (HEADER / BODY / FOOTER) is retried when any of its fields is
+   nullish or below confidence `0.60` (hardcoded). Each area gets a dedicated crop and an
+   area-specific Italian prompt; only BODY (contrast 1.3 / sharpness 2.5) and HEADER (1.4 / 3.5)
+   also get an image boost, FOOTER gets none (`pipeline.py:274-282`). At most
+   `max(0, MAX_CALLS_PER_SCREEN - 2)` areas are retried (anchor + main already count,
+   `pipeline.py:261-266`), in `AREA_TO_FIELDS` declaration order. `MAX_CALLS_PER_SCREEN` therefore
+   defaults to `2 + len(AREA_TO_FIELDS)` (= 5), derived rather than a literal: below that the
+   trailing areas are structurally unreachable. A page showing a single section makes every *other*
+   area look weak (their fields legitimately are not there), so those areas consume the whole budget
+   before the area holding the page's payload is ever retried. That is how FOOTER, which owns
+   `note_della_richiesta`, used to lose its retry on the Note da Richiesta page.
+   The per-field winner is chosen by
+   `pick_best()`: non-null beats null; on equal nullness the current value wins unless the candidate
+   has strictly higher confidence. Only the retried area's own fields are merged back, and the
+   arrays only for BODY (`pipeline.py:305-318`).
+   **Retry coverage gap:** `creazione` and the 5 `tooltip_*` fields belong to *no* retry area
+   (`AREA_TO_FIELDS`, `extraction/config.py:81`), so they can never be retried. A failed area
+   retry is non-fatal (main-pass values are kept, warning printed).
+
+Post-processing order is load-bearing (`pipeline.py:154-176`): anchors are merged back and `tipo`
+normalized *before* retries; the coherence check (repairs `evidenze` / `tipo` from their tooltips)
+runs *after* retries; then `soggetti[:4]` are flattened to `ndg_1..4` / `denominazione_1..4` /
+`ruolo_1..4` for CSV-style evaluation. This flatten runs after the retry merge and overwrites those
+fields from the soggetti rows (even with `None` values) without updating `_field_sources`
+(`pipeline.py:169-176`) -- but only for rows actually present, so with an empty `soggetti` the flat
+values the model produced survive.
+
+Two entry methods exist by design:
+- `extract_from_screen(path)` -- used by CLI and the Tkinter GUI; normalizes the image internally.
+- `extract_from_image(img, screen_id)` -- used by `LocalExtractionClient`; the image is already
+  preprocessed by the edge-agent, so `normalize_image()` is intentionally bypassed.
+
+## Three run modes
+
+- **CLI** (`python main.py`): batch-processes every `.png/.jpg/.jpeg` in `INPUT_DIR`, writes JSON
+  results, prints accuracy metrics and a cost summary. Hard-requires `mnt/data/dati.csv`
+  (`FileNotFoundError` at `extraction/cli.py:320`); the CSV is **not** in the repo -- see
+  Data & Evaluation.
+- **Tkinter GUI** (`python gui_app.py`): desktop window for uploading screenshots, picking
+  provider/model, viewing per-screen results, and exporting CSV/JSON. Imports
+  `run_extraction_batch()` from the `extraction` package.
+- **Edge-agent** (`python edge-agent/edge_agent.py`, or `python main.py --gui`): PyQt6 app that
+  captures BPER screens in real time, detects the page type, and runs extraction locally via
+  `LocalExtractionClient`.
+
+CLI and the Tkinter GUI share `run_extraction_batch()` in `extraction/cli.py` -- do not duplicate the
+`ThreadPoolExecutor` logic.
+
+## Edge-agent capture flow
+
+The edge-agent captures live screenshots and extracts locally, with no remote backend.
+
+```
+BPERCaptureWorker (QThread)
+  ├── Captures screenshot via mss (whole monitor)
+  ├── Normalizes framing to the app window via frame_normalize.normalize_frame()
+  ├── Preprocesses (scale, unsharp, autocontrast) via image_ops.preprocess_for_ocr()
+  ├── Dedup check via pHash (Hamming distance <= config dedup_threshold, default 3)
+  ├── Detects page type via router (LLM or ML)
+  ├── Stability check (StabilityTracker: >= 2 concordant matches AND >= 2.0s presence, 1 miss tolerated)
+  └── _upload_page() → LocalExtractionClient.ingest_frame() -- enqueues, returns immediately
+                           └── DaemonThreadPool (PARALLEL_WORKERS daemon threads, shared ExtractionPipeline)
+                                   └── ExtractionPipeline.extract_from_image()
+                                           ├── Anchor pass (header crop → NDG + DENOMINAZIONE)
+                                           ├── Main pass (full content → all fields)
+                                           └── Retry pass (low-confidence fields only)
+                                       → logs diagnostics → stores result
+                                       → emits result_ready(job_id, result)
+                                                             └── DataTableTab (Dati Estratti)
+                                                                     └── consolidate() → one row per practice
+```
+
+- **Detection hook:** `BPERCaptureWorker._upload_page()` detects `LocalExtractionClient` via
+  `hasattr(api_client, "ingest_frame")` and calls it directly (asynchronously: the frame is queued and
+  extracted on `LocalExtractionClient`'s internal daemon pool).
+- **Frame framing is load-bearing** -- `_grab_raw()` grabs the whole monitor, then
+  `frame_normalize.normalize_frame()` crops back to the application window: first the OS window rect
+  (`find_window_rect()`, ctypes/user32, driven by `config.ini` `window_title_contains`), else the
+  rectangle inferred from a uniform desktop background, else the frame unchanged. Both consumers
+  downstream use *relative* coordinates calibrated on window-sized screenshots (the classifier's
+  `DEFAULT_CROP_ROI` and the pipeline's `CONTENT_CROP`), so on a full-monitor frame those coordinates
+  land on different content. See `docs/adr/0001-normalizzazione-inquadratura-frame.md`.
+- **Page routing modes** (set in `edge-agent/config.ini` `router=`; both the code default and
+  the shipped `config.ini` are `ml`):
+  - `ml` -- `MLPageRouter` wraps `BPERPagePrototypeClassifier` (DINOv2 ViT-S/14, 384-dim, prototype
+    matching via **centered** cosine similarity: the prototype centroid is subtracted from both
+    prototypes and query, because pages of the same application share almost every pixel and the raw
+    cosine put all 9 between 0.91 and 1.00 with margins of 0.003). ROI is
+    `DEFAULT_CROP_ROI = (0.0, 0.20, 1.0, 0.98)` on the application area, squashed to 224x224 with no
+    CenterCrop. Threshold `DEFAULT_SIMILARITY_THRESHOLD = 0.35` on the centered score. Degrades
+    gracefully to disabled if torch is unavailable. First run downloads the DINOv2 weights (~84MB)
+    via torch.hub (needs internet once). See
+    `docs/adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md`.
+  - `llm` -- `LLMPageRouter` via the OpenAI client, provider-aware:
+    `AgentConfig.resolve_llm_settings()` (`edge-agent/config.py`) picks key/endpoint/model from
+    `[llm] provider`; explicit INI values are authoritative, provider defaults fill only blank
+    entries (config.ini ships `gemini` + `gemini-3.6-flash` through Google's OpenAI-compatible
+    endpoint); reads page definitions from `assets/templates/bper/prompts.json`. Router failures
+    are logged in the capture feed (deduped per distinct error).
+  - `hybrid` -- tries LLM first, falls back to ML.

@@ -60,7 +60,9 @@ Se sei nuovo del progetto, leggi prima la [Sintesi per tutti](00-executive-summa
 | **distanza di Hamming** | Quanti bit differiscono tra due hash; una distanza piccola significa frame quasi duplicati. |
 | **cancello di stabilità** | Il requisito di "stare fermi" 2 secondi prima che una pagina riconosciuta venga catturata -- evita di estrarre a metà scroll. |
 | **page routing / router** | Decidere quale pagina BPER è a schermo prima di estrarre; modalità `llm` (OpenAI Vision), `ml` (classificatore locale), `hybrid` (prima LLM, fallback ML). |
-| **classificatore a prototipi** (DINOv2) | Il router ML locale: trasforma l'intestazione della pagina in un embedding di 384 numeri e lo confronta per similarità del coseno con prototipi per pagina in cache. |
+| **classificatore a prototipi** (DINOv2) | Il router ML locale: trasforma l'area applicativa della pagina in un embedding di 384 numeri e lo confronta con prototipi per pagina in cache, per similarità del coseno **centrata**. |
+| **coseno centrato** | Il confronto usato dal classificatore: prima di misurare la similarità si sottrae il centroide dei prototipi sia alla query sia ai prototipi. Pagine diverse dello stesso applicativo condividono quasi tutti i pixel, e la componente condivisa domina il coseno grezzo; togliendola resta soltanto ciò che distingue una pagina dalle altre. Non cambia quale pagina vince, moltiplica per trenta il margine con cui vince. |
+| **inquadratura normalizzata** | Il ritaglio applicato in `_grab_raw()` per riportare una cattura a schermo intero sulla finestra applicativa. Serve perché ogni ritaglio del sistema è espresso in coordinate relative tarate su screenshot di finestra. |
 | **embedding** | Un'impronta numerica di un'immagine che rende misurabile la somiglianza visiva. |
 | **similarità del coseno** | La matematica usata per misurare quanto due embedding sono simili. |
 | **hallucination guard** | Il rifiuto delle risposte del router che nominano una pagina non presente nel file delle definizioni di pagina. |

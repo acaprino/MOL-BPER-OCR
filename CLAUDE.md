@@ -17,101 +17,11 @@ desktop GUI, and a PyQt6 edge-agent that captures the screen live.
 
 ## How It Works
 
-### Multi-pass extraction pipeline
+Read `docs/how-it-works.md` for the multi-pass extraction pipeline (anchor -> main -> conditional
+retry), the three run modes, and the edge-agent capture flow.
 
-Each screenshot is processed in three stages by `ExtractionPipeline` in `extraction/pipeline.py`
-(`extract_from_screen()` / `extract_from_image()`):
-
-1. **Anchor pass** -- `extract_anchors()` crops the header region and extracts only NDG +
-   DENOMINAZIONE. A confidence gate (`>= 0.95`, `ANCHOR_CONF_MIN`) nulls the `value` of any anchor
-   read below the threshold, and it **is** effective: `safe_field()` returns a fresh dict
-   (`normalization.py:77-86`) and the gate mutates those same dicts in place before returning them
-   (`pipeline.py:98-103`). Below threshold the value reaches neither `_merge_anchors()` nor the
-   main-pass hint, so the model-reported confidence is a binary switch here, not a soft signal.
-   With `STOP_ON_ANCHOR_UNCERTAIN=1` the pipeline exits early when both anchor *values* are null.
-2. **Main pass** -- the full content crop is sent to the VLM together with anchor hints
-   (`extraction_anchor_hints`, framed as non-authoritative clues the model must verify against the
-   image). Extracts all scalar fields plus the soggetti / fidi / garanzie arrays in one call.
-3. **Conditional retry** -- an area (HEADER / BODY / FOOTER) is retried when any of its fields is
-   nullish or below confidence `0.60` (hardcoded). Each area gets a dedicated crop and an
-   area-specific Italian prompt; only BODY (contrast 1.3 / sharpness 2.5) and HEADER (1.4 / 3.5)
-   also get an image boost, FOOTER gets none (`pipeline.py:274-282`). At most
-   `max(0, MAX_CALLS_PER_SCREEN - 2)` areas are retried (anchor + main already count,
-   `pipeline.py:261-266`), in `AREA_TO_FIELDS` declaration order. The per-field winner is chosen by
-   `pick_best()`: non-null beats null; on equal nullness the current value wins unless the candidate
-   has strictly higher confidence. Only the retried area's own fields are merged back, and the
-   arrays only for BODY (`pipeline.py:305-318`).
-   **Retry coverage gap:** `creazione` and the 5 `tooltip_*` fields belong to *no* retry area
-   (`AREA_TO_FIELDS`, `extraction/config.py:82`), so they can never be retried. A failed area
-   retry is non-fatal (main-pass values are kept, warning printed).
-
-Post-processing order is load-bearing (`pipeline.py:154-176`): anchors are merged back and `tipo`
-normalized *before* retries; the coherence check (repairs `evidenze` / `tipo` from their tooltips)
-runs *after* retries; then `soggetti[:4]` are flattened to `ndg_1..4` / `denominazione_1..4` /
-`ruolo_1..4` for CSV-style evaluation. This flatten runs after the retry merge and overwrites those
-fields from the soggetti rows (even with `None` values) without updating `_field_sources`
-(`pipeline.py:169-176`) -- but only for rows actually present, so with an empty `soggetti` the flat
-values the model produced survive.
-
-Two entry methods exist by design:
-- `extract_from_screen(path)` -- used by CLI and the Tkinter GUI; normalizes the image internally.
-- `extract_from_image(img, screen_id)` -- used by `LocalExtractionClient`; the image is already
-  preprocessed by the edge-agent, so `normalize_image()` is intentionally bypassed.
-
-### Three run modes
-
-- **CLI** (`python main.py`): batch-processes every `.png/.jpg/.jpeg` in `INPUT_DIR`, writes JSON
-  results, prints accuracy metrics and a cost summary. Hard-requires `mnt/data/dati.csv`
-  (`FileNotFoundError` at `extraction/cli.py:315-316`); the CSV is **not** in the repo -- see
-  Data & Evaluation.
-- **Tkinter GUI** (`python gui_app.py`): desktop window for uploading screenshots, picking
-  provider/model, viewing per-screen results, and exporting CSV/JSON. Imports
-  `run_extraction_batch()` from the `extraction` package.
-- **Edge-agent** (`python edge-agent/edge_agent.py`, or `python main.py --gui`): PyQt6 app that
-  captures BPER screens in real time, detects the page type, and runs extraction locally via
-  `LocalExtractionClient`.
-
-CLI and the Tkinter GUI share `run_extraction_batch()` in `extraction/cli.py` -- do not duplicate the
-`ThreadPoolExecutor` logic.
-
-### Edge-agent capture flow
-
-The edge-agent captures live screenshots and extracts locally, with no remote backend.
-
-```
-BPERCaptureWorker (QThread)
-  ├── Captures screenshot via mss
-  ├── Preprocesses (scale, unsharp, autocontrast) via image_ops.preprocess_for_ocr()
-  ├── Dedup check via pHash (Hamming distance <= config dedup_threshold, default 3)
-  ├── Detects page type via router (LLM or ML)
-  ├── Stability check (StabilityTracker: >= 2 concordant matches AND >= 2.0s presence, 1 miss tolerated)
-  └── _upload_page() → LocalExtractionClient.ingest_frame() -- enqueues, returns immediately
-                           └── DaemonThreadPool (PARALLEL_WORKERS daemon threads, shared ExtractionPipeline)
-                                   └── ExtractionPipeline.extract_from_image()
-                                           ├── Anchor pass (header crop → NDG + DENOMINAZIONE)
-                                           ├── Main pass (full content → all fields)
-                                           └── Retry pass (low-confidence fields only)
-                                       → logs diagnostics → stores result
-                                       → emits result_ready(job_id, result)
-                                                             └── DataTableTab (Dati Estratti)
-                                                                     └── consolidate() → one row per practice
-```
-
-- **Detection hook:** `BPERCaptureWorker._upload_page()` detects `LocalExtractionClient` via
-  `hasattr(api_client, "ingest_frame")` and calls it directly (asynchronously: the frame is queued and
-  extracted on `LocalExtractionClient`'s internal daemon pool).
-- **Page routing modes** (set in `edge-agent/config.ini` `router=`; both the code default and
-  the shipped `config.ini` are `ml`):
-  - `ml` -- `MLPageRouter` wraps `BPERPagePrototypeClassifier` (DINOv2 ViT-S/14, 384-dim, prototype
-    matching via cosine similarity). Degrades gracefully to disabled if torch is unavailable.
-    First run downloads the DINOv2 weights (~84MB) via torch.hub (needs internet once).
-  - `llm` -- `LLMPageRouter` via the OpenAI client, provider-aware:
-    `AgentConfig.resolve_llm_settings()` (`edge-agent/config.py`) picks key/endpoint/model from
-    `[llm] provider`; explicit INI values are authoritative, provider defaults fill only blank
-    entries (config.ini ships `gemini` + `gemini-3.6-flash` through Google's OpenAI-compatible
-    endpoint); reads page definitions from `assets/templates/bper/prompts.json`. Router failures
-    are logged in the capture feed (deduped per distinct error).
-  - `hybrid` -- tries LLM first, falls back to ML.
+The rules that follow from that machinery, the ones you must not break, stay inline below under
+*Architectural Constraints*. Read them even when you skip the mechanics.
 
 ## Running the Project
 
@@ -152,11 +62,11 @@ All defaults verified against `extraction/config.py`.
 | `INPUT_DIR` | `mnt/data` | Data directory (screenshots + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Thread pool size |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
-| `MAX_CALLS_PER_SCREEN` | `4` | Max VLM calls per screen (1 anchor + 1 main + retries) |
+| `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Max VLM calls per screen (1 anchor + 1 main + 1 retry per retry area). Lowering it starves the trailing areas of `AREA_TO_FIELDS` |
 | `ANCHOR_CONF_MIN` | `0.95` | Anchor confidence gate; below it the anchor value is nulled and never reaches the merge or the main-pass hint |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Early exit when both anchor values are null |
 | `LLM_THINKING_LEVEL` | *(unset)* | Thinking budget `low`/`medium`/`high`; applied only to models whose name contains `thinking` |
-| `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `extraction/cli.py` (`config.py:92`) |
+| `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `extraction/cli.py` (`config.py:108`) |
 | `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to `INPUT_DIR/debug_crops` |
 | `PROMPTS_DIR` | *(unset)* | Override the prompt catalog directory (read in `prompt_store.py`, not `config.py`); default is `prompts/` at the repo root, or next to the exe when frozen. An explicit override fails closed: no fallback to the bundled copy |
 
@@ -177,9 +87,20 @@ All defaults verified against `extraction/config.py`.
 
 ## Testing & Validation
 
-A pytest suite lives in `tests/` (`python -m pytest tests`) covering the page registry, the capture
-stability tracker, the daemon thread pool, the async local-extraction client, the prompt catalog,
-practice consolidation and the Excel writer; the extraction pipeline itself is still untested.
+A pytest suite lives in `tests/` (`python -m pytest tests`, 116 tests) covering the page registry,
+the capture stability tracker, the daemon thread pool, the async local-extraction client, the prompt
+catalog, frame normalization (`test_frame_normalize.py`), the worker's capture framing
+(`test_bper_capture_framing.py`), page recognition from live-shaped frames
+(`test_page_classifier.py`) and retry-area selection (`test_pipeline_retry.py`). The rest of the
+extraction pipeline is still untested.
+
+`test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s, and it rebuilds the prototype
+cache the first time after any geometry change); it skips via
+`pytest.importorskip` where torch is absent. It rebuilds the app-window-inside-a-monitor framing from
+the reference templates rather than feeding the classifier its own prototypes back, so it fails if
+the ROI, the resize or the scoring rule regress. Do not "simplify" it into classifying the templates
+directly: that variant passes even with the geometry that recognized 1 page out of 9 in the field.
+
 Dev dependencies for the suite install via `pip install -r requirements-dev.txt`. To
 verify changes manually:
 
@@ -195,6 +116,23 @@ verify changes manually:
 6. **Edge-agent smoke test:** `python edge-agent/edge_agent.py` -- start capture in BPER mode, verify
    `ingest_frame()` is called and that one screen's worth of capture yields **one** row in Dati
    Estratti, not one per frame; export the workbook and check the two-level header.
+
+## Test-Suite Rules
+
+1. **A test exists to fail.** Write the test before the fix, watch it fail for the expected reason,
+   then make it pass. A test written after the code passes on the first run and proves nothing.
+2. **Test behavior, not internals.** Assert on what the code produces, never on how it got there.
+   A test that breaks on a rename, but not on a wrong answer, is a liability.
+3. **Never weaken a test to make it pass.** If a test fails, the code is wrong until proven
+   otherwise. Loosening an assertion, widening a tolerance, or deleting a case to get green is
+   forbidden without an explicit decision recorded in the commit message.
+4. **No mocks where the real thing fits.** Mock only genuine boundaries: network calls, the clock,
+   the filesystem when it is the subject. Mocking the code under test is testing the mock.
+5. **One behavior per test, named for that behavior.** If the name needs an "and", split it.
+6. **A failing test is never left failing.** Fix it, or quarantine it with an explicit skip and a
+   reason. Never commit a red suite silently.
+7. **Run the suite before claiming done.** `python -m pytest tests`. Report the actual output,
+   including failures. Never assert success from expectation.
 
 ## Working Principles
 
@@ -267,9 +205,9 @@ downstream effects.
    `model_main`/`model_anchor` overrides (the GUI provider/model dropdown). Callbacks
    (`on_complete`, `on_error`) run on the calling thread, not on worker threads. Do not
    re-implement batch/threading logic elsewhere. `_deduplicate_same_page_outputs()` exists but its
-   call is commented out (`cli.py:268-273`, "TEMP TEST" pending page_key mapping validation).
+   call is commented out (`cli.py:271-276`, "TEMP TEST" pending page_key mapping validation).
 9. **Screenshot discovery** -- the CLI scans `INPUT_DIR` directly for `.png/.jpg/.jpeg`
-   (`cli.py:322-327`). `get_screenshot_paths()` in `extraction/config.py` currently has no caller.
+   (`cli.py:326-330`). `get_screenshot_paths()` in `extraction/config.py` currently has no caller.
    Do not reintroduce the old mutable global `SCREENSHOTS` list.
 10. **No startup guards** -- contrary to what this file used to claim, there are **no** `if/raise`
     guards validating `FIELD_RETRY_MAP`/`AREA_TO_FIELDS` against `FIELD_KEYS` (and no
@@ -283,7 +221,15 @@ downstream effects.
     `extract_from_image()` (not `extract_from_screen()`), bypassing `normalize_image()`. Capture and
     extraction are decoupled: `ingest_frame()` queues and returns, extraction runs on
     `PARALLEL_WORKERS` daemon threads sharing one pipeline (same pattern as `BatchRunner`).
-13. **Prompts are data** -- every LLM prompt lives in `prompts/*.json` (one file per prompt) and is
+13. **Every relative crop assumes window framing** -- the classifier ROI, the pipeline's
+    `CONTENT_CROP`/`HEADER_IN_CONTENT` and the `RETRY_AREAS` are all fractions calibrated on the
+    848x679 window screenshots in `mnt/data`. `_grab_raw()` captures the whole monitor, so
+    `frame_normalize.normalize_frame()` must run there, before dedup, routing and extraction: with a
+    full-monitor frame the same fractions point at different content and page recognition drops to
+    1 page out of 9. Do not move the normalization into a single consumer, and do not add a consumer
+    that re-derives crops from a raw monitor grab.
+    See `docs/adr/0001-normalizzazione-inquadratura-frame.md`.
+14. **Prompts are data** -- every LLM prompt lives in `prompts/*.json` (one file per prompt) and is
     read once at import by the root-level `prompt_store.py`, then served from memory. Do not re-add
     prompt literals to Python: `extraction/prompts.py`, `vlm_client.py`, `pipeline.py` and the
     edge-agent `llm_router.py` all resolve theirs through the store. The store is stdlib-only and
@@ -379,7 +325,7 @@ in `extraction/evaluation.py` auto-detects alternative column names (`Screenshot
 
 **The CSV is NOT in the repo:** `/mnt` is gitignored (only the 9 PNGs are force-tracked), and no
 copy exists in the working tree. `python main.py` raises `FileNotFoundError` without it
-(`extraction/cli.py:315-316`) -- obtain it separately and place it at `mnt/data/dati.csv`. The
+(`extraction/cli.py:320`) -- obtain it separately and place it at `mnt/data/dati.csv`. The
 Tkinter GUI and the edge-agent work without it (evaluation is optional there).
 
 **Field classification** -- `classify_field()` labels each extracted field as one of:
@@ -400,52 +346,58 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 |---|---|
 | `main.py` | Shim: loads `.env` via `python-dotenv`, then `from extraction import *`. `python main.py` runs the CLI; `python main.py --gui` launches the edge-agent. |
 | `gui_app.py` | Tkinter GUI: upload screenshots, pick provider/model, process, display, export CSV/JSON. Imports `run_extraction_batch` from `extraction`. Does not load `.env`. |
-| `edge-agent/edge_agent.py` | PyQt6 entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow`. `--debug` adds the Debug LLM tab. |
+| `edge-agent/edge_agent.py` | PyQt6 entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow`. `--debug` adds the Debug LLM tab (`ui/debug_tab.py`), but the router traffic only reaches it when `config.ini` also has `[debug] show_llm_tab = true`, which gates the `llm_debug` signal. Both are required. |
 | `run_edge_agent.bat` | Windows launcher: bootstraps/self-heals `.venv` (Python 3.13, then 3.12), installs `requirements.txt`, starts the edge-agent. |
 | `prompt_store.py` | Prompt catalog loader shared by `extraction/` and the edge-agent router. Stdlib-only and deliberately outside `extraction/`, so reading a prompt does not import LangChain. `CATALOG`, `get_text()`, `get_part()`, `catalog_source()`. |
 
 ### `extraction/` package (core engine)
 
-| Module | Purpose |
-|---|---|
-| `__init__.py` | Public API re-exports for backward compatibility |
-| `config.py` | Env-var config, crop constants, pricing, `AREA_TO_FIELDS`/`FIELD_RETRY_MAP` |
-| `fields.py` | `FIELD_KEYS` (45 fields), `CSV_TO_SCHEMA` mapping |
-| `field_definitions.py` | Canonical field → display-name / page-key resolution |
-| `page_definitions.py` | Canonical page names and label resolution |
-| `canonical_mapping.py` | `build_canonical_field_entries()` for client-facing output |
-| `schemas.py` | Pydantic models: `ExtractionResponse`, `AnchorResponse`, `FieldResult`, `Soggetto` |
-| `prompts.py` | `PROMPT`, `ANCHOR_PROMPT`, area retry prompts (Italian) -- constants resolved from the catalog via the root-level `prompt_store` |
-| `normalization.py` | Text normalization, `classify_field()`, `pick_best()`, `dataset_mismatch_guard()` |
-| `imaging.py` | `normalize_image()`, `crop_relative()`, `img_to_png_bytes()`, `save_debug_crop()` |
-| `vlm_client.py` | `call_vlm()`, `call_vlm_with_retry()`, `estimate_cost_usd()` -- LangChain structured output |
-| `llm_factory.py` | `create_chat_model()` -- LangChain ChatModel factory |
-| `pipeline.py` | `ExtractionPipeline`: `extract_from_image()`, `extract_from_screen()` |
-| `evaluation.py` | `eval_outputs()`, `build_debug_report()`, `print_cost_summary()`, `load_ground_truth()` |
-| `cli.py` | `BatchRunner`, `run_extraction_batch()` (shared by CLI and Tkinter GUI), `main()` CLI entry |
+Flat package, no sub-packages, one module per concern. Grouped by role:
+
+- **Domain vocabulary** -- `fields.py` (`FIELD_KEYS`, 45 fields; `CSV_TO_SCHEMA`),
+  `field_definitions.py` (field → display-name / page-key), `page_definitions.py` (canonical page
+  names), `canonical_mapping.py` (`build_canonical_field_entries()` for client-facing output).
+- **Configuration** -- `config.py`: env-var snapshot, crop constants, pricing,
+  `AREA_TO_FIELDS`/`FIELD_RETRY_MAP`.
+- **Pipeline** -- `pipeline.py` (`ExtractionPipeline`), `vlm_client.py` (the single VLM call path,
+  `call_vlm_with_retry()`, `estimate_cost_usd()`), `llm_factory.py` (`create_chat_model()`),
+  `schemas.py` (Pydantic models), `prompts.py` (constants resolved from `prompt_store`).
+- **Support** -- `normalization.py` (`classify_field()`, `pick_best()`,
+  `dataset_mismatch_guard()`), `imaging.py` (`normalize_image()`, `crop_relative()`,
+  `save_debug_crop()`).
+- **Batch & reporting** -- `cli.py` (`BatchRunner`, `run_extraction_batch()`, `main()`),
+  `evaluation.py` (`eval_outputs()`, `print_cost_summary()`, `load_ground_truth()`).
+- `__init__.py` re-exports the public API for backward compatibility.
 
 ### `edge-agent/` package (live capture)
 
-| Module | Purpose |
-|---|---|
-| `local_extraction_client.py` | `LocalExtractionClient(QObject)`: bridge to `ExtractionPipeline`; `start_job()`, `ingest_frame()` (enqueues on the daemon pool, returns immediately), `get_results()`, `shutdown()`; `result_ready`/`frame_queued` signals; logs per-frame diagnostics via `_log_extraction()` |
-| `practice_consolidation.py` | `PracticeRecord`/`consolidate()`: groups captured frames by normalized NDG and merges their fields with `pick_best()`; `normalize_ndg()` |
-| `excel_export.py` | `ColumnSpec`, `build_columns()`, `write_workbook()`, `export_results()` -- formatted openpyxl workbook, two-level header, one row per practice |
-| `extraction_pool.py` | `DaemonThreadPool`: background extraction workers; daemon so window close kills the process |
-| `config.py` | `AgentConfig`: loads `config.ini` (FPS, router mode, preprocessing params, monitor index) |
-| `llm_router.py` | `LLMPageRouter` (OpenAI client, provider-aware endpoint/key/model), `MLPageRouter` (DINOv2 ViT-S/14), `PageRouter` base |
-| `image_ops.py` | `preprocess_for_ocr()`, `to_png8()`, `to_webp_lossless()` -- capture preprocessing |
-| `page_classifier.py` | `BPERPagePrototypeClassifier` -- DINOv2 ViT-S/14 (384-dim) prototype matching |
-| `page_registry.py` | `PageDef`/`PageRegistry`: canonical page identity, template mapping, capture order from `prompts.json` |
-| `stability.py` | `StabilityTracker`: count+time stability gate with miss tolerance |
-| `ui/main_window.py` | `MainWindow`: creates `LocalExtractionClient` and the Cattura / Dati Estratti tabs (+ Debug LLM with `--debug`) |
-| `ui/capture_tab.py` | `CaptureTab`: start/stop, FPS/filter, force-capture, log |
-| `ui/data_table_tab.py` | `DataTableTab`: spreadsheet view (rows = consolidated practices, cols = the 45 canonical fields, page band on row 0), Excel export |
-| `ui/debug_tab.py` | `DebugTab`: LLM router prompt/response viewer (tab shown with `--debug`; `show_llm_tab=true` in config.ini gates the `llm_debug` signal) |
-| `ui/overlay.py` | `CaptureBorderOverlay`: red border on the captured monitor |
-| `workers/capture/base_capture_worker.py` | `BaseCaptureWorker(QThread)`: FPS run loop, `tick`/`error`/`llm_debug` signals |
-| `workers/capture/bper_capture_worker.py` | `BPERCaptureWorker`: pHash dedup, page routing resolved through `page_registry`, stability via `StabilityTracker`, calls `ingest_frame()` |
-| `workers/capture/default_capture_worker.py` | `DefaultCaptureWorker`: generic mode, uploads raw frames to a remote API (no local extraction; no such backend exists in this repo) |
+Flat modules plus two sub-packages: `ui/` (one module per PyQt6 tab, plus `main_window.py` and the
+`overlay.py` capture border) and `workers/capture/` (`BaseCaptureWorker` with one subclass per
+capture mode). `assets/templates/bper/` holds the page catalog and the DINOv2 prototype cache.
+
+The capture chain, in order: `bper_capture_worker.py` grabs → `frame_normalize.py` reframes →
+`image_ops.py` preprocesses → `llm_router.py` / `page_classifier.py` identify the page →
+`stability.py` gates it → `page_registry.py` names it → `local_extraction_client.py` queues it onto
+`extraction_pool.py`. Results reach `ui/data_table_tab.py`, where `practice_consolidation.py` groups
+frames by normalized NDG (merging with `pick_best()`) and `excel_export.py` writes the workbook
+(two-level header, one row per practice).
+
+Called out individually, because the filename alone does not tell you:
+
+- `app_paths.py` -- every path in the app resolves through here, and it answers differently from
+  source and from a PyInstaller bundle (`env_file()`, `templates_dir()`, `prompts_dir()`).
+- `bootstrap.py` -- `run_preflight()` creates/loads the local `.env`; `_ensure_files()` re-seeds
+  `prompts/` from the bundle only when missing or empty. Must run *before* `ui.main_window` is
+  imported (Constraint 3).
+- `frame_normalize.py` -- reframes a full-monitor grab onto the app window (Constraint 13).
+- `page_classifier.py` -- `embedding_geometry()` is part of the prototype cache key, so changing
+  ROI, resize, model or scoring rule rebuilds the prototypes instead of silently mismatching them.
+- `config.py` -- `AgentConfig` reads `config.ini`, **not** env vars; `resolve_llm_settings()` is the
+  provider-aware key/endpoint/model resolver.
+- `local_extraction_client.py` -- `ingest_frame()` enqueues and returns immediately; extraction runs
+  on the daemon pool, not on the capture thread.
+- `default_capture_worker.py` -- generic mode, uploads raw frames to a remote API. **No such backend
+  exists in this repo**; do not use it as a model for the BPER path (Constraint 11).
 
 ### Data files
 
@@ -460,7 +412,9 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 
 | Path | Purpose |
 |---|---|
+| `docs/how-it-works.md` | The pipeline mechanics extracted from this file: multi-pass stages, three run modes, edge-agent capture flow. In English, like this file, because it is the same document split for size |
 | `docs/` | Narrative codebase guide in Italian (start at `docs/INDEX.md`) |
+| `docs/adr/` | Architecture Decision Records in Italian, one decision per file, numbered and immutable once accepted (start at `docs/adr/README.md`). A decision that changes behaviour gets an ADR *and* a test; the ADR explains why, the test keeps it true |
 | `.codebase-map/` | Generated technical map (start at `.codebase-map/INDEX.md`); `_internal/context-brief.md` and `_internal/interconnect.md` hold code-verified facts with file:line citations |
 
 ## Dependencies
@@ -487,7 +441,8 @@ mss>=9.0.0             # Fast screenshot capture
 pyscreenshot>=3.1      # Screenshot fallback (Linux-only env marker)
 imagehash>=4.3.0       # pHash for frame dedup
 torch, torchvision     # DINOv2 ViT-S/14 ML page classifier (edge-agent/page_classifier.py)
-openai>=1.51.0         # LLM page router (gpt-4o-mini)
+openai>=1.51.0         # SDK for the page router in `llm` mode; endpoint and model come from
+                       # config.ini [llm], so it also talks to non-OpenAI providers
 requests>=2.31.0       # Remote upload in DefaultCaptureWorker (generic mode only)
 ```
 
@@ -500,6 +455,6 @@ pyinstaller>=6.10,<7    # portable package build only (build_exe.bat); the dist 
 
 Not yet implemented:
 - `pyproject.toml` -- dependencies are listed in `requirements.txt` but not version-pinned
-- Tests -- unit suite in `tests/` covers the edge-agent pure logic (page registry, stability tracker, extraction pool, async client) and the prompt catalog; the extraction pipeline itself is still untested
+- Tests -- unit suite in `tests/` covers the edge-agent pure logic (page registry, stability tracker, extraction pool, async client, frame normalization, capture framing), the prompt catalog, page recognition and retry-area selection; the rest of the extraction pipeline (anchor gate, merge order, coherence check, flatten) is still untested
 - CI/CD -- no pipeline configured
 - Docker -- no containerization

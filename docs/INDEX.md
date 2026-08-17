@@ -18,6 +18,8 @@ Un proof of concept in Python che estrae campi strutturati dagli screenshot dell
 | 9 | [Anatomia del progetto](09-project-anatomy.md) | L'albero delle directory, i file di configurazione, le env var reali (verificate sul codice), i comandi di esecuzione e le sequenze di avvio. |
 | 10 | [Guida alla configurazione](10-configuration-guide.md) | Percorso guidato di configurazione, profili OpenAI-vs-Gemini, ricette copia-incolla e troubleshooting errore per errore. |
 | 11 | [Glossario](11-glossary.md) | Definizioni in parole semplici dei termini bancari italiani (`ndg`, `fido`, `soggetti`, …) e del vocabolario tecnico usato ovunque altrove. |
+| — | [Decisioni architetturali](adr/README.md) | Un ADR per decisione: contesto, alternative misurate e scartate, conseguenze. Da leggere prima di "semplificare" una costante che sembra arbitraria. |
+| — | [How It Works](how-it-works.md) | Meccanica della pipeline estratta da `CLAUDE.md` per contenerne la dimensione: passate multiple, tre modi di esecuzione, flusso di cattura. In inglese come il file da cui proviene. |
 
 ## Percorsi di lettura
 
@@ -33,11 +35,11 @@ Un proof of concept in Python che estrae campi strutturati dagli screenshot dell
 - **Provider LLM:** OpenAI (default, `gpt-4o`) oppure Google Gemini, commutati da `LLM_PROVIDER`
 - **Toolkit UI:** Tkinter (`gui_app.py`) e PyQt6 + qt-material (`edge-agent/`)
 - **Dominio:** 9 schermate BPER, 45 chiavi di campo italiane in `FIELD_KEYS`, 4 pagine canoniche
-- **Classificatore ML pagine:** DINOv2 ViT-S/14 (opzionale; degrada senza torch)
+- **Classificatore ML pagine:** DINOv2 ViT-S/14, router in vigore (`router = ml`); coseno centrato su ROI dell'area applicativa; degrada a disabilitato senza torch
 - **Persistenza:** nessun database, dizionari in memoria scritti su file JSON/CSV
 - **Entry point:** `main.py` (CLI; `--gui` → edge-agent), `gui_app.py` (Tkinter), `edge-agent/edge_agent.py` (PyQt6)
-- **Stato:** proof of concept. Nessun test, nessuna CI, nessun Docker, nessun linter configurato. `develop` è il branch di lavoro, `master` il principale.
-- **Sicurezza:** una chiave API OpenAI committata in `edge-agent/config.ini:23` è stata rimossa dall'intera cronologia git il 2026-07-21 (`git filter-repo` + force-push; la riga ora contiene il placeholder `REDACTED_OPENAI_API_KEY`). La rotazione della chiave è ancora da confermare; chi ha clonato prima del 2026-07-21 deve riclonare.
+- **Stato:** proof of concept. Suite pytest in `tests/` (116 test) sulla logica pura di edge-agent ed estrazione; nessuna CI, nessun Docker, nessun linter configurato. `develop` è il branch di lavoro, `master` il principale.
+- **Sicurezza:** una chiave API OpenAI committata in `edge-agent/config.ini` è stata rimossa dall'intera cronologia git il 2026-07-21 (`git filter-repo` + force-push; la riga ora è vuota, e `AgentConfig` tratta come vuoto qualunque valore che inizi per `REDACTED`). La rotazione della chiave è ancora da confermare; chi ha clonato prima del 2026-07-21 deve riclonare.
 
 > Nota sull'autorevolezza: dove questi documenti e il `CLAUDE.md`/`README.md` del progetto non concordano, questi documenti seguono il codice. Tre fatti da tenere dritti: la terza UI è la GUI Tkinter `gui_app.py` (non esiste alcuna `app.py` Streamlit); il classificatore ML delle pagine è DINOv2 ViT-S/14 (non MobileNetV3); e il gate di confidenza degli anchor descritto in `CLAUDE.md` è attualmente inefficace nel codice.
 

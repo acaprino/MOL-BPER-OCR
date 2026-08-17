@@ -38,7 +38,7 @@ Sostituisci il placeholder di `.env.example:5` (`LLM_API_KEY=your-api-key-here`)
 
 **Passo 5 -- Mettere i dati dove la CLI li cerca.** La CLI legge screenshot e CSV di ground truth da `INPUT_DIR`, default `mnt/data` (`extraction/config.py:8`); il percorso della ground truth ne deriva come `mnt/data/dati.csv` (`extraction/config.py:9`). **`dati.csv` non è nel repository** (`/mnt` è in gitignore; solo i 9 file `screen *.png` sono stati forzati), e la CLI fallisce duramente senza (`extraction/cli.py:315-316`) -- vedi Risoluzione dei problemi. Procurati il file separatamente e mettilo in `mnt/data/` prima di lanciare `python main.py`. La GUI Tkinter e l'edge-agent non ne hanno bisogno: la GUI Tkinter è l'alternativa per estrarre **senza** ground truth.
 
-**Passo 6 -- Solo edge-agent: fornire la chiave del router.** Il router di pagina in modalità `llm` ha bisogno di una propria chiave OpenAI. `edge-agent/config.ini:23` contiene oggi il placeholder `api_key = REDACTED_OPENAI_API_KEY` (una chiave reale è stata rimossa dalla cronologia git), quindi il router non funzionerà finché non fornisci una chiave reale in locale. Preferisci lasciare vuoto il valore nell'INI e affidarti al fallback da ambiente -- vedi la ricetta più avanti.
+**Passo 6 -- Solo edge-agent in modalità `llm`: fornire la chiave del router.** Non serve nella configurazione spedita, che usa `router = ml` e non fa alcuna chiamata di rete per riconoscere la pagina. Serve soltanto passando a `router = llm` o `hybrid`. In quel caso `[llm] api_key` nel `config.ini` spedito è **vuota** per scelta, e la chiave viene raccolta dall'ambiente in base al provider -- vedi la ricetta più avanti.
 
 ### Dipendenze d'ordine che mordono
 
@@ -188,10 +188,12 @@ Risultato: quando il passaggio anchor non riesce a leggere NDG e DENOMINAZIONE, 
 In `.env`:
 
 ```
-MAX_CALLS_PER_SCREEN=4
+MAX_CALLS_PER_SCREEN=5
 ```
 
-Risultato: limita il totale di chiamate VLM per screenshot. Una chiamata anchor e una main si spendono sempre; il passaggio di retry riceve `MAX_CALLS_PER_SCREEN - 2` retry per area (`extraction/pipeline.py:262`). Con `2` (o meno) i retry sono disabilitati del tutto: si eseguono solo anchor + main, senza crash. Default `4` (`extraction/config.py:54`).
+Risultato: limita il totale di chiamate VLM per screenshot. Una chiamata anchor e una main si spendono sempre; il passaggio di retry riceve `MAX_CALLS_PER_SCREEN - 2` retry, uno per area debole (`extraction/pipeline.py:261`). Con `2` (o meno) i retry sono disabilitati del tutto: si eseguono solo anchor + main, senza crash.
+
+Il default è **derivato**, non un letterale: `2 + len(AREA_TO_FIELDS)` = `5` (`extraction/config.py:102-103`). Abbassarlo non riduce il costo in modo uniforme: taglia le aree in **coda** all'ordine di dichiarazione di `AREA_TO_FIELDS`, che è HEADER, BODY, FOOTER. Con `4` le aree ritentabili diventano due e `FOOTER` non viene mai riletta; siccome `FOOTER` possiede `note_della_richiesta`, su una pagina di note si perde esattamente il campo per cui quella pagina viene acquisita. Il perché in [ADR 0004](adr/0004-budget-retry-derivato-dalle-aree.md).
 
 ### Passare l'edge-agent al riconoscimento pagina ML
 
@@ -201,7 +203,9 @@ In `edge-agent/config.ini`, sezione `[agent]`:
 router = ml
 ```
 
-Risultato: il prototype matching DINOv2 sostituisce la chiamata OpenAI Vision per frame -- nessuna chiave né costo per il router. Richiede `torch`/`torchvision`; se non disponibili il classificatore risulta DISABLED e non matcha mai (`edge-agent/page_classifier.py:50`).
+Risultato: il prototype matching DINOv2 sostituisce la chiamata VLM per frame -- nessuna chiave né costo per il router. È l'impostazione in vigore, sia come default nel codice sia nel `config.ini` spedito ([ADR 0005](adr/0005-router-ml-invece-di-router-llm.md)). Richiede `torch`/`torchvision`; se non disponibili il classificatore risulta DISABLED e non matcha mai.
+
+Il confronto avviene sulla ROI dell'area applicativa `DEFAULT_CROP_ROI = (0.0, 0.20, 1.0, 0.98)` (`edge-agent/page_classifier.py:44`), schiacciata a 224x224, con **coseno centrato** e soglia `0.35` (`:51`). Tre valori che non vanno toccati alla leggera: sono l'esito di una misura, e la configurazione precedente riconosceva 1 pagina su 9 in esercizio ([ADR 0002](adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md)). Cambiandone uno, la cache dei prototipi si invalida da sé perché `embedding_geometry()` fa parte della sua chiave ([ADR 0003](adr/0003-chiave-cache-prototipi-con-geometria.md)): il primo avvio successivo ricostruisce i 9 prototipi.
 
 ### Configurare quale monitor cattura l'edge-agent
 
@@ -215,11 +219,19 @@ Risultato: `mss` cattura il monitor 2 (indicizzazione a partire da 1). Letto in 
 
 ### Fornire la API key del router dell'edge-agent
 
-Precedenza della chiave per il router LLM di pagina: `config.ini [llm] api_key` → env `OPENAI_API_KEY` → env `LLM_API_KEY` (`edge-agent/workers/capture/bper_capture_worker.py:122`). Il fallback su ambiente scatta **solo se il valore nell'INI è vuoto**.
+Serve solo con `router = llm` o `hybrid`. La risoluzione avviene in `AgentConfig.resolve_llm_settings()` (`edge-agent/config.py`) ed è **consapevole del provider**: i valori espliciti in `config.ini [llm]` sono autorevoli, i default del provider riempiono soltanto le voci lasciate vuote.
 
-Raccomandato: lascia `api_key` nell'INI **vuota** e fai raccogliere al router `LLM_API_KEY` dalla tua `.env`. L'INI è tracciato in git: qualunque chiave incollata lì è a un commit di distanza dal leak.
+Precedenza della chiave:
 
-> **Nota di sicurezza:** una chiave OpenAI era stata committata in `edge-agent/config.ini` ed è stata rimossa dall'intera cronologia git il 2026-07-21 (riscrittura con filter-repo + force-push); la riga 23 ora contiene il placeholder `REDACTED_OPENAI_API_KEY`. Il router tratta il placeholder come una chiave (inutile) e si inizializza con quella, quindi il routing fallisce in silenzio finché non la sostituisci in locale con una chiave appena ruotata, oppure la svuoti e usi il fallback da ambiente. La rotazione della chiave esposta è da confermare. Chi ha clonato il repo **prima del 2026-07-21** deve ri-clonare (la cronologia è stata riscritta). Ricorda anche che `AgentConfig.save()` ri-persisterebbe nella copia tracciata qualunque chiave in memoria (`edge-agent/config.py:326-332`) -- oggi non ha chiamanti, ma non committare mai una chiave reale in questo file.
+| provider | ordine |
+|---|---|
+| qualsiasi | `config.ini [llm] api_key` se non vuota |
+| `gemini` | poi `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY` |
+| `openai` | poi `OPENAI_API_KEY` → `LLM_API_KEY` |
+
+Il `config.ini` spedito usa `provider = gemini`, `model = gemini-3.6-flash` e l'endpoint OpenAI-compatibile di Google, con `api_key` **vuota**: la chiave arriva dall'ambiente. Lasciala vuota. L'INI è tracciato in git, quindi qualunque chiave incollata lì è a un commit di distanza dalla fuga, e `build_exe.bat` si rifiuta di impacchettare un `config.ini` con `api_key` non vuota.
+
+> **Nota di sicurezza:** una chiave OpenAI era stata committata in `edge-agent/config.ini` ed è stata rimossa dall'intera cronologia git il 2026-07-21 (riscrittura con filter-repo + force-push). La riga ora è vuota. `AgentConfig` tratta inoltre qualunque valore che inizi per `REDACTED` come vuoto: un placeholder rimasto in giro aveva già oscurato le chiavi da ambiente rompendo il router in silenzio. La rotazione della chiave esposta è da confermare. Chi ha clonato il repo **prima del 2026-07-21** deve ri-clonare (la cronologia è stata riscritta). Ricorda anche che `AgentConfig.save()` ri-persisterebbe nella copia tracciata qualunque chiave in memoria (`edge-agent/config.py:326-332`) -- oggi non ha chiamanti, ma non committare mai una chiave reale in questo file.
 
 ## Operazioni comuni
 
@@ -387,9 +399,11 @@ Cattura fallita 5 volte consecutive. Ultimo errore: ...
 LLM client non inizializzato (manca API key o import OpenAI fallito)
 ```
 
-**Causa:** il router non ha una chiave OpenAI utilizzabile. È lo stato atteso out of the box, perché `edge-agent/config.ini:23` contiene il placeholder `REDACTED_OPENAI_API_KEY`, che il worker passa come se fosse una chiave. Il router è resiliente by design: restituisce "nessun match" invece di sollevare, quindi il fallimento è silenzioso nella UI normale.
+**Causa:** il router non ha una chiave utilizzabile per il provider configurato. Il router è resiliente by design: restituisce "nessun match" invece di sollevare, quindi il fallimento è silenzioso nella UI normale.
 
-**Soluzione:** svuota la riga `api_key` in `config.ini` e imposta `LLM_API_KEY` (o `OPENAI_API_KEY`) nella `.env` di root -- il worker ricade sulle env var solo quando il valore INI è vuoto (`bper_capture_worker.py:122`). La riga di log all'avvio `[BPER-LLM] Router LLM inizializzato (model=..., pages=..., api_key=yes|no)` (`bper_capture_worker.py:139-141`) ti dice se una chiave è stata trovata -- ma non se è valida.
+**Soluzione:** lascia vuota la riga `api_key` in `config.ini` e imposta la chiave nella `.env` di root, con il nome che il provider si aspetta: con `provider = gemini` va bene `GEMINI_API_KEY`, `GOOGLE_API_KEY` o `LLM_API_KEY`; con `provider = openai`, `OPENAI_API_KEY` o `LLM_API_KEY`. Il ripiego su ambiente scatta solo quando il valore INI è vuoto, e un valore che inizi per `REDACTED` conta come vuoto. La riga di log all'avvio `[BPER-LLM] Router LLM inizializzato (provider=..., model=..., pages=..., api_key=yes|no)` ti dice se una chiave è stata trovata -- ma non se è valida.
+
+Prima di indagare la chiave, verifica di avere davvero bisogno del router LLM: la configurazione spedita è `router = ml`, che non usa chiavi.
 
 ### Edge-agent: il riconoscimento ML non fa nulla in silenzio
 
@@ -398,6 +412,23 @@ LLM client non inizializzato (manca API key o import OpenAI fallito)
 **Causa:** `torch`/`torchvision` non si sono importati, quindi `BPERPagePrototypeClassifier` gira in modalità DISABLED e non restituisce classificazioni (`edge-agent/page_classifier.py:50,158`). Un errore correlato, `FileNotFoundError: templates_dir non trovato: ...` (`edge-agent/page_classifier.py:143`), significa che `edge-agent/assets/templates/bper/` manca.
 
 **Soluzione:** installa torch/torchvision (Python 3.13 o 3.12 -- la 3.14 non ha wheel, motivo per cui il launcher la evita, `run_edge_agent.bat:47-52`), oppure passa a `router = llm`.
+
+### Edge-agent: la pagina viene riconosciuta sempre con lo stesso nome sbagliato
+
+**Sintomo:** il router riconosce una pagina a ogni frame, con punteggio plausibile ma sempre lo stesso nome, indipendentemente da cosa c'è a schermo. Dopo la prima acquisizione il log entra in un ciclo:
+
+```
+[Router] Riconosciuta: «Note da Richiesta» (score=0.848)
+ℹ️ «Note da Richiesta» già acquisita → apri nel sistema BPER: «Risultato ricerca»
+```
+
+e la schermata indicata è proprio quella che l'operatore ha davanti. La sessione si blocca con una pagina acquisita su nove, e il CSV esportato contiene i campi di una pagina sotto il nome di un'altra.
+
+**Causa:** disallineamento di inquadratura fra i prototipi e il frame. I prototipi sono screenshot di **finestra**; se il frame che arriva al classificatore è un monitor intero, le ROI relative cadono su contenuto diverso e la scelta fra le 9 pagine diventa arbitraria. Il difetto si autoalimenta: la pagina etichettata male entra in `captured_page_types` e da quel momento ogni frame finisce nell'uscita anticipata "già acquisita".
+
+**Come confermarlo:** confronta i valori estratti con le schermate di riferimento in `mnt/data`. Se corrispondono a una pagina **diversa** da quella nel log, l'estrazione sta funzionando e il problema è il routing.
+
+**Soluzione:** verificare che la normalizzazione dell'inquadratura stia agendo. `_grab_raw()` riporta il frame sulla finestra applicativa (`edge-agent/frame_normalize.py`), prima via titolo della finestra usando `window_title_contains` in `config.ini`, poi dedotta dallo sfondo del desktop. Se il titolo della finestra non contiene la sottostringa configurata **e** il desktop attorno alla finestra non è uniforme (altre finestre visibili agli angoli), entrambe le strategie rinunciano e il frame passa a schermo intero: allinea `window_title_contains` al titolo reale della finestra. Contesto completo in [ADR 0001](adr/0001-normalizzazione-inquadratura-frame.md).
 
 ### Launcher: nessun Python adatto / venv rotta
 

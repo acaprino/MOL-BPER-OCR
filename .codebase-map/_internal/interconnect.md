@@ -124,7 +124,7 @@
 |-----------|-------|--------|-------------|
 | `FieldsModel` fields == `FIELD_KEYS` (45 keys) | schemas | `extraction/schemas.py:46-49` | by construction (`create_model` over `FIELD_KEYS`) |
 | Every VLM response dict contains `fields`, `soggetti`, `fidi`, `garanzie` (ExtractionResponse) or `fields.{ndg,denominazione}` (AnchorResponse) | vlm_client → pipeline | `extraction/schemas.py:54-65`, `extraction/vlm_client.py:93,147,193` | Pydantic validation; `ValueError` on failure |
-| Total VLM calls per screen ≤ `MAX_CALLS_PER_SCREEN` (1 anchor + 1 main + `max(0, MAX-2)` retries) | pipeline | `extraction/pipeline.py:262-263` | runtime slice of sorted retry areas |
+| Total VLM calls per screen ≤ `MAX_CALLS_PER_SCREEN` (1 anchor + 1 main + `max(0, MAX-2)` retries) | pipeline | `extraction/pipeline.py:261-266` | runtime slice of the retry areas in `AREA_TO_FIELDS` declaration order; `MAX_CALLS_PER_SCREEN` is derived as `2 + len(AREA_TO_FIELDS)` so the slice covers every area |
 | Retry triggers only for fields nullish or confidence < 0.60 | pipeline | `extraction/pipeline.py:251-257` | runtime check (0.60 hardcoded) |
 | `pick_best`: non-null beats null; both same nullness → `f1` (current) wins on `c1 >= c2` | normalization | `extraction/normalization.py:87-96` | runtime logic; source attribution depends on object identity (`chosen is candidate`, `extraction/normalization.py:105-107`) |
 | `_meta_agg` totals = sum over `_attempts` entries; cost rounded to 6 decimals | pipeline | `extraction/pipeline.py:330-340` | runtime aggregation (only successful calls counted, see Contracts) |

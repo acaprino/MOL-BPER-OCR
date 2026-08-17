@@ -21,7 +21,7 @@ Caratteristiche principali:
 - **Edge Agent (GUI)**: Cattura screenshot in tempo reale dal monitor selezionato, riconosce la pagina corrente (router LLM o ML) e avvia l'estrazione locale.
 - **Parallelismo**: Elaborazione simultanea di più immagini in modalità CLI (`ThreadPoolExecutor`).
 - **Anchor Check**: Un primo pass estrae solo NDG e DENOMINAZIONE dall'header per ancorare l'estrazione al soggetto corretto; il `dataset_mismatch_guard()` esclude dalle metriche gli screen con mismatch.
-- **Retry Intelligente**: Crop mirati per area dove l'estrazione iniziale è fallita, con tetto di chiamate per screenshot (`MAX_CALLS_PER_SCREEN`).
+- **Retry Intelligente**: Crop mirati per area dove l'estrazione iniziale è fallita, con tetto di chiamate per screenshot (`MAX_CALLS_PER_SCREEN`, dimensionato per coprire un retry per area).
 - **Valutazione Automatica**: Confronta i risultati con un file Ground Truth (`dati.csv`, **non incluso nel repo**, vedi sotto).
 
 Limiti noti (è un POC): nessuna test suite automatica, nessuna CI/CD, nessun Dockerfile, dipendenze non pinnate (un solo `requirements.txt` alla radice).
@@ -97,9 +97,9 @@ python gui_app.py
 ## Sicurezza: chiavi API e cronologia git
 
 - **2026-07-21**: una chiave OpenAI committata in `edge-agent/config.ini` è stata **rimossa dall'intera cronologia git** (`git filter-repo` + force-push). Tutti gli hash dei commit sono cambiati. **Chi ha clonato prima di quella data deve ri-clonare**: un push o merge da un clone vecchio reintrodurrebbe la chiave nella cronologia.
-- `edge-agent/config.ini:23` ora contiene il placeholder `api_key = REDACTED_OPENAI_API_KEY`. Il file è tracciato in git: **non inserire mai una chiave reale lì**.
+- La riga `api_key` in `edge-agent/config.ini` ora è **vuota**. Il file è tracciato in git: **non inserire mai una chiave reale lì**. `AgentConfig` tratta come vuoto anche qualunque valore che inizi per `REDACTED`, perché un placeholder rimasto in giro aveva già oscurato le chiavi da ambiente rompendo il router in silenzio. `build_exe.bat` si rifiuta di impacchettare un `config.ini` con `api_key` non vuota.
 - Le chiavi vanno in `.env` (gitignorato): `LLM_API_KEY` è l'unica variabile obbligatoria.
-- Nota sul router LLM dell'Edge Agent: la precedenza della chiave è `config.ini [llm] api_key` -> `OPENAI_API_KEY` -> `LLM_API_KEY` (`edge-agent/workers/capture/bper_capture_worker.py:122`). Il valore nell'INI **vince** se non vuoto; quindi con il placeholder presente il router non funziona finché non lo si svuota (lasciando l'env fallback) o non si mette una chiave in locale senza committarla.
+- Nota sul router dell'Edge Agent: serve una chiave solo con `router = llm` o `hybrid`; la configurazione spedita usa `router = ml`, che riconosce le pagine in locale senza rete. Quando serve, la precedenza è risolta da `AgentConfig.resolve_llm_settings()` in modo consapevole del provider: `config.ini [llm] api_key` se non vuota, poi per `gemini` `GEMINI_API_KEY` -> `GOOGLE_API_KEY` -> `LLM_API_KEY`, per `openai` `OPENAI_API_KEY` -> `LLM_API_KEY`.
 
 ---
 
@@ -156,7 +156,7 @@ Tutte le variabili sono configurabili via environment (lette a import time da `e
 | `INPUT_DIR` | `mnt/data` | Directory dati (screenshot + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `PARALLEL_ENABLED` | `1` | Elaborazione parallela (`0` per disattivarla) |
-| `MAX_CALLS_PER_SCREEN` | `4` | Massimo chiamate VLM per screenshot (1 anchor + 1 main + retry) |
+| `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Massimo chiamate VLM per screenshot (1 anchor + 1 main + un retry per area). Derivato, non letterale: abbassarlo affama le aree in coda a `AREA_TO_FIELDS` |
 | `ANCHOR_CONF_MIN` | `0.95` | Confidenza minima per accettare gli anchor |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Fermare il processing se l'anchor è incerto (`1` per attivare) |
 | `DEBUG_MODE` | `0` | Log `[DEBUG]` verbosi del batch |
@@ -234,8 +234,9 @@ poc-data-extraction/
     edge_agent.py          # Entry point GUI
     config.py / config.ini # Configurazione agent (fps, router, monitor, [llm])
     local_extraction_client.py # Ponte tra GUI e ExtractionPipeline
-    llm_router.py          # Router pagine: LLM (OpenAI Vision) e ML (DINOv2)
-    page_classifier.py     # Classificatore prototipi DINOv2 ViT-S/14
+    llm_router.py          # Router pagine: LLM (Vision) e ML (DINOv2, in vigore)
+    page_classifier.py     # Classificatore prototipi DINOv2 ViT-S/14, coseno centrato
+    frame_normalize.py     # Dal monitor intero alla finestra applicativa
     image_ops.py           # Preprocessing cattura (scale, unsharp, autocontrast)
     ui/                    # MainWindow, tab Cattura/Risultati/Dati Estratti/Debug
     workers/capture/       # QThread di cattura (BPER + generico)
