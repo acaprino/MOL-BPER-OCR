@@ -80,19 +80,21 @@ BPERCaptureWorker (QThread)
   ├── Preprocesses (scale, unsharp, autocontrast) via image_ops.preprocess_for_ocr()
   ├── Dedup check via pHash (Hamming distance <= config dedup_threshold, default 3)
   ├── Detects page type via router (LLM or ML)
-  ├── Stability check (STABILITY_SECONDS = 2.0 steady-state)
-  └── _upload_page() → LocalExtractionClient.ingest_frame()
-                           └── ExtractionPipeline.extract_from_image()
-                                   ├── Anchor pass (header crop → NDG + DENOMINAZIONE)
-                                   ├── Main pass (full content → all fields)
-                                   └── Retry pass (low-confidence fields only)
-                               → stores result → emits result_ready(job_id, result)
-                                                     ├── ExtractionResultsTab (Risultati)
-                                                     └── DataTableTab (Dati Estratti)
+  ├── Stability check (StabilityTracker: >= 2 concordant matches AND >= 2.0s presence, 1 miss tolerated)
+  └── _upload_page() → LocalExtractionClient.ingest_frame() -- enqueues, returns immediately
+                           └── DaemonThreadPool (PARALLEL_WORKERS daemon threads, shared ExtractionPipeline)
+                                   └── ExtractionPipeline.extract_from_image()
+                                           ├── Anchor pass (header crop → NDG + DENOMINAZIONE)
+                                           ├── Main pass (full content → all fields)
+                                           └── Retry pass (low-confidence fields only)
+                                       → stores result → emits result_ready(job_id, result)
+                                                             ├── ExtractionResultsTab (Risultati)
+                                                             └── DataTableTab (Dati Estratti)
 ```
 
 - **Detection hook:** `BPERCaptureWorker._upload_page()` detects `LocalExtractionClient` via
-  `hasattr(api_client, "ingest_frame")` and calls it directly (synchronously, in the capture QThread).
+  `hasattr(api_client, "ingest_frame")` and calls it directly (asynchronously: the frame is queued and
+  extracted on `LocalExtractionClient`'s internal daemon pool).
 - **Page routing modes** (set in `edge-agent/config.ini` `router=`; both the code default and
   the shipped `config.ini` are `ml`):
   - `ml` -- `MLPageRouter` wraps `BPERPagePrototypeClassifier` (DINOv2 ViT-S/14, 384-dim, prototype
@@ -172,7 +174,8 @@ All defaults verified against `extraction/config.py`.
 
 A pytest suite lives in `tests/` (`python -m pytest tests`) covering the page registry, the capture
 stability tracker, the daemon thread pool and the prompt catalog; the extraction pipeline itself is
-still untested. To verify changes manually:
+still untested. Dev dependencies for the suite install via `pip install -r requirements-dev.txt`. To
+verify changes manually:
 
 1. **Run extraction:** `python main.py` -- should complete without errors (needs `LLM_API_KEY`
    and a local `mnt/data/dati.csv`).
@@ -270,7 +273,9 @@ downstream effects.
     there is no remote API backend. Do not reintroduce remote upload logic into the BPER path.
 12. **Edge-agent preprocessing** -- `BPERCaptureWorker` preprocesses via
     `image_ops.preprocess_for_ocr()` before calling `ingest_frame()`, so `LocalExtractionClient` calls
-    `extract_from_image()` (not `extract_from_screen()`), bypassing `normalize_image()`.
+    `extract_from_image()` (not `extract_from_screen()`), bypassing `normalize_image()`. Capture and
+    extraction are decoupled: `ingest_frame()` queues and returns, extraction runs on
+    `PARALLEL_WORKERS` daemon threads sharing one pipeline (same pattern as `BatchRunner`).
 13. **Prompts are data** -- every LLM prompt lives in `prompts/*.json` (one file per prompt) and is
     read once at import by the root-level `prompt_store.py`, then served from memory. Do not re-add
     prompt literals to Python: `extraction/prompts.py`, `vlm_client.py`, `pipeline.py` and the
@@ -397,11 +402,14 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 
 | Module | Purpose |
 |---|---|
-| `local_extraction_client.py` | `LocalExtractionClient(QObject)`: bridge to `ExtractionPipeline`; `start_job()`, `ingest_frame()`, `export_csv()`, `result_ready` signal |
+| `local_extraction_client.py` | `LocalExtractionClient(QObject)`: bridge to `ExtractionPipeline`; `start_job()`, `ingest_frame()` (enqueues on the daemon pool, returns immediately), `export_csv()`, `shutdown()`; `result_ready`/`frame_queued` signals |
+| `extraction_pool.py` | `DaemonThreadPool`: background extraction workers; daemon so window close kills the process |
 | `config.py` | `AgentConfig`: loads `config.ini` (FPS, router mode, preprocessing params, monitor index) |
 | `llm_router.py` | `LLMPageRouter` (OpenAI client, provider-aware endpoint/key/model), `MLPageRouter` (DINOv2 ViT-S/14), `PageRouter` base |
 | `image_ops.py` | `preprocess_for_ocr()`, `to_png8()`, `to_webp_lossless()` -- capture preprocessing |
 | `page_classifier.py` | `BPERPagePrototypeClassifier` -- DINOv2 ViT-S/14 (384-dim) prototype matching |
+| `page_registry.py` | `PageDef`/`PageRegistry`: canonical page identity, template mapping, capture order from `prompts.json` |
+| `stability.py` | `StabilityTracker`: count+time stability gate with miss tolerance |
 | `ui/main_window.py` | `MainWindow`: creates `LocalExtractionClient` and the Cattura / Risultati / Dati Estratti tabs (+ Debug LLM with `--debug`) |
 | `ui/capture_tab.py` | `CaptureTab`: start/stop, FPS/filter, force-capture, log |
 | `ui/extraction_results_tab.py` | `ExtractionResultsTab`: pages tree, fields table, raw JSON, CSV export |
@@ -409,7 +417,7 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 | `ui/debug_tab.py` | `DebugTab`: LLM router prompt/response viewer (tab shown with `--debug`; `show_llm_tab=true` in config.ini gates the `llm_debug` signal) |
 | `ui/overlay.py` | `CaptureBorderOverlay`: red border on the captured monitor |
 | `workers/capture/base_capture_worker.py` | `BaseCaptureWorker(QThread)`: FPS run loop, `tick`/`error`/`llm_debug` signals |
-| `workers/capture/bper_capture_worker.py` | `BPERCaptureWorker`: pHash dedup, page routing, stability, calls `ingest_frame()` |
+| `workers/capture/bper_capture_worker.py` | `BPERCaptureWorker`: pHash dedup, page routing resolved through `page_registry`, stability via `StabilityTracker`, calls `ingest_frame()` |
 | `workers/capture/default_capture_worker.py` | `DefaultCaptureWorker`: generic mode, uploads raw frames to a remote API (no local extraction; no such backend exists in this repo) |
 
 ### Data files
@@ -442,7 +450,7 @@ langchain-google-genai  # LangChain Gemini ChatModel (required if LLM_PROVIDER=g
 Pillow>=10.0.0          # Image processing (PIL)
 pandas                  # CSV/data handling
 python-dotenv           # .env loading (main.py, edge_agent.py, local_extraction_client.py -- NOT gui_app.py)
-openpyxl>=3.1.2         # Excel read (edge-agent/workers/capture/bper_capture_worker.py)
+openpyxl>=3.1.2         # Excel export (edge-agent/ui/data_table_tab.py)
 ```
 
 **Edge-agent (PyQt6 live capture):**
@@ -464,6 +472,6 @@ candidate): `streamlit`.
 
 Not yet implemented:
 - `pyproject.toml` -- dependencies are listed in `requirements.txt` but not version-pinned
-- Tests -- no test suite exists
+- Tests -- unit suite in `tests/` covers the edge-agent pure logic (page registry, stability tracker, extraction pool, async client) and the prompt catalog; the extraction pipeline itself is still untested
 - CI/CD -- no pipeline configured
 - Docker -- no containerization
