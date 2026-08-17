@@ -53,7 +53,6 @@ PRICING_PER_1M = {
 # ============================================================
 # Extraction Logic Config
 # ============================================================
-MAX_CALLS_PER_SCREEN = int(os.getenv("MAX_CALLS_PER_SCREEN", "4"))
 STOP_ON_ANCHOR_UNCERTAIN = os.getenv("STOP_ON_ANCHOR_UNCERTAIN", "0") == "1"
 ANCHOR_CONF_MIN = float(os.getenv("ANCHOR_CONF_MIN", "0.95"))
 # Confidence below which a field marks its area for a retry pass.
@@ -93,6 +92,16 @@ AREA_TO_FIELDS = {
     ],
     "FOOTER": ["note_della_richiesta", "note_scheda_privati"]
 }
+
+# 1 anchor + 1 main + one retry per declared area. Derived, not a literal: the
+# retry budget is spent in AREA_TO_FIELDS order, so anything below this leaves
+# the trailing areas structurally unreachable. A page that shows a single
+# section (e.g. Note da Richiesta) makes every *other* area look weak, since
+# their fields legitimately are not there, and those areas would consume the
+# whole budget before the one holding the page's payload is ever retried.
+MAX_CALLS_PER_SCREEN = int(
+    os.getenv("MAX_CALLS_PER_SCREEN", str(2 + len(AREA_TO_FIELDS)))
+)
 
 
 # Debug
