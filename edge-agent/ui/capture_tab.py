@@ -305,7 +305,12 @@ class CaptureTab(QWidget):
         self._log("Richiesta arresto cattura...")
         try:
             self.worker.stop()
-            self.worker.wait(5000)
+            if not self.worker.wait(5000):
+                # Worker bloccato in una chiamata lunga (es. estrazione VLM):
+                # senza terminate il processo sopravvive headless alla finestra.
+                self._log("[WARN] Worker ancora attivo dopo 5s: chiusura forzata.")
+                self.worker.terminate()
+                self.worker.wait(2000)
         except Exception as exc:  # noqa: BLE001
             self._log(f"[ERROR] Errore in stop_capture: {exc}")
         finally:
