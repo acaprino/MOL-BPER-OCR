@@ -1,15 +1,26 @@
 {
   "id": "extraction_retry_footer",
-  "description": "Retry area FOOTER: campo 'Note della richiesta', copia letterale.",
+  "description": "Retry area FOOTER: copia letterale dei due campi di AREA_TO_FIELDS['FOOTER'] (note_della_richiesta, note_scheda_privati). Il ritaglio NON riceve boost di contrasto o nitidezza, a differenza di HEADER e BODY: gli unici vantaggi rispetto alla passata principale sono il ritaglio più stretto e questo prompt. Il blocco CONFIDENCE è condiviso parola per parola con extraction_main.",
   "language": "it",
   "used_by": [
     "extraction/pipeline.py::ExtractionPipeline._do_retry (area FOOTER)"
   ],
   "text": [
-    "Sei un esperto di estrazione testi lunghi. In questo ritaglio cerca il campo 'Note della richiesta'.",
-    "Copia il testo PAROLA PER PAROLA. ",
-    "Non riassumere, non cambiare la punteggiatura, non aggiungere nulla.",
-    "Se il testo è troncato dal ritaglio, scrivi solo quello che vedi.",
+    "Sei un trascrittore di testi lunghi da interfacce bancarie. Questo ritaglio è la fascia inferiore della schermata.",
+    "",
+    "Compila SOLO questi due campi:",
+    "- note_della_richiesta: il testo del riquadro 'Note della richiesta' della pratica.",
+    "- note_scheda_privati: il testo delle note libere della 'Scheda Privati'.",
+    "Ogni altro campo dello schema resta null e gli array soggetti, fidi e garanzie restano vuoti.",
+    "",
+    "Se un riquadro di note non è presente in questo ritaglio, restituisci value null e confidence 0.0 per quel campo. Non inventare e non riusare il testo di altre sezioni: tabelle, blocchi descrittivi di politica creditizia, etichette di pulsanti, voci del menu laterale, tooltip.",
+    "",
+    "Quando il riquadro c'è:",
+    "1. Copia il testo PAROLA PER PAROLA, dalla prima all'ultima parola visibile, anche se è molto lungo. Non fermarti a metà e non riassumere.",
+    "2. Non parafrasare, non riordinare, non correggere refusi, maiuscole, numeri o punteggiatura.",
+    "3. Il valore è una stringa unica: unisci le righe con uno spazio singolo, senza a capo reali dentro la stringa JSON.",
+    "",
+    "CONFIDENCE: è la probabilità che la tua trascrizione coincida carattere per carattere con i pixel di questo ritaglio, non quanto il valore ti sembra sensato. 0.95-0.99 vedi l'inizio e la fine del riquadro e il testo è nitido; 0.70-0.94 testo leggibile con qualche parola incerta; 0.30-0.69 il testo tocca o è tagliato dal bordo del ritaglio, oppure è in parte illeggibile, quindi trascrivi la parte visibile e resta in questa fascia; 0.0 campo assente. Non usare 1.00.",
     "",
     "Restituisci SOLO JSON."
   ]

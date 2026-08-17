@@ -1,6 +1,6 @@
 {
   "id": "extraction_anchor_hints",
-  "description": "Righe di hint appese al prompt della passata principale con i valori gia' letti dalla passata anchor. Vengono aggiunte solo per gli anchor non nulli.",
+  "description": "Righe di hint appese al prompt della passata principale con i valori letti dalla passata anchor. Aggiunte solo per gli anchor non nulli e formattate in modo indipendente l'una dall'altra, quindi ogni riga deve essere autosufficiente: il framing 'indizio da verificare' va ripetuto su entrambe. Sui campi ndg e denominazione finali l'hint è ininfluente, perché _merge_anchors() li sovrascrive comunque con il valore anchor: il beneficio residuo è capire quale pratica sia il soggetto della schermata, il rischio è contaminare le righe di soggetti[], che a valle sovrascrivono 12 campi valutati.",
   "language": "it",
   "placeholders": [
     "value"
@@ -9,7 +9,7 @@
     "extraction/pipeline.py::ExtractionPipeline._build_anchor_hint_prompt"
   ],
   "parts": {
-    "ndg": "NDG atteso: {value}",
-    "denominazione": "Denominazione attesa: {value}"
+    "ndg": "INDIZIO NON AUTORITATIVO, da una lettura precedente della sola intestazione: l'NDG della pratica dovrebbe essere {value}. Usalo solo per capire di quale pratica si tratta. Verificalo sull'immagine: se leggi un NDG diverso, riporta quello che leggi tu. Non inserirlo in righe di tabella in cui non compare.",
+    "denominazione": "INDIZIO NON AUTORITATIVO, da una lettura precedente della sola intestazione: la Denominazione della pratica dovrebbe essere {value}. Usala solo per capire di quale pratica si tratta. Verificala sull'immagine: se leggi una denominazione diversa, riporta quella che leggi tu. Non inserirla in righe di tabella in cui non compare."
   }
 }

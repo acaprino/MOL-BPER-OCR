@@ -23,31 +23,35 @@ Each screenshot is processed in three stages by `ExtractionPipeline` in `extract
 (`extract_from_screen()` / `extract_from_image()`):
 
 1. **Anchor pass** -- `extract_anchors()` crops the header region and extracts only NDG +
-   DENOMINAZIONE. A confidence gate (`>= 0.95`, `ANCHOR_CONF_MIN`) is *intended* to zero out
-   low-confidence anchors, but is currently **ineffective**: the returned `ndg`/`den` dicts are
-   copied via `safe_field()` *before* the gate runs (`pipeline.py:87-96`), and `safe_set_field()`
-   cannot null an existing non-null value (`normalization.py:78-79`), so low-confidence anchors
-   flow downstream unfiltered. With `STOP_ON_ANCHOR_UNCERTAIN=1` the pipeline exits early when
-   both anchor *values* are null.
+   DENOMINAZIONE. A confidence gate (`>= 0.95`, `ANCHOR_CONF_MIN`) nulls the `value` of any anchor
+   read below the threshold, and it **is** effective: `safe_field()` returns a fresh dict
+   (`normalization.py:77-86`) and the gate mutates those same dicts in place before returning them
+   (`pipeline.py:98-103`). Below threshold the value reaches neither `_merge_anchors()` nor the
+   main-pass hint, so the model-reported confidence is a binary switch here, not a soft signal.
+   With `STOP_ON_ANCHOR_UNCERTAIN=1` the pipeline exits early when both anchor *values* are null.
 2. **Main pass** -- the full content crop is sent to the VLM together with anchor hints
-   (`"NDG atteso: {value}"`). Extracts all scalar fields plus the soggetti / fidi / garanzie arrays
-   in one call.
+   (`extraction_anchor_hints`, framed as non-authoritative clues the model must verify against the
+   image). Extracts all scalar fields plus the soggetti / fidi / garanzie arrays in one call.
 3. **Conditional retry** -- an area (HEADER / BODY / FOOTER) is retried when any of its fields is
-   nullish or below confidence `0.60` (hardcoded). Each area gets a dedicated crop, a
-   contrast/sharpness boost, and an area-specific Italian prompt. At most
+   nullish or below confidence `0.60` (hardcoded). Each area gets a dedicated crop and an
+   area-specific Italian prompt; only BODY (contrast 1.3 / sharpness 2.5) and HEADER (1.4 / 3.5)
+   also get an image boost, FOOTER gets none (`pipeline.py:274-282`). At most
    `max(0, MAX_CALLS_PER_SCREEN - 2)` areas are retried (anchor + main already count,
-   `pipeline.py:262`). The per-field winner is chosen by `pick_best()`: non-null beats null; on
-   equal nullness the current value wins unless the candidate has strictly higher confidence.
+   `pipeline.py:261-266`), in `AREA_TO_FIELDS` declaration order. The per-field winner is chosen by
+   `pick_best()`: non-null beats null; on equal nullness the current value wins unless the candidate
+   has strictly higher confidence. Only the retried area's own fields are merged back, and the
+   arrays only for BODY (`pipeline.py:305-318`).
    **Retry coverage gap:** `creazione` and the 5 `tooltip_*` fields belong to *no* retry area
-   (`AREA_TO_FIELDS`, `extraction/config.py:69-82`), so they can never be retried. A failed area
+   (`AREA_TO_FIELDS`, `extraction/config.py:82`), so they can never be retried. A failed area
    retry is non-fatal (main-pass values are kept, warning printed).
 
-Post-processing order is load-bearing (`pipeline.py:144-178`): anchors are merged back and `tipo`
+Post-processing order is load-bearing (`pipeline.py:154-176`): anchors are merged back and `tipo`
 normalized *before* retries; the coherence check (repairs `evidenze` / `tipo` from their tooltips)
 runs *after* retries; then `soggetti[:4]` are flattened to `ndg_1..4` / `denominazione_1..4` /
-`ruolo_1..4` for CSV-style evaluation. This flatten runs after the retry merge and
-**unconditionally overwrites** those 12 fields from the soggetti rows (even with `None` values),
-without updating `_field_sources` (`pipeline.py:161-166`).
+`ruolo_1..4` for CSV-style evaluation. This flatten runs after the retry merge and overwrites those
+fields from the soggetti rows (even with `None` values) without updating `_field_sources`
+(`pipeline.py:169-176`) -- but only for rows actually present, so with an empty `soggetti` the flat
+values the model produced survive.
 
 Two entry methods exist by design:
 - `extract_from_screen(path)` -- used by CLI and the Tkinter GUI; normalizes the image internally.
@@ -148,7 +152,7 @@ All defaults verified against `extraction/config.py`.
 | `PARALLEL_WORKERS` | `4` | Thread pool size |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
 | `MAX_CALLS_PER_SCREEN` | `4` | Max VLM calls per screen (1 anchor + 1 main + retries) |
-| `ANCHOR_CONF_MIN` | `0.95` | Anchor confidence gate (currently ineffective -- see pipeline notes) |
+| `ANCHOR_CONF_MIN` | `0.95` | Anchor confidence gate; below it the anchor value is nulled and never reaches the merge or the main-pass hint |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Early exit when both anchor values are null |
 | `LLM_THINKING_LEVEL` | *(unset)* | Thinking budget `low`/`medium`/`high`; applied only to models whose name contains `thinking` |
 | `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `extraction/cli.py` (`config.py:92`) |
@@ -428,7 +432,6 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 | `mnt/data/screen *.png` | Test banking screenshots (9 BPER images, force-tracked in git) |
 | `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `prompt_store.py` |
 | `edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
-| `prompts_immagini.txt` | Image-generation prompts (reference only, not used by the pipeline) |
 
 ### Documentation
 
@@ -465,8 +468,10 @@ openai>=1.51.0         # LLM page router (gpt-4o-mini)
 requests>=2.31.0       # Remote upload in DefaultCaptureWorker (generic mode only)
 ```
 
-**Present in `requirements.txt` but unused / orphaned** (no importer in current code -- removal
-candidate): `streamlit`.
+**Build tooling** (in `requirements.txt`, imported by no module):
+```
+pyinstaller>=6.10,<7    # portable package build only (build_exe.bat); the dist layout depends on the major
+```
 
 ## Missing Infrastructure
 

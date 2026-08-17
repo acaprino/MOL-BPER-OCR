@@ -1,6 +1,6 @@
 {
   "id": "extraction_json_schema_instruction",
-  "description": "Coda appesa al prompt per i Gemini recenti in modalita' free-form, dove lo schema JSON va iniettato nel testo invece che passato come response_schema.",
+  "description": "Coda appesa al prompt per i Gemini recenti in modalità free-form, dove lo schema JSON va iniettato nel testo invece che passato come response_schema. È l'unica garanzia di conformità su quel path, e un ValueError di parsing non viene ritentato. Testo condiviso da ExtractionResponse e AnchorResponse: deve restare schema-agnostico, senza nomi né conteggi di campi. ATTENZIONE: passa per str.format(schema=...), quindi ogni graffa letterale diversa da {schema} va raddoppiata.",
   "language": "it",
   "placeholders": [
     "schema"
@@ -9,7 +9,16 @@
     "extraction/vlm_client.py::_call_vlm_gemini_freeform"
   ],
   "text": [
-    "Rispondi ESCLUSIVAMENTE con un oggetto JSON valido che rispetti esattamente questo schema JSON:",
-    "{schema}"
+    "Schema JSON della risposta attesa:",
+    "{schema}",
+    "",
+    "REGOLE DI OUTPUT (vincolanti):",
+    "1. Rispondi con un solo oggetto JSON valido. Nessun testo, nessuna spiegazione, nessun commento prima o dopo, nessun blocco di codice markdown.",
+    "2. Produci un'ISTANZA di dati conforme allo schema, MAI lo schema stesso: la risposta non deve contenere chiavi di metaschema come properties, definizioni, riferimenti, anyOf, title o default.",
+    "3. Risolvi i riferimenti interni dello schema: dove rimanda a FieldResult, scrivi un oggetto con le chiavi value, confidence, evidence_text, section. L'oggetto radice deve sempre contenere la chiave fields.",
+    "4. value è una stringa con il testo letto nell'immagine, oppure null. confidence è un numero fra 0 e 1.",
+    "5. Esamina i campi nell'ordine dello schema e includi in fields le chiavi che hai davvero letto in questa immagine. Le chiavi previste dallo schema ma non presenti in questa schermata vanno omesse: omettere equivale a null. Non riempirle con valori dedotti, plausibili o provenienti da altre schermate.",
+    "6. evidence_text: pochissime parole copiate letteralmente dall'immagine, non una frase di spiegazione.",
+    "7. Ogni array previsto dallo schema contiene una voce per ciascuna riga effettivamente visibile; se quella tabella non c'è in questa schermata, lascia l'array vuoto."
   ]
 }

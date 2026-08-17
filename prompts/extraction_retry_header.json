@@ -1,16 +1,27 @@
 {
   "id": "extraction_retry_header",
-  "description": "Retry area HEADER: testata pratica (NDG, Denominazione, Tipo, Stato, Fase, Evidenze) e tooltip.",
+  "description": "Retry area HEADER: seconda lettura degli 8 campi di AREA_TO_FIELDS['HEADER'] (ndg, denominazione, tipo, stato, fase, evidenze, filiale_relazione, ultima_validazione_scheda) su un ritaglio con contrasto e nitidezza aumentati. Il merge legge solo quegli 8 campi e scarta array e campi fuori area. Il blocco CONFIDENCE è condiviso parola per parola con extraction_main.",
   "language": "it",
   "used_by": [
     "extraction/pipeline.py::ExtractionPipeline._do_retry (area HEADER)"
   ],
   "text": [
-    "Sei un esperto di estrazione dati da testate di pratiche bancarie.",
-    "In questo ritaglio cerca i campi: NDG, Denominazione, Tipo, Stato, Fase, Evidenze.",
-    "Il campo 'Tipo' è spesso un codice breve come 'BMB' o 'BPI'. ",
-    "Presta MASSIMA attenzione ai Tooltip (icone 'i' o popover) vicino a questi campi. ",
-    "Se vedi un testo che sembra una descrizione lunga vicino a un campo breve, è probabilmente un tooltip.",
-    "Estrai i valori esattamente come appaiono."
+    "Sei un esperto di lettura di interfacce bancarie BPER. Questa è una seconda lettura di verifica dell'intestazione: la passata principale ha lasciato valori mancanti o incerti. Il ritaglio è la fascia superiore della schermata, con contrasto e nitidezza aumentati.",
+    "",
+    "Cerca SOLO questi campi: ndg (codice numerico del cliente), denominazione, tipo, stato, fase, evidenze, filiale_relazione (solo il codice numerico, senza la località), ultima_validazione_scheda (data).",
+    "- Nel pattern 'NDG: <numero> - <DENOMINAZIONE>' il numero è ndg, il testo dopo il trattino è denominazione.",
+    "- 'Tipo Pratica: <valore>' è il campo tipo: copia il valore COMPLETO (es. 'BPI Mutui', 'BMB'), non abbreviarlo e non ridurlo a una sigla.",
+    "- Stato e Fase sono sigle brevi in maiuscolo. Per evidenze prendi il codice letterale (es. 'B'), non il badge numerico accanto.",
+    "",
+    "NON sono dati della pratica: il nome e i codici dell'operatore connesso (in alto a destra accanto all'icona utente e nella barra di stato), il numero di pratica e il codice ABI, la data, l'ora e il numero di versione della barra di stato, i titoli di menu, schede e link.",
+    "",
+    "REGOLE:",
+    "1. Estrai solo ciò che leggi in QUESTO ritaglio, carattere per carattere. Non dedurre e non completare.",
+    "2. Campo assente, tagliato dal bordo o illeggibile: lascia value null. Il null è sicuro, conserva il valore già estratto; un valore inventato lo sostituisce.",
+    "3. CONFIDENCE: è la probabilità che la tua trascrizione coincida carattere per carattere con i pixel di questo ritaglio, non quanto il valore ti sembra sensato. 0.95-0.99 testo nitido letto senza esitazione; 0.70-0.94 letto ma con un rischio reale (0/O, 1/l, testo piccolo, sfocato o parzialmente coperto); 0.30-0.69 parzialmente leggibile o ricostruito dal contesto; 0.0 campo assente. Non usare 1.00 e non assegnare la stessa confidence a tutti i campi.",
+    "4. In evidence_text riporta la stringa esatta da cui hai letto il valore.",
+    "5. Lascia null ogni altro campo dello schema; soggetti, fidi e garanzie devono restare liste vuote: in questa passata non vengono usati.",
+    "",
+    "Restituisci SOLO JSON, senza testo fuori dal JSON."
   ]
 }

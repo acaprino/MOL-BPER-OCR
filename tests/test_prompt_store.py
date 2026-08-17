@@ -197,7 +197,11 @@ def test_literal_brace_in_a_formatted_template_is_rejected(tmp_path: Path) -> No
 def test_escaped_braces_are_allowed(tmp_path: Path) -> None:
     catalog = _copy_catalog(tmp_path)
     doc = json.loads((catalog / "page_router_system.json").read_text(encoding="utf-8"))
-    doc["parts"]["base"] += " Esempio: {{page_type}}"
+    # `parts` accepts a string or a list of lines: append without assuming which.
+    base = doc["parts"]["base"]
+    if isinstance(base, list):
+        base = "\n".join(base)
+    doc["parts"]["base"] = base + " Esempio: {{page_type}}"
     (catalog / "page_router_system.json").write_text(
         json.dumps(doc, ensure_ascii=False), encoding="utf-8"
     )
