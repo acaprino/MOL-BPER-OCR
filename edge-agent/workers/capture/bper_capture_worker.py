@@ -108,6 +108,41 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
     # ------------------------------------------------------------------ init classifier
 
+    def _resolve_llm_settings(self) -> Tuple[str, str, str]:
+        """
+        Risolve (api_key, base_url, model) del router LLM in base al provider configurato.
+
+        Con provider=gemini usa l'endpoint OpenAI-compatibile di Google e le chiavi
+        GEMINI_API_KEY/GOOGLE_API_KEY/LLM_API_KEY; con openai la catena classica
+        OPENAI_API_KEY/LLM_API_KEY. La api_key in config.ini, se presente, vince sempre.
+        """
+        import os
+
+        provider = (self.config.llm_provider or "openai").lower()
+        if provider == "gemini":
+            api_key = (
+                self.config.llm_api_key
+                or os.getenv("GEMINI_API_KEY")
+                or os.getenv("GOOGLE_API_KEY")
+                or os.getenv("LLM_API_KEY", "")
+            )
+            base_url = self.config.llm_base_url or ""
+            if not base_url or "api.openai.com" in base_url:
+                base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
+            model = self.config.llm_model or ""
+            if not model or model.lower().startswith("gpt"):
+                env_model = os.getenv("LLM_MODEL", "")
+                model = env_model if env_model.lower().startswith("gemini") else "gemini-3.6-flash"
+        else:
+            api_key = (
+                self.config.llm_api_key
+                or os.getenv("OPENAI_API_KEY")
+                or os.getenv("LLM_API_KEY", "")
+            )
+            base_url = self.config.llm_base_url or "https://api.openai.com/v1"
+            model = self.config.llm_model
+        return api_key, base_url, model
+
     def _init_router(self) -> None:
         """Inizializza il router pagina in base a config.router_mode."""
         try:
@@ -119,15 +154,12 @@ class BPERCaptureWorker(BaseCaptureWorker):
             mode = (self.config.router_mode or "ml").lower()
             if mode == "llm":
                 prompts_path = templates_dir / "prompts.json"
-                # LLM API key: da config oppure da env
-                import os
-
-                api_key = self.config.llm_api_key or os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY", "")
+                api_key, base_url, model = self._resolve_llm_settings()
                 self.router = LLMPageRouter(
                     prompts_path=prompts_path,
                     provider=self.config.llm_provider,
-                    base_url=self.config.llm_base_url,
-                    model=self.config.llm_model,
+                    base_url=base_url,
+                    model=model,
                     api_key=api_key or "",
                     timeout=self.config.llm_timeout,
                 )
@@ -140,19 +172,17 @@ class BPERCaptureWorker(BaseCaptureWorker):
                     pages_count = 0
                 has_key = bool(api_key)
                 self.tick.emit(
-                    f"[BPER-LLM] Router LLM inizializzato (model={self.config.llm_model}, pages={pages_count}, api_key={'yes' if has_key else 'no'})"
+                    f"[BPER-LLM] Router LLM inizializzato (provider={self.config.llm_provider}, model={model}, pages={pages_count}, api_key={'yes' if has_key else 'no'})"
                 )
             elif mode == "hybrid":
                 # per ora: usa LLM, altrimenti fallback su ML
                 prompts_path = templates_dir / "prompts.json"
-                import os
-
-                api_key = self.config.llm_api_key or os.getenv("OPENAI_API_KEY") or os.getenv("LLM_API_KEY", "")
+                api_key, base_url, model = self._resolve_llm_settings()
                 self.router = LLMPageRouter(
                     prompts_path=prompts_path,
                     provider=self.config.llm_provider,
-                    base_url=self.config.llm_base_url,
-                    model=self.config.llm_model,
+                    base_url=base_url,
+                    model=model,
                     api_key=api_key or "",
                     timeout=self.config.llm_timeout,
                 )
@@ -165,7 +195,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
                     pages_count = 0
                 has_key = bool(api_key)
                 self.tick.emit(
-                    f"[BPER-LLM] Router ibrido inizializzato (LLM→fallback ML, model={self.config.llm_model}, pages={pages_count}, api_key={'yes' if has_key else 'no'})"
+                    f"[BPER-LLM] Router ibrido inizializzato (LLM→fallback ML, provider={self.config.llm_provider}, model={model}, pages={pages_count}, api_key={'yes' if has_key else 'no'})"
                 )
                 # In parallelo inizializza ML per fallback, se disponibile
                 if BPERPagePrototypeClassifier is not None:
