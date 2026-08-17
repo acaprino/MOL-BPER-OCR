@@ -11,7 +11,6 @@ from local_extraction_client import LocalExtractionClient
 from .capture_tab import CaptureTab
 from .data_table_tab import DataTableTab
 from .debug_tab import DebugTab
-from .extraction_results_tab import ExtractionResultsTab
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -20,7 +19,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
     Contiene:
         - una tab "Cattura" per gestire job e worker di screenshot;
-        - una tab "Risultati" per consultare i risultati dell'estrazione locale.
+        - una tab "Dati Estratti" con una riga per pratica consolidata.
 
     Condivide:
         - AgentConfig
@@ -58,12 +57,6 @@ class MainWindow(QtWidgets.QMainWindow):
             debug_tab=self.debug_tab,
         )
 
-        # Tab di risultati locali
-        self.results_tab = ExtractionResultsTab(
-            extraction_client=self.extraction_client,
-            parent=self,
-        )
-
         # Tab dati estratti (spreadsheet)
         self.data_tab = DataTableTab(
             extraction_client=self.extraction_client,
@@ -71,7 +64,6 @@ class MainWindow(QtWidgets.QMainWindow):
         )
 
         self.tabs.addTab(self.capture_tab, "Cattura")
-        self.tabs.addTab(self.results_tab, "Risultati")
         self.tabs.addTab(self.data_tab, "Dati Estratti")
         if self.debug_tab is not None:
             self.tabs.addTab(self.debug_tab, "Debug LLM")
@@ -84,11 +76,9 @@ class MainWindow(QtWidgets.QMainWindow):
         job_id = None
         if hasattr(self.capture_tab, "get_current_job_id"):
             job_id = self.capture_tab.get_current_job_id()
-        if job_id:
-            if index == 1 and hasattr(self.results_tab, "set_job_id"):
-                self.results_tab.set_job_id(job_id)
-            elif index == 2 and hasattr(self.data_tab, "set_job_id"):
-                self.data_tab.set_job_id(job_id)
+        # Cattura = 0, Dati Estratti = 1 (era 2 quando esisteva il tab Risultati).
+        if job_id and index == 1 and hasattr(self.data_tab, "set_job_id"):
+            self.data_tab.set_job_id(job_id)
 
     # ------------------------------------------------------------------ Chiusura finestra
 

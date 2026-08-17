@@ -22,6 +22,7 @@ from PyQt6.QtWidgets import (
     QMessageBox,
 )
 from config import AgentConfig
+from excel_export import export_results
 from workers.capture import (
     BaseCaptureWorker,
     DefaultCaptureWorker,
@@ -117,7 +118,7 @@ class CaptureTab(QWidget):
         self.start_button = QPushButton("▶  Avvia", self)
         self.stop_button = QPushButton("■  Ferma", self)
         # self.requeue_button = QPushButton("Requeue job", self) # Inutile in locale
-        self.export_button = QPushButton("⬇️  Esporta CSV", self)
+        self.export_button = QPushButton("⬇️  Esporta Excel", self)
 
         # Forza scatto: selezione pagina + bottone
         self.force_page_combo = QComboBox(self)
@@ -150,7 +151,7 @@ class CaptureTab(QWidget):
         self.start_button.clicked.connect(self._on_start_capture)
         self.stop_button.clicked.connect(self._on_stop_capture)
         # self.requeue_button.clicked.connect(self._on_requeue_job)
-        self.export_button.clicked.connect(self._on_export_csv)
+        self.export_button.clicked.connect(self._on_export_excel)
         self.force_capture_button.clicked.connect(self._on_force_capture)
 
         # Stato iniziale
@@ -328,7 +329,7 @@ class CaptureTab(QWidget):
 
     # ------------------------------------------------------------------ Azioni backend
 
-    def _on_export_csv(self) -> None:
+    def _on_export_excel(self) -> None:
         if not self.job_id:
             QMessageBox.warning(
                 self,
@@ -337,36 +338,42 @@ class CaptureTab(QWidget):
             )
             return
 
-        csv_text = self.api_client.export_csv(self.job_id)
-        if csv_text is None:
-            self._log(f"[ERROR] Export CSV fallita per job {self.job_id}.")
+        results = self.api_client.get_results(self.job_id)
+        if not results:
+            self._log(f"[ERROR] Export Excel fallita: nessun risultato per {self.job_id}.")
+            QMessageBox.warning(
+                self,
+                "Nessun dato",
+                "Nessuna estrazione completata da esportare.",
+            )
             return
 
         file_path, _ = QtWidgets.QFileDialog.getSaveFileName(
             self,
-            "Salva CSV",
-            f"export-{self.job_id}.csv",
-            "File CSV (*.csv)",
+            "Salva Excel",
+            f"dati-{self.job_id}.xlsx",
+            "File Excel (*.xlsx)",
         )
         if not file_path:
             return
 
         try:
-            with open(file_path, "w", encoding="utf-8", newline="") as f:
-                f.write(csv_text)
-            self._log(f"Export CSV salvata in: {file_path}")
-            QMessageBox.information(
-                self,
-                "Export completata",
-                f"Export CSV salvata in:\n{file_path}",
-            )
-        except OSError as e:
-            self._log(f"[ERROR] Errore scrittura file CSV: {e}")
+            written = export_results(results, file_path)
+        except Exception as e:  # noqa: BLE001
+            self._log(f"[ERROR] Export Excel fallita: {e}")
             QMessageBox.critical(
                 self,
                 "Errore scrittura",
                 f"Errore durante la scrittura del file:\n{e}",
             )
+            return
+
+        self._log(f"Export Excel salvata in: {file_path} ({written} pratiche)")
+        QMessageBox.information(
+            self,
+            "Export completata",
+            f"{written} pratiche salvate in:\n{file_path}",
+        )
 
     def _update_session_label(self) -> None:
         self.job_label.setText(
