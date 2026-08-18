@@ -17,8 +17,9 @@ l'inquadratura e' peggio che lasciarla come e'.
 
 from __future__ import annotations
 
+import os
 import sys
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
 from PIL import Image, ImageChops
 
@@ -109,43 +110,98 @@ def detect_app_rect(img: Image.Image, *, tolerance: int = _COLOR_TOLERANCE) -> O
     return bbox
 
 
+def select_window_rect(
+    title_substring: str,
+    windows: Iterable[Dict[str, Any]],
+    own_pid: int,
+) -> Optional[Rect]:
+    """Sceglie fra le finestre candidate quella che inquadra l'applicativo.
+
+    Pura di proposito: l'enumerazione di sistema sta in find_window_rect(), qui
+    resta la sola decisione, che e' la parte che puo' sbagliare in silenzio.
+
+    Due regole, entrambe nate da difetti osservati:
+
+    1. Le finestre del nostro stesso processo sono escluse. L'agent intitola la
+       propria finestra "BPER Edge Agent" (ui/main_window.py) e config.ini cerca
+       "BPER": senza questa esclusione l'agent trova se stesso, e siccome un
+       ritaglio riuscito ferma normalize_frame() prima del ripiego, a router ed
+       estrazione arriva uno screenshot dell'agent.
+    2. Fra piu' candidate vince l'area maggiore, non l'ordine di enumerazione.
+       L'ordine non e' una prova di niente: una finestra vecchia o in secondo
+       piano poteva vincere per caso. La sessione in cui l'operatore lavora e'
+       quella grande. E' un arbitraggio, non una validazione: non dimostra che
+       la finestra scelta contenga davvero l'applicativo.
+    """
+    needle = (title_substring or "").strip().lower()
+    if not needle:
+        return None
+
+    best: Optional[Rect] = None
+    best_area = 0
+    for win in windows:
+        title = str(win.get("title") or "")
+        if needle not in title.lower():
+            continue
+        if win.get("pid") == own_pid:
+            continue
+        rect = win.get("rect")
+        if not rect:
+            continue
+        left, top, right, bottom = rect
+        area = max(0, right - left) * max(0, bottom - top)
+        if area <= 0:
+            continue
+        if area > best_area:
+            best, best_area = (left, top, right, bottom), area
+
+    return best
+
+
+def _enumerate_windows() -> List[Dict[str, Any]]:
+    """Finestre visibili con titolo: {title, pid, rect}. Solo Windows."""
+    import ctypes
+    from ctypes import wintypes
+
+    user32 = ctypes.windll.user32
+    out: List[Dict[str, Any]] = []
+
+    @ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
+    def _visit(hwnd: int, _lparam: int) -> bool:
+        if not user32.IsWindowVisible(hwnd):
+            return True
+        length = user32.GetWindowTextLengthW(hwnd)
+        if length <= 0:
+            return True
+        buffer = ctypes.create_unicode_buffer(length + 1)
+        user32.GetWindowTextW(hwnd, buffer, length + 1)
+        rect = wintypes.RECT()
+        if not user32.GetWindowRect(hwnd, ctypes.byref(rect)):
+            return True
+        pid = wintypes.DWORD()
+        user32.GetWindowThreadProcessId(hwnd, ctypes.byref(pid))
+        out.append({
+            "title": buffer.value,
+            "pid": int(pid.value),
+            "rect": (rect.left, rect.top, rect.right, rect.bottom),
+        })
+        return True  # enumerazione completa: la scelta e' di select_window_rect()
+
+    user32.EnumWindows(_visit, 0)
+    return out
+
+
 def find_window_rect(title_substring: str) -> Optional[Rect]:
-    """Rect della prima finestra visibile il cui titolo contiene la sottostringa.
+    """Rect della finestra visibile che meglio corrisponde alla sottostringa.
 
     Solo Windows, via user32 con ctypes: nessuna dipendenza aggiuntiva. Fuori da
     Windows, senza sottostringa o in caso di qualunque errore restituisce None,
     e la normalizzazione ripiega sul rilevamento da contenuto.
     """
-    needle = (title_substring or "").strip().lower()
-    if not needle or sys.platform != "win32":
+    if not (title_substring or "").strip() or sys.platform != "win32":
         return None
-
     try:
-        import ctypes
-        from ctypes import wintypes
-
-        user32 = ctypes.windll.user32
-        found: List[Rect] = []
-
-        @ctypes.WINFUNCTYPE(wintypes.BOOL, wintypes.HWND, wintypes.LPARAM)
-        def _visit(hwnd: int, _lparam: int) -> bool:
-            if not user32.IsWindowVisible(hwnd):
-                return True
-            length = user32.GetWindowTextLengthW(hwnd)
-            if length <= 0:
-                return True
-            buffer = ctypes.create_unicode_buffer(length + 1)
-            user32.GetWindowTextW(hwnd, buffer, length + 1)
-            if needle not in buffer.value.lower():
-                return True
-            rect = wintypes.RECT()
-            if user32.GetWindowRect(hwnd, ctypes.byref(rect)):
-                found.append((rect.left, rect.top, rect.right, rect.bottom))
-                return False  # primo match: basta
-            return True
-
-        user32.EnumWindows(_visit, 0)
-        return found[0] if found else None
+        return select_window_rect(title_substring, _enumerate_windows(), os.getpid())
     except Exception:  # noqa: BLE001 — la cattura non deve dipendere da user32
         return None
 

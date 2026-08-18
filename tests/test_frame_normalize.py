@@ -9,6 +9,7 @@ from frame_normalize import (
     crop_to_rect,
     detect_app_rect,
     normalize_frame,
+    select_window_rect,
 )
 
 # mss reports monitors as left/top/width/height in virtual-screen coordinates.
@@ -118,3 +119,64 @@ def test_normalize_frame_survives_a_window_rect_provider_that_raises():
 
     assert normalized.size == (420, 300)
     assert strategy == CONTENT_RECT
+
+
+# ---------------------------------------------------------------- window selection
+
+def _win(title: str, pid: int, rect: tuple) -> dict:
+    return {"title": title, "pid": pid, "rect": rect}
+
+
+OWN_PID = 4242
+
+
+def test_window_selection_never_returns_our_own_window():
+    """The agent titles its own window "BPER Edge Agent".
+
+    With `window_title_contains = BPER` the agent is a permanent match for itself,
+    so a title-only search hands routing and extraction a screenshot of the agent.
+    Nothing downstream can recover from that, because a successful crop stops
+    normalize_frame() before the content fallback runs.
+    """
+    windows = [
+        _win("BPER Edge Agent", OWN_PID, (0, 0, 900, 700)),
+        _win("Nuova PEF 3.0 - BPER - Google Chrome", 99, (100, 50, 1400, 900)),
+    ]
+
+    assert select_window_rect("BPER", windows, own_pid=OWN_PID) == (100, 50, 1400, 900)
+
+
+def test_window_selection_gives_up_when_only_our_own_window_matches():
+    windows = [_win("BPER Edge Agent", OWN_PID, (0, 0, 900, 700))]
+
+    assert select_window_rect("BPER", windows, own_pid=OWN_PID) is None
+
+
+def test_window_selection_arbitrates_by_area_instead_of_enumeration_order():
+    """Enumeration order is not evidence of which window holds the application.
+
+    Taking the first hit made a stale or background window win by accident; the
+    session the operator works in is the large one.
+    """
+    windows = [
+        _win("BPER notes.txt - Notepad", 7, (0, 0, 400, 300)),
+        _win("BPER - Remote Desktop Connection", 8, (200, 100, 1720, 980)),
+    ]
+
+    assert select_window_rect("BPER", windows, own_pid=OWN_PID) == (200, 100, 1720, 980)
+
+
+def test_window_selection_returns_none_when_nothing_matches():
+    windows = [_win("Spotify", 7, (0, 0, 400, 300))]
+
+    assert select_window_rect("BPER", windows, own_pid=OWN_PID) is None
+
+
+def test_window_selection_ignores_degenerate_rectangles():
+    # A minimized or zero-area window matches the title but frames nothing.
+    windows = [
+        _win("BPER - Remote Desktop Connection", 8, (0, 0, 0, 0)),
+        _win("BPER - Google Chrome", 9, (10, 10, 800, 600)),
+    ]
+
+    assert select_window_rect("BPER", windows, own_pid=OWN_PID) == (10, 10, 800, 600)
