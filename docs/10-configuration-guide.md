@@ -38,7 +38,7 @@ Sostituisci il placeholder di `.env.example:5` (`LLM_API_KEY=your-api-key-here`)
 
 **Passo 5 -- Mettere i dati dove la CLI li cerca.** La CLI legge screenshot e CSV di ground truth da `INPUT_DIR`, default `mnt/data` (`extraction/config.py:8`); il percorso della ground truth ne deriva come `mnt/data/dati.csv` (`extraction/config.py:9`). **`dati.csv` non è nel repository** (`/mnt` è in gitignore; solo i 9 file `screen *.png` sono stati forzati), e la CLI fallisce duramente senza (`extraction/cli.py:315-316`) -- vedi Risoluzione dei problemi. Procurati il file separatamente e mettilo in `mnt/data/` prima di lanciare `python main.py`. La GUI Tkinter e l'edge-agent non ne hanno bisogno: la GUI Tkinter è l'alternativa per estrarre **senza** ground truth.
 
-**Passo 6 -- Solo edge-agent in modalità `llm`: fornire la chiave del router.** Non serve nella configurazione spedita, che usa `router = ml` e non fa alcuna chiamata di rete per riconoscere la pagina. Serve soltanto passando a `router = llm` o `hybrid`. In quel caso `[llm] api_key` nel `config.ini` spedito è **vuota** per scelta, e la chiave viene raccolta dall'ambiente in base al provider -- vedi la ricetta più avanti.
+**Passo 6 -- Solo edge-agent in modalità `llm`: fornire la chiave del router.** Serve con la configurazione spedita, che usa `router = llm`. In quel caso `[llm] api_key` nel `config.ini` spedito è **vuota** per scelta, e la chiave viene raccolta dall'ambiente in base al provider -- vedi la ricetta più avanti.
 
 ### Dipendenze d'ordine che mordono
 
@@ -403,7 +403,7 @@ LLM client non inizializzato (manca API key o import OpenAI fallito)
 
 **Soluzione:** lascia vuota la riga `api_key` in `config.ini` e imposta la chiave nella `.env` di root, con il nome che il provider si aspetta: con `provider = gemini` va bene `GEMINI_API_KEY`, `GOOGLE_API_KEY` o `LLM_API_KEY`; con `provider = openai`, `OPENAI_API_KEY` o `LLM_API_KEY`. Il ripiego su ambiente scatta solo quando il valore INI è vuoto, e un valore che inizi per `REDACTED` conta come vuoto. La riga di log all'avvio `[BPER-LLM] Router LLM inizializzato (provider=..., model=..., pages=..., api_key=yes|no)` ti dice se una chiave è stata trovata -- ma non se è valida.
 
-Prima di indagare la chiave, verifica di avere davvero bisogno del router LLM: la configurazione spedita è `router = ml`, che non usa chiavi.
+Prima di indagare la chiave, verifica di avere davvero bisogno del router LLM: la configurazione spedita è `router = llm`, quindi la chiave serve davvero.
 
 ### Edge-agent: il riconoscimento ML non fa nulla in silenzio
 

@@ -35,7 +35,7 @@ Un proof of concept in Python che estrae campi strutturati dagli screenshot dell
 - **Provider LLM:** OpenAI (default, `gpt-4o`) oppure Google Gemini, commutati da `LLM_PROVIDER`
 - **Toolkit UI:** Tkinter (`gui_app.py`) e PyQt6 + qt-material (`edge-agent/`)
 - **Dominio:** 9 schermate BPER, 45 chiavi di campo italiane in `FIELD_KEYS`, 4 pagine canoniche
-- **Classificatore ML pagine:** DINOv2 ViT-S/14, router in vigore (`router = ml`); coseno centrato su ROI dell'area applicativa; degrada a disabilitato senza torch
+- **Riconoscimento pagina:** router LLM in vigore (`router = llm`), che legge il testo a schermo ed è invariante all'inquadratura; classificatore DINOv2 ViT-S/14 a prototipi come ripiego
 - **Persistenza:** nessun database, dizionari in memoria scritti su file JSON/CSV
 - **Entry point:** `main.py` (CLI; `--gui` → edge-agent), `gui_app.py` (Tkinter), `edge-agent/edge_agent.py` (PyQt6)
 - **Stato:** proof of concept. Suite pytest in `tests/` (116 test) sulla logica pura di edge-agent ed estrazione; nessuna CI, nessun Docker, nessun linter configurato. `develop` è il branch di lavoro, `master` il principale.

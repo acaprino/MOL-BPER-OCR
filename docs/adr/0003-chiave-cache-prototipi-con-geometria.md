@@ -55,7 +55,17 @@ autoinvalida non richiede che nessuno si ricordi.
 
 **Versione numerica incrementata a mano.** Funziona solo se chi modifica la geometria si ricorda di
 incrementarla, cioè ha lo stesso difetto della cancellazione manuale. La stringa derivata dai
-parametri reali non può andare fuori sincrono con essi.
+parametri reali non richiede che nessuno se ne ricordi.
+
+**Correzione (2026-08-18, peer review finding F10).** La formulazione originale di
+questo paragrafo diceva che una stringa derivata dai parametri "non puo' andare fuori
+sincrono": e' falso come scritto. `embedding_geometry()` **enumera a mano** un
+sottoinsieme, e omette la revisione del modello e i pesi (`page_classifier.py:33-37`),
+`InterpolationMode.BICUBIC` (`:337-340`) e `T.Normalize(...)` (`:342-345`). Cambiando
+la revisione DINOv2 fissata senza cambiare il nome del modello, la chiave resta
+identica e i vettori vecchi vengono confrontati con query nuove. La chiave copre le
+modifiche che sono passate per i suoi parametri, non tutte quelle che influenzano
+l'embedding.
 
 ## Conseguenze
 

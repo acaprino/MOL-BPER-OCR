@@ -1,9 +1,18 @@
 # 0005 - Router pagina ML invece di router LLM
 
-- **Stato:** Accettato
+- **Stato:** Superato da [0006](0006-router-llm-come-predefinito.md) (2026-08-18)
 - **Data:** 2026-08-17
 - **Interessa:** `edge-agent/config.ini`, `edge-agent/llm_router.py`, `edge-agent/page_classifier.py`
 - **Correlati:** [0001](0001-normalizzazione-inquadratura-frame.md), [0002](0002-riconoscimento-pagina-roi-e-coseno-centrato.md)
+
+> **Perche' e' stato superato.** La scelta poggiava su una premessa non dichiarata:
+> che l'inquadratura del frame fosse normalizzabile. L'operatore ha poi chiarito che
+> il browser puo' stare in locale o dentro una sessione remota, in qualsiasi
+> dimensione e posizione, e che i due casi possono coesistere nello stesso lavoro.
+> Senza inquadratura normalizzabile il confronto per prototipi non puo' funzionare,
+> e la misura in [0006](0006-router-llm-come-predefinito.md) lo conferma: 8/9 contro
+> 4/9 sulle inquadrature annidate. Il testo di questo ADR resta invariato: la storia
+> delle decisioni vale quanto la decisione corrente.
 
 ## Contesto
 

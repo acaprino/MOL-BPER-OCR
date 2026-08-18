@@ -17,7 +17,8 @@ Ogni ritaglio del sistema è espresso in **coordinate relative**:
 | `RETRY_AREAS` | HEADER / BODY / FOOTER | `extraction/config.py` |
 
 Tutte sono tarate sugli screenshot di riferimento in `mnt/data`, che sono **finestre di browser
-848x679**. Gli stessi file sono anche i prototipi del classificatore
+846x677 a 850x680** (verificato file per file: la cifra "848x679" che questo ADR
+riportava era generalizzata da un solo file). Gli stessi file sono anche i prototipi del classificatore
 (`edge-agent/assets/templates/bper/screen N.png`).
 
 `BPERCaptureWorker._grab_raw()` però cattura il **monitor intero** via `mss`. Su un frame
@@ -33,7 +34,16 @@ cattura: la stessa firma numerica.
 La conseguenza a valle era peggiore dell'etichetta sbagliata. Una pagina etichettata male entra in
 `captured_page_types`, e da quel momento ogni frame successivo finisce nell'uscita anticipata "già
 acquisita" di `_capture_once()`. La sessione si blocca: una pagina acquisita su nove, sotto il nome
-di un'altra, e nessun modo per l'operatore di recuperarla.
+di un'altra.
+
+**Correzione (2026-08-18, peer review finding F02/F05).** Questo ADR diceva
+"nessun modo per l'operatore di recuperarla": e' falso. `force_capture()` non
+controlla l'appartenenza a `captured_page_types`
+(`bper_capture_worker.py:544-577`), i risultati si accodano per job
+(`local_extraction_client.py:174-175`) e si consolidano per NDG tramite `pick_best`
+(`practice_consolidation.py:105-145`). Il recupero e' **manuale e parziale**, non
+assente: l'operatore puo' riacquisire la pagina con "Acquisisci ora". Resta vero che
+la sequenza guidata non si sblocca da sola.
 
 ## Decisione
 
@@ -43,9 +53,17 @@ Riportare l'inquadratura sulla finestra applicativa **al momento della cattura**
 `frame_normalize.normalize_frame()` prova due strategie in ordine di affidabilità:
 
 1. **Rettangolo della finestra dal sistema operativo.** `find_window_rect()` enumera le finestre
-   visibili con `user32` via `ctypes` e prende la prima il cui titolo contiene la sottostringa
-   configurata. La sottostringa è `window_title_contains` in `config.ini`, che era già presente,
-   già esposta nella UI in `capture_tab.py:100` e **non usata da nessuna parte**: questo la collega.
+   visibili con `user32` via `ctypes` e `select_window_rect()` sceglie fra quelle il cui titolo
+   contiene la sottostringa configurata. La sottostringa è `window_title_contains` in `config.ini`,
+   che era già presente, già esposta nella UI in `capture_tab.py:101` e **non usata da nessuna
+   parte**: questo la collega.
+
+   *Aggiornato il 2026-08-18.* La prima stesura prendeva la **prima** finestra corrispondente, senza
+   verificarla. Siccome l'agent intitola la propria finestra "BPER Edge Agent" e `config.ini` cerca
+   "BPER", l'agent trovava se stesso, e un ritaglio riuscito ferma la funzione prima del ripiego:
+   a router ed estrazione arrivava uno screenshot dell'agent. Ora le finestre del nostro processo
+   sono escluse per PID e fra le restanti vince l'area maggiore. Resta un arbitraggio, non una
+   validazione.
 2. **Rettangolo dedotto dal contenuto.** `detect_app_rect()` confronta i quattro angoli del frame:
    se concordano, li assume come sfondo del desktop e prende il bounding box di ciò che ne differisce.
    Rinuncia quando gli angoli non concordano o quando il contenuto tocca un bordo, perché in quei
@@ -73,6 +91,13 @@ Il ritaglio corregge **sia** il riconoscimento pagina **sia** l'estrazione: `CON
 sulle stesse finestre, quindi anche la pipeline riceveva un ritaglio spostato. Il test di
 riconoscimento passa da 1/9 a 9/9, e regge scale della finestra da 0.8x a 2.4x e variazioni di
 proporzioni del ±40% (vedi [0002](0002-riconoscimento-pagina-roi-e-coseno-centrato.md)).
+
+*Portata di quel 9/9, precisata il 2026-08-18 (peer review finding F11).* Il test costruisce il
+frame "dal vivo" incollando la finestra centrata su una tela, cioè **l'unica inquadratura che
+`detect_app_rect()` sa gestire fra le sette realistiche misurate**. Il 9/9 dimostra che geometria e
+punteggio sono corretti; non dimostra niente sulle sei inquadrature che la normalizzazione non
+gestisce, e niente sul campo. Questa è parte della ragione per cui
+[0006](0006-router-llm-come-predefinito.md) supera l'impianto.
 
 La deduplicazione pHash ora confronta frame già ritagliati: cambiamenti sul desktop **fuori** dalla
 finestra non contano più come frame nuovo. È un miglioramento, ma è un cambio di comportamento da

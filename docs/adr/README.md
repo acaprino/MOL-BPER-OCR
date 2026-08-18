@@ -46,7 +46,8 @@ tarati, e nessun test lo verificava.
 | [0002](0002-riconoscimento-pagina-roi-e-coseno-centrato.md) | Riconoscimento pagina: ROI sul contenuto e coseno centrato | Accettato |
 | [0003](0003-chiave-cache-prototipi-con-geometria.md) | La chiave della cache prototipi include la geometria di embedding | Accettato |
 | [0004](0004-budget-retry-derivato-dalle-aree.md) | Budget di retry derivato dal numero di aree | Accettato |
-| [0005](0005-router-ml-invece-di-router-llm.md) | Router pagina ML invece di router LLM | Accettato |
+| [0005](0005-router-ml-invece-di-router-llm.md) | Router pagina ML invece di router LLM | Superato da 0006 |
+| [0006](0006-router-llm-come-predefinito.md) | Router LLM come predefinito, ML come ripiego | Accettato |
 
 ## Da scrivere
 

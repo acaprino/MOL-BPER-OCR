@@ -7,7 +7,7 @@ Questions are ordered within each section by impact on a new developer's effecti
 ## Architecture
 
 ### Which page router is the intended default: LLM or ML?
-**RESOLVED 2026-08-17: ML.** Code default and shipped `config.ini` now agree on `router = ml`, recorded in [ADR 0005](../docs/adr/0005-router-ml-invece-di-router-llm.md) with the measurements behind it: with the ROI and scoring rule fixed, DINOv2 separates all 9 pages locally, without adding a network call per frame to the capture loop. `torch`/`torchvision` are therefore required dependencies, not optional extras, and the first-run weight download is documented in [Getting Started](07-getting-started.md) and the [Configuration Guide](10-configuration-guide.md). `router = llm` remains implemented as the fallback.
+**RESOLVED 2026-08-18: LLM.** The 17 August answer was ML; it was superseded the next day by [ADR 0006](../docs/adr/0006-router-llm-come-predefinito.md), once it emerged that the browser may sit locally or inside a remote session, at any size and position, and that both can occur within one job. Without a normalizable framing the prototype comparison cannot work: 8/9 against 4/9 on nested framings. The shipped `config.ini` uses `router = llm`; the code default stays `ml` deliberately, as the safe behaviour when `config.ini` is missing. Earlier history: shipped config and code default agreed on `router = ml`, recorded in [ADR 0005](../docs/adr/0005-router-ml-invece-di-router-llm.md). `torch`/`torchvision` are now needed only for the ML fallback, so they become candidates for optional extras, which ADR 0005 had ruled out.
 
 Still open: **an offline story for the DINOv2 weights** on a locked-down network. First run currently needs internet once.
 

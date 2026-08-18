@@ -38,7 +38,7 @@ Replace the `.env.example:5` placeholder (`LLM_API_KEY=your-api-key-here`) with 
 
 **Step 5: Put the data where the CLI looks for it.** The CLI reads screenshots and the ground-truth CSV from `INPUT_DIR`, default `mnt/data` (`extraction/config.py:8`); the ground-truth path is derived from it as `mnt/data/dati.csv` (`extraction/config.py:9`). **`dati.csv` is not in the repository** (`/mnt` is gitignored; only the 9 `screen *.png` files were force-added), and the CLI hard-fails without it (`extraction/cli.py:315-316`); see Troubleshooting. Obtain the file separately and place it in `mnt/data/` before running `python main.py`. The Tkinter GUI and the edge-agent do not need it.
 
-**Step 6: Edge-agent in `llm` mode only: supply the router key.** Not needed with the shipped configuration, which uses `router = ml` and makes no network call to recognize a page. Only needed if you switch to `router = llm` or `hybrid`. In that case `[llm] api_key` in the shipped `config.ini` is deliberately **blank** and the key is picked up from the environment according to the provider; see the recipe below.
+**Step 6: Edge-agent in `llm` mode only: supply the router key.** Needed with the shipped configuration, which uses `router = llm`. In that case `[llm] api_key` in the shipped `config.ini` is deliberately **blank** and the key is picked up from the environment according to the provider; see the recipe below.
 
 ### Order dependencies that bite
 
@@ -403,7 +403,7 @@ LLM client non inizializzato (manca API key o import OpenAI fallito)
 
 **Fix:** leave the `api_key` line in `config.ini` blank and set the key in the root `.env` under the name the provider expects: with `provider = gemini` any of `GEMINI_API_KEY`, `GOOGLE_API_KEY` or `LLM_API_KEY`; with `provider = openai`, `OPENAI_API_KEY` or `LLM_API_KEY`. The env fallback fires only when the INI value is blank, and a value starting with `REDACTED` counts as blank. The startup log line `[BPER-LLM] Router LLM inizializzato (provider=..., model=..., pages=..., api_key=yes|no)` tells you whether a key was found, but not whether it is valid.
 
-Before chasing the key, check you actually need the LLM router: the shipped configuration is `router = ml`, which uses no keys.
+Before chasing the key, check you actually need the LLM router: the shipped configuration is `router = llm`, so the key really is needed.
 
 ### Edge-agent: ML page detection silently does nothing
 

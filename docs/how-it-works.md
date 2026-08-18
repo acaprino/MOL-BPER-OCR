@@ -101,9 +101,13 @@ BPERCaptureWorker (QThread)
   downstream use *relative* coordinates calibrated on window-sized screenshots (the classifier's
   `DEFAULT_CROP_ROI` and the pipeline's `CONTENT_CROP`), so on a full-monitor frame those coordinates
   land on different content. See `docs/adr/0001-normalizzazione-inquadratura-frame.md`.
-- **Page routing modes** (set in `edge-agent/config.ini` `router=`; both the code default and
-  the shipped `config.ini` are `ml`):
-  - `ml` -- `MLPageRouter` wraps `BPERPagePrototypeClassifier` (DINOv2 ViT-S/14, 384-dim, prototype
+- **Page routing modes** (set in `edge-agent/config.ini` `router=`). The shipped `config.ini` is
+  `llm`; the code default `DEFAULT_ROUTER_MODE` stays `ml` **on purpose**, as the safe behaviour when
+  `config.ini` is missing: starting up with network calls under a key that may not be configured is
+  worse than starting up with a local recognizer. See
+  `docs/adr/0006-router-llm-come-predefinito.md`:
+  - `ml` (**fallback since 2026-08-18**) -- `MLPageRouter` wraps `BPERPagePrototypeClassifier`
+    (DINOv2 ViT-S/14, 384-dim, prototype
     matching via **centered** cosine similarity: the prototype centroid is subtracted from both
     prototypes and query, because pages of the same application share almost every pixel and the raw
     cosine put all 9 between 0.91 and 1.00 with margins of 0.003). ROI is
@@ -112,7 +116,13 @@ BPERCaptureWorker (QThread)
     gracefully to disabled if torch is unavailable. First run downloads the DINOv2 weights (~84MB)
     via torch.hub (needs internet once). See
     `docs/adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md`.
-  - `llm` -- `LLMPageRouter` via the OpenAI client, provider-aware:
+  - `llm` (**shipped default**) -- recognizes the page from the *text* on screen, so it is invariant
+    to window size, position and nesting depth. The prototype comparison can never be: a global
+    embedding is by construction a function of the whole frame, hence of the framing, and the
+    production framing varies per operator (local Chrome, or a remote session at any size and
+    position, possibly both within one job). Measured 8/9 against the prototype classifier's 4/9 on
+    frames nested inside a desktop, at the cost of one VLM call per routed frame and 4-5 s of
+    latency. Via the OpenAI client, provider-aware:
     `AgentConfig.resolve_llm_settings()` (`edge-agent/config.py`) picks key/endpoint/model from
     `[llm] provider`; explicit INI values are authoritative, provider defaults fill only blank
     entries (config.ini ships `gemini` + `gemini-3.6-flash` through Google's OpenAI-compatible

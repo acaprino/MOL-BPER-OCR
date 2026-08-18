@@ -94,7 +94,8 @@ Separazione fra match e non-match, che giustifica la soglia 0.35:
 
 **Token di patch DINOv2 con matching spaziale, o una testa addestrata.** Avrebbe più capacità
 discriminante, in particolare fra le pagine che differiscono solo per un tooltip aperto (5, 6, 7, 8).
-Scartata perché non serve: la configurazione scelta è già a 9/9 con margine di 0.11, e un
+Scartata perché non serviva: la configurazione scelta è a 9/9 con margine di 0.11 **sulle
+inquadrature che la normalizzazione gestisce** (vedi la precisazione in coda), e un
 addestramento richiederebbe un dataset di catture reali che non abbiamo.
 
 **Solo la correzione geometrica, senza centratura.** Porta a 9/9 sulle finestre, quindi i test di
@@ -118,3 +119,20 @@ diverse dalle 9 previste.
 
 `EMBED_SIDE` è esportato invece di essere murato nella transform: fa parte della chiave di cache di
 [0003](0003-chiave-cache-prototipi-con-geometria.md) e cambiarlo deve invalidare i prototipi.
+
+## Precisazione (2026-08-18)
+
+Due misure di questo ADR sono state contestate dalla peer review incrociata e le
+contestazioni sono state accettate:
+
+- **Il 9/9 non è prova di comportamento sul campo** (finding F11). Il test costruisce
+  il frame incollando la finestra centrata su una tela, che è l'unica delle sette
+  inquadrature realistiche che `detect_app_rect()` gestisce. Misura il caso favorevole.
+- **Il 4/9 su monitor intero non descrive il classificatore spedito** (finding F07). La
+  riga della tabella è `contenuto + squash` **senza** centratura, e non è mai stato
+  verificato se quei quattro superino la soglia 0.35.
+
+Le decisioni prese qui (ROI sul contenuto, squash, coseno centrato, chiave di cache)
+restano valide e sono miglioramenti reali. Ciò che non regge è l'uso di questi numeri
+come prova che il riconoscimento per prototipi basti in esercizio:
+[0006](0006-router-llm-come-predefinito.md) lo sostituisce come predefinito.
