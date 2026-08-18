@@ -80,6 +80,19 @@ def build_prompt(process: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def save_atomic(path: Path, payload: Any) -> None:
+    """Write via a temporary file and rename, so a reader never sees a half file.
+
+    Reading labels.json mid-write once showed 425 records where 505 existed, and
+    that was diagnosed as data loss before it was recognised as a torn read. The
+    rename is atomic on the same filesystem, so a reader sees either the previous
+    complete file or the new one, never a prefix.
+    """
+    tmp = path.with_suffix(path.suffix + ".tmp")
+    tmp.write_text(json.dumps(payload, indent=1, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(path)
+
+
 def load_model() -> Any:
     from page_classifier import DINOV2_HUB_REPO, DINOV2_MODEL_NAME
 
@@ -134,6 +147,15 @@ def main() -> None:
     ap.add_argument("--process", default="bper-p1")
     ap.add_argument("--templates", default="edge-agent/assets/templates/bper")
     ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--batch", type=int, default=50,
+                    help="frames per batch; results are checkpointed after each one")
+    ap.add_argument("--restart", action="store_true",
+                    help="ignore existing results and label everything again")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="stop after this many frames and exit; together with resume this "
+                         "lets a driver run each batch as a fresh process, so torch arenas "
+                         "and decoded images go back to the OS between batches instead of "
+                         "accumulating for the whole run (0 = no limit)")
     args = ap.parse_args()
 
     process = json.loads(Path(f"processes/{args.process}.json").read_text(encoding="utf-8"))
@@ -162,8 +184,26 @@ def main() -> None:
     key, base_url, model_name = cfg.resolve_llm_settings()
     client = OpenAI(api_key=key, base_url=base_url)
 
-    frames = [Path(p) for p in json.loads(Path(args.frames).read_text(encoding="utf-8"))]
+    labels_path = out / "labels.json"
     records: List[Dict[str, Any]] = []
+    if labels_path.exists() and not args.restart:
+        records = json.loads(labels_path.read_text(encoding="utf-8"))
+        # A record without a cluster is a failed call, not a done frame: retry it.
+        records = [r for r in records if r.get("cluster")]
+    done = {r["source"] for r in records}
+
+    frames = [Path(p) for p in json.loads(Path(args.frames).read_text(encoding="utf-8"))]
+    total = len(frames)
+    frames = [f for f in frames if f.name not in done]
+    remaining = len(frames)
+    if args.limit:
+        frames = frames[:args.limit]
+    if done:
+        tail = f", ne prendo {len(frames)} in questa esecuzione" if args.limit else ""
+        print(f"ripresa: {len(done)} gia' fatti, {remaining} da fare{tail}", flush=True)
+    if not frames:
+        print("niente da fare: tutti i fotogrammi sono gia' etichettati", flush=True)
+        return
     lock = threading.Lock()
 
     def classify(base: Dict[str, Any], crop: Image.Image) -> None:
@@ -191,31 +231,41 @@ def main() -> None:
             base["error"] = str(exc)[:140]
         with lock:
             records.append(base)
-            if len(records) % 25 == 0:
-                (out / "labels.json").write_text(
-                    json.dumps(records, indent=1, ensure_ascii=False), encoding="utf-8")
 
     start = time.time()
-    with ThreadPoolExecutor(max_workers=args.workers) as pool:
-        for i, path in enumerate(frames, 1):
-            frame = Image.open(path).convert("RGB")
-            score, rect = localize(model, detector, frame, aspect)
-            crop = frame.crop(rect)
-            crop.save(out / "crops" / f"{path.stem}.jpg", "JPEG", quality=88, optimize=True)
-            pool.submit(classify, {"file": f"{path.stem}.jpg", "source": path.name,
-                                   "video": path.parent.name, "rect": list(rect),
-                                   "loc_score": round(score, 4)}, crop)
-            if i % 50 == 0:
-                elapsed = time.time() - start
-                print(f"{i}/{len(frames)}  {elapsed/i:.2f}s/frame  "
-                      f"residuo ~{(len(frames)-i)*elapsed/i/60:.0f} min", flush=True)
+    processed = 0
+    for offset in range(0, len(frames), args.batch):
+        batch = frames[offset:offset + args.batch]
+        # One pool per batch: leaving the block waits for every call in it, so the
+        # checkpoint below is written only once the batch is genuinely complete.
+        with ThreadPoolExecutor(max_workers=args.workers) as pool:
+            for path in batch:
+                frame = Image.open(path).convert("RGB")
+                score, rect = localize(model, detector, frame, aspect)
+                crop = frame.crop(rect)
+                crop.save(out / "crops" / f"{path.stem}.jpg", "JPEG", quality=88, optimize=True)
+                pool.submit(classify, {"file": f"{path.stem}.jpg", "source": path.name,
+                                       "video": path.parent.name, "rect": list(rect),
+                                       "loc_score": round(score, 4)}, crop)
+        save_atomic(labels_path, records)
+        processed += len(batch)
+        elapsed = time.time() - start
+        print(f"[checkpoint] {len(records)}/{total} totali, {processed} in questa sessione, "
+              f"{elapsed/processed:.2f}s/frame, residuo ~{(len(frames)-processed)*elapsed/processed/60:.0f} min",
+              flush=True)
 
-    (out / "labels.json").write_text(json.dumps(records, indent=1, ensure_ascii=False),
-                                     encoding="utf-8")
+    save_atomic(labels_path, records)
     counts = Counter(r.get("cluster") or "(errore)" for r in records)
     print(f"\nFINITO: {len(records)} in {(time.time()-start)/60:.1f} min")
     for cluster, n in counts.most_common():
         print(f"  {n:4}  {cluster}")
+
+    left = remaining - len(frames)
+    if left > 0:
+        # Exit 10 means "work remains": the driver loop reads this and starts a
+        # fresh process, which is the point of the limit.
+        print(f"restano {left} fotogrammi: richiamare per continuare", flush=True)
+        raise SystemExit(10)
 
 
 if __name__ == "__main__":
