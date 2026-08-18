@@ -100,9 +100,35 @@ positivi, contro 83% e 100% del punto di partenza.
   `local_margin_min` (default 0.10) o quando il frame perde contro uno scarto; altrimenti
   passa al router LLM. E' l'inversa di `hybrid`, dove la rete si paga comunque.
 
-Il `config.ini` spedito resta su `router = llm`: attivare `local-first` richiede prima di
-costruire i prototipi reali sotto `assets/templates/bper/`, che oggi contiene solo i nove
-screenshot di riferimento in root.
+### Cosa e' stato effettivamente spedito, e la sorpresa (2026-08-18)
+
+Costruendo i prototipi e provandoli, la parte sulle **pagine** non ha retto:
+
+| configurazione dei prototipi | riferimenti riconosciuti |
+|---|---|
+| solo i nove riferimenti | **9/9** |
+| riferimenti + tre classi di scarto | **9/9** |
+| riferimenti + scarto + ritagli reali nelle pagine | **1/9** |
+
+Aggiungere ritagli reali alle classi *pagina* fa crollare il riconoscimento: tutto finisce
+su `screen 8`, l'unica classe rimasta con il solo riferimento. La misura sul corpus
+(87% con prototipi reali) era fatta costruendo **tutti** i prototipi dai ritagli, una
+popolazione sola; mescolarli con i riferimenti produce prototipi mediati fra due
+popolazioni e lontani da entrambe. Il meccanismo esatto non e' stato dimostrato, il fatto
+misurato si'.
+
+Lungo la strada e' emerso anche un difetto del builder: salvare i prototipi gia' ritagliati
+sull'area applicativa fa applicare `DEFAULT_CROP_ROI` una seconda volta, togliendo un altro
+20% di contenuto vero. Corretto allargando il rettangolo verso l'alto, ma non e' bastato a
+salvare la configurazione mista.
+
+**Spedito quindi:** pagine dai nove riferimenti (come prima), piu' le **tre classi di
+scarto** dai ritagli reali. E' la meta' che regge: 9/9 sulle pagine e negativi rifiutati con
+la categoria giusta. `tools/build_prototypes.py` costruisce gli scarti per default e mette
+le pagine dietro `--pages`, con il numero in aiuto.
+
+Il `config.ini` spedito resta su `router = llm`. `local-first` e' cablato e provabile, ma
+attivarlo di default richiede una misura sul campo che questa non sostituisce.
 
 ## Cosa questa misura NON dice
 

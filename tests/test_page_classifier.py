@@ -239,3 +239,30 @@ def test_cache_is_stale_when_reject_classes_appear(tmp_path):
     with_three = embedding_geometry(reject_classes=3)
 
     assert without != with_three
+
+
+def test_reject_classes_do_not_cost_page_recognition(classifier):
+    """Adding reject prototypes must not disturb the pages.
+
+    Measured while wiring this: reject classes alone leave reference recognition at
+    9/9, while adding real crops to the *page* classes dropped it to 1/9. That is
+    why the shipped templates carry reject folders and keep the nine references as
+    the page prototypes. This test is the guard on the half that works.
+    """
+    misread = [
+        screen
+        for screen in SCREENS
+        if classifier.classify(Image.open(TEMPLATES / f"{screen}.png"))[0] != screen
+    ]
+
+    assert misread == []
+
+
+def test_a_blank_desktop_is_rejected_by_a_named_class(classifier):
+    """Before reject classes existed the only possible answer was a page or a
+    below-threshold None. Naming which reject class won tells the caller the frame
+    was recognised as a non-page rather than simply not recognised."""
+    result = classifier.classify_detailed(Image.new("RGB", (1920, 1080), DESKTOP))
+
+    assert result.label is None
+    assert result.rejected_by is not None
