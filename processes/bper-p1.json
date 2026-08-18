@@ -1,0 +1,210 @@
+{
+  "id": "bper-p1",
+  "name": "BPER P1",
+  "title": "Lettura pratica di credito in Gestione Pratiche",
+  "description": "Sequenza di schermate che un operatore percorre per leggere una pratica di credito nell'applicativo BPER Gestione Pratiche (PEF). Il processo copre la lista pratiche in tre viste e il dettaglio della pratica in sei viste, dalle quali si estraggono i 45 campi del catalogo.",
+  "sequence": 1,
+  "next": null,
+  "application": {
+    "name": "BPER Gestione Pratiche (PEF)",
+    "url_contains": [
+      "intrawseal.gbbper.priv",
+      "/npef/npefApp"
+    ],
+    "identifying_marks": [
+      "logo testuale 'BPER:' in verde acqua su sfondo chiaro, in alto a sinistra",
+      "intestazione 'Gestione Pratiche' sottolineata accanto al logo",
+      "barra schede applicativa con 'Ricerca Pratica' ed 'Elenco Pratiche'",
+      "nome e codici dell'operatore connesso in alto a destra"
+    ],
+    "not_this_application": [
+      "gestionale di istruttoria mutui su qtaskbper.istruttore.it, interfaccia blu con 'Incarico', 'Macrostato: Preistruttoria', 'Checklist', 'Pre-delibera', 'Assegna operatore', 'Report Server': contiene campi chiamati 'Nota ...' che somigliano a quelli di BPER ma non appartengono a questo processo",
+      "portale iSpace, Q-Task, client di posta, Excel, visualizzatori di documenti"
+    ]
+  },
+  "layout_families": [
+    {
+      "id": "lista-pratiche",
+      "pages": [
+        1,
+        2,
+        3
+      ],
+      "shared": "Lista pratiche BStore. Sezione 'Filtri Attivi', pulsante 'ESPORTA IN EXCEL'. NESSUNA sidebar di navigazione a sinistra: e' il discriminante rispetto alle pagine di dettaglio.",
+      "differs_by": "posizione dello scorrimento orizzontale della tabella e presenza di un tooltip"
+    },
+    {
+      "id": "dettaglio-fidi",
+      "pages": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "shared": "Dettaglio pratica con sidebar blu a sinistra, banner pratica in alto, tabella fidi e tabella garanzie.",
+      "differs_by": "quale tooltip e' aperto, e su quale riga"
+    }
+  ],
+  "pages": [
+    {
+      "order": 1,
+      "name": "Risultato ricerca",
+      "slug": "risultato-ricerca",
+      "template": "screen 1",
+      "signature": "Tabella non scorsa: sono visibili ADD, NDG, Numero, Denominazione, Tipo, Stato, Fase, Creazione, Evidenze. Una riga evidenziata.",
+      "excludes": [
+        "nessun tooltip aperto",
+        "nessuna sidebar di navigazione a sinistra"
+      ],
+      "fields": [
+        "NDG",
+        "Denom.",
+        "Tipo",
+        "tooltip su valore campo Descrizione: BMB",
+        "Stato",
+        "Fase"
+      ]
+    },
+    {
+      "order": 2,
+      "name": "Risultato ricerca - Colonne estese",
+      "slug": "risultato-ricerca-colonne-estese",
+      "template": "screen 2",
+      "signature": "Stessa lista scorsa orizzontalmente: le colonne base sono uscite dalla vista e compaiono colonne di assegnazione e date (Assegnato, Data Elic., Recapito).",
+      "excludes": [
+        "nessun tooltip aperto",
+        "nessuna sidebar a sinistra"
+      ],
+      "fields": [
+        "Creazione"
+      ]
+    },
+    {
+      "order": 3,
+      "name": "Risultato ricerca - Tooltip mostrata",
+      "slug": "risultato-ricerca-tooltip",
+      "template": "screen 3",
+      "signature": "Stessa lista scorsa a destra, colonne prevalentemente temporali, CON un tooltip galleggiante aperto su una cella della riga selezionata, tipicamente su Evidenze.",
+      "excludes": [
+        "nessuna sidebar a sinistra"
+      ],
+      "fields": [
+        "Evidenze",
+        "tooltip su valore campo Evidenze: B"
+      ]
+    },
+    {
+      "order": 4,
+      "name": "Elenco Soggetti",
+      "slug": "elenco-soggetti",
+      "template": "screen 4",
+      "signature": "Dettaglio pratica con la tabella soggetti espansa e dominante: piu' righe con ruolo, denominazione, NDG, quote.",
+      "excludes": [
+        "nessuna sezione finanziaria prominente (importi, rate, garanzie)",
+        "nessun tooltip sui campi finanziari"
+      ],
+      "fields": [
+        "NDG (riga 1)",
+        "Denominazione (riga 1)",
+        "Ruolo (riga 1)",
+        "NDG (riga 2)",
+        "Denominazione (riga 2)",
+        "Ruolo (riga 2)",
+        "NDG (riga 3)",
+        "Denominazione (riga 3)",
+        "Ruolo (riga 3)",
+        "Filiale relazione"
+      ]
+    },
+    {
+      "order": 5,
+      "name": "Gestione Fidi e Garanzie",
+      "slug": "gestione-fidi-e-garanzie",
+      "template": "screen 5",
+      "signature": "Dettaglio pratica con tabella fidi (numero fido, rapporto, descrizione, scadenza, importo, tipo operazione) e tabella garanzie sottostante.",
+      "excludes": [
+        "NESSUN popup tooltip sovrapposto: e' cio' che la distingue dalle pagine 6, 7 e 8"
+      ],
+      "fields": [
+        "n° FIDO",
+        "Rapporto",
+        "Descrizione",
+        "Scadenza",
+        "Importo (€)",
+        "Tipo Op.",
+        "n° Gar  (riga 1)",
+        "Descrizione  (riga 1)",
+        "Fido  (riga 1)",
+        "NDG (riga 1)",
+        "Denominazione  (riga 1)",
+        "Imp. (€)/%  (riga 1)",
+        "Tipo Op.  (riga 1)",
+        "n° Gar  (riga 2)",
+        "Descrizione  (riga 2)",
+        "Fido  (riga 2)",
+        "NDG  (riga 2)",
+        "Denominazione  (riga 2)",
+        "Imp. (€)/%  (riga 2)",
+        "Tipo Op.  (riga 2)"
+      ]
+    },
+    {
+      "order": 6,
+      "name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+      "slug": "gestione-fidi-tooltip-fidi",
+      "template": "screen 6",
+      "signature": "Come la pagina 5, con un tooltip testuale aperto sulla colonna 'Descrizione' della tabella FIDI, nella parte centrale del layout.",
+      "excludes": [
+        "il tooltip non e' sulla tabella garanzie"
+      ],
+      "fields": [
+        "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%"
+      ]
+    },
+    {
+      "order": 7,
+      "name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
+      "slug": "gestione-fidi-tooltip-garanzie-riga1",
+      "template": "screen 7",
+      "signature": "Come la pagina 5, con un tooltip aperto sulla colonna 'Descrizione' della tabella GARANZIE, in corrispondenza della PRIMA riga.",
+      "excludes": [
+        "il popup e' piu' in alto rispetto alla variante riga 2"
+      ],
+      "fields": [
+        "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS"
+      ]
+    },
+    {
+      "order": 8,
+      "name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+      "slug": "gestione-fidi-tooltip-garanzie-riga2",
+      "template": "screen 8",
+      "signature": "Come la pagina 5, con un tooltip aperto sulla colonna 'Descrizione' della tabella GARANZIE, in corrispondenza della SECONDA riga.",
+      "excludes": [
+        "il popup e' piu' in basso rispetto alla variante riga 1"
+      ],
+      "fields": [
+        "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."
+      ]
+    },
+    {
+      "order": 9,
+      "name": "Note da Richiesta",
+      "slug": "note-da-richiesta",
+      "template": "screen 9",
+      "signature": "Dettaglio pratica con il riquadro 'Nota della richiesta': un blocco di testo narrativo esteso che occupa la maggior parte dell'area contenuto.",
+      "excludes": [
+        "non e' un elenco di documenti con checklist e allegati"
+      ],
+      "fields": [
+        "Note della richiesta"
+      ],
+      "note": "La descrizione originale in prompts.json ammetteva anche 'elenco documenti con checklist e allegati'. Quella frase ha attirato decine di schermate di gestione documentale, sia di BPER sia dell'altro gestionale, dentro questa classe durante l'etichettatura del 2026-08-18. Il tratto caratterizzante e' il riquadro di note, non i documenti."
+    }
+  ],
+  "catchall": {
+    "name": "Altro / Non riconosciuto",
+    "signature": "Qualsiasi schermata che non corrisponda chiaramente a una delle pagine sopra, inclusa qualsiasi schermata di un'applicazione diversa da BPER Gestione Pratiche.",
+    "note": "Da preferire ogni volta che la corrispondenza e' ambigua. Un falso positivo consuma lo slot di una pagina per l'intero job."
+  }
+}
