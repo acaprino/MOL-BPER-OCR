@@ -63,7 +63,15 @@
         "tooltip su valore campo Descrizione: BMB",
         "Stato",
         "Fase"
-      ]
+      ],
+      "location": {
+        "app_tab": "Elenco Pratiche",
+        "phase": null,
+        "step": null,
+        "content_tab": null,
+        "within_page_state": "tabella non scorsa"
+      },
+      "revisitable": true
     },
     {
       "order": 2,
@@ -77,7 +85,15 @@
       ],
       "fields": [
         "Creazione"
-      ]
+      ],
+      "location": {
+        "app_tab": "Elenco Pratiche",
+        "phase": null,
+        "step": null,
+        "content_tab": null,
+        "within_page_state": "tabella scorsa a destra"
+      },
+      "revisitable": true
     },
     {
       "order": 3,
@@ -91,7 +107,15 @@
       "fields": [
         "Evidenze",
         "tooltip su valore campo Evidenze: B"
-      ]
+      ],
+      "location": {
+        "app_tab": "Elenco Pratiche",
+        "phase": null,
+        "step": null,
+        "content_tab": null,
+        "within_page_state": "tabella scorsa a destra, tooltip aperto"
+      },
+      "revisitable": true
     },
     {
       "order": 4,
@@ -114,7 +138,15 @@
         "Denominazione (riga 3)",
         "Ruolo (riga 3)",
         "Filiale relazione"
-      ]
+      ],
+      "location": {
+        "app_tab": "PEF 2.0",
+        "phase": "Istruttoria",
+        "step": "Elenco Soggetti",
+        "content_tab": null,
+        "within_page_state": null
+      },
+      "revisitable": true
     },
     {
       "order": 5,
@@ -146,7 +178,15 @@
         "Denominazione  (riga 2)",
         "Imp. (€)/%  (riga 2)",
         "Tipo Op.  (riga 2)"
-      ]
+      ],
+      "location": {
+        "app_tab": "PEF 2.0",
+        "phase": "Istruttoria",
+        "step": "Gestione Fidi e Garanzie",
+        "content_tab": "Gestione Fidi e Garanzie",
+        "within_page_state": "nessun tooltip"
+      },
+      "revisitable": true
     },
     {
       "order": 6,
@@ -159,7 +199,15 @@
       ],
       "fields": [
         "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%"
-      ]
+      ],
+      "location": {
+        "app_tab": "PEF 2.0",
+        "phase": "Istruttoria",
+        "step": "Gestione Fidi e Garanzie",
+        "content_tab": "Gestione Fidi e Garanzie",
+        "within_page_state": "tooltip su Descrizione fidi"
+      },
+      "revisitable": true
     },
     {
       "order": 7,
@@ -172,7 +220,15 @@
       ],
       "fields": [
         "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS"
-      ]
+      ],
+      "location": {
+        "app_tab": "PEF 2.0",
+        "phase": "Istruttoria",
+        "step": "Gestione Fidi e Garanzie",
+        "content_tab": "Gestione Fidi e Garanzie",
+        "within_page_state": "tooltip su Descrizione garanzie, riga 1"
+      },
+      "revisitable": true
     },
     {
       "order": 8,
@@ -185,7 +241,15 @@
       ],
       "fields": [
         "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."
-      ]
+      ],
+      "location": {
+        "app_tab": "PEF 2.0",
+        "phase": "Istruttoria",
+        "step": "Gestione Fidi e Garanzie",
+        "content_tab": "Gestione Fidi e Garanzie",
+        "within_page_state": "tooltip su Descrizione garanzie, riga 2"
+      },
+      "revisitable": true
     },
     {
       "order": 9,
@@ -199,12 +263,111 @@
       "fields": [
         "Note della richiesta"
       ],
-      "note": "La descrizione originale in prompts.json ammetteva anche 'elenco documenti con checklist e allegati'. Quella frase ha attirato decine di schermate di gestione documentale, sia di BPER sia dell'altro gestionale, dentro questa classe durante l'etichettatura del 2026-08-18. Il tratto caratterizzante e' il riquadro di note, non i documenti."
+      "note": "La descrizione originale in prompts.json ammetteva anche 'elenco documenti con checklist e allegati'. Quella frase ha attirato decine di schermate di gestione documentale, sia di BPER sia dell'altro gestionale, dentro questa classe durante l'etichettatura del 2026-08-18. Il tratto caratterizzante e' il riquadro di note, non i documenti.",
+      "location": {
+        "app_tab": "PEF 2.0",
+        "phase": "Istruttoria",
+        "step": "Gestione Fidi e Garanzie",
+        "content_tab": "Note da Richiesta",
+        "within_page_state": null
+      },
+      "revisitable": true
     }
   ],
   "catchall": {
     "name": "Altro / Non riconosciuto",
     "signature": "Qualsiasi schermata che non corrisponda chiaramente a una delle pagine sopra, inclusa qualsiasi schermata di un'applicazione diversa da BPER Gestione Pratiche.",
     "note": "Da preferire ogni volta che la corrispondenza e' ambigua. Un falso positivo consuma lo slot di una pagina per l'intero job."
+  },
+  "navigation": {
+    "model": "graph",
+    "bidirectional": true,
+    "rationale": "L'operatore si muove liberamente: puo' tornare a una pagina gia' vista, riaprirla per un tooltip diverso, saltare a un altro passo e rientrare. Un modello a lista ordinata descrive il percorso suggerito, non quello percorso, e trattare l'ordine come vincolo produce due difetti: la guida chiede una pagina che l'operatore ha gia' davanti, e una pagina acquisita per errore non e' piu' recuperabile.",
+    "observed_from": [
+      "mnt/data/screen 5.png: navigatore di fase e barra schede applicative",
+      "mnt/data/screen 9.png: schede di contenuto dentro un passo"
+    ],
+    "levels": [
+      {
+        "id": "app-tabs",
+        "name": "Schede applicative",
+        "scope": "sempre presenti, in alto",
+        "free_movement": true,
+        "values": [
+          "Ricerca Pratica",
+          "Elenco Pratiche",
+          "PEF 2.0 - Pratica: <numero>"
+        ],
+        "readable_from_screen": "barra schede con icone: lente per Ricerca Pratica, griglia per Elenco Pratiche, ingranaggio per la pratica aperta. La scheda attiva ha etichetta in verde acqua e sfondo chiaro.",
+        "note": "E' qui che avviene il movimento avanti/indietro piu' frequente: dalla lista alla pratica e viceversa, con un clic e in entrambi i sensi, senza perdere lo stato."
+      },
+      {
+        "id": "navigator",
+        "name": "Navigatore di fase",
+        "scope": "dentro la scheda della pratica (PEF 2.0)",
+        "free_movement": true,
+        "readable_from_screen": "colonna a sinistra intitolata 'Navigatore'. Ogni voce porta un'icona di stato che dichiara a che punto e' il processo.",
+        "state_markers": {
+          "completato": "spunta verde",
+          "corrente": "pallino arancione, voce evidenziata e riquadrata",
+          "da fare": "matita"
+        },
+        "phases": [
+          {
+            "name": "Verifica Preliminare",
+            "steps": []
+          },
+          {
+            "name": "Istruttoria",
+            "steps": [
+              "Elenco Soggetti",
+              "Note Delibere Precedenti",
+              "Gestione Fidi e Garanzie",
+              "Analisi Soggetti",
+              "Situazione Banche",
+              "Controlli di Fine Fase",
+              "Iter e Chiusura"
+            ]
+          },
+          {
+            "name": "Proposta",
+            "steps": []
+          },
+          {
+            "name": "Parere",
+            "steps": []
+          },
+          {
+            "name": "Delibera",
+            "steps": []
+          }
+        ],
+        "functions": [
+          "Gestione Documentale",
+          "Stampe"
+        ],
+        "note": "La fase corrente non va dedotta da un modello di transizioni: e' scritta sullo schermo. Leggerla e' piu' affidabile che inferirla, e da' al riconoscitore un contesto forte proprio dove e' piu' debole (le varianti con tooltip di uno stesso passo). 'Gestione Documentale' sotto Funzioni spiega le schermate documentali presenti nelle registrazioni: sono BPER, ma non appartengono a questo processo."
+      },
+      {
+        "id": "content-tabs",
+        "name": "Schede di contenuto",
+        "scope": "dentro un passo del navigatore",
+        "free_movement": true,
+        "example_values": [
+          "Gestione Fidi e Garanzie",
+          "Note a Istruttoria",
+          "Note da Richiesta",
+          "Dettaglio BPI"
+        ],
+        "readable_from_screen": "riga di schede sopra l'area contenuto; l'attiva e' in arancione",
+        "note": "E' il livello che distingue la pagina 9 dalla 5: stesso passo, scheda diversa."
+      }
+    ],
+    "reachability": "Ogni pagina del processo e' raggiungibile da ogni altra cambiando al piu' un valore per livello. Non esistono passaggi a senso unico ne' pagine terminali."
+  },
+  "capture_policy": {
+    "revisiting_allowed": true,
+    "rationale": "Le pagine 6, 7 e 8 si raggiungono SOLO passando dalla 5 e aprendo un tooltip diverso: impedire il ritorno a una pagina gia' acquisita impedisce di raccoglierle. Piu' in generale, l'operatore torna indietro per motivi legittimi e il sistema deve seguirlo.",
+    "implementation_gap": "Il codice attuale non rispetta questo modello. `captured_page_types` in edge-agent/workers/capture/bper_capture_worker.py e' a sola aggiunta: una pagina acquisita fa uscire ogni frame successivo dal ramo 'gia' acquisita', e la guida continua a chiedere la pagina successiva secondo un ordine lineare. Il solo rientro possibile e' manuale, via 'Acquisisci ora' (force_capture), che non controlla l'appartenenza a quel set. Allineare il codice a questo modello e' una modifica di comportamento e merita una decisione a se'."
   }
 }
