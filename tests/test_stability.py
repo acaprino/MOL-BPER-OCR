@@ -77,3 +77,44 @@ def test_reset_clears_state() -> None:
     t.reset()
     assert t.candidate is None
     assert t.observe("s9", 5.0) is None  # fresh cycle after reset
+
+
+# --------------------------------------------------- unchanged-frame confirmation
+
+def test_unchanged_frame_confirms_the_candidate_without_a_second_route() -> None:
+    """An identical frame is direct evidence that the page has not changed.
+
+    The page router costs one VLM call per answer (4-5s), so demanding two
+    concordant answers means demanding that the operator hold a screen still for
+    10-24 seconds. A duplicate frame measures the same thing the second answer was
+    standing in for, at no cost.
+    """
+    t = StabilityTracker(CFG)
+    assert t.observe("s9", 0.0) is None       # one routed answer adopts the candidate
+    assert t.confirm(1.0) is None             # unchanged, but under min_seconds
+    assert t.confirm(2.1) == "s9"             # unchanged for long enough
+
+
+def test_confirming_without_a_candidate_does_nothing() -> None:
+    t = StabilityTracker(CFG)
+
+    assert t.confirm(5.0) is None
+    assert t.candidate is None
+
+
+def test_confirmation_still_honours_min_seconds() -> None:
+    # An unchanged frame must not shortcut the anti-mid-scroll delay.
+    t = StabilityTracker(CFG)
+    t.observe("s4", 0.0)
+
+    assert t.confirm(0.5) is None
+    assert t.confirm(1.9) is None
+    assert t.confirm(2.0) == "s4"
+
+
+def test_confirmation_does_not_resurrect_a_reset_candidate() -> None:
+    t = StabilityTracker(CFG)
+    t.observe("s4", 0.0)
+    t.reset()
+
+    assert t.confirm(10.0) is None

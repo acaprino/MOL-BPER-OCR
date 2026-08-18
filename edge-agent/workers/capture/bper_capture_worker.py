@@ -90,6 +90,11 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Ultima strategia di inquadratura annunciata (una riga per strategia)
         self._last_framing_strategy: Optional[str] = None
 
+        # Ultimo esito di routing, per acquisire su conferma senza re-interrogare
+        self._last_routed_page: Optional[PageDef] = None
+        self._last_route_score: float = 0.0
+        self._last_route_fields: dict = {}
+
     # ------------------------------------------------------------------ init classifier
 
     def _init_router(self) -> None:
@@ -260,6 +265,23 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
         is_dup = self._is_duplicate_frame(raw)
         if is_dup:
+            # Frame identico al precedente: e' la prova diretta che la pagina non
+            # e' cambiata, cioe' esattamente cio' per cui serviva una seconda
+            # risposta del router. Confermare qui costa nulla; interrogare di
+            # nuovo il router costa una chiamata VLM (4-5s), e con quella cadenza
+            # "due osservazioni concordi" significa tenere ferma una schermata
+            # per 10-24 secondi invece dei 2 per cui le soglie erano scritte.
+            if self._tracker.candidate is not None and self._last_routed_page is not None:
+                if self._tracker.confirm(time.time()) is not None:
+                    self._acquire(
+                        job_id,
+                        self._preprocess(raw),
+                        self._last_routed_page,
+                        self._last_route_score,
+                        self._last_route_fields,
+                    )
+                return
+
             now_ts = time.time()
             min_interval = float(getattr(self.config, "route_retry_seconds", 1.0) or 1.0)
             if self._last_route_attempt_ts is not None and (now_ts - self._last_route_attempt_ts) < min_interval:
@@ -269,6 +291,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
         img = self._preprocess(raw)
         label, score, fields = self._detect_page(img)
         page = self.registry.resolve(label)
+        self._last_routed_page = page
+        self._last_route_score = score
+        self._last_route_fields = fields
 
         # Pagina già acquisita: non riacquisire (con l'estrazione asincrona una
         # ri-acquisizione costerebbe una seconda estrazione completa).
@@ -293,11 +318,20 @@ class BPERCaptureWorker(BaseCaptureWorker):
         if ready is None or page is None:
             return
 
+        self._acquire(job_id, img, page, score, fields)
+
+    def _acquire(self, job_id: str, img: Image.Image, page: PageDef, score: float, fields: dict) -> None:
+        """Accoda la pagina stabile e aggiorna guida e stato.
+
+        Condiviso fra le due strade che possono dichiarare stabile una pagina:
+        una seconda osservazione instradata, e la conferma su frame invariato.
+        """
         n_captured = len(self.captured_page_types) + 1
         n_total: Any = len(self._acquirable_names) or "?"
         self._upload_page(job_id, img, page, score, fields)
         self.captured_page_types.add(page.name)
         self._tracker.reset()
+        self._last_routed_page = None
         self._last_already_captured = None
 
         next_page = self._next_pending_page()

@@ -48,6 +48,7 @@ tarati, e nessun test lo verificava.
 | [0004](0004-budget-retry-derivato-dalle-aree.md) | Budget di retry derivato dal numero di aree | Accettato |
 | [0005](0005-router-ml-invece-di-router-llm.md) | Router pagina ML invece di router LLM | Superato da 0006 |
 | [0006](0006-router-llm-come-predefinito.md) | Router LLM come predefinito, ML come ripiego | Accettato |
+| [0007](0007-conferma-stabilita-su-frame-invariato.md) | Confermare la stabilità con un frame invariato | Accettato |
 
 ## Da scrivere
 

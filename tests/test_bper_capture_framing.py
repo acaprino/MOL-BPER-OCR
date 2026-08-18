@@ -117,3 +117,56 @@ def test_grab_raw_warns_when_the_frame_is_passed_through_uncropped():
     ticks = _ticks_from(_worker(_maximized_app()), 1)
 
     assert any("unchanged" in t for t in ticks), ticks
+
+
+# ------------------------------------------------- confirmation on unchanged frames
+
+class _Page:
+    def __init__(self, name: str) -> None:
+        self.name = name
+        self.order = 1
+        self.slug = "risultato_ricerca"
+
+
+class _Registry:
+    def resolve(self, label):
+        return _Page(label) if label else None
+
+
+def _routing_worker(frame: Image.Image, monkeypatch) -> Any:
+    """A worker whose router answers once and counts how often it is asked."""
+    worker = _worker(frame)
+    worker.registry = _Registry()
+    worker._acquirable_names = ["Risultato ricerca"]
+    worker.routes = 0
+
+    def fake_detect(_img):
+        worker.routes += 1
+        return "Risultato ricerca", 0.95, {}
+
+    monkeypatch.setattr(worker, "_detect_page", fake_detect)
+    worker.queued = []
+    monkeypatch.setattr(
+        worker, "_upload_page",
+        lambda job_id, img, page, score, fields: worker.queued.append(page.name),
+    )
+    return worker
+
+
+def test_an_unchanged_screen_is_acquired_without_a_second_route(monkeypatch):
+    """The router costs one VLM call per answer.
+
+    Requiring two concordant answers means requiring the operator to hold a
+    screen still for two routing round-trips. An identical frame already proves
+    the page has not changed, so it must be able to close the stability gate.
+    """
+    worker = _routing_worker(_monitor_with_window(), monkeypatch)
+    clock = {"t": 1000.0}
+    monkeypatch.setattr("workers.capture.bper_capture_worker.time.time", lambda: clock["t"])
+
+    worker._capture_once()          # routes once, adopts the candidate
+    clock["t"] += 3.0
+    worker._capture_once()          # same frame: confirmation, no new route
+
+    assert worker.queued == ["Risultato ricerca"]
+    assert worker.routes == 1, f"il router è stato interrogato {worker.routes} volte"

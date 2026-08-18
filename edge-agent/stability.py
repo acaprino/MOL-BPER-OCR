@@ -73,6 +73,29 @@ class StabilityTracker:
         self._register_miss()
         return None
 
+    def confirm(self, now: float) -> Optional[str]:
+        """Count an unchanged frame as another observation of the current candidate.
+
+        A duplicate frame is direct evidence that the page on screen has not
+        changed, which is what the second concordant observation was standing in
+        for. It matters because the page router costs one VLM call per answer:
+        demanding two answers means demanding that the operator hold a screen
+        still for two routing round-trips, which with the LLM router is 10-24
+        seconds rather than the 2 seconds the thresholds were written for.
+
+        The trade is deliberate and worth stating: confirmation is *stronger*
+        evidence that the screen is stable, and *weaker* evidence that the label
+        is right, because only one router answer backs it. `min_seconds` still
+        applies, so this never shortcuts the anti-mid-scroll delay.
+
+        Returns the candidate when it becomes stable, else None. A no-op when
+        there is no candidate: an unchanged frame says nothing about a page
+        nobody has identified yet.
+        """
+        if self.candidate is None:
+            return None
+        return self.observe(self.candidate, now)
+
     def _adopt(self, page: str, now: float) -> None:
         self.reset()
         self.candidate = page
