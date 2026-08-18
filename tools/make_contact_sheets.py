@@ -34,44 +34,61 @@ def main() -> None:
     ap.add_argument("--labels", required=True, help="labels.json from the labelling run")
     ap.add_argument("--crops", required=True, help="directory holding the cropped frames")
     ap.add_argument("--out", required=True, help="output directory for the sheets")
+    ap.add_argument("--by-source", action="store_true",
+                    help="one stream in capture order, captioned with the proposed label, "
+                         "for cross-review instead of per-label grouping")
+    ap.add_argument("--tile", type=int, default=TILE_W, help="tile width in px")
+    ap.add_argument("--cols", type=int, default=COLS)
+    ap.add_argument("--per-sheet", type=int, default=MAX_TILES)
     args = ap.parse_args()
 
     records = [r for r in json.loads(Path(args.labels).read_text(encoding="utf-8"))
                if r.get("file")]
+    tile_w, cols, max_tiles = args.tile, args.cols, args.per_sheet
     crops = Path(args.crops)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
 
-    groups: Dict[str, List[dict]] = defaultdict(list)
-    for r in records:
-        groups[r.get("label") or "(senza etichetta)"].append(r)
+    if args.by_source:
+        # Un solo flusso in ordine di ripresa, con l'etichetta proposta in didascalia.
+        # Serve alla revisione incrociata: chi rivede conferma o corregge, non etichetta
+        # da zero, e vede i fotogrammi nell'ordine in cui sono stati ripresi, dove le
+        # transizioni fra pagine sono leggibili.
+        records.sort(key=lambda r: (r.get("video", ""), r.get("source", "")))
+        groups = {"revisione": records}
+    else:
+        groups = defaultdict(list)
+        for r in records:
+            groups[r.get("label") or "(senza etichetta)"].append(r)
 
     index_lines = ["# Fogli di validazione", ""]
     for label in sorted(groups, key=lambda k: -len(groups[k])):
         entries = groups[label]
-        for page_no in range(0, len(entries), MAX_TILES):
-            chunk = entries[page_no:page_no + MAX_TILES]
+        for page_no in range(0, len(entries), max_tiles):
+            chunk = entries[page_no:page_no + max_tiles]
             tile_h = None
             tiles = []
             for rec in chunk:
                 img = Image.open(crops / rec["file"]).convert("RGB")
-                h = int(TILE_W * img.height / img.width)
+                h = int(tile_w * img.height / img.width)
                 tiles.append((rec, img, h))
                 tile_h = max(tile_h or 0, h)
-            tile_h = (tile_h or TILE_W) + 18  # caption strip
+            tile_h = (tile_h or tile_w) + 18  # caption strip
 
-            rows = (len(tiles) + COLS - 1) // COLS
-            sheet = Image.new("RGB", (COLS * TILE_W, rows * tile_h), (24, 24, 28))
+            rows = (len(tiles) + cols - 1) // cols
+            sheet = Image.new("RGB", (cols * tile_w, rows * tile_h), (24, 24, 28))
             draw = ImageDraw.Draw(sheet)
             for i, (rec, img, h) in enumerate(tiles):
-                x, y = (i % COLS) * TILE_W, (i // COLS) * tile_h
-                sheet.paste(img.resize((TILE_W, h), Image.Resampling.LANCZOS), (x, y))
+                x, y = (i % cols) * tile_w, (i // cols) * tile_h
+                sheet.paste(img.resize((tile_w, h), Image.Resampling.LANCZOS), (x, y))
                 n = page_no + i + 1
-                draw.rectangle([x, y + tile_h - 18, x + TILE_W, y + tile_h], fill=(24, 24, 28))
-                draw.text((x + 4, y + tile_h - 16),
-                          f"{n:3}  {rec['file'][:34]}", fill=(230, 230, 230))
+                draw.rectangle([x, y + tile_h - 18, x + tile_w, y + tile_h], fill=(24, 24, 28))
+                caption = f"{n:3}  {rec['file'][:22]}"
+                if args.by_source:
+                    caption += f"  -> {(rec.get('label') or '?')[:40]}"
+                draw.text((x + 4, y + tile_h - 16), caption, fill=(230, 230, 230))
 
-            suffix = f"_{page_no // MAX_TILES + 1}" if len(entries) > MAX_TILES else ""
+            suffix = f"_{page_no // max_tiles + 1:02d}" if len(entries) > max_tiles else ""
             name = f"{_slug(label)}{suffix}.png"
             sheet.save(out / name)
             index_lines.append(f"- `{name}`: **{label}**, "

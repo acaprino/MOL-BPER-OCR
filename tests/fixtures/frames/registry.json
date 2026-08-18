@@ -1,0 +1,10141 @@
+{
+ "process": "bper-p1",
+ "frames_dir": "tests/fixtures/frames",
+ "clusters": {
+  "1": "Risultato ricerca",
+  "2": "Risultato ricerca - Colonne estese",
+  "3": "Risultato ricerca - Tooltip mostrata",
+  "4": "Elenco Soggetti",
+  "5": "Gestione Fidi e Garanzie",
+  "6": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+  "7": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
+  "8": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+  "9": "Note da Richiesta",
+  "altro-bper": "BPER Gestione Pratiche, fuori dal processo P1",
+  "altro-app": "applicativo diverso",
+  "altro-nulla": "nero, transizione, popup",
+  "altro": "negativo non ancora suddiviso (proposta batch, non rivista)"
+ },
+ "review_status": {
+  "total": 505,
+  "reviewed": 24,
+  "pending": 481,
+  "agreement_page_vs_altro": "23/24",
+  "agreement_exact_string": "4/24",
+  "caveat": "Nessuna etichetta e' verita' umana. 'cluster' riporta la revisione indipendente dove esiste, altrimenti la proposta batch."
+ },
+ "cluster_counts": {
+  "altro": 397,
+  "9": 44,
+  "5": 24,
+  "4": 11,
+  "altro-bper": 9,
+  "altro-nulla": 6,
+  "altro-app": 5,
+  "2": 5,
+  "1": 3,
+  "7": 1
+ },
+ "frames": [
+  {
+   "frame": "20250919-parte02/v1_0001.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-nulla",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-nulla"
+   },
+   "app_rect": [
+    662,
+    510,
+    921,
+    720
+   ],
+   "localization_score": 0.4257
+  },
+  {
+   "frame": "20250919-parte02/v1_0002.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-app",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-app"
+   },
+   "app_rect": [
+    105,
+    12,
+    1142,
+    851
+   ],
+   "localization_score": 0.8942
+  },
+  {
+   "frame": "20250919-parte02/v1_0003.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-app",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-app"
+   },
+   "app_rect": [
+    107,
+    13,
+    1092,
+    806
+   ],
+   "localization_score": 0.8929
+  },
+  {
+   "frame": "20250919-parte02/v1_0005.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-app",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "2",
+    "claude": "altro-app"
+   },
+   "app_rect": [
+    1236,
+    76,
+    1547,
+    333
+   ],
+   "localization_score": 0.8846
+  },
+  {
+   "frame": "20250919-parte02/v1_0006.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-app",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-app"
+   },
+   "app_rect": [
+    852,
+    76,
+    1163,
+    333
+   ],
+   "localization_score": 0.8536
+  },
+  {
+   "frame": "20250919-parte02/v1_0008.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-app",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-app"
+   },
+   "app_rect": [
+    1190,
+    35,
+    1449,
+    245
+   ],
+   "localization_score": 0.8398
+  },
+  {
+   "frame": "20250919-parte02/v1_0011.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": true,
+   "proposals": {
+    "gemini": "5",
+    "claude": "5"
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.922
+  },
+  {
+   "frame": "20250919-parte02/v1_0012.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    288,
+    5,
+    1584,
+    1031
+   ],
+   "localization_score": 0.9165
+  },
+  {
+   "frame": "20250919-parte02/v1_0016.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    288,
+    5,
+    1584,
+    1031
+   ],
+   "localization_score": 0.9165
+  },
+  {
+   "frame": "20250919-parte02/v1_0017.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    288,
+    5,
+    1584,
+    1031
+   ],
+   "localization_score": 0.918
+  },
+  {
+   "frame": "20250919-parte02/v1_0018.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9171
+  },
+  {
+   "frame": "20250919-parte02/v1_0019.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9062
+  },
+  {
+   "frame": "20250919-parte02/v1_0021.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    289,
+    0,
+    1534,
+    965
+   ],
+   "localization_score": 0.9196
+  },
+  {
+   "frame": "20250919-parte02/v1_0022.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    339,
+    0,
+    1532,
+    921
+   ],
+   "localization_score": 0.917
+  },
+  {
+   "frame": "20250919-parte02/v1_0023.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-nulla",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-nulla"
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9075
+  },
+  {
+   "frame": "20250919-parte02/v1_0025.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-nulla",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-nulla"
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9099
+  },
+  {
+   "frame": "20250919-parte02/v1_0026.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9154
+  },
+  {
+   "frame": "20250919-parte02/v1_0027.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-bper"
+   },
+   "app_rect": [
+    288,
+    5,
+    1584,
+    1031
+   ],
+   "localization_score": 0.9156
+  },
+  {
+   "frame": "20250919-parte02/v1_0029.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-nulla",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-nulla"
+   },
+   "app_rect": [
+    1378,
+    810,
+    1741,
+    1080
+   ],
+   "localization_score": 0.5396
+  },
+  {
+   "frame": "20250919-parte02/v1_0032.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-nulla",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-nulla"
+   },
+   "app_rect": [
+    802,
+    32,
+    1165,
+    312
+   ],
+   "localization_score": 0.8504
+  },
+  {
+   "frame": "20250919-parte02/v1_0042.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro-nulla",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "gemini": "altro",
+    "claude": "altro-nulla"
+   },
+   "app_rect": [
+    1378,
+    810,
+    1741,
+    1080
+   ],
+   "localization_score": 0.5571
+  },
+  {
+   "frame": "20250919-parte02/v1_0045.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": true,
+   "proposals": {
+    "gemini": "9",
+    "claude": "9"
+   },
+   "app_rect": [
+    789,
+    108,
+    1514,
+    691
+   ],
+   "localization_score": 0.9063
+  },
+  {
+   "frame": "20250919-parte02/v1_0046.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": true,
+   "proposals": {
+    "gemini": "9",
+    "claude": "9"
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8973
+  },
+  {
+   "frame": "20250919-parte02/v1_0049.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": true,
+   "proposals": {
+    "gemini": "9",
+    "claude": "9"
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9074
+  },
+  {
+   "frame": "20250919-parte02/v1_0050.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9064
+  },
+  {
+   "frame": "20250919-parte02/v1_0056.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    370,
+    119,
+    733,
+    399
+   ],
+   "localization_score": 0.8621
+  },
+  {
+   "frame": "20250919-parte02/v1_0060.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8994
+  },
+  {
+   "frame": "20250919-parte02/v1_0063.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.8906
+  },
+  {
+   "frame": "20250919-parte02/v1_0068.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    5,
+    1584,
+    1031
+   ],
+   "localization_score": 0.9163
+  },
+  {
+   "frame": "20250919-parte02/v1_0070.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    5,
+    1584,
+    1031
+   ],
+   "localization_score": 0.9182
+  },
+  {
+   "frame": "20250919-parte02/v1_0071.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    837,
+    496,
+    1562,
+    1080
+   ],
+   "localization_score": 0.869
+  },
+  {
+   "frame": "20250919-parte02/v1_0072.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    5,
+    1584,
+    1031
+   ],
+   "localization_score": 0.916
+  },
+  {
+   "frame": "20250919-parte02/v1_0074.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    339,
+    0,
+    1532,
+    921
+   ],
+   "localization_score": 0.9128
+  },
+  {
+   "frame": "20250919-parte02/v1_0079.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    228,
+    76,
+    539,
+    333
+   ],
+   "localization_score": 0.8658
+  },
+  {
+   "frame": "20250919-parte02/v1_0080.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    228,
+    76,
+    539,
+    333
+   ],
+   "localization_score": 0.8638
+  },
+  {
+   "frame": "20250919-parte02/v1_0085.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8795
+  },
+  {
+   "frame": "20250919-parte02/v1_0087.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8753
+  },
+  {
+   "frame": "20250919-parte02/v1_0088.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9155
+  },
+  {
+   "frame": "20250919-parte02/v1_0090.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9147
+  },
+  {
+   "frame": "20250919-parte02/v1_0091.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    261,
+    64,
+    986,
+    648
+   ],
+   "localization_score": 0.8948
+  },
+  {
+   "frame": "20250919-parte02/v1_0092.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    261,
+    64,
+    986,
+    648
+   ],
+   "localization_score": 0.8967
+  },
+  {
+   "frame": "20250919-parte02/v1_0093.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    293,
+    9,
+    1434,
+    919
+   ],
+   "localization_score": 0.9077
+  },
+  {
+   "frame": "20250919-parte02/v1_0094.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9052
+  },
+  {
+   "frame": "20250919-parte02/v1_0099.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9051
+  },
+  {
+   "frame": "20250919-parte02/v1_0104.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    599,
+    23,
+    1272,
+    559
+   ],
+   "localization_score": 0.8692
+  },
+  {
+   "frame": "20250919-parte02/v1_0106.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9016
+  },
+  {
+   "frame": "20250919-parte02/v1_0117.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9083
+  },
+  {
+   "frame": "20250919-parte02/v1_0125.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9144
+  },
+  {
+   "frame": "20250919-parte02/v1_0127.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    387,
+    0,
+    1580,
+    921
+   ],
+   "localization_score": 0.9094
+  },
+  {
+   "frame": "20250919-parte02/v1_0129.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    50,
+    1436,
+    1007
+   ],
+   "localization_score": 0.9129
+  },
+  {
+   "frame": "20250919-parte02/v1_0130.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    245,
+    9,
+    1386,
+    919
+   ],
+   "localization_score": 0.9049
+  },
+  {
+   "frame": "20250919-parte02/v1_0132.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.912
+  },
+  {
+   "frame": "20250919-parte02/v1_0138.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    245,
+    9,
+    1386,
+    919
+   ],
+   "localization_score": 0.9083
+  },
+  {
+   "frame": "20250919-parte02/v1_0144.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    268,
+    70,
+    787,
+    490
+   ],
+   "localization_score": 0.8682
+  },
+  {
+   "frame": "20250919-parte02/v1_0145.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8705
+  },
+  {
+   "frame": "20250919-parte02/v1_0147.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    337,
+    0,
+    1582,
+    965
+   ],
+   "localization_score": 0.8798
+  },
+  {
+   "frame": "20250919-parte02/v1_0150.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9035
+  },
+  {
+   "frame": "20250919-parte02/v1_0152.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    387,
+    0,
+    1580,
+    921
+   ],
+   "localization_score": 0.891
+  },
+  {
+   "frame": "20250919-parte02/v1_0161.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    7,
+    1436,
+    964
+   ],
+   "localization_score": 0.9065
+  },
+  {
+   "frame": "20250919-parte02/v1_0162.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    192,
+    0,
+    1488,
+    988
+   ],
+   "localization_score": 0.8955
+  },
+  {
+   "frame": "20250919-parte02/v1_0165.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8797
+  },
+  {
+   "frame": "20250919-parte02/v1_0170.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    241,
+    0,
+    1486,
+    965
+   ],
+   "localization_score": 0.8854
+  },
+  {
+   "frame": "20250919-parte02/v1_0177.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    5,
+    1536,
+    1031
+   ],
+   "localization_score": 0.9115
+  },
+  {
+   "frame": "20250919-parte02/v1_0178.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    7,
+    1436,
+    964
+   ],
+   "localization_score": 0.9068
+  },
+  {
+   "frame": "20250919-parte02/v1_0183.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    261,
+    64,
+    986,
+    648
+   ],
+   "localization_score": 0.8916
+  },
+  {
+   "frame": "20250919-parte02/v1_0185.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    7,
+    1436,
+    964
+   ],
+   "localization_score": 0.9061
+  },
+  {
+   "frame": "20250919-parte02/v1_0186.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    241,
+    0,
+    1486,
+    965
+   ],
+   "localization_score": 0.8724
+  },
+  {
+   "frame": "20250919-parte02/v1_0189.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    9,
+    1578,
+    919
+   ],
+   "localization_score": 0.9129
+  },
+  {
+   "frame": "20250919-parte02/v1_0198.jpg",
+   "video": "20250919-parte02",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    109,
+    0,
+    1042,
+    718
+   ],
+   "localization_score": 0.8923
+  },
+  {
+   "frame": "20250919-parte02/v1_0202.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9152
+  },
+  {
+   "frame": "20250919-parte02/v1_0215.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    245,
+    9,
+    1386,
+    919
+   ],
+   "localization_score": 0.9087
+  },
+  {
+   "frame": "20250919-parte02/v1_0216.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    7,
+    1436,
+    964
+   ],
+   "localization_score": 0.9092
+  },
+  {
+   "frame": "20250919-parte02/v1_0218.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    5,
+    1536,
+    1031
+   ],
+   "localization_score": 0.9125
+  },
+  {
+   "frame": "20250919-parte02/v1_0219.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    50,
+    1436,
+    1007
+   ],
+   "localization_score": 0.9105
+  },
+  {
+   "frame": "20250919-parte02/v1_0220.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    7,
+    1436,
+    964
+   ],
+   "localization_score": 0.9123
+  },
+  {
+   "frame": "20250919-parte02/v1_0222.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8629
+  },
+  {
+   "frame": "20250919-parte02/v1_0223.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9071
+  },
+  {
+   "frame": "20250919-parte02/v1_0224.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8705
+  },
+  {
+   "frame": "20250919-parte02/v1_0225.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    7,
+    1436,
+    964
+   ],
+   "localization_score": 0.9112
+  },
+  {
+   "frame": "20250919-parte02/v1_0226.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9164
+  },
+  {
+   "frame": "20250919-parte02/v1_0227.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9154
+  },
+  {
+   "frame": "20250919-parte02/v1_0228.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.897
+  },
+  {
+   "frame": "20250919-parte02/v1_0229.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    992,
+    203,
+    1407,
+    530
+   ],
+   "localization_score": 0.8944
+  },
+  {
+   "frame": "20250919-parte02/v1_0230.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    48,
+    1536,
+    1074
+   ],
+   "localization_score": 0.9165
+  },
+  {
+   "frame": "20250919-parte02/v1_0231.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    261,
+    21,
+    986,
+    604
+   ],
+   "localization_score": 0.8897
+  },
+  {
+   "frame": "20250919-parte02/v1_0232.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    272,
+    117,
+    687,
+    444
+   ],
+   "localization_score": 0.8759
+  },
+  {
+   "frame": "20250919-parte02/v1_0234.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9034
+  },
+  {
+   "frame": "20250919-parte02/v1_0237.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9102
+  },
+  {
+   "frame": "20250919-parte02/v1_0238.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8944
+  },
+  {
+   "frame": "20250919-parte02/v1_0240.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    339,
+    0,
+    1532,
+    921
+   ],
+   "localization_score": 0.8738
+  },
+  {
+   "frame": "20250919-parte02/v1_0242.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9156
+  },
+  {
+   "frame": "20250919-parte02/v1_0243.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8965
+  },
+  {
+   "frame": "20250919-parte02/v1_0245.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9138
+  },
+  {
+   "frame": "20250919-parte02/v1_0251.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9043
+  },
+  {
+   "frame": "20250919-parte02/v1_0252.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9011
+  },
+  {
+   "frame": "20250919-parte02/v1_0254.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9132
+  },
+  {
+   "frame": "20250919-parte02/v1_0257.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9017
+  },
+  {
+   "frame": "20250919-parte02/v1_0258.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.8955
+  },
+  {
+   "frame": "20250919-parte02/v1_0259.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9022
+  },
+  {
+   "frame": "20250919-parte02/v1_0262.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    842,
+    112,
+    1413,
+    578
+   ],
+   "localization_score": 0.8957
+  },
+  {
+   "frame": "20250919-parte02/v1_0264.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9127
+  },
+  {
+   "frame": "20250919-parte02/v1_0265.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8983
+  },
+  {
+   "frame": "20250919-parte02/v1_0266.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8737
+  },
+  {
+   "frame": "20250919-parte02/v1_0267.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.896
+  },
+  {
+   "frame": "20250919-parte02/v1_0269.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9092
+  },
+  {
+   "frame": "20250919-parte02/v1_0270.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    9,
+    1578,
+    919
+   ],
+   "localization_score": 0.9095
+  },
+  {
+   "frame": "20250919-parte02/v1_0271.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.9097
+  },
+  {
+   "frame": "20250919-parte02/v1_0273.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    139,
+    1578,
+    1048
+   ],
+   "localization_score": 0.9089
+  },
+  {
+   "frame": "20250919-parte02/v1_0274.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    9,
+    1578,
+    919
+   ],
+   "localization_score": 0.9114
+  },
+  {
+   "frame": "20250919-parte02/v1_0275.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.904
+  },
+  {
+   "frame": "20250919-parte02/v1_0278.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.9133
+  },
+  {
+   "frame": "20250919-parte02/v1_0280.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9068
+  },
+  {
+   "frame": "20250919-parte02/v1_0284.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    241,
+    49,
+    1486,
+    1052
+   ],
+   "localization_score": 0.9138
+  },
+  {
+   "frame": "20250919-parte02/v1_0285.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    241,
+    6,
+    1486,
+    1009
+   ],
+   "localization_score": 0.9125
+  },
+  {
+   "frame": "20250919-parte02/v1_0292.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9072
+  },
+  {
+   "frame": "20250919-parte02/v1_0297.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.9039
+  },
+  {
+   "frame": "20250919-parte02/v1_0298.jpg",
+   "video": "20250919-parte02",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8864
+  },
+  {
+   "frame": "20250919-parte02/v1_0299.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    230,
+    121,
+    489,
+    331
+   ],
+   "localization_score": 0.8675
+  },
+  {
+   "frame": "20250919-parte02/v1_0300.jpg",
+   "video": "20250919-parte02",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "2",
+    "claude": null
+   },
+   "app_rect": [
+    1238,
+    165,
+    1497,
+    374
+   ],
+   "localization_score": 0.8903
+  },
+  {
+   "frame": "20250919-parte02/v1_0301.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.8902
+  },
+  {
+   "frame": "20250919-parte02/v1_0303.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.8901
+  },
+  {
+   "frame": "20250919-parte02/v1_0307.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    218,
+    112,
+    789,
+    578
+   ],
+   "localization_score": 0.8879
+  },
+  {
+   "frame": "20250919-parte02/v1_0308.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    318,
+    158,
+    785,
+    532
+   ],
+   "localization_score": 0.8715
+  },
+  {
+   "frame": "20250919-parte02/v1_0311.jpg",
+   "video": "20250919-parte02",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    318,
+    158,
+    785,
+    532
+   ],
+   "localization_score": 0.8677
+  },
+  {
+   "frame": "20250919-parte02/v1_0314.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9054
+  },
+  {
+   "frame": "20250919-parte02/v1_0317.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    48,
+    1584,
+    1074
+   ],
+   "localization_score": 0.9185
+  },
+  {
+   "frame": "20250919-parte02/v1_0318.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    289,
+    6,
+    1534,
+    1009
+   ],
+   "localization_score": 0.9186
+  },
+  {
+   "frame": "20250919-parte02/v1_0319.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8729
+  },
+  {
+   "frame": "20250919-parte02/v1_0331.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8936
+  },
+  {
+   "frame": "20250919-parte02/v1_0334.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8853
+  },
+  {
+   "frame": "20250919-parte02/v1_0335.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1142,
+    337,
+    1401,
+    547
+   ],
+   "localization_score": 0.8838
+  },
+  {
+   "frame": "20250919-parte02/v1_0336.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9005
+  },
+  {
+   "frame": "20250919-parte02/v1_0337.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.8961
+  },
+  {
+   "frame": "20250919-parte02/v1_0339.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9085
+  },
+  {
+   "frame": "20250919-parte02/v1_0343.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9076
+  },
+  {
+   "frame": "20250919-parte02/v1_0344.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9063
+  },
+  {
+   "frame": "20250919-parte02/v1_0347.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    268,
+    114,
+    787,
+    533
+   ],
+   "localization_score": 0.8705
+  },
+  {
+   "frame": "20250919-parte02/v1_0349.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9023
+  },
+  {
+   "frame": "20250919-parte02/v1_0350.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    387,
+    0,
+    1580,
+    921
+   ],
+   "localization_score": 0.9086
+  },
+  {
+   "frame": "20250919-parte02/v1_0351.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.9095
+  },
+  {
+   "frame": "20250919-parte02/v1_0352.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    9,
+    1578,
+    919
+   ],
+   "localization_score": 0.9118
+  },
+  {
+   "frame": "20250919-parte02/v1_0355.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    387,
+    0,
+    1580,
+    921
+   ],
+   "localization_score": 0.9064
+  },
+  {
+   "frame": "20250919-parte02/v1_0356.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    9,
+    1578,
+    919
+   ],
+   "localization_score": 0.9113
+  },
+  {
+   "frame": "20250919-parte02/v1_0359.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    387,
+    7,
+    1580,
+    964
+   ],
+   "localization_score": 0.908
+  },
+  {
+   "frame": "20250919-parte02/v1_0360.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    228,
+    76,
+    539,
+    333
+   ],
+   "localization_score": 0.8592
+  },
+  {
+   "frame": "20250919-parte02/v1_0361.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1238,
+    0,
+    1497,
+    202
+   ],
+   "localization_score": 0.8068
+  },
+  {
+   "frame": "20250919-parte02/v1_0362.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    322,
+    0,
+    685,
+    269
+   ],
+   "localization_score": 0.836
+  },
+  {
+   "frame": "20250919-parte02/v1_0363.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    896,
+    0,
+    1311,
+    314
+   ],
+   "localization_score": 0.8388
+  },
+  {
+   "frame": "20250919-parte02/v1_0364.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    587,
+    0,
+    1572,
+    763
+   ],
+   "localization_score": 0.8678
+  },
+  {
+   "frame": "20250919-parte02/v1_0365.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    587,
+    0,
+    1572,
+    763
+   ],
+   "localization_score": 0.8664
+  },
+  {
+   "frame": "20250919-parte02/v1_0366.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    587,
+    0,
+    1572,
+    763
+   ],
+   "localization_score": 0.8666
+  },
+  {
+   "frame": "20250919-parte02/v1_0367.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8765
+  },
+  {
+   "frame": "20250919-parte02/v1_0369.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    387,
+    0,
+    1580,
+    921
+   ],
+   "localization_score": 0.8928
+  },
+  {
+   "frame": "20250919-parte02/v1_0372.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.9113
+  },
+  {
+   "frame": "20250919-parte02/v1_0373.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    337,
+    92,
+    1582,
+    1080
+   ],
+   "localization_score": 0.9055
+  },
+  {
+   "frame": "20250919-parte02/v1_0374.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    337,
+    49,
+    1582,
+    1052
+   ],
+   "localization_score": 0.903
+  },
+  {
+   "frame": "20250919-parte02/v1_0376.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9102
+  },
+  {
+   "frame": "20250919-parte02/v1_0380.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9083
+  },
+  {
+   "frame": "20250919-parte02/v1_0384.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    50,
+    1436,
+    1007
+   ],
+   "localization_score": 0.9115
+  },
+  {
+   "frame": "20250919-parte02/v1_0385.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    247,
+    11,
+    1336,
+    874
+   ],
+   "localization_score": 0.9047
+  },
+  {
+   "frame": "20250919-parte02/v1_0386.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8726
+  },
+  {
+   "frame": "20250919-parte02/v1_0387.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9082
+  },
+  {
+   "frame": "20250919-parte02/v1_0389.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    245,
+    0,
+    1386,
+    876
+   ],
+   "localization_score": 0.9137
+  },
+  {
+   "frame": "20250919-parte02/v1_0392.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    387,
+    0,
+    1580,
+    921
+   ],
+   "localization_score": 0.9077
+  },
+  {
+   "frame": "20250919-parte02/v1_0393.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.9095
+  },
+  {
+   "frame": "20250919-parte02/v1_0401.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.9018
+  },
+  {
+   "frame": "20250919-parte02/v1_0410.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9029
+  },
+  {
+   "frame": "20250919-parte02/v1_0416.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9078
+  },
+  {
+   "frame": "20250919-parte02/v1_0419.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    245,
+    52,
+    1386,
+    962
+   ],
+   "localization_score": 0.9099
+  },
+  {
+   "frame": "20250919-parte02/v1_0421.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    293,
+    52,
+    1434,
+    962
+   ],
+   "localization_score": 0.9162
+  },
+  {
+   "frame": "20250919-parte02/v1_0423.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9107
+  },
+  {
+   "frame": "20250919-parte02/v1_0425.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.9051
+  },
+  {
+   "frame": "20250919-parte02/v1_0427.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    289,
+    6,
+    1534,
+    1009
+   ],
+   "localization_score": 0.9104
+  },
+  {
+   "frame": "20250919-parte02/v1_0428.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8697
+  },
+  {
+   "frame": "20250919-parte02/v1_0430.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.9068
+  },
+  {
+   "frame": "20250919-parte02/v1_0433.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9048
+  },
+  {
+   "frame": "20250919-parte02/v1_0445.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.8963
+  },
+  {
+   "frame": "20250919-parte02/v1_0452.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    188,
+    0,
+    1587,
+    1078
+   ],
+   "localization_score": 0.8904
+  },
+  {
+   "frame": "20250919-parte02/v1_0464.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    119,
+    23,
+    792,
+    559
+   ],
+   "localization_score": 0.8696
+  },
+  {
+   "frame": "20250919-parte02/v1_0467.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    339,
+    0,
+    1532,
+    921
+   ],
+   "localization_score": 0.9002
+  },
+  {
+   "frame": "20250919-parte02/v1_0468.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9141
+  },
+  {
+   "frame": "20250919-parte02/v1_0471.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9076
+  },
+  {
+   "frame": "20250919-parte02/v1_0472.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.906
+  },
+  {
+   "frame": "20250919-parte02/v1_0474.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    188,
+    0,
+    1587,
+    1078
+   ],
+   "localization_score": 0.9029
+  },
+  {
+   "frame": "20250919-parte02/v1_0475.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    587,
+    0,
+    1572,
+    763
+   ],
+   "localization_score": 0.8602
+  },
+  {
+   "frame": "20250919-parte02/v1_0477.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1188,
+    0,
+    1499,
+    247
+   ],
+   "localization_score": 0.8385
+  },
+  {
+   "frame": "20250919-parte02/v1_0478.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8418
+  },
+  {
+   "frame": "20250919-parte02/v1_0479.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8697
+  },
+  {
+   "frame": "20250919-parte02/v1_0480.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8711
+  },
+  {
+   "frame": "20250919-parte02/v1_0481.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1236,
+    0,
+    1547,
+    247
+   ],
+   "localization_score": 0.7975
+  },
+  {
+   "frame": "20250919-parte02/v1_0482.jpg",
+   "video": "20250919-parte02",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8878
+  },
+  {
+   "frame": "20250919-parte02/v1_0483.jpg",
+   "video": "20250919-parte02",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8864
+  },
+  {
+   "frame": "20250919-parte02/v1_0484.jpg",
+   "video": "20250919-parte02",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.891
+  },
+  {
+   "frame": "20250919-parte02/v1_0485.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    370,
+    119,
+    733,
+    399
+   ],
+   "localization_score": 0.8596
+  },
+  {
+   "frame": "20250919-parte02/v1_0486.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    370,
+    119,
+    733,
+    399
+   ],
+   "localization_score": 0.8606
+  },
+  {
+   "frame": "20250919-parte02/v1_0487.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    128,
+    74,
+    543,
+    400
+   ],
+   "localization_score": 0.8596
+  },
+  {
+   "frame": "20250919-parte02/v1_0489.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8793
+  },
+  {
+   "frame": "20250919-parte02/v1_0490.jpg",
+   "video": "20250919-parte02",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    587,
+    0,
+    1572,
+    763
+   ],
+   "localization_score": 0.8856
+  },
+  {
+   "frame": "20250919-parte02/v1_0491.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    120,
+    68,
+    743,
+    558
+   ],
+   "localization_score": 0.8903
+  },
+  {
+   "frame": "20250919-parte02/v1_0492.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    120,
+    68,
+    743,
+    558
+   ],
+   "localization_score": 0.8935
+  },
+  {
+   "frame": "20250919-parte02/v1_0494.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    758,
+    78,
+    1017,
+    288
+   ],
+   "localization_score": 0.8645
+  },
+  {
+   "frame": "20250919-parte02/v1_0496.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    107,
+    0,
+    1092,
+    763
+   ],
+   "localization_score": 0.8894
+  },
+  {
+   "frame": "20250919-parte02/v1_0497.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    180,
+    120,
+    491,
+    376
+   ],
+   "localization_score": 0.8766
+  },
+  {
+   "frame": "20250919-parte02/v1_0500.jpg",
+   "video": "20250919-parte02",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "2",
+    "claude": null
+   },
+   "app_rect": [
+    1286,
+    208,
+    1545,
+    418
+   ],
+   "localization_score": 0.886
+  },
+  {
+   "frame": "20250919-parte02/v1_0501.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    120,
+    68,
+    743,
+    558
+   ],
+   "localization_score": 0.8911
+  },
+  {
+   "frame": "20250919-parte02/v1_0503.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    120,
+    68,
+    743,
+    558
+   ],
+   "localization_score": 0.8919
+  },
+  {
+   "frame": "20250919-parte02/v1_0505.jpg",
+   "video": "20250919-parte02",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "2",
+    "claude": null
+   },
+   "app_rect": [
+    844,
+    27,
+    1363,
+    447
+   ],
+   "localization_score": 0.878
+  },
+  {
+   "frame": "20250919-parte02/v1_0506.jpg",
+   "video": "20250919-parte02",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "1",
+    "claude": null
+   },
+   "app_rect": [
+    276,
+    76,
+    587,
+    333
+   ],
+   "localization_score": 0.8739
+  },
+  {
+   "frame": "20250919-parte02/v1_0507.jpg",
+   "video": "20250919-parte02",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "2",
+    "claude": null
+   },
+   "app_rect": [
+    326,
+    78,
+    585,
+    288
+   ],
+   "localization_score": 0.8738
+  },
+  {
+   "frame": "20250919-parte02/v1_0509.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1238,
+    78,
+    1497,
+    288
+   ],
+   "localization_score": 0.7583
+  },
+  {
+   "frame": "20250919-parte02/v1_0510.jpg",
+   "video": "20250919-parte02",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1094,
+    553,
+    1353,
+    763
+   ],
+   "localization_score": 0.5254
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0001.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    902,
+    553,
+    1161,
+    763
+   ],
+   "localization_score": 0.4765
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0002.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1286,
+    856,
+    1545,
+    1066
+   ],
+   "localization_score": 0.7153
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0003.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8833
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0004.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    852,
+    76,
+    1163,
+    333
+   ],
+   "localization_score": 0.8609
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0005.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    105,
+    0,
+    1142,
+    808
+   ],
+   "localization_score": 0.8937
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0006.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    105,
+    0,
+    1142,
+    808
+   ],
+   "localization_score": 0.898
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0007.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "1",
+    "claude": null
+   },
+   "app_rect": [
+    326,
+    78,
+    585,
+    288
+   ],
+   "localization_score": 0.8681
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0008.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    230,
+    0,
+    489,
+    202
+   ],
+   "localization_score": 0.7844
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0009.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    180,
+    76,
+    491,
+    333
+   ],
+   "localization_score": 0.8834
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0012.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    758,
+    78,
+    1017,
+    288
+   ],
+   "localization_score": 0.8459
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0013.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    758,
+    78,
+    1017,
+    288
+   ],
+   "localization_score": 0.855
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0014.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9092
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0015.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    758,
+    78,
+    1017,
+    288
+   ],
+   "localization_score": 0.8531
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0020.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    543,
+    103,
+    1424,
+    803
+   ],
+   "localization_score": 0.906
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0021.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    182,
+    121,
+    441,
+    331
+   ],
+   "localization_score": 0.5591
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0023.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1286,
+    0,
+    1545,
+    202
+   ],
+   "localization_score": 0.7591
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0025.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1286,
+    640,
+    1545,
+    850
+   ],
+   "localization_score": 0.5926
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0027.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    806,
+    0,
+    1065,
+    202
+   ],
+   "localization_score": 0.8678
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0029.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    806,
+    0,
+    1065,
+    202
+   ],
+   "localization_score": 0.8631
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0031.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    278,
+    78,
+    537,
+    288
+   ],
+   "localization_score": 0.8586
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0032.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    5,
+    1536,
+    1031
+   ],
+   "localization_score": 0.9225
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0033.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    806,
+    0,
+    1065,
+    202
+   ],
+   "localization_score": 0.8652
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0035.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8654
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0037.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    789,
+    108,
+    1514,
+    691
+   ],
+   "localization_score": 0.9092
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0038.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8648
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0043.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    180,
+    76,
+    491,
+    333
+   ],
+   "localization_score": 0.8699
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0044.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    508,
+    0,
+    1027,
+    404
+   ],
+   "localization_score": 0.8759
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0047.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.917
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0048.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9141
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0049.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    992,
+    203,
+    1407,
+    530
+   ],
+   "localization_score": 0.8932
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0050.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9039
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0051.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8567
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0052.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9109
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0054.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "7",
+   "process": "bper-p1",
+   "step": 7,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "7",
+    "claude": null
+   },
+   "app_rect": [
+    806,
+    35,
+    1065,
+    245
+   ],
+   "localization_score": 0.8498
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0057.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    241,
+    6,
+    1486,
+    1009
+   ],
+   "localization_score": 0.9075
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0060.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9029
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0063.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9134
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0064.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    268,
+    157,
+    787,
+    577
+   ],
+   "localization_score": 0.8955
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0066.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9067
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0070.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9037
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0071.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    188,
+    0,
+    1587,
+    1078
+   ],
+   "localization_score": 0.8857
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0072.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9043
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0073.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    120,
+    68,
+    743,
+    558
+   ],
+   "localization_score": 0.8888
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0079.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    839,
+    0,
+    1512,
+    516
+   ],
+   "localization_score": 0.8604
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0081.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8752
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0085.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.906
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0088.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    837,
+    0,
+    1562,
+    561
+   ],
+   "localization_score": 0.8603
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0089.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9174
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0093.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9015
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0094.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9014
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0096.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9157
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0097.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9156
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0098.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.8886
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0099.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    52,
+    1578,
+    962
+   ],
+   "localization_score": 0.9149
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0102.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9047
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0104.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    339,
+    0,
+    1532,
+    921
+   ],
+   "localization_score": 0.917
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0106.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1142,
+    337,
+    1401,
+    547
+   ],
+   "localization_score": 0.8845
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0110.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8985
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0111.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    272,
+    160,
+    687,
+    487
+   ],
+   "localization_score": 0.8642
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0117.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    220,
+    330,
+    739,
+    749
+   ],
+   "localization_score": 0.8838
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0118.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    587,
+    0,
+    1572,
+    763
+   ],
+   "localization_score": 0.8904
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0121.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    337,
+    6,
+    1582,
+    1009
+   ],
+   "localization_score": 0.9038
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0123.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.903
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0128.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9083
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0134.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9061
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0136.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9029
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0138.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9013
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0139.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.892
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0142.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9081
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0144.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8862
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0145.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8859
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0146.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.9002
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0149.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    7,
+    1436,
+    964
+   ],
+   "localization_score": 0.9122
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0152.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    50,
+    1436,
+    1007
+   ],
+   "localization_score": 0.9059
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0153.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    245,
+    0,
+    1386,
+    876
+   ],
+   "localization_score": 0.8913
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0154.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9015
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0155.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    247,
+    11,
+    1336,
+    874
+   ],
+   "localization_score": 0.9033
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0156.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8983
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0157.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8795
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0158.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8993
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0159.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    259,
+    19,
+    1036,
+    649
+   ],
+   "localization_score": 0.8863
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0160.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8993
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0162.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    837,
+    0,
+    1562,
+    561
+   ],
+   "localization_score": 0.8659
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0164.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9005
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0165.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8878
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0166.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8985
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0169.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    245,
+    9,
+    1386,
+    919
+   ],
+   "localization_score": 0.9079
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0170.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8981
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0171.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    837,
+    0,
+    1562,
+    561
+   ],
+   "localization_score": 0.8706
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0173.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8997
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0174.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9022
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0175.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.896
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0182.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9077
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0191.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    48,
+    1536,
+    1074
+   ],
+   "localization_score": 0.9138
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0196.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9074
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0201.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9153
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0204.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9024
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0205.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8796
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0214.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9039
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0216.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9164
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0220.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    272,
+    117,
+    687,
+    444
+   ],
+   "localization_score": 0.8721
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0223.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8993
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0224.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8913
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0225.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8929
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0226.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8846
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0227.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8874
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0229.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8826
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0230.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8859
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0231.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8877
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0234.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8868
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0248.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.883
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0259.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.9058
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0277.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    245,
+    0,
+    1386,
+    876
+   ],
+   "localization_score": 0.8874
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0282.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.898
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0285.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8993
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0286.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.886
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0287.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8854
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0289.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9045
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0291.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8942
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0292.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.9002
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0294.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8948
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0296.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9163
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0297.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    288,
+    0,
+    1584,
+    988
+   ],
+   "localization_score": 0.898
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0299.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    48,
+    1536,
+    1074
+   ],
+   "localization_score": 0.9139
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0303.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8957
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0314.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.904
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0317.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9109
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0331.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9125
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0333.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    5,
+    1536,
+    1031
+   ],
+   "localization_score": 0.9177
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0334.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8991
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0339.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.8999
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0340.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.8993
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0341.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8863
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0348.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.885
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0356.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8946
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0357.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8945
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0359.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    837,
+    0,
+    1562,
+    561
+   ],
+   "localization_score": 0.865
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0364.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    9,
+    1578,
+    919
+   ],
+   "localization_score": 0.9092
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0365.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    139,
+    1578,
+    1048
+   ],
+   "localization_score": 0.9045
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0367.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    837,
+    0,
+    1562,
+    561
+   ],
+   "localization_score": 0.8686
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0368.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.895
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0369.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    180,
+    76,
+    491,
+    333
+   ],
+   "localization_score": 0.883
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0378.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.9145
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0379.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8923
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0383.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    263,
+    152,
+    936,
+    689
+   ],
+   "localization_score": 0.893
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0384.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    50,
+    1436,
+    1007
+   ],
+   "localization_score": 0.913
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0385.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    48,
+    1536,
+    1074
+   ],
+   "localization_score": 0.9138
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0392.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.9118
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0394.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    263,
+    152,
+    936,
+    689
+   ],
+   "localization_score": 0.8862
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0395.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    7,
+    1436,
+    964
+   ],
+   "localization_score": 0.9105
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0396.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9114
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0397.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8601
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0398.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    758,
+    78,
+    1017,
+    288
+   ],
+   "localization_score": 0.8549
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0399.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    293,
+    0,
+    1434,
+    876
+   ],
+   "localization_score": 0.9022
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0409.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.907
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0415.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9066
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0423.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9066
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0427.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8709
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0429.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8699
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0432.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9029
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0433.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8547
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0435.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    0,
+    1564,
+    606
+   ],
+   "localization_score": 0.8659
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0438.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8904
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0441.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.902
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0446.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9073
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0450.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    243,
+    0,
+    1436,
+    921
+   ],
+   "localization_score": 0.8903
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0456.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.8745
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0461.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    259,
+    149,
+    1036,
+    779
+   ],
+   "localization_score": 0.9042
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0468.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9089
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0471.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8939
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0472.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8884
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0473.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.89
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0474.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8944
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0475.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8956
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0476.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8942
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0477.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8829
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0478.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8883
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0479.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8872
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0480.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8937
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0482.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8779
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0483.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    806,
+    35,
+    1065,
+    245
+   ],
+   "localization_score": 0.859
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0484.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9129
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0485.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    787,
+    451,
+    1564,
+    1080
+   ],
+   "localization_score": 0.8594
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0486.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    240,
+    0,
+    1536,
+    988
+   ],
+   "localization_score": 0.9156
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0490.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    0,
+    1578,
+    876
+   ],
+   "localization_score": 0.9095
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0491.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    52,
+    1578,
+    962
+   ],
+   "localization_score": 0.9094
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0492.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    437,
+    52,
+    1578,
+    962
+   ],
+   "localization_score": 0.9143
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0499.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8865
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0504.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    188,
+    0,
+    1587,
+    1078
+   ],
+   "localization_score": 0.8255
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0506.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    138,
+    0,
+    1589,
+    1080
+   ],
+   "localization_score": 0.8582
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0507.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    637,
+    0,
+    1570,
+    718
+   ],
+   "localization_score": 0.8565
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0511.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    387,
+    0,
+    1580,
+    921
+   ],
+   "localization_score": 0.8986
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0512.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    0,
+    1585,
+    1033
+   ],
+   "localization_score": 0.9147
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0513.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.916
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0514.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    278,
+    78,
+    537,
+    288
+   ],
+   "localization_score": 0.8513
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0517.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    408,
+    0,
+    1031,
+    471
+   ],
+   "localization_score": 0.8811
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0518.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    846,
+    29,
+    1313,
+    402
+   ],
+   "localization_score": 0.8655
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0519.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    113,
+    0,
+    942,
+    628
+   ],
+   "localization_score": 0.8743
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0520.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    113,
+    0,
+    942,
+    628
+   ],
+   "localization_score": 0.893
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0521.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    230,
+    78,
+    489,
+    288
+   ],
+   "localization_score": 0.8568
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0522.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    180,
+    33,
+    491,
+    290
+   ],
+   "localization_score": 0.8498
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0523.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1238,
+    0,
+    1497,
+    202
+   ],
+   "localization_score": 0.774
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0524.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    107,
+    0,
+    1092,
+    763
+   ],
+   "localization_score": 0.8878
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0525.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    182,
+    78,
+    441,
+    288
+   ],
+   "localization_score": 0.869
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0528.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    180,
+    76,
+    491,
+    333
+   ],
+   "localization_score": 0.8725
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0531.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    758,
+    78,
+    1017,
+    288
+   ],
+   "localization_score": 0.8553
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0532.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    758,
+    78,
+    1017,
+    288
+   ],
+   "localization_score": 0.8538
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0533.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    806,
+    78,
+    1065,
+    288
+   ],
+   "localization_score": 0.8558
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0535.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    120,
+    0,
+    743,
+    471
+   ],
+   "localization_score": 0.8734
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0536.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    230,
+    208,
+    489,
+    418
+   ],
+   "localization_score": 0.8929
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0538.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    180,
+    206,
+    491,
+    463
+   ],
+   "localization_score": 0.8935
+  },
+  {
+   "frame": "bpimutui-surroga/v2_0541.jpg",
+   "video": "bpimutui-surroga",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1238,
+    78,
+    1497,
+    288
+   ],
+   "localization_score": 0.7511
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0001.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    854,
+    553,
+    1113,
+    763
+   ],
+   "localization_score": 0.4612
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0002.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    806,
+    78,
+    1065,
+    288
+   ],
+   "localization_score": 0.7852
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0003.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    856,
+    249,
+    1066
+   ],
+   "localization_score": 0.7261
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0005.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "1",
+    "claude": null
+   },
+   "app_rect": [
+    1430,
+    165,
+    1689,
+    374
+   ],
+   "localization_score": 0.8819
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0008.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    23,
+    66,
+    696,
+    603
+   ],
+   "localization_score": 0.8688
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0010.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    1230,
+    72,
+    1697,
+    445
+   ],
+   "localization_score": 0.8598
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0012.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    147,
+    50,
+    1340,
+    1007
+   ],
+   "localization_score": 0.9194
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0013.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    49,
+    1198,
+    1052
+   ],
+   "localization_score": 0.8729
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0015.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    99,
+    50,
+    1292,
+    1007
+   ],
+   "localization_score": 0.9192
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0016.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    99,
+    50,
+    1292,
+    1007
+   ],
+   "localization_score": 0.9175
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0019.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    3,
+    1345,
+    1076
+   ],
+   "localization_score": 0.8725
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0020.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.9071
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0022.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    370,
+    119,
+    733,
+    399
+   ],
+   "localization_score": 0.8683
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0023.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    165,
+    249,
+    374
+   ],
+   "localization_score": 0.8688
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0026.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    71,
+    66,
+    744,
+    603
+   ],
+   "localization_score": 0.8821
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0027.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    111,
+    60,
+    992,
+    760
+   ],
+   "localization_score": 0.8982
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0028.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    297,
+    184,
+    1334,
+    1024
+   ],
+   "localization_score": 0.9158
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0029.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.9138
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0030.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.9139
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0032.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    848,
+    247,
+    1263,
+    573
+   ],
+   "localization_score": 0.9019
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0033.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    848,
+    290,
+    1263,
+    616
+   ],
+   "localization_score": 0.8875
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0034.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    854,
+    294,
+    1113,
+    504
+   ],
+   "localization_score": 0.8753
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0035.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    180,
+    163,
+    491,
+    419
+   ],
+   "localization_score": 0.8485
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0039.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    128,
+    117,
+    543,
+    444
+   ],
+   "localization_score": 0.8549
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0040.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    122,
+    112,
+    693,
+    578
+   ],
+   "localization_score": 0.861
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0041.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    124,
+    114,
+    643,
+    533
+   ],
+   "localization_score": 0.8569
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0042.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    130,
+    162,
+    493,
+    442
+   ],
+   "localization_score": 0.8574
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0043.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "5",
+    "claude": null
+   },
+   "app_rect": [
+    126,
+    115,
+    593,
+    489
+   ],
+   "localization_score": 0.8515
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0045.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.9121
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0048.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    798,
+    288,
+    1265,
+    661
+   ],
+   "localization_score": 0.9023
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0049.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8932
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0050.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8811
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0056.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "2",
+    "claude": null
+   },
+   "app_rect": [
+    746,
+    69,
+    1317,
+    535
+   ],
+   "localization_score": 0.8836
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0058.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "4",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    64,
+    698,
+    648
+   ],
+   "localization_score": 0.8906
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0070.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8749
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0074.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.9105
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0077.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    99,
+    50,
+    1292,
+    1007
+   ],
+   "localization_score": 0.9054
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0081.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    105,
+    55,
+    1142,
+    895
+   ],
+   "localization_score": 0.903
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0088.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8991
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0095.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8711
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0097.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8694
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0106.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.9036
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0120.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8947
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0121.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8741
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0134.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8749
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0138.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    147,
+    50,
+    1340,
+    1007
+   ],
+   "localization_score": 0.9113
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0139.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    151,
+    54,
+    1240,
+    917
+   ],
+   "localization_score": 0.905
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0142.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    848,
+    290,
+    1263,
+    616
+   ],
+   "localization_score": 0.8938
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0143.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8621
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0147.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    48,
+    48,
+    1344,
+    1074
+   ],
+   "localization_score": 0.8658
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0152.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8683
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0158.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    74,
+    112,
+    645,
+    578
+   ],
+   "localization_score": 0.8559
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0160.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.9133
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0165.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.9027
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0168.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8817
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0169.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    48,
+    48,
+    1344,
+    1074
+   ],
+   "localization_score": 0.8996
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0171.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    414,
+    245,
+    881,
+    618
+   ],
+   "localization_score": 0.8577
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0173.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    130,
+    119,
+    493,
+    399
+   ],
+   "localization_score": 0.8646
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0177.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8994
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0191.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8967
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0193.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    813,
+    249,
+    1022
+   ],
+   "localization_score": 0.8396
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0196.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    322,
+    76,
+    685,
+    355
+   ],
+   "localization_score": 0.8424
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0197.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    372,
+    76,
+    683,
+    333
+   ],
+   "localization_score": 0.8468
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0198.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    374,
+    78,
+    633,
+    288
+   ],
+   "localization_score": 0.8377
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0199.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    374,
+    78,
+    633,
+    288
+   ],
+   "localization_score": 0.8493
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0200.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    374,
+    78,
+    633,
+    288
+   ],
+   "localization_score": 0.8487
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0201.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    324,
+    76,
+    635,
+    333
+   ],
+   "localization_score": 0.8478
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0203.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    326,
+    78,
+    585,
+    288
+   ],
+   "localization_score": 0.8501
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0205.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    46,
+    3,
+    1393,
+    1076
+   ],
+   "localization_score": 0.8543
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0207.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    3,
+    1345,
+    1076
+   ],
+   "localization_score": 0.8632
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0208.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    46,
+    3,
+    1393,
+    1076
+   ],
+   "localization_score": 0.8634
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0209.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    238,
+    3,
+    1585,
+    1076
+   ],
+   "localization_score": 0.8537
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0210.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    97,
+    49,
+    1342,
+    1052
+   ],
+   "localization_score": 0.8952
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0211.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    854,
+    769,
+    1113,
+    979
+   ],
+   "localization_score": 0.8602
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0213.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    322,
+    119,
+    685,
+    399
+   ],
+   "localization_score": 0.8798
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0216.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": false,
+   "proposals": {
+    "gemini": "9",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    63,
+    748,
+    692
+   ],
+   "localization_score": 0.8841
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0219.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    326,
+    208,
+    585,
+    418
+   ],
+   "localization_score": 0.872
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0222.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    311,
+    66,
+    984,
+    603
+   ],
+   "localization_score": 0.8966
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0231.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    71,
+    66,
+    744,
+    603
+   ],
+   "localization_score": 0.8956
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0234.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    147,
+    50,
+    1340,
+    1007
+   ],
+   "localization_score": 0.9166
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0235.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    0,
+    68,
+    599,
+    558
+   ],
+   "localization_score": 0.859
+  },
+  {
+   "frame": "20250925-controllo-schermo/v3_0236.jpg",
+   "video": "20250925-controllo-schermo",
+   "cluster": "altro",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": false,
+   "proposals": {
+    "gemini": "altro",
+    "claude": null
+   },
+   "app_rect": [
+    1430,
+    35,
+    1689,
+    245
+   ],
+   "localization_score": 0.7403
+  }
+ ]
+}

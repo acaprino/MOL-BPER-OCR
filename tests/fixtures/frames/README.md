@@ -60,3 +60,51 @@ Contengono nominativi, NDG e importi di clienti veri, come i 9 screenshot in `mn
 Il repository è privato. Non renderlo pubblico senza averli rimossi dalla cronologia,
 non solo dal working tree: questo repository ha già dovuto riscrivere la propria storia
 una volta, il 2026-07-21, per una chiave API committata.
+
+## Il registro: `registry.json`
+
+`registry.json` è l'indice su questi fotogrammi, e ha vita più lunga di qualsiasi singolo
+esperimento: serve **a tutte le riesecuzioni**. Un metodo nuovo, un backbone nuovo, un
+prompt nuovo si misurano contro questo file, e i risultati diventano confrontabili nel tempo
+perché il riferimento non cambia sotto i piedi.
+
+Si rigenera con `python tools/build_frame_registry.py --labels <...> --review <...>`.
+
+Per ogni fotogramma:
+
+| campo | contenuto |
+|---|---|
+| `frame` | percorso relativo dentro `tests/fixtures/frames/` |
+| `cluster` | il gruppo: `1`..`9` per una pagina del processo, oppure un negativo |
+| `process`, `step`, `step_name` | quando è una pagina: il processo e il passo esatto, esplicitati invece che lasciati dedurre dal numero |
+| `proposals.gemini`, `proposals.claude` | le due proposte indipendenti, conservate entrambe |
+| `reviewed` | se la revisione indipendente ha già coperto questo fotogramma |
+| `app_rect`, `localization_score` | dove è stata trovata l'area applicativa, e con quale punteggio |
+
+`app_rect` è il motivo per cui i **ritagli non sono committati**: da fotogramma più rettangolo
+il ritaglio si riproduce identico, e il repository non porta due copie della stessa immagine.
+
+### I negativi sono tre gruppi, non uno
+
+| cluster | cos'è | difficoltà |
+|---|---|---|
+| `altro-bper` | BPER Gestione Pratiche fuori dal processo P1, tipicamente Gestione Documentale | **difficile**: stesso applicativo, stesso stile, va rifiutato lo stesso |
+| `altro-app` | un altro applicativo (istruttoria qtask, iSpace, il browser) | facile |
+| `altro-nulla` | nero, transizione, popup | banale |
+| `altro` | negativo proposto dal batch e non ancora suddiviso | da rivedere |
+
+La distinzione non è cosmetica. La soglia di rifiuto era stata tarata su due negativi
+sintetici, un desktop uniforme e un grigio pieno: entrambi `altro-nulla`. Una soglia che
+supera quella prova può fallire completamente su `altro-bper`, che è il caso che conta.
+
+### Nessuna etichetta è verità umana
+
+`gemini` è la passata batch, `claude` è una revisione indipendente di un'altra famiglia di
+modelli. Sono conservate **entrambe**, non fuse in un verdetto, perché il loro accordo è
+l'unica cosa che dà fiducia in assenza di validazione umana.
+
+L'accordo si misura a due granularità, e la distinzione è necessaria: dove il batch dice
+`altro` e la revisione dice `altro-bper`, è lo **stesso giudizio a grana più fine**, non un
+disaccordo. Confrontare le stringhe direttamente lo conta come errore e sottostima
+gravemente l'accordo: sul primo foglio, 23 corrispondenze su 24 si leggevano come 4 su 24.
+Per questo il registro riporta `agreement_page_vs_altro` accanto ad `agreement_exact_string`.
