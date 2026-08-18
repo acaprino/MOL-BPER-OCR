@@ -108,3 +108,56 @@ L'accordo si misura a due granularità, e la distinzione è necessaria: dove il 
 disaccordo. Confrontare le stringhe direttamente lo conta come errore e sottostima
 gravemente l'accordo: sul primo foglio, 23 corrispondenze su 24 si leggevano come 4 su 24.
 Per questo il registro riporta `agreement_page_vs_altro` accanto ad `agreement_exact_string`.
+
+## Due estrazioni, e perché servono entrambe
+
+I fotogrammi vengono da due passate con criteri opposti, e la differenza non è
+accademica: hanno prodotto materiale complementare.
+
+| | modo | copertura | fotogrammi | pagine bersaglio |
+|---|---|---|---|---|
+| radice | cambio-scena | tutta la durata | 505 + 984 | 6% |
+| `fixed-1fps/` | passo fisso 1 fps | primi 10 minuti | 609 | **14%** |
+
+**Il campionamento a passo fisso è l'unico che ha catturato le pagine con tooltip.**
+Su 1489 fotogrammi selezionati per cambio-scena, le pagine 3, 6, 7 e 8 comparivano
+**zero** volte. Con il passo fisso sono comparse 3, 6 e 7. La ragione è nel
+docstring di `tools/extract_frames.py`: un tooltip copre lo 0,05% dello schermo e
+dura un paio di secondi, quindi il rilevamento scena non scatta e la
+deduplicazione percettiva rifonde ciò che resta nella pagina base.
+
+Il cambio-scena resta prezioso per l'altro scopo: i negativi difficili (`altro-bper`,
+BPER fuori processo) vengono quasi tutti da lì, perché spazzando la coda lunga delle
+registrazioni intercetta le lunghe sessioni di gestione documentale.
+
+## Copertura attuale, e cosa manca
+
+| pagina | esempi | |
+|---|---|---|
+| 9 Note da Richiesta | 118 | sufficienti |
+| 5 Gestione Fidi e Garanzie | 43 | sufficienti |
+| 4 Elenco Soggetti | 34 | sufficienti |
+| 1 Risultato ricerca | 13 | sufficienti |
+| 2 Colonne estese | 8 | al limite |
+| 3 Tooltip Evidenze | 2 | **insufficienti** |
+| 7 Tooltip Garanzie riga 1 | 2 | **insufficienti** |
+| 6 Tooltip Fidi | 1 | **insufficienti** |
+| 8 Tooltip Garanzie riga 2 | 0 | **assente** |
+
+Le quattro pagine scarse sono le quattro con tooltip, e la scarsità non dipende da
+come sono state cercate. Un tooltip esiste solo mentre il cursore ci resta sopra, e
+un operatore non ci passa: conosce già quei codici. Chi ha prodotto i nove
+screenshot di riferimento in `mnt/data` ci è passato **apposta**, per documentarli.
+
+Altre estrazioni hanno quindi rendimento marginale su quelle quattro. La strada è
+chiedere screenshot mirati a chi usa l'applicativo.
+
+## Attenzione all'accordo riportato nel registro
+
+`review_status.agreement_*` misura **solo la prima passata**, quella con il prompt
+scritto a mano, perché è quella i cui fotogrammi sono stati rivisti a mano
+(83/95 corretti, 12 errori, quasi tutti "un altro applicativo scambiato per BPER").
+
+Le passate successive girano su estrazioni diverse e non condividono fotogrammi con
+la revisione, quindi **non hanno un accordo misurato**. Il numero nel registro non è
+un giudizio sul catalogo di processo, e il campo `agreement_caveat` lo ripete lì.

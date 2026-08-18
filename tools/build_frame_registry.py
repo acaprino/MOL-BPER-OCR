@@ -35,9 +35,17 @@ from typing import Dict, Optional
 
 FRAMES = Path("tests/fixtures/frames")
 VIDEO_DIRS = {
+    # scene-change extraction, whole recordings
     "raw_v1": "20250919-parte02",
     "raw_v2": "bpimutui-surroga",
     "raw_v3": "20250925-controllo-schermo",
+    # fixed-rate extraction, opening minutes: the only pass that caught tooltips
+    "fixed_f1": "fixed-1fps/20250919-parte02",
+    "fixed_f2": "fixed-1fps/bpimutui-surroga",
+    "fixed_f3": "fixed-1fps/20250925-controllo-schermo",
+    "fixed_f4": "fixed-1fps/20250909-consap80",
+    "fixed_f5": "fixed-1fps/20250910-bpi-standard",
+    "fixed_f6": "fixed-1fps/20250922-parte01",
 }
 
 # gemini answered with page names; the registry speaks cluster ids
@@ -65,13 +73,19 @@ def _cluster_from_name(name: Optional[str]) -> Optional[str]:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--labels", required=True, help="labels.json from the batch labelling run")
+    ap.add_argument("--labels", required=True, action="append",
+                    help="labels.json from a labelling run; repeat for several passes")
     ap.add_argument("--review", default="", help="review json with the independent pass")
     ap.add_argument("--out", default=str(FRAMES / "registry.json"))
     args = ap.parse_args()
 
-    labels = {r["file"]: r for r in json.loads(Path(args.labels).read_text(encoding="utf-8"))
-              if r.get("file")}
+    # Several passes over different extractions of the same recordings. Keyed by
+    # crop filename, which carries its extraction tag, so passes never collide.
+    labels: Dict[str, Dict[str, Any]] = {}
+    for source in args.labels:
+        for rec in json.loads(Path(source).read_text(encoding="utf-8")):
+            if rec.get("file"):
+                labels[rec["file"]] = rec
 
     review: Dict[str, str] = {}
     if args.review and Path(args.review).exists():
@@ -86,7 +100,8 @@ def main() -> None:
         stem = Path(crop_name).stem
         folder = VIDEO_DIRS.get(rec.get("video", ""), "")
         reviewed = review.get(crop_name)
-        cluster = reviewed or _cluster_from_name(rec.get("label"))
+        proposed = rec.get("cluster") or _cluster_from_name(rec.get("label"))
+        cluster = reviewed or proposed
         is_page = cluster in PAGE_NAMES
         entries.append({
             "frame": f"{folder}/{stem}.jpg" if folder else f"{stem}.jpg",
@@ -97,9 +112,10 @@ def main() -> None:
             "step_name": PAGE_NAMES.get(cluster),
             "reviewed": reviewed is not None,
             "proposals": {
-                "gemini": _cluster_from_name(rec.get("label")),
+                "gemini": proposed,
                 "claude": reviewed,
             },
+            "extraction": rec.get("extraction", "scene"),
             "app_rect": rec.get("rect"),
             "localization_score": rec.get("loc_score"),
         })
@@ -137,6 +153,13 @@ def main() -> None:
             "pending": len(entries) - reviewed_n,
             "agreement_page_vs_altro": f"{agree_coarse}/{reviewed_n}" if reviewed_n else "n/a",
             "agreement_exact_string": f"{agree_exact}/{reviewed_n}" if reviewed_n else "n/a",
+            "agreement_caveat": (
+                "L'accordo misura SOLO la prima passata di etichettatura, quella con il "
+                "prompt scritto a mano: la revisione indipendente ha coperto i suoi "
+                "fotogrammi. Le passate successive girano su estrazioni diverse e non "
+                "condividono fotogrammi con la revisione, quindi non hanno un accordo "
+                "misurato. Non leggere questo numero come giudizio sul catalogo di processo."
+            ),
             "caveat": "Nessuna etichetta e' verita' umana. 'cluster' riporta la revisione "
                       "indipendente dove esiste, altrimenti la proposta batch.",
         },
