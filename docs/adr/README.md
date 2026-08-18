@@ -49,6 +49,7 @@ tarati, e nessun test lo verificava.
 | [0005](0005-router-ml-invece-di-router-llm.md) | Router pagina ML invece di router LLM | Superato da 0006 |
 | [0006](0006-router-llm-come-predefinito.md) | Router LLM come predefinito, ML come ripiego | Accettato |
 | [0007](0007-conferma-stabilita-su-frame-invariato.md) | Confermare la stabilità con un frame invariato | Accettato |
+| [0008](0008-classificatore-locale-prototipi-reali-e-classi-di-scarto.md) | Classificatore locale: prototipi da ritagli reali e classi di scarto | Proposto |
 
 ## Da scrivere
 

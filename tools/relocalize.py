@@ -40,6 +40,9 @@ def main() -> None:
     ap.add_argument("--out", default="tests/fixtures/frames/relocalized.json")
     ap.add_argument("--templates", default="edge-agent/assets/templates/bper")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--subset", default="",
+                    help="json list of frame paths to restrict the run to; the rest of "
+                         "the registry keeps its stored rectangles")
     args = ap.parse_args()
 
     lf = load_localizer()
@@ -52,8 +55,14 @@ def main() -> None:
         done = json.loads(out_path.read_text(encoding="utf-8"))
         print(f"ripresa: {len(done)} rettangoli gia' calcolati", flush=True)
 
+    wanted = None
+    if args.subset:
+        wanted = set(json.loads(Path(args.subset).read_text(encoding="utf-8")))
+        print(f"sottoinsieme richiesto: {len(wanted)} fotogrammi", flush=True)
+
     frames = [e for e in registry["frames"]
-              if (FRAMES_DIR / e["frame"]).exists() and e["frame"] not in done]
+              if (FRAMES_DIR / e["frame"]).exists() and e["frame"] not in done
+              and (wanted is None or e["frame"] in wanted)]
     if args.limit:
         frames = frames[:args.limit]
     print(f"da calcolare: {len(frames)}", flush=True)
