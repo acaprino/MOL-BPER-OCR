@@ -8,10 +8,12 @@ and reports IoU statistics and per-frame cost side by side.
     python tools/benchmark_backbones.py --corpus <dir> \
         --backbones dinov2_vits14,dinov2_vits14_reg,dinov3_vits16
 
-DINOv3 weights are license-gated (HTTP 403 on the public URL). To include it,
-accept the license on the Meta/Hugging Face page, download the checkpoint, and
-either place it under %USERPROFILE%/.cache/torch/hub/checkpoints/ with its
-original filename or point DINOV3_WEIGHTS at the file.
+DINOv3 weights are license-gated (HTTP 403 on the public URL). Two ways in:
+place the torch.hub checkpoint under %USERPROFILE%/.cache/torch/hub/checkpoints/
+(or point DINOV3_WEIGHTS at it), or pass a transformers-format directory as
+`hf:<path>` -- the layout the gated Hugging Face download actually ships, holding
+config.json + model.safetensors. Patch size and register count are read from the
+model config.
 
 Classification benchmarking is deliberately absent until a human-validated
 label set exists: measuring one model's labels against another model's labels
@@ -48,8 +50,29 @@ BACKBONES: Dict[str, Tuple[str, int]] = {
 }
 
 
-def load_backbone(name: str) -> torch.nn.Module:
-    repo, _ = BACKBONES[name]
+class HFBackbone:
+    """Adapter: a transformers DINOv3 checkpoint behind the forward_features dict API."""
+
+    def __init__(self, path: str) -> None:
+        from transformers import AutoModel  # dev-side dependency, benchmark only
+
+        self.model = AutoModel.from_pretrained(path)
+        self.model.eval()
+        cfg = self.model.config
+        self.patch = int(cfg.patch_size)
+        self._specials = 1 + int(getattr(cfg, "num_register_tokens", 0))
+
+    def forward_features(self, x: torch.Tensor) -> Dict[str, torch.Tensor]:
+        out = self.model(pixel_values=x)
+        return {"x_norm_patchtokens": out.last_hidden_state[:, self._specials:, :]}
+
+
+def load_backbone(name: str) -> Tuple[object, int]:
+    """Returns (model exposing forward_features, patch size)."""
+    if name.startswith("hf:"):
+        adapter = HFBackbone(name[3:])
+        return adapter, adapter.patch
+    repo, patch = BACKBONES[name]
     try:
         model = torch.hub.load(repo, name)
     except Exception:
@@ -59,7 +82,7 @@ def load_backbone(name: str) -> torch.nn.Module:
         else:
             raise
     model.eval()
-    return model
+    return model, patch
 
 
 def patch_grid(model: torch.nn.Module, patch: int, img: Image.Image, w: int, h: int) -> torch.Tensor:
@@ -131,15 +154,14 @@ def main() -> None:
 
     results: Dict[str, Dict[str, object]] = {}
     for name in [b.strip() for b in args.backbones.split(",") if b.strip()]:
-        if name not in BACKBONES:
-            print(f"{name}: sconosciuto (noti: {', '.join(BACKBONES)})")
+        if not name.startswith("hf:") and name not in BACKBONES:
+            print(f"{name}: sconosciuto (noti: {', '.join(BACKBONES)}, oppure hf:<dir>)")
             continue
         try:
-            model = load_backbone(name)
+            model, patch = load_backbone(name)
         except Exception as e:
             print(f"{name}: NON DISPONIBILE ({type(e).__name__}: {str(e)[:120]})")
             continue
-        _, patch = BACKBONES[name]
 
         template_means: List[torch.Tensor] = []
         for img in sources.values():
