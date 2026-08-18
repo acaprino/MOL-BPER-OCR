@@ -47,6 +47,16 @@ NORM = T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 PATCH, SWEEP_W, SWEEP_H = 14, 1120, 700
 MARGIN = 0.04  # widen the found rectangle: overshooting is harmless, amputating is not
 
+# A candidate window must cover at least this fraction of the frame. Without it the
+# sweep sometimes settles on a panel or a table inside the page: measured across 2098
+# frames, 36% of rectangles came back under 0.6 Mpx against a median of 1.10, the worst
+# being 249x203 on a 1920x1080 desktop. The score is normalized per window, so a small
+# uniform region can outscore the real window on average similarity while containing
+# none of the marks that identify the application: URL bar, BPER logo, navigator. The
+# classifier then answers about a table it was handed, and the answer gets recorded as
+# a classification error rather than the localization error it is.
+MIN_AREA_FRACTION = 0.20
+
 
 def build_prompt(process: Dict[str, Any]) -> str:
     """Compose the classification prompt out of the process catalog."""
@@ -119,9 +129,12 @@ def localize(model: Any, detector: torch.Tensor, frame: Image.Image,
     grid_aspect = aspect * (SWEEP_W / W) * (H / SWEEP_H)
 
     best: Optional[Tuple[float, int, int, int, int]] = None
+    cells = gh * gw
     for win_w in range(10, gw + 1, 2):
         win_h = int(round(win_w / grid_aspect))
         if win_h < 4 or win_h > gh:
+            continue
+        if (win_w * win_h) / cells < MIN_AREA_FRACTION:
             continue
         sums = (integral[win_h:, win_w:] - integral[win_h:, :-win_w]
                 - integral[:-win_h, win_w:] + integral[:-win_h, :-win_w])
