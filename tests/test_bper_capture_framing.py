@@ -170,3 +170,91 @@ def test_an_unchanged_screen_is_acquired_without_a_second_route(monkeypatch):
 
     assert worker.queued == ["Risultato ricerca"]
     assert worker.routes == 1, f"il router è stato interrogato {worker.routes} volte"
+
+
+# ---------------------------------------------------- local-first routing
+
+class _FakeClassification:
+    def __init__(self, label, score, margin, rejected_by=None):
+        self.label, self.score, self.margin = label, score, margin
+        self.runner_up, self.rejected_by = "altro", rejected_by
+
+
+class _FakeClassifier:
+    """Records how often it is asked, and answers whatever it was handed."""
+
+    def __init__(self, result):
+        self.result = result
+        self.calls = 0
+
+    def classify_detailed(self, _img):
+        self.calls += 1
+        return self.result
+
+    def classify(self, img):
+        r = self.classify_detailed(img)
+        return r.label, r.score
+
+
+class _FakeRouter:
+    def __init__(self):
+        self.calls = 0
+
+    def route(self, _img):
+        self.calls += 1
+        class R:
+            page_type, confidence, fields, reason = "Risultato ricerca", 0.9, {}, None
+        return R()
+
+
+def _hybrid_worker(monkeypatch, classification):
+    worker = _worker(_monitor_with_window())
+    worker.classifier = _FakeClassifier(classification)
+    worker.router = _FakeRouter()
+    worker.registry = _Registry()
+    worker.config.router_mode = "local-first"
+    worker.local_margin_min = 0.10
+    return worker
+
+
+def test_a_confident_local_answer_does_not_call_the_router(monkeypatch):
+    """The whole point of the local classifier is removing the network call.
+
+    If the router is asked anyway, the local path costs CPU and buys nothing: the
+    4-5s per routed frame stay, and so does the dependency on a key and a
+    connection.
+    """
+    worker = _hybrid_worker(monkeypatch, _FakeClassification("Elenco Soggetti", 0.8, 0.30))
+
+    label, _score, _fields = worker._detect_page(_monitor_with_window())
+
+    assert label == "Elenco Soggetti"
+    assert worker.router.calls == 0, "il router e' stato interrogato senza bisogno"
+
+
+def test_a_low_margin_answer_defers_to_the_router(monkeypatch):
+    """Accuracy alone cannot gate a hybrid decision; the margin can.
+
+    Measured on held-out frames: correct answers carried margins an order of
+    magnitude above wrong ones, so a margin floor sends the doubtful cases to the
+    model that reads text instead of comparing pixels.
+    """
+    worker = _hybrid_worker(monkeypatch, _FakeClassification("Elenco Soggetti", 0.8, 0.02))
+
+    label, _score, _fields = worker._detect_page(_monitor_with_window())
+
+    assert worker.router.calls == 1
+    assert label == "Risultato ricerca", "avrebbe dovuto prevalere la risposta del router"
+
+
+def test_a_frame_rejected_locally_does_not_call_the_router(monkeypatch):
+    """A frame that lost to a reject prototype was actively recognised as a
+    non-page. Paying a VLM call to confirm it is waste: reject classes exist
+    precisely to answer this case without the network."""
+    worker = _hybrid_worker(
+        monkeypatch, _FakeClassification(None, 0.5, 0.40, rejected_by="SCARTO-fuori-processo"))
+
+    label, _score, _fields = worker._detect_page(_monitor_with_window())
+
+    assert label is None
+    assert worker.router.calls == 0

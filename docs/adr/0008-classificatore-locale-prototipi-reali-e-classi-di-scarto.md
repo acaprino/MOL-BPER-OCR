@@ -1,6 +1,6 @@
 # 0008 - Classificatore locale: prototipi da ritagli reali e classi di scarto
 
-- **Stato:** Proposto (misurato, non ancora cablato nel codice di produzione)
+- **Stato:** Accettato (cablato il 2026-08-18; `router = local-first` non ancora attivato in `config.ini`)
 - **Data:** 2026-08-18
 - **Interessa:** `edge-agent/page_classifier.py`, `tools/label_frames.py`
 - **Misure:** `tests/fixtures/frames/registry.json`, `tools/measure_classifier.py`
@@ -87,10 +87,22 @@ Adottare la configurazione **prototipi reali + i nove riferimenti + tre classi d
 per tipo**, che sulla registrazione tenuta fuori misura 87% sulle pagine e 20% di falsi
 positivi, contro 83% e 100% del punto di partenza.
 
-Lo stato e' **Proposto** e non Accettato: la configurazione e' misurata ma non ancora
-cablata in `page_classifier.py`. Cablarla significa cambiare il formato della cache dei
-prototipi (piu' immagini per classe, piu' classi di scarto) e stabilire la soglia di
-ripiego verso l'LLM, che questa misura non fissa.
+### Cablaggio (2026-08-18)
+
+- `page_classifier.py` riconosce le cartelle di prototipi che iniziano per `SCARTO`:
+  restano normali prototipi, cambia solo come `classify()` riporta una loro vittoria.
+- `classify_detailed()` espone `margin`, `runner_up` e `rejected_by` accanto a label e
+  score, senza toccare il contratto `(label, score)` usato da cinque chiamanti.
+- `embedding_geometry()` include il numero di classi di scarto: aggiungerne una cambia il
+  *comportamento*, non solo i dati, e una cache costruita prima non deve essere servita
+  dopo.
+- `router = local-first` nel worker: il classificatore decide quando il margine supera
+  `local_margin_min` (default 0.10) o quando il frame perde contro uno scarto; altrimenti
+  passa al router LLM. E' l'inversa di `hybrid`, dove la rete si paga comunque.
+
+Il `config.ini` spedito resta su `router = llm`: attivare `local-first` richiede prima di
+costruire i prototipi reali sotto `assets/templates/bper/`, che oggi contiene solo i nove
+screenshot di riferimento in root.
 
 ## Cosa questa misura NON dice
 

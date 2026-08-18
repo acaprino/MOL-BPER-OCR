@@ -90,6 +90,14 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Ultima strategia di inquadratura annunciata (una riga per strategia)
         self._last_framing_strategy: Optional[str] = None
 
+        # Ultimo esito locale annunciato, per non ripetere la stessa riga a ogni frame
+        self._last_local_note: Optional[str] = None
+
+        # Margine minimo per fidarsi della risposta locale senza interrogare il router
+        self.local_margin_min: float = float(
+            getattr(config, "local_margin_min", 0.10) or 0.10
+        )
+
         # Ultimo esito di routing, per acquisire su conferma senza re-interrogare
         self._last_routed_page: Optional[PageDef] = None
         self._last_route_score: float = 0.0
@@ -478,10 +486,64 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
     # ------------------------------------------------------------------ detection
 
+    def _try_local_first(self, img: Image.Image) -> Optional[Tuple[Optional[str], float, dict]]:
+        """Modalita' local-first: decide in locale quando il margine lo consente.
+
+        Ritorna None quando la decisione va passata al router, cioe' quando il
+        classificatore locale non e' abbastanza sicuro. Ritorna una risposta quando:
+
+        - il margine sul secondo classificato supera la soglia: la risposta locale e'
+          separabile, e interrogare il router costerebbe una chiamata VLM (4-5s) per
+          confermare qualcosa che gia' sappiamo;
+        - il frame ha perso contro un prototipo di scarto: e' stato *riconosciuto* come
+          non-pagina, non semplicemente non riconosciuto. Le classi di scarto esistono
+          per rispondere a questo caso senza rete.
+
+        Il margine, e non il punteggio, e' la grandezza giusta: misurato su fotogrammi
+        tenuti fuori dall'addestramento, le risposte corrette portavano margini di un
+        ordine di grandezza superiori a quelle sbagliate, mentre i punteggi assoluti si
+        sovrapponevano. Vedi docs/adr/0008.
+
+        Questa e' l'inversa di `hybrid`, che prova prima l'LLM e ripiega su ML: li' la
+        rete si paga sempre.
+        """
+        if (self.config.router_mode or "").lower() != "local-first":
+            return None
+        if self.classifier is None or not hasattr(self.classifier, "classify_detailed"):
+            return None
+
+        try:
+            res = self.classifier.classify_detailed(img)
+        except Exception:  # noqa: BLE001 — il riconoscimento non deve fermare la cattura
+            return None
+
+        if res.rejected_by:
+            if self._last_local_note != res.rejected_by:
+                self.tick.emit(f"[ML] Scartata in locale ({res.rejected_by})")
+                self._last_local_note = res.rejected_by
+            return None, float(res.score), {}
+
+        floor = float(getattr(self, "local_margin_min", 0.10))
+        if res.label is not None and res.margin >= floor:
+            resolved = self.registry.resolve(res.label)
+            shown = resolved.name if resolved else res.label
+            self.tick.emit(
+                f"[ML] Riconosciuta in locale: «{shown}» "
+                f"(score={res.score:.3f}, margine={res.margin:.3f})"
+            )
+            self._last_local_note = None
+            return res.label, float(res.score), {}
+
+        return None
+
     def _detect_page(self, img: Image.Image) -> Tuple[Optional[str], float, dict]:
         """Usa il router configurato per riconoscere la pagina e (se LLM) estrarre campi."""
         if self.router is None and self.classifier is None:
             return None, 0.0, {}
+
+        local = self._try_local_first(img)
+        if local is not None:
+            return local
 
         # Se abbiamo un router, usiamolo
         if self.router is not None:

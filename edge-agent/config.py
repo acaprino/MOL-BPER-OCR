@@ -23,7 +23,14 @@ class AgentConfig:
     DEFAULT_MINIO_ACCESS_KEY = "minioadmin"
     DEFAULT_MINIO_SECRET_KEY = "minioadmin"
     # Nuovi default per router/LLM/dataset
-    DEFAULT_ROUTER_MODE = "ml"  # ml | llm | hybrid
+    # ml | llm | hybrid | local-first
+    #   ml          solo classificatore locale
+    #   llm         solo router VLM (una chiamata per frame instradato)
+    #   hybrid      prova LLM, ripiega su ML: la rete si paga sempre
+    #   local-first classificatore locale, con ripiego sull'LLM solo quando il margine
+    #               sul secondo classificato non basta. E' l'inversa di hybrid, ed e'
+    #               quella che toglie la rete dal caso comune (docs/adr/0008)
+    DEFAULT_ROUTER_MODE = "ml"
     DEFAULT_LLM_PROVIDER = "openai"
     DEFAULT_LLM_MODEL = "gpt-4o-mini"
     DEFAULT_GEMINI_MODEL = "gemini-3.6-flash"
@@ -86,6 +93,12 @@ class AgentConfig:
 
         # Router / LLM
         self.router_mode: str = self.DEFAULT_ROUTER_MODE
+
+        # Margine minimo perche' la risposta locale sia accettata senza interrogare
+        # l'LLM, in modalita' local-first. Il margine e non il punteggio: misurato su
+        # fotogrammi tenuti fuori, i punteggi assoluti di risposte giuste e sbagliate
+        # si sovrappongono, i margini no.
+        self.local_margin_min: float = 0.10
         self.llm_provider: str = self.DEFAULT_LLM_PROVIDER
         self.llm_base_url: str = "https://api.openai.com/v1"
         self.llm_model: str = self.DEFAULT_LLM_MODEL
@@ -159,6 +172,9 @@ class AgentConfig:
         # --- Sezione [agent] estesa per router ---
         if agent_section:
             self.router_mode = agent_section.get("router", self.DEFAULT_ROUTER_MODE).lower()
+            self.local_margin_min = agent_section.getfloat(
+                "local_margin_min", self.local_margin_min
+            )
             # monitor index
             try:
                 self.monitor_index = int(agent_section.get("monitor_index", str(self.DEFAULT_MONITOR_INDEX)))
@@ -333,6 +349,7 @@ class AgentConfig:
             "fps": str(self.fps),
             "window_title_contains": self.window_title_contains,
             "router": self.router_mode,
+            "local_margin_min": str(self.local_margin_min),
             "monitor_index": str(self.monitor_index),
             "show_capture_border": "true" if self.show_capture_border else "false",
             "image_scale": str(self.image_scale) if self.image_scale is not None else "auto",

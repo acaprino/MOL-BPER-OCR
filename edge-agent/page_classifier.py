@@ -56,6 +56,41 @@ EMBED_SIDE = 224
 # Sottocartelle del dataset che NON sono pagine (escluse dai prototipi)
 _EXCLUDED_SUBDIRS = {"transitions"}
 
+# Prefisso delle classi di SCARTO: prototipi che rappresentano cio' che NON e' una
+# pagina del processo. Sono normali cartelle di prototipi, quindi la costruzione non
+# cambia; cio' che cambia e' come classify() riporta una loro vittoria.
+#
+# Senza di esse il classificatore *deve* scegliere una pagina: misurato su fotogrammi
+# reali, il 100% dei negativi veniva assegnato a una pagina, per costruzione e non per
+# errore. Tre classi separate per tipo (BPER fuori processo, altro applicativo, schermate
+# vuote) portano i falsi positivi dal 44% al 20% senza perdere accuratezza; un unico
+# prototipo mediato si ferma al 44%, perche' media categorie che non si somigliano.
+# Vedi docs/adr/0008.
+REJECT_PREFIX = "SCARTO"
+
+
+@dataclass
+class Classification:
+    """Esito completo di una classificazione.
+
+    `label` resta None quando la risposta non e' una pagina, ma il perche' cambia la
+    decisione di chi chiama:
+      - `rejected_by` valorizzato: il frame ha perso contro un prototipo di scarto, cioe'
+        e' stato *riconosciuto* come non-pagina. Interrogare l'LLM ha poco senso.
+      - `rejected_by` None e score sotto soglia: semplicemente non riconosciuto. E' qui
+        che un ripiego sull'LLM puo' pagare.
+
+    `margin` e' la distanza dal secondo classificato: e' la grandezza su cui si decide
+    se fidarsi della risposta locale, perche' l'accuratezza da sola non dice se una
+    singola risposta e' separabile dalla successiva.
+    """
+
+    label: Optional[str]
+    score: float
+    margin: float
+    runner_up: Optional[str]
+    rejected_by: Optional[str]
+
 
 def _scan_dataset_images(templates_dir: Path) -> Dict[str, List[Path]]:
     """
@@ -102,7 +137,8 @@ def _scan_dataset_images(templates_dir: Path) -> Dict[str, List[Path]]:
     return page_images
 
 
-def embedding_geometry(crop_roi: Optional[Tuple[float, float, float, float]] = None) -> str:
+def embedding_geometry(crop_roi: Optional[Tuple[float, float, float, float]] = None,
+                       reject_classes: int = 0) -> str:
     """Identita' del modo in cui un embedding viene prodotto.
 
     Fa parte della chiave di cache insieme all'hash del dataset. Prototipi e
@@ -110,6 +146,12 @@ def embedding_geometry(crop_roi: Optional[Tuple[float, float, float, float]] = N
     contenuto dei file continuerebbe a servire vettori costruiti con una ROI o un
     resize precedenti mentre le query usano i nuovi, e ogni punteggio diventa
     priva di senso senza che nulla lo segnali.
+
+    `reject_classes` fa parte della chiave perche' aggiungere prototipi di scarto
+    cambia il *comportamento*, non solo i dati: la stessa query che prima doveva
+    per forza scegliere una pagina ora puo' essere rifiutata. L'hash del dataset
+    cambierebbe comunque (le cartelle sono immagini in piu'), ma dichiararlo qui
+    rende esplicito che le due configurazioni non sono intercambiabili.
     """
     roi = DEFAULT_CROP_ROI if crop_roi is None else crop_roi
     return (
@@ -117,6 +159,7 @@ def embedding_geometry(crop_roi: Optional[Tuple[float, float, float, float]] = N
         f"|roi={tuple(round(float(v), 4) for v in roi) if roi else None}"
         f"|resize={EMBED_SIDE}x{EMBED_SIDE}-squash"
         f"|score=centered-cosine"
+        f"|reject={reject_classes}"
     )
 
 
@@ -132,9 +175,10 @@ def cache_is_valid(templates_dir: Path, cache_path: Optional[Path] = None) -> bo
         return False
     try:
         data = json.loads(cache.read_text(encoding="utf-8"))
-        if data.get("geometry") != embedding_geometry():
-            return False
         page_images = _scan_dataset_images(templates_dir)
+        n_reject = sum(1 for k in page_images if k.startswith(REJECT_PREFIX))
+        if data.get("geometry") != embedding_geometry(reject_classes=n_reject):
+            return False
         return data.get("dataset_hash") == BPERPagePrototypeClassifier._compute_dataset_hash(page_images)
     except Exception:
         return False
@@ -381,7 +425,8 @@ class BPERPagePrototypeClassifier:
 
         page_images = self._list_dataset_images()
         current_hash = self._compute_dataset_hash(page_images)
-        current_geometry = embedding_geometry(self.crop_roi)
+        n_reject = sum(1 for k in page_images if k.startswith(REJECT_PREFIX))
+        current_geometry = embedding_geometry(self.crop_roi, reject_classes=n_reject)
 
         if self.cache_path.exists():
             try:
@@ -505,7 +550,10 @@ class BPERPagePrototypeClassifier:
 
         data = {
             "dataset_hash": dataset_hash,
-            "geometry": embedding_geometry(self.crop_roi),
+            "geometry": embedding_geometry(
+                self.crop_roi,
+                reject_classes=sum(1 for k in self.prototypes if k.startswith(REJECT_PREFIX)),
+            ),
             "created_at": int(time.time()),
             "prototypes": {},
         }
@@ -609,25 +657,15 @@ class BPERPagePrototypeClassifier:
     # API pubblica
     # -------------------------------------------------------------------------
 
-    def classify(self, image) -> Tuple[Optional[str], float]:
-        """
-        Classifica una pagina BPER.
-
-        Returns:
-            (label, score):
-                - label: page_type oppure None
-                - score: similarità coseno [0,1] del best_match (anche in caso di None)
-        """
-        if self._disabled:
-            # Motore ML non disponibile → nessuna classificazione
-            return None, 0.0
-
-        if self._proto_matrix is None or not self._proto_labels:
-            return None, 0.0
+    def classify_detailed(self, image) -> "Classification":
+        """Classifica riportando anche margine e motivo di un eventuale rifiuto."""
+        empty = Classification(None, 0.0, 0.0, None, None)
+        if self._disabled or self._proto_matrix is None or not self._proto_labels:
+            return empty
 
         emb = self._compute_embedding(image)
         if emb is None:
-            return None, 0.0
+            return empty
 
         torch = self._torch
         assert torch is not None
@@ -636,17 +674,39 @@ class BPERPagePrototypeClassifier:
             proto_mat = self._proto_matrix_centered
             emb = torch.nn.functional.normalize(emb - self._proto_mean, p=2, dim=0)
         else:
-            proto_mat = self._proto_matrix  # [N, D] su CPU
-        sims = torch.mv(proto_mat, emb)  # [N]
+            proto_mat = self._proto_matrix
 
-        best_idx = int(torch.argmax(sims).item())
-        best_score = float(sims[best_idx].item())
+        sims = torch.mv(proto_mat, emb)
+        order = torch.argsort(sims, descending=True)
+        best_idx = int(order[0].item())
         best_label = self._proto_labels[best_idx]
+        best_score = float(sims[best_idx].item())
 
-        if best_score >= self.similarity_threshold:
-            return best_label, best_score
+        runner_up = self._proto_labels[int(order[1].item())] if len(order) > 1 else None
+        margin = best_score - float(sims[order[1]].item()) if len(order) > 1 else best_score
 
-        return None, best_score
+        if best_label.startswith(REJECT_PREFIX):
+            return Classification(None, best_score, margin, runner_up, best_label)
+
+        if best_score < self.similarity_threshold:
+            return Classification(None, best_score, margin, runner_up, None)
+
+        return Classification(best_label, best_score, margin, runner_up, None)
+
+    def classify(self, image) -> Tuple[Optional[str], float]:
+        """
+        Classifica una pagina BPER.
+
+        Returns:
+            (label, score):
+                - label: page_type oppure None
+                - score: similarità coseno [0,1] del best_match (anche in caso di None)
+
+        Conserva il contratto storico usato dai chiamanti esistenti; per margine e
+        motivo del rifiuto usare classify_detailed().
+        """
+        result = self.classify_detailed(image)
+        return result.label, result.score
 
     def info(self) -> Dict:
         """
