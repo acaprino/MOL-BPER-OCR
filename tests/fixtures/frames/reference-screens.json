@@ -1,0 +1,140 @@
+{
+ "curated": true,
+ "frames": [
+  {
+   "frame": "../../mnt/data/screen 1.png",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": true,
+   "proposals": {
+    "claude": "1"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 2.png",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": true,
+   "proposals": {
+    "claude": "2"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 3.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "claude": "3"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 4.png",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": true,
+   "proposals": {
+    "claude": "4"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 5.png",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": true,
+   "proposals": {
+    "claude": "5"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 6.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "claude": "6"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 7.png",
+   "cluster": "7",
+   "process": "bper-p1",
+   "step": 7,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
+   "reviewed": true,
+   "proposals": {
+    "claude": "7"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 8.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "claude": "8"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 9.png",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": true,
+   "proposals": {
+    "claude": "9"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  }
+ ]
+}

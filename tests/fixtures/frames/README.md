@@ -161,3 +161,29 @@ scritto a mano, perché è quella i cui fotogrammi sono stati rivisti a mano
 Le passate successive girano su estrazioni diverse e non condividono fotogrammi con
 la revisione, quindi **non hanno un accordo misurato**. Il numero nel registro non è
 un giudizio sul catalogo di processo, e il campo `agreement_caveat` lo ripete lì.
+
+## Screenshot mirati (2026-08-19)
+
+`tooltips-rita/` contiene 17 catture dirette, a finestra intera, consegnate su
+richiesta da chi usa l'applicativo: pratiche diverse fra loro, ognuna con un
+tooltip aperto. Sono esattamente il materiale che le registrazioni non potevano
+dare (un tooltip vive solo finche' il mouse ci sta fermo sopra, e un operatore
+non ci passa: quei codici li conosce gia').
+
+Le etichette dei nomi file sono state verificate immagine per immagine, e tre
+sono state corrette (`manifest.json` ne tiene il verbale): 3a, 3c e 3d mostrano
+il tooltip dell'ipoteca, quindi pagina 8. La 3a e' anche una lezione di modello:
+in quella pratica esiste una sola garanzia e l'ipoteca sta in riga 1, quindi
+l'identita' delle pagine 7/8 e' il **contenuto** del tooltip (CONSAP DR BIS vs
+IPOTECA), non il numero di riga da cui il nome delle pagine deriva.
+
+Con queste, ogni pagina del processo ha esempi reali:
+
+| pagina | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
+|---|---|---|---|---|---|---|---|---|---|
+| esempi | 14 | 9 | 7 | 35 | 44 | 7 | **4** | 8 | 119 |
+
+La pagina 7 resta la piu' scarsa (un solo esemplare mirato). I manifesti curati
+(`tooltips-rita/manifest.json`, `reference-screens.json`, che verbalizza anche i
+nove riferimenti di mnt/data) vengono fusi nel registro a ogni rebuild da
+`tools/build_frame_registry.py`, cosi' rieseguire gli strumenti non li perde.

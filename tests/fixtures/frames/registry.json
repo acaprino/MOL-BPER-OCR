@@ -17,9 +17,9 @@
   "altro": "negativo non ancora suddiviso (proposta batch, non rivista)"
  },
  "review_status": {
-  "total": 2098,
+  "total": 2124,
   "reviewed": 96,
-  "pending": 2002,
+  "pending": 2028,
   "agreement_page_vs_altro": "83/96",
   "agreement_exact_string": "8/96",
   "agreement_caveat": "L'accordo misura SOLO la prima passata di etichettatura, quella con il prompt scritto a mano: la revisione indipendente ha coperto i suoi fotogrammi. Le passate successive girano su estrazioni diverse e non condividono fotogrammi con la revisione, quindi non hanno un accordo misurato. Non leggere questo numero come giudizio sul catalogo di processo.",
@@ -29,15 +29,16 @@
   "altro-bper": 838,
   "altro-app": 593,
   "altro": 341,
-  "9": 118,
+  "9": 119,
   "altro-nulla": 104,
-  "5": 43,
-  "4": 34,
-  "1": 13,
-  "2": 8,
-  "7": 2,
-  "3": 2,
-  "6": 1,
+  "5": 44,
+  "4": 35,
+  "1": 14,
+  "2": 9,
+  "8": 8,
+  "6": 7,
+  "3": 7,
+  "7": 4,
   "incerto": 1
  },
  "frames": [
@@ -44098,6 +44099,430 @@
     245
    ],
    "localization_score": 0.7403
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-1a.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "filename": "3",
+    "claude": "3"
+   },
+   "tooltip_text": "Origination BSTORE Mediatori",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-1b.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "filename": "3",
+    "claude": "3"
+   },
+   "tooltip_text": "Origination BSTORE Comparatori",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-1c.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "filename": "3",
+    "claude": "3"
+   },
+   "tooltip_text": "Origination BSTORE Mediatori",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-1d.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "filename": "3",
+    "claude": "3"
+   },
+   "tooltip_text": "Origination BSTORE Intestatari",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-2a.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-2b.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340110 - MUTUO IPO NON FONDIARIO PRIVATI",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-2c.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340110 - MUTUO IPO NON FONDIARIO PRIVATI",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-2d.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-2e.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340170 - MUTUO FONDIARIO PRIVATI",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-3a.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "7",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO (unica garanzia della pratica, in riga 1)",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-3b.png",
+   "cluster": "7",
+   "process": "bper-p1",
+   "step": 7,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "7",
+    "claude": "7"
+   },
+   "tooltip_text": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-3c.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "7",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-3d.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "7",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-4a.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "8",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-4b.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "8",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-4c.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "8",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips-rita/rita-tooltip-4d.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "8",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 1.png",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": true,
+   "proposals": {
+    "claude": "1"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 2.png",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": true,
+   "proposals": {
+    "claude": "2"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 3.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "claude": "3"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 4.png",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": true,
+   "proposals": {
+    "claude": "4"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 5.png",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": true,
+   "proposals": {
+    "claude": "5"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 6.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "claude": "6"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 7.png",
+   "cluster": "7",
+   "process": "bper-p1",
+   "step": 7,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
+   "reviewed": true,
+   "proposals": {
+    "claude": "7"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 8.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "claude": "8"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "../../mnt/data/screen 9.png",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": true,
+   "proposals": {
+    "claude": "9"
+   },
+   "source": "screenshot di riferimento originali (famiglia di calibrazione, ADR 0010)",
+   "framing": "finestra 848x679 circa (846x677-850x680)",
+   "app_rect": null,
+   "localization_score": null
   }
  ]
 }

@@ -76,6 +76,11 @@ def main() -> None:
     ap.add_argument("--labels", required=True, action="append",
                     help="labels.json from a labelling run; repeat for several passes")
     ap.add_argument("--review", default="", help="review json with the independent pass")
+    ap.add_argument("--curated", action="append", default=[
+        str(FRAMES / "tooltips-rita" / "manifest.json"),
+        str(FRAMES / "reference-screens.json"),
+    ], help="curated manifests with hand-verified entries, merged as-is into the "
+            "registry on every rebuild so re-running the tools cannot drop them")
     ap.add_argument("--out", default=str(FRAMES / "registry.json"))
     args = ap.parse_args()
 
@@ -130,6 +135,17 @@ def main() -> None:
                        and coarse(e["proposals"]["gemini"]) == coarse(e["proposals"]["claude"]))
     agree_exact = sum(1 for e in entries if e["reviewed"]
                       and e["proposals"]["gemini"] == e["proposals"]["claude"])
+
+    curated_entries = []
+    for src in args.curated:
+        path = Path(src)
+        if not path.exists():
+            continue
+        data = json.loads(path.read_text(encoding="utf-8"))
+        curated_entries.extend(data.get("frames", []))
+    if curated_entries:
+        entries.extend(curated_entries)
+        print(f"voci curate fuse nel registro: {len(curated_entries)}")
 
     registry = {
         "process": "bper-p1",
