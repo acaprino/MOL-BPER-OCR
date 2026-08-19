@@ -108,12 +108,25 @@ class ExtractionPipeline:
             "_meta": out["_meta"],
         }
 
-    def extract_from_image(self, img: Image.Image, screen_id: str) -> Dict[str, Any]:
-        """Full multi-pass extraction for a single PIL image."""
+    def extract_from_image(
+        self, img: Image.Image, screen_id: str, *, allow_content_crop: bool = False
+    ) -> Dict[str, Any]:
+        """Full multi-pass extraction for a single PIL image.
+
+        `allow_content_crop` defaults to False because this is the live entry
+        point: every operator has a different window resolution, so no framing
+        arriving here is ever the one CONTENT_CROP was calibrated on. Even an
+        aspect that matches by coincidence is a false positive: the navigator is
+        laid out in CSS pixels, and on any window not rendered at the reference's
+        848px width its share of the width differs, so the calibrated fractions
+        amputate columns regardless of aspect. Only extract_from_screen(), which
+        serves the reference files on disk, opts in; even then the aspect guard
+        still has to agree (ADR 0009).
+        """
         # Bound oversized raw frames (edge-agent path skips normalize_image);
         # no-op for the already-normalized CLI path.
         img = clamp_long_side(img, MAX_IMAGE_LONG_SIDE)
-        crop_box = select_content_crop(img.size)
+        crop_box = select_content_crop(img.size) if allow_content_crop else None
         content_img = crop_relative(img, crop_box) if crop_box else img
         save_debug_crop(content_img, screen_id, "CONTENT")
 
@@ -195,7 +208,7 @@ class ExtractionPipeline:
         img = Image.open(path).convert("RGB")
         img = normalize_image(img)
         screen_id = screen_id_from_path(path)
-        return self.extract_from_image(img, screen_id)
+        return self.extract_from_image(img, screen_id, allow_content_crop=True)
 
     # --------------------------------------------------------
     # Private helpers

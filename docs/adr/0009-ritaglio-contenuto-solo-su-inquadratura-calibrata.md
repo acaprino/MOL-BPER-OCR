@@ -38,14 +38,25 @@ solo aspetto, e i due modi di sbagliare non sono simmetrici: ritagliare
 un'inquadratura non calibrata distrugge campi in silenzio, non ritagliarne una
 calibrata costa solo qualche token di immagine in piu'.
 
-## Cosa questa guardia NON copre
+## Rifinitura nello stesso giorno: la decisione appartiene al percorso
 
-L'aspetto e' un indizio, non una prova. Una finestra con l'aspetto calibrato ma
-resa piu' larga in pixel CSS ha comunque il navigatore piu' stretto in proporzione,
-e dalla sola dimensione dell'immagine il caso non e' rilevabile. Non e' ancora stato
-osservato in nessuna cattura; se compare, il punto dove aggiungere la rilevazione e'
-`select_content_crop()`, non un nuovo consumatore ([0001] vieta di ri-derivare i
-ritagli altrove).
+La prima versione applicava la guardia di aspetto a ogni immagine, ovunque entrasse.
+L'osservazione che l'ha corretta e' dell'utente: **nessuna finestra reale potra' mai
+essere il riferimento renderizzato a 848px** -- ogni operatore ha una risoluzione
+diversa. Ne segue che sul percorso live un match di aspetto e' *sempre* un falso
+positivo: una finestra che capita per coincidenza a proporzione 1.249 ha comunque il
+navigatore piu' stretto del 18% calibrato, perche' quello e' impaginato in pixel CSS,
+e il ritaglio la amputerebbe come qualunque altra.
+
+Quindi il ritaglio non e' autorizzato da una proprieta' dell'immagine ma dal punto
+di ingresso: `extract_from_image()` (percorso live, edge-agent) **non ritaglia mai**;
+`extract_from_screen()` (file su disco: i riferimenti di mnt/data, la CLI, la GUI)
+fa opt-in, e anche li' la guardia di aspetto deve comunque essere d'accordo, cosi'
+un file fuori famiglia messo in mnt/data non viene amputato.
+
+Il punto cieco della prima versione (aspetto calibrato ma resa CSS piu' larga) resta
+teoricamente aperto solo sul percorso da file, dove pero' la famiglia e' chiusa e
+nota. Sul percorso live non esiste piu' per costruzione.
 
 ## Conseguenze
 

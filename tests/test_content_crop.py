@@ -60,10 +60,30 @@ def test_the_main_pass_receives_the_full_image_on_a_divergent_framing(call_sizes
     assert sizes["CONTENT_MAIN"] == MEASURED_AMPUTATION
 
 
-def test_the_main_pass_still_gets_the_crop_on_the_calibrated_framing(call_sizes):
+def test_a_live_frame_is_never_cropped_even_at_the_calibrated_aspect(call_sizes):
+    """On the live path, a matching aspect is always a false positive.
+
+    No operator window is the reference rendered at 848px: every operator has a
+    different resolution, and the navigator is laid out in CSS pixels, so a window
+    that lands on the calibrated aspect by coincidence still has a narrower
+    navigator share and the crop would amputate columns anyway. The crop decision
+    belongs to the entry point, not to a heuristic on the image.
+    """
     pipeline = ExtractionPipeline(None, None, "test-model", "test-model")
 
     pipeline.extract_from_image(Image.new("RGB", CALIBRATED, "white"), "screen x")
+
+    assert dict(call_sizes)["CONTENT_MAIN"] == CALIBRATED
+
+
+def test_the_file_path_still_gets_the_crop_on_a_reference_shaped_file(call_sizes, tmp_path):
+    """extract_from_screen serves the mnt/data reference family: there the crop
+    is calibrated, measured, and must keep applying or the CLI baseline moves."""
+    path = tmp_path / "screen x.png"
+    Image.new("RGB", CALIBRATED, "white").save(path)
+    pipeline = ExtractionPipeline(None, None, "test-model", "test-model")
+
+    pipeline.extract_from_screen(str(path))
 
     left, top, right, bottom = CONTENT_CROP
     expected = (round(CALIBRATED[0] * (right - left)), round(CALIBRATED[1] * (bottom - top)))
