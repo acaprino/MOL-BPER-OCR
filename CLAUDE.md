@@ -311,7 +311,7 @@ different page of the BPER credit-management application.
 | Privati scheda (screens 4-5) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` |
 
 **Crop regions** (relative coords, `extraction/config.py`):
-- `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` -- full content area (main pass)
+- `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` -- full content area (main pass); applied only when the image aspect matches the 848x679 calibration within 5% (`select_content_crop()`, ADR 0009) -- on any other framing the full image is sent
 - `HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)` -- header strip (anchor pass)
 - Per-area retry crops in `RETRY_AREAS`; field-to-area mapping in `AREA_TO_FIELDS` (from which
   `FIELD_RETRY_MAP` is derived)

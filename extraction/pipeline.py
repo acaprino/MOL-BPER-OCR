@@ -8,7 +8,6 @@ from extraction.canonical_mapping import build_canonical_field_entries
 
 
 from extraction.config import (
-    CONTENT_CROP,
     HEADER_IN_CONTENT,
     ANCHOR_CONF_MIN,
     RETRY_CONF_MIN,
@@ -37,6 +36,7 @@ from extraction.imaging import (
     normalize_image,
     clamp_long_side,
     crop_relative,
+    select_content_crop,
     img_to_png_bytes,
     save_debug_crop,
     screen_id_from_path,
@@ -113,7 +113,8 @@ class ExtractionPipeline:
         # Bound oversized raw frames (edge-agent path skips normalize_image);
         # no-op for the already-normalized CLI path.
         img = clamp_long_side(img, MAX_IMAGE_LONG_SIDE)
-        content_img = crop_relative(img, CONTENT_CROP)
+        crop_box = select_content_crop(img.size)
+        content_img = crop_relative(img, crop_box) if crop_box else img
         save_debug_crop(content_img, screen_id, "CONTENT")
 
         # 1) Anchor pass

@@ -6,7 +6,15 @@ from typing import Tuple
 
 from PIL import Image, ImageEnhance, ImageFilter
 
-from extraction.config import DEBUG_SAVE_CROPS, DEBUG_CROP_DIR
+from typing import Optional
+
+from extraction.config import (
+    CONTENT_CROP,
+    CONTENT_CROP_ASPECT_TOLERANCE,
+    CONTENT_CROP_CALIBRATED_ASPECT,
+    DEBUG_SAVE_CROPS,
+    DEBUG_CROP_DIR,
+)
 
 
 def normalize_image(img: Image.Image, long_side: int = 1800) -> Image.Image:
@@ -40,6 +48,26 @@ def clamp_long_side(img: Image.Image, max_side: int) -> Image.Image:
         scale = max_side / longest
         img = img.resize((int(w * scale), int(h * scale)))
     return img
+
+
+def select_content_crop(size: Tuple[int, int]) -> Optional[Tuple[float, float, float, float]]:
+    """CONTENT_CROP when the framing matches the calibration, None otherwise.
+
+    None means: send the full image. The fractions were calibrated on one window
+    framing, and applying them elsewhere amputates columns (see the comment on
+    CONTENT_CROP in config.py for the measured case). Aspect is a proxy, not a
+    proof: a window at the calibrated aspect but rendered wider in CSS pixels
+    still shrinks the navigator's share, and that case is undetectable from the
+    image size alone. No such capture has been observed yet; if one shows up,
+    this gate is where the detection belongs.
+    """
+    width, height = size
+    if height <= 0:
+        return None
+    deviation = abs(width / height - CONTENT_CROP_CALIBRATED_ASPECT) / CONTENT_CROP_CALIBRATED_ASPECT
+    if deviation <= CONTENT_CROP_ASPECT_TOLERANCE:
+        return CONTENT_CROP
+    return None
 
 
 def crop_relative(img: Image.Image, box: Tuple[float, float, float, float]) -> Image.Image:
