@@ -2,16 +2,15 @@
 
 import io
 import os
-from typing import Tuple
+from typing import Optional, Tuple
 
 from PIL import Image, ImageEnhance, ImageFilter
-
-from typing import Optional
 
 from extraction.config import (
     CONTENT_CROP,
     CONTENT_CROP_ASPECT_TOLERANCE,
     CONTENT_CROP_CALIBRATED_ASPECT,
+    CONTENT_CROP_LONG_SIDE_RANGE,
     DEBUG_SAVE_CROPS,
     DEBUG_CROP_DIR,
 )
@@ -51,18 +50,24 @@ def clamp_long_side(img: Image.Image, max_side: int) -> Image.Image:
 
 
 def select_content_crop(size: Tuple[int, int]) -> Optional[Tuple[float, float, float, float]]:
-    """CONTENT_CROP when the framing matches the calibration, None otherwise.
+    """CONTENT_CROP if the image belongs to the calibration family, None otherwise.
 
-    None means: send the full image. The fractions were calibrated on one window
-    framing, and applying them elsewhere amputates columns (see the comment on
-    CONTENT_CROP in config.py for the measured case). Aspect is a proxy, not a
-    proof: a window at the calibrated aspect but rendered wider in CSS pixels
-    still shrinks the navigator's share, and that case is undetectable from the
-    image size alone. No such capture has been observed yet; if one shows up,
-    this gate is where the detection belongs.
+    Membership means both the aspect AND the pixel size of the mnt/data
+    references. Aspect alone is not identity: 1280x1024 (5:4) sits 0.09% from
+    848/679, so a full-screen legacy grab would pass an aspect-only gate and
+    lose its left columns exactly as in the measured 1536x1032 case (see the
+    comment on CONTENT_CROP in config.py).
+
+    None means: send the full image. This gate is only consulted on the file
+    path (extract_from_screen); the live path never crops, because no operator
+    window is ever the reference rendered at 848px (ADR 0010). A future second
+    reference family adds a calibration entry here, not a new consumer.
     """
     width, height = size
     if height <= 0:
+        return None
+    lo, hi = CONTENT_CROP_LONG_SIDE_RANGE
+    if not (lo <= max(width, height) <= hi):
         return None
     deviation = abs(width / height - CONTENT_CROP_CALIBRATED_ASPECT) / CONTENT_CROP_CALIBRATED_ASPECT
     if deviation <= CONTENT_CROP_ASPECT_TOLERANCE:

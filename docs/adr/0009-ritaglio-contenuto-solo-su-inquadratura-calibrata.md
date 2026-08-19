@@ -1,6 +1,6 @@
 # 0009 - Il ritaglio del contenuto si applica solo all'inquadratura calibrata
 
-- **Stato:** Accettato
+- **Stato:** Superato da [0010](0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md)
 - **Data:** 2026-08-19
 - **Interessa:** `extraction/config.py`, `extraction/imaging.py`, `extraction/pipeline.py`
 - **Test:** `tests/test_content_crop.py`

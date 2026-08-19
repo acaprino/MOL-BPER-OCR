@@ -74,11 +74,18 @@ MAX_IMAGE_LONG_SIDE = int(os.getenv("MAX_IMAGE_LONG_SIDE", "2000"))
 # NDG 32084406 was extracted as "06". select_content_crop() therefore applies the
 # crop only when the framing matches the calibration (see imaging.py).
 CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)
+# Nominal figure: the references actually span 846x677 to 850x680 (ADR 0001
+# generalized "848x679" from one file); the spread is absorbed by the tolerance.
 CONTENT_CROP_CALIBRATED_ASPECT = 848 / 679
 # Tight on purpose: every validated framing shares one aspect, and the two failure
 # modes are asymmetric. Cropping an uncalibrated frame silently destroys fields;
 # not cropping a calibrated one only costs image tokens.
 CONTENT_CROP_ASPECT_TOLERANCE = 0.05
+# Aspect alone is not identity: 1280x1024 (5:4, a standard legacy full-screen
+# resolution) sits 0.09% from 848/679 and would pass any aspect tolerance. The
+# references are 846-850 px wide and normalize_image() never upscales, so an
+# image outside this size band cannot be one of them, whatever its aspect.
+CONTENT_CROP_LONG_SIDE_RANGE = (800, 900)
 HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)
 
 # Targeted retry crops (grouped by functional area)

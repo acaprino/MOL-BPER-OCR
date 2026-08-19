@@ -14,7 +14,7 @@ Every screenshot (whether it arrives from the CLI, the Tkinter GUI, or the edge-
 
 ```mermaid
 flowchart TD
-    Start(["extract_from_image(img, screen_id)"]) --> Crop["Crop CONTENT_CROP<br/>(0.18, 0.12, 0.98, 0.98)<br/>drops BPER left sidebar"]
+    Start(["extract_from_image(img, screen_id)"]) --> Crop["CONTENT_CROP only for calibrated-family files (ADR 0010)<br/>live path: whole frame"]
     Crop --> Anchor["ANCHOR PASS<br/>header crop HEADER_IN_CONTENT (0,0,1,0.22)<br/>ANCHOR_PROMPT → AnchorResponse<br/>ndg + denominazione only"]
     Anchor --> Gate["Confidence gate vs ANCHOR_CONF_MIN 0.95<br/>intended null-out: ineffective, see step 3"]
     Gate --> StopCheck{"STOP_ON_ANCHOR_UNCERTAIN=1<br/>and both anchors null?"}

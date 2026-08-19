@@ -50,7 +50,8 @@ tarati, e nessun test lo verificava.
 | [0006](0006-router-llm-come-predefinito.md) | Router LLM come predefinito, ML come ripiego | Accettato |
 | [0007](0007-conferma-stabilita-su-frame-invariato.md) | Confermare la stabilità con un frame invariato | Accettato |
 | [0008](0008-classificatore-locale-prototipi-reali-e-classi-di-scarto.md) | Classificatore locale: prototipi da ritagli reali e classi di scarto | Accettato |
-| [0009](0009-ritaglio-contenuto-solo-su-inquadratura-calibrata.md) | Il ritaglio del contenuto si applica solo all'inquadratura calibrata | Accettato |
+| [0009](0009-ritaglio-contenuto-solo-su-inquadratura-calibrata.md) | Il ritaglio del contenuto si applica solo all'inquadratura calibrata | Superato da 0010 |
+| [0010](0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md) | Il ritaglio calibrato: autorizzato dal percorso, limitato alla famiglia | Accettato |
 
 ## Da scrivere
 

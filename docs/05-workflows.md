@@ -14,7 +14,7 @@ Ogni screenshot (che arrivi dalla CLI, dalla GUI Tkinter o dall'edge-agent) vien
 
 ```mermaid
 flowchart TD
-    Start(["extract_from_image(img, screen_id)"]) --> Crop["Ritaglio CONTENT_CROP<br/>(0.18, 0.12, 0.98, 0.98)<br/>elimina la sidebar sinistra BPER"]
+    Start(["extract_from_image(img, screen_id)"]) --> Crop["Ritaglio CONTENT_CROP<br/>solo su file della famiglia calibrata (ADR 0010)<br/>percorso live: frame intero"]
     Crop --> Anchor["PASSAGGIO ANCHOR<br/>ritaglio header HEADER_IN_CONTENT (0,0,1,0.22)<br/>ANCHOR_PROMPT → AnchorResponse<br/>solo ndg + denominazione"]
     Anchor --> Gate["Gate di confidenza vs ANCHOR_CONF_MIN 0.95<br/>azzeramento previsto: inefficace, vedi passo 3"]
     Gate --> StopCheck{"STOP_ON_ANCHOR_UNCERTAIN=1<br/>ed entrambi gli anchor null?"}
@@ -34,7 +34,7 @@ flowchart TD
 
 ### Spiegazione passo per passo
 
-**1. Ritaglio del contenuto.** `extract_from_image` ritaglia l'immagine a `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` (`extraction/config.py:59`), rimuovendo la barra di navigazione sinistra di BPER così che il modello veda solo la regione dei dati (`extraction/pipeline.py:106`).
+**1. Ritaglio del contenuto.** Solo sul percorso da file e solo se l'immagine appartiene alla famiglia calibrata (aspetto e dimensione dei riferimenti 848x679), `extract_from_screen` applica `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` rimuovendo la barra di navigazione sinistra. Sul percorso live il modello riceve il frame intero: le frazioni calibrate su una finestra amputano colonne su qualunque altra ([ADR 0010](adr/0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md)).
 
 **2. Passaggio anchor.** `extract_anchors()` ritaglia la striscia header `HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)` (`extraction/config.py:60`) e la invia con `ANCHOR_PROMPT` per estrarre solo `ndg` e `denominazione` (`extraction/pipeline.py:70-102`). Il prompt codifica due regole di dominio: NDG e Denominazione stanno al centro visivo dell'intestazione della pratica, e il nome dell'operatore in alto a destra va ignorato (`prompts/extraction_anchor.json`). Il prompt istruisce inoltre il modello a restituire `null` quando è incerto e a impostare `confidence >= 0.95` solo quando il valore è chiaramente leggibile (`prompts/extraction_anchor.json`).
 
@@ -64,7 +64,7 @@ sequenceDiagram
     participant API as API OpenAI / Gemini (HTTPS)
 
     Caller->>Pipe: extract_from_image(img, screen_id)
-    Note over Pipe: ritaglio CONTENT_CROP, poi HEADER_IN_CONTENT
+    Note over Pipe: CONTENT_CROP/HEADER_IN_CONTENT solo su famiglia calibrata (ADR 0010)
     Pipe->>VLM: ANCHOR_PROMPT + ritaglio header (AnchorResponse)
     VLM->>API: invoke (output strutturato)
     API-->>VLM: ndg, denominazione + confidence

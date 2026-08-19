@@ -383,9 +383,11 @@ class BPERCaptureWorker(BaseCaptureWorker):
             shot = sct.grab(mon)
             img = Image.frombytes('RGB', shot.size, shot.rgb)
             # Riporta l'inquadratura sulla finestra applicativa: i prototipi del
-            # router e il CONTENT_CROP della pipeline sono tarati su screenshot
-            # di finestra, e su un frame a schermo intero le stesse coordinate
-            # relative cadono su contenuto diverso.
+            # router, la ROI del classificatore e le bande RETRY_AREAS della
+            # pipeline sono tarati su screenshot di finestra, e su un frame a
+            # schermo intero le stesse coordinate relative cadono su contenuto
+            # diverso. (CONTENT_CROP invece non si applica piu' al percorso
+            # live: ADR 0010.)
             full_size = img.size
             img, strategy = normalize_frame(
                 img,

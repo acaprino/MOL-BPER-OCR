@@ -99,7 +99,7 @@ BPERCaptureWorker (QThread)
   (`find_window_rect()`, ctypes/user32, driven by `config.ini` `window_title_contains`), else the
   rectangle inferred from a uniform desktop background, else the frame unchanged. Both consumers
   downstream use *relative* coordinates calibrated on window-sized screenshots (the classifier's
-  `DEFAULT_CROP_ROI` and the pipeline's `CONTENT_CROP`), so on a full-monitor frame those coordinates
+  `DEFAULT_CROP_ROI` and the pipeline's `RETRY_AREAS` bands; `CONTENT_CROP` no longer applies on the live path, ADR 0010), so on a full-monitor frame those coordinates
   land on different content. See `docs/adr/0001-normalizzazione-inquadratura-frame.md`.
 - **Page routing modes** (set in `edge-agent/config.ini` `router=`). The shipped `config.ini` is
   `llm`; the code default `DEFAULT_ROUTER_MODE` stays `ml` **on purpose**, as the safe behaviour when

@@ -75,10 +75,21 @@ class ExtractionPipeline:
     # Public interface
     # --------------------------------------------------------
 
-    def extract_anchors(self, content_img: Image.Image, screen_id: str) -> Dict[str, Any]:
-        """Pass 1: extract NDG + Denominazione from the header crop only."""
-        header_img = crop_relative(content_img, HEADER_IN_CONTENT)
-        save_debug_crop(header_img, screen_id, "HEADER_IN_CONTENT")
+    def extract_anchors(
+        self, content_img: Image.Image, screen_id: str, *, calibrated: bool = True
+    ) -> Dict[str, Any]:
+        """Pass 1: extract NDG + Denominazione.
+
+        On the calibrated family the identifiers live in the top band of the
+        content area, so the pass reads HEADER_IN_CONTENT only. Off calibration
+        no fixed band contains them: measured on a real 1296x1027 operator
+        window, the top 22% holds only browser chrome and tab bar, and at 35%
+        the NDG bar appears half-cut. Banding an uncalibrated image is the
+        content-crop amputation one level down, so there the pass reads the
+        whole image and pays the larger payload instead.
+        """
+        header_img = crop_relative(content_img, HEADER_IN_CONTENT) if calibrated else content_img
+        save_debug_crop(header_img, screen_id, "HEADER_IN_CONTENT" if calibrated else "HEADER_FULL")
 
         payload = img_to_png_bytes(header_img)
         out = call_vlm_with_retry(
@@ -127,11 +138,14 @@ class ExtractionPipeline:
         # no-op for the already-normalized CLI path.
         img = clamp_long_side(img, MAX_IMAGE_LONG_SIDE)
         crop_box = select_content_crop(img.size) if allow_content_crop else None
-        content_img = crop_relative(img, crop_box) if crop_box else img
-        save_debug_crop(content_img, screen_id, "CONTENT")
+        calibrated = crop_box is not None
+        content_img = crop_relative(img, crop_box) if calibrated else img
+        # Distinct debug names: a full frame saved as "CONTENT" is indistinguishable
+        # from a genuine content crop when recalibrating fractions from disk.
+        save_debug_crop(content_img, screen_id, "CONTENT" if calibrated else "CONTENT_FULL")
 
         # 1) Anchor pass
-        anchors = self.extract_anchors(content_img, screen_id)
+        anchors = self.extract_anchors(content_img, screen_id, calibrated=calibrated)
 
         if STOP_ON_ANCHOR_UNCERTAIN:
             if is_nullish(anchors["ndg"]["value"]) and is_nullish(anchors["denominazione"]["value"]):
@@ -142,6 +156,7 @@ class ExtractionPipeline:
                     "fidi": [],
                     "garanzie": [],
                     "_status": "ANCHOR_UNCERTAIN",
+                    "_content_crop": "calibrated" if calibrated else "full-frame",
                     "_attempts": [anchors["_meta"]],
                     "_meta_agg": self._aggregate_meta([anchors["_meta"]]),
                     "_field_sources": {},
@@ -170,7 +185,8 @@ class ExtractionPipeline:
         self._postprocess_tipo(result)
 
         # 4) Retry areas
-        self._retry_areas(content_img, screen_id, result, field_sources, attempts_meta)
+        self._retry_areas(content_img, screen_id, result, field_sources, attempts_meta,
+                          calibrated=calibrated)
 
         # 5) Coherence check
         self._coherence_check(result)
@@ -179,6 +195,7 @@ class ExtractionPipeline:
         result["_attempts"] = attempts_meta
         result["_meta_agg"] = self._aggregate_meta(attempts_meta)
         result["_field_sources"] = field_sources
+        result["_content_crop"] = "calibrated" if calibrated else "full-frame"
 
         # 7) Flatten soggetti for flat evaluation (CSV compatibility)
         soggetti = result.get("soggetti", [])
@@ -238,12 +255,23 @@ class ExtractionPipeline:
             result["fields"]["tipo"] = tipo_field
 
     @staticmethod
-    def _merge_tables(result: Dict[str, Any], retry_out: Dict[str, Any], area_name: str) -> None:
+    def _merge_tables(result: Dict[str, Any], retry_out: Dict[str, Any], area_name: str,
+                      *, calibrated: bool = True) -> None:
         if area_name != "BODY":
             return
         for tbl in ["soggetti", "fidi", "garanzie"]:
             new_data = retry_out.get(tbl) or []
             old_data = result.get(tbl, [])
+
+            # Off calibration the BODY crop is a band of the raw window and
+            # includes the navigator column, so a longer retry table may be
+            # padded with rows read out of menu text. There it may only fill an
+            # empty table, never replace one: a fabricated soggetti row flattens
+            # into ndg_N and reaches the consolidated practice looking real.
+            if not calibrated:
+                if new_data and not old_data:
+                    result[tbl] = new_data
+                continue
 
             new_conf = sum(row.get("confidence", 0) for row in new_data) / max(1, len(new_data))
             old_conf = sum(row.get("confidence", 0) for row in old_data) / max(1, len(old_data))
@@ -260,6 +288,8 @@ class ExtractionPipeline:
         result: Dict[str, Any],
         field_sources: Dict[str, str],
         attempts_meta: List[Dict[str, Any]],
+        *,
+        calibrated: bool = True,
     ) -> None:
         areas_to_retry: Set[str] = set()
         for area, fields in AREA_TO_FIELDS.items():
@@ -329,7 +359,7 @@ class ExtractionPipeline:
                         candidate_source=f"RETRY_{area_name}",
                     )
 
-                self._merge_tables(result, retry_out, area_name)
+                self._merge_tables(result, retry_out, area_name, calibrated=calibrated)
 
     @staticmethod
     def _coherence_check(result: Dict[str, Any]) -> None:

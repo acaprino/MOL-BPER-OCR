@@ -11,21 +11,14 @@ from extraction.fields import FIELD_KEYS
 from extraction.pipeline import ExtractionPipeline
 
 
-def _empty_retry_response() -> Dict[str, Any]:
-    """A retry that reads nothing: keeps the merge a no-op."""
-    return {"fields": {}, "soggetti": [], "fidi": [], "garanzie": [], "_meta": {}}
+from conftest import install_fake_vlm
 
 
 @pytest.fixture
 def recorded_attempts(monkeypatch) -> List[str]:
     """Capture the `attempt` label of every VLM call the pipeline makes."""
     attempts: List[str] = []
-
-    def fake_call(**kwargs: Any) -> Dict[str, Any]:
-        attempts.append(kwargs["attempt"])
-        return _empty_retry_response()
-
-    monkeypatch.setattr(pipeline_mod, "call_vlm_with_retry", fake_call)
+    install_fake_vlm(monkeypatch, lambda kwargs: attempts.append(kwargs["attempt"]))
     return attempts
 
 

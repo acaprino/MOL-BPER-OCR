@@ -91,8 +91,10 @@ A pytest suite lives in `tests/` (`python -m pytest tests`, 116 tests) covering 
 the capture stability tracker, the daemon thread pool, the async local-extraction client, the prompt
 catalog, frame normalization (`test_frame_normalize.py`), the worker's capture framing
 (`test_bper_capture_framing.py`), page recognition from live-shaped frames
-(`test_page_classifier.py`) and retry-area selection (`test_pipeline_retry.py`). The rest of the
-extraction pipeline is still untested.
+(`test_page_classifier.py`), retry-area selection (`test_pipeline_retry.py`) and the content-crop
+family gate with off-calibration anchor/table behavior (`test_content_crop.py`). The rest of the
+extraction pipeline (anchor confidence gate, scalar merge order, coherence check, flatten) is
+still untested.
 
 `test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s, and it rebuilds the prototype
 cache the first time after any geometry change); it skips via
@@ -221,9 +223,10 @@ downstream effects.
     `extract_from_image()` (not `extract_from_screen()`), bypassing `normalize_image()`. Capture and
     extraction are decoupled: `ingest_frame()` queues and returns, extraction runs on
     `PARALLEL_WORKERS` daemon threads sharing one pipeline (same pattern as `BatchRunner`).
-13. **Every relative crop assumes window framing** -- the classifier ROI, the pipeline's
-    `CONTENT_CROP`/`HEADER_IN_CONTENT` and the `RETRY_AREAS` are all fractions calibrated on the
-    848x679 window screenshots in `mnt/data`. `_grab_raw()` captures the whole monitor, so
+13. **Every relative crop assumes window framing** -- the classifier ROI and the pipeline's
+    `RETRY_AREAS` bands are fractions calibrated on the 848x679 window screenshots in `mnt/data`
+    (`CONTENT_CROP`/`HEADER_IN_CONTENT` now apply only on the file path over the calibrated
+    family, ADR 0010; off calibration the anchor pass reads the whole image). `_grab_raw()` captures the whole monitor, so
     `frame_normalize.normalize_frame()` must run there, before dedup, routing and extraction: with a
     full-monitor frame the same fractions point at different content and page recognition drops to
     1 page out of 9. Do not move the normalization into a single consumer, and do not add a consumer
@@ -311,7 +314,7 @@ different page of the BPER credit-management application.
 | Privati scheda (screens 4-5) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` |
 
 **Crop regions** (relative coords, `extraction/config.py`):
-- `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` -- full content area (main pass); applied only on the file path (`extract_from_screen()`) and only when the image aspect matches the 848x679 calibration within 5% (`select_content_crop()`, ADR 0009); the live path (`extract_from_image()`) never crops -- every operator window has a different resolution, so a matching aspect there is always a false positive
+- `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` -- full content area (main pass); applied only on the file path (`extract_from_screen()`) and only when the image matches the calibration family in BOTH aspect (within 5% of 848/679) and size (long side 800-900px) -- aspect alone is not identity: 1280x1024 sits 0.09% from the calibrated aspect (`select_content_crop()`, ADR 0010). The live path (`extract_from_image()`) never crops, and off calibration the anchor pass reads the whole image and retry tables may only fill, never replace
 - `HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)` -- header strip (anchor pass)
 - Per-area retry crops in `RETRY_AREAS`; field-to-area mapping in `AREA_TO_FIELDS` (from which
   `FIELD_RETRY_MAP` is derived)
@@ -455,6 +458,6 @@ pyinstaller>=6.10,<7    # portable package build only (build_exe.bat); the dist 
 
 Not yet implemented:
 - `pyproject.toml` -- dependencies are listed in `requirements.txt` but not version-pinned
-- Tests -- unit suite in `tests/` covers the edge-agent pure logic (page registry, stability tracker, extraction pool, async client, frame normalization, capture framing), the prompt catalog, page recognition and retry-area selection; the rest of the extraction pipeline (anchor gate, merge order, coherence check, flatten) is still untested
+- Tests -- unit suite in `tests/` covers the edge-agent pure logic (page registry, stability tracker, extraction pool, async client, frame normalization, capture framing), the prompt catalog, page recognition, retry-area selection and the content-crop family gate; the rest of the extraction pipeline (anchor confidence gate, scalar merge order, coherence check, flatten) is still untested
 - CI/CD -- no pipeline configured
 - Docker -- no containerization
