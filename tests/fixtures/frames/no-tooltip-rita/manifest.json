@@ -1,0 +1,363 @@
+{
+ "curated": true,
+ "note": "Etichette verificate a mano immagine per immagine. Due correzioni rispetto ai nomi di consegna: le coppie 'Note da richiesta 1b' e '1c' sono in realta' sulla tab 'Note a Istruttoria' (l'header della tab e il titolo 'Nota all'istruttoria' lo provano) -> altro-bper, fuori dalle 9 classi. Rita ha ridotto lo zoom del browser in alcune schermate per far entrare l'intera pagina (segnalato nella sua mail del 2026-08-21): la risoluzione della finestra resta ~1890x1015 ma il contenuto e' reso piu' piccolo. Le coppie chiuso/aperto di 'Note da Richiesta' documentano che la pagina si presenta con la sezione nota compressa: l'operatore deve cliccare per espanderla.",
+ "frames": [
+  {
+   "frame": "no-tooltip-rita/rita-base-1a.png",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": true,
+   "proposals": {
+    "filename": "no tooltip 1a_1.png",
+    "claude": "1"
+   },
+   "note": "lista pratiche, colonne iniziali; NDG 32526867",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-1b.png",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": true,
+   "proposals": {
+    "filename": "no tooltip 1b_1.png",
+    "claude": "1"
+   },
+   "note": "lista pratiche, colonne iniziali; NDG 30429881",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-1c.png",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": true,
+   "proposals": {
+    "filename": "no tooltip 1c_1.png",
+    "claude": "1"
+   },
+   "note": "lista pratiche, colonne iniziali; NDG 32669007",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-1d.png",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": true,
+   "proposals": {
+    "filename": "no tooltip 1d_1.png",
+    "claude": "1"
+   },
+   "note": "lista pratiche, colonne iniziali; NDG 32740019",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-1e.png",
+   "cluster": "1",
+   "process": "bper-p1",
+   "step": 1,
+   "step_name": "Risultato ricerca",
+   "reviewed": true,
+   "proposals": {
+    "filename": "No tooltip_schermata intera di ricerca_1.png",
+    "claude": "1"
+   },
+   "note": "lista pratiche con TUTTE le colonne visibili insieme (zoom ridotto): niente scorrimento, quindi stato base -> cluster 1, ma copre anche le colonne finali del cluster 2; NDG 32688380",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-2a.png",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": true,
+   "proposals": {
+    "filename": "no tooltip 1a_2.png",
+    "claude": "2"
+   },
+   "note": "stessa pratica di rita-base-1a, tabella scorsa a destra (Area/Filiale/Evidenze)",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-2b.png",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": true,
+   "proposals": {
+    "filename": "no tooltip 1b_2.png",
+    "claude": "2"
+   },
+   "note": "stessa pratica di rita-base-1b, tabella scorsa a destra",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-2c.png",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": true,
+   "proposals": {
+    "filename": "no tooltip 1c_2.png",
+    "claude": "2"
+   },
+   "note": "stessa pratica di rita-base-1c, tabella scorsa a destra",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-2d.png",
+   "cluster": "2",
+   "process": "bper-p1",
+   "step": 2,
+   "step_name": "Risultato ricerca - Colonne estese",
+   "reviewed": true,
+   "proposals": {
+    "filename": "no tooltip 1d_2.png",
+    "claude": "2"
+   },
+   "note": "stessa pratica di rita-base-1d, tabella scorsa a destra",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-4a.png",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": true,
+   "proposals": {
+    "filename": "Elenco soggetti 1a.png",
+    "claude": "4"
+   },
+   "note": "pratica 51800301, NDG 32731685 (3 soggetti in tabella)",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-4b.png",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": true,
+   "proposals": {
+    "filename": "Elenco soggetti 1b.png",
+    "claude": "4"
+   },
+   "note": "pratica 52032077, NDG 32661219 (2 soggetti in tabella)",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-4c.png",
+   "cluster": "4",
+   "process": "bper-p1",
+   "step": 4,
+   "step_name": "Elenco Soggetti",
+   "reviewed": true,
+   "proposals": {
+    "filename": "Elenco soggetti 1c.png",
+    "claude": "4"
+   },
+   "note": "pratica 51788077, NDG 32688380 (1 soggetto in tabella)",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-5a.png",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": true,
+   "proposals": {
+    "filename": "Gestione fidi e garanzie 1a.png",
+    "claude": "5"
+   },
+   "note": "pratica 51800301: 1 fido + 1 garanzia (IPOTECA I GR.), nessun tooltip",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-5b.png",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": true,
+   "proposals": {
+    "filename": "Gestione fidi e garanzie 1b.png",
+    "claude": "5"
+   },
+   "note": "pratica 52032077: 1 fido + 2 garanzie (CONSAP L.BIL24, IPOTECA I GR.), nessun tooltip",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-5c.png",
+   "cluster": "5",
+   "process": "bper-p1",
+   "step": 5,
+   "step_name": "Gestione Fidi e Garanzie",
+   "reviewed": true,
+   "proposals": {
+    "filename": "Gestione fidi e garanzie 1c.png",
+    "claude": "5"
+   },
+   "note": "pratica 51788077: 1 fido + 1 garanzia, nessun tooltip",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-9a-chiuso.png",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": true,
+   "proposals": {
+    "filename": "Note da richiesta 1a_chiuso.png",
+    "claude": "9"
+   },
+   "note": "pratica 51800301, tab 'Note da Richiesta', sezione nota COMPRESSA: e' la prima visualizzazione che l'operatore incontra (l'espansione richiede un click)",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-base-9a-aperto.png",
+   "cluster": "9",
+   "process": "bper-p1",
+   "step": 9,
+   "step_name": "Note da Richiesta",
+   "reviewed": true,
+   "proposals": {
+    "filename": "Note da richiesta 1a_aperto.png",
+    "claude": "9"
+   },
+   "note": "pratica 51800301, tab 'Note da Richiesta', sezione nota ESPANSA (testo integrale)",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-istruttoria-b-chiuso.png",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "filename": "Note da richiesta 1b_chiuso.png",
+    "claude": "altro-bper"
+   },
+   "note": "NON e' 'Note da Richiesta': tab attiva 'Note a Istruttoria' (pratica 52032077), sezione 'Nota all'istruttoria' con scorrimento interno",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-istruttoria-b-aperto.png",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "filename": "Note da richiesta 1b_aperto.png",
+    "claude": "altro-bper"
+   },
+   "note": "NON e' 'Note da Richiesta': tab attiva 'Note a Istruttoria' (pratica 52032077), nota integrale visibile",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-istruttoria-c-chiuso.png",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "filename": "Note da richiesta 1c_chiuso.png",
+    "claude": "altro-bper"
+   },
+   "note": "NON e' 'Note da Richiesta': tab attiva 'Note a Istruttoria' (pratica 51788077), sezione con scorrimento interno",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "no-tooltip-rita/rita-istruttoria-c-aperto.png",
+   "cluster": "altro-bper",
+   "process": null,
+   "step": null,
+   "step_name": null,
+   "reviewed": true,
+   "proposals": {
+    "filename": "Note da richiesta 1c_aperto.png",
+    "claude": "altro-bper"
+   },
+   "note": "NON e' 'Note da Richiesta': tab attiva 'Note a Istruttoria' (pratica 51788077), nota integrale visibile",
+   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
+   "app_rect": null,
+   "localization_score": null
+  }
+ ]
+}

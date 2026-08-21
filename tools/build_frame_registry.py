@@ -78,6 +78,7 @@ def main() -> None:
     ap.add_argument("--review", default="", help="review json with the independent pass")
     ap.add_argument("--curated", action="append", default=[
         str(FRAMES / "tooltips-rita" / "manifest.json"),
+        str(FRAMES / "no-tooltip-rita" / "manifest.json"),
         str(FRAMES / "reference-screens.json"),
     ], help="curated manifests with hand-verified entries, merged as-is into the "
             "registry on every rebuild so re-running the tools cannot drop them")

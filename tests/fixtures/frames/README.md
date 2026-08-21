@@ -177,13 +177,38 @@ in quella pratica esiste una sola garanzia e l'ipoteca sta in riga 1, quindi
 l'identita' delle pagine 7/8 e' il **contenuto** del tooltip (CONSAP DR BIS vs
 IPOTECA), non il numero di riga da cui il nome delle pagine deriva.
 
-Con queste, ogni pagina del processo ha esempi reali:
+Con queste, ogni pagina del processo ha esempi reali.
+
+## Screenshot mirati, secondo giro (2026-08-21)
+
+`no-tooltip-rita/` contiene 21 catture dirette delle **pagine base senza
+tooltip**, richieste per costruire un set di prototipi interamente dentro la
+popolazione live (l'ADR 0011 documenta perche' mescolare popolazioni dentro una
+classe distrugge i prototipi). Stessa operatrice, stessa forma dei 17 scatti
+precedenti: finestra intera ~1890x1015.
+
+Verificate immagine per immagine; due avvertenze dal verbale
+(`no-tooltip-rita/manifest.json`):
+
+- le coppie consegnate come "Note da richiesta 1b/1c" sono in realta' sulla tab
+  **Note a Istruttoria**, che non e' tra le 9 classi: etichettate `altro-bper` e
+  usate come negativi di processo nella misura dei prototipi;
+- in alcune schermate lo zoom del browser e' ridotto per far entrare l'intera
+  pagina (segnalato dall'operatrice): la finestra resta ~1890px ma il contenuto
+  e' reso piu' piccolo. E' variabilita' reale della popolazione live.
+
+La coppia chiuso/aperto di "Note da Richiesta" documenta che la pagina si
+presenta con la sezione nota compressa: l'operatore clicca per espanderla, e le
+due viste sono abbastanza diverse da servire entrambe al prototipo di classe 9.
+
+Copertura per pagina dopo i due giri (scatti diretti + registrazioni):
 
 | pagina | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 |
 |---|---|---|---|---|---|---|---|---|---|
-| esempi | 14 | 9 | 7 | 35 | 44 | 7 | **4** | 8 | 119 |
+| esempi | 19 | 13 | 7 | 38 | 47 | 7 | **4** | 8 | 121 |
 
 La pagina 7 resta la piu' scarsa (un solo esemplare mirato). I manifesti curati
-(`tooltips-rita/manifest.json`, `reference-screens.json`, che verbalizza anche i
-nove riferimenti di mnt/data) vengono fusi nel registro a ogni rebuild da
-`tools/build_frame_registry.py`, cosi' rieseguire gli strumenti non li perde.
+(`tooltips-rita/manifest.json`, `no-tooltip-rita/manifest.json`,
+`reference-screens.json`, che verbalizza anche i nove riferimenti di mnt/data)
+vengono fusi nel registro a ogni rebuild da `tools/build_frame_registry.py`,
+cosi' rieseguire gli strumenti non li perde.
