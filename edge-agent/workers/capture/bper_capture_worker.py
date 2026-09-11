@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import queue
 import time
 import uuid
-from typing import Optional, Set, Tuple, List, Any
+from typing import Optional, Set, Tuple, List, Any, Callable
 
 import imagehash
 from PIL import Image
@@ -43,13 +45,27 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
     def __init__(
             self,
-            config,
-            job_id_getter,
+            config: Any,
+            job_id_getter: Callable[[], Optional[str]],
             api_client: Optional[Any] = None,
             parent: Optional[QtCore.QObject] = None,
     ) -> None:
         super().__init__(config, job_id_getter, parent)
         self.api_client = api_client
+
+        # Only the capture thread mutates visit, camera and acknowledgement state.
+        # QThread.run() owns a polling loop, not a Qt event loop: slots only enqueue.
+        self._commands: queue.Queue[Tuple[str, Any]] = queue.Queue()
+        self._frame_identity: Optional[Tuple[Tuple[int, int], str, bytes]] = None
+        self._visit_sequence: int = 0
+        self._visit_pending: Optional[int] = None
+        self._visit_completed: bool = False
+        self._pending_captures: dict[Tuple[str, int], Tuple[int, PageDef]] = {}
+        self._result_connected = api_client is not None and hasattr(api_client, "result_ready")
+        if self._result_connected:
+            api_client.result_ready.connect(
+                self._queue_extraction_result, QtCore.Qt.ConnectionType.DirectConnection
+            )
 
         # Stato dedup
         self._last_frame_hash: Optional[imagehash.ImageHash] = None
@@ -57,7 +73,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Stabilità pagina (macchina a stati pura, vedi stability.py)
         self._tracker = StabilityTracker()
 
-        # Pagine già acquisite in questo job (nomi canonici dal registro)
+        # Successfully processed page names for guidance, never a dedup gate.
         self.captured_page_types: Set[str] = set()
 
         # Registro pagine: caricato in run() nel thread worker
@@ -82,7 +98,6 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
         # Anti-spam log: ultima guida emessa e ultima pagina "già acquisita"
         self._last_guidance_page: Optional[str] = None
-        self._last_already_captured: Optional[str] = None
 
         # Ultimo errore router già loggato (per non ripeterlo a ogni frame)
         self._last_router_error: Optional[str] = None
@@ -199,23 +214,30 @@ class BPERCaptureWorker(BaseCaptureWorker):
     # ------------------------------------------------------------------ lifecycle
 
     def run(self) -> None:
-        """Inizializza router e registro pagine nel thread worker, poi entra nel loop."""
-        if not self._router_ready:
-            self.tick.emit("[Worker] Inizializzazione riconoscimento in corso...")
-            self._init_router()
-            self._load_registry()
-            self._router_ready = True
-        super().run()
-
-    def stop(self) -> None:
-        """Override: ferma il loop e rilascia il contesto mss."""
-        super().stop()
-        if self._mss_ctx is not None:
-            try:
-                self._mss_ctx.close()
-            except Exception:
-                pass
-            self._mss_ctx = None
+        """Initialize, capture and release the camera in the same thread."""
+        try:
+            if self._stop_requested:
+                return
+            if not self._router_ready:
+                self.tick.emit("[Worker] Inizializzazione riconoscimento in corso...")
+                self._init_router()
+                self._load_registry()
+                self._router_ready = True
+            super().run()
+        finally:
+            if self._mss_ctx is not None:
+                try:
+                    self._mss_ctx.close()
+                except Exception:
+                    pass
+                self._mss_ctx = None
+            if self._result_connected:
+                try:
+                    self.api_client.result_ready.disconnect(self._queue_extraction_result)
+                except (TypeError, RuntimeError):
+                    # Qt may already have disconnected or destroyed the sender.
+                    pass
+                self._result_connected = False
 
     # ------------------------------------------------------------------ page registry
 
@@ -252,6 +274,75 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
     # ------------------------------------------------------------------ core loop
 
+    @QtCore.pyqtSlot(str, dict)
+    def _queue_extraction_result(self, job_id: str, result: dict) -> None:
+        """Cross-thread entry point: enqueue only, including very fast completions."""
+        self._commands.put(("result", (
+            job_id, result.get("_capture_sequence"), result.get("_status"),
+        )))
+
+    def _drain_commands(self) -> bool:
+        """Apply acknowledgements and manual requests inside the capture loop."""
+        manual = False
+        while not self._stop_requested:
+            try:
+                command, payload = self._commands.get_nowait()
+            except queue.Empty:
+                break
+            if command == "manual":
+                self._execute_manual_capture(payload)
+                manual = True
+            else:
+                self._complete_capture(*payload)
+        return manual
+
+    def _complete_capture(self, job_id: str, sequence: Optional[int], status: Optional[str]) -> None:
+        """An old completion cannot change the pending state of a newer visit."""
+        if sequence is None:
+            return
+        pending = self._pending_captures.pop((job_id, sequence), None)
+        if pending is None:
+            return
+        visit, page = pending
+        current = visit == self._visit_sequence and sequence == self._visit_pending
+        if status == "ERROR":
+            if current:
+                self._visit_pending = None
+                self._restart_stability(page)
+            self.tick.emit(f"⚠️ Estrazione fallita per «{page.name}»; la pagina può essere acquisita nuovamente.")
+            return
+        # ANCHOR_UNCERTAIN can contain useful fields from pages without an NDG.
+        self.captured_page_types.add(page.name)
+        if current:
+            self._visit_pending = None
+            self._visit_completed = True
+        next_page = self._next_pending_page()
+        hint = f" → prossima schermata: «{next_page}»" if next_page else ""
+        self.tick.emit(f"✅ Estrazione completata per «{page.name}»{hint}")
+
+    def _restart_stability(self, page: PageDef) -> None:
+        """An error requires another stable interval, not a retry every frame."""
+        self._tracker.reset()
+        self._tracker.observe(page.name, time.time())
+        self._last_routed_page = page
+
+    def _observe_frame(self, raw: Image.Image) -> None:
+        """A visit is one unchanged normalized image, including small ID edits.
+
+        pHash is useful for routing cost but can miss a one-digit NDG change.
+        Pixel identity therefore controls rearming and the stability interval.
+        Animated content must settle, or the operator can request a manual shot.
+        """
+        identity = (raw.size, raw.mode, hashlib.blake2b(raw.tobytes(), digest_size=16).digest())
+        if identity != self._frame_identity:
+            self._frame_identity = identity
+            self._visit_sequence += 1
+            self._visit_pending = None
+            self._visit_completed = False
+            self._tracker.reset()
+            self._last_routed_page = None
+            self._last_route_attempt_ts = None
+
     def _capture_once(self) -> None:
         """
         Loop di cattura per BPER:
@@ -263,12 +354,20 @@ class BPERCaptureWorker(BaseCaptureWorker):
             - applica la macchina a stati di stabilità
             - accoda il frame stabile per l'estrazione in background
         """
+        if self._stop_requested:
+            return
+        if self._drain_commands() or self._stop_requested:
+            return
         job_id = self.job_id_getter()
         if not job_id:
             return
 
         raw = self._grab_raw()
-        if raw is None:
+        if raw is None or self._stop_requested:
+            return
+
+        self._observe_frame(raw)
+        if self._visit_pending is not None or self._visit_completed:
             return
 
         is_dup = self._is_duplicate_frame(raw)
@@ -279,7 +378,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
             # nuovo il router costa una chiamata VLM (4-5s), e con quella cadenza
             # "due osservazioni concordi" significa tenere ferma una schermata
             # per 10-24 secondi invece dei 2 per cui le soglie erano scritte.
-            if self._tracker.candidate is not None and self._last_routed_page is not None:
+            if (self._last_routed_page is not None
+                    and self._tracker.candidate == self._last_routed_page.name):
                 if self._tracker.confirm(time.time()) is not None:
                     self._acquire(
                         job_id,
@@ -298,21 +398,12 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._last_route_attempt_ts = time.time()
         img = self._preprocess(raw)
         label, score, fields = self._detect_page(img)
+        if self._stop_requested:
+            return
         page = self.registry.resolve(label)
         self._last_routed_page = page
         self._last_route_score = score
         self._last_route_fields = fields
-
-        # Pagina già acquisita: non riacquisire (con l'estrazione asincrona una
-        # ri-acquisizione costerebbe una seconda estrazione completa).
-        if page is not None and page.name in self.captured_page_types:
-            if self._last_already_captured != page.name:
-                nxt = self._next_pending_page()
-                hint = f" → apri nel sistema BPER: «{nxt}»" if nxt else ""
-                self.tick.emit(f"ℹ️ «{page.name}» già acquisita{hint}")
-                self._last_already_captured = page.name
-            self._tracker.observe(None, time.time())
-            return
 
         prev_candidate = self._tracker.candidate
         ready = self._tracker.observe(page.name if page else None, time.time())
@@ -329,30 +420,22 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._acquire(job_id, img, page, score, fields)
 
     def _acquire(self, job_id: str, img: Image.Image, page: PageDef, score: float, fields: dict) -> None:
-        """Accoda la pagina stabile e aggiorna guida e stato.
-
-        Condiviso fra le due strade che possono dichiarare stabile una pagina:
-        una seconda osservazione instradata, e la conferma su frame invariato.
-        """
-        n_captured = len(self.captured_page_types) + 1
-        n_total: Any = len(self._acquirable_names) or "?"
-        self._upload_page(job_id, img, page, score, fields)
-        self.captured_page_types.add(page.name)
+        """Record acceptance; only the matching completion confirms extraction."""
+        if self._stop_requested:
+            return
+        # A stable retry must retain this capture's selection and metadata,
+        # including a manual page override of the previous router answer.
+        self._last_routed_page = page
+        self._last_route_score = score
+        self._last_route_fields = fields
+        sequence = self._upload_page(job_id, img, page, score, fields)
+        if sequence is None:
+            self._restart_stability(page)
+            return
+        self._pending_captures[(job_id, sequence)] = (self._visit_sequence, page)
+        self._visit_pending = sequence
+        self._visit_completed = False
         self._tracker.reset()
-        self._last_routed_page = None
-        self._last_already_captured = None
-
-        next_page = self._next_pending_page()
-        if next_page:
-            self.tick.emit(
-                f"✅ «{page.name}» acquisita [{n_captured}/{n_total}] "
-                f"→ apri nel sistema BPER: «{next_page}»"
-            )
-            self._last_guidance_page = next_page
-        else:
-            self.tick.emit(
-                f"✅ «{page.name}» acquisita [{n_captured}/{n_total}] — tutte le schermate completate!"
-            )
 
     # ------------------------------------------------------------------ screenshot & dedup
 
@@ -455,11 +538,6 @@ class BPERCaptureWorker(BaseCaptureWorker):
             )
         except Exception:  # noqa: BLE001
             return img
-
-    def _capture_screenshot(self) -> Optional[Image.Image]:
-        """Frame già preprocessato (usato dal forza scatto)."""
-        raw = self._grab_raw()
-        return None if raw is None else self._preprocess(raw)
 
     def _is_duplicate_frame(self, img: Image.Image) -> bool:
         """
@@ -613,8 +691,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
         page: PageDef,
         confidence: float = 0.0,
         fields: Optional[dict] = None,
-    ) -> None:
-        """Accoda lo screenshot di una pagina riconosciuta per l'estrazione."""
+    ) -> Optional[int]:
+        """Return the accepted capture sequence, or None when enqueue failed."""
         if page.order > 0:
             filename = f"{page.order:02d}-{page.slug}.png"
         else:
@@ -622,7 +700,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
         if self.api_client and hasattr(self.api_client, "ingest_frame"):
             try:
-                self.api_client.ingest_frame(
+                sequence = self.api_client.ingest_frame(
                     job_id=job_id,
                     img=img,
                     page_no=page.order,
@@ -631,23 +709,23 @@ class BPERCaptureWorker(BaseCaptureWorker):
                     fields_json=json.dumps(fields or {}),
                 )
                 self.tick.emit(f"📤 In coda per estrazione: {filename}")
-                return
+                return sequence
             except Exception as exc:  # noqa: BLE001
                 self.on_error(exc)
-                return
+                return None
 
         self.tick.emit(f"[ERRORE] Client locale non configurato correttamente per {filename}")
+        return None
 
     # ------------------------------------------------------------------ forza scatto manuale
     @QtCore.pyqtSlot(str)
     def force_capture(self, page_name: str) -> None:
-        """
-        Forza lo scatto e l'accodamento dell'immagine corrente come pagina indicata.
+        """Request a manual shot without touching camera or capture state."""
+        if not self._stop_requested:
+            self._commands.put(("manual", page_name))
 
-        Il nome arriva dal combo della UI (nomi canonici del registro); accetta
-        anche uno stem template ("screen 5"). Non richiede stabilità né match
-        del router. Aggiunge la pagina a `captured_page_types`.
-        """
+    def _execute_manual_capture(self, page_name: str) -> None:
+        """Process the UI request in the same thread as automatic capture."""
         try:
             if not self._router_ready:
                 self.tick.emit("[BPER] Forza scatto: inizializzazione in corso, riprova tra qualche secondo.")
@@ -663,15 +741,21 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 self.tick.emit(f"[BPER] Forza scatto: pagina sconosciuta: '{page_name}'.")
                 return
 
-            img = self._capture_screenshot()
-            if img is None:
+            raw = self._grab_raw()
+            if raw is None or self._stop_requested:
                 self.tick.emit("[BPER] Forza scatto: nessuno screenshot disponibile.")
                 return
-
-            self._upload_page(job_id, img, page, 0.0, {})
-            self.captured_page_types.add(page.name)
-            self._tracker.reset()
-            self._last_already_captured = None
-            self.tick.emit(f"[BPER] Forza scatto completato per «{page.name}».")
+            self._observe_frame(raw)
+            pending = (
+                self._pending_captures.get((job_id, self._visit_pending))
+                if self._visit_pending is not None else None
+            )
+            if pending is not None and pending[1].name == page.name:
+                self.tick.emit(f"[BPER] «{page.name}» è già in elaborazione.")
+                return
+            # Seed the same frame reference used by automatic confirmation.
+            # The first manual shot may precede any automatic routing attempt.
+            self._is_duplicate_frame(raw)
+            self._acquire(job_id, self._preprocess(raw), page, 0.0, {})
         except Exception as exc:  # noqa: BLE001
             self.on_error(exc)

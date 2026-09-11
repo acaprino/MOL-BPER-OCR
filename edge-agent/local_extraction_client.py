@@ -114,6 +114,8 @@ class LocalExtractionClient(QtCore.QObject):
         self._pool = DaemonThreadPool(max_workers=max(1, int(PARALLEL_WORKERS)))
 
         self._results: Dict[str, List[Dict[str, Any]]] = {}
+        self._completed: Dict[str, Dict[int, Dict[str, Any]]] = {}
+        self._next_capture_sequence: Dict[str, int] = {}
         self._lock = threading.Lock()
 
     # ------------------------------------------------------------------ APIClient-compatible interface
@@ -130,16 +132,27 @@ class LocalExtractionClient(QtCore.QObject):
         page_type: str = "",
         confidence: float = 0.0,
         fields_json: str = "{}",
-    ) -> None:
-        """Enqueue a frame for background extraction and return immediately.
+    ) -> int:
+        """Enqueue a frame and return its zero-based capture sequence for the job.
 
         Called from the capture QThread; extraction runs on the internal
-        daemon pool so the capture loop is never blocked.
+        daemon pool so the capture loop never waits for extraction. A stopped
+        pool raises RuntimeError without emitting frame_queued.
         """
+        # Reserve only accepted slots. A fast completion waits for this lock,
+        # so it cannot publish before the sequence has been committed.
+        with self._lock:
+            sequence = self._next_capture_sequence.get(job_id, 0)
+            accepted = self._pool.submit(
+                self._process_frame, job_id, img, page_no, page_type,
+                confidence, fields_json, sequence,
+            )
+            if not accepted:
+                raise RuntimeError("Extraction pool has stopped accepting frames")
+            self._next_capture_sequence[job_id] = sequence + 1
+
         self.frame_queued.emit(job_id, page_type)
-        self._pool.submit(
-            self._process_frame, job_id, img, page_no, page_type, confidence, fields_json
-        )
+        return sequence
 
     def _process_frame(
         self,
@@ -149,6 +162,7 @@ class LocalExtractionClient(QtCore.QObject):
         page_type: str,
         confidence: float,
         fields_json: str,
+        capture_sequence: int,
     ) -> None:
         """Pool worker: run the pipeline and publish the result."""
         screen_id = page_type if page_type else f"pagina {page_no}"
@@ -168,11 +182,23 @@ class LocalExtractionClient(QtCore.QObject):
         result["_page_type"] = page_type
         result["_page_no"] = page_no
         result["_page_confidence"] = confidence
+        result["_capture_sequence"] = capture_sequence
 
-        _log_extraction(job_id, result)
+        try:
+            _log_extraction(job_id, result)
+        except Exception as exc:  # noqa: BLE001
+            # Diagnostics must not leave a missing slot that blocks later results.
+            result["_diagnostic_error"] = str(exc)
 
         with self._lock:
-            self._results.setdefault(job_id, []).append(result)
+            completed = self._completed.setdefault(job_id, {})
+            completed[capture_sequence] = result
+            published = self._results.setdefault(job_id, [])
+            # An anonymous frame belongs to the preceding captured practice.
+            # Sorting only finished frames could temporarily attach it to an
+            # earlier practice while the intervening identifier is still running.
+            while len(published) in completed:
+                published.append(completed.pop(len(published)))
 
         # Qt signal is thread-safe across thread boundaries
         self.result_ready.emit(job_id, dict(result))
@@ -188,11 +214,13 @@ class LocalExtractionClient(QtCore.QObject):
     def shutdown(self) -> None:
         """Stop the pool: queued frames are discarded; running tasks cannot
         block process exit (daemon threads)."""
-        self._pool.stop()
+        with self._lock:
+            self._pool.stop()
 
     # ------------------------------------------------------------------ Data access
 
     def get_results(self, job_id: str) -> List[Dict[str, Any]]:
+        """Return the completed prefix in capture order, including error slots."""
         with self._lock:
             return list(self._results.get(job_id, []))
 

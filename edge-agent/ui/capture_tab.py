@@ -377,7 +377,7 @@ class CaptureTab(QWidget):
 
     def _update_session_label(self) -> None:
         self.job_label.setText(
-            f"Sessione attiva  |  Acquisite: {self._n_queued}  |  Estratte: {self._n_results}"
+            f"Sessione attiva  |  Inviate: {self._n_queued}  |  Elaborate: {self._n_results}"
         )
 
     def _on_frame_queued(self, job_id: str, _page_type: str) -> None:
@@ -391,7 +391,7 @@ class CaptureTab(QWidget):
             self._update_session_label()
             page = str(result.get("_page_type") or result.get("screen_id") or "?")
             status = str(result.get("_status") or "OK")
-            self._log(f"✅ Estrazione completata: «{page}» (stato: {status})")
+            self._log(f"Elaborazione terminata: «{page}» (stato: {status})")
 
     # ------------------------------------------------------------------ API pubblica
 
@@ -411,7 +411,7 @@ class CaptureTab(QWidget):
             QMessageBox.warning(self, "Selezione mancante", "Seleziona una pagina da forzare.")
             return
         try:
-            # Solo per BPER worker
+            # Queue the request; the BPER capture thread owns the camera.
             if isinstance(self.worker, BPERCaptureWorker) and hasattr(self.worker, "force_capture"):
                 # type: ignore[attr-defined]
                 self.worker.force_capture(page)

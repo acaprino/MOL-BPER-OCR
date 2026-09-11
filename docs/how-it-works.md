@@ -73,27 +73,57 @@ The edge-agent captures live screenshots and extracts locally, with no remote ba
 
 ```
 BPERCaptureWorker (QThread)
+  ├── Drains queued manual requests and extraction acknowledgements
   ├── Captures screenshot via mss (whole monitor)
   ├── Normalizes framing to the app window via frame_normalize.normalize_frame()
-  ├── Preprocesses (scale, unsharp, autocontrast) via image_ops.preprocess_for_ocr()
-  ├── Dedup check via pHash (Hamming distance <= config dedup_threshold, default 3)
+  ├── Compares pixel identity: changed frame starts a new visit and stability interval
+  ├── Skips unchanged visits whose extraction is pending or completed
+  ├── Uses pHash to confirm an existing candidate without another router call
+  ├── Preprocesses (scale, unsharp, autocontrast) when routing or extraction needs the image
   ├── Detects page type via router (LLM or ML)
   ├── Stability check (StabilityTracker: >= 2 concordant matches AND >= 2.0s presence, 1 miss tolerated)
-  └── _upload_page() → LocalExtractionClient.ingest_frame() -- enqueues, returns immediately
+  └── _upload_page() → LocalExtractionClient.ingest_frame() -- returns accepted capture sequence
                            └── DaemonThreadPool (PARALLEL_WORKERS daemon threads, shared ExtractionPipeline)
                                    └── ExtractionPipeline.extract_from_image()
                                            ├── Anchor pass (header crop → NDG + DENOMINAZIONE)
                                            ├── Main pass (full content → all fields)
                                            └── Retry pass (low-confidence fields only)
-                                       → logs diagnostics → stores result
+                                       → logs diagnostics → stores result by capture sequence
+                                       → publishes the contiguous completed prefix to get_results()
                                        → emits result_ready(job_id, result)
-                                                             └── DataTableTab (Dati Estratti)
-                                                                     └── consolidate() → one row per practice
+                                             ├── queues acknowledgement for the capture worker
+                                             └── DataTableTab (Dati Estratti)
+                                                     └── get_results() → consolidate() → one row per practice
 ```
 
 - **Detection hook:** `BPERCaptureWorker._upload_page()` detects `LocalExtractionClient` via
   `hasattr(api_client, "ingest_frame")` and calls it directly (asynchronously: the frame is queued and
-  extracted on `LocalExtractionClient`'s internal daemon pool).
+  extracted on `LocalExtractionClient`'s internal daemon pool). A rejected enqueue raises
+  `RuntimeError`; it emits no `frame_queued` event and does not consume a capture sequence.
+- **Capture order:** accepted frames get a zero-based sequence per job. Results carry
+  `_capture_sequence`, including errors. `result_ready` reports each completion as it happens;
+  `get_results()` exposes only the contiguous completed prefix in capture order. The table and
+  exports consolidate that prefix so a late anonymous frame stays with the preceding captured
+  practice. A slow earlier result can delay later rows even when the completion counter has advanced.
+  An error occupies its sequence and releases following results; jobs progress independently.
+  See [ADR 0013](adr/0013-risultati-nell-ordine-di-acquisizione.md).
+- **Visits and acknowledgements:** the worker compares size, color mode and a BLAKE2b digest of
+  normalized raw pixels before preprocessing. Any changed identity starts a new visit, even on the
+  same page. Pending and completed visits suppress automatic duplicates and further router calls
+  while the image stays unchanged. Only the matching job/sequence acknowledgement can complete or
+  release the current pending capture. `ERROR` restarts the stability interval before retry;
+  non-error results, including `ANCHOR_UNCERTAIN`, complete the visit because headerless pages can
+  still contain useful fields. `captured_page_types` is guidance about successfully processed page
+  names, not a job-wide acquisition gate. Pixel identity detects small identifier changes that pHash
+  can miss, but animation can keep restarting stability and cause further routing calls.
+  See [ADR 0014](adr/0014-acquisizione-per-visita-con-esito.md), which integrates ADR 0007.
+- **Manual capture and stop:** `force_capture()` only enqueues a command. The capture loop performs
+  the screenshot, preprocessing and submission, bypassing routing and stability. A request for the
+  same page already pending in the current visit is coalesced; a request after success may capture
+  again. The result signal also only enqueues an acknowledgement; the loop applies it. An ongoing
+  router call can delay a manual shot. Stop checks prevent later submission once control returns;
+  the worker closes mss in `run()`'s `finally`, on the capture thread. Already running extraction
+  calls continue in the daemon pool. See [ADR 0015](adr/0015-scatto-manuale-nel-thread-di-cattura.md).
 - **Frame framing is load-bearing** -- `_grab_raw()` grabs the whole monitor, then
   `frame_normalize.normalize_frame()` crops back to the application window: first the OS window rect
   (`find_window_rect()`, ctypes/user32, driven by `config.ini` `window_title_contains`), else the

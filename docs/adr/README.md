@@ -54,6 +54,9 @@ tarati, e nessun test lo verificava.
 | [0010](0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md) | Il ritaglio calibrato: autorizzato dal percorso, limitato alla famiglia | Accettato |
 | [0011](0011-prototipi-tooltip-rimandati-purezza-di-popolazione.md) | Prototipi per le pagine tooltip: rimandati finche' la popolazione non e' pura | Accettato |
 | [0012](0012-prototipi-interamente-nella-popolazione-live.md) | Prototipi interamente nella popolazione live: la misura che lo 0011 aspettava | Accettato |
+| [0013](0013-risultati-nell-ordine-di-acquisizione.md) | Pubblicare i risultati nell'ordine di acquisizione | Accettato |
+| [0014](0014-acquisizione-per-visita-con-esito.md) | Acquisire per visita e confermare l'esito dell'estrazione | Accettato |
+| [0015](0015-scatto-manuale-nel-thread-di-cattura.md) | Eseguire lo scatto manuale nel thread di cattura | Accettato |
 
 ## Da scrivere
 
