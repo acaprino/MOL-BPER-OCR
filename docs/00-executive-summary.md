@@ -12,12 +12,12 @@ In BPER, gruppo bancario italiano, i dettagli di una pratica di credito (codici 
 
 Dai al software uno screenshot di una di quelle schermate, oppure lo lasci osservare in silenzio il monitor mentre un operatore sfoglia l'applicativo. Il software invia l'immagine a un servizio di intelligenza artificiale capace di guardare le immagini e rispondere a domande su di esse: la stessa tecnologia dietro i moderni assistenti conversazionali. Le domande arrivano in tre passi accurati: prima *"di chi è questa pratica?"*, per agganciare il cliente giusto; poi *"leggi tutto quello che c'è su questa pagina"*; infine *"riguarda solo le parti su cui non eri sicuro"*. Ogni risposta torna come una voce etichettata, con allegato un livello di confidenza.
 
-Immaginalo come un impiegato diligente affiancato da un supervisore severo. L'impiegato trascrive ogni schermata in un modulo. Il supervisore poi confronta ogni voce con un foglio delle risposte corrette, la marca come giusta, sbagliata, mancante o inventata, e tiene il conto esatto di quanto è costata la lettura di ogni pagina: perché i servizi di AI dietro le quinte si pagano a consumo.
+Immaginalo come un impiegato diligente affiancato da un supervisore severo. L'impiegato trascrive ogni schermata in un modulo. Il supervisore poi confronta ogni voce con un foglio delle risposte corrette, la marca come giusta, sbagliata, mancante o inventata, e stima quanto è costata la lettura di ogni pagina: perché i servizi di AI dietro le quinte si pagano a consumo.
 
 ## Cosa ottieni
 
-- Per ogni schermata: un record di dati strutturato, circa 45 campi, ciascuno con il proprio punteggio di confidenza.
-- Per ogni esecuzione: un **report di accuratezza** (quali campi l'AI ha letto bene, campo per campo e in totale) e un **report dei costi** (quanto è costato elaborare ogni schermata).
+- Per ogni schermata: un record con 45 campi possibili. Nell’edge-agent i dati di più schermate vengono riuniti in **una riga per pratica**, mostrata in Dati Estratti ed esportabile in Excel.
+- Nel batch con il foglio di riferimento: un **report di accuratezza** e un **report dei costi stimati**. L’edge-agent può lavorare senza quel foglio; registra la diagnostica separatamente dai dati mostrati all’operatore.
 
 Insieme, questi due report rispondono alla domanda per cui il progetto esiste: **l'AI può sostituire in modo affidabile la ridigitazione manuale di queste schermate bancarie, e a quale prezzo?**
 
@@ -27,7 +27,7 @@ Agli ingegneri di Tri-tech solutions che costruiscono e valutano il sistema. È 
 
 ## Lo stato, onestamente
 
-È un proof of concept in sviluppo attivo, non un prodotto finito. Non ci sono test automatici, non c'è un installer, e i risultati si verificano a mano rispetto a un foglio di riferimento. Dimostra e misura un approccio; non è pronto da consegnare così com'è agli utenti finali.
+È un proof of concept in sviluppo attivo. Esistono una suite automatica in `tests/` e una build portable Windows dell’edge-agent (`build_exe.bat`); la verifica dell’accuratezza su dati reali richiede ancora un foglio di riferimento fornito separatamente. Mancano CI e una distribuzione con dipendenze bloccate a versioni esatte. Le prove automatiche non sostituiscono la verifica sul monitor e con il provider utilizzati in banca.
 
 ## Dove andare adesso
 

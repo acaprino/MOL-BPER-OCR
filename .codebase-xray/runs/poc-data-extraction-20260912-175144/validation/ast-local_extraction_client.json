@@ -1,0 +1,73 @@
+{
+  "file_path": "edge-agent\\local_extraction_client.py",
+  "language": "python",
+  "notes": [
+    "parser=stdlib-ast"
+  ],
+  "classes": [
+    {
+      "name": "LocalExtractionClient",
+      "kind": "class",
+      "visibility": "public",
+      "bases": [
+        "QtCore.QObject"
+      ],
+      "methods": [
+        "__init__",
+        "start_job",
+        "ingest_frame",
+        "_process_frame",
+        "requeue_job",
+        "pending_extractions",
+        "shutdown",
+        "get_results",
+        "get_all_job_ids"
+      ],
+      "class_variables": [
+        "result_ready",
+        "frame_queued"
+      ],
+      "line_number": 76
+    }
+  ],
+  "functions": [
+    {
+      "name": "_log_extraction",
+      "is_async": false,
+      "visibility": "private",
+      "parameters": [
+        "job_id",
+        "result"
+      ],
+      "line_number": 41
+    }
+  ],
+  "imports": {
+    "internal": [
+      "__future__",
+      "PIL",
+      "PyQt6",
+      "app_paths",
+      "extraction.llm_factory",
+      "extraction.pipeline",
+      "extraction.config",
+      "prompt_store",
+      "extraction_pool",
+      "dotenv"
+    ],
+    "external": [
+      "os",
+      "sys",
+      "threading",
+      "uuid",
+      "typing"
+    ]
+  },
+  "constants": [
+    "_PROJECT_ROOT"
+  ],
+  "external_calls": [],
+  "exported_symbols": [
+    "LocalExtractionClient"
+  ]
+}

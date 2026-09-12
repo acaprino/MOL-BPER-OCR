@@ -1,0 +1,17 @@
+{
+  "run_id": "poc-data-extraction-20260912-175144",
+  "parent_run": "poc-data-extraction-20260911-154206",
+  "published_at": "2026-09-12T18:26:19.266898+00:00",
+  "mirror_sha256": {
+    "01-structure.md": "829afbe7047ed30e983d675234dbbecd75b61f4279d070f47f4ae7d081c0fd4c",
+    "02-interfaces.md": "f8eafe988a461ffd6a9ce4be8315d405d708b11009e0ff61a876c5f897ea9496",
+    "03-flows.md": "7255ebe62a94bf22ab679f60cbcf8f1be9687ac9767f859da7d72143035a2259",
+    "04-semantics.md": "37b378ee5b9fc2f3ec3728241a630993d6ca7554d9cd673b156a0646004f5184",
+    "05-risks.md": "386fcf0cd730ecd5ea64c41807566fe6516137a270464aa765d3abcf498e4580",
+    "06-documentation.md": "71b739ce80f6bf7b93cab45c8cbc888091ac59da69403d6ab194dff236c3525b",
+    "07-final-report.md": "373ff49f27adc8d6fcdca9325f275c36b52f19d6b7230f0363d9f169816e50bb",
+    "08-interconnect-map.md": "78e176dae12f1065d69a03504e5a0f3ac0e81cc9da0976a1ab1a5e4b13ef9c8a",
+    "state.json": "d24a8965b8cae9dd0a18ffeebbc71edbf4d9d7a1a776978a4bb41d05c03b75f8"
+  },
+  "parent_files_preserved": 32
+}

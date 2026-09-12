@@ -1,0 +1,92 @@
+{
+  "generated_at": "2026-09-12T19:57:19.912998",
+  "total_files": 36,
+  "files_by_directory": {
+    "docs": 16,
+    "docs/adr": 16,
+    "docs/superpowers/plans": 2,
+    "docs/superpowers/specs": 2
+  },
+  "files_with_todos": [],
+  "files_missing_metadata": [
+    "docs/00-executive-summary.md",
+    "docs/01-overview.md",
+    "docs/02-features.md",
+    "docs/03-tech-stack.md",
+    "docs/04-architecture.md",
+    "docs/05-workflows.md",
+    "docs/06-data-model.md",
+    "docs/07-getting-started.md",
+    "docs/08-open-questions.md",
+    "docs/09-project-anatomy.md",
+    "docs/10-configuration-guide.md",
+    "docs/11-glossary.md",
+    "docs/12-python-api.md",
+    "docs/INDEX.md",
+    "docs/adr/0001-normalizzazione-inquadratura-frame.md",
+    "docs/adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md",
+    "docs/adr/0003-chiave-cache-prototipi-con-geometria.md",
+    "docs/adr/0004-budget-retry-derivato-dalle-aree.md",
+    "docs/adr/0005-router-ml-invece-di-router-llm.md",
+    "docs/adr/0006-router-llm-come-predefinito.md",
+    "docs/adr/0007-conferma-stabilita-su-frame-invariato.md",
+    "docs/adr/0008-classificatore-locale-prototipi-reali-e-classi-di-scarto.md",
+    "docs/adr/0009-ritaglio-contenuto-solo-su-inquadratura-calibrata.md",
+    "docs/adr/0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md",
+    "docs/adr/0011-prototipi-tooltip-rimandati-purezza-di-popolazione.md",
+    "docs/adr/0012-prototipi-interamente-nella-popolazione-live.md",
+    "docs/adr/0013-risultati-nell-ordine-di-acquisizione.md",
+    "docs/adr/0014-acquisizione-per-visita-con-esito.md",
+    "docs/adr/0015-scatto-manuale-nel-thread-di-cattura.md",
+    "docs/adr/README.md",
+    "docs/how-it-works.md",
+    "docs/mappa-codice.md",
+    "docs/superpowers/plans/2026-08-17-edge-agent-async-capture.md",
+    "docs/superpowers/plans/2026-08-17-edge-agent-excel-export.md",
+    "docs/superpowers/specs/2026-08-17-edge-agent-async-capture-design.md",
+    "docs/superpowers/specs/2026-08-17-edge-agent-excel-export-design.md"
+  ],
+  "large_files": [
+    {
+      "file": "docs/superpowers/plans/2026-08-17-edge-agent-excel-export.md",
+      "lines": 1526
+    },
+    {
+      "file": "docs/superpowers/plans/2026-08-17-edge-agent-async-capture.md",
+      "lines": 1518
+    }
+  ],
+  "broken_links": [],
+  "obsolete_candidates": [],
+  "unverified_files": [],
+  "low_verification_files": [],
+  "stale_markers": [],
+  "verification_summary": {
+    "total_verified_markers": 0,
+    "total_validated_markers": 0,
+    "total_unverified_markers": 0,
+    "total_deprecated_markers": 0,
+    "files_with_unverified": 0,
+    "files_below_50_percent": 0,
+    "overall_ratio": 0.0,
+    "failed_files": 0
+  },
+  "statistics": {
+    "total_files": 36,
+    "files_with_todos": 0,
+    "files_missing_metadata": 36,
+    "large_files_count": 2,
+    "directories": 4,
+    "verification_integrity": {
+      "total_verified_markers": 0,
+      "total_validated_markers": 0,
+      "total_unverified_markers": 0,
+      "total_deprecated_markers": 0,
+      "files_with_unverified": 0,
+      "files_below_50_percent": 0,
+      "overall_ratio": 0.0,
+      "failed_files": 0
+    },
+    "failed_files": []
+  }
+}

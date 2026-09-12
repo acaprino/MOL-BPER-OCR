@@ -1,0 +1,17 @@
+{
+  "command": [
+    "D:\\Projects\\poc-data-extraction\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests",
+    "-o",
+    "cache_dir=D:\\Projects\\poc-data-extraction\\.codebase-xray\\runs\\poc-data-extraction-20260912-175144\\validation\\pytest-cache"
+  ],
+  "environment_overrides": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHON_DOTENV_DISABLED": "1",
+    "QT_QPA_PLATFORM": "offscreen",
+    "OMP_NUM_THREADS": "2",
+    "MKL_NUM_THREADS": "2"
+  }
+}

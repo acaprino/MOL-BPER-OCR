@@ -1,0 +1,17 @@
+{
+  "run_id": "poc-data-extraction-20260911-154206",
+  "published_at": "2026-09-11T17:09:21.552419+02:00",
+  "mirror": "D:\\Projects\\poc-data-extraction\\.codebase-xray",
+  "matching_sha256": {
+    "01-structure.md": "8dc818f8535b1be528ae4c53c1779c2059fb1a033ab153b887d84b00fe0b2b5c",
+    "02-interfaces.md": "ad75faefb21f935340ace5935a8fd4d6346c075d07cef2c0441c3caa1c9f8b65",
+    "03-flows.md": "966dfe5309281586cd5b86a184871b5d0e4240b42a947298c4a25135567f6fb5",
+    "04-semantics.md": "14fbb55653cc33d4fc63c6f6422ea88db94a07b5bb3b469701228f5351778b5f",
+    "05-risks.md": "d4ba14f09279a062fa7e9680b019e239f778cc4a03b9baffc6c8787876a593a7",
+    "06-documentation.md": "1dac626695c127c205d3063add26bfa860ccd6e11abf158ce0aa350155bc1d33",
+    "07-final-report.md": "7c69986075ffe86ed92985668e11dfe22cba4c0a6c4db071a4b81efc8fd9ae85",
+    "08-interconnect-map.md": "94348a8f5bcd59b0e52449d3b1c42832c81d975de125392cfd9761652f3a479a",
+    "state.json": "9adfdf626f4218b09f476ca037c5176e9f0e20be6b57785e13a1bc274e85f4ce"
+  },
+  "registry_latest_completed": "poc-data-extraction-20260911-154206"
+}

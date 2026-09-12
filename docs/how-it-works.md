@@ -1,30 +1,33 @@
 # How It Works -- poc-data-extraction
 
-Estratto da `CLAUDE.md` per contenerne la dimensione. Descrive il funzionamento interno della
-pipeline di estrazione, i tre modi di esecuzione e il flusso di cattura dell'edge-agent.
-Le regole non negoziabili che ne derivano restano in `CLAUDE.md` sotto *Architectural Constraints*.
+English reference for the extraction pipeline, its three entry points and live capture.
+The official Italian guide covers [architecture](04-architecture.md),
+[workflows](05-workflows.md), [data](06-data-model.md) and [Python APIs](12-python-api.md).
 
 ## Multi-pass extraction pipeline
 
 Each screenshot is processed in three stages by `ExtractionPipeline` in `extraction/pipeline.py`
 (`extract_from_screen()` / `extract_from_image()`):
 
-1. **Anchor pass** -- `extract_anchors()` crops the header region and extracts only NDG +
+1. **Anchor pass** -- `extract_anchors()` reads the header region on calibrated file images,
+   or the whole image off calibration, and extracts only NDG +
    DENOMINAZIONE. A confidence gate (`>= 0.95`, `ANCHOR_CONF_MIN`) nulls the `value` of any anchor
    read below the threshold, and it **is** effective: `safe_field()` returns a fresh dict
    (`normalization.py:77-86`) and the gate mutates those same dicts in place before returning them
    (`pipeline.py:98-103`). Below threshold the value reaches neither `_merge_anchors()` nor the
    main-pass hint, so the model-reported confidence is a binary switch here, not a soft signal.
    With `STOP_ON_ANCHOR_UNCERTAIN=1` the pipeline exits early when both anchor *values* are null.
-2. **Main pass** -- the full content crop is sent to the VLM together with anchor hints
+2. **Main pass** -- the selected content crop, or the whole image when cropping is not
+   authorized or calibrated, is sent to the VLM together with anchor hints
    (`extraction_anchor_hints`, framed as non-authoritative clues the model must verify against the
    image). Extracts all scalar fields plus the soggetti / fidi / garanzie arrays in one call.
 3. **Conditional retry** -- an area (HEADER / BODY / FOOTER) is retried when any of its fields is
-   nullish or below confidence `0.60` (hardcoded). Each area gets a dedicated crop and an
+   nullish or below `RETRY_CONF_MIN` (default `0.60`). Each area gets a dedicated crop and an
    area-specific Italian prompt; only BODY (contrast 1.3 / sharpness 2.5) and HEADER (1.4 / 3.5)
    also get an image boost, FOOTER gets none (`pipeline.py:274-282`). At most
    `max(0, MAX_CALLS_PER_SCREEN - 2)` areas are retried (anchor + main already count,
-   `pipeline.py:261-266`), in `AREA_TO_FIELDS` declaration order. `MAX_CALLS_PER_SCREEN` therefore
+   `pipeline.py:305-317`), selected in `AREA_TO_FIELDS` declaration order and then executed
+   concurrently. `MAX_CALLS_PER_SCREEN` therefore
    defaults to `2 + len(AREA_TO_FIELDS)` (= 5), derived rather than a literal: below that the
    trailing areas are structurally unreachable. A page showing a single section makes every *other*
    area look weak (their fields legitimately are not there), so those areas consume the whole budget
@@ -38,6 +41,12 @@ Each screenshot is processed in three stages by `ExtractionPipeline` in `extract
    (`AREA_TO_FIELDS`, `extraction/config.py:81`), so they can never be retried. A failed area
    retry is non-fatal (main-pass values are kept, warning printed).
 
+The call budget counts logical passes, not HTTP requests. `call_vlm_with_retry()` can
+attempt each pass up to three times. It immediately re-raises `ValueError`, `KeyError`
+and `IndexError`; other exceptions enter backoff. Anchor and main still run when the
+configured budget is below two, unless the early anchor exit applies.
+<!-- Source: extraction/vlm_client.py:230; extraction/pipeline.py:151; extraction/pipeline.py:305 -->
+
 Post-processing order is load-bearing (`pipeline.py:154-176`): anchors are merged back and `tipo`
 normalized *before* retries; the coherence check (repairs `evidenze` / `tipo` from their tooltips)
 runs *after* retries; then `soggetti[:4]` are flattened to `ndg_1..4` / `denominazione_1..4` /
@@ -47,9 +56,12 @@ fields from the soggetti rows (even with `None` values) without updating `_field
 values the model produced survive.
 
 Two entry methods exist by design:
-- `extract_from_screen(path)` -- used by CLI and the Tkinter GUI; normalizes the image internally.
+- `extract_from_screen(path)` -- used by CLI and the Tkinter GUI; normalizes the image internally
+  and permits the content crop only when the image belongs to the calibrated family.
 - `extract_from_image(img, screen_id)` -- used by `LocalExtractionClient`; the image is already
-  preprocessed by the edge-agent, so `normalize_image()` is intentionally bypassed.
+  preprocessed by the edge-agent, so `normalize_image()` is intentionally bypassed. Content
+  cropping defaults to disabled; the method still clamps the long side to
+  `MAX_IMAGE_LONG_SIDE` (default 2000 pixels).
 
 ## Three run modes
 
@@ -62,14 +74,16 @@ Two entry methods exist by design:
   `run_extraction_batch()` from the `extraction` package.
 - **Edge-agent** (`python edge-agent/edge_agent.py`, or `python main.py --gui`): PyQt6 app that
   captures BPER screens in real time, detects the page type, and runs extraction locally via
-  `LocalExtractionClient`.
+  `LocalExtractionClient`. The direct entry runs preflight before importing the UI and engine;
+  `main.py --gui` has already imported `extraction` and requires the environment to be ready.
 
 CLI and the Tkinter GUI share `run_extraction_batch()` in `extraction/cli.py` -- do not duplicate the
 `ThreadPoolExecutor` logic.
 
 ## Edge-agent capture flow
 
-The edge-agent captures live screenshots and extracts locally, with no remote backend.
+The edge-agent coordinates live extraction locally, without a separate application backend.
+The extraction models still call external providers.
 
 ```
 BPERCaptureWorker (QThread)
@@ -85,7 +99,7 @@ BPERCaptureWorker (QThread)
   └── _upload_page() → LocalExtractionClient.ingest_frame() -- returns accepted capture sequence
                            └── DaemonThreadPool (PARALLEL_WORKERS daemon threads, shared ExtractionPipeline)
                                    └── ExtractionPipeline.extract_from_image()
-                                           ├── Anchor pass (header crop → NDG + DENOMINAZIONE)
+                                           ├── Anchor pass (whole live image → NDG + DENOMINAZIONE)
                                            ├── Main pass (full content → all fields)
                                            └── Retry pass (low-confidence fields only)
                                        → logs diagnostics → stores result by capture sequence

@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-09-11T17:09:08.034134+02:00",
+  "phase_evidence_preservation": [
+    {
+      "file": "01-structure.md",
+      "lost_source_citations": []
+    },
+    {
+      "file": "02-interfaces.md",
+      "lost_source_citations": []
+    },
+    {
+      "file": "03-flows.md",
+      "lost_source_citations": []
+    },
+    {
+      "file": "04-semantics.md",
+      "lost_source_citations": []
+    },
+    {
+      "file": "05-risks.md",
+      "lost_source_citations": []
+    },
+    {
+      "file": "06-documentation.md",
+      "lost_source_citations": []
+    }
+  ],
+  "public_signatures_preserved": 152,
+  "local_markdown_links_checked": 69,
+  "link_issues": [],
+  "utf8_replacement_characters": 0
+}

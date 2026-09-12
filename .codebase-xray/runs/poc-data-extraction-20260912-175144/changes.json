@@ -1,0 +1,2055 @@
+{
+  "affected_files": [
+    "AGENTS.md",
+    "CLAUDE.md",
+    "README.md",
+    "docs/00-executive-summary.md",
+    "docs/01-overview.md",
+    "docs/02-features.md",
+    "docs/03-tech-stack.md",
+    "docs/04-architecture.md",
+    "docs/05-workflows.md",
+    "docs/06-data-model.md",
+    "docs/07-getting-started.md",
+    "docs/08-open-questions.md",
+    "docs/09-project-anatomy.md",
+    "docs/10-configuration-guide.md",
+    "docs/11-glossary.md",
+    "docs/12-python-api.md",
+    "docs/INDEX.md",
+    "docs/adr/0013-risultati-nell-ordine-di-acquisizione.md",
+    "docs/adr/0014-acquisizione-per-visita-con-esito.md",
+    "docs/adr/0015-scatto-manuale-nel-thread-di-cattura.md",
+    "docs/adr/README.md",
+    "docs/how-it-works.md",
+    "docs/mappa-codice.md",
+    "edge-agent/local_extraction_client.py",
+    "edge-agent/ui/__init__.py",
+    "edge-agent/ui/capture_tab.py",
+    "edge-agent/ui/main_window.py",
+    "edge-agent/workers/capture/__init__.py",
+    "edge-agent/workers/capture/bper_capture_worker.py",
+    "tests/test_bper_capture_framing.py",
+    "tests/test_bper_capture_lifecycle.py",
+    "tests/test_local_extraction_client.py"
+  ],
+  "base_snapshot_created_at": "2026-09-11T13:45:00Z",
+  "claims": [
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:1"
+      ],
+      "line": 27,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## File Inventory"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/__init__.py:1"
+      ],
+      "line": 32,
+      "phase_file": "01-structure.md",
+      "reason": "importer",
+      "section": "## File Inventory"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/capture_tab.py:1"
+      ],
+      "line": 33,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## File Inventory"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/main_window.py:1"
+      ],
+      "line": 36,
+      "phase_file": "01-structure.md",
+      "reason": "importer",
+      "section": "## File Inventory"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/__init__.py:1"
+      ],
+      "line": 39,
+      "phase_file": "01-structure.md",
+      "reason": "importer",
+      "section": "## File Inventory"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:1"
+      ],
+      "line": 41,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## File Inventory"
+    },
+    {
+      "cites": [
+        "tests/test_bper_capture_framing.py:1"
+      ],
+      "line": 63,
+      "phase_file": "01-structure.md",
+      "reason": "importer",
+      "section": "## File Inventory"
+    },
+    {
+      "cites": [
+        "tests/test_local_extraction_client.py:1"
+      ],
+      "line": 68,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## File Inventory"
+    },
+    {
+      "cites": [
+        "edge-agent/edge_agent.py:63",
+        "edge-agent/edge_agent.py:74",
+        "edge-agent/ui/capture_tab.py:224",
+        "edge-agent/ui/main_window.py:36"
+      ],
+      "line": 149,
+      "phase_file": "01-structure.md",
+      "reason": "importer",
+      "section": "## Dependency Graph (cross-partition view)"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:299",
+        "edge-agent/workers/capture/bper_capture_worker.py:318",
+        "edge-agent/workers/capture/bper_capture_worker.py:392",
+        "edge-agent/workers/capture/bper_capture_worker.py:625"
+      ],
+      "line": 150,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Dependency Graph (cross-partition view)"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:114",
+        "edge-agent/local_extraction_client.py:159",
+        "extraction/cli.py:195"
+      ],
+      "line": 151,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Dependency Graph (cross-partition view)"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:20",
+        "main.py:14",
+        "tests/conftest.py:9"
+      ],
+      "line": 158,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Dependency Graph (cross-partition view)"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:76",
+        "edge-agent/workers/capture/base_capture_worker.py:9"
+      ],
+      "line": 169,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Global Entry Points"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:114",
+        "extraction/cli.py:232",
+        "extraction/llm_factory.py:27",
+        "extraction/pipeline.py:337"
+      ],
+      "line": 189,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:159",
+        "edge-agent/workers/capture/bper_capture_worker.py:392",
+        "extraction/pipeline.py:223"
+      ],
+      "line": 190,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/config.py:26",
+        "edge-agent/workers/capture/bper_capture_worker.py:173",
+        "edge-agent/workers/capture/bper_capture_worker.py:541",
+        "tests/test_bper_capture_framing.py:212"
+      ],
+      "line": 192,
+      "phase_file": "01-structure.md",
+      "reason": "importer",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/assets/templates/bper/prompts.json:104",
+        "edge-agent/workers/capture/bper_capture_worker.py:308",
+        "edge-agent/workers/capture/bper_capture_worker.py:643",
+        "processes/bper-p1.json:259",
+        "processes/bper-p1.json:368"
+      ],
+      "line": 193,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/main_window.py:36",
+        "edge-agent/workers/capture/bper_capture_worker.py:625",
+        "edge-agent/workers/capture/default_capture_worker.py:34"
+      ],
+      "line": 194,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:175",
+        "edge-agent/practice_consolidation.py:125"
+      ],
+      "line": 195,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:125",
+        "edge-agent/workers/capture/base_capture_worker.py:81"
+      ],
+      "line": 205,
+      "phase_file": "01-structure.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/main_window.py:85",
+        "edge-agent/ui/overlay.py:30",
+        "extraction/normalization.py:104"
+      ],
+      "line": 219,
+      "phase_file": "01-structure.md",
+      "reason": "importer",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/__init__.py:1",
+        "edge-agent/ui/__init__.py:1",
+        "edge-agent/workers/__init__.py:3",
+        "edge-agent/workers/capture/__init__.py:3",
+        "extraction/__init__.py:11",
+        "extraction/__init__.py:47",
+        "extraction/config.py:16",
+        "extraction/prompts.py:6",
+        "extraction/schemas.py:68"
+      ],
+      "line": 9,
+      "phase_file": "02-interfaces.md",
+      "reason": "importer",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:90"
+      ],
+      "line": 264,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### `edge-agent/local_extraction_client.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:125"
+      ],
+      "line": 266,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### `edge-agent/local_extraction_client.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:188"
+      ],
+      "line": 269,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### `edge-agent/local_extraction_client.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:195"
+      ],
+      "line": 270,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### `edge-agent/local_extraction_client.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:44"
+      ],
+      "line": 287,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### `edge-agent/workers/capture/bper_capture_worker.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:201"
+      ],
+      "line": 288,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### `edge-agent/workers/capture/bper_capture_worker.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:210"
+      ],
+      "line": 289,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### `edge-agent/workers/capture/bper_capture_worker.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:643"
+      ],
+      "line": 290,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### `edge-agent/workers/capture/bper_capture_worker.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/main_window.py:31"
+      ],
+      "line": 319,
+      "phase_file": "02-interfaces.md",
+      "reason": "importer",
+      "section": "##### `edge-agent/ui/main_window.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/main_window.py:85"
+      ],
+      "line": 320,
+      "phase_file": "02-interfaces.md",
+      "reason": "importer",
+      "section": "##### `edge-agent/ui/main_window.py`"
+    },
+    {
+      "cites": [
+        "edge-agent/excel_export.py:227",
+        "edge-agent/local_extraction_client.py:159",
+        "gui_app.py:238"
+      ],
+      "line": 374,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Cross-Partition Exports"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:160",
+        "extraction/pipeline.py:216"
+      ],
+      "line": 393,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Campi, righe e output di estrazione"
+    },
+    {
+      "cites": [
+        "edge-agent/assets/templates/bper/prompts.json:104",
+        "edge-agent/workers/capture/bper_capture_worker.py:308",
+        "processes/bper-p1.json:259",
+        "processes/bper-p1.json:282",
+        "processes/bper-p1.json:368",
+        "tools/label_frames.py:174"
+      ],
+      "line": 433,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Prompt, configurazione e cataloghi pagina"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:201",
+        "edge-agent/workers/capture/bper_capture_worker.py:255",
+        "edge-agent/workers/capture/bper_capture_worker.py:339",
+        "edge-agent/workers/capture/bper_capture_worker.py:392",
+        "edge-agent/workers/capture/bper_capture_worker.py:643"
+      ],
+      "line": 451,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Cattura, concorrenza e segnali Qt"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:121",
+        "edge-agent/local_extraction_client.py:125",
+        "edge-agent/local_extraction_client.py:168",
+        "edge-agent/local_extraction_client.py:87"
+      ],
+      "line": 454,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Cattura, concorrenza e segnali Qt"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:180",
+        "edge-agent/local_extraction_client.py:184",
+        "edge-agent/local_extraction_client.py:188",
+        "edge-agent/local_extraction_client.py:195"
+      ],
+      "line": 455,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Cattura, concorrenza e segnali Qt"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/capture_tab.py:299",
+        "edge-agent/ui/capture_tab.py:417",
+        "edge-agent/ui/data_table_tab.py:194",
+        "edge-agent/ui/main_window.py:85"
+      ],
+      "line": 456,
+      "phase_file": "02-interfaces.md",
+      "reason": "importer",
+      "section": "#### Cattura, concorrenza e segnali Qt"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:175",
+        "edge-agent/practice_consolidation.py:105",
+        "edge-agent/practice_consolidation.py:30",
+        "edge-agent/practice_consolidation.py:46",
+        "edge-agent/practice_consolidation.py:85"
+      ],
+      "line": 460,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Pratica consolidata e workbook"
+    },
+    {
+      "cites": [
+        "edge-agent/edge_agent.py:31",
+        "edge-agent/local_extraction_client.py:24",
+        "main.py:4",
+        "requirements.txt:5"
+      ],
+      "line": 482,
+      "phase_file": "02-interfaces.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## External Dependencies"
+    },
+    {
+      "cites": [
+        "tests/conftest.py:19",
+        "tests/test_bper_capture_framing.py:212",
+        "tests/test_content_crop.py:79",
+        "tests/test_excel_export.py:14",
+        "tests/test_page_classifier.py:50"
+      ],
+      "line": 495,
+      "phase_file": "02-interfaces.md",
+      "reason": "importer",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/capture_tab.py:192",
+        "edge-agent/workers/capture/base_capture_worker.py:41",
+        "edge-agent/workers/capture/bper_capture_worker.py:201",
+        "edge-agent/workers/capture/bper_capture_worker.py:552"
+      ],
+      "line": 40,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Sessione live, routing e stabilit\u00e0"
+    },
+    {
+      "cites": [
+        "edge-agent/page_registry.py:69",
+        "edge-agent/workers/capture/bper_capture_worker.py:246",
+        "edge-agent/workers/capture/bper_capture_worker.py:255"
+      ],
+      "line": 42,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Sessione live, routing e stabilit\u00e0"
+    },
+    {
+      "cites": [
+        "edge-agent/stability.py:10",
+        "edge-agent/stability.py:46",
+        "edge-agent/stability.py:76",
+        "edge-agent/workers/capture/bper_capture_worker.py:282"
+      ],
+      "line": 43,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Sessione live, routing e stabilit\u00e0"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:125",
+        "edge-agent/workers/capture/bper_capture_worker.py:331",
+        "edge-agent/workers/capture/bper_capture_worker.py:609"
+      ],
+      "line": 49,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Acquisizione, coda, risultati e chiusura"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:23",
+        "edge-agent/local_extraction_client.py:144",
+        "extraction/pipeline.py:337"
+      ],
+      "line": 50,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Acquisizione, coda, risultati e chiusura"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/capture_tab.py:405",
+        "edge-agent/workers/capture/bper_capture_worker.py:643"
+      ],
+      "line": 51,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Acquisizione, coda, risultati e chiusura"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:44",
+        "edge-agent/llm_router.py:228",
+        "edge-agent/local_extraction_client.py:180",
+        "edge-agent/ui/capture_tab.py:292",
+        "edge-agent/ui/main_window.py:85",
+        "edge-agent/workers/capture/base_capture_worker.py:73",
+        "edge-agent/workers/capture/bper_capture_worker.py:210",
+        "extraction/pipeline.py:337"
+      ],
+      "line": 52,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Acquisizione, coda, risultati e chiusura"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:270",
+        "extraction/pipeline.py:223",
+        "extraction/pipeline.py:318"
+      ],
+      "line": 80,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:121",
+        "edge-agent/local_extraction_client.py:154",
+        "extraction/imaging.py:29",
+        "extraction/vlm_client.py:123"
+      ],
+      "line": 81,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:168",
+        "extraction/pipeline.py:180",
+        "extraction/pipeline.py:365"
+      ],
+      "line": 82,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:156",
+        "extraction/cli.py:249",
+        "extraction/pipeline.py:148"
+      ],
+      "line": 97,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:55",
+        "edge-agent/local_extraction_client.py:172",
+        "edge-agent/workers/capture/bper_capture_worker.py:635"
+      ],
+      "line": 101,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:116",
+        "edge-agent/local_extraction_client.py:195",
+        "edge-agent/ui/data_table_tab.py:179",
+        "edge-agent/workers/capture/bper_capture_worker.py:44"
+      ],
+      "line": 110,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/edge_agent.py:15",
+        "edge-agent/local_extraction_client.py:41",
+        "edge-agent/ui/capture_tab.py:388",
+        "edge-agent/ui/data_table_tab.py:210"
+      ],
+      "line": 111,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:255"
+      ],
+      "line": 156,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### Selezione della pagina live"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:125"
+      ],
+      "line": 182,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### Pool e terminazione"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/main_window.py:85"
+      ],
+      "line": 184,
+      "phase_file": "03-flows.md",
+      "reason": "importer",
+      "section": "##### Pool e terminazione"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/capture_tab.py:405"
+      ],
+      "line": 251,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### Ripresa manuale"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:643"
+      ],
+      "line": 252,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### Ripresa manuale"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:144"
+      ],
+      "line": 292,
+      "phase_file": "03-flows.md",
+      "reason": "line-outside-known-symbol",
+      "section": "##### Operatore \u2192 Excel"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/base_capture_worker.py:41",
+        "edge-agent/workers/capture/bper_capture_worker.py:255",
+        "edge-agent/workers/capture/default_capture_worker.py:34"
+      ],
+      "line": 35,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Acquisizione desktop e presentazione"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:23",
+        "edge-agent/local_extraction_client.py:125",
+        "edge-agent/local_extraction_client.py:144",
+        "extraction/vlm_client.py:197"
+      ],
+      "line": 36,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### Acquisizione desktop e presentazione"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/capture_tab.py:192",
+        "edge-agent/ui/data_table_tab.py:161",
+        "edge-agent/ui/data_table_tab.py:194",
+        "edge-agent/ui/main_window.py:31",
+        "edge-agent/ui/main_window.py:85"
+      ],
+      "line": 38,
+      "phase_file": "04-semantics.md",
+      "reason": "importer",
+      "section": "#### Acquisizione desktop e presentazione"
+    },
+    {
+      "cites": [
+        "edge-agent/__init__.py:1",
+        "edge-agent/ui/__init__.py:1",
+        "edge-agent/workers/__init__.py:3",
+        "edge-agent/workers/capture/__init__.py:3"
+      ],
+      "line": 40,
+      "phase_file": "04-semantics.md",
+      "reason": "importer",
+      "section": "#### Acquisizione desktop e presentazione"
+    },
+    {
+      "cites": [
+        "tests/test_base_capture_worker.py:30",
+        "tests/test_bper_capture_framing.py:64",
+        "tests/test_extraction_pool.py:9",
+        "tests/test_local_extraction_client.py:41",
+        "tests/test_stability.py:8"
+      ],
+      "line": 51,
+      "phase_file": "04-semantics.md",
+      "reason": "importer",
+      "section": "#### Strumenti e test"
+    },
+    {
+      "cites": [
+        "docs/how-it-works.md:7",
+        "extraction/pipeline.py:244",
+        "extraction/pipeline.py:284",
+        "extraction/pipeline.py:78",
+        "prompts/extraction_anchor.json:18"
+      ],
+      "line": 59,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:14",
+        "edge-agent/extraction_pool.py:44",
+        "edge-agent/local_extraction_client.py:125",
+        "extraction/pipeline.py:337"
+      ],
+      "line": 63,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/llm_router.py:228",
+        "edge-agent/local_extraction_client.py:159",
+        "edge-agent/workers/capture/default_capture_worker.py:65",
+        "extraction/vlm_client.py:197"
+      ],
+      "line": 66,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/adr/0001-normalizzazione-inquadratura-frame.md:95",
+        "edge-agent/frame_normalize.py:113",
+        "edge-agent/frame_normalize.py:72",
+        "edge-agent/workers/capture/bper_capture_worker.py:274"
+      ],
+      "line": 87,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### ADR 0001 \u2014 Normalizzare prima dei consumer"
+    },
+    {
+      "cites": [
+        "README.md:49",
+        "docs/adr/0006-router-llm-come-predefinito.md:44",
+        "edge-agent/config.py:33",
+        "edge-agent/workers/capture/bper_capture_worker.py:108"
+      ],
+      "line": 112,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### ADR 0006 \u2014 LLM come scelta distribuita, ML come default del codice"
+    },
+    {
+      "cites": [
+        "docs/adr/0007-conferma-stabilita-su-frame-invariato.md:35",
+        "edge-agent/stability.py:76",
+        "edge-agent/workers/capture/bper_capture_worker.py:275"
+      ],
+      "line": 119,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "#### ADR 0007 \u2014 Confermare sul duplicato"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:175",
+        "edge-agent/practice_consolidation.py:121"
+      ],
+      "line": 156,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/workers/capture/bper_capture_worker.py:308",
+        "edge-agent/workers/capture/bper_capture_worker.py:643"
+      ],
+      "line": 157,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/frame_normalize.py:113",
+        "edge-agent/local_extraction_client.py:154",
+        "extraction/vlm_client.py:123"
+      ],
+      "line": 161,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:114",
+        "extraction/cli.py:236",
+        "extraction/pipeline.py:337",
+        "extraction/pipeline.py:58"
+      ],
+      "line": 162,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/stability.py:71",
+        "edge-agent/workers/capture/bper_capture_worker.py:282",
+        "edge-agent/workers/capture/bper_capture_worker.py:302"
+      ],
+      "line": 184,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:33",
+        "edge-agent/local_extraction_client.py:139",
+        "edge-agent/workers/capture/bper_capture_worker.py:339"
+      ],
+      "line": 185,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:159",
+        "edge-agent/page_classifier.py:607",
+        "edge-agent/workers/capture/bper_capture_worker.py:392",
+        "tools/build_prototypes.py:67"
+      ],
+      "line": 187,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/edge_agent.py:86",
+        "edge-agent/local_extraction_client.py:41",
+        "edge-agent/ui/main_window.py:49",
+        "edge-agent/workers/capture/bper_capture_worker.py:555"
+      ],
+      "line": 190,
+      "phase_file": "04-semantics.md",
+      "reason": "importer",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:160",
+        "edge-agent/workers/capture/bper_capture_worker.py:191",
+        "extraction/vlm_client.py:253",
+        "prompt_store.py:262"
+      ],
+      "line": 196,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:23",
+        "edge-agent/ui/capture_tab.py:417",
+        "extraction/cli.py:236",
+        "extraction/pipeline.py:337"
+      ],
+      "line": 200,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "README.md:19",
+        "extraction/cli.py:285",
+        "extraction/pipeline.py:400",
+        "extraction/pipeline.py:410",
+        "extraction/schemas.py:92"
+      ],
+      "line": 201,
+      "phase_file": "04-semantics.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "README.md:7",
+        "tests/conftest.py:19",
+        "tests/test_local_extraction_client.py:15"
+      ],
+      "line": 5,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "# Phase 5: Pattern & Risk Detection"
+    },
+    {
+      "cites": [
+        "docs/how-it-works.md:37",
+        "extraction/config.py:101",
+        "extraction/field_definitions.py:5",
+        "extraction/fields.py:12",
+        "extraction/pipeline.py:295",
+        "prompts/extraction_main.json:10"
+      ],
+      "line": 11,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Anti-Patterns Found (by severity)"
+    },
+    {
+      "cites": [
+        "edge-agent/page_classifier.py:202",
+        "edge-agent/workers/capture/bper_capture_worker.py:28"
+      ],
+      "line": 14,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Anti-Patterns Found (by severity)"
+    },
+    {
+      "cites": [
+        "README.md:21",
+        "edge-agent/excel_export.py:227",
+        "edge-agent/local_extraction_client.py:159",
+        "edge-agent/practice_consolidation.py:118",
+        "edge-agent/ui/data_table_tab.py:195"
+      ],
+      "line": 20,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Red Flags (by severity)"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:160",
+        "edge-agent/ui/capture_tab.py:198",
+        "edge-agent/workers/capture/bper_capture_worker.py:308"
+      ],
+      "line": 21,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Red Flags (by severity)"
+    },
+    {
+      "cites": [
+        "edge-agent/ui/capture_tab.py:417",
+        "edge-agent/workers/capture/bper_capture_worker.py:666"
+      ],
+      "line": 22,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Red Flags (by severity)"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:23",
+        "edge-agent/llm_router.py:219",
+        "edge-agent/ui/capture_tab.py:187",
+        "edge-agent/ui/capture_tab.py:299",
+        "edge-agent/ui/main_window.py:85",
+        "extraction/pipeline.py:337"
+      ],
+      "line": 23,
+      "phase_file": "05-risks.md",
+      "reason": "importer",
+      "section": "## Red Flags (by severity)"
+    },
+    {
+      "cites": [
+        "edge-agent/bootstrap.py:245",
+        "edge-agent/bootstrap.py:40",
+        "edge-agent/edge_agent.py:63",
+        "edge-agent/edge_agent.py:73",
+        "edge-agent/ui/main_window.py:36",
+        "extraction/config.py:16",
+        "extraction/llm_factory.py:12",
+        "main.py:5"
+      ],
+      "line": 25,
+      "phase_file": "05-risks.md",
+      "reason": "importer",
+      "section": "## Red Flags (by severity)"
+    },
+    {
+      "cites": [
+        "edge-agent/llm_router.py:260",
+        "edge-agent/local_extraction_client.py:160",
+        "extraction/pipeline.py:342",
+        "extraction/pipeline.py:392",
+        "extraction/vlm_client.py:242",
+        "extraction/vlm_client.py:26"
+      ],
+      "line": 26,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "## Red Flags (by severity)"
+    },
+    {
+      "cites": [
+        "edge-agent/local_extraction_client.py:175",
+        "edge-agent/workers/capture/bper_capture_worker.py:108",
+        "tests/test_bper_capture_framing.py:212",
+        "tests/test_local_extraction_client.py:39",
+        "tests/test_practice_consolidation.py:44"
+      ],
+      "line": 38,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "AGENTS.md:199",
+        "extraction/normalization.py:126",
+        "extraction/pipeline.py:375"
+      ],
+      "line": 41,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:24",
+        "edge-agent/local_extraction_client.py:140"
+      ],
+      "line": 54,
+      "phase_file": "05-risks.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/INDEX.md"
+      ],
+      "line": 3,
+      "phase_file": "06-documentation.md",
+      "reason": "file-modified",
+      "section": "# Phase 6: Documentation Health"
+    },
+    {
+      "cites": [
+        "README.md"
+      ],
+      "line": 5,
+      "phase_file": "06-documentation.md",
+      "reason": "file-modified",
+      "section": "# Phase 6: Documentation Health"
+    },
+    {
+      "cites": [
+        "AGENTS.md:66",
+        "docs/01-overview.md:37",
+        "docs/02-features.md:17",
+        "docs/04-architecture.md:163",
+        "docs/05-workflows.md:41",
+        "docs/08-open-questions.md:15",
+        "docs/10-configuration-guide.md:184",
+        "docs/INDEX.md:44",
+        "docs/how-it-works.md:13",
+        "extraction/pipeline.py:105"
+      ],
+      "line": 13,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/04-architecture.md:56",
+        "docs/05-workflows.md:191",
+        "docs/07-getting-started.md:223",
+        "docs/how-it-works.md:94",
+        "edge-agent/extraction_pool.py:23",
+        "edge-agent/llm_router.py:228",
+        "edge-agent/local_extraction_client.py:139"
+      ],
+      "line": 14,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "README.md:241",
+        "docs/02-features.md:105",
+        "docs/04-architecture.md:50",
+        "docs/06-data-model.md:222",
+        "docs/10-configuration-guide.md:277",
+        "edge-agent/excel_export.py:177",
+        "edge-agent/local_extraction_client.py:180",
+        "edge-agent/ui/capture_tab.py:361",
+        "edge-agent/ui/data_table_tab.py:270",
+        "edge-agent/ui/main_window.py:60"
+      ],
+      "line": 15,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "AGENTS.md:90",
+        "README.md:7",
+        "docs/00-executive-summary.md:30",
+        "docs/01-overview.md:96",
+        "docs/02-features.md:113",
+        "docs/07-getting-started.md:3",
+        "docs/08-open-questions.md:69",
+        "docs/10-configuration-guide.md:295",
+        "docs/INDEX.md:41",
+        "tests/test_excel_export.py:14",
+        "tests/test_frame_normalize.py:1",
+        "tests/test_local_extraction_client.py:39",
+        "tests/test_practice_consolidation.py:44"
+      ],
+      "line": 16,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/06-data-model.md:230",
+        "docs/08-open-questions.md:89",
+        "extraction/schemas.py:21",
+        "extraction/vlm_client.py:94"
+      ],
+      "line": 17,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "README.md:148",
+        "README.md:159",
+        "docs/05-workflows.md:79",
+        "docs/10-configuration-guide.md:194",
+        "docs/how-it-works.md:23",
+        "extraction/config.py:59",
+        "extraction/config.py:65",
+        "extraction/pipeline.py:298",
+        "extraction/vlm_client.py:242"
+      ],
+      "line": 18,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/04-architecture.md:152",
+        "docs/06-data-model.md:206",
+        "edge-agent/llm_router.py:273",
+        "extraction/pipeline.py:342",
+        "extraction/pipeline.py:392",
+        "extraction/vlm_client.py:200",
+        "extraction/vlm_client.py:26"
+      ],
+      "line": 19,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "README.md:24",
+        "docs/09-project-anatomy.md:198",
+        "docs/adr/0008-classificatore-locale-prototipi-reali-e-classi-di-scarto.md:99",
+        "edge-agent/workers/capture/bper_capture_worker.py:173"
+      ],
+      "line": 20,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/02-features.md:37",
+        "extraction/normalization.py:148",
+        "extraction/pipeline.py:374"
+      ],
+      "line": 21,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "AGENTS.md:214",
+        "README.md:5",
+        "docs/01-overview.md:98",
+        "docs/08-open-questions.md:105",
+        "extraction/fields.py:12"
+      ],
+      "line": 22,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/INDEX.md:38",
+        "docs/how-it-works.md:119",
+        "edge-agent/llm_router.py:228",
+        "extraction/cli.py:185"
+      ],
+      "line": 24,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/10-configuration-guide.md:3",
+        "docs/adr/0008-classificatore-locale-prototipi-reali-e-classi-di-scarto.md:90"
+      ],
+      "line": 26,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "README.md:21",
+        "docs/how-it-works.md:83",
+        "docs/superpowers/specs/2026-08-17-edge-agent-excel-export-design.md:93",
+        "edge-agent/local_extraction_client.py:125",
+        "edge-agent/practice_consolidation.py:105"
+      ],
+      "line": 38,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "edge-agent/extraction_pool.py:44",
+        "edge-agent/local_extraction_client.py:188",
+        "edge-agent/ui/capture_tab.py:341",
+        "edge-agent/workers/capture/base_capture_worker.py:73",
+        "edge-agent/workers/capture/bper_capture_worker.py:643"
+      ],
+      "line": 39,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/10-configuration-guide.md:222",
+        "edge-agent/bootstrap.py:489",
+        "edge-agent/config.py:292",
+        "extraction/llm_factory.py:18",
+        "main.py:5"
+      ],
+      "line": 40,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "README.md:81",
+        "tools/build_prototypes.py:147",
+        "tools/build_prototypes.py:85",
+        "tools/label_frames.py:156",
+        "tools/label_frames.py:278",
+        "tools/relocalize.py:38"
+      ],
+      "line": 43,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "AGENTS.md:235",
+        "README.md:81",
+        "docs/adr/0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md:37",
+        "docs/how-it-works.md:37",
+        "edge-agent/page_registry.py:40",
+        "edge-agent/workers/capture/bper_capture_worker.py:225",
+        "extraction/imaging.py:52",
+        "extraction/pipeline.py:123",
+        "prompt_store.py:239"
+      ],
+      "line": 45,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "AGENTS.md:421",
+        "README.md:17",
+        "docs/04-architecture.md:7",
+        "docs/09-project-anatomy.md:81"
+      ],
+      "line": 53,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "docs/06-data-model.md:222",
+        "docs/10-configuration-guide.md:277",
+        "edge-agent/excel_export.py:217",
+        "edge-agent/local_extraction_client.py:76"
+      ],
+      "line": 54,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "AGENTS.md:212",
+        "AGENTS.md:320",
+        "extraction/cli.py:326"
+      ],
+      "line": 55,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    },
+    {
+      "cites": [
+        "README.md:25",
+        "extraction/cli.py:319"
+      ],
+      "line": 57,
+      "phase_file": "06-documentation.md",
+      "reason": "line-outside-known-symbol",
+      "section": "### Partition: root"
+    }
+  ],
+  "computed_at": "2026-09-12T17:51:45Z",
+  "files": {
+    "added": [
+      "docs/12-python-api.md",
+      "docs/adr/0013-risultati-nell-ordine-di-acquisizione.md",
+      "docs/adr/0014-acquisizione-per-visita-con-esito.md",
+      "docs/adr/0015-scatto-manuale-nel-thread-di-cattura.md",
+      "docs/mappa-codice.md",
+      "tests/test_bper_capture_lifecycle.py"
+    ],
+    "modified": [
+      "AGENTS.md",
+      "CLAUDE.md",
+      "README.md",
+      "docs/00-executive-summary.md",
+      "docs/01-overview.md",
+      "docs/02-features.md",
+      "docs/03-tech-stack.md",
+      "docs/04-architecture.md",
+      "docs/05-workflows.md",
+      "docs/06-data-model.md",
+      "docs/07-getting-started.md",
+      "docs/08-open-questions.md",
+      "docs/09-project-anatomy.md",
+      "docs/10-configuration-guide.md",
+      "docs/11-glossary.md",
+      "docs/INDEX.md",
+      "docs/adr/README.md",
+      "docs/how-it-works.md",
+      "edge-agent/local_extraction_client.py",
+      "edge-agent/ui/capture_tab.py",
+      "edge-agent/workers/capture/bper_capture_worker.py",
+      "tests/test_local_extraction_client.py"
+    ],
+    "removed": []
+  },
+  "git": {
+    "branch": "develop",
+    "commit": "f8f57e6124e0",
+    "dirty": true
+  },
+  "importers": [
+    {
+      "file": "edge-agent/ui/__init__.py",
+      "imports": [
+        "edge-agent/ui/capture_tab.py"
+      ]
+    },
+    {
+      "file": "edge-agent/ui/main_window.py",
+      "imports": [
+        "edge-agent/local_extraction_client.py",
+        "edge-agent/ui/capture_tab.py"
+      ]
+    },
+    {
+      "file": "edge-agent/workers/capture/__init__.py",
+      "imports": [
+        "edge-agent/workers/capture/bper_capture_worker.py"
+      ]
+    },
+    {
+      "file": "tests/test_bper_capture_framing.py",
+      "imports": [
+        "edge-agent/workers/capture/bper_capture_worker.py"
+      ]
+    },
+    {
+      "file": "tests/test_bper_capture_lifecycle.py",
+      "imports": [
+        "edge-agent/workers/capture/bper_capture_worker.py"
+      ]
+    }
+  ],
+  "parent_run": "poc-data-extraction-20260911-154206",
+  "reasons": [],
+  "recommendation": "incremental",
+  "renumber": {
+    "edge-agent/local_extraction_client.py": [
+      {
+        "end_old": 73,
+        "start_new": 41,
+        "start_old": 41,
+        "symbol": "_log_extraction"
+      },
+      {
+        "end_old": 123,
+        "start_new": 123,
+        "start_old": 121,
+        "symbol": "LocalExtractionClient.start_job"
+      },
+      {
+        "end_old": 182,
+        "start_new": 206,
+        "start_old": 180,
+        "symbol": "LocalExtractionClient.requeue_job"
+      },
+      {
+        "end_old": 186,
+        "start_new": 210,
+        "start_old": 184,
+        "symbol": "LocalExtractionClient.pending_extractions"
+      },
+      {
+        "end_old": 201,
+        "start_new": 227,
+        "start_old": 199,
+        "symbol": "LocalExtractionClient.get_all_job_ids"
+      }
+    ],
+    "edge-agent/ui/capture_tab.py": [
+      {
+        "end_old": 74,
+        "start_new": 47,
+        "start_old": 47,
+        "symbol": "CaptureTab.__init__"
+      },
+      {
+        "end_old": 158,
+        "start_new": 78,
+        "start_old": 78,
+        "symbol": "CaptureTab._init_ui"
+      },
+      {
+        "end_old": 171,
+        "start_new": 163,
+        "start_old": 163,
+        "symbol": "CaptureTab._load_bper_page_names"
+      },
+      {
+        "end_old": 176,
+        "start_new": 173,
+        "start_old": 173,
+        "symbol": "CaptureTab._log"
+      },
+      {
+        "end_old": 185,
+        "start_new": 178,
+        "start_old": 178,
+        "symbol": "CaptureTab._create_job_id"
+      },
+      {
+        "end_old": 188,
+        "start_new": 187,
+        "start_old": 187,
+        "symbol": "CaptureTab._make_job_id_getter"
+      },
+      {
+        "end_old": 290,
+        "start_new": 192,
+        "start_old": 192,
+        "symbol": "CaptureTab._on_start_capture"
+      },
+      {
+        "end_old": 322,
+        "start_new": 292,
+        "start_old": 292,
+        "symbol": "CaptureTab._on_stop_capture"
+      },
+      {
+        "end_old": 325,
+        "start_new": 324,
+        "start_old": 324,
+        "symbol": "CaptureTab._on_worker_tick"
+      },
+      {
+        "end_old": 328,
+        "start_new": 327,
+        "start_old": 327,
+        "symbol": "CaptureTab._on_worker_error"
+      },
+      {
+        "end_old": 376,
+        "start_new": 332,
+        "start_old": 332,
+        "symbol": "CaptureTab._on_export_excel"
+      },
+      {
+        "end_old": 386,
+        "start_new": 383,
+        "start_old": 383,
+        "symbol": "CaptureTab._on_frame_queued"
+      },
+      {
+        "end_old": 399,
+        "start_new": 398,
+        "start_old": 398,
+        "symbol": "CaptureTab.get_current_job_id"
+      },
+      {
+        "end_old": 402,
+        "start_new": 401,
+        "start_old": 401,
+        "symbol": "CaptureTab.stop_capture"
+      }
+    ],
+    "edge-agent/workers/capture/bper_capture_worker.py": [
+      {
+        "end_old": 197,
+        "start_new": 123,
+        "start_old": 108,
+        "symbol": "BPERCaptureWorker._init_router"
+      },
+      {
+        "end_old": 244,
+        "start_new": 244,
+        "start_old": 222,
+        "symbol": "BPERCaptureWorker._load_registry"
+      },
+      {
+        "end_old": 251,
+        "start_new": 268,
+        "start_old": 246,
+        "symbol": "BPERCaptureWorker._next_pending_page"
+      },
+      {
+        "end_old": 411,
+        "start_new": 442,
+        "start_old": 359,
+        "symbol": "BPERCaptureWorker._grab_raw"
+      },
+      {
+        "end_old": 443,
+        "start_new": 496,
+        "start_old": 413,
+        "symbol": "BPERCaptureWorker._announce_framing"
+      },
+      {
+        "end_old": 457,
+        "start_new": 528,
+        "start_old": 445,
+        "symbol": "BPERCaptureWorker._preprocess"
+      },
+      {
+        "end_old": 487,
+        "start_new": 542,
+        "start_old": 464,
+        "symbol": "BPERCaptureWorker._is_duplicate_frame"
+      },
+      {
+        "end_old": 539,
+        "start_new": 569,
+        "start_old": 491,
+        "symbol": "BPERCaptureWorker._try_local_first"
+      },
+      {
+        "end_old": 605,
+        "start_new": 619,
+        "start_old": 541,
+        "symbol": "BPERCaptureWorker._detect_page"
+      }
+    ],
+    "tests/test_local_extraction_client.py": [
+      {
+        "end_old": 22,
+        "start_new": 20,
+        "start_old": 15,
+        "symbol": "FakePipeline"
+      },
+      {
+        "end_old": 22,
+        "start_new": 21,
+        "start_old": 16,
+        "symbol": "FakePipeline.extract_from_image"
+      },
+      {
+        "end_old": 27,
+        "start_new": 30,
+        "start_old": 25,
+        "symbol": "BrokenPipeline"
+      },
+      {
+        "end_old": 27,
+        "start_new": 31,
+        "start_old": 26,
+        "symbol": "BrokenPipeline.extract_from_image"
+      },
+      {
+        "end_old": 31,
+        "start_new": 35,
+        "start_old": 30,
+        "symbol": "_app"
+      },
+      {
+        "end_old": 38,
+        "start_new": 39,
+        "start_old": 34,
+        "symbol": "_wait_for"
+      },
+      {
+        "end_old": 62,
+        "start_new": 46,
+        "start_old": 41,
+        "symbol": "test_ingest_frame_returns_immediately_and_result_arrives_async"
+      },
+      {
+        "end_old": 74,
+        "start_new": 70,
+        "start_old": 65,
+        "symbol": "test_pipeline_error_produces_error_result"
+      },
+      {
+        "end_old": 82,
+        "start_new": 82,
+        "start_old": 77,
+        "symbol": "test_shutdown_stops_accepting_work"
+      }
+    ]
+  },
+  "schema": 1,
+  "symbols": {
+    "added": [
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._complete_capture"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._drain_commands"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._execute_manual_capture"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._observe_frame"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._queue_extraction_result"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._restart_stability"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "class",
+        "symbol": "Camera"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "method",
+        "symbol": "Camera.__init__"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "method",
+        "symbol": "Camera.close"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "method",
+        "symbol": "Camera.grab"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "class",
+        "symbol": "CaptureClient"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "method",
+        "symbol": "CaptureClient.__init__"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "method",
+        "symbol": "CaptureClient.complete"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "method",
+        "symbol": "CaptureClient.ingest_frame"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "class",
+        "symbol": "Router"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "method",
+        "symbol": "Router.__init__"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "method",
+        "symbol": "Router.route"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "acquire"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "app"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "capture"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_failed_extraction_rearms_the_stationary_page"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_first_manual_capture_retries_the_operator_page_after_error"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_manual_request_after_success_can_capture_again"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_manual_request_during_pending_extraction_is_coalesced"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_manual_request_waits_for_the_capture_thread"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_manual_retry_does_not_reuse_automatic_route_metadata"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_old_failure_does_not_release_the_current_pending_visit"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_queued_page_is_not_reported_as_completed"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_rejected_enqueue_does_not_consume_the_page"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_returning_to_a_page_is_a_new_visit"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_small_identity_change_on_the_same_page_can_be_acquired"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_stationary_page_is_not_rerouted_after_completion"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_stop_discards_queued_manual_requests"
+      },
+      {
+        "file": "tests/test_bper_capture_lifecycle.py",
+        "kind": "function",
+        "symbol": "test_uncertain_anchor_does_not_trigger_endless_recapture"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "class",
+        "symbol": "ControlledPipeline"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "method",
+        "symbol": "ControlledPipeline.__init__"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "method",
+        "symbol": "ControlledPipeline.extract_from_image"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "method",
+        "symbol": "ControlledPipeline.release_all"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "function",
+        "symbol": "_field"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "function",
+        "symbol": "test_error_completion_releases_the_following_ordered_results"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "function",
+        "symbol": "test_log_write_error_does_not_block_ordered_results"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "function",
+        "symbol": "test_out_of_order_completions_preserve_practice_assignment"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "function",
+        "symbol": "test_rejected_ingest_does_not_emit_frame_queued"
+      },
+      {
+        "file": "tests/test_local_extraction_client.py",
+        "kind": "function",
+        "symbol": "test_slow_job_does_not_delay_another_jobs_results"
+      }
+    ],
+    "changed": [
+      {
+        "file": "edge-agent/local_extraction_client.py",
+        "kind": "class",
+        "symbol": "LocalExtractionClient"
+      },
+      {
+        "file": "edge-agent/local_extraction_client.py",
+        "kind": "method",
+        "symbol": "LocalExtractionClient.__init__"
+      },
+      {
+        "file": "edge-agent/local_extraction_client.py",
+        "kind": "method",
+        "symbol": "LocalExtractionClient._process_frame"
+      },
+      {
+        "file": "edge-agent/local_extraction_client.py",
+        "kind": "method",
+        "symbol": "LocalExtractionClient.get_results"
+      },
+      {
+        "file": "edge-agent/local_extraction_client.py",
+        "kind": "method",
+        "symbol": "LocalExtractionClient.ingest_frame"
+      },
+      {
+        "file": "edge-agent/local_extraction_client.py",
+        "kind": "method",
+        "symbol": "LocalExtractionClient.shutdown"
+      },
+      {
+        "file": "edge-agent/ui/capture_tab.py",
+        "kind": "class",
+        "symbol": "CaptureTab"
+      },
+      {
+        "file": "edge-agent/ui/capture_tab.py",
+        "kind": "method",
+        "symbol": "CaptureTab._on_force_capture"
+      },
+      {
+        "file": "edge-agent/ui/capture_tab.py",
+        "kind": "method",
+        "symbol": "CaptureTab._on_result_ready_count"
+      },
+      {
+        "file": "edge-agent/ui/capture_tab.py",
+        "kind": "method",
+        "symbol": "CaptureTab._update_session_label"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "class",
+        "symbol": "BPERCaptureWorker"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker.__init__"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._acquire"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._capture_once"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._upload_page"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker.force_capture"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker.run"
+      }
+    ],
+    "removed": [
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker._capture_screenshot"
+      },
+      {
+        "file": "edge-agent/workers/capture/bper_capture_worker.py",
+        "kind": "method",
+        "symbol": "BPERCaptureWorker.stop"
+      }
+    ]
+  },
+  "totals": {
+    "affected_files": 32,
+    "claims_affected": 119,
+    "files_in_snapshot": 232,
+    "ratio": 0.1379
+  }
+}

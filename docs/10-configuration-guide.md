@@ -1,6 +1,6 @@
 # Guida alla configurazione e all'uso
 
-Questo progetto si configura quasi interamente con variabili d'ambiente, con un'eccezione: l'edge-agent PyQt6 legge le proprie impostazioni da `edge-agent/config.ini`. Non c'è database da predisporre né server da avviare. Il lavoro quotidiano è eseguire uno dei tre entry point (`main.py` CLI, `gui_app.py` Tkinter, o l'edge-agent) su una directory di screenshot e un CSV di ground truth. Questa guida costruisce una configurazione funzionante da zero, spiega la scelta OpenAI-vs-Gemini che guida la maggior parte del setup, offre ricette copia-incolla per le manopole che girerai davvero, elenca i comandi ricorrenti (Windows/PowerShell-first -- la macchina di sviluppo è Windows 11 con Python 3.13) e documenta gli errori che incontrerai quando qualcosa non va, ciascuno citato dal sorgente reale (verifica del 2026-07-21).
+Questo progetto si configura quasi interamente con variabili d'ambiente, con un'eccezione: l'edge-agent PyQt6 legge le proprie impostazioni da `edge-agent/config.ini`. Non c'è database da predisporre né server da avviare. La CLI legge screenshot e ground truth; Tkinter accetta immagini con valutazione opzionale, mentre l’edge-agent acquisisce il monitor senza CSV di riferimento. Questa guida costruisce una configurazione funzionante da zero, spiega la scelta OpenAI-vs-Gemini che guida la maggior parte del setup, offre ricette copia-incolla per le manopole che girerai davvero, elenca i comandi ricorrenti (Windows/PowerShell-first -- la macchina di sviluppo è Windows 11 con Python 3.13) e documenta gli errori che incontrerai quando qualcosa non va.
 
 Per il catalogo completo di ogni variabile d'ambiente e chiave di configurazione, vedi [Anatomia del progetto](09-project-anatomy.md). Per il primo setup, vedi [Come iniziare](07-getting-started.md). Per dipendenze e dettagli sui provider, vedi [Tech Stack](03-tech-stack.md).
 
@@ -44,7 +44,7 @@ Sostituisci il placeholder di `.env.example:5` (`LLM_API_KEY=your-api-key-here`)
 
 - `INPUT_DIR` va impostata **prima** dell'avvio del processo: `GROUND_TRUTH_CSV` e `DEBUG_CROP_DIR` sono calcolate da essa all'import (`extraction/config.py:9,94`). Esportarla dopo il lancio non fa nulla.
 - `LLM_PROVIDER` e `LLM_MODEL` devono essere coerenti (provider OpenAI vuole un modello OpenAI e viceversa). La factory lo impone -- vedi Risoluzione dei problemi.
-- L'edge-agent costruisce entrambi i ChatModel dell'estrazione alla costruzione della finestra (`edge-agent/ui/main_window.py:37` → `edge-agent/local_extraction_client.py:47-48`), quindi una `LLM_API_KEY` mancante fa **crashare l'edge-agent all'avvio**, non alla prima cattura.
+- L’edge-agent esegue `bootstrap.run_preflight()` prima dell’import di `ui.main_window`: prepara file e chiave, poi costruisce i ChatModel. Non anticipare l’import di `extraction` rispetto al preflight, che può creare/caricare la `.env` al primo avvio.
 
 ## Profili d'ambiente
 
@@ -79,15 +79,16 @@ Due manopole extra:
 - `LLM_MODEL_ANCHOR` (`extraction/config.py:19`) fa usare al passaggio anchor (economico) un modello diverso dal main; default = `LLM_MODEL`.
 - `LLM_THINKING_LEVEL` (`extraction/config.py:20`) -- `low`/`medium`/`high`; applicata solo quando il nome del modello contiene `thinking` (`extraction/llm_factory.py:72-74`). Un no-op per ogni altro modello.
 
-> **Servizio esterno:** entrambi i profili chiamano un'API a pagamento di terzi (OpenAI o Google) via rete. Serve una chiave valida e con credito per il provider scelto. Niente in questo progetto mocka l'LLM.
+> **Servizio esterno:** entrambi i profili chiamano un'API a pagamento di terzi (OpenAI o Google) via rete. Serve una chiave valida e con credito per il provider scelto. La suite locale sostituisce il confine di rete; le esecuzioni dell’applicazione richiedono il provider reale.
 
 ### Modalità di riconoscimento pagina dell'edge-agent
 
 L'edge-agent sceglie come riconoscere quale schermata BPER è a video tramite la chiave `router` in `[agent]` di **`edge-agent/config.ini`**, letta in `AgentConfig.router_mode` (`edge-agent/config.py:160`):
 
 - `ml` -- prototype matching DINOv2, locale e gratuito per frame (richiede `torch`/`torchvision`). Default nel codice (`edge-agent/config.py:25`).
-- `llm` -- OpenAI Vision (`gpt-4o-mini`) classifica ogni frame candidato. Il valore consegnato in `edge-agent/config.ini:4`.
+- `llm` -- il router usa l’SDK OpenAI con provider, endpoint e modello risolti dall’INI. È la modalità spedita; il file corrente seleziona Gemini tramite endpoint compatibile OpenAI.
 - `hybrid` -- prima LLM, fallback su ML.
+- `local-first` -- prova il margine del classificatore e le classi di scarto; nel cablaggio attuale ricade su `MLPageRouter`, senza escalation all’LLM. Non usarlo aspettandosi il fallback remoto progettato nell’ADR 0008: vedi [Workflow](05-workflows.md).
 
 Le modalità `ml`/`hybrid` degradano con grazia: se l'import di torch fallisce, il classificatore entra in modalità DISABLED e non restituisce classificazioni invece di crashare (`edge-agent/page_classifier.py:50,158`).
 
@@ -181,7 +182,7 @@ STOP_ON_ANCHOR_UNCERTAIN=1
 ANCHOR_CONF_MIN=0.95
 ```
 
-Risultato: quando il passaggio anchor non riesce a leggere NDG e DENOMINAZIONE, la pipeline ritorna in anticipo con `_status="ANCHOR_UNCERTAIN"` invece di spendere le chiamate main e retry (`extraction/pipeline.py:112-120`). Interruttore in `extraction/config.py:55`, soglia in `:56`. Nota: l'uscita anticipata scatta solo quando è il modello stesso a restituire entrambi gli anchor come null -- `ANCHOR_CONF_MIN` oggi **non** azzera i valori a bassa confidenza (il cancello è inefficace: le copie usate a valle sono prese prima del filtro, `extraction/pipeline.py:87-96`, e `safe_set_field` non annulla valori esistenti, `extraction/normalization.py:78-79`), quindi cambiare la soglia non influisce su questo comportamento.
+Risultato: quando entrambi gli anchor sono nulli dopo l’applicazione di `ANCHOR_CONF_MIN`, la pipeline ritorna `_status="ANCHOR_UNCERTAIN"` e salta main e retry. Il gate azzera effettivamente i valori a bassa confidenza (`extraction/pipeline.py`). Nell’edge-agent questo stato completa la visita senza innescare un ciclo infinito di tentativi automatici.
 
 ### Limitare il costo per schermata
 
@@ -191,7 +192,7 @@ In `.env`:
 MAX_CALLS_PER_SCREEN=5
 ```
 
-Risultato: limita il totale di chiamate VLM per screenshot. Una chiamata anchor e una main si spendono sempre; il passaggio di retry riceve `MAX_CALLS_PER_SCREEN - 2` retry, uno per area debole (`extraction/pipeline.py:261`). Con `2` (o meno) i retry sono disabilitati del tutto: si eseguono solo anchor + main, senza crash.
+Risultato: limita i passaggi logici di retry, non le richieste effettive al provider. La pipeline riserva anchor e main e assegna al retry `max(0, MAX_CALLS_PER_SCREEN - 2)` aree. Con 2 o meno restano i due passaggi iniziali, salvo uscita anticipata sugli anchor. Ogni passaggio può ritentare errori transitori dentro `call_vlm_with_retry()`, quindi il valore non è un tetto di rete o di spesa.
 
 Il default è **derivato**, non un letterale: `2 + len(AREA_TO_FIELDS)` = `5` (`extraction/config.py:102-103`). Abbassarlo non riduce il costo in modo uniforme: taglia le aree in **coda** all'ordine di dichiarazione di `AREA_TO_FIELDS`, che è HEADER, BODY, FOOTER. Con `4` le aree ritentabili diventano due e `FOOTER` non viene mai riletta; siccome `FOOTER` possiede `note_della_richiesta`, su una pagina di note si perde esattamente il campo per cui quella pagina viene acquisita. Il perché in [ADR 0004](adr/0004-budget-retry-derivato-dalle-aree.md).
 
@@ -235,7 +236,7 @@ Il `config.ini` spedito usa `provider = gemini`, `model = gemini-3.6-flash` e l'
 
 ## Operazioni comuni
 
-Non ci sono database, migrazioni, cache né server long-running -- molte operazioni "standard" semplicemente non si applicano. I comandi sotto sono verificati su `main.py`, `gui_app.py`, `edge-agent/edge_agent.py`, `run_edge_agent.bat` e `README.md`. Eseguili dalla root del progetto con la venv attiva (`.venv\Scripts\Activate.ps1`).
+Non ci sono database, migrazioni, cache né server long-running -- molte operazioni "standard" semplicemente non si applicano. Eseguili dalla root del progetto con la venv attiva (`.venv\Scripts\Activate.ps1`).
 
 ### Eseguire l'estrazione batch da CLI
 
@@ -259,7 +260,11 @@ python gui_app.py
 
 Apre una finestra nativa con campo API key, dropdown provider/modello e selettori di file/CSV. Il CSV di ground truth qui è opzionale (`gui_app.py:263`), quindi questa è la via per estrarre screenshot estemporanei senza `dati.csv`. Gli output vengono scritti nella **directory di lavoro corrente**: `poc_outputs_gui.json`, `poc_results_gui.csv` e (se è stato selezionato un CSV di GT) `poc_debug_gui.csv` (`gui_app.py:250-256,273-274`).
 
-### Avviare l'edge-agent (cattura live)
+### Dimensioni delle immagini e soglia dei retry
+
+`MAX_IMAGE_LONG_SIDE=2000` limita il lato lungo delle immagini all’ingresso della pipeline senza ingrandire quelle più piccole. `RETRY_CONF_MIN=0.60` seleziona le aree con campi sotto soglia; i valori nulli richiedono comunque un retry se il budget lo consente. Entrambe sono lette all’import (`extraction/config.py`).
+
+### Avviare l’edge-agent (cattura live)
 
 ```powershell
 .\run_edge_agent.bat            # raccomandato su Windows: crea/ripara la .venv, poi avvia
@@ -274,25 +279,24 @@ python main.py --gui
 .\run_edge_agent.bat --debug
 ```
 
-Nell'app: scegli la modalità BPER nel tab Cattura, premi "Avvia" e naviga l'applicazione BPER sul monitor catturato. Le pagine riconosciute vengono estratte localmente e compaiono nei tab Risultati e Dati Estratti; "Acquisisci ora" forza la cattura di una pagina selezionata a mano. Export CSV dalla UI (`LocalExtractionClient.export_csv()`).
+Nell’app: scegli BPER in Cattura, premi «Avvia» e naviga sul monitor selezionato. I frame stabili vengono accodati; l’estrazione usa thread separati e invia le immagini al provider. Dati Estratti mostra una riga per pratica e consente l’export Excel. «Acquisisci ora» accoda uno scatto della pagina scelta nel thread di cattura: non interrompe un routing già in corso. Un errore consente un nuovo tentativo; una visita completata non viene ripetuta finché il frame resta identico. I contatori «Inviate» ed «Elaborate» misurano fasi diverse; `get_results()` attende i risultati precedenti prima di rendere visibili quelli successivi ([API Python](12-python-api.md), ADR [0013](adr/0013-risultati-nell-ordine-di-acquisizione.md), [0014](adr/0014-acquisizione-per-visita-con-esito.md), [0015](adr/0015-scatto-manuale-nel-thread-di-cattura.md)).
 
-### Compilare un eseguibile Windows (app Tkinter)
+### Creare il portable Windows dell’edge-agent
 
 ```powershell
-pip install pyinstaller
-pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py
+.\build_exe.bat
 ```
 
-Produce `dist/AI_Data_Extractor.exe` (`README.md:88-100`). Impacchetta solo la GUI Tkinter, non l'edge-agent.
+Usa `edge_agent.spec` e produce `dist/EdgeAgent` più uno ZIP datato. Il pacchetto contiene configurazione, prompt e asset; l’avvio esegue il preflight prima di importare la UI. La chiave va nella `.env` locale: la build rifiuta un `config.ini` con `api_key` valorizzata. Vedi [Come iniziare](07-getting-started.md) per la consegna del pacchetto.
 
 ### Controllare risultati e log
 
-Non c'è un file di log. La CLI stampa su stdout; l'edge-agent logga nel pannello di log del tab Cattura. Dopo un'esecuzione CLI, ispeziona:
+La CLI stampa su stdout. Nel portable senza console, `edge-agent/edge_agent.py` reindirizza stdout/stderr su `edge-agent.log`; `_log_extraction()` conserva stato, confidenza, costi e provenienza, mentre la UI mostra i dati di business. Dopo un’esecuzione CLI, ispeziona:
 
 - `mnt/data/poc_outputs_improved.json` -- risultati completi per schermata, inclusi `_meta_agg` (chiamate, token, `estimated_cost_usd`) e `_field_sources`.
 - `mnt/data/poc_debug_improved.csv` -- classificazione per (schermata, campo); separato da `;`, `utf-8-sig` (si apre pulito in Excel).
 
-Operazioni che qui **non esistono**: migrazioni di database, seeding, test automatici (nessuno -- la validazione è il confronto manuale accuratezza/costi descritto in `CLAUDE.md`), svuotamento cache, start/stop di server.
+La suite locale si esegue con `python -m pytest tests` dopo `pip install -r requirements-dev.txt`. Non esistono migrazioni database, seeding o comandi di avvio di un server.
 
 ## Risoluzione dei problemi
 
@@ -399,7 +403,7 @@ Cattura fallita 5 volte consecutive. Ultimo errore: ...
 LLM client non inizializzato (manca API key o import OpenAI fallito)
 ```
 
-**Causa:** il router non ha una chiave utilizzabile per il provider configurato. Il router è resiliente by design: restituisce "nessun match" invece di sollevare, quindi il fallimento è silenzioso nella UI normale.
+**Causa:** il router non ha una chiave utilizzabile per il provider configurato. Restituisce un risultato senza pagina; quando contiene una motivazione, il worker la mostra nel log di Cattura come errore di riconoscimento.
 
 **Soluzione:** lascia vuota la riga `api_key` in `config.ini` e imposta la chiave nella `.env` di root, con il nome che il provider si aspetta: con `provider = gemini` va bene `GEMINI_API_KEY`, `GOOGLE_API_KEY` o `LLM_API_KEY`; con `provider = openai`, `OPENAI_API_KEY` o `LLM_API_KEY`. Il ripiego su ambiente scatta solo quando il valore INI è vuoto, e un valore che inizi per `REDACTED` conta come vuoto. La riga di log all'avvio `[BPER-LLM] Router LLM inizializzato (provider=..., model=..., pages=..., api_key=yes|no)` ti dice se una chiave è stata trovata -- ma non se è valida.
 
@@ -411,20 +415,19 @@ Prima di indagare la chiave, verifica di avere davvero bisogno del router LLM: l
 
 **Causa:** `torch`/`torchvision` non si sono importati, quindi `BPERPagePrototypeClassifier` gira in modalità DISABLED e non restituisce classificazioni (`edge-agent/page_classifier.py:50,158`). Un errore correlato, `FileNotFoundError: templates_dir non trovato: ...` (`edge-agent/page_classifier.py:143`), significa che `edge-agent/assets/templates/bper/` manca.
 
-**Soluzione:** installa torch/torchvision (Python 3.13 o 3.12 -- la 3.14 non ha wheel, motivo per cui il launcher la evita, `run_edge_agent.bat:47-52`), oppure passa a `router = llm`.
+**Soluzione:** installa torch/torchvision (Python 3.13 o 3.12, preferiti dal launcher; verificare la compatibilità dell’ambiente installato), oppure passa a `router = llm`.
 
 ### Edge-agent: la pagina viene riconosciuta sempre con lo stesso nome sbagliato
 
-**Sintomo:** il router riconosce una pagina a ogni frame, con punteggio plausibile ma sempre lo stesso nome, indipendentemente da cosa c'è a schermo. Dopo la prima acquisizione il log entra in un ciclo:
+**Sintomo:** il router riconosce una pagina a ogni frame, con punteggio plausibile ma sempre lo stesso nome, indipendentemente da cosa c'è a schermo. Il log può ripetere un riconoscimento sbagliato:
 
 ```
 [Router] Riconosciuta: «Note da Richiesta» (score=0.848)
-ℹ️ «Note da Richiesta» già acquisita → apri nel sistema BPER: «Risultato ricerca»
 ```
 
-e la schermata indicata è proprio quella che l'operatore ha davanti. La sessione si blocca con una pagina acquisita su nove, e il CSV esportato contiene i campi di una pagina sotto il nome di un'altra.
+e la schermata indicata è proprio quella che l'operatore ha davanti. Un nome pagina errato può confondere la guida e i metadati del frame.
 
-**Causa:** disallineamento di inquadratura fra i prototipi e il frame. I prototipi sono screenshot di **finestra**; se il frame che arriva al classificatore è un monitor intero, le ROI relative cadono su contenuto diverso e la scelta fra le 9 pagine diventa arbitraria. Il difetto si autoalimenta: la pagina etichettata male entra in `captured_page_types` e da quel momento ogni frame finisce nell'uscita anticipata "già acquisita".
+**Causa:** disallineamento di inquadratura fra i prototipi e il frame. I prototipi sono screenshot di **finestra**; se il frame che arriva al classificatore è un monitor intero, le ROI relative cadono su contenuto diverso e la scelta fra le 9 pagine diventa arbitraria. Il nome in `captured_page_types` oggi serve soltanto alla guida: non blocca altre visite della stessa pagina. La normalizzazione resta necessaria per classificare correttamente.
 
 **Come confermarlo:** confronta i valori estratti con le schermate di riferimento in `mnt/data`. Se corrispondono a una pagina **diversa** da quella nel log, l'estrazione sta funzionando e il problema è il routing.
 
@@ -477,9 +480,10 @@ Non può accadere da questo progetto -- non apre **nessuna** porta. Le voci `htt
 | Catalogo prompt alternativo | `PROMPTS_DIR=...` | Diventa l'unico candidato: nessun fallback, fallisce chiuso |
 | Log / crop di debug | `DEBUG_MODE=1` / `DEBUG_SAVE_CROPS=1` | I crop finiscono in `INPUT_DIR/debug_crops` |
 | Esecuzione sequenziale | `PARALLEL_ENABLED=0` | Output più leggibile / guasti isolabili |
-| Limitare il costo per schermata | `MAX_CALLS_PER_SCREEN=N` | I retry ricevono `N - 2` chiamate |
-| Monitor / router dell'edge-agent | modifica `monitor_index` / `router` in `edge-agent/config.ini` | A partire da 1; `ml` \| `llm` \| `hybrid` |
-| Compilare il .exe | `pyinstaller ... gui_app.py` | Comando completo in `README.md:91` |
+| Limitare i passaggi di retry | `MAX_CALLS_PER_SCREEN=N` | Massimo `N - 2` aree; non è un tetto di rete o spesa |
+| Monitor / router dell'edge-agent | modifica `monitor_index` / `router` in `edge-agent/config.ini` | A partire da 1; `ml` \| `llm` \| `hybrid` \| `local-first` |
+| Creare il portable | `.\build_exe.bat` | Cartella `dist/EdgeAgent` e ZIP datato |
+| Eseguire i test | `python -m pytest tests` | Prima installare `requirements-dev.txt` |
 
 ---
 

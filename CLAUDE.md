@@ -169,6 +169,15 @@ Transform "do X" into "X passes test Y".
 ### 5. Centralize Shared Logic
 Route external calls (HTTP clients, broker APIs, LLM/embedding providers, payment gateways, DB access) and cross-cutting concerns (config, auth, logging) through a single utility, client, or facade module. Apply DRY and Single Source of Truth: one change, one place. Before adding a new call site, check whether an existing client/wrapper already exists and extend it instead of duplicating.
 
+### 6. Keep the X-ray Current
+After every change to code, tests, configuration, or documentation, update the current
+`.codebase-xray/` analysis before declaring the task complete. Recheck affected findings
+against the working tree, mark verified fixes as resolved, and refresh affected flows,
+interfaces, documentation findings, source references, and analysis state. Record the
+actual revision and any uncommitted changes covered; never relabel an old analysis as current.
+Preserve historical runs and distinguish previous test results from newly executed checks.
+Keep execution reports and analysis history in the X-ray, not in the official user documentation.
+
 ## Architectural Constraints
 
 These patterns are load-bearing. Do not remove or restructure them without understanding the

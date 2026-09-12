@@ -1,0 +1,184 @@
+{
+  "run_id": "poc-data-extraction-20260911-154206",
+  "target": "D:\\Projects\\poc-data-extraction",
+  "mode": "team",
+  "status": "complete",
+  "flags": {
+    "critical": false,
+    "comments": false,
+    "depth": "full"
+  },
+  "parent_run": null,
+  "base_snapshot_created_at": null,
+  "git": {
+    "branch": "develop",
+    "commit": "d28dac359cec",
+    "dirty": true
+  },
+  "incremental": null,
+  "partitions": [
+    {
+      "name": "root",
+      "path": "D:\\Projects\\poc-data-extraction",
+      "language_primary": "python",
+      "file_count": 70,
+      "loc_estimate": 8150,
+      "status": "done"
+    }
+  ],
+  "partition_strategy": "single-partition fallback",
+  "checkpoint": "accepted",
+  "phases": {
+    "phase_0_detection": "complete",
+    "phase_1_partition_workers": "complete",
+    "phase_2_synthesis": "complete",
+    "phase_3_interconnect": "complete"
+  },
+  "agents_spawned": [
+    {
+      "name": "P1.A",
+      "task_name": "/root/partition_structure",
+      "role": "partition-structure-worker",
+      "partition": "root",
+      "status": "delivered",
+      "resumes": [
+        {
+          "at": "2026-09-11T16:03:45.841595+02:00",
+          "reason": "No report yet and no response to two progress requests; interrupted and resumed same isolated context."
+        }
+      ],
+      "delivered_at": "2026-09-11T16:28:44.000224+02:00"
+    },
+    {
+      "name": "P1.B",
+      "task_name": "/root/partition_behavior",
+      "role": "partition-behavior-worker",
+      "partition": "root",
+      "status": "delivered",
+      "dispatched_at": "2026-09-11T16:31:05.533346+02:00",
+      "delivered_at": "2026-09-11T16:50:15.184364+02:00"
+    },
+    {
+      "name": "P1.C",
+      "task_name": "/root/partition_quality",
+      "role": "partition-quality-worker",
+      "partition": "root",
+      "status": "delivered",
+      "dispatched_at": "2026-09-11T16:31:05.533403+02:00",
+      "delivered_at": "2026-09-11T16:44:05.234960+02:00"
+    },
+    {
+      "name": "MAP",
+      "task_name": "/root/interconnect_mapper",
+      "role": "semantic-interconnect-mapper",
+      "partition": null,
+      "status": "delivered",
+      "dispatched_at": "2026-09-11T16:52:38.710943+02:00",
+      "delivered_at": "2026-09-11T16:56:33.091323+02:00"
+    },
+    {
+      "name": "SYNTH",
+      "task_name": "/root/partition_synthesizer",
+      "role": "partition-synthesizer",
+      "partition": null,
+      "status": "delivered",
+      "dispatched_at": "2026-09-11T16:58:47.271480+02:00",
+      "delivered_at": "2026-09-11T17:09:08.035127+02:00"
+    }
+  ],
+  "files_created": [
+    "knowledge/navigation.md",
+    "knowledge/documentation-leads.md",
+    "snapshot/manifest.json",
+    "validation/pytest.txt",
+    "validation/pytest-exit-code.txt",
+    "validation/launcher-baseline.json",
+    "validation/README.md",
+    "partitions/root/01-structure.md",
+    "partitions/root/02-interfaces.md",
+    "partitions/root/05-risks.md",
+    "partitions/root/06-documentation.md",
+    "validation/check_artifacts.py",
+    "validation/artifact-validation.json",
+    "validation/consolidation-order.json",
+    "partitions/root/03-flows.md",
+    "partitions/root/04-semantics.md",
+    "08-interconnect-map.md",
+    "validation/consolidation-validation.json",
+    "01-structure.md",
+    "02-interfaces.md",
+    "03-flows.md",
+    "04-semantics.md",
+    "05-risks.md",
+    "06-documentation.md",
+    "07-final-report.md",
+    "validation/publish_run.py",
+    "validation/publication.json"
+  ],
+  "started_at": "2026-09-11T15:42:06.080941+02:00",
+  "completed_at": "2026-09-11T17:09:21.552419+02:00",
+  "checkpoint_accepted_at": "2026-09-11T15:44:59.850369+02:00",
+  "execution_order": [
+    "structure",
+    "behavior",
+    "quality",
+    "interconnect",
+    "synthesis",
+    "publish"
+  ],
+  "execution_order_note": "The execution harness and workflow contract put interconnect before synthesis; they govern over the contradictory narrative phase numbering. Interconnect consumes partition artifacts, then synthesis consumes the map.",
+  "preexisting_changes": {
+    "untracked": [
+      "AGENTS.md"
+    ],
+    "deleted_directory": ".codebase-map/"
+  },
+  "snapshot_created_at": "2026-09-11T13:45:00Z",
+  "validation": {
+    "test_command": ".venv/Scripts/python.exe -m pytest tests -o cache_dir=<run>/validation/pytest-cache",
+    "exit_code": 0,
+    "passed": 153,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 3,
+    "duration_seconds": 43.27,
+    "log": "validation/pytest.txt",
+    "environment": {
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "PYTHON_DOTENV_DISABLED": "1",
+      "QT_QPA_PLATFORM": "offscreen"
+    },
+    "ground_truth_csv_present": false,
+    "consolidation": {
+      "report": "validation/consolidation-validation.json",
+      "public_signatures_preserved": 152,
+      "local_markdown_links_checked": 69
+    },
+    "artifact_check": {
+      "reports_checked": 14,
+      "source_files_unchanged": 121,
+      "log": "validation/artifact-validation.json"
+    }
+  },
+  "tooling": {
+    "workflow_version": "4.0.1",
+    "snapshot_version": "4.0.1",
+    "available_plugin_version": "4.0.2",
+    "note": "Plugin cache was externally replaced during analysis; replacement 4.0.2 supplies available scripts. Behavior, quality, mapper and synthesizer role bodies were compared with the already-read 4.0.1 files and are identical."
+  },
+  "findings": {
+    "anti_patterns": 2,
+    "red_flags": 11,
+    "technical_debt": 4,
+    "severity": {
+      "critical": 0,
+      "high": 3,
+      "medium": 11,
+      "low": 3
+    },
+    "documentation_discrepancies": 10,
+    "documentation_gaps": 6,
+    "documentation_reference_entries": 3,
+    "cross_partition_flows": 0
+  }
+}

@@ -41,7 +41,7 @@ Se sei nuovo del progetto, leggi prima la [Sintesi per tutti](00-executive-summa
 | **LLM** | Large language model; l'AI testo-e-immagini dietro sia l'estrazione sia il riconoscimento pagina. |
 | **prompt** | Le istruzioni scritte inviate al modello insieme a ogni immagine. Qui in italiano, per scelta. |
 | **anchor pass / main pass / retry pass** | I tre passaggi di lettura: prima l'identità del cliente, poi tutto il contenuto della pagina, infine una rilettura mirata delle zone deboli. |
-| **confidenza** | La certezza auto-dichiarata dal modello (0-1) per ogni valore. Guida i retry (sotto 0.60) e gli spareggi, ma non è verificata in modo indipendente. La soglia 0.95 per le àncore (`ANCHOR_CONF_MIN`) è dichiarata nel codice ma oggi di fatto non filtra nulla (vedi [Flussi di lavoro](05-workflows.md)). |
+| **confidenza** | Certezza dichiarata dal modello. Gli schemi la limitano a [0, 1]; valori non finiti diventano 0. Guida i retry sotto `RETRY_CONF_MIN` (0.60) e gli spareggi. Gli anchor sotto `ANCHOR_CONF_MIN` (0.95) sono annullati prima dell’uso a valle. Non è una misura verificata di accuratezza. |
 | **output strutturato** | Obbligare il modello a rispondere in una forma JSON fissa e verificabile a macchina invece che in testo libero; le risposte non valide falliscono rumorosamente. |
 | **Pydantic** | La libreria Python che definisce e valida quelle forme di output (gli "schemi"). |
 | **LangChain / ChatModel** | Lo strato di astrazione che rende OpenAI e Google Gemini intercambiabili dietro un'unica funzione factory. |
@@ -56,22 +56,25 @@ Se sei nuovo del progetto, leggi prima la [Sintesi per tutti](00-executive-summa
 | **OK / WRONG / MISSING / HALLUCINATED / OK_NULL** | I voti per campo: corretto; sbagliato; atteso un valore ma non estratto; prodotto un valore dove non ce n'era; correttamente vuoto. |
 | **allucinazione** | Quando l'AI inventa un valore che in realtà non è a schermo. Il report di accuratezza lo segnala come HALLUCINATED. |
 | **edge-agent** | L'app desktop PyQt6 che osserva un monitor ed esegue l'estrazione dal vivo mentre un operatore naviga BPER. |
-| **pHash dedup** | Hashing percettivo: frame consecutivi quasi identici hanno impronte quasi identiche e vengono saltati invece di essere rielaborati. |
+| **pHash dedup** | Confronto percettivo per ridurre il routing dei frame simili. La visita è distinta invece dall’impronta esatta dei pixel normalizzati, così anche una piccola modifica dell’NDG consente una nuova acquisizione. |
 | **distanza di Hamming** | Quanti bit differiscono tra due hash; una distanza piccola significa frame quasi duplicati. |
 | **cancello di stabilità** | Il requisito di "stare fermi" 2 secondi prima che una pagina riconosciuta venga catturata -- evita di estrarre a metà scroll. |
-| **page routing / router** | Decidere quale pagina BPER è a schermo prima di estrarre; modalità `llm` (OpenAI Vision), `ml` (classificatore locale), `hybrid` (prima LLM, fallback ML). |
+| **page routing / router** | Decidere quale pagina è a schermo. `ml` usa il classificatore locale; `llm` il provider configurato; `hybrid` prova LLM e poi ML. `local-first` valuta prima margine e classi di scarto, ma attualmente ricade su ML, senza fallback remoto. |
 | **classificatore a prototipi** (DINOv2) | Il router ML locale: trasforma l'area applicativa della pagina in un embedding di 384 numeri e lo confronta con prototipi per pagina in cache, per similarità del coseno **centrata**. |
 | **coseno centrato** | Il confronto usato dal classificatore: prima di misurare la similarità si sottrae il centroide dei prototipi sia alla query sia ai prototipi. Pagine diverse dello stesso applicativo condividono quasi tutti i pixel, e la componente condivisa domina il coseno grezzo; togliendola resta soltanto ciò che distingue una pagina dalle altre. Non cambia quale pagina vince, moltiplica per trenta il margine con cui vince. |
 | **inquadratura normalizzata** | Il ritaglio applicato in `_grab_raw()` per riportare una cattura a schermo intero sulla finestra applicativa. Serve perché ogni ritaglio del sistema è espresso in coordinate relative tarate su screenshot di finestra. |
 | **embedding** | Un'impronta numerica di un'immagine che rende misurabile la somiglianza visiva. |
 | **similarità del coseno** | La matematica usata per misurare quanto due embedding sono simili. |
 | **hallucination guard** | Il rifiuto delle risposte del router che nominano una pagina non presente nel file delle definizioni di pagina. |
-| **QThread / segnale Qt** | Thread in background e messaggistica thread-safe nella UI PyQt6; il segnale `result_ready` porta ogni risultato all'interfaccia. |
+| **QThread / segnale Qt** | Thread di cattura e notifiche fra thread. `force_capture()` accoda il comando; `result_ready` segnala un completamento, mentre `get_results()` restituisce solo il prefisso completato nell’ordine di acquisizione. |
 | **CLI** | Interfaccia a riga di comando: `python main.py`, il front-end batch-e-valutazione. |
 | **Tkinter / PyQt6** | I due toolkit UI desktop: quello integrato in Python (la GUI semplice) e quello più ricco (l'edge-agent). |
 | **mss** | La libreria usata per la cattura veloce dell'intero monitor. |
 | **FPS** | Frame al secondo -- quanto spesso l'edge-agent guarda il monitor. |
-| **thread pool** | Eseguire in parallelo le estrazioni di più schermate per accorciare i batch. |
+| **thread pool** | Gruppo di thread che esegue più estrazioni in parallelo. Il batch e il client live condividono ciascuno una pipeline fra i propri worker; il client live usa thread daemon. |
+| **visita** | Permanenza su un frame normalizzato identico. Ha uno stato in attesa o completato; `ERROR` consente un nuovo tentativo, un cambiamento dei pixel avvia una visita nuova. |
+| **sequenza di acquisizione** | Numero progressivo `_capture_sequence` assegnato al frame accettato per un job. Impedisce che l’ordine di completamento alteri l’associazione dei frame senza NDG alla pratica precedente. |
+| **consolidamento** | Unione dei campi di più frame per NDG normalizzato, con la stessa scelta `pick_best()` del motore. Produce una riga per pratica nella UI e nel workbook. |
 | **env var / `.env`** | Configurazione tramite variabili d'ambiente, caricate da un file `.env` locale (mai committato). |
 | **OCR** | "Optical Character Recognition", la tecnologia classica di lettura del testo dalle immagini. Qui il lavoro lo fa il VLM in cloud; il nome sopravvive solo in `preprocess_for_ocr()`, che è un ritocco dell'immagine, non un lettore. |
 | **POC** (proof of concept) | Software costruito per dimostrare e misurare un approccio, non per essere consegnato a utenti finali. |

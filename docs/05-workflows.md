@@ -1,333 +1,263 @@
 # Workflow
 
-Tutto ciò che questo progetto fa passa per un unico motore: la pipeline di estrazione multi-pass in `extraction/pipeline.py`. Tre front-end la avvolgono. La CLI (`main.py`) elabora in batch una cartella di screenshot e valuta i risultati rispetto a un CSV di ground truth. La GUI Tkinter (`gui_app.py`) fa lo stesso su richiesta, per file scelti dall'utente. L'edge-agent PyQt6 (`edge-agent/edge_agent.py`) osserva un monitor dal vivo, riconosce quale pagina BPER è a schermo ed esegue l'estrazione frame per frame mentre l'operatore naviga nell'applicazione.
+Il motore estrae campi da una singola immagine. CLI e Tkinter lo applicano a file scelti; l'edge-agent lo alimenta con frame acquisiti durante la navigazione e riunisce i risultati per pratica. Questo capitolo segue i dati dalla lettura dell'immagine fino alla valutazione o all'Excel, indicando anche dove errori e attese cambiano il flusso.
+<!-- Source: extraction/pipeline.py:122; extraction/cli.py:285; gui_app.py:238; edge-agent/local_extraction_client.py:127; edge-agent/excel_export.py:217 -->
 
-I workflow qui sotto sono ordinati dal motore verso l'esterno: la pipeline stessa, l'esecuzione batch da CLI che la esercita, la valutazione di accuratezza che la misura, il loop di cattura dal vivo dell'edge-agent e la decisione di routing di pagina che filtra ogni frame catturato. Per come i pezzi si incastrano strutturalmente, vedi [Architettura](04-architecture.md); per le capacità rivolte all'utente, vedi [Funzionalità](02-features.md).
+Per le responsabilità dei componenti vedere [Architettura](04-architecture.md); per firme, parametri e ritorni, [API Python](12-python-api.md).
 
 ## Pipeline di estrazione multi-pass
 
-Ogni screenshot (che arrivi dalla CLI, dalla GUI Tkinter o dall'edge-agent) viene elaborato da `ExtractionPipeline.extract_from_image()` in **`extraction/pipeline.py`**. La pipeline effettua fino a `MAX_CALLS_PER_SCREEN` chiamate Vision-LLM per schermata (default `2 + len(AREA_TO_FIELDS)` = 5, derivato in `extraction/config.py` subito dopo `AREA_TO_FIELDS`) in tre stadi (anchor, principale, retry condizionale) e ne fonde gli output in un unico dict risultato. Il disegno esiste perché un singolo passaggio LLM su una schermata bancaria densa manca o legge male dei campi; il passaggio anchor punta prima ai due campi identitari, e il passaggio di retry ritenta soltanto le aree tornate deboli.
+L'anchor è la prima lettura di NDG e denominazione. Una volta filtrati per confidenza, questi identificativi possono guidare il passaggio principale. I retry successivi rileggono ritagli contenenti campi nulli o poco affidabili. L'ordine dei passaggi è rilevante: i retry vedono gli anchor già fusi e il controllo di coerenza legge il risultato dei retry.
+<!-- Source: extraction/pipeline.py:78; extraction/pipeline.py:181; extraction/pipeline.py:235; extraction/pipeline.py:284 -->
 
-**Trigger:** `extract_from_screen(path)` (`extraction/pipeline.py:182-187`, usato da CLI e GUI Tkinter; apre il file, esegue `normalize_image()`, ricava `screen_id` dallo stem del file) oppure `extract_from_image(img, screen_id)` (`extraction/pipeline.py:104`, usato dall'edge-agent; il frame è già preprocessato a monte, quindi `normalize_image()` viene deliberatamente bypassata, `edge-agent/local_extraction_client.py:84-86`).
-
-**Esito:** un dict risultato con i valori per campo, le tabelle `soggetti`/`fidi`/`garanzie`, `canonical_fields` (le voci rivolte al cliente), i metadati di costo/token in `_meta_agg`, la provenienza per campo in `_field_sources` e uno `_status` pari a `OK` o `ANCHOR_UNCERTAIN`. La forma completa del dict è documentata in [Modello dei dati](06-data-model.md#il-dict-risultato).
+**Trigger:** `extract_from_screen(path)` per i file; `extract_from_image(img, screen_id)` per i frame già preparati. Il primo apre il file in RGB, normalizza l'immagine e autorizza il controllo della famiglia calibrata; il secondo lascia quel ritaglio disabilitato per default. Entrambi passano dal limite dimensionale `MAX_IMAGE_LONG_SIDE`, default 2000 pixel.
+<!-- Source: extraction/pipeline.py:122; extraction/pipeline.py:138; extraction/pipeline.py:223; extraction/config.py:65 -->
 
 ```mermaid
 flowchart TD
-    Start(["extract_from_image(img, screen_id)"]) --> Crop["Ritaglio CONTENT_CROP<br/>solo su file della famiglia calibrata (ADR 0010)<br/>percorso live: frame intero"]
-    Crop --> Anchor["PASSAGGIO ANCHOR<br/>ritaglio header HEADER_IN_CONTENT (0,0,1,0.22)<br/>ANCHOR_PROMPT → AnchorResponse<br/>solo ndg + denominazione"]
-    Anchor --> Gate["Gate di confidenza vs ANCHOR_CONF_MIN 0.95<br/>azzeramento previsto: inefficace, vedi passo 3"]
-    Gate --> StopCheck{"STOP_ON_ANCHOR_UNCERTAIN=1<br/>ed entrambi gli anchor null?"}
-    StopCheck -->|sì| EarlyExit(["Ritorna _status=ANCHOR_UNCERTAIN<br/>fields vuoto, 1 chiamata in _meta_agg"])
-    StopCheck -->|no| Main["PASSAGGIO PRINCIPALE<br/>PROMPT + suggerimenti anchor<br/>ritaglio contenuto completo → ExtractionResponse"]
-    Main --> Merge["Unione anchor sul risultato principale<br/>normalizzazione di tipo"]
-    Merge --> RetryCheck{"Qualche area contiene un campo<br/>nullo o con confidenza < 0.60?"}
-    RetryCheck -->|no| Coherence
-    RetryCheck -->|sì| Retry["PASSAGGIO DI RETRY<br/>ritaglio per area + contrasto/nitidezza<br/>parallelo, tetto MAX_CALLS_PER_SCREEN - 2 = una per area<br/>ordine di dichiarazione di AREA_TO_FIELDS<br/>pick_best per campo"]
-    Retry --> Coherence["CONTROLLO DI COERENZA<br/>tooltip_evidenze_b → evidenze = B<br/>tooltip_descrizione_bmb → tipo = BMB"]
-    Coherence --> Flatten["Appiattimento dei primi 4 soggetti in<br/>ndg_1..4 / denominazione_1..4 / ruolo_1..4"]
-    Flatten --> Canonical["Costruzione canonical_fields<br/>aggregazione _meta_agg"]
-    Canonical --> Status{"ndg e denominazione<br/>entrambi non null?"}
-    Status -->|sì| OK(["_status = OK"])
-    Status -->|no| Uncertain(["_status = ANCHOR_UNCERTAIN"])
+    Image["Immagine e limite dimensionale"] --> Crop["Ritaglio solo se autorizzato e calibrato"]
+    Crop --> Anchor["Anchor: NDG e denominazione"]
+    Anchor --> Confidence["Annulla valori sotto ANCHOR_CONF_MIN"]
+    Confidence --> Stop{"Stop anticipato attivo<br/>e anchor entrambi assenti?"}
+    Stop -->|Sì| Early["ANCHOR_UNCERTAIN<br/>campi vuoti e metadati anchor"]
+    Stop -->|No| Main["Lettura principale con hint validi"]
+    Main --> Merge["Merge anchor e normalizzazione tipo"]
+    Merge --> Retry["Retry delle aree deboli nel budget<br/>eseguiti in parallelo"]
+    Retry --> Coherence["Controlli di coerenza"]
+    Coherence --> Meta["Metadati e appiattimento soggetti"]
+    Meta --> Canonical["Campi canonici e stato finale"]
 ```
+
+<!-- Source: extraction/pipeline.py:110; extraction/pipeline.py:138; extraction/pipeline.py:151; extraction/pipeline.py:181; extraction/pipeline.py:194; extraction/pipeline.py:203; extraction/pipeline.py:214 -->
 
 ### Spiegazione passo per passo
 
-**1. Ritaglio del contenuto.** Solo sul percorso da file e solo se l'immagine appartiene alla famiglia calibrata (aspetto e dimensione dei riferimenti 848x679), `extract_from_screen` applica `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` rimuovendo la barra di navigazione sinistra. Sul percorso live il modello riceve il frame intero: le frazioni calibrate su una finestra amputano colonne su qualunque altra ([ADR 0010](adr/0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md)).
+1. **Inquadratura e ritaglio.** Sul file, `normalize_image()` limita il lato lungo a 1800 senza ingrandire e applica contrasto e nitidezza. Il ritaglio `CONTENT_CROP=(0.18, 0.12, 0.98, 0.98)` si applica soltanto se autorizzato e compatibile con la famiglia 848×679: rapporto entro il 5% e lato lungo 800–900 pixel. Dal vivo il worker ha già normalizzato l'inquadratura e preparato il frame. Vedi [ADR 0010](adr/0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md).
+2. **Anchor.** Su immagine calibrata legge la fascia superiore `HEADER_IN_CONTENT=(0, 0, 1, 0.22)` del contenuto; fuori calibrazione legge l'immagine intera. Il prompt italiano distingue gli identificativi della pratica dal nome dell'operatore.
+3. **Gate di confidenza.** I valori anchor con confidenza sotto `ANCHOR_CONF_MIN`, default 0.95, vengono annullati sulle copie restituite. Non entrano quindi negli hint né nel merge. Con `STOP_ON_ANCHOR_UNCERTAIN=1`, se entrambi sono nulli, la pipeline termina con campi e tabelle vuoti, un solo tentativo e senza `canonical_fields`.
+4. **Lettura principale.** Il prompt incorpora solo gli anchor non nulli. La risposta contiene i 45 campi e le liste soggetti, fidi e garanzie. Gli anchor validi sovrascrivono poi gli omologhi del main e ricevono provenienza `ANCHOR_HEADER`.
+5. **Normalizzazione di tipo.** `normalize_tipo()` riconduce i sinonimi di mutuo previsti dal codice a `BPI Mutui`; la stessa regola si applica ai candidati del retry per `tipo`.
+6. **Retry condizionale.** Un campo nullo o sotto `RETRY_CONF_MIN`, default 0.60, rende candidata la propria area. HEADER, BODY e FOOTER vengono selezionate nell'ordine dichiarato in `AREA_TO_FIELDS`, fino a `max(0, MAX_CALLS_PER_SCREEN-2)`, poi eseguite in parallelo. HEADER e BODY ricevono anche un incremento di contrasto e nitidezza. Il default del budget è `2 + len(AREA_TO_FIELDS)`, oggi 5: ridurlo può escludere le aree in coda, come spiegato nell'[ADR 0004](adr/0004-budget-retry-derivato-dalle-aree.md).
+7. **Fusione.** `pick_best()` preferisce il valore non nullo e poi la confidenza maggiore; a parità conserva il corrente. `_field_sources` cambia se vince il candidato. Solo BODY può proporre tabelle: su immagini calibrate prevalgono più righe, poi la confidenza media; fuori calibrazione può solo riempire una tabella vuota.
+8. **Coerenza.** Un tooltip delle evidenze B può correggere `evidenze` nullo o numerico in `B`; un tooltip BMB può riempire `tipo` nullo con `BMB`.
+9. **Risultato finale.** La pipeline aggrega metadati, appiattisce i primi quattro soggetti nei dodici campi numerati, costruisce `canonical_fields` e assegna `OK` solo se NDG e denominazione sono entrambi presenti; altrimenti assegna `ANCHOR_UNCERTAIN`.
 
-**2. Passaggio anchor.** `extract_anchors()` ritaglia la striscia header `HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)` (`extraction/config.py:60`) e la invia con `ANCHOR_PROMPT` per estrarre solo `ndg` e `denominazione` (`extraction/pipeline.py:70-102`). Il prompt codifica due regole di dominio: NDG e Denominazione stanno al centro visivo dell'intestazione della pratica, e il nome dell'operatore in alto a destra va ignorato (`prompts/extraction_anchor.json`). Il prompt istruisce inoltre il modello a restituire `null` quando è incerto e a impostare `confidence >= 0.95` solo quando il valore è chiaramente leggibile (`prompts/extraction_anchor.json`).
-
-**3. Il gate di confidenza degli anchor: intento vs comportamento reale.** Il codice *intende* azzerare gli anchor sotto `ANCHOR_CONF_MIN` (0.95, `extraction/config.py:56`), e CLAUDE.md lo documenta così. In pratica il gate è un no-op. I dict `ndg`/`den` restituiti sono copie fresche prodotte da `safe_field()` *prima* che il gate venga eseguito (`extraction/pipeline.py:87-88` vs `:91-96`), e in ogni caso la chiamata `safe_set_field(..., value=None)` del gate non può annullare un valore non nullo esistente, per via della guardia `if value is not None or f.get("value") is None` (`extraction/normalization.py:78-79`). Sono le copie pre-gate ad alimentare tutto ciò che viene dopo: l'uscita anticipata `STOP_ON_ANCHOR_UNCERTAIN` (`extraction/pipeline.py:112-113`), il prompt con i suggerimenti (`:205-208`) e `_merge_anchors` (`:212-216`). Effetto netto: **un anchor a bassa confidenza fluisce comunque a valle a piena forza**; l'unico comportamento "null se incerto" realmente in vigore è l'istruzione contenuta nel prompt. L'uscita anticipata scatta quindi solo quando è il modello stesso ad aver restituito valori null. Con `STOP_ON_ANCHOR_UNCERTAIN=1` ed entrambi gli anchor null, la pipeline ritorna `_status="ANCHOR_UNCERTAIN"` con `fields` vuoto, una sola voce in `_attempts` e nessuna chiave `canonical_fields` (`extraction/pipeline.py:112-124`).
-
-**4. Passaggio principale.** `_build_anchor_hint_prompt()` accoda i valori anchor al `PROMPT` di base come suggerimenti (`"NDG atteso: {value}"`, `"Denominazione attesa: {value}"`), così la chiamata principale parte già innescata con gli identificativi (`extraction/pipeline.py:127`, `:202-209`). Il ritaglio completo del contenuto viene inviato e parsato in una `ExtractionResponse`: tutti i 45 campi scalari più le liste `soggetti`, `fidi` e `garanzie` in un'unica chiamata (`extraction/pipeline.py:130-138`). L'ordine qui è portante: il passaggio anchor deve completarsi prima che venga costruito il prompt principale, perché il prompt ne incorpora l'output. L'intera sequenza per schermata (anchor → principale → merge → normalizzazione tipo → retry → coerenza → appiattimento → canonico → status) è garantita soltanto dall'ordine sequenziale del codice (`extraction/pipeline.py:109-178`).
-
-**5. Merge e normalizzazione di tipo.** `_merge_anchors()` sovrascrive `ndg`/`denominazione` del passaggio principale con qualsiasi valore anchor non nullo e registra la sorgente come `ANCHOR_HEADER` (`extraction/pipeline.py:211-216`). `_postprocess_tipo()` canonicalizza poi `tipo`: i sinonimi `mutui spesa`, `mutuo spesa` e `bpi mutui` (case-insensitive) mappano tutti su `BPI Mutui` (`extraction/normalization.py:10-23`, applicato in `extraction/pipeline.py:146` e di nuovo per ogni candidato di retry in `:298-299`).
-
-**6. Retry condizionale.** `_retry_areas()` scansiona le tre aree funzionali (`HEADER`, `BODY`, `FOOTER`, `extraction/config.py:63-82`) e marca ogni area contenente un campo nullo o con confidenza sotto 0.60 (`extraction/pipeline.py:251-257`; lo 0.60 è hardcoded). Ogni area marcata riceve un ritaglio dedicato (con potenziamento extra di contrasto/nitidezza per `HEADER` e `BODY`, `:267-272`) e un prompt italiano specifico per area (`FIELD_RETRY_PROMPTS`, `extraction/prompts.py:23-27`, testi in `prompts/extraction_retry_*.json`), eseguito in un `ThreadPoolExecutor` annidato (`:284`). Il tetto è `max(0, MAX_CALLS_PER_SCREEN - 2)` retry: una chiamata ciascuna riservata ad anchor e principale. Il tetto viene applicato alla lista delle aree nell'**ordine di dichiarazione** di `AREA_TO_FIELDS` (`[a for a in AREA_TO_FIELDS if a in areas_to_retry][:allowed_retries]`), non alfabetico: `HEADER` possiede i campi identitari che pilotano `_status` e la guardia sul disallineamento del dataset, quindi deve essere ritentata prima che il budget finisca. Con il default derivato (`2 + len(AREA_TO_FIELDS)` = 5) il tetto vale 3 e copre tutte le aree, quindi nessuna viene scartata. Abbassare `MAX_CALLS_PER_SCREEN` ripristina lo scarto silenzioso, e a perderci sono le aree in coda alla lista: fu così che `FOOTER`, che possiede `note_della_richiesta`, non veniva mai riletta sulla pagina Note da Richiesta ([ADR 0004](adr/0004-budget-retry-derivato-dalle-aree.md)). Per ogni campo, `merge_field_sources()`/`pick_best()` scelgono il vincitore: non-nullo batte nullo; a parità di confidenza vince il valore corrente (`extraction/normalization.py:87-108`); `_field_sources` passa a `RETRY_{AREA}` solo quando vince il candidato del retry. Le tabelle vengono unite solo dal retry `BODY`, preferendo più righe e, a pari lunghezza, la confidenza media più alta (`extraction/pipeline.py:225-241`, una regola di dominio: una tabella soggetti/fidi/garanzie più lunga si presume più completa).
-
-**7. Controllo di coerenza.** Due regole di dominio riparano i campi a partire dai loro tooltip, dopo i retry così che i tooltip riflettano il passaggio migliore (`extraction/pipeline.py:311-328`):
-- Se `tooltip_evidenze_b` ha un valore ed `evidenze` è nullo o puramente numerico, `evidenze` viene forzato a `"B"` (`:317-322`).
-- Se `tooltip_descrizione_bmb` ha un valore e `tipo` è null, `tipo` viene impostato a `"BMB"` (`:324-328`).
-
-**8. Appiattimento dei soggetti.** Le prime quattro righe di `soggetti` vengono appiattite in `ndg_1..4` / `denominazione_1..4` / `ruolo_1..4` per la valutazione in stile CSV (`extraction/pipeline.py:160-166`): il dominio limita i cointestatari a 4 slot piatti. Questo passo gira *dopo* il passaggio di retry e sovrascrive incondizionatamente: quelle dodici chiavi sono campi `BODY` ritentabili (`extraction/config.py:73-76`), quindi un vincitore di retry `BODY` per `ndg_2` viene rimpiazzato in silenzio da qualunque cosa contenga `soggetti[1].ndg` (persino `None`) e `_field_sources` non viene aggiornato per loro.
-
-**9. Campi canonici e status.** `build_canonical_field_entries()` converte ogni campo in una voce rivolta al cliente con nome visualizzato, chiave di pagina e nome di pagina (`extraction/canonical_mapping.py:20-42`). `_status` è `OK` se e solo se sia `ndg` sia `denominazione` contengono valori non nulli alla fine (`extraction/pipeline.py:172-178`).
-
-La stessa pipeline come sequenza di chiamate, con l'indicazione di dove avviene ogni chiamata VLM:
-
-```mermaid
-sequenceDiagram
-    participant Caller as Chiamante (CLI / GUI / edge-agent)
-    participant Pipe as ExtractionPipeline
-    participant VLM as call_vlm_with_retry
-    participant API as API OpenAI / Gemini (HTTPS)
-
-    Caller->>Pipe: extract_from_image(img, screen_id)
-    Note over Pipe: CONTENT_CROP/HEADER_IN_CONTENT solo su famiglia calibrata (ADR 0010)
-    Pipe->>VLM: ANCHOR_PROMPT + ritaglio header (AnchorResponse)
-    VLM->>API: invoke (output strutturato)
-    API-->>VLM: ndg, denominazione + confidence
-    VLM-->>Pipe: anchor + _meta
-    Note over Pipe: gate 0.95 previsto ma inefficace -<br/>le copie non filtrate alimentano hint e merge
-    Pipe->>VLM: PROMPT + suggerimenti anchor + ritaglio contenuto (ExtractionResponse)
-    VLM->>API: invoke (output strutturato)
-    API-->>VLM: 45 campi + soggetti/fidi/garanzie
-    VLM-->>Pipe: risultato principale + _meta
-    Note over Pipe: unione anchor, normalizzazione tipo
-    Pipe->>VLM: prompt di retry per area (in parallelo)
-    Note over Pipe,API: invariante: chiamate totali per schermata ≤ MAX_CALLS_PER_SCREEN<br/>(1 anchor + 1 principale + max una retry per area di AREA_TO_FIELDS)
-    API-->>VLM: campi ri-estratti
-    VLM-->>Pipe: candidati → pick_best per campo
-    Note over Pipe: controllo di coerenza → appiattimento soggetti (sovrascrive i vincitori dei retry)<br/>→ canonical_fields → _status
-    Pipe-->>Caller: dict risultato (_meta_agg, _field_sources, _status)
-```
+<!-- Source: extraction/imaging.py:19; extraction/imaging.py:52; extraction/config.py:78; extraction/pipeline.py:78; extraction/pipeline.py:110; extraction/pipeline.py:151; extraction/pipeline.py:235; extraction/pipeline.py:244; extraction/normalization.py:16; extraction/normalization.py:104; extraction/pipeline.py:258; extraction/pipeline.py:284; extraction/pipeline.py:366; extraction/pipeline.py:194; prompts/extraction_anchor.json:1 -->
 
 ### Gestione degli errori e casi limite
 
-- **Fallimenti transitori vs permanenti.** `call_vlm_with_retry()` riprova fino a 3 volte con backoff limitato (`min(8.0, 2**i * 0.8) + 0.05*i` secondi) per qualsiasi eccezione *tranne* `ValueError`, che viene risollevata immediatamente (`extraction/vlm_client.py:229-258`). Tutti i fallimenti di parsing/validazione vengono deliberatamente sollevati come `ValueError` (`extraction/vlm_client.py:39,44,95,153,200`), quindi la tassonomia è: `ValueError` = permanente, tutto il resto = transitorio. Qualunque nuovo tipo di eccezione introdotto in `call_vlm` diventa silenziosamente "riprova 3 volte".
-- **Un retry fallito non è fatale.** La pipeline stampa `Warning: retry {area} for {screen} failed (keeping main-pass results)` e mantiene i valori del passaggio principale (`extraction/pipeline.py:288-292`). Il `_meta` della chiamata fallita non viene mai accodato (la riga `:294` è raggiunta solo in caso di successo), quindi `_meta_agg.calls` sottoconta i tentativi falliti anche se i tentativi precedenti del wrapper di retry potrebbero essere già stati fatturati.
-- **Sei campi non vengono mai ritentati.** `creazione` e i cinque campi `tooltip_*` non appartengono a nessuna area di retry (`extraction/config.py:69-82` vs `extraction/fields.py:12-54`): un buco nel passaggio principale per loro è definitivo, salvo dove il controllo di coerenza riempie `evidenze`/`tipo` come effetto collaterale. Nessuna guardia di avvio verifica questa copertura.
-- **L'output strutturato varia per provider.** OpenAI usa `.with_structured_output(schema, include_raw=True)`; `gemini-1.5*` usa json_mode con lo schema; Gemini 2.0+/3.x ricevono lo schema JSON iniettato nel prompt e vengono validati manualmente con Pydantic, perché payload `response_schema` complessi provocano `INVALID_ARGUMENT` (`extraction/vlm_client.py:15-18`, `:47-119`, `:134-183`).
+`MAX_CALLS_PER_SCREEN` regola i **passaggi logici**, non un tetto alle richieste HTTP. Anchor e main restano due letture anche se il valore configurato è inferiore a due, salvo uscita anticipata; ogni invocazione può essere ritentata dal wrapper di trasporto. Le aree vengono selezionate in ordine di priorità, ma completano in qualunque ordine.
+<!-- Source: extraction/pipeline.py:151; extraction/pipeline.py:168; extraction/pipeline.py:304; extraction/pipeline.py:338; extraction/vlm_client.py:230 -->
+
+- **Errori delle prime letture:** propagano al chiamante. `ValueError`, `KeyError` e `IndexError` non vengono ritentati dal wrapper; le altre eccezioni possono produrre fino a tre tentativi, con pausa `min(8.0, 2**i * 0.8) + 0.05*i` secondi.
+- **Errore di un retry di area:** produce un avviso e conserva i valori precedenti. Non aggiunge `_meta`, quindi i tentativi falliti possono essere assenti dal conto di chiamate e costi.
+- **Campi non coperti dai retry:** `creazione` e i cinque `tooltip_*` non appartengono ad alcuna area. Non esistono guardie di avvio che verifichino la copertura.
+- **Appiattimento soggetti:** sovrascrive i dodici campi numerati anche dopo un retry, senza aggiornare la provenienza. I consumatori non devono interpretare `_field_sources` come traccia completa di tutte le trasformazioni.
+- **Stime:** un modello non presente in `PRICING_PER_1M` costa zero nel report; la latenza aggregata somma le chiamate e non misura il tempo totale percepito quando i retry sono paralleli.
+
+<!-- Source: extraction/vlm_client.py:230; extraction/pipeline.py:342; extraction/config.py:101; extraction/fields.py:12; extraction/pipeline.py:203; extraction/vlm_client.py:26; extraction/pipeline.py:383 -->
+
+La forma di output del modello dipende dal provider: OpenAI usa output strutturato, `gemini-1.5*` usa `json_mode`, le altre famiglie Gemini percorrono JSON libero e validazione Pydantic. Il [layer LLM](04-architecture.md#layer-llm-e-prompt) descrive anche il catalogo prompt.
+<!-- Source: extraction/vlm_client.py:21; extraction/vlm_client.py:52; extraction/vlm_client.py:123 -->
 
 ## Estrazione batch da CLI
 
-L'esecuzione end-to-end canonica: elaborare ogni screenshot in una directory, persistere il JSON e stampare accuratezza e costi. La GUI Tkinter riusa lo stesso macchinario: entrambe chiamano `run_extraction_batch()` / `BatchRunner` in **`extraction/cli.py`** (vincolo di CLAUDE.md: non duplicare mai questa logica di threading).
-
-**Trigger:** `python main.py`. `main.py:7-8` carica `.env` *prima* di `from extraction import *`: quest'ordine conta, perché `extraction/config.py:8-56` legge tutte le variabili d'ambiente al momento dell'import. Poi gira `extraction.cli.main()` (`extraction/cli.py:314`).
-
-**Esito:** `mnt/data/poc_outputs_improved.json` (i dict risultato completi), `mnt/data/poc_debug_improved.csv` (righe di audit per coppia (schermata, campo), separatore `;`, `utf-8-sig`), accuratezza RAW + FILTERED su console e un riepilogo dei costi per schermata.
+**Trigger:** `python main.py`, eseguito dalla radice del repository. Carica `.env` prima dell'import del motore, poi `main()` richiede `INPUT_DIR/dati.csv`, carica la ground truth e cerca tutte le immagini PNG/JPG/JPEG direttamente in `INPUT_DIR`, ordinate per nome. Il CSV non è distribuito con il repository; l'avvio CLI si ferma con `FileNotFoundError` se manca.
+<!-- Source: main.py:4; extraction/cli.py:318; extraction/config.py:10; .gitignore:1 -->
 
 ```mermaid
-flowchart TD
-    Start(["python main.py"]) --> Env["main.py: carica .env, importa extraction<br/>(env letto al momento dell'import)"]
-    Env --> CSVCheck{"mnt/data/dati.csv esiste?"}
-    CSVCheck -->|no| Raise["Solleva FileNotFoundError"]
-    CSVCheck -->|sì| LoadGT["load_ground_truth →<br/>dict schermata → etichetta → valore"]
-    LoadGT --> List["Elenca *.png / *.jpg / *.jpeg<br/>in INPUT_DIR, ordinati"]
-    List --> Empty{"Ci sono immagini?"}
-    Empty -->|no| Quit["Stampa 'No images found', ritorna"]
-    Empty -->|sì| Models["Init di BatchRunner:<br/>crea i ChatModel main + anchor UNA VOLTA"]
-    Models --> Decide{"parallel E workers > 1<br/>E schermate > 1?"}
-    Decide -->|sì| Pool["ThreadPoolExecutor:<br/>extract_from_screen per immagine"]
-    Decide -->|no| Serial["extract_from_screen sequenziale"]
-    Pool --> Collect["Raccoglie gli output con chiave = stem del file"]
-    Serial --> Collect
-    Collect --> Dump["Scrive poc_outputs_improved.json"]
-    Dump --> Eval["Evaluator.eval → accuratezza RAW + FILTERED"]
-    Eval --> Debug["build_debug_report →<br/>poc_debug_improved.csv"]
-    Debug --> Cost["print_cost_summary"]
-    Cost --> Done(["Fine"])
+flowchart LR
+    Start["Avvio e ambiente"] --> GT["CSV di riferimento obbligatorio"]
+    GT --> Files["Scoperta immagini"]
+    Files --> Models["Una pipeline e due modelli condivisi"]
+    Models --> Batch["File in parallelo o in sequenza"]
+    Batch --> JSON["poc_outputs_improved.json"]
+    JSON --> Eval["Accuratezza RAW e FILTERED"]
+    Eval --> Report["CSV di debug e costi"]
 ```
 
-### Spiegazione passo per passo
+<!-- Source: extraction/cli.py:184; extraction/cli.py:235; extraction/cli.py:318; extraction/cli.py:344 -->
 
-**1. La ground truth è obbligatoria.** `main()` solleva `FileNotFoundError` se `GROUND_TRUTH_CSV` (`INPUT_DIR/dati.csv`) manca (`extraction/cli.py:315-316`). Il repo traccia i nove screenshot ma non `dati.csv` (`/mnt` è in gitignore), quindi un clone fresco si ferma qui finché il CSV non viene fornito, vedi [Domande aperte](08-open-questions.md).
+`BatchRunner` usa il pool solo quando il parallelismo è attivo, ci sono più worker e più immagini esistenti. I percorsi mancanti sono segnalati e saltati; una cartella senza immagini fa terminare la CLI dopo un messaggio. Ogni risultato è indicizzato dallo stem del file: `a.png` e `a.jpg` hanno la stessa chiave e possono sovrascriversi. La deduplica per pagina canonica è implementata ma la sua chiamata è disabilitata in attesa di validazione del mapping.
+<!-- Source: extraction/cli.py:210; extraction/cli.py:235; extraction/cli.py:271; extraction/cli.py:333; extraction/imaging.py:29 -->
 
-**2. Caricamento della ground truth.** `load_ground_truth()` costruisce un dict `{screen_id: {csv_label: value}}`, auto-rilevando le colonne schermata/chiave/valore tra diverse grafie accettate (`extraction/evaluation.py:33-69`).
+Il JSON completo viene scritto in `INPUT_DIR/poc_outputs_improved.json`. Il valutatore stampa accuratezza e riepilogo dei costi e scrive `INPUT_DIR/poc_debug_improved.csv` con separatore `;` e codifica `utf-8-sig`. Se manca `on_error`, il batch parallelo stampa l'errore e continua, mentre quello sequenziale rilancia l'eccezione. Le callback girano sempre nel thread che chiama il batch.
+<!-- Source: extraction/cli.py:244; extraction/cli.py:260; extraction/cli.py:344; extraction/evaluation.py:15 -->
 
-**3. Enumerazione degli screenshot.** Ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR`, in ordine lessicale (`extraction/cli.py:322-327`), non limitato alle schermate nominate nel CSV. `screen_id` è lo stem del file (`:225`), quindi `a.png` e `a.jpg` colliderebbero in silenzio nel dict degli output.
+### Variante Tkinter
 
-**4. Modelli costruiti una sola volta.** `BatchRunner.__init__` crea esattamente due ChatModel LangChain via `create_chat_model()` (principale e anchor) e una `ExtractionPipeline` condivisa (`extraction/cli.py:181-197`). I ChatModel LangChain si assumono thread-safe e vengono condivisi tra tutti i worker (commento a `:181`; docstring in `extraction/pipeline.py:50-51`); questo è documentato, non verificato nel repo.
+`gui_app.py` avvia il batch da un thread di background con chiave, provider e modello selezionati. Passa fino a `min(numero immagini, 12)` worker. Quando `model_main` è esplicito e `model_anchor` è omesso, il runner usa il modello scelto per entrambi: non recupera un anchor incompatibile dall'ambiente. Tkinter non chiama `load_dotenv()`.
+<!-- Source: gui_app.py:24; gui_app.py:225; gui_app.py:238; extraction/cli.py:177 -->
 
-**5. Estrazione, in parallelo quando conviene.** Il `ThreadPoolExecutor` viene usato solo quando `parallel` è attivo, `max_workers > 1` e c'è più di un'immagine esistente; altrimenti il loop è seriale (`extraction/cli.py:229-266`). La CLI passa `PARALLEL_ENABLED` / `PARALLEL_WORKERS` (default `1` / `4`, `extraction/config.py:11-12`). I file mancanti vengono segnalati con un warning e saltati (`:214-217`).
-
-**6. Persistenza e valutazione.** Gli output vanno in `poc_outputs_improved.json` (`extraction/cli.py:337-340`), poi girano `Evaluator.eval()`, `Evaluator.build_debug_report()` e `print_cost_summary()` (`:343-347`).
-
-Il percorso Tkinter differisce solo ai bordi: `gui_app.py:225-226` avvia un thread worker che chiama `run_extraction_batch()` con la chiave API inserita nella GUI, il provider e il modello principale (`gui_app.py:238-247`, `max_workers=min(len(images), 12)`), scrive `poc_outputs_gui.json` / `poc_results_gui.csv` nella directory corrente e (se è stato selezionato un CSV di GT) esegue `eval_outputs()` e `build_debug_report()` (`gui_app.py:250-275`). Due avvertenze: la GUI non passa mai `model_anchor`, quindi il modello anchor ricade sul `LLM_MODEL_ANCHOR` derivato dall'ambiente (un mismatch di provider solleva un'eccezione in `extraction/llm_factory.py:59-63` quando dal menu a tendina si sceglie Gemini), e `gui_app.py` non esegue alcun `load_dotenv`: assume che le variabili d'ambiente siano già esportate. Vedi [Per iniziare](07-getting-started.md) per l'avvio di ciascuna interfaccia.
-
-### Gestione degli errori e casi limite
-
-- **La semantica degli errori cambia per modalità.** In modalità parallela un'eccezione di un worker senza callback `on_error` stampa `ERROR extracting {screen}` e il batch prosegue (`extraction/cli.py:246-251`). In modalità seriale senza callback l'eccezione viene risollevata e il batch si interrompe (`:261-266`).
-- **Le callback girano sul thread chiamante.** `on_complete`/`on_error` scattano dentro il loop `as_completed` sul thread che ha chiamato `BatchRunner.run()`, non sui worker (`extraction/cli.py:235-266`).
-- **La deduplica per pagina è implementata ma disabilitata.** `_deduplicate_same_page_outputs()` (`extraction/cli.py:92-152`) terrebbe un solo risultato per pagina canonica, ma il punto di chiamata è commentato: `# TEMP TEST: keep all outputs until page_key mapping is validated` (`:268-273`). Il suo controllo di confidenza (`_is_confident_output`, `:77-89`) è, per inciso, l'unico codice che applica davvero `ANCHOR_CONF_MIN` sui valori finali.
+La GUI scrive `poc_outputs_gui.json` e `poc_results_gui.csv` nella directory corrente; se è stato scelto il CSV di riferimento esegue anche valutazione e report di debug. Per comandi e prerequisiti vedere [Per iniziare](07-getting-started.md).
+<!-- Source: gui_app.py:250; gui_app.py:265 -->
 
 ## Valutazione dell'accuratezza
 
-Dopo un'esecuzione batch, il valutatore classifica ogni campo estratto rispetto alla ground truth e riporta due numeri di accuratezza più una traccia di audit per coppia (schermata, campo). I numeri sono due per separare i veri errori di estrazione dalle schermate abbinate alla riga di ground truth sbagliata.
+Il confronto avviene per chiave di schermata e campo: non ricostruisce le pratiche del percorso live. La CLI usa `Evaluator`, che conserva la ground truth, mentre Tkinter chiama le funzioni equivalenti di modulo.
+<!-- Source: extraction/evaluation.py:88; extraction/evaluation.py:269; gui_app.py:265 -->
 
-**Trigger:** `Evaluator.eval()` / `Evaluator.build_debug_report()` dalla CLI (`extraction/cli.py:343-346`); `eval_outputs()` / la `build_debug_report()` a livello di modulo dalla GUI (`gui_app.py:266-274`, nota che le due callable `build_debug_report` hanno arità diverse: la funzione di modulo prende `(outputs, gt, path)`, il metodo `(outputs, path)`, `extraction/evaluation.py:125-129` vs `:275-277`).
+1. **Caricamento CSV.** Il loader rileva il separatore e prova `utf-8-sig`, `cp1252`, `latin-1`; normalizza gli spazi delle intestazioni e riconosce varianti per schermata, nome campo e valore. Una colonna indispensabile non riconosciuta solleva `ValueError`.
+2. **Allineamento della schermata.** Per ogni schermata GT viene cercato l'output con la stessa chiave. Una predizione assente viene saltata, non contata automaticamente come estrazione mancante. Anche etichette senza mapping in `CSV_TO_SCHEMA` vengono saltate.
+3. **Guardia di mismatch.** Quando gli identificativi sono disponibili da entrambi i lati, `dataset_mismatch_guard()` confronta NDG e denominazione; può ricavare il valore predetto anche dai soggetti quando manca nell'intestazione. Una differenza marca la schermata come `DATASET_MISMATCH`.
+4. **Classificazione.** Ogni valore diventa `OK`, `WRONG`, `MISSING`, `HALLUCINATED` o `OK_NULL`. I campi la cui chiave contiene `importo_euro`, `ndg` o `n_fido` usano normalizzazione numerica; il testo GT normalizzato oltre 20 caratteri può passare con similarità `SequenceMatcher` almeno 0.85. Sono nulli anche stringhe vuote, `n/d`, `nd`, `---`, `null`, `none`, `nan`.
+5. **Metriche.** RAW include i campi valutati; FILTERED esclude quelli delle schermate in mismatch. Il dettaglio per campo è FILTERED. Correttezza significa `OK` o `OK_NULL`.
+6. **Report.** Una riga per coppia schermata/campo GT registra valore, confidenza, evidenza, stato, provenienza e metadati. Su una schermata in mismatch lo stato del report diventa `DATASET_MISMATCH`. I CSV neutralizzano le stringhe interpretabili come formule prima della scrittura.
 
-**Esito:** accuratezza complessiva RAW e FILTERED su console, un dettaglio FILTERED per campo e il CSV di debug.
+<!-- Source: extraction/evaluation.py:25; extraction/evaluation.py:32; extraction/evaluation.py:47; extraction/evaluation.py:88; extraction/normalization.py:183; extraction/normalization.py:195; extraction/normalization.py:134; extraction/normalization.py:28; extraction/evaluation.py:139; extraction/evaluation.py:15 -->
 
-```mermaid
-flowchart TD
-    Start(["eval_outputs(outputs, gt)"]) --> Loop["Per ogni schermata nella ground truth"]
-    Loop --> Pred{"Esiste una predizione<br/>per questa schermata?"}
-    Pred -->|no| Loop
-    Pred -->|sì| Guard["dataset_mismatch_guard:<br/>confronta NDG / Denominazione vs GT"]
-    Guard --> FieldLoop["Per ogni etichetta CSV della schermata"]
-    FieldLoop --> Map{"CSV_TO_SCHEMA<br/>ha una mappatura?"}
-    Map -->|no| FieldLoop
-    Map -->|sì| Classify["classify_field →<br/>OK / WRONG / MISSING /<br/>HALLUCINATED / OK_NULL"]
-    Classify --> Raw["Conta per RAW"]
-    Raw --> Mismatch{"Schermata marcata<br/>DATASET_MISMATCH?"}
-    Mismatch -->|no| Filt["Conta per FILTERED<br/>+ FILTERED per campo"]
-    Mismatch -->|sì| Skip["Esclusa da FILTERED"]
-    Filt --> FieldLoop
-    Skip --> FieldLoop
-    FieldLoop --> Report["Stampa % RAW, % FILTERED,<br/>dettaglio per campo"]
-    Report --> Done(["Ritorna acc_raw, acc_filt, per_field_filt"])
-```
-
-### Spiegazione passo per passo
-
-**1. Guardia di mismatch per schermata.** `dataset_mismatch_guard()` confronta `ndg`/`denominazione` predetti con la riga di GT: l'NDG normalizzato numericamente, la Denominazione normalizzata come testo (`extraction/normalization.py:174-189`). Codifica la regola di dominio centrale: **NDG + DENOMINAZIONE sono gli anchor identitari di una pratica; se uno dei due non concorda con la ground truth, l'intera schermata viene marcata `DATASET_MISMATCH` ed esclusa dalle metriche FILTERED.** Il valore anchor può anche essere soddisfatto dalla tabella `soggetti` quando il campo di intestazione è nullo (`_resolve_anchor_value`, `:162-172`).
-
-**2. Classificazione dei campi.** `classify_field()` restituisce uno di cinque stati (`extraction/normalization.py:113-148`): `OK_NULL` (entrambi vuoti), `MISSING` (GT ha un valore, predizione nulla), `HALLUCINATED` (GT nulla, predizione con un valore), e `OK`/`WRONG` per il caso in cui entrambi sono presenti. Le regole di confronto sono specifiche di dominio: qualsiasi campo la cui chiave *contiene* `importo_euro`, `ndg` o `n_fido` viene confrontato dopo la normalizzazione valuta/migliaia (`,`→`.`, rimozione di `€` e spazi, `:127-133`, `norm_number_str` a `:40-55`; la semantica per sottostringa estende la regola a `ndg_1..4`); il testo più lungo di 20 caratteri passa con un rapporto `SequenceMatcher` ≥ 0.85 (`:141-146`). Il vocabolario dei valori nulli è `""`, `"n/d"`, `"nd"`, `"---"`, `"null"`, `"none"`, `"nan"` (`:28-32`).
-
-**3. Accuratezza a due varianti.** Ogni campo classificato conta per RAW; solo i campi su schermate non in mismatch contano per FILTERED e per il dettaglio per campo (`extraction/evaluation.py:96-104`).
-
-**4. Report di debug.** Una riga per coppia (schermata, etichetta GT) con valore predetto, confidenza, testo di evidenza, stato, il passaggio produttore da `_field_sources` (colonna `source_attempt`) e i metadati di costo per schermata; su una schermata marcata ogni stato viene sovrascritto con `DATASET_MISMATCH` (`extraction/evaluation.py:141-170`). Scritto con `sep=";"` e `utf-8-sig` (`:172-177`).
-
-### Gestione degli errori e casi limite
-
-- **Colonne CSV non riconoscibili falliscono rumorosamente**: `_find_column()` solleva `ValueError` (`extraction/evaluation.py:26-31`).
-- **Le etichette GT non mappate vengono saltate in silenzio** durante la valutazione (`extraction/evaluation.py:88-90`); `CSV_TO_SCHEMA` porta persino chiavi con varianti di spaziatura come `"Evidenze "` per assorbire intestazioni sporche (`extraction/fields.py:65`).
-- **I risultati dell'edge-agent non sono valutabili in questo modo.** `ingest_frame` costruisce screen ID come `"{Friendly} - pag. {n}"` (`edge-agent/local_extraction_client.py:80-81`) mentre le chiavi della GT sono stem di file come `"screen 1"`: il join non corrisponde mai, quindi la valutazione ha senso solo per gli output CLI/Tkinter.
+La normalizzazione numerica del valutatore resta distinta da `normalize_ndg()` del consolidamento: trattare un identificatore come quantità può alterarlo. I risultati live usano `screen_id` pari al nome pagina o `pagina N`; non sono automaticamente allineati a chiavi GT come `screen 1`. Serve un mapping esplicito per confrontarli con quel dataset.
+<!-- Source: extraction/normalization.py:40; extraction/normalization.py:195; edge-agent/practice_consolidation.py:46; edge-agent/local_extraction_client.py:168 -->
 
 ## Cattura dal vivo dell'edge-agent (modalità BPER)
 
-L'edge-agent osserva un monitor dal vivo ed estrae mentre l'operatore naviga in BPER. È il workflow più ricco di stato: cattura a FPS fissi, salta i duplicati, aspetta che lo schermo stia fermo, riconosce la pagina, poi esegue l'intera pipeline, in modo sincrono, sul thread di cattura. Non esiste alcun backend remoto: `LocalExtractionClient` è l'unico client del percorso BPER (la logica di upload remoto è stata rimossa deliberatamente, commento a `edge-agent/workers/capture/bper_capture_worker.py:710`).
+**Trigger:** avvio diretto dell'edge-agent e pulsante Avvia nella scheda Cattura. Il preflight precede l'import di `MainWindow`, quindi la prima configurazione dell'ambiente arriva prima dello snapshot del motore. `python main.py --gui` inoltra alla stessa UI ma ha già importato `extraction`; il launcher Windows avvia invece direttamente l'edge-agent.
+<!-- Source: edge-agent/edge_agent.py:63; edge-agent/edge_agent.py:74; main.py:4; run_edge_agent.bat:22; edge-agent/ui/capture_tab.py:192 -->
 
-**Trigger:** `python edge-agent/edge_agent.py` (oppure `python main.py --gui`, oppure `run_edge_agent.bat`), poi l'operatore clicca Avvia nella tab Cattura.
+`MainWindow` crea un client condiviso e l'avvio della cattura assegna un UUID al job prima di far partire il worker. L'estrazione viene accodata su thread separati; il riconoscimento pagina resta nel loop di cattura e le sue chiamate di rete possono allungare un tick oltre l'intervallo FPS.
+<!-- Source: edge-agent/ui/main_window.py:36; edge-agent/ui/capture_tab.py:192; edge-agent/workers/capture/base_capture_worker.py:43; edge-agent/local_extraction_client.py:114 -->
 
-**Esito:** un dict risultato per pagina catturata, memorizzato sotto il job in `LocalExtractionClient` e spinto verso le tab della UI tramite il segnale Qt `result_ready`; l'operatore viene guidato verso la prossima pagina da aprire.
+### Dalla schermata a una visita
+
+`_grab_raw()` crea mss nel thread di cattura, legge il monitor configurato e applica `normalize_frame()` prima di deduplica, routing o estrazione. Se l'indice monitor non è valido usa il primo monitor. La normalizzazione prova a identificare la finestra; se resta il monitor intero, il worker emette un avviso perché le geometrie dei consumatori possono non corrispondere. Il preprocessing successivo è best effort: un suo errore conserva l'immagine precedente.
+<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:444; edge-agent/workers/capture/bper_capture_worker.py:497; edge-agent/workers/capture/bper_capture_worker.py:536; edge-agent/frame_normalize.py:209 -->
+
+Una *visita* è un'immagine normalizzata invariata: dimensioni, modalità colore e digest BLAKE2b dei pixel. Qualsiasi cambiamento rilevato apre una nuova visita e riavvia la stabilità, anche quando cambia soltanto una cifra dell'NDG. Il pHash misura invece la somiglianza visiva: riduce lavoro di routing, ma non impedisce una nuova pratica sulla stessa pagina.
+<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:329; edge-agent/workers/capture/bper_capture_worker.py:549; tests/test_bper_capture_lifecycle.py:141 -->
+
+Il registro risolve l'etichetta in una pagina; sul catalogo valido il catch-all e i nomi sconosciuti non sono acquisibili. `StabilityTracker` richiede almeno due osservazioni concordi e due secondi di permanenza e tollera un'osservazione discordante. Nel worker, un cambiamento dei pixel resetta comunque il tracker. Un duplicato può confermare il candidato già riconosciuto senza pagare un'altra chiamata router, purché l'ultima pagina riconosciuta coincida col candidato. Se non c'è un candidato confermabile, `route_retry_seconds` limita i nuovi tentativi sul frame simile.
+<!-- Source: edge-agent/page_registry.py:69; edge-agent/stability.py:10; edge-agent/stability.py:47; edge-agent/stability.py:75; edge-agent/workers/capture/bper_capture_worker.py:329; edge-agent/workers/capture/bper_capture_worker.py:368 -->
 
 ```mermaid
-flowchart TD
-    Start(["L'operatore clicca Avvia"]) --> Job["start_job → job_id uuid<br/>poi parte il QThread BPERCaptureWorker"]
-    Job --> Tick["_capture_once agli FPS configurati"]
-    Tick --> Grab["Grab mss di monitor_index<br/>+ preprocess_for_ocr"]
-    Grab --> Dedup{"Frame duplicato?<br/>Hamming pHash ≤ soglia"}
-    Dedup -->|"sì, entro la finestra route_retry"| Tick
-    Dedup -->|"no, o finestra scaduta"| Route["_detect_page tramite router"]
-    Route --> Known{"page_type noto e diverso da<br/>Altro / Non riconosciuto?"}
-    Known -->|no| ResetA["Reset stabilità, guida l'operatore"]
-    ResetA --> Tick
-    Known -->|sì| Candidate{"Stesso candidato<br/>del tick precedente?"}
-    Candidate -->|no| NewCand["Nuovo candidato, riavvia il timer"]
-    NewCand --> Tick
-    Candidate -->|sì| Stable{"Fermo da ≥ 2.0 s?<br/>STABILITY_SECONDS"}
-    Stable -->|no| Wait["Log 'mantieni aperta', attende"]
-    Wait --> Tick
-    Stable -->|sì| Upload["_upload_page → ingest_frame<br/>SINCRONO nel thread di cattura"]
-    Upload --> Pipe["ExtractionPipeline.extract_from_image"]
-    Pipe --> Store["Accoda il risultato sotto job_id<br/>protetto da threading.Lock"]
-    Store --> Emit["Emette result_ready(job_id, result)"]
-    Emit --> UI["Le tab della UI si aggiornano sul thread GUI"]
-    UI --> Next["Aggiunge la pagina a captured_page_types<br/>guida l'operatore alla pagina successiva"]
-    Next --> Tick
+flowchart LR
+    New["Nuova visita"] --> Stable["Attesa di stabilità"]
+    Stable -->|"Ingest accettato"| Pending["Estrazione pendente"]
+    Stable -->|"Ingest rifiutato"| Stable
+    Stable -->|"Pixel cambiati"| New
+    Pending -->|"ERROR corrente"| Stable
+    Pending -->|"Altro esito corrente"| Done["Visita completata"]
+    Pending -->|"Pixel cambiati"| New
+    Done -->|"Pixel cambiati"| New
+    Done -->|"Scatto manuale accettato"| Pending
 ```
 
-### Spiegazione passo per passo
+<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/workers/capture/bper_capture_worker.py:329; edge-agent/workers/capture/bper_capture_worker.py:422; edge-agent/workers/capture/bper_capture_worker.py:727 -->
 
-**1. Un client condiviso, un job.** `MainWindow` costruisce un solo `LocalExtractionClient`, che al volo costruisce entrambi i ChatModel e la `ExtractionPipeline` dalla config derivata dall'ambiente: l'app fallisce subito al boot senza chiave API (`edge-agent/local_extraction_client.py:44-57`; `edge-agent/ui/main_window.py:37`). Il click su Avvia chiama `start_job()` per un nuovo UUID e avvia un QThread `BPERCaptureWorker` agli FPS configurati (`edge-agent/ui/capture_tab.py:177-232`, `:272`). Contratto di ordinamento: **il job ID viene impostato prima che il worker parta**; `_capture_once()` non fa nulla finché `job_id_getter()` restituisce un valore falsy (`edge-agent/workers/capture/bper_capture_worker.py:466-469`).
+### Accodamento, esito e nuovo tentativo
 
-**2. Cattura e preprocessing.** A ogni tick (loop `BaseCaptureWorker.run()`, `edge-agent/workers/capture/base_capture_worker.py:39-61`), `_capture_screenshot()` cattura il monitor configurato tramite un contesto `mss` creato pigramente ed esegue `preprocess_for_ocr()` (scala adattiva, unsharp mask, autocontrasto) da `edge-agent/image_ops.py` (`bper_capture_worker.py:550-587`). `monitor_index` viene limitato con fallback al monitor 1 (`:569-571`).
+`ingest_frame()` accetta il lavoro e restituisce la sequenza del frame da zero per job. Solo i lavori accettati consumano una sequenza; un pool chiuso solleva `RuntimeError` senza emettere `frame_queued`. `fields_json` è mantenuto nell'interfaccia, ma non guida la pipeline. Il worker marca la visita come pendente, senza dichiararla già acquisita.
+<!-- Source: edge-agent/local_extraction_client.py:127; edge-agent/local_extraction_client.py:145; edge-agent/local_extraction_client.py:157; edge-agent/workers/capture/bper_capture_worker.py:422 -->
 
-**3. Deduplica tramite pHash.** `_is_duplicate_frame()` confronta un pHash su 256×256 con il frame precedente; una distanza di Hamming ≤ `dedup_threshold` (config, default 3) significa duplicato (`bper_capture_worker.py:601-624`). Dettaglio temporale: **l'hash memorizzato viene aggiornato solo quando la distanza supera la soglia** (`:617-623`), quindi una deriva lenta continua a confrontare con l'ultimo frame "nuovo". Un duplicato non viene scartato subito: il routing viene ritentato una volta ogni `route_retry_seconds`, così una schermata statica che il router non ha riconosciuto ha un'altra occasione (`:476-489`).
+La conferma dell'esito, o *ack*, entra in una coda di comandi con `(job_id, sequenza, stato)`. La coppia job/sequenza identifica visita e pagina originarie. Solo l'ack della cattura corrente può completare o liberare quella visita; una risposta vecchia non modifica il pendente di una visita nuova. Il set `captured_page_types` registra i nomi elaborati per la guida, senza impedire successive acquisizioni della stessa pagina.
+<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:278; edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/workers/capture/bper_capture_worker.py:267 -->
 
-**4. Riconoscimento della pagina.** `_detect_page()` esegue il router configurato (vedi il workflow successivo). Un page type `None` o il catch-all resetta la stabilità e salta il frame; **"Altro / Non riconosciuto" non viene mai catturato** (`bper_capture_worker.py:31-32`, `:491-494`, lo stesso controllo su frozenset è duplicato in `edge-agent/ui/capture_tab.py:34`).
+Dopo `ERROR` o rifiuto di ingest serve un nuovo intervallo stabile prima del retry automatico. `ANCHOR_UNCERTAIN` completa la visita: una pagina senza NDG può comunque avere campi utili e non va ripetuta indefinitamente solo per lo stato. La pagina corrente, mentre è pendente o completata, non viene instradata e accodata a ogni tick; un cambiamento di pixel riabilita la cattura.
+<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/workers/capture/bper_capture_worker.py:323; edge-agent/workers/capture/bper_capture_worker.py:362 -->
 
-**5. Il gate di stabilità: un invariante temporale.** Una pagina riconosciuta viene caricata solo dopo che lo *stesso* candidato è stato rilevato continuativamente per ≥ `STABILITY_SECONDS` (2.0 s, `bper_capture_worker.py:49`, `:496-521`). Un candidato diverso riavvia il timer. Questo evita di catturare frame a metà transizione. Il gate viene bypassato da `force_capture()` (passo 8).
+### Pubblicazione ordinata e consolidamento
 
-**6. Estrazione sincrona.** `_upload_page()` riconosce il client locale per duck typing (`hasattr(api_client, "ingest_frame")`) e chiama `ingest_frame(job_id, img, page_no, page_type, confidence, fields_json)` (`bper_capture_worker.py:693-703`; il kwarg `fields_json` viene accettato ma non usato dal chiamato, `edge-agent/local_extraction_client.py:65-73`). **La chiamata gira in modo sincrono nel QThread di cattura** (`local_extraction_client.py:77-79`), quindi le molteplici chiamate HTTPS bloccanti della pipeline fermano il loop FPS finché l'estrazione non è completa.
+Le estrazioni possono finire fuori ordine. `get_results()` espone soltanto il **prefisso completato senza buchi**: se sono pronti 0 e 2, espone 0; quando termina 1, espone 0, 1 e 2. Un risultato `ERROR` occupa il suo posto, mentre un errore nella scrittura diagnostica aggiunge `_diagnostic_error` senza perdere il risultato o bloccare il prefisso.
+<!-- Source: edge-agent/local_extraction_client.py:170; edge-agent/local_extraction_client.py:188; edge-agent/local_extraction_client.py:194; edge-agent/local_extraction_client.py:222 -->
 
-**7. Memorizza ed emette.** `ingest_frame()` esegue `extract_from_image()`, allega `_page_type`/`_page_no`/`_page_confidence`, accoda a `_results[job_id]` sotto un `threading.Lock` ed emette `result_ready(job_id, result)` con un dict copiato in modo shallow (`local_extraction_client.py:86-106`). Invarianti: **le mutazioni di `_results` sono sempre protette dal lock e la lista è append-only**: ri-rilevare una pagina dopo un cambio di hash accoda un'altra riga invece di sostituirne una (`:100-103`). Il segnale Qt è l'unico canale cross-thread; sono connesse tre tab (`edge-agent/ui/capture_tab.py:212`, `edge-agent/ui/extraction_results_tab.py:65`, `edge-agent/ui/data_table_tab.py:98`), e il codice UI legge soltanto tramite gli accessor con lock `get_results()`/`get_all_job_ids()` (`local_extraction_client.py:147-153`). Le copie sono shallow, quindi i dict annidati restano condivisi con la UI.
-
-**8. Guida e cattura forzata.** Dopo la cattura, la pagina entra in `captured_page_types`: un set che **cresce monotonicamente entro un job** e guida soltanto l'operatore; nulla lo consulta prima di ricaricare una pagina già catturata, e lo "stop automatico quando tutte le pagine previste sono acquisite" della docstring (`bper_capture_worker.py:45`) non ha codice che lo implementi (`:532-546`). Il pulsante "Acquisisci ora" chiama `force_capture(page_name)` per una pagina selezionata manualmente, saltando sia il match del router sia il gate di stabilità (`:725-764`).
-
-Lo stesso loop come sequenza di chiamate, con i confini tra thread:
+`result_ready` notifica invece ciascun completamento appena disponibile: può arrivare prima del ritorno di `ingest_frame()` e prima di `frame_queued`. La UI non deve costruire una seconda lista dall'ordine dei segnali. Dati Estratti rilegge il client e consolida il prefisso pubblicato. Il segnale immediato permette intanto al worker di confermare l'esito senza attendere i frame precedenti.
+<!-- Source: edge-agent/local_extraction_client.py:154; edge-agent/local_extraction_client.py:204; edge-agent/ui/data_table_tab.py:128; edge-agent/ui/data_table_tab.py:194; edge-agent/workers/capture/bper_capture_worker.py:278 -->
 
 ```mermaid
 sequenceDiagram
-    actor Op as Operatore
-    participant Worker as BPERCaptureWorker (QThread)
-    participant Router as PageRouter (LLM / ML)
+    participant Capture as Thread di cattura
     participant Client as LocalExtractionClient
-    participant Pipe as ExtractionPipeline
-    participant UI as Tab della UI (thread GUI)
-
-    Op->>Client: start_job()
-    Client-->>Op: job_id (uuid) - impostato prima dell'avvio del worker
-    loop Ogni tick agli FPS configurati
-        Worker->>Worker: grab mss + preprocess_for_ocr + dedup pHash
-        Worker->>Router: route(img)
-        Router-->>Worker: page_type, confidence
-        alt Sconosciuta o "Altro / Non riconosciuto"
-            Worker->>Worker: reset stabilità (mai catturata)
-        else Nota e stabile per ≥ 2.0 s
-            Worker->>Client: ingest_frame(job_id, img, ...)
-            Note over Worker,Client: sincrono - loop di cattura bloccato<br/>per l'intera estrazione
-            Client->>Pipe: extract_from_image(img, screen_id)
-            Pipe-->>Client: dict risultato
-            Note over Client: append sotto lock - _results è append-only
-            Client-->>UI: result_ready(job_id, result) [coda Qt]
-            Worker->>Op: pagina aggiunta a captured_page_types (monotono),<br/>guida verso la pagina successiva
-        end
-    end
+    participant Pool as Worker di estrazione
+    participant UI as Dati Estratti
+    Capture->>Client: ingest_frame(immagine e pagina)
+    Client->>Pool: accoda con sequenza
+    Client-->>Capture: sequenza accettata
+    Note over Capture: Il loop continua a catturare
+    Pool->>Pool: extract_from_image()
+    Pool->>Client: risultato o ERROR con sequenza
+    Note over Client: Memorizza sotto lock e avanza il prefisso contiguo
+    Client-->>Capture: result_ready → coda ack
+    Client-->>UI: result_ready → aggiorna vista
+    UI->>Client: get_results(job_id)
+    Client-->>UI: prefisso in ordine di cattura
+    UI->>UI: consolidate() → una riga per pratica
+    Note over Capture,Pool: Un completamento molto rapido può precedere il ritorno di ingest
 ```
 
-### Gestione degli errori e casi limite
+<!-- Source: edge-agent/local_extraction_client.py:145; edge-agent/local_extraction_client.py:194; edge-agent/local_extraction_client.py:204; edge-agent/ui/data_table_tab.py:194 -->
 
-- **Un fallimento di estrazione diventa un risultato `ERROR`, non un crash.** In caso di eccezione, `ingest_frame()` sostituisce `{screen_id, fields: {}, _status: "ERROR", _error}`: un dict ridotto senza `_meta_agg`, `canonical_fields`, `_field_sources` né le liste tabellari (`edge-agent/local_extraction_client.py:87-94`). I consumatori leggono quelle chiavi in modo difensivo.
-- **La cattura si auto-arresta dopo fallimenti ripetuti.** Cinque errori di screenshot consecutivi sollevano `RuntimeError("Cattura fallita N volte consecutive...")` e fermano il worker (`bper_capture_worker.py:97-98`, `:588-598`); un `mss` mancante solleva `"mss non disponibile"` e ferma subito (`:557-564`). Le altre eccezioni per-tick non sono fatali: il loop di run le cattura e le emette (`base_capture_worker.py:53-56`).
-- **Rischi cross-thread (non verificati).** `force_capture()` viene eseguito sul thread della UI (`capture_tab.py:404` invoca lo slot direttamente sull'oggetto QThread) e condivide `_mss_ctx`, `_last_frame_hash` e `captured_page_types` con il loop di cattura senza lock (`bper_capture_worker.py:739`, `:557-574`). `stop()` chiude `_mss_ctx` dal thread chiamante mentre il loop può essere a metà di `_capture_once()`; `CaptureTab` chiama `stop()` e poi `wait(5000)` (`bper_capture_worker.py:214-222`; `capture_tab.py:307-308`).
-- **Crescita illimitata.** `_results` accumula una voce per frame catturato per job e non viene mai svuotato (`local_extraction_client.py:56`, `:100-103`).
+`consolidate()` usa `normalize_ndg()` come chiave: elimina separatori, uniforma le lettere e rimuove gli zeri iniziali soltanto se restano cifre. Un frame senza NDG si associa alla pratica precedente in ordine di cattura; quelli iniziali attendono la prima identificata. Se nessun frame ha NDG, nasce un solo record anonimo. La fusione dei campi passa da `pick_best()`, condiviso con la pipeline.
+<!-- Source: edge-agent/practice_consolidation.py:46; edge-agent/practice_consolidation.py:85; edge-agent/practice_consolidation.py:105 -->
+
+Entrambi i pulsanti Excel usano `export_results()`: consolidamento, 45 colonne canoniche, NDG e denominazione all'inizio, intestazione su due righe, una riga per pratica. I valori vengono scritti come testo tramite il tipo della cella: le stringhe che iniziano con `=` non diventano formule e i valori negativi conservano il segno. Le rinomine delle colonne in Dati Estratti modificano le etichette, non le chiavi del motore.
+<!-- Source: edge-agent/ui/capture_tab.py:332; edge-agent/ui/data_table_tab.py:255; edge-agent/excel_export.py:92; edge-agent/excel_export.py:124; edge-agent/excel_export.py:177; edge-agent/excel_export.py:217 -->
+
+### Scatto manuale e arresto
+
+`force_capture(page_name)` inserisce soltanto un comando nella coda. Il loop di cattura lo consuma, fotografa ciò che è visibile **al momento dell'esecuzione** e salta routing e attesa di stabilità. Se una chiamata router è già in corso, il comando aspetta che termini. Una richiesta per la stessa pagina già pendente non aggiunge un doppione; dopo un completamento è possibile riacquisire manualmente. Il retry dopo errore conserva la pagina selezionata e i suoi metadati, anche quando differiscono dalla precedente risposta del router.
+<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:284; edge-agent/workers/capture/bper_capture_worker.py:422; edge-agent/workers/capture/bper_capture_worker.py:722; edge-agent/workers/capture/bper_capture_worker.py:727 -->
+
+Il worker usa un loop proprio, senza event loop Qt: uno slot Qt accodato da solo non basta a eseguire la cattura nel suo thread. Per questo lo slot cross-thread scrive soltanto nella coda e il loop applica i comandi. mss viene creato, usato e chiuso nel thread di cattura. Lo stop impedisce nuove acquisizioni ai punti di controllo e scarta i comandi non ancora eseguiti, ma non interrompe una chiamata di rete già in corso.
+<!-- Source: edge-agent/workers/capture/base_capture_worker.py:43; edge-agent/workers/capture/base_capture_worker.py:74; edge-agent/workers/capture/bper_capture_worker.py:65; edge-agent/workers/capture/bper_capture_worker.py:216; edge-agent/workers/capture/bper_capture_worker.py:284; edge-agent/workers/capture/bper_capture_worker.py:350 -->
+
+I compromessi sono espliciti negli [ADR 0013](adr/0013-risultati-nell-ordine-di-acquisizione.md), [0014](adr/0014-acquisizione-per-visita-con-esito.md) e [0015](adr/0015-scatto-manuale-nel-thread-di-cattura.md):
+
+- un frame lento ritarda la visualizzazione dei successivi già pronti;
+- animazioni o aggiornamenti continui dei pixel riavviano la stabilità e possono aumentare routing e attesa; lo scatto manuale resta disponibile;
+- il client conserva risultati in memoria senza una politica di svuotamento; le copie di `get_results()` proteggono la lista, non i dizionari annidati;
+- `shutdown()` scarta le estrazioni ancora in coda e non attende il completamento della sessione: eventuali buchi possono lasciare risultati successivi non pubblicabili;
+- cinque errori consecutivi di screenshot fermano la cattura; l'assenza di mss la ferma subito. Le altre eccezioni per tick vengono segnalate dal loop.
+
+<!-- Source: edge-agent/local_extraction_client.py:116; edge-agent/local_extraction_client.py:194; edge-agent/local_extraction_client.py:214; edge-agent/local_extraction_client.py:222; edge-agent/extraction_pool.py:45; edge-agent/workers/capture/bper_capture_worker.py:329; edge-agent/workers/capture/bper_capture_worker.py:444; edge-agent/workers/capture/base_capture_worker.py:53 -->
 
 ## Routing di pagina (edge-agent)
 
-La decisione per-frame dentro il passo 4 della cattura dal vivo: *quale pagina BPER è questa, e l'estrazione va eseguita?* Tre strategie intercambiabili, selezionate da `router=` in `edge-agent/config.ini` (valore committato: `llm`).
+Il routing assegna una pagina alla schermata prima dell'estrazione. `RouterResult` trasporta `page_type`, `confidence`, `fields`, `reason` ed `expected`; `PageRegistry` collega nomi visualizzati e stem dei template. Questi nomi distinguono varianti della schermata; le quattro pagine canoniche dell'output sono invece assegnate ai campi da `field_definitions.py`, non dal nome ritornato dal router.
+<!-- Source: edge-agent/llm_router.py:29; edge-agent/page_registry.py:69; extraction/field_definitions.py:1; extraction/page_definitions.py:5 -->
 
-**Trigger:** `BPERCaptureWorker._detect_page()` (`edge-agent/workers/capture/bper_capture_worker.py:628-675`).
+| Modalità | Percorso effettivo |
+|---|---|
+| `ml` | `MLPageRouter` possiede un classificatore DINOv2 locale e restituisce la classificazione. |
+| `llm` | `LLMPageRouter` invia frame e fascia header all'endpoint configurato. |
+| `hybrid` | Prima LLM; se non trova una pagina e il classificatore è disponibile, ripiega su ML. |
+| `local-first` | Esegue prima il controllo locale su margine e classe di scarto. Nell'inizializzazione attuale il router di riserva è ancora `MLPageRouter`: non viene creato un fallback LLM. |
 
-**Esito:** un `RouterResult(page_type, confidence, fields, reason, expected)` (`edge-agent/llm_router.py:27-34`): il contratto che ogni implementazione di `PageRouter.route()` deve onorare (`:37-39`).
+<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:123; edge-agent/workers/capture/bper_capture_worker.py:571; edge-agent/workers/capture/bper_capture_worker.py:622; edge-agent/llm_router.py:43 -->
 
-```mermaid
-flowchart TD
-    Start(["_detect_page(img)"]) --> Mode{"modalità router<br/>da config.ini"}
-    Mode -->|ml| ML["MLPageRouter →<br/>BPERPagePrototypeClassifier"]
-    Mode -->|llm| LLM["LLMPageRouter<br/>(OpenAI Vision, SDK raw)"]
-    Mode -->|hybrid| LLM
-    ML --> MLClass["Embedding DINOv2 ViT-S/14 della ROI area applicativa<br/>(0.0, 0.20, 1.0, 0.98) schiacciata a 224x224<br/>coseno CENTRATO vs prototipi in cache<br/>soglia 0.35"]
-    LLM --> LLMCall["Downscale a 1280px di frame intero + ROI header<br/>chat.completions, json_object, temperatura 0"]
-    LLMCall --> Validate["Guardia anti-allucinazione:<br/>page_type deve corrispondere a un nome di prompts.json<br/>(rimappatura case-insensitive, altrimenti None)"]
-    Validate --> Res{"page_type trovato?"}
-    Res -->|sì| Return(["RouterResult(page_type, confidence)"])
-    Res -->|"no + hybrid + classificatore disponibile"| MLClass
-    Res -->|"no (solo llm)"| Null(["RouterResult(None, 0.0)"])
-    MLClass --> Return
-```
+### Router LLM
 
-### Spiegazione passo per passo
+Il router riduce il lato lungo del frame a un massimo di 1280 pixel e aggiunge una fascia header dal 12% al 30% dell'altezza. Usa l'SDK OpenAI compatibile con endpoint e modello risolti da `AgentConfig`, temperatura zero e `response_format=json_object`. Prova due volte il blocco di chiamata/parsing, con pausa `0.5*(tentativo+1)` secondi in caso di errore; dopo il fallimento restituisce una pagina nulla con `reason`.
+<!-- Source: edge-agent/llm_router.py:172; edge-agent/llm_router.py:218; edge-agent/config.py:292 -->
 
-**1. Modalità LLM (il predefinito dal 2026-08-18).** `LLMPageRouter.route()` riduce il frame intero e una ROI di header (la banda di altezza 12%-30%) a 1280 px, invia entrambi alle chat completions con `response_format={"type": "json_object"}` a temperatura 0 e il timeout di config, e parsa `page_type`/`confidence`/`reason` (`edge-agent/llm_router.py:144-245`). L'elenco delle pagine e i suggerimenti per pagina vengono da `edge-agent/assets/templates/bper/prompts.json` (10 definizioni, catch-all incluso). Questo è l'unico percorso LLM che bypassa `create_chat_model()`; usa l'SDK `openai` raw contro l'endpoint del provider configurato, con la propria risoluzione di chiave, endpoint e modello via `AgentConfig.resolve_llm_settings()`: i valori espliciti in `config.ini [llm]` sono autorevoli, i default del provider riempiono solo le voci vuote, e per `gemini` la chiave si cerca in `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY` (per `openai`: `OPENAI_API_KEY` → `LLM_API_KEY`). Nota che il valore `[llm] api_key` nel `config.ini` committato è stato ripulito e sostituito da un placeholder dopo una fuga di chiave; tratta quel file come potenziale portatore di segreti.
+Con catalogo pagine valido e non vuoto, il nome prodotto deve appartenere al catalogo: il router corregge differenze di maiuscole/minuscole e annulla gli altri nomi. Se manca il client, restituisce un risultato nullo e registra la motivazione nel debug. Gli errori forniti in `reason` vengono mostrati nel feed del worker senza ripeterli a ogni frame. Il dettaglio completo di prompt e risposta richiede entrambi `--debug` e l'impostazione INI della diagnostica LLM.
+<!-- Source: edge-agent/llm_router.py:172; edge-agent/llm_router.py:251; edge-agent/workers/capture/bper_capture_worker.py:636; edge-agent/workers/capture/bper_capture_worker.py:653; edge-agent/edge_agent.py:87 -->
 
-**2. Guardia anti-allucinazione.** Un `page_type` restituito viene validato contro i nomi di `prompts.json`; un quasi-match viene rimappato in modo case-insensitive, tutto il resto viene annullato (`edge-agent/llm_router.py:225-230`). Invariante: **un page type non nullo del router è sempre un vero nome di pagina di `prompts.json`.**
+Il catalogo dei testi e quello delle pagine hanno politiche diverse: un testo LLM illeggibile deve produrre un errore gestibile, mentre un catalogo pagine mancante o danneggiato degrada la specifica e il registro. In fallback permissivo `PageRegistry.empty()` può risolvere etichette non vuote senza una sequenza predefinita; non vale quindi in quella modalità l'invariante del catalogo completo.
+<!-- Source: edge-agent/llm_router.py:102; edge-agent/llm_router.py:111; edge-agent/page_registry.py:63; edge-agent/page_registry.py:69; edge-agent/workers/capture/bper_capture_worker.py:239 -->
 
-**3. Modalità ML** (il ripiego, non più il predefinito). `MLPageRouter` incapsula `BPERPagePrototypeClassifier` (ROI `DEFAULT_CROP_ROI = (0.0, 0.20, 1.0, 0.98)` sull'area applicativa, soglia 0.35 sul punteggio centrato, CPU, `edge-agent/llm_router.py:42-58`), che fa l'embedding del ritaglio con DINOv2 ViT-S/14 (384 dimensioni, caricato via `torch.hub`), lo schiaccia a 224x224 senza `CenterCrop` e confronta con i prototipi in cache in `edge-agent/assets/templates/bper/bper_page_prototypes.json` per **coseno centrato**: il centroide dei prototipi viene sottratto a entrambi i lati del confronto. Serve perché pagine diverse dello stesso applicativo condividono quasi tutti i pixel: sul coseno grezzo stavano tutte fra 0.91 e 1.00 con margini di 0.003 fra la prima e la seconda, e nessuna soglia poteva separarle. Togliendo la componente comune il margine medio sale a 0.11. La cache dei prototipi è indicizzata anche su `embedding_geometry()`, così un cambio di ROI, resize, modello o regola di punteggio la invalida invece di servire vettori incoerenti ([ADR 0002](adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md), [ADR 0003](adr/0003-chiave-cache-prototipi-con-geometria.md)). (La docstring del worker a `bper_capture_worker.py:42` dice ancora "MobileNetV3"; il codice in `edge-agent/page_classifier.py` è quello autorevole.) Se l'import di torch fallisce, il classificatore si auto-disabilita e `classify()` restituisce `(None, 0.0)` (`page_classifier.py:9-19`).
+### Classificatore ML e cache
 
-**4. Fallback hybrid.** Prima LLM; se non restituisce alcuna pagina ed esiste un classificatore ML, si ricade su ML (`bper_capture_worker.py:663-668`).
+DINOv2 ViT-S/14 produce un vettore di 384 dimensioni dalla ROI dell'area applicativa, ridimensionata interamente a 224×224 senza ritaglio centrale. Il confronto usa coseno centrato: sottrae la componente comune dei prototipi per distinguere schermate con gran parte della grafica identica. La soglia del punteggio è 0.35; `classify_detailed()` espone anche il margine rispetto al secondo candidato e l'eventuale prototipo di scarto.
+<!-- Source: edge-agent/page_classifier.py:37; edge-agent/page_classifier.py:350; edge-agent/page_classifier.py:660 -->
 
-### Gestione degli errori e casi limite
+La cache include la geometria dell'embedding: ROI, resize, modello e regola di punteggio. Un cambiamento di geometria invalida i prototipi, come descritto negli [ADR 0002](adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md) e [0003](adr/0003-chiave-cache-prototipi-con-geometria.md). Se torch/torchvision non sono importabili, il classificatore si disabilita. Il caricamento usa Torch Hub; il preflight prepara pesi e cache per `ml` e `hybrid`, ma non include `local-first` in quel controllo.
+<!-- Source: edge-agent/page_classifier.py:140; edge-agent/page_classifier.py:166; edge-agent/page_classifier.py:313; edge-agent/page_classifier.py:350; edge-agent/bootstrap.py:510 -->
 
-- **Il router non lancia mai eccezioni nel loop.** Un client assente (chiave mancante, import fallito) produce un `RouterResult` nullo con un messaggio d'errore solo di debug (`llm_router.py:146-150`); i fallimenti API vengono ritentati due volte con backoff di `0.5*(n+1)` s e poi restituiscono anch'essi null (`:191`, `:246-258`). Un router silenziosamente morto appare quindi come "nessuna pagina riconosciuta": visibile solo nella tab Debug LLM (`config.ini [debug] show_llm_tab` più il flag CLI `--debug`).
-- **I page type del router non raggiungono mai la tassonomia canonica.** I nomi rilevati (es. `"Risultato ricerca - Colonne estese"`) vengono memorizzati grezzi in `_page_type` e non passano mai per `resolve_page_key()`, che conosce solo le quattro chiavi canoniche: due sistemi di naming disgiunti senza alcun ponte (`edge-agent/local_extraction_client.py:96`; `extraction/page_definitions.py:12-39`). Vedi [Modello dei dati](06-data-model.md#pagina-canonica).
-- **I pesi DINOv2 vengono scaricati al primo uso ML** via `torch.hub`, senza fallback offline.
+In `local-first`, un prototipo di scarto termina la decisione senza rete; una pagina con margine almeno `local_margin_min`, default 0.10, viene accettata localmente. Se il margine è basso si passa al router configurato, che nell'implementazione corrente è ancora ML: la soglia di margine non garantisce quindi l'escalation remota né impone un rifiuto finale.
+<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:103; edge-agent/workers/capture/bper_capture_worker.py:190; edge-agent/workers/capture/bper_capture_worker.py:571; edge-agent/workers/capture/bper_capture_worker.py:622 -->
 
 ## Processi in background
 
-Non esistono server, scheduler, cron job o worker di coda. L'unica attività a lunga esecuzione è il loop di cattura dell'edge-agent, che è una funzionalità rivolta all'operatore più che un task autonomo:
+| Unità | Compito e durata |
+|---|---|
+| `BPERCaptureWorker` | Loop QThread di camera, routing, stabilità e comandi fino allo stop. |
+| `DaemonThreadPool` | Coda di estrazione live con almeno un worker, normalmente `PARALLEL_WORKERS`; `pending()` conta approssimativamente i lavori non ancora iniziati. |
+| Pool batch | Executor temporaneo per i file, condividendo una pipeline e due modelli. |
+| Executor dei retry | Pool temporaneo per le aree deboli di ogni immagine, annidato al livello batch o live. |
+| Preflight Qt | Preparazione di pesi e classificatore prima della UI principale, con worker dedicato al download. |
 
-- **`BPERCaptureWorker` (QThread).** Il loop di cattura descritto sopra gira agli FPS configurati finché l'operatore non lo ferma o non scatta l'auto-arresto dopo cinque fallimenti consecutivi (`edge-agent/workers/capture/bper_capture_worker.py`).
-- **Executor di retry per schermata.** Il passaggio di retry della pipeline avvia un `ThreadPoolExecutor` annidato di breve vita per schermata, condividendo gli stessi ChatModel del pool batch esterno (`extraction/pipeline.py:284-309`).
-- **`DefaultCaptureWorker` (modalità "Generico").** Un percorso legacy che cattura frame a schermo intero via `pyscreenshot` e li POSTa a `{api.base_url}/jobs/{job_id}/frames` (`edge-agent/workers/capture/default_capture_worker.py:62-66`; `config.ini` punta a `http://localhost:8081`). Nessun backend del genere esiste in questo repo. L'endpoint è morto. Non fa riconoscimento pagina né estrazione locale.
-- **Upload del dataset a stub.** `_maybe_upload_dataset()` è un no-op (`bper_capture_worker.py:713-715`); le sezioni `[minio]` e `[dataset]` in `config.ini` sono residui dell'era remota rimossa.
+<!-- Source: edge-agent/workers/capture/base_capture_worker.py:43; edge-agent/extraction_pool.py:14; edge-agent/extraction_pool.py:41; edge-agent/local_extraction_client.py:114; extraction/cli.py:237; extraction/pipeline.py:338; edge-agent/bootstrap.py:284; edge-agent/bootstrap.py:489 -->
 
-## Vedi anche
+Il worker generico resta un percorso separato: cattura e invia frame a `{api.base_url}/jobs/{job_id}/frames`. Il repository non implementa il server destinatario e quel percorso non esegue l'estrazione locale BPER. La presenza di quell'upload non descrive un'API HTTP disponibile in questo progetto.
+<!-- Source: edge-agent/workers/capture/default_capture_worker.py:34; edge-agent/ui/main_window.py:36; edge-agent/workers/capture/bper_capture_worker.py:687 -->
 
-- [Architettura](04-architecture.md): il diagramma dei componenti e i livelli che sostengono questi flussi
-- [Modello dei dati](06-data-model.md): gli schemi Pydantic e il dict risultato che ogni passaggio produce e modifica
-- [Funzionalità](02-features.md): le capacità rivolte all'utente che questi workflow implementano
-- [Guida alla configurazione](10-configuration-guide.md): come regolare `PARALLEL_WORKERS`, `MAX_CALLS_PER_SCREEN` e il router di pagina dell'edge-agent dall'esterno del codice
+Vedi anche: [Architettura](04-architecture.md), [Modello dei dati](06-data-model.md), [Funzionalità](02-features.md), [Guida alla configurazione](10-configuration-guide.md), [API Python](12-python-api.md).

@@ -1,0 +1,168 @@
+{
+  "run_id": "poc-data-extraction-20260912-175144",
+  "target": "D:\\Projects\\poc-data-extraction",
+  "mode": "team",
+  "status": "complete",
+  "flags": {
+    "critical": false,
+    "comments": false,
+    "depth": "full"
+  },
+  "parent_run": "poc-data-extraction-20260911-154206",
+  "base_snapshot_created_at": "2026-09-11T13:45:00Z",
+  "git": {
+    "branch": "develop",
+    "commit": "f8f57e6124e0",
+    "dirty": true
+  },
+  "incremental": {
+    "affected_files": 32,
+    "files_in_snapshot": 238,
+    "base_files_in_snapshot": 232
+  },
+  "partitions": [
+    {
+      "name": "root",
+      "path": "D:\\Projects\\poc-data-extraction",
+      "language_primary": "python",
+      "status": "done",
+      "update": "re-analyzed",
+      "affected_files": 32,
+      "file_count": 71,
+      "loc_estimate": 8575,
+      "physical_lines": 12812
+    }
+  ],
+  "partition_strategy": "single-partition fallback",
+  "phases": {
+    "phase_0_detection": "complete",
+    "phase_1_partition_workers": "complete",
+    "phase_2_synthesis": "complete",
+    "phase_3_interconnect": "complete"
+  },
+  "agents_spawned": [
+    {
+      "name": "P1.A",
+      "task_name": "/root/xray_current_structure",
+      "role": "partition-structure-worker",
+      "partition": "root",
+      "status": "delivered"
+    },
+    {
+      "name": "P1.B",
+      "task_name": "/root/xray_current_behavior",
+      "role": "partition-behavior-worker",
+      "partition": "root",
+      "status": "delivered"
+    },
+    {
+      "name": "P1.C",
+      "task_name": "/root/xray_current_quality",
+      "role": "partition-quality-worker",
+      "partition": "root",
+      "status": "delivered"
+    },
+    {
+      "name": "MAP",
+      "task_name": "/root/xray_current_interconnect",
+      "role": "semantic-interconnect-mapper",
+      "partition": null,
+      "status": "delivered"
+    },
+    {
+      "name": "SYNTH",
+      "task_name": "/root/xray_current_synthesis",
+      "role": "partition-synthesizer",
+      "partition": null,
+      "status": "delivered"
+    }
+  ],
+  "files_created": [
+    "01-structure.md",
+    "02-interfaces.md",
+    "03-flows.md",
+    "04-semantics.md",
+    "05-risks.md",
+    "06-documentation.md",
+    "07-final-report.md",
+    "08-interconnect-map.md",
+    "changes.json",
+    "changes.md",
+    "knowledge/documentation-leads.md",
+    "knowledge/navigation.md",
+    "partitions/root/01-structure.md",
+    "partitions/root/02-interfaces.md",
+    "partitions/root/03-flows.md",
+    "partitions/root/04-semantics.md",
+    "partitions/root/05-risks.md",
+    "partitions/root/06-documentation.md",
+    "snapshot/manifest.json",
+    "state.json",
+    "validation/README.md",
+    "validation/__pycache__/check_artifacts.cpython-313.pyc",
+    "validation/artifact-validation.json",
+    "validation/ast-bper_capture_worker.json",
+    "validation/ast-capture_tab.json",
+    "validation/ast-local_extraction_client.json",
+    "validation/check_artifacts.py",
+    "validation/check_links.py",
+    "validation/doc-health.json",
+    "validation/doc-links.txt",
+    "validation/launcher-baseline.json",
+    "validation/parent-integrity.json",
+    "validation/publication.json",
+    "validation/publish_run.py",
+    "validation/pytest-exit-code.txt",
+    "validation/pytest.txt",
+    "validation/report-links.json",
+    "validation/test-command.json"
+  ],
+  "started_at": "2026-09-12T17:52:45.199703+00:00",
+  "completed_at": "2026-09-12T18:26:19.266898+00:00",
+  "scope": "Current working tree including uncommitted documentation; analysis only, no application changes.",
+  "validation": {
+    "test_command": ".venv/Scripts/python.exe -m pytest tests -o cache_dir=<run>/validation/pytest-cache",
+    "exit_code": 0,
+    "passed": 173,
+    "failed": 0,
+    "warnings": 3,
+    "duration_seconds": 38.2,
+    "log": "validation/pytest.txt",
+    "environment": "validation/test-command.json",
+    "kind": "new execution during current run",
+    "provider_calls": false,
+    "banking_gui_session": false
+  },
+  "findings": {
+    "open": 14,
+    "resolved": [
+      "XQ-R01",
+      "XQ-R02",
+      "XQ-R03"
+    ],
+    "anti_patterns": 2,
+    "red_flags": 8,
+    "technical_debt": 4,
+    "severity": {
+      "critical": 0,
+      "high": 0,
+      "medium": 11,
+      "low": 3
+    },
+    "documentation_topics_resolved": [
+      "DQ-01",
+      "DQ-02",
+      "DQ-03",
+      "DQ-06",
+      "DQ-08",
+      "DQ-09",
+      "DQ-10"
+    ],
+    "documentation_topics_partial": [
+      "DQ-04",
+      "DQ-05",
+      "DQ-07"
+    ],
+    "cross_partition_flows": 0
+  }
+}

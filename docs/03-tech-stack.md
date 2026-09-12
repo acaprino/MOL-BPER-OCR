@@ -1,12 +1,12 @@
 # Tech Stack
 
-Questo è un proof of concept interamente in Python che tratta il vision LLM come un componente intercambiabile. Ogni chiamata di estrazione passa da **LangChain**, così un'unica funzione factory (`create_chat_model()` in **`extraction/llm_factory.py`**) sceglie a runtime tra OpenAI e Google Gemini a partire da una sola variabile d'ambiente, e il resto dello stack è disposto attorno a quella cucitura: Pillow per il ritaglio e il miglioramento delle immagini, Pandas per il confronto con la ground truth, Tkinter e PyQt6 per le due interfacce desktop, e un classificatore opzionale PyTorch/DINOv2 per il riconoscimento delle pagine sul dispositivo. Non c'è web server, non c'è database, non c'è build system; il progetto gira come script da un unico `requirements.txt` piatto.
+Questo è un proof of concept interamente in Python che tratta il vision LLM come un componente intercambiabile. Ogni chiamata di estrazione passa da **LangChain**, così un'unica funzione factory (`create_chat_model()` in **`extraction/llm_factory.py`**) sceglie a runtime tra OpenAI e Google Gemini a partire da una sola variabile d'ambiente, e il resto dello stack è disposto attorno a quella cucitura: Pillow per il ritaglio e il miglioramento delle immagini, Pandas per il confronto con la ground truth, Tkinter e PyQt6 per le due interfacce desktop, e un classificatore opzionale PyTorch/DINOv2 per il riconoscimento delle pagine sul dispositivo. Non c'è web server, non c'è database, la build portable usa `build_exe.bat` e `edge_agent.spec`; le dipendenze applicative sono in `requirements.txt`.
 
 ## Linguaggi
 
 | Linguaggio | Versione | Dove è configurato |
 |----------|---------|-----------------|
-| Python | 3.8+ dichiarato (`CLAUDE.md`, `README.md`); 3.12/3.13 nella pratica | Non esiste alcun `pyproject.toml`, quindi nulla dichiara formalmente una versione. `run_edge_agent.bat` (righe 50-52) cerca prima Python 3.13, poi 3.12 (la preferenza è guidata dalla disponibilità delle wheel di torch), e il bytecode committato in `extraction/__pycache__/` è CPython 3.13. Considera 3.12+ il target reale. |
+| Python | Target pratico 3.12/3.13 | `run_edge_agent.bat` prova `py -3.13`, poi `py -3.12`, infine `python` sul PATH. Non c’è un vincolo formale di runtime in un `pyproject.toml`. |
 
 Python è l'unico linguaggio di implementazione. La codebase mescola però deliberatamente due lingue *naturali*: codice, identificatori, commenti e messaggi di commit sono in inglese, mentre i prompt VLM (**`prompts/*.json`**), le chiavi di campo (`professione_principale`, `filiale_relazione`, …), le stringhe delle GUI e le intestazioni CSV sono in italiano, perché il target dell'estrazione è la UI bancaria italiana di BPER e le chiavi di campo sono termini di dominio portanti che devono combaciare con il CSV di ground truth (`extraction/fields.py`, `CSV_TO_SCHEMA`). Non tradurle.
 
@@ -18,11 +18,11 @@ Python è l'unico linguaggio di implementazione. La codebase mescola però delib
 | PyQt6 | UI desktop dell'edge-agent (cattura dal vivo dello schermo). Entry `edge-agent/edge_agent.py`; finestra e schede in `edge-agent/ui/`; i worker di cattura sono sottoclassi di `QThread` e i risultati tornano al thread UI tramite segnali Qt. | `PyQt6>=6.4.0` (`requirements.txt:7`) |
 | qt-material | Tema Material (`dark_cyan.xml`) applicato all'avvio dell'edge-agent (`edge-agent/edge_agent.py`). Opzionale: l'avvio degrada allo stile di default se l'import fallisce. | `qt-material>=2.14` (`requirements.txt:8`) |
 | Tkinter | La GUI desktop standalone `gui_app.py` (selettore immagini, menu provider/modello, vista dei risultati, esportazione CSV/JSON). Libreria standard, quindi nessuna voce in `requirements.txt`. | stdlib |
-| PyTorch / torchvision | Sostiene il classificatore ML delle pagine `BPERPagePrototypeClassifier` (`edge-agent/page_classifier.py`), che dal 2026-08-18 è il **ripiego** e non più il router in vigore ([ADR 0006](adr/0006-router-llm-come-predefinito.md)): embedding DINOv2 ViT-S/14 (384 dimensioni) della ROI sull'area applicativa, confrontati con prototipi in cache per similarità del coseno **centrata** (centroide dei prototipi sottratto a entrambi i lati). Se l'import di torch fallisce, il classificatore si auto-disabilita e `classify()` restituisce `(None, 0.0)` invece di andare in crash (`edge-agent/page_classifier.py:9-19`), ma in quello stato nessuna pagina viene riconosciuta. | `torch`, `torchvision`, senza vincolo (`requirements.txt:14-15`) |
+| PyTorch / torchvision | Classificatore locale `BPERPagePrototypeClassifier`: embedding DINOv2 ViT-S/14 (384 dimensioni) confrontati con prototipi tramite coseno centrato. È usato da `ml`, dal fallback `hybrid` e da `local-first`. Se l’import fallisce, il classificatore si disabilita. `config.ini` spedisce `llm`, mentre `AgentConfig.DEFAULT_ROUTER_MODE` resta `ml`. | `torch`, `torchvision`, senza vincolo (`requirements.txt`) |
 
 ## Dipendenze principali
 
-Raggruppate per scopo. Tutto vive nell'unico **`requirements.txt`** alla radice (17 righe); le dipendenze transitive sono omesse salvo dove contano.
+Raggruppate per scopo. Tutto vive nell'unico **`requirements.txt`** alla radice; le dipendenze transitive sono omesse salvo dove contano.
 
 ### Accesso LLM
 - **`langchain-core` / `langchain-openai` / `langchain-google-genai`** (`requirements.txt:1-3`), trattate sotto Framework. I pacchetti dei provider sono importati in modo lazy dentro `create_chat_model()`, quindi a runtime deve funzionare davvero solo il pacchetto del provider selezionato (`extraction/llm_factory.py:47,57`).
@@ -32,27 +32,28 @@ Raggruppate per scopo. Tutto vive nell'unico **`requirements.txt`** alla radice 
 ### Immagini e cattura
 - **`Pillow`** (`requirements.txt:11`, `>=10.0.0`), tutto il lavoro di ritaglio/ridimensionamento/miglioramento: `normalize_image()`, `crop_relative()`, `img_to_png_bytes()` in `extraction/imaging.py` per la pipeline; `preprocess_for_ocr()` (upscale adattivo, unsharp mask, autocontrasto) in `edge-agent/image_ops.py` e la normalizzazione dell'inquadratura in `edge-agent/frame_normalize.py` per la cattura.
 - **`mss`** (`requirements.txt:9`, `>=9.0.0`), cattura veloce del monitor nel loop dell'edge-agent (`edge-agent/workers/capture/bper_capture_worker.py:557-574`).
-- **`imagehash`** (`requirements.txt:12`, `>=4.3.0`), hashing percettivo (pHash) per la deduplica dei frame; i frame entro la distanza di Hamming `dedup_threshold` (default 3) saltano il routing (`bper_capture_worker.py:601-624`).
+- **`imagehash`** (`>=4.3.0`), pHash per contenere il routing sui frame simili. L’identità della visita usa invece `hashlib.blake2b` della libreria standard sui pixel normalizzati, per distinguere anche piccole variazioni dell’NDG (`bper_capture_worker.py`).
 - **`pyscreenshot`** (`requirements.txt:10`, `>=3.1`, **marker d'ambiente solo Linux** `sys_platform == 'linux'`), grabber di fallback usato solo da `DefaultCaptureWorker` (modalità generica). Su Windows non viene proprio installato, il che va bene perché il percorso BPER usa `mss`.
 
 ### Dati e valutazione
 - **`pandas`** (`requirements.txt:4`), carica il CSV di ground truth con auto-rilevamento dei nomi di colonna (`load_ground_truth()`, `extraction/evaluation.py:33`) e scrive i CSV di debug/risultati (separatore `;`, `utf-8-sig`).
-- **`openpyxl`** (`requirements.txt:17`, `>=3.1.2`), legge il workbook opzionale della sequenza pagine `Guida pagine ITA .xlsx` (`bper_capture_worker.py:273-291`; il file è assente dal repo, con fallback controllato su `prompts.json`) e sostiene l'esportazione Excel in `edge-agent/ui/data_table_tab.py`.
+- **`openpyxl`** (`>=3.1.2`), scrittura del workbook finale con `edge-agent/excel_export.py`: una riga per pratica, intestazione a due livelli.
 
 ### Configurazione e bootstrap
 - **`python-dotenv`** (`requirements.txt:6`), carica `.env` prima che il pacchetto `extraction` venga importato, cosa che conta perché `extraction/config.py` legge ogni variabile d'ambiente al momento dell'import. Caricato in `main.py:7`, `edge-agent/edge_agent.py:9-13` e `edge-agent/local_extraction_client.py:22-25`, ma **non** in `gui_app.py`, che presume le variabili già esportate (vedi [Domande Aperte](08-open-questions.md)).
 - **`requests`** (`requirements.txt:13`, `>=2.31.0`), l'upload HTTP dei frame usato solo dalla modalità di cattura generica legacy (`edge-agent/workers/capture/default_capture_worker.py:62-66`), che invia POST a un backend che non esiste in questo repo.
 
-### Orfane
-- **`streamlit`** (`requirements.txt:5`): nulla la importa. È un residuo della UI web Streamlit rimossa (`app.py`, cancellato nel commit `ea04ef7`). Candidata alla rimozione; anche `CLAUDE.md` la segnala. È l'unica dipendenza orfana rimasta.
+### Build e test
+- **`pyinstaller>=6.10,<7`** è in `requirements.txt` e serve alla build portable `build_exe.bat`, anche se non viene importato dal codice applicativo.
+- **`pytest>=8.0`** è in `requirements-dev.txt` e avvia la suite `tests/`. `streamlit` è stato rimosso dalle dipendenze.
 
 ## Infrastruttura
 
-Non c'è database, coda di messaggi o cache. I risultati vivono in dizionari in memoria (nell'edge-agent, un dict `_results` protetto da `threading.Lock` dentro `LocalExtractionClient`) e vengono persistiti solo come file: `mnt/data/poc_outputs_improved.json` e `poc_debug_improved.csv` dalla CLI, `poc_outputs_gui.json` / `poc_results_gui.csv` / `poc_debug_gui.csv` dalla GUI Tkinter, e i CSV/XLSX esportati dall'operatore nell'edge-agent.
+Non c’è database né broker esterno. Esistono code locali in memoria (`extraction_pool.py` e i comandi del worker) e una cache dei prototipi DINOv2. `LocalExtractionClient` conserva i risultati sotto lock e pubblica il prefisso completato in ordine di acquisizione. CLI e Tkinter esportano JSON/CSV; la UI dell’edge-agent consolida le schermate per pratica ed esporta Excel. La memoria della sessione non è un archivio persistente.
 
 Servizi esterni vivi (tutti HTTPS in uscita):
-- **API OpenAI**: estrazione principale via LangChain (`gpt-4o` di default) e routing delle pagine via SDK grezzo (`gpt-4o-mini`).
-- **API Google Gemini**: provider di estrazione alternativo (`LLM_PROVIDER=gemini`).
+- **API OpenAI**: provider di estrazione via LangChain (`gpt-4o` come default del codice) e provider possibile per il router tramite SDK OpenAI.
+- **API Google Gemini**: provider di estrazione alternativo e provider del router nella configurazione INI spedita, attraverso l’endpoint compatibile OpenAI. «Locale» descrive l’orchestrazione, non un’estrazione offline.
 - **torch.hub**: i pesi DINOv2 vengono scaricati una volta al primo avvio del router ML.
 
 Infrastruttura morta, referenziata nella configurazione ma inutilizzata nel flusso BPER solo-locale, residui dell'era del backend remoto rimosso (commit `ea04ef7`):
@@ -63,10 +64,10 @@ Infrastruttura morta, referenziata nella configurazione ma inutilizzata nel flus
 
 | Strumento | Ruolo | Stato |
 |------|------|--------|
-| PyInstaller | Pacchettizza `gui_app.py` in un `.exe` Windows (`AI_Data_Extractor`), con flag `--collect-all` per gli import dinamici di LangChain. | Ricetta documentata solo in `README.md` righe 78-100; non in `requirements.txt` |
+| PyInstaller | Build portable dell’edge-agent con `build_exe.bat` e `edge_agent.spec`, output `dist/EdgeAgent` e ZIP datato. | In `requirements.txt`, vincolo `>=6.10,<7` |
 | `run_edge_agent.bat` | Launcher Windows: verifica/ricostruisce una `.venv` obsoleta (preferendo Python 3.13), installa `requirements.txt`, lancia l'edge-agent inoltrando gli argomenti. | Committato, funzionante |
 | Linter / formatter | Nessuno. Nessun `ruff`, `flake8`, `black` o configurazione `pyproject.toml` da nessuna parte. | Assente |
-| Test runner | Nessuno. Non esiste una suite di test; la validazione è manuale (esegui `python main.py`, confronta accuratezza e costi con una baseline, fai lo smoke test delle GUI: `CLAUDE.md` "Testing & Validation"). | Assente |
+| Test runner | pytest: `python -m pytest tests`. | `requirements-dev.txt`, suite `tests/` |
 | CI/CD | Nessuna. Nessun `.github/workflows` o configurazione di pipeline. | Assente |
 | Docker | Nessuno. Nessun `Dockerfile`. | Assente |
 
@@ -74,13 +75,14 @@ Le lacune sono coerenti con la maturità da POC e sono riconosciute in `CLAUDE.m
 
 ## Gestione delle dipendenze
 
-pip con un **unico `requirements.txt` piatto** alla radice del repo: dipendenze del core di estrazione e dell'edge-agent combinate, nessuna suddivisione per componente, nessun gruppo di dipendenze di sviluppo, nessun lockfile, nessun `pyproject.toml`.
+pip con un **unico `requirements.txt` piatto** alla radice del repo: dipendenze del core di estrazione e dell'edge-agent combinate, nessuna suddivisione per componente, pytest separato in `requirements-dev.txt`, nessun lockfile, nessun `pyproject.toml`.
 
-Coesistono due stili di vincolo:
-- **Senza vincolo:** il trio LangChain, `pandas`, `streamlit`, `python-dotenv`, `torch`, `torchvision`. I pacchetti LangChain non pinnati sono l'elemento a rischio più alto: il comportamento di output strutturato su cui `extraction/vlm_client.py` si dirama per provider/famiglia di modello (`_GEMINI_JSON_SCHEMA_MODELS`, `vlm_client.py:18,134-138`) è sensibile alla deriva di versione di LangChain.
+Coesistono questi stili di vincolo:
+- **Senza vincolo:** il trio LangChain, `pandas`, `python-dotenv`, `torch`, `torchvision`. I pacchetti LangChain non pinnati sono l'elemento a rischio più alto: il comportamento di output strutturato su cui `extraction/vlm_client.py` si dirama per provider/famiglia di modello (`_GEMINI_JSON_SCHEMA_MODELS`, `vlm_client.py:18,134-138`) è sensibile alla deriva di versione di LangChain.
+- **Intervallo di versione:** `pyinstaller>=6.10,<7`.
 - **Limite inferiore (`>=`):** `PyQt6`, `qt-material`, `mss`, `pyscreenshot`, `Pillow`, `imagehash`, `requests`, `openai`, `openpyxl`.
 
-Nulla è pinnato in modo esatto, quindi un `pip install -r requirements.txt` fresco non è riproducibile da un giorno all'altro: versioni diverse di LangChain o torch possono arrivare in silenzio. Altre due cose da segnalare: `pyscreenshot` porta un marker di piattaforma (solo Linux), quindi le installazioni cross-platform differiscono di proposito; e `streamlit` è un puro orfano che gonfia un'installazione già pesante (torch ne è il grosso).
+Nulla è pinnato in modo esatto, quindi un `pip install -r requirements.txt` fresco non è riproducibile da un giorno all'altro: versioni diverse di LangChain o torch possono arrivare in silenzio. `pyscreenshot` porta un marker di piattaforma (solo Linux), quindi le installazioni cross-platform differiscono di proposito; torch resta fra i componenti più pesanti.
 
 ---
 

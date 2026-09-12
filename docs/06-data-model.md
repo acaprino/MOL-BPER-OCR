@@ -1,8 +1,9 @@
 # Modello dei dati
 
-Questo progetto non ha un database. Il suo paesaggio dati è fatto di dict Python in memoria, modelli Pydantic che definiscono la forma dell'output dell'LLM e file piatti su disco: un CSV di ground truth rispetto a cui l'estrazione viene valutata e i report JSON/CSV scritti dopo un'esecuzione. Il centro del modello è il **dict risultato**: l'unica struttura che esce dalla pipeline ed entra in ogni consumatore a valle (valutazione, export CSV, la vista risultati Tkinter e le tre tab dell'edge-agent).
+Questo progetto non ha un database. Il suo paesaggio dati è fatto di dict Python in memoria, modelli Pydantic che definiscono la forma dell'output dell'LLM e file piatti su disco: un CSV di ground truth rispetto a cui l'estrazione viene valutata e i report JSON/CSV scritti dopo un'esecuzione. Il centro del modello è il **dict risultato**: l'unica struttura che esce dalla pipeline ed entra in ogni consumatore a valle (valutazione, export CSV, la vista risultati Tkinter e il consolidamento delle pratiche nell'edge-agent).
 
-Tre concetti ancorano tutto. **`FIELD_KEYS`** (`extraction/fields.py:12-54`) è l'elenco canonico di esattamente 45 campi scalari e l'unica fonte di verità: il modello Pydantic dei campi viene generato da esso, e la mappatura CSV, le definizioni canoniche e le aree di retry devono restargli allineate. Gli **schemi Pydantic** (`extraction/schemas.py`) definiscono che aspetto ha una risposta LLM valida. Le **definizioni canoniche di campo/pagina** (`extraction/field_definitions.py`, `extraction/page_definitions.py`) mappano ogni campo su un nome visualizzato italiano e su una delle quattro pagine BPER, ed è così che i valori vengono raggruppati per export e visualizzazione. Le chiavi dei campi sono termini italiani del dominio bancario (`professione_principale`, `filiale_relazione`, ...) e sono portanti: devono corrispondere alle etichette della ground truth tramite `CSV_TO_SCHEMA` e non vanno mai tradotte. Le definizioni in linguaggio semplice dei termini di dominio sono nel [Glossario](11-glossary.md).
+Tre concetti ancorano tutto. **`FIELD_KEYS`** è l'elenco canonico di esattamente 45 campi scalari e l'unica fonte di verità: il modello Pydantic dei campi viene generato da esso, e la mappatura CSV, le definizioni canoniche e le aree di retry devono restargli allineate. Gli **schemi Pydantic** (`extraction/schemas.py`) definiscono che aspetto ha una risposta LLM valida. Le **definizioni canoniche di campo/pagina** (`extraction/field_definitions.py`, `extraction/page_definitions.py`) mappano ogni campo su un nome visualizzato italiano e su una delle quattro pagine BPER, ed è così che i valori vengono raggruppati per export e visualizzazione. Le chiavi dei campi sono termini italiani del dominio bancario (`professione_principale`, `filiale_relazione`, ...) e sono portanti: devono corrispondere alle etichette della ground truth tramite `CSV_TO_SCHEMA` e non vanno mai tradotte. Le definizioni in linguaggio semplice dei termini di dominio sono nel [Glossario](11-glossary.md).
+<!-- Source: extraction/fields.py:12-54 -->
 
 Il diagramma seguente mappa come queste strutture si relazionano:
 
@@ -24,7 +25,7 @@ erDiagram
 
     FIELD-RESULT {
         string value "testo estratto, nullable"
-        float confidence "fornita dal modello, default 0.0"
+        float confidence "limitata a 0–1, default 0.0"
         string evidence_text "nullable"
         string section "nullable"
     }
@@ -61,7 +62,7 @@ erDiagram
         string display_name
     }
     GROUND-TRUTH-ROW {
-        string screen_id PK "screen 1..9"
+        string screen_id PK "nome file senza estensione"
         string csv_label PK "etichetta GT italiana"
         string value "valore atteso"
     }
@@ -81,50 +82,83 @@ La struttura centrale del progetto: ciò che `ExtractionPipeline.extract_from_im
 
 **Significato di dominio:** tutto ciò che il sistema sa di un singolo screenshot bancario, i campi scalari estratti, le tabelle a lunghezza variabile di cointestatari/linee di credito/garanzie, una vista appiattita rivolta al cliente e i metadati necessari a valutare e costare l'estrazione.
 
-**Voci chiave** (assemblate in **`extraction/pipeline.py:104-180`**):
+Il risultato ordinario contiene le seguenti voci. Le firme dei metodi sono nel
+[riferimento delle API Python](12-python-api.md).
 
 | Chiave | Tipo | Scopo |
 |---|---|---|
-| `screen_id` | str | Stem del file (`screen 1`) o `"{Friendly} - pag. N"` nell'edge-agent |
-| `fields` | dict di dict in forma FieldResult | Una voce per membro di `FIELD_KEYS` |
-| `soggetti` / `fidi` / `garanzie` | liste | Righe tabellari a lunghezza variabile |
-| `canonical_fields` | lista | Voci rivolte al cliente con nome visualizzato e binding di pagina |
-| `_attempts` | lista di dict `_meta` | Una per chiamata VLM *riuscita* |
-| `_meta_agg` | dict | Chiamate/token/costo/latenza aggregati (`extraction/pipeline.py:330-340`) |
-| `_field_sources` | dict | `{key: ANCHOR_HEADER \| CONTENT_MAIN \| RETRY_{HEADER\|BODY\|FOOTER}}` |
-| `_status` | str | `OK`, `ANCHOR_UNCERTAIN` oppure (percorso d'errore dell'edge-agent) `ERROR` |
-| `_meta`, `attempt` | dict, str | Residui dell'ultima chiamata VLM principale - mai rimossi (`extraction/vlm_client.py:214-225`) |
+| `screen_id` | stringa | Nome del file senza estensione; nel client live è `page_type`, oppure `pagina N` se manca. |
+| `fields` | dizionario | Chiavi di `FIELD_KEYS`; ogni payload può essere un `FieldResult` serializzato o `None`. |
+| `soggetti`, `fidi`, `garanzie` | liste | Righe tabellari a lunghezza variabile. |
+| `canonical_fields` | lista | Valori con etichetta italiana e pagina canonica. |
+| `_attempts` | lista di dizionari | Metadati delle chiamate VLM riuscite. |
+| `_meta_agg` | dizionario | Modelli, chiamate, token, costo stimato e latenza aggregati. |
+| `_field_sources` | dizionario | Passaggio che ha fornito ciascun campo: `ANCHOR_HEADER`, `CONTENT_MAIN` o `RETRY_{AREA}`. |
+| `_content_crop` | stringa | `calibrated` oppure `full-frame`. |
+| `_status` | stringa | `OK` oppure `ANCHOR_UNCERTAIN`; il client aggiunge anche il percorso `ERROR`. |
+| `_meta`, `attempt` | dizionario, stringa | Metadati rimasti dalla chiamata principale. |
 
-L'edge-agent allega tre chiavi in più: `_page_type`, `_page_no`, `_page_confidence` (`edge-agent/local_extraction_client.py:96-98`).
+<!-- Source: extraction/pipeline.py:151; extraction/pipeline.py:181; extraction/pipeline.py:194; extraction/imaging.py:29; extraction/vlm_client.py:223; edge-agent/local_extraction_client.py:168 -->
 
-**Persistenza:** in memoria durante un'esecuzione; serializzato letteralmente (inclusi `_meta` e `_attempts`) in `mnt/data/poc_outputs_improved.json` dalla CLI (`extraction/cli.py:337-340`) e in `poc_outputs_gui.json` dalla GUI (`gui_app.py:253-254`). L'edge-agent tiene i risultati in `LocalExtractionClient._results`, un dict `{job_id: [result, ...]}` protetto da lock, append-only e mai svuotato (`edge-agent/local_extraction_client.py:56`, `:100-103`).
+Il client live aggiunge `_page_type`, `_page_no`, `_page_confidence` e
+`_capture_sequence`: quest'ultima è una sequenza intera da zero per job, assegnata
+soltanto ai frame accettati. Se la pipeline solleva un'eccezione, restituisce un
+risultato ridotto con `screen_id`, `fields: {}`, `_status: "ERROR"` e `_error`,
+comunque corredato dei metadati di cattura. Un errore di scrittura diagnostica
+aggiunge `_diagnostic_error` senza perdere il risultato.
+<!-- Source: edge-agent/local_extraction_client.py:127; edge-agent/local_extraction_client.py:170; edge-agent/local_extraction_client.py:188 -->
 
-**Invarianti da conoscere:**
+Anche l'uscita anticipata è ridotta: con `STOP_ON_ANCHOR_UNCERTAIN` attivo e i due
+anchor nulli, `fields` e le tre tabelle sono vuoti, i metadati contano soltanto
+l'anchor e `canonical_fields` non viene costruito. Nel percorso completo, lo stato
+finale è `OK` quando NDG e denominazione non sono nulli dopo tutti i passaggi; non
+è una certificazione di accuratezza o una soglia sulla loro confidenza finale.
+<!-- Source: extraction/pipeline.py:151; extraction/pipeline.py:214 -->
 
-- `_status == "OK"` se e solo se sia `fields["ndg"].value` sia `fields["denominazione"].value` sono non nulli alla fine (`extraction/pipeline.py:172-178`). La confidenza non gioca alcun ruolo in questo controllo: vedi Validazione più sotto.
-- I totali di `_meta_agg` sono le somme su `_attempts`, con il costo arrotondato a 6 decimali (`extraction/pipeline.py:330-340`). Poiché il `_meta` di un retry fallito non viene mai accodato (`extraction/pipeline.py:288-294`), `calls` conta solo le chiamate riuscite: i tentativi già fatturati del wrapper di retry sono invisibili.
-- I valori di `_field_sources` provengono per costruzione da un insieme chiuso (`extraction/pipeline.py:141`, `:216`, `:301-307`), ma il passo di appiattimento dei soggetti sovrascrive `ndg_1..4`/`denominazione_1..4`/`ruolo_1..4` senza aggiornarne la sorgente (`extraction/pipeline.py:160-166`), quindi la provenienza di quelle dodici chiavi può essere stantia.
-- Il risultato del percorso `ERROR` dell'edge-agent è un dict ridotto: solo `screen_id`, `fields: {}`, `_status`, `_error`; niente `_meta_agg`, `canonical_fields`, `_field_sources` né liste tabellari (`edge-agent/local_extraction_client.py:87-94`). Ogni consumatore legge quelle chiavi in modo difensivo con `.get(..., {})` o con un fallback `canonical_fields`→`fields` (`extraction/evaluation.py:186-217`, `gui_app.py:333-368`, `edge-agent/ui/data_table_tab.py:161-208`).
+**Persistenza.** La CLI scrive i risultati completi in
+`INPUT_DIR/poc_outputs_improved.json`; Tkinter scrive `poc_outputs_gui.json` nella
+directory corrente. Il client live conserva risultati e completamenti in memoria,
+protetti da lock, fino alla chiusura del processo; l'export Excel è esplicito.
+<!-- Source: extraction/cli.py:344; gui_app.py:250; edge-agent/local_extraction_client.py:114; edge-agent/ui/data_table_tab.py:255 -->
+
+### Ordine di acquisizione e disponibilità dei risultati
+
+`get_results(job_id)` espone solo il prefisso contiguo completato nell'ordine di
+acquisizione: se sono pronti 0 e 2, restituisce solo 0; quando termina 1, rende
+visibili 0, 1 e 2. Un errore occupa il proprio posto e consente ai successivi di
+avanzare. Il segnale `result_ready` annuncia invece ogni completamento appena
+pronto, anche fuori ordine e prima del ritorno di `ingest_frame()` o del segnale
+`frame_queued`. La tabella rilegge quindi `get_results()` a ogni notifica.
+<!-- Source: edge-agent/local_extraction_client.py:145; edge-agent/local_extraction_client.py:194; edge-agent/local_extraction_client.py:222; edge-agent/ui/data_table_tab.py:128; tests/test_local_extraction_client.py:117; tests/test_local_extraction_client.py:183; tests/test_local_extraction_client.py:220 -->
+
+Questo ordinamento conserva il legame fra una schermata senza NDG e la pratica
+che la precede. Può ritardare la visualizzazione di risultati già pronti; lo
+shutdown scarta i lavori ancora in coda e può lasciare incompleto il prefisso.
+La lista restituita è una copia superficiale: i consumatori non devono modificare
+i dizionari annidati. La motivazione è nell'[ADR 0013](adr/0013-risultati-nell-ordine-di-acquisizione.md).
+<!-- Source: edge-agent/local_extraction_client.py:214; edge-agent/local_extraction_client.py:222; edge-agent/practice_consolidation.py:105 -->
 
 ## FieldResult e FieldsModel
 
 **Significato di dominio:** un singolo scalare estratto (ad esempio il numero NDG o lo `stato` della pratica) con la confidenza del modello e l'evidenza a schermo che ha citato.
 
-**Definizione** (`extraction/schemas.py:9-13`):
+**Definizione:**
+<!-- Source: extraction/schemas.py:31 -->
 
 ```python
-class FieldResult(BaseModel):
+class FieldResult(_ConfidenceModel):
     value: Optional[str] = None
     confidence: float = 0.0
     evidence_text: Optional[str] = None
     section: Optional[str] = None
 ```
 
-Ogni valore è una stringa o null indipendentemente da ciò che rappresenta: il confronto numerico avviene più tardi, in valutazione, tramite `norm_number_str()`. L'accessor `safe_field()` coerce la `confidence` a float anche quando il modello restituisce null (`extraction/normalization.py:60-69`).
+La classe base limita `confidence` a 0–1, riconducendo a zero valori non numerici o non finiti. Ogni valore è una stringa o null indipendentemente da ciò che rappresenta: il confronto numerico avviene più tardi, in valutazione, tramite `norm_number_str()`. L'accessor `safe_field()` converte la `confidence` a float anche quando il modello restituisce null.
 
-**`FieldsModel`** non è scritto a mano: è generato con `create_model()`, un `Optional[FieldResult]` per ogni voce di `FIELD_KEYS` (`extraction/schemas.py:46-49`). La sincronia schema/elenco-campi è garantita per costruzione: l'insieme delle chiavi valide *è* `FIELD_KEYS`. Aggiungere una chiave rigenera il modello automaticamente, ma la chiave va aggiunta anche a mano a `CSV_TO_SCHEMA` (o non viene mai valutata), ad `AREA_TO_FIELDS` (o non viene mai ritentata), a `CANONICAL_FIELD_DEFINITIONS` (o ricade su una visualizzazione con la chiave grezza e `page_key=None`) e ai prompt italiani. Niente di tutto ciò è verificato da guardie: vedi Validazione.
+**`FieldsModel`** non è scritto a mano: è generato con `create_model()`, un `Optional[FieldResult]` per ogni voce di `FIELD_KEYS`. La sincronia schema/elenco-campi è garantita per costruzione: l'insieme delle chiavi valide *è* `FIELD_KEYS`. Aggiungere una chiave rigenera il modello automaticamente, ma la chiave va aggiunta anche a mano a `CSV_TO_SCHEMA` (o non viene mai valutata), ad `AREA_TO_FIELDS` (o non viene mai ritentata), a `CANONICAL_FIELD_DEFINITIONS` (o ricade su una visualizzazione con la chiave grezza e `page_key=None`) e ai prompt italiani. Niente di tutto ciò è verificato da guardie: vedi Validazione.
 
-**I 45 campi** si raggruppano così (`extraction/fields.py:12-54`):
+**I 45 campi** si raggruppano così:
+<!-- Source: extraction/fields.py:12-54 -->
 
 | Gruppo | Campi |
 |---|---|
@@ -135,42 +169,58 @@ Ogni valore è una stringa o null indipendentemente da ciò che rappresenta: il 
 | Soggetti appiattiti | `ndg_1..4`, `denominazione_1..4`, `ruolo_1..4` |
 | Scheda Privati | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` |
 
-La famiglia `ndg_1..4` è una proiezione piatta delle prime quattro righe `Soggetto`, scritta per compatibilità CSV con la ground truth della schermata 2 (`extraction/pipeline.py:160-166`; il dominio limita i cointestatari a 4 slot piatti).
+La famiglia `ndg_1..4` è una proiezione piatta delle prime quattro righe `Soggetto`, scritta per compatibilità CSV con la ground truth della schermata 2. Il formato piatto dispone di quattro slot, mentre la lista originale può contenere altre righe.
+
+<!-- Source: extraction/schemas.py:11; extraction/schemas.py:31; extraction/schemas.py:68; extraction/normalization.py:78; extraction/pipeline.py:203 -->
 
 ## Soggetto, Fido, Garanzia
 
 Le tabelle a lunghezza variabile che l'LLM restituisce come array JSON nel passaggio principale (e facoltativamente nel retry `BODY`).
 
-- **Soggetto**: una riga di cointestatario da Elenco Soggetti (`extraction/schemas.py:15-20`): `ndg`, `denominazione`, `ruolo`, più `confidence`/`evidence_text`; tutto opzionale.
-- **Fido**: una riga di linea di credito da Gestione Fidi e Garanzie (`extraction/schemas.py:22-30`): `n_fido`, `rapporto`, `descrizione`, `scadenza`, `importo_euro`, `tipo_op`, più confidenza/evidenza.
-- **Garanzia**: una riga di garanzia (`extraction/schemas.py:32-41`): `n_gar`, `descrizione`, `fido` (la linea di credito collegata), `ndg`, `denominazione`, `importo_percentuale`, `tipo_op`, più confidenza/evidenza.
+- **Soggetto**: una riga di cointestatario da Elenco Soggetti: `ndg`, `denominazione`, `ruolo`, più `confidence`/`evidence_text`; tutto opzionale.
+- **Fido**: una riga di linea di credito da Gestione Fidi e Garanzie: `n_fido`, `rapporto`, `descrizione`, `scadenza`, `importo_euro`, `tipo_op`, più confidenza/evidenza.
+- **Garanzia**: una riga di garanzia: `n_gar`, `descrizione`, `fido` (la linea di credito collegata), `ndg`, `denominazione`, `importo_percentuale`, `tipo_op`, più confidenza/evidenza.
 
-**Persistenza:** liste nel dict risultato; esportate come righe `category` del tipo `soggetti[0].ndg` (`extraction/evaluation.py:219-232`). Durante il retry, una tabella viene sostituita solo dall'area `BODY` e solo quando la nuova tabella ha più righe oppure, a pari lunghezza, una confidenza media più alta (`extraction/pipeline.py:225-241`).
+**Persistenza:** liste nel dict risultato; esportate nel CSV con una categoria per tabella e un campo del tipo `soggetti[0].ndg`. Durante il retry, solo l’area `BODY` può aggiornare una tabella. Sulle immagini calibrate vince una tabella con più righe o, a pari lunghezza, confidenza media maggiore. Fuori calibrazione il retry può soltanto riempire una tabella vuota, mai sostituirne una già letta.
+<!-- Source: extraction/schemas.py:37; extraction/schemas.py:44; extraction/schemas.py:54; extraction/evaluation.py:228; extraction/pipeline.py:258; tests/test_content_crop.py:172 -->
 
 ## ExtractionResponse e AnchorResponse
 
 I due schemi di primo livello consegnati a LangChain perché l'LLM restituisca JSON parseabile e validato.
 
-- **`ExtractionResponse`** (passaggio principale e retry, `extraction/schemas.py:54-58`): `fields: FieldsModel` più le tre liste tabellari, l'intera struttura in un'unica chiamata.
-- **`AnchorResponse`** (passaggio anchor, `extraction/schemas.py:60-65`): un ristretto `AnchorFields` con soli `ndg` e `denominazione`. La restrizione è voluta: costringe il modello a concentrarsi sui due campi identitari da cui dipende tutto il resto.
+- **`ExtractionResponse`** (passaggio principale e retry): `fields: FieldsModel` più le tre liste tabellari, l'intera struttura in un'unica chiamata.
+- **`AnchorResponse`** (passaggio anchor): un ristretto `AnchorFields` con soli `ndg` e `denominazione`. La restrizione è voluta: costringe il modello a concentrarsi sui due campi identitari da cui dipende tutto il resto.
 
-Esistono gli alias retrocompatibili `RESPONSE_SCHEMA` / `ANCHOR_SCHEMA` (`extraction/schemas.py:70-71`).
+Esistono gli alias retrocompatibili `RESPONSE_SCHEMA` / `ANCHOR_SCHEMA`.
 
-**L'applicazione varia per provider** (`extraction/vlm_client.py`): OpenAI usa `.with_structured_output(schema, include_raw=True)` (`:193`); `gemini-1.5*` usa json_mode con lo schema (`:138-147`); Gemini 2.0+/3.x ricevono lo schema JSON iniettato nel prompt e vengono validati manualmente con `schema.model_validate_json()` (`:47-119`), perché un `response_schema` complesso provoca `INVALID_ARGUMENT` su quei modelli (`:15-18`).
+**Applicazione per provider.** Il codice usa output strutturato LangChain con
+`include_raw=True` per OpenAI, `json_mode` con schema per i nomi `gemini-1.5*`,
+e JSON libero seguito da validazione Pydantic manuale per gli altri nomi Gemini.
+Questa è la scelta implementata dall'adattatore, non una verifica aggiornata
+delle capacità o disponibilità dei modelli esterni.
+<!-- Source: extraction/schemas.py:76; extraction/schemas.py:82; extraction/schemas.py:92; extraction/vlm_client.py:123 -->
 
 ## Voce di campo canonica
 
-**Significato di dominio:** la vista rivolta al cliente di un campo estratto. Dove `FieldResult` è l'estrazione grezza, una voce canonica abbina il valore alla sua etichetta italiana leggibile e alla pagina BPER a cui appartiene, così i risultati possono essere raggruppati per pagina negli export e nella tab Dati Estratti. La docstring del modulo ne dichiara lo scopo: "backend/UI/export integration" (`extraction/canonical_mapping.py:1`); il consumatore esterno di questo contratto non è identificato nel repo (vedi [Domande aperte](08-open-questions.md)).
+Una voce canonica abbina il valore estratto alla sua etichetta italiana e alla
+pagina BPER di appartenenza. `build_canonical_field_entries()` produce
+`schema_key`, `display_name`, `page_key`, `page_name`, `value`, `confidence`,
+`evidence_text` e `section`. Ordina per `PAGE_SHEET_ORDER`, poi per etichetta e
+chiave; una pagina sconosciuta va in coda. Il binding viene dalle definizioni
+canoniche dei campi, non dalla pagina riconosciuta sul frame.
+<!-- Source: extraction/canonical_mapping.py:8; extraction/canonical_mapping.py:20; extraction/fields.py:112 -->
 
-**Forma**: costruita da `build_canonical_field_entries()` (`extraction/canonical_mapping.py:20-42`): `schema_key`, `display_name`, `page_key`, `page_name`, `value`, `confidence`, `evidence_text`, `section`. Le voci sono ordinate per posizione in `PAGE_SHEET_ORDER`, poi per nome visualizzato, poi per chiave di schema (`:8-18`); una `page_key` sconosciuta si ordina in coda invece di sollevare un'eccezione (`:12-14`). Nome visualizzato e binding di pagina si risolvono tramite `get_canonical_field_metadata()` (`extraction/fields.py:128-138`) contro `CANONICAL_FIELD_DEFINITIONS` (`extraction/field_definitions.py:5-186`).
-
-**Consumatori:** `export_to_csv()` (`extraction/evaluation.py:186-200`), la deduplica batch attualmente disabilitata (`extraction/cli.py:45-74`), l'albero dei risultati Tkinter (`gui_app.py:333-354`) e la tabella dati dell'edge-agent (`edge-agent/ui/data_table_tab.py:161-208`). Tutti ricadono sui `fields` grezzi quando `canonical_fields` manca.
+`export_to_csv()` e l'albero Tkinter usano queste voci, con fallback su `fields`.
+La deduplica batch disabilitata le consulta per individuare una pagina. La tabella
+live e il suo Excel usano invece direttamente `fields` tramite `consolidate()`.
+<!-- Source: extraction/evaluation.py:191; extraction/cli.py:44; extraction/cli.py:271; gui_app.py:333; edge-agent/ui/data_table_tab.py:194 -->
 
 ## Pagina canonica
 
-**Significato di dominio:** le quattro pagine logiche della UI di gestione del credito BPER che organizzano i 45 campi per export e visualizzazione, un ordinamento a fogli fisso, non una proprietà scoperta a runtime.
+**Significato di dominio:** le quattro pagine logiche della UI di gestione del credito BPER che organizzano i 45 campi per export e visualizzazione, un raggruppamento fisso di colonne, non una proprietà scoperta a runtime.
 
-**Definizione** (`extraction/page_definitions.py:5-28`):
+**Definizione**:
+<!-- Source: extraction/page_definitions.py:5-28 -->
 
 | `page_key` | Nome visualizzato | Contiene |
 |---|---|---|
@@ -181,58 +231,195 @@ Esistono gli alias retrocompatibili `RESPONSE_SCHEMA` / `ANCHOR_SCHEMA` (`extrac
 
 Ogni campo è legato staticamente a esattamente una pagina in `CANONICAL_FIELD_DEFINITIONS`. Il binding è metadato, non provenienza: i campi Scheda Privati come `professione_principale` sono legati a `note_da_richiesta` anche se hanno origine su una schermata BPER diversa.
 
-**Un divario di naming da conoscere:** il router dell'edge-agent emette page type presi da `edge-agent/assets/templates/bper/prompts.json` (es. `"Risultato ricerca - Colonne estese"`, 10 definizioni catch-all compreso), memorizzati grezzi in `_page_type`. Non vengono mai risolti tramite `resolve_page_key()` (`extraction/page_definitions.py:36-39`), i cui alias coprono solo i quattro nomi canonici: la tassonomia delle pagine rilevate e quella delle pagine canoniche sono disgiunte, senza alcun ponte (`edge-agent/local_extraction_client.py:96`). La `page_key` di un campo viene sempre dal suo binding statico, mai dalla pagina su cui il frame è stato effettivamente catturato.
+Il catalogo di riconoscimento contiene le varianti delle schermate; `_page_type`
+conserva il nome riconosciuto, che può essere più specifico della pagina canonica.
+Il client non lo converte con `resolve_page_key()`. I campi restano raggruppati
+secondo il loro binding statico: la pagina canonica descrive dove mostrarli,
+mentre `_page_type` descrive quale schermata è stata acquisita.
+<!-- Source: edge-agent/local_extraction_client.py:183; extraction/page_definitions.py:35; extraction/field_definitions.py:1 -->
 
 ## Ground truth (CSV)
 
 **Significato di dominio:** i valori attesi verificati da un umano per ogni schermata, il foglio delle risposte.
 
-**Struttura:** formato long con tre colonne logiche (schermata, etichetta di campo, valore atteso) caricato in `{screen_id: {csv_label: value}}` da `load_ground_truth()` (`extraction/evaluation.py:33-69`). Il loader tollera varianti di intestazione: la schermata può essere `Screenshot`/`Fotogramma`/`Screen`/`screen`; il valore `Valore rilevato` (inclusa una variante con spazio finale)/`Valore`/`Value`; la chiave `Denominazione da attribuire`/`Denominazione`/`Campo`/`Field` (`:38-52`). Colonne non abbinabili sollevano `ValueError` (`:26-31`).
+**Struttura.** Il formato long ha una riga per coppia schermata/campo ed è caricato
+in `{screen_id: {csv_label: value}}`. Il loader rileva il separatore, prova
+`utf-8-sig`, `cp1252` e `latin-1`, elimina gli spazi esterni dalle intestazioni e
+accetta le varianti seguenti:
 
-**Join con il modello dei campi:** le etichette GT mappano sulle chiavi di schema tramite `CSV_TO_SCHEMA` (`extraction/fields.py:56-100`, che porta anche etichette con varianti di spaziatura come `"Evidenze "`). Un'etichetta senza mappatura viene saltata in silenzio durante la valutazione (`extraction/evaluation.py:88-90`); nulla verifica che i valori di `CSV_TO_SCHEMA` siano ⊆ `FIELD_KEYS`.
+| Colonna logica | Intestazioni accettate |
+|---|---|
+| Schermata | `Screenshot`, `Fotogramma`, `Screen`, `screen` |
+| Campo | `Denominazione da attribuire`, `Denominazione`, `Campo`, `Field` |
+| Valore | `Valore rilevato`, `Valore`, `Value` |
 
-**Persistenza:** letto da `INPUT_DIR/dati.csv` (`extraction/config.py:8-9`). La CLI lo richiede tassativamente (`extraction/cli.py:315-316`), ma il file è assente sia dal working tree sia dalla storia git: vedi [Domande aperte](08-open-questions.md).
+<!-- Source: extraction/evaluation.py:26; extraction/evaluation.py:34; extraction/evaluation.py:49 -->
+
+L'identificativo deve coincidere con il nome del file senza estensione, per
+esempio `screen 1` per `screen 1.png`: il loader rimuove gli spazi esterni, ma non
+converte `1` o `screen 1.png` in `screen 1`. In valutazione le schermate senza
+risultato corrispondente vengono saltate. Le etichette dei campi passano per
+`CSV_TO_SCHEMA`; quelle sconosciute vengono saltate a loro volta. Una coppia
+schermata/campo ripetuta nel CSV conserva l'ultima riga letta.
+<!-- Source: extraction/imaging.py:29; extraction/evaluation.py:70; extraction/evaluation.py:85; extraction/evaluation.py:97 -->
+
+**Persistenza.** La CLI richiede `INPUT_DIR/dati.csv`; il dataset di riferimento non
+è distribuito con il repository. Tkinter può ricevere un CSV facoltativo, mentre
+l'edge-agent non ne ha bisogno. Il formato completo dei risultati e le funzioni
+di accesso sono nel [riferimento API](12-python-api.md).
+<!-- Source: extraction/config.py:8; extraction/cli.py:318; gui_app.py:263; edge-agent/local_extraction_client.py:90 -->
+
+## Una riga per pratica: PracticeRecord
+
+Il risultato di un frame conserva ciò che il modello ha letto da un'immagine.
+`PracticeRecord` riunisce invece le informazioni di una pratica attraverso più
+frame: NDG normalizzato, denominazione scelta, `fields`, `source_pages` (tupla dei
+nomi pagina) e `frame_count`. La dataclass è dichiarata `frozen`, ma il dizionario
+annidato dei campi resta mutabile.
+<!-- Source: edge-agent/practice_consolidation.py:30 -->
+
+```mermaid
+flowchart LR
+    ORDER["Risultati in ordine di acquisizione"] --> NDG{"NDG leggibile?"}
+    NDG -->|Sì| GROUP["Gruppo dell'NDG normalizzato"]
+    NDG -->|No| PREV["Pratica precedente o buffer iniziale"]
+    PREV --> GROUP
+    GROUP --> MERGE["pick_best per ciascuno dei 45 campi"]
+    MERGE --> RECORD["PracticeRecord"]
+    RECORD --> TABLE["Tabella Dati Estratti"]
+    RECORD --> XLSX["Una riga Excel"]
+```
+
+<!-- Source: edge-agent/practice_consolidation.py:85; edge-agent/practice_consolidation.py:105; edge-agent/ui/data_table_tab.py:194; edge-agent/excel_export.py:217 -->
+
+`normalize_ndg()` tratta l'NDG come identificatore: elimina i caratteri non
+alfanumerici, uniforma le lettere in maiuscolo e toglie gli zeri iniziali solo se
+rimangono cifre. Non usa `norm_number_str()`, che normalizza quantità e può
+corrompere identificativi con punti o suffissi. I gruppi sono presentati
+nell'ordine della prima apparizione.
+<!-- Source: edge-agent/practice_consolidation.py:46; edge-agent/practice_consolidation.py:105; tests/test_practice_consolidation.py:23; tests/test_practice_consolidation.py:55 -->
+
+Un frame senza NDG si unisce alla pratica precedente. Quelli iniziali attendono
+la prima pratica identificata; se nessun frame ha un NDG leggibile, nasce un solo
+record anonimo. È un'associazione basata sull'ordine, che non ricostruisce la
+pratica dal contenuto delle note. `pick_best()` preferisce un valore non nullo,
+poi la confidenza maggiore; in caso di parità conserva il valore precedente.
+Gli stessi criteri sono usati nel motore: tabella ed export non introducono una
+seconda fusione. Ogni campo canonico è presente nel record anche quando mai letto.
+<!-- Source: edge-agent/practice_consolidation.py:78; edge-agent/practice_consolidation.py:105; extraction/normalization.py:104; tests/test_practice_consolidation.py:61; tests/test_practice_consolidation.py:81; tests/test_practice_consolidation.py:122 -->
+
+### Excel: colonne e valori
+
+`export_results()` è condiviso dai pulsanti di Cattura e Dati Estratti. Consolida
+la sequenza ricevuta, scrive il workbook e restituisce il numero di pratiche.
+L'Excel contiene 45 colonne canoniche: NDG e denominazione per primi, poi i campi
+raggruppati per pagina. La prima riga contiene le bande pagina, la seconda le
+etichette; i dati iniziano dalla terza. Le intestazioni rinominate dall'operatore
+possono sostituire le etichette predefinite. Filtro automatico e blocco riquadri
+`C3` mantengono consultabili intestazioni e identificativi.
+<!-- Source: edge-agent/excel_export.py:92; edge-agent/excel_export.py:177; edge-agent/excel_export.py:217; tests/test_excel_export.py:22; tests/test_excel_export.py:68; tests/test_excel_export.py:130 -->
+
+I valori delle celle sono testo (`cell.data_type = "s"`): una stringa che inizia
+con `=` resta inerte e un importo negativo conserva il segno. Non si applica
+l'apostrofo di `escape_csv_formula()` al workbook, perché lì resterebbe visibile.
+Il CSV di report usa invece tale protezione, con separatore `;` e `utf-8-sig`.
+I metadati diagnostici (confidenza, token, costi e provenienza) restano nel
+risultato e nella diagnostica del client, non nelle 45 colonne business.
+<!-- Source: edge-agent/excel_export.py:124; extraction/evaluation.py:15; extraction/normalization.py:62; edge-agent/local_extraction_client.py:41; tests/test_excel_export.py:92; tests/test_excel_export.py:104 -->
 
 ## Strutture dati dell'edge-agent
 
 Tre strutture più piccole sostengono la cattura dal vivo (vedi [Architettura](04-architecture.md)):
 
-- **`RouterResult`** (`edge-agent/llm_router.py:27-34`): `page_type: Optional[str]`, `confidence: float`, `fields: dict`, `reason`, `expected`. Ogni `PageRouter.route()` ne restituisce uno. Invariante: un `page_type` non nullo è sempre un vero nome di pagina di `prompts.json`: i valori allucinati vengono rimappati in modo case-insensitive o annullati (`edge-agent/llm_router.py:225-230`).
-- **`AgentConfig`** (`edge-agent/config.py:8`): una vista tipizzata su `edge-agent/config.ini` (fps, modalità router, indice monitor, preprocessing, credenziali `[llm]`). Nota che `AgentConfig.save()`, se mai venisse chiamato, ri-persisterebbe `[llm] api_key` su disco (`edge-agent/config.py:326-332`, attualmente non chiamato); il file committato in passato ha fatto trapelare una chiave reale, poi ripulita e sostituita con un placeholder.
-- **Prototipi DINOv2** (`edge-agent/page_classifier.py`): embedding a 384 dimensioni L2-normalizzati per pagina, in cache in `edge-agent/assets/templates/bper/bper_page_prototypes.json`, confrontati per similarità coseno **centrata** (sottratto il centroide dei prototipi a entrambi i lati) con soglia 0.35. La cache porta anche il campo `geometry`, prodotto da `embedding_geometry()`: descrive modello, ROI, resize e regola di punteggio, e insieme all'hash del dataset determina se i prototipi vanno ricostruiti ([ADR 0002](adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md), [ADR 0003](adr/0003-chiave-cache-prototipi-con-geometria.md)).
+- **`RouterResult`** contiene `page_type`, `confidence`, `fields`, `reason` ed
+  `expected`. Il router LLM valida i nomi contro il catalogo, normalizzando il caso
+  o annullando i valori sconosciuti; il percorso ML restituisce la classe del
+  classificatore. Sono metadati di routing, distinti dai campi dell'estrazione.
+- **`AgentConfig`** rappresenta la configurazione INI di cattura e router. Il
+  resolver considera vuoti i valori `REDACTED*` e cerca le credenziali nell'ambiente
+  se l'INI è vuoto. `save()` può persistere la credenziale nell'INI: non va usato
+  per salvare una chiave reale in un file distribuito.
+- **Prototipi DINOv2**: embedding a 384 dimensioni normalizzati, conservati nella
+  cache `bper_page_prototypes.json`. Il router ML usa coseno centrato e soglia 0.35.
+  La chiave di cache combina hash del dataset e `embedding_geometry()` (modello,
+  ROI, resize, regola di punteggio e classi di scarto); se cambia, i prototipi si
+  ricostruiscono. Vedi [ADR 0002](adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md)
+  e [ADR 0003](adr/0003-chiave-cache-prototipi-con-geometria.md).
+
+<!-- Source: edge-agent/llm_router.py:28; edge-agent/llm_router.py:43; edge-agent/llm_router.py:250; edge-agent/config.py:239; edge-agent/config.py:292; edge-agent/config.py:339; edge-agent/page_classifier.py:51; edge-agent/page_classifier.py:140; edge-agent/page_classifier.py:415; edge-agent/page_classifier.py:629 -->
 
 ## Pattern di flusso dei dati
 
-**Create.** Tutti i dati hanno origine in una chiamata Vision-LLM. `call_vlm()` invoca il modello con un'immagine e uno schema Pydantic e restituisce `parsed.model_dump()` più un blocco `_meta`: `{model, screen_id, attempt, latency_ms, prompt_tokens, completion_tokens, total_tokens, estimated_cost_usd}` (`extraction/vlm_client.py:107-116`, `:167-176`, `:214-223`). Popolare `_meta` a ogni chiamata è un contratto a effetto collaterale portante (vincolo n. 2 di CLAUDE.md); tutti e tre i percorsi produttori lo rispettano. Non esiste inserimento dati da parte dell'utente: ogni valore è prodotto dal modello, poi eventualmente sovrascritto dalle regole di post-elaborazione.
+**Creazione.** `call_vlm()` restituisce la risposta Pydantic serializzata e un
+blocco `_meta` con modello, identificativo schermata, passaggio, latenza, token
+in ingresso/uscita e costo stimato. I valori letti sono poi rivisti dalle regole
+della pipeline; la tabella live non permette di modificare le celle business.
+<!-- Source: extraction/vlm_client.py:123; extraction/pipeline.py:181; edge-agent/ui/data_table_tab.py:114 -->
 
-**Read.** I consumatori leggono il dict risultato per chiave documentata. La valutazione legge `fields[key].value` (`extraction/evaluation.py:92`); il report dei costi legge `_meta_agg` (`:249-257`); le GUI leggono `fields`, `canonical_fields`, le tabelle e `_meta_agg` (`gui_app.py:308-396`; `edge-agent/ui/extraction_results_tab.py:159-211`; `edge-agent/ui/data_table_tab.py:161-305`). Nessuno schema vincola il dict, quindi ogni lettore usa accessi difensivi con `.get()`.
+**Lettura.** La valutazione usa `fields`, i report di costo `_meta_agg`, Tkinter
+anche `canonical_fields` e le liste tabellari. La tabella live rilegge il prefisso
+ordinato dal client e costruisce i record consolidati. L'assenza di alcune chiavi
+nei percorsi ridotti richiede accessi difensivi.
+<!-- Source: extraction/evaluation.py:106; extraction/evaluation.py:248; gui_app.py:333; edge-agent/ui/data_table_tab.py:194 -->
 
-**Update.** All'interno di una schermata, i valori dei campi vengono rivisti in un ordine temporale fisso che `_field_sources` registra (vedi [Workflow](05-workflows.md#pipeline-di-estrazione-multi-pass)):
+**Aggiornamento.** Nel singolo frame, il risultato principale assegna la sorgente
+`CONTENT_MAIN`; gli anchor ammessi dal gate sovrascrivono i due identificativi.
+Seguono normalizzazione di `tipo`, retry con `pick_best()`, controllo di coerenza,
+metadati, appiattimento dei primi quattro soggetti e costruzione dei campi canonici.
+Le regole di coerenza possono ricavare `evidenze="B"` o `tipo="BMB"` dai tooltip.
+Il flatten dei soggetti aggiorna le dodici chiavi numerate senza aggiornare
+`_field_sources`: per quelle chiavi la provenienza può essere stantia.
+<!-- Source: extraction/pipeline.py:181; extraction/pipeline.py:203; extraction/pipeline.py:365 -->
 
-1. Il passaggio principale inizializza la sorgente di ogni campo a `CONTENT_MAIN` (`extraction/pipeline.py:141`).
-2. `_merge_anchors()` sovrascrive `ndg`/`denominazione` con qualsiasi valore anchor non nullo → `ANCHOR_HEADER` (`:211-216`). Il previsto filtro di confidenza 0.95 su questo passo è inefficace (vedi Validazione).
-3. Il passaggio di retry sostituisce un campo solo quando `pick_best()` favorisce il candidato → `RETRY_{AREA}` (`extraction/normalization.py:87-108`).
-4. Le regole di coerenza possono forzare `evidenze="B"` o `tipo="BMB"` a partire dall'evidenza dei tooltip (`extraction/pipeline.py:311-328`).
-5. L'appiattimento dei soggetti scrive `ndg_1..4`/`denominazione_1..4`/`ruolo_1..4` per ultimo e incondizionatamente, vincendo su qualsiasi retry `BODY` per quelle chiavi e lasciando `_field_sources` intatto (`:160-166`).
-
-L'ordinamento è portante: i retry assumono che gli anchor siano già stati uniti, il controllo di coerenza assume che i retry siano finiti, e `canonical_fields` viene costruito solo dopo l'appiattimento così da riflettere i valori finali (`extraction/pipeline.py:109-170`).
-
-**Delete.** Non esiste alcun percorso di cancellazione. La CLI scarta i risultati all'uscita del processo; il `_results` dell'edge-agent cresce per job finché l'app non si chiude (`edge-agent/local_extraction_client.py:56`). La deduplica batch per pagina è implementata ma disabilitata (`extraction/cli.py:268-273`), e ri-ingerire una pagina nell'edge-agent accoda una nuova riga invece di sostituirne una.
-
-**Le forme di export divergono.** Gli stessi dati escono dal sistema in tre dialetti CSV: separatore `;` e `utf-8-sig` per i CSV di valutazione/debug/report (`extraction/evaluation.py:172-177`, `:234-239`) e per l'export della tabella dati (`edge-agent/ui/data_table_tab.py:340-341`); `,` semplice per il formato piatto una-riga-per-schermata di `LocalExtractionClient.export_csv()` (`edge-agent/local_extraction_client.py:112-143`, che restituisce `None` quando un job non ha risultati).
+**Durata dei dati.** Il client non espone un'operazione di cancellazione dei risultati.
+Una nuova acquisizione aggiunge un risultato di frame; la tabella ed Excel lo
+fondono nella pratica corrispondente. La deduplica batch per pagina è implementata
+ma la sua invocazione resta disabilitata.
+<!-- Source: edge-agent/local_extraction_client.py:114; edge-agent/local_extraction_client.py:194; edge-agent/practice_consolidation.py:105; extraction/cli.py:271 -->
 
 ## Validazione
 
-La validazione avviene su tre livelli; nessuno è un vincolo di database, e diverse guardie previste sono più deboli di quanto documentato.
+I modelli Pydantic validano la risposta LLM, mentre il dizionario arricchito della
+pipeline segue un contratto fra consumatori. Non esistono vincoli di database.
 
-**Validazione dello schema (il confine con l'LLM).** Ogni risposta VLM deve essere JSON valido conforme al suo schema Pydantic. `call_vlm()` solleva `ValueError` per un oggetto JSON mancante, un errore di decodifica, un fallimento Pydantic o un errore di parsing dell'output strutturato (`extraction/vlm_client.py:39`, `:44`, `:95`, `:153`, `:200`). Per convenzione questi sono permanenti: `call_vlm_with_retry()` risolleva `ValueError` immediatamente e riprova solo le eccezioni non-`ValueError` (`:252-258`).
+**Confine LLM.** JSON mancante, parsing non valido o validazione Pydantic fallita
+producono `ValueError`. `call_vlm_with_retry()` rilancia subito `ValueError`,
+`KeyError` e `IndexError`; le altre eccezioni entrano nel backoff fino a tre
+tentativi per passaggio. Il budget dei passaggi non è un tetto alle richieste di rete.
+<!-- Source: extraction/vlm_client.py:34; extraction/vlm_client.py:230 -->
 
-**Il gating sulla confidenza - per lo più consultivo.** La `confidence` fornita dal modello è fidata ovunque; nulla impone l'intervallo [0, 1] al di là di un'istruzione nel prompt (`prompts/extraction_anchor.json`). Il trigger di retry (`< 0.60`, `extraction/pipeline.py:255`) e gli spareggi di `pick_best()` la usano così com'è. Il gate degli anchor a `extraction/pipeline.py:91-96` *intende* annullare gli anchor sotto `ANCHOR_CONF_MIN` (0.95), ma i dict restituiti sono copie pre-gate (`:87-88`) e `safe_set_field(..., value=None)` non può sovrascrivere un valore non nullo (`extraction/normalization.py:78-79`), quindi gli anchor a bassa confidenza fluiscono a valle senza filtro. L'unico codice che verifica davvero `ANCHOR_CONF_MIN` sui valori finali è `_is_confident_output()` dentro l'helper di deduplica disabilitato (`extraction/cli.py:77-89`). Lo "zeroes out low-confidence anchors" di CLAUDE.md descrive l'intento, non il comportamento.
+**Confidenza.** `_ConfidenceModel` limita a 0–1 la confidenza delle risposte Pydantic;
+valori non numerici o non finiti diventano zero. Il gate anchor è efficace:
+`extract_anchors()` annulla direttamente i valori delle copie restituite sotto
+`ANCHOR_CONF_MIN` (default 0.95), escludendoli sia dal suggerimento principale sia
+dal merge. La lettura principale e i retry possono comunque fornire gli
+identificativi finali. Il retry viene selezionato sui campi nulli o sotto
+`RETRY_CONF_MIN` (default 0.60).
+<!-- Source: extraction/schemas.py:11; extraction/pipeline.py:105; extraction/pipeline.py:235; extraction/pipeline.py:284; extraction/config.py:57 -->
 
-**Coerenza tra strutture - per costruzione dove c'è, assente dove non c'è.** La sincronia `FieldsModel` ⟷ `FIELD_KEYS` è garantita da `create_model()` (`extraction/schemas.py:46-49`), e `FIELD_RETRY_MAP` è derivata meccanicamente da `AREA_TO_FIELDS` (`extraction/config.py:85-88`). Ma nessuna guardia `if/raise` di avvio valida le chiavi di `AREA_TO_FIELDS` contro `FIELD_KEYS`, i valori di `CSV_TO_SCHEMA` o la copertura di `CANONICAL_FIELD_DEFINITIONS`: le guardie descritte da CLAUDE.md (e un dict `_FIELD_COMPARATORS`) non esistono nel codice attuale. Le conseguenze osservabili: sei campi (`creazione` e i cinque `tooltip_*`) non appartengono a nessuna area di retry e non possono mai essere ritentati; una nuova chiave di campo senza definizione canonica ricade in silenzio su una visualizzazione con la chiave grezza e `page_key=None` e si ordina nel bucket catch-all dell'export (`extraction/fields.py:118-138`, `extraction/canonical_mapping.py:12-14`). Questi fallback silenziosi sono la principale modalità di fallimento quando si estende l'insieme dei campi.
+**Coerenza delle definizioni.** `FieldsModel` deriva da `FIELD_KEYS`, ma nessuna
+guardia di avvio valida la copertura di `AREA_TO_FIELDS`, `CSV_TO_SCHEMA` e delle
+definizioni canoniche. `creazione` e i cinque campi `tooltip_*` non appartengono
+alle aree di retry. Se manca una definizione canonica, il mapping usa la chiave
+grezza e `page_key=None`; le colonne Excel sono invece costruite dalle definizioni
+canoniche, quindi estendere solo `FIELD_KEYS` non basta a ottenere una colonna.
+<!-- Source: extraction/schemas.py:68; extraction/config.py:101; extraction/fields.py:118; edge-agent/excel_export.py:92 -->
 
-**Normalizzazione dei valori (in valutazione).** Prima del confronto: `norm_number_str()` rimuove `€`/spazi e normalizza i separatori per i campi numerici: qualsiasi chiave contenente `importo_euro`, `ndg` o `n_fido` (`extraction/normalization.py:40-55`, `:127-133`); `norm_text()` mette in minuscolo e comprime gli spazi (`:34-38`); il testo oltre i 20 caratteri passa in modalità fuzzy con un rapporto `SequenceMatcher` ≥ 0.85 (`:141-146`); il vocabolario dei valori nulli è `""`, `"n/d"`, `"nd"`, `"---"`, `"null"`, `"none"`, `"nan"` (`:28-32`). `tipo` viene normalizzato prima, nella pipeline, collassando `mutui spesa`/`mutuo spesa`/`bpi mutui` in `BPI Mutui` (`:10-23`).
+**Normalizzazione in valutazione.** `norm_number_str()` gestisce euro, spazi e
+separatori per le chiavi contenenti `importo_euro`, `ndg` o `n_fido`; per gli NDG
+ha quindi la stessa ambiguità fra identificatore e quantità evitata dal
+consolidamento. `norm_text()` uniforma maiuscole e spazi; oltre 20 caratteri il
+confronto del testo atteso può accettare una somiglianza `SequenceMatcher` ≥ 0.85.
+Sono nulli anche `""`, `n/d`, `nd`, `---`, `null`, `none` e `nan`. La pipeline
+normalizza già `mutui spesa`, `mutuo spesa` e `bpi mutui` in `BPI Mutui`.
+<!-- Source: extraction/normalization.py:10; extraction/normalization.py:29; extraction/normalization.py:40; extraction/normalization.py:138 -->
 
-**Avvertenza sulla contabilità dei costi.** `estimate_cost_usd()` restituisce `0.0` per qualsiasi modello assente da `PRICING_PER_1M` (`extraction/vlm_client.py:21-26`; tabella in `extraction/config.py:36-49`), quindi le esecuzioni con nomi di modello non elencati sotto-riportano il costo senza alcun avviso.
+**Contabilità dei costi.** `_meta_agg` somma i metadati in `_attempts` e arrotonda
+il costo a sei decimali. Conta le chiamate riuscite registrate dalla pipeline,
+non tutti i tentativi di trasporto potenzialmente fatturati. La latenza è una
+somma: con retry paralleli non rappresenta il tempo totale percepito.
+`estimate_cost_usd()` restituisce zero per un modello assente da `PRICING_PER_1M`;
+un report a zero non significa che il servizio sia gratuito.
+<!-- Source: extraction/pipeline.py:340; extraction/pipeline.py:383; extraction/vlm_client.py:26; extraction/vlm_client.py:230 -->
 
 Per come queste strutture vengono prodotte e consumate end-to-end, vedi [Workflow](05-workflows.md); per la disposizione dei componenti, vedi [Architettura](04-architecture.md).

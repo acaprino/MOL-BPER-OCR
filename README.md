@@ -4,6 +4,8 @@
 
 Estrazione automatica di dati strutturati da screenshot bancari italiani (applicazione BPER) tramite pipeline VLM (Vision Language Model) multi-pass con **LangChain**. Supporta l'acquisizione in tempo reale tramite un **Edge Agent** (PyQt6) che si collega direttamente alla pipeline di estrazione locale. Estrae **45 campi** (`FIELD_KEYS` in `extraction/fields.py`) da 9 tipi di schermata, valuta l'accuratezza rispetto a un ground truth CSV e produce metriche per campo e breakdown dei costi.
 
+La **[documentazione ufficiale](docs/INDEX.md)** raccoglie [istruzioni di avvio](docs/07-getting-started.md), [architettura](docs/04-architecture.md), [flussi di elaborazione](docs/05-workflows.md), [modello dei dati](docs/06-data-model.md) e [API Python](docs/12-python-api.md). Le decisioni sono spiegate negli [ADR](docs/adr/README.md).
+
 > **Avviso (2026-07-21):** la cronologia git è stata **riscritta e force-pushata** per rimuovere una chiave API committata per errore. Se hai clonato il repository **prima del 2026-07-21, ri-clona da zero**; non fare push/merge da un clone vecchio. Dettagli in [Sicurezza: chiavi API](#sicurezza-chiavi-api-e-cronologia-git).
 
 ## Cosa fa
@@ -12,19 +14,19 @@ Il sistema riceve screenshot (da file o cattura in tempo reale) e, attraverso tr
 
 ## Stato Attuale
 
-Il sistema integra l'acquisizione automatica degli screenshot con l'estrazione locale, senza microservizi esterni o backend remoti.
-Modelli supportati (`PROVIDER_MODELS` in `extraction/config.py`):
+Il coordinamento dell'estrazione e i risultati risiedono nell'applicazione. La lettura delle immagini chiama i provider AI configurati e richiede rete; non serve un backend applicativo separato per il percorso BPER.
+Modelli elencati nel catalogo locale (`PROVIDER_MODELS` in `extraction/config.py`; la disponibilità presso il provider va verificata quando si configura l'applicazione):
 - **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `o1`, `o1-mini`.
-- **Google Gemini**: `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-exp`, `gemini-2.0-flash-thinking-exp`, `gemini-3-flash-preview`, `gemini-3.1-flash-lite-preview`.
+- **Google Gemini**: `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-exp`, `gemini-2.0-flash-thinking-exp`, `gemini-3-flash-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.6-flash`.
 
 Caratteristiche principali:
 - **Edge Agent (GUI)**: Cattura screenshot in tempo reale dal monitor selezionato, riconosce la pagina corrente (router LLM o ML) e avvia l'estrazione locale.
-- **Parallelismo**: Elaborazione simultanea di più immagini in modalità CLI (`ThreadPoolExecutor`).
-- **Anchor Check**: Un primo pass estrae solo NDG e DENOMINAZIONE dall'header per ancorare l'estrazione al soggetto corretto; il `dataset_mismatch_guard()` esclude dalle metriche gli screen con mismatch.
-- **Retry Intelligente**: Crop mirati per area dove l'estrazione iniziale è fallita, con tetto di chiamate per screenshot (`MAX_CALLS_PER_SCREEN`, dimensionato per coprire un retry per area).
+- **Parallelismo**: Elaborazione simultanea di file nel batch e di frame nell'edge-agent. Tabella ed export live usano i risultati nell'ordine di acquisizione, anche quando terminano fuori ordine.
+- **Anchor Check**: Un primo pass estrae NDG e DENOMINAZIONE e azzera i valori sotto `ANCHOR_CONF_MIN`. Il `dataset_mismatch_guard()` esclude dalle metriche FILTERED gli screenshot con mismatch; le metriche RAW li includono.
+- **Retry mirato**: Ritagli per le aree con valori nulli o poco affidabili, entro `MAX_CALLS_PER_SCREEN`. Il budget conta i passaggi logici; i tentativi di trasporto possono produrre più richieste di rete.
 - **Valutazione Automatica**: Confronta i risultati con un file Ground Truth (`dati.csv`, **non incluso nel repo**, vedi sotto).
 
-Limiti noti (è un POC): nessuna test suite automatica, nessuna CI/CD, nessun Dockerfile, dipendenze non pinnate (un solo `requirements.txt` alla radice).
+Il progetto è un POC con dipendenze non bloccate a versioni esatte. Per eseguire i test e valutare l'accuratezza dell'estrazione, consulta [Avvio e sviluppo](docs/07-getting-started.md).
 
 ## Scopo dei Componenti
 
@@ -51,7 +53,7 @@ Il package `extraction` contiene tutta la logica di business, separata dall'inte
 
 ### 1. Setup Ambiente
 
-Python consigliato: **3.13** (o 3.12). Il launcher Windows `run_edge_agent.bat` cerca deliberatamente `py -3.13`, poi `py -3.12` (le versioni più nuove spesso non hanno wheel torch). Tutte le dipendenze stanno in un unico `requirements.txt` alla radice.
+I runtime di riferimento sono **Python 3.13 e 3.12**. Il launcher Windows prova `py -3.13`, poi `py -3.12`, infine il comando `python` disponibile senza verificarne la versione. Le dipendenze dell'applicazione stanno in `requirements.txt`; `requirements-dev.txt` aggiunge pytest.
 
 ```bash
 # Installazione dipendenze
@@ -76,7 +78,7 @@ run_edge_agent.bat
 Per la cattura real-time e l'estrazione locale:
 ```bash
 python edge-agent/edge_agent.py        # avvio diretto (--debug aggiunge il tab Debug LLM)
-python main.py --gui                   # equivalente
+python main.py --gui                   # importa extraction prima del preflight: ambiente già pronto
 run_edge_agent.bat                     # Windows: bootstrap venv + avvio
 ```
 
@@ -92,6 +94,8 @@ Per l'applicazione desktop nativa:
 python gui_app.py
 ```
 
+L'avvio diretto di Tkinter non carica `.env`: esportare prima le variabili oppure inserire la chiave nella GUI. Per il primo avvio dell'edge-agent usare il launcher o `edge-agent/edge_agent.py`, che eseguono il preflight prima di importare la UI e il motore. Le procedure complete sono in [Avvio e sviluppo](docs/07-getting-started.md).
+
 ---
 
 ## Sicurezza: chiavi API e cronologia git
@@ -99,33 +103,21 @@ python gui_app.py
 - **2026-07-21**: una chiave OpenAI committata in `edge-agent/config.ini` è stata **rimossa dall'intera cronologia git** (`git filter-repo` + force-push). Tutti gli hash dei commit sono cambiati. **Chi ha clonato prima di quella data deve ri-clonare**: un push o merge da un clone vecchio reintrodurrebbe la chiave nella cronologia.
 - La riga `api_key` in `edge-agent/config.ini` ora è **vuota**. Il file è tracciato in git: **non inserire mai una chiave reale lì**. `AgentConfig` tratta come vuoto anche qualunque valore che inizi per `REDACTED`, perché un placeholder rimasto in giro aveva già oscurato le chiavi da ambiente rompendo il router in silenzio. `build_exe.bat` si rifiuta di impacchettare un `config.ini` con `api_key` non vuota.
 - Le chiavi vanno in `.env` (gitignorato): `LLM_API_KEY` è l'unica variabile obbligatoria.
-- Nota sul router dell'Edge Agent: serve una chiave solo con `router = llm` o `hybrid`; la configurazione spedita usa `router = ml`, che riconosce le pagine in locale senza rete. Quando serve, la precedenza è risolta da `AgentConfig.resolve_llm_settings()` in modo consapevole del provider: `config.ini [llm] api_key` se non vuota, poi per `gemini` `GEMINI_API_KEY` -> `GOOGLE_API_KEY` -> `LLM_API_KEY`, per `openai` `OPENAI_API_KEY` -> `LLM_API_KEY`.
+- Il router dell'edge-agent risolve le credenziali separatamente dal motore. La configurazione inclusa usa `router = llm`, mentre il default di `AgentConfig` è `ml`. Quando viene usato il router LLM, `resolve_llm_settings()` sceglie `config.ini [llm] api_key` se non vuota, poi per `gemini` `GEMINI_API_KEY` -> `GOOGLE_API_KEY` -> `LLM_API_KEY`, per `openai` `OPENAI_API_KEY` -> `LLM_API_KEY`. Il riconoscimento ML può essere locale, ma l'estrazione richiede comunque la chiave del provider.
 
 ---
 
 ## Generazione Eseguibile (.exe)
 
-È possibile pacchettizzare l'applicazione Desktop Tkinter (`gui_app.py`) in un unico file eseguibile per Windows utilizzando **PyInstaller**. (Non esiste un pacchetto per l'Edge Agent: il suo unico launcher è `run_edge_agent.bat`.)
+Il repository include il build portable dell'edge-agent tramite [build_exe.bat](build_exe.bat) e [edge_agent.spec](edge_agent.spec). Dalla radice, su Windows:
 
-### Prerequisiti
-```bash
-pip install pyinstaller
+```bat
+build_exe.bat
 ```
 
-### Build
-Per generare l'eseguibile, posizionarsi nella root del progetto e lanciare:
+Lo script prepara Python e le dipendenze se mancanti, rimuove la precedente `dist/EdgeAgent` e genera un bundle PyInstaller `onedir`. Copia configurazione, asset e prompt, include un template `.env` senza credenziale e produce `dist/EdgeAgent_YYYY-MM-DD.zip`.
 
-```bash
-pyinstaller --noconfirm --onefile --windowed --name "AI_Data_Extractor" --add-data "extraction;extraction" --collect-all langchain_google_genai --collect-all langchain_openai gui_app.py
-```
-
-**Note sulla build:**
-- `--onefile`: Crea un singolo file .exe (nella cartella `dist/`).
-- `--windowed`: Impedisce l'apertura della console all'avvio dell'app.
-- `--add-data "extraction;extraction"`: Include il package `extraction` del progetto.
-- `--collect-all`: Forza l'inclusione delle dipendenze dinamiche di LangChain (import dinamici che PyInstaller non rileva da solo).
-
-L'eseguibile risultante si troverà in `dist/AI_Data_Extractor.exe`.
+Consegnare l'intera cartella del pacchetto, non soltanto l'eseguibile. Il build rifiuta un `config.ini` con `api_key` valorizzata. Al primo avvio il preflight prepara i componenti e richiede la chiave. Dettagli in [Avvio e sviluppo](docs/07-getting-started.md).
 
 ## I 45 campi estratti
 
@@ -134,11 +126,11 @@ L'eseguibile risultante si troverà in `dist/AI_Data_Extractor.exe`.
 | Gruppo | Campi | Area retry |
 |---|---|---|
 | Identificatori header | `ndg`, `denominazione` | HEADER |
-| Metadati pratica | `tipo`, `stato`, `fase`, `creazione`, `evidenze` | HEADER |
+| Metadati pratica | `tipo`, `stato`, `fase`, `creazione`, `evidenze` | HEADER; `creazione` esclusa dai retry |
 | Dati fido | `filiale_relazione`, `n_fido`, `rapporto`, `descrizione`, `scadenza`, `importo_euro`, `tipo_op` | HEADER / BODY |
-| Note e tooltip | `note_della_richiesta`, `tooltip_descrizione_bmb`, `tooltip_evidenze_b`, `tooltip_descrizione_m_consap`, `tooltip_descrizione_consap_dr_bis`, `tooltip_descrizione_ipoteca` | FOOTER |
+| Note e tooltip | `note_della_richiesta`, `tooltip_descrizione_bmb`, `tooltip_evidenze_b`, `tooltip_descrizione_m_consap`, `tooltip_descrizione_consap_dr_bis`, `tooltip_descrizione_ipoteca` | FOOTER per la nota; i cinque tooltip sono esclusi dai retry |
 | Soggetti appiattiti (screen 2-3) | `ndg_1..4`, `denominazione_1..4`, `ruolo_1..4` (fino a 4 cointestatari) | BODY |
-| Scheda privati (screen 4-5) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` | BODY / FOOTER |
+| Scheda privati (screen 4-5) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` | HEADER / BODY / FOOTER |
 
 Le chiavi sono termini di dominio bancario in italiano e non vanno tradotte. Il mapping campo -> area di retry è in `AREA_TO_FIELDS` (`extraction/config.py`).
 
@@ -156,13 +148,16 @@ Tutte le variabili sono configurabili via environment (lette a import time da `e
 | `INPUT_DIR` | `mnt/data` | Directory dati (screenshot + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `PARALLEL_ENABLED` | `1` | Elaborazione parallela (`0` per disattivarla) |
-| `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Massimo chiamate VLM per screenshot (1 anchor + 1 main + un retry per area). Derivato, non letterale: abbassarlo affama le aree in coda a `AREA_TO_FIELDS` |
+| `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Budget dei passaggi: 1 anchor + 1 main + un retry per area. Ridurlo elimina le aree in coda a `AREA_TO_FIELDS`; non limita i tentativi di trasporto |
 | `ANCHOR_CONF_MIN` | `0.95` | Confidenza minima per accettare gli anchor |
+| `RETRY_CONF_MIN` | `0.60` | Confidenza sotto cui un campo rende candidata al retry la propria area |
+| `MAX_IMAGE_LONG_SIDE` | `2000` | Limite del lato lungo all'ingresso di `extract_from_image()` |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Fermare il processing se l'anchor è incerto (`1` per attivare) |
 | `DEBUG_MODE` | `0` | Log `[DEBUG]` verbosi del batch |
 | `DEBUG_SAVE_CROPS` | `0` | Salvare i crop intermedi in `INPUT_DIR/debug_crops` |
+| `PROMPTS_DIR` | *(non impostata)* | Directory alternativa del catalogo prompt; viene letta da `prompt_store.py` e un override non valido interrompe il caricamento |
 
-L'Edge Agent si configura invece via `edge-agent/config.ini` (fps, router `ml`/`llm`/`hybrid`, monitor, ecc.), non via env, con l'eccezione del fallback della chiave del router descritto sopra. Provider e modello devono essere coerenti: la factory rifiuta ad esempio un modello `gemini-*` con `LLM_PROVIDER=openai` (`extraction/llm_factory.py`).
+La cattura e il routing dell'edge-agent si configurano via `edge-agent/config.ini`; il motore di estrazione continua a leggere le variabili d'ambiente. Le modalità `ml`, `llm`, `hybrid` e `local-first` sono descritte nei [Workflow](docs/05-workflows.md), inclusi i limiti del percorso `local-first` corrente. Provider e modello devono essere coerenti: la factory rifiuta ad esempio un modello `gemini-*` con `LLM_PROVIDER=openai` (`extraction/llm_factory.py`).
 
 ## Output JSON
 
@@ -238,7 +233,7 @@ poc-data-extraction/
     page_classifier.py     # Classificatore prototipi DINOv2 ViT-S/14, coseno centrato
     frame_normalize.py     # Dal monitor intero alla finestra applicativa
     image_ops.py           # Preprocessing cattura (scale, unsharp, autocontrast)
-    ui/                    # MainWindow, tab Cattura/Risultati/Dati Estratti/Debug
+    ui/                    # MainWindow, tab Cattura/Dati Estratti e Debug LLM opzionale
     workers/capture/       # QThread di cattura (BPER + generico)
     assets/templates/bper/ # prompts.json (definizioni pagine), embeddings, template
   extraction/

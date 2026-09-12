@@ -1,0 +1,6 @@
+
+============================================================
+LINK VALIDATION RESULTS
+============================================================
+Total broken links: 0
+2026-09-12 19:57:53,066 - INFO - Validating links in D:\Projects\poc-data-extraction\docs...
