@@ -230,7 +230,7 @@ Precedenza della chiave:
 | `gemini` | poi `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY` |
 | `openai` | poi `OPENAI_API_KEY` → `LLM_API_KEY` |
 
-Il `config.ini` spedito usa `provider = gemini`, `model = gemini-3.6-flash` e l'endpoint OpenAI-compatibile di Google, con `api_key` **vuota**: la chiave arriva dall'ambiente. Lasciala vuota. L'INI è tracciato in git, quindi qualunque chiave incollata lì è a un commit di distanza dalla fuga, e `build_exe.bat` si rifiuta di impacchettare un `config.ini` con `api_key` non vuota.
+Il `config.ini` spedito usa `provider = gemini`, `model = gemini-3.8-flash` e l'endpoint OpenAI-compatibile di Google, con `api_key` **vuota**: la chiave arriva dall'ambiente. Lasciala vuota. L'INI è tracciato in git, quindi qualunque chiave incollata lì è a un commit di distanza dalla fuga, e `build_exe.bat` si rifiuta di impacchettare un `config.ini` con `api_key` non vuota.
 
 > **Nota di sicurezza:** una chiave OpenAI era stata committata in `edge-agent/config.ini` ed è stata rimossa dall'intera cronologia git il 2026-07-21 (riscrittura con filter-repo + force-push). La riga ora è vuota. `AgentConfig` tratta inoltre qualunque valore che inizi per `REDACTED` come vuoto: un placeholder rimasto in giro aveva già oscurato le chiavi da ambiente rompendo il router in silenzio. La rotazione della chiave esposta è da confermare. Chi ha clonato il repo **prima del 2026-07-21** deve ri-clonare (la cronologia è stata riscritta). Ricorda anche che `AgentConfig.save()` ri-persisterebbe nella copia tracciata qualunque chiave in memoria (`edge-agent/config.py:326-332`) -- oggi non ha chiamanti, ma non committare mai una chiave reale in questo file.
 
@@ -287,7 +287,7 @@ Nell’app: scegli BPER in Cattura, premi «Avvia» e naviga sul monitor selezio
 .\build_exe.bat
 ```
 
-Usa `edge_agent.spec` e produce `dist/EdgeAgent` più uno ZIP datato. Il pacchetto contiene configurazione, prompt e asset; l’avvio esegue il preflight prima di importare la UI. La chiave va nella `.env` locale: la build rifiuta un `config.ini` con `api_key` valorizzata. Vedi [Come iniziare](07-getting-started.md) per la consegna del pacchetto.
+Usa `edge_agent.spec` e produce `dist/EdgeAgent` più uno ZIP datato. Il pacchetto contiene configurazione, prompt e asset; l’avvio esegue il preflight prima di importare la UI. La chiave va nella `.env` locale: la build rifiuta un `config.ini` con `api_key` valorizzata. Per consegnare un pacchetto che non chiede nulla al tester, la build può precompilare la chiave nel `.env` del pacchetto (richiesta all'avvio della build, oppure `EDGE_AGENT_PACKAGE_KEY`); lo zip prende il suffisso `_CON-CHIAVE`. Vedi [Come iniziare](07-getting-started.md) per la consegna del pacchetto.
 
 ### Controllare risultati e log
 

@@ -164,5 +164,19 @@
       "DQ-07"
     ],
     "cross_partition_flows": 0
-  }
+  },
+  "incremental_updates": [
+    {
+      "date": "2026-09-29",
+      "file": "09-incremental-2026-09-29.md",
+      "base_run": "poc-data-extraction-20260912-175144",
+      "git": {
+        "branch": "develop",
+        "commit": "4b5cac6",
+        "dirty": true
+      },
+      "scope": "env_key.py and packaged key in build_exe.bat; default model gemini-3.8-flash with pricing; first real-provider baseline; docs; tests 178 passed",
+      "baseline": "baselines/2026-09-29-gemini-3.8-flash"
+    }
+  ]
 }

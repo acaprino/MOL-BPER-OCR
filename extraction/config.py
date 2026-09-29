@@ -29,6 +29,7 @@ PROVIDER_MODELS = {
         "gemini-3-flash-preview",
         "gemini-3.1-flash-lite-preview",
         "gemini-3.6-flash",
+        "gemini-3.8-flash",
     ],
 }
 
@@ -48,6 +49,9 @@ PRICING_PER_1M = {
     "gemini-3.1-flash-lite-preview": {"input": 0.25, "output": 1.50},
     # Prezzo introduttivo fino al 2026-12-31; dal 2027-01-01 diventa 1.50/7.50
     "gemini-3.6-flash": {"input": 0.75, "output": 3.75},
+    # Stesso listino introduttivo: 0.75/3.75 fino al 2026-12-31, dal 2027-01-01 1.50/7.50
+    # (https://ai.google.dev/gemini-api/docs/pricing, verificato il 2026-09-29)
+    "gemini-3.8-flash": {"input": 0.75, "output": 3.75},
 }
 
 # ============================================================

@@ -1,0 +1,5849 @@
+{
+  "screen 3": {
+    "fields": {
+      "ndg": {},
+      "denominazione": {},
+      "tipo": {},
+      "stato": {},
+      "fase": {},
+      "creazione": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "evidenze": {
+        "value": "B",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "filiale_relazione": {
+        "value": "3749",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "n_fido": {},
+      "rapporto": {},
+      "descrizione": {},
+      "scadenza": {},
+      "importo_euro": {},
+      "tipo_op": {},
+      "note_della_richiesta": {},
+      "tooltip_descrizione_bmb": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "tooltip_evidenze_b": {
+        "value": "Origination BSTORE",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "tooltip_descrizione_m_consap": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "tooltip_descrizione_consap_dr_bis": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "tooltip_descrizione_ipoteca": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "ndg_1": {},
+      "denominazione_1": {},
+      "ruolo_1": {},
+      "ndg_2": {},
+      "denominazione_2": {},
+      "ruolo_2": {},
+      "ndg_3": {},
+      "denominazione_3": {},
+      "ruolo_3": {},
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [],
+    "fidi": [],
+    "garanzie": [],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 3",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 6329,
+      "prompt_tokens": 5333,
+      "completion_tokens": 1570,
+      "total_tokens": 6903,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 3",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 3",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 3119,
+        "prompt_tokens": 2213,
+        "completion_tokens": 359,
+        "total_tokens": 2572,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 3",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 6329,
+        "prompt_tokens": 5333,
+        "completion_tokens": 1570,
+        "total_tokens": 6903,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 2065,
+        "prompt_tokens": 4460,
+        "completion_tokens": 345,
+        "total_tokens": 4805,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 4456,
+        "prompt_tokens": 4625,
+        "completion_tokens": 414,
+        "total_tokens": 5039,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 3",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 5100,
+        "prompt_tokens": 5075,
+        "completion_tokens": 1065,
+        "total_tokens": 6140,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21706,
+      "completion_tokens": 3753,
+      "total_tokens": 25459,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 21069
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "n_fido": "CONTENT_MAIN",
+      "rapporto": "CONTENT_MAIN",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "CONTENT_MAIN",
+      "importo_euro": "CONTENT_MAIN",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "creazione",
+        "display_name": "Creazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "B",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "3749",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_evidenze_b",
+        "display_name": "tooltip su valore campo Evidenze: B",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "Origination BSTORE",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_descrizione_consap_dr_bis",
+        "display_name": "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_descrizione_m_consap",
+        "display_name": "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_descrizione_ipoteca",
+        "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_descrizione_bmb",
+        "display_name": "tooltip su valore campo Descrizione: BMB",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "ANCHOR_UNCERTAIN"
+  },
+  "screen 4": {
+    "fields": {
+      "ndg": {
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "denominazione": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "tipo": {
+        "value": "BPI Mutui",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "stato": {},
+      "fase": {},
+      "creazione": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "evidenze": {},
+      "filiale_relazione": {
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "n_fido": {},
+      "rapporto": {},
+      "descrizione": {},
+      "scadenza": {},
+      "importo_euro": {},
+      "tipo_op": {},
+      "note_della_richiesta": {},
+      "tooltip_descrizione_bmb": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "tooltip_evidenze_b": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "tooltip_descrizione_m_consap": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "tooltip_descrizione_consap_dr_bis": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "tooltip_descrizione_ipoteca": {
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      "ndg_1": {
+        "value": "26871394",
+        "confidence": 0.98,
+        "section": "soggetti_table"
+      },
+      "denominazione_1": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "section": "soggetti_table"
+      },
+      "ruolo_1": {
+        "value": "Richiedente",
+        "confidence": 0.98,
+        "section": "soggetti_table"
+      },
+      "ndg_2": {
+        "value": "11153238",
+        "confidence": 0.97,
+        "section": "soggetti_table"
+      },
+      "denominazione_2": {
+        "value": "FONDO DI GARANZIA PER LA PRIMA CASA",
+        "confidence": 0.97,
+        "section": "soggetti_table"
+      },
+      "ruolo_2": {
+        "value": "Nuovo Garante/nuovo Datore Di Pegno",
+        "confidence": 0.97,
+        "section": "soggetti_table"
+      },
+      "ndg_3": {
+        "value": "29011926",
+        "confidence": 0.97,
+        "section": "soggetti_table"
+      },
+      "denominazione_3": {
+        "value": "CARRER MONICA LUNARDI GIANMARCO",
+        "confidence": 0.97,
+        "section": "soggetti_table"
+      },
+      "ruolo_3": {
+        "value": "Cointestazione",
+        "confidence": 0.97,
+        "section": "soggetti_table"
+      },
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [
+      {
+        "ndg": "26871394",
+        "denominazione": "LUNARDI GIANMARCO",
+        "ruolo": "Richiedente",
+        "confidence": 0.98,
+        "evidence_text": null
+      },
+      {
+        "ndg": "11153238",
+        "denominazione": "FONDO DI GARANZIA PER LA PRIMA CASA",
+        "ruolo": "Nuovo Garante/nuovo Datore Di Pegno",
+        "confidence": 0.97,
+        "evidence_text": null
+      },
+      {
+        "ndg": "29011926",
+        "denominazione": "CARRER MONICA LUNARDI GIANMARCO",
+        "ruolo": "Cointestazione",
+        "confidence": 0.97,
+        "evidence_text": null
+      }
+    ],
+    "fidi": [],
+    "garanzie": [],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 4",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 6660,
+      "prompt_tokens": 5333,
+      "completion_tokens": 1926,
+      "total_tokens": 7259,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 4",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 4",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 2592,
+        "prompt_tokens": 2199,
+        "completion_tokens": 319,
+        "total_tokens": 2518,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 4",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 6660,
+        "prompt_tokens": 5333,
+        "completion_tokens": 1926,
+        "total_tokens": 7259,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 5621,
+        "prompt_tokens": 4625,
+        "completion_tokens": 1297,
+        "total_tokens": 5922,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 5667,
+        "prompt_tokens": 5096,
+        "completion_tokens": 1391,
+        "total_tokens": 6487,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 4",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 6341,
+        "prompt_tokens": 4460,
+        "completion_tokens": 451,
+        "total_tokens": 4911,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21713,
+      "completion_tokens": 5384,
+      "total_tokens": 27097,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 26881
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "n_fido": "CONTENT_MAIN",
+      "rapporto": "CONTENT_MAIN",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "CONTENT_MAIN",
+      "importo_euro": "CONTENT_MAIN",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "creazione",
+        "display_name": "Creazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "BPI Mutui",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "tooltip_evidenze_b",
+        "display_name": "tooltip su valore campo Evidenze: B",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "FONDO DI GARANZIA PER LA PRIMA CASA",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "CARRER MONICA LUNARDI GIANMARCO",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "11153238",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "29011926",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "Richiedente",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "Nuovo Garante/nuovo Datore Di Pegno",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": "Cointestazione",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "soggetti_table"
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_descrizione_consap_dr_bis",
+        "display_name": "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_descrizione_m_consap",
+        "display_name": "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_descrizione_ipoteca",
+        "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tooltip_descrizione_bmb",
+        "display_name": "tooltip su valore campo Descrizione: BMB",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": 0.0,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "OK"
+  },
+  "screen 1": {
+    "fields": {
+      "ndg": {
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "denominazione": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "tipo": {},
+      "stato": {
+        "value": "LAV",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "fase": {
+        "value": "VEP",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "creazione": {
+        "value": "09/09/2025",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "evidenze": {
+        "value": "B",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "filiale_relazione": {},
+      "n_fido": {},
+      "rapporto": {},
+      "descrizione": {},
+      "scadenza": {},
+      "importo_euro": {},
+      "tipo_op": {},
+      "note_della_richiesta": {},
+      "tooltip_descrizione_bmb": null,
+      "tooltip_evidenze_b": null,
+      "tooltip_descrizione_m_consap": null,
+      "tooltip_descrizione_consap_dr_bis": null,
+      "tooltip_descrizione_ipoteca": null,
+      "ndg_1": {},
+      "denominazione_1": {},
+      "ruolo_1": {},
+      "ndg_2": {},
+      "denominazione_2": {},
+      "ruolo_2": {},
+      "ndg_3": {},
+      "denominazione_3": {},
+      "ruolo_3": {},
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [],
+    "fidi": [],
+    "garanzie": [],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 1",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 4353,
+      "prompt_tokens": 5333,
+      "completion_tokens": 956,
+      "total_tokens": 6289,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 1",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 1",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 4353,
+        "prompt_tokens": 2213,
+        "completion_tokens": 180,
+        "total_tokens": 2393,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 1",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 4353,
+        "prompt_tokens": 5333,
+        "completion_tokens": 956,
+        "total_tokens": 6289,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 2707,
+        "prompt_tokens": 4460,
+        "completion_tokens": 454,
+        "total_tokens": 4914,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 3319,
+        "prompt_tokens": 4625,
+        "completion_tokens": 462,
+        "total_tokens": 5087,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 1",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 9115,
+        "prompt_tokens": 5075,
+        "completion_tokens": 2371,
+        "total_tokens": 7446,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21706,
+      "completion_tokens": 4423,
+      "total_tokens": 26129,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 23847
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "n_fido": "CONTENT_MAIN",
+      "rapporto": "CONTENT_MAIN",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "CONTENT_MAIN",
+      "importo_euro": "CONTENT_MAIN",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "creazione",
+        "display_name": "Creazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "09/09/2025",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "B",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "VEP",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LAV",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "OK"
+  },
+  "screen 2": {
+    "fields": {
+      "ndg": {
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "denominazione": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "tipo": {},
+      "stato": {},
+      "fase": {},
+      "creazione": {
+        "value": "9/09/2025",
+        "confidence": 0.78,
+        "evidence_text": "9/09/2025",
+        "section": "Elenco Pratiche"
+      },
+      "evidenze": {
+        "value": "B",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      "filiale_relazione": {},
+      "n_fido": {},
+      "rapporto": {},
+      "descrizione": {},
+      "scadenza": {},
+      "importo_euro": {},
+      "tipo_op": {},
+      "note_della_richiesta": {},
+      "tooltip_descrizione_bmb": null,
+      "tooltip_evidenze_b": null,
+      "tooltip_descrizione_m_consap": null,
+      "tooltip_descrizione_consap_dr_bis": null,
+      "tooltip_descrizione_ipoteca": null,
+      "ndg_1": {},
+      "denominazione_1": {},
+      "ruolo_1": {},
+      "ndg_2": {},
+      "denominazione_2": {},
+      "ruolo_2": {},
+      "ndg_3": {},
+      "denominazione_3": {},
+      "ruolo_3": {},
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [],
+    "fidi": [],
+    "garanzie": [],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 2",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 12581,
+      "prompt_tokens": 5333,
+      "completion_tokens": 2704,
+      "total_tokens": 8037,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 2",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 2",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 17098,
+        "prompt_tokens": 2213,
+        "completion_tokens": 3996,
+        "total_tokens": 6209,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 2",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 12581,
+        "prompt_tokens": 5333,
+        "completion_tokens": 2704,
+        "total_tokens": 8037,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 4560,
+        "prompt_tokens": 4625,
+        "completion_tokens": 782,
+        "total_tokens": 5407,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 4588,
+        "prompt_tokens": 4460,
+        "completion_tokens": 631,
+        "total_tokens": 5091,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 2",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 7567,
+        "prompt_tokens": 5096,
+        "completion_tokens": 1926,
+        "total_tokens": 7022,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21727,
+      "completion_tokens": 10039,
+      "total_tokens": 31766,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 46394
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "n_fido": "CONTENT_MAIN",
+      "rapporto": "CONTENT_MAIN",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "CONTENT_MAIN",
+      "importo_euro": "CONTENT_MAIN",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "creazione",
+        "display_name": "Creazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "9/09/2025",
+        "confidence": 0.78,
+        "evidence_text": "9/09/2025",
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "B",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "Elenco Pratiche"
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "OK"
+  },
+  "screen 6": {
+    "fields": {
+      "ndg": {
+        "value": "26871394",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      "denominazione": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      "tipo": {
+        "value": "BPI Mutui",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      "stato": {},
+      "fase": {},
+      "creazione": null,
+      "evidenze": {},
+      "filiale_relazione": {
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      "n_fido": {
+        "value": "F1",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "rapporto": {
+        "value": "034 3749 0017 05531236",
+        "confidence": 0.95,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "descrizione": {
+        "value": "M. CONSAP >= 80%",
+        "confidence": 0.92,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "scadenza": {
+        "value": "15/09/2055",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "importo_euro": {
+        "value": "158.800",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "tipo_op": {
+        "value": "In Lavoraz.",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "note_della_richiesta": {},
+      "tooltip_descrizione_bmb": null,
+      "tooltip_evidenze_b": null,
+      "tooltip_descrizione_m_consap": {
+        "value": "340176 - MUTUO FOND PRIV CONSAP >= 80%",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "tooltip_descrizione_consap_dr_bis": null,
+      "tooltip_descrizione_ipoteca": null,
+      "ndg_1": {},
+      "denominazione_1": {},
+      "ruolo_1": {},
+      "ndg_2": {},
+      "denominazione_2": {},
+      "ruolo_2": {},
+      "ndg_3": {},
+      "denominazione_3": {},
+      "ruolo_3": {},
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [],
+    "fidi": [
+      {
+        "n_fido": "F1",
+        "rapporto": "034 3749 0017 05531236",
+        "descrizione": "M. CONSAP >= 80%",
+        "scadenza": "15/09/2055",
+        "importo_euro": "158.800",
+        "tipo_op": "In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null
+      }
+    ],
+    "garanzie": [
+      {
+        "n_gar": "G1",
+        "descrizione": "CONSAP DR BIS",
+        "fido": "F1",
+        "ndg": "11153238",
+        "denominazione": "FONDO DI G",
+        "importo_percentuale": "127.040",
+        "tipo_op": "Nuova / In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null
+      },
+      {
+        "n_gar": "G2",
+        "descrizione": "IPOTECA I GR.",
+        "fido": "F1",
+        "ndg": null,
+        "denominazione": null,
+        "importo_percentuale": "285.840",
+        "tipo_op": "Nuova / In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null
+      }
+    ],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 6",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 7023,
+      "prompt_tokens": 5333,
+      "completion_tokens": 1857,
+      "total_tokens": 7190,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 6",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 6",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 3548,
+        "prompt_tokens": 2213,
+        "completion_tokens": 576,
+        "total_tokens": 2789,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 6",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 7023,
+        "prompt_tokens": 5333,
+        "completion_tokens": 1857,
+        "total_tokens": 7190,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 6",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 6684,
+        "prompt_tokens": 5075,
+        "completion_tokens": 1576,
+        "total_tokens": 6651,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 6",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 13180,
+        "prompt_tokens": 4625,
+        "completion_tokens": 878,
+        "total_tokens": 5503,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 6",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 13242,
+        "prompt_tokens": 4460,
+        "completion_tokens": 458,
+        "total_tokens": 4918,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21706,
+      "completion_tokens": 5345,
+      "total_tokens": 27051,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 43677
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "n_fido": "CONTENT_MAIN",
+      "rapporto": "CONTENT_MAIN",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "CONTENT_MAIN",
+      "importo_euro": "CONTENT_MAIN",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "26871394",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "BPI Mutui",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "M. CONSAP >= 80%",
+        "confidence": 0.92,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "158.800",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "034 3749 0017 05531236",
+        "confidence": 0.95,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "15/09/2055",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "In Lavoraz.",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "F1",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "tooltip_descrizione_m_consap",
+        "display_name": "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "340176 - MUTUO FOND PRIV CONSAP >= 80%",
+        "confidence": 0.99,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "OK"
+  },
+  "screen 5": {
+    "fields": {
+      "ndg": {
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "intestazione"
+      },
+      "denominazione": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "intestazione"
+      },
+      "tipo": {
+        "value": "BPI Mutui",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "stato": {},
+      "fase": {},
+      "creazione": null,
+      "evidenze": {},
+      "filiale_relazione": {
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "dati_generali"
+      },
+      "n_fido": {
+        "value": "F1",
+        "confidence": 0.98,
+        "evidence_text": "F1",
+        "section": "fidi_table"
+      },
+      "rapporto": {
+        "value": "034 3749 0017 05531236",
+        "confidence": 0.96,
+        "evidence_text": "034 3749 0017 05531236",
+        "section": "fidi_table"
+      },
+      "descrizione": {
+        "value": "M. CONSAP >=80%",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      "scadenza": {
+        "value": "15/09/2055",
+        "confidence": 0.98,
+        "evidence_text": "15/09/2055",
+        "section": "fidi_table"
+      },
+      "importo_euro": {
+        "value": "158.800",
+        "confidence": 0.98,
+        "evidence_text": "158.800",
+        "section": "fidi_table"
+      },
+      "tipo_op": {
+        "value": "In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      "note_della_richiesta": {},
+      "tooltip_descrizione_bmb": null,
+      "tooltip_evidenze_b": null,
+      "tooltip_descrizione_m_consap": null,
+      "tooltip_descrizione_consap_dr_bis": null,
+      "tooltip_descrizione_ipoteca": null,
+      "ndg_1": {},
+      "denominazione_1": {},
+      "ruolo_1": {},
+      "ndg_2": {},
+      "denominazione_2": {},
+      "ruolo_2": {},
+      "ndg_3": {},
+      "denominazione_3": {},
+      "ruolo_3": {},
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [],
+    "fidi": [
+      {
+        "n_fido": "F1",
+        "rapporto": "034 3749 0017 05531236",
+        "descrizione": "M. CONSAP >=80%",
+        "scadenza": "15/09/2055",
+        "importo_euro": "158.800",
+        "tipo_op": "In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null
+      }
+    ],
+    "garanzie": [
+      {
+        "n_gar": "G1",
+        "descrizione": "CONSAP DR BIS",
+        "fido": "F1",
+        "ndg": "11153238",
+        "denominazione": "FONDO DI G",
+        "importo_percentuale": "127.040",
+        "tipo_op": "Nuova / In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null
+      },
+      {
+        "n_gar": "G2",
+        "descrizione": "IPOTECA I GR.",
+        "fido": "F1",
+        "ndg": null,
+        "denominazione": null,
+        "importo_percentuale": "285.840",
+        "tipo_op": "Nuova / In Lavoraz.",
+        "confidence": 0.95,
+        "evidence_text": null
+      }
+    ],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 5",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 8696,
+      "prompt_tokens": 5333,
+      "completion_tokens": 2120,
+      "total_tokens": 7453,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 5",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 5",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 2440,
+        "prompt_tokens": 2213,
+        "completion_tokens": 379,
+        "total_tokens": 2592,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 5",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 8696,
+        "prompt_tokens": 5333,
+        "completion_tokens": 2120,
+        "total_tokens": 7453,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 5",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 2964,
+        "prompt_tokens": 4460,
+        "completion_tokens": 367,
+        "total_tokens": 4827,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 5",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 6205,
+        "prompt_tokens": 4625,
+        "completion_tokens": 1007,
+        "total_tokens": 5632,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 5",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 18748,
+        "prompt_tokens": 5075,
+        "completion_tokens": 2290,
+        "total_tokens": 7365,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21706,
+      "completion_tokens": 6163,
+      "total_tokens": 27869,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 39053
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "n_fido": "RETRY_BODY",
+      "rapporto": "RETRY_BODY",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "RETRY_BODY",
+      "importo_euro": "RETRY_BODY",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "intestazione"
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "dati_generali"
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "intestazione"
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "BPI Mutui",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "M. CONSAP >=80%",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "158.800",
+        "confidence": 0.98,
+        "evidence_text": "158.800",
+        "section": "fidi_table"
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "034 3749 0017 05531236",
+        "confidence": 0.96,
+        "evidence_text": "034 3749 0017 05531236",
+        "section": "fidi_table"
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "15/09/2055",
+        "confidence": 0.98,
+        "evidence_text": "15/09/2055",
+        "section": "fidi_table"
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "F1",
+        "confidence": 0.98,
+        "evidence_text": "F1",
+        "section": "fidi_table"
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "OK"
+  },
+  "screen 9": {
+    "fields": {
+      "ndg": {
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      "denominazione": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      "tipo": {
+        "value": "BPI Mutui",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      "stato": {},
+      "fase": {},
+      "creazione": null,
+      "evidenze": {},
+      "filiale_relazione": {
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      "n_fido": {},
+      "rapporto": {},
+      "descrizione": {},
+      "scadenza": {},
+      "importo_euro": {},
+      "tipo_op": {},
+      "note_della_richiesta": {
+        "value": "- Numero Finanziamento FICS: 017/5531236\n- Numero proposta DESK: 2602257\n- Importo perizia: N.D.\n- Valore immobile presunto: 160.000,00\n- Immobile da ipotecare è ad uso abitativo: Si\n- Dettaglio importi mutuo:\n   IMPORTO INSERIMENTO PRE-VENDITA: 158.800,00 €\n   IMPORTO PER PRIMA CASA : 158.800,00 €\n   IMPORTO RICHIESTO : 158.800,00 €\n- Codice immobile: 4781760;\nRICHIESTA DI MUTUO CONSAP PRIORITARIO CON FINANZIAMENTO DEGLI ONERI NOTARILI.\nLUNARDI GIANMARCO - 32 ANNI, CELIBE, VIVE IN AFFITTO E PAGA UN CANONE MENSILE DI EURO 500,00, DIPENDENTE CON CONTRATTO A TEMPO INDETERMINATO PRESSO LA SOCIETA' ELITECHGROUP SPA CON REDDITO MENSILIZZATO DI EURO 2.350,00, NON HA ALTRI IMPEGNI RATEALI IN CORSO.",
+        "confidence": 0.95,
+        "evidence_text": null,
+        "section": "Note da Richiesta"
+      },
+      "tooltip_descrizione_bmb": null,
+      "tooltip_evidenze_b": null,
+      "tooltip_descrizione_m_consap": null,
+      "tooltip_descrizione_consap_dr_bis": null,
+      "tooltip_descrizione_ipoteca": null,
+      "ndg_1": {},
+      "denominazione_1": {},
+      "ruolo_1": {},
+      "ndg_2": {},
+      "denominazione_2": {},
+      "ruolo_2": {},
+      "ndg_3": {},
+      "denominazione_3": {},
+      "ruolo_3": {},
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [],
+    "fidi": [],
+    "garanzie": [],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 9",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 9550,
+      "prompt_tokens": 5333,
+      "completion_tokens": 2912,
+      "total_tokens": 8245,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 9",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 9",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 4063,
+        "prompt_tokens": 2213,
+        "completion_tokens": 820,
+        "total_tokens": 3033,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 9",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 9550,
+        "prompt_tokens": 5333,
+        "completion_tokens": 2912,
+        "total_tokens": 8245,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 9",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 4511,
+        "prompt_tokens": 5096,
+        "completion_tokens": 957,
+        "total_tokens": 6053,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 9",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 7103,
+        "prompt_tokens": 4460,
+        "completion_tokens": 1560,
+        "total_tokens": 6020,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 9",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 7881,
+        "prompt_tokens": 4625,
+        "completion_tokens": 1595,
+        "total_tokens": 6220,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21727,
+      "completion_tokens": 7844,
+      "total_tokens": 29571,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 33108
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "n_fido": "CONTENT_MAIN",
+      "rapporto": "CONTENT_MAIN",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "CONTENT_MAIN",
+      "importo_euro": "CONTENT_MAIN",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "BPI Mutui",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "DETTAGLIO PRATICA"
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": "- Numero Finanziamento FICS: 017/5531236\n- Numero proposta DESK: 2602257\n- Importo perizia: N.D.\n- Valore immobile presunto: 160.000,00\n- Immobile da ipotecare è ad uso abitativo: Si\n- Dettaglio importi mutuo:\n   IMPORTO INSERIMENTO PRE-VENDITA: 158.800,00 €\n   IMPORTO PER PRIMA CASA : 158.800,00 €\n   IMPORTO RICHIESTO : 158.800,00 €\n- Codice immobile: 4781760;\nRICHIESTA DI MUTUO CONSAP PRIORITARIO CON FINANZIAMENTO DEGLI ONERI NOTARILI.\nLUNARDI GIANMARCO - 32 ANNI, CELIBE, VIVE IN AFFITTO E PAGA UN CANONE MENSILE DI EURO 500,00, DIPENDENTE CON CONTRATTO A TEMPO INDETERMINATO PRESSO LA SOCIETA' ELITECHGROUP SPA CON REDDITO MENSILIZZATO DI EURO 2.350,00, NON HA ALTRI IMPEGNI RATEALI IN CORSO.",
+        "confidence": 0.95,
+        "evidence_text": null,
+        "section": "Note da Richiesta"
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "OK"
+  },
+  "screen 7": {
+    "fields": {
+      "ndg": {
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "denominazione": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "tipo": {
+        "value": "BPI Mutui",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "stato": {},
+      "fase": {},
+      "creazione": null,
+      "evidenze": {},
+      "filiale_relazione": {
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      "n_fido": {
+        "value": "F1",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      "rapporto": {
+        "value": "034 3749 0017 05531236",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      "descrizione": {
+        "value": "M.CONSAP >=80%",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      "scadenza": {
+        "value": "15/09/2055",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      "importo_euro": {
+        "value": "158.800",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      "tipo_op": {
+        "value": "In Lavoraz.",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      "note_della_richiesta": {},
+      "tooltip_descrizione_bmb": null,
+      "tooltip_evidenze_b": null,
+      "tooltip_descrizione_m_consap": null,
+      "tooltip_descrizione_consap_dr_bis": {
+        "value": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "garanzie"
+      },
+      "tooltip_descrizione_ipoteca": null,
+      "ndg_1": {},
+      "denominazione_1": {},
+      "ruolo_1": {},
+      "ndg_2": {},
+      "denominazione_2": {},
+      "ruolo_2": {},
+      "ndg_3": {},
+      "denominazione_3": {},
+      "ruolo_3": {},
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [],
+    "fidi": [
+      {
+        "n_fido": "F1",
+        "rapporto": "034 3749 0017 05531236",
+        "descrizione": "M.CONSAP >=80%",
+        "scadenza": "15/09/2055",
+        "importo_euro": "158.800",
+        "tipo_op": "In Lavoraz.",
+        "confidence": 0.97,
+        "evidence_text": null
+      }
+    ],
+    "garanzie": [
+      {
+        "n_gar": "G1",
+        "descrizione": "CONSAP DR BIS",
+        "fido": "F1",
+        "ndg": "11153238",
+        "denominazione": "FONDO DI G",
+        "importo_percentuale": "127.040",
+        "tipo_op": "Nuova / In Lavoraz.",
+        "confidence": 0.92,
+        "evidence_text": null
+      },
+      {
+        "n_gar": "G2",
+        "descrizione": "IPOTECA I GR.",
+        "fido": "F1",
+        "ndg": null,
+        "denominazione": null,
+        "importo_percentuale": "285.840",
+        "tipo_op": "Nuova / In Lavoraz.",
+        "confidence": 0.88,
+        "evidence_text": "IPOTE... GR."
+      }
+    ],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 7",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 21502,
+      "prompt_tokens": 5333,
+      "completion_tokens": 4358,
+      "total_tokens": 9691,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 7",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 7",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 4571,
+        "prompt_tokens": 2213,
+        "completion_tokens": 924,
+        "total_tokens": 3137,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 7",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 21502,
+        "prompt_tokens": 5333,
+        "completion_tokens": 4358,
+        "total_tokens": 9691,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 7",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 3768,
+        "prompt_tokens": 4460,
+        "completion_tokens": 771,
+        "total_tokens": 5231,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 7",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 7737,
+        "prompt_tokens": 5096,
+        "completion_tokens": 1480,
+        "total_tokens": 6576,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 7",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 17558,
+        "prompt_tokens": 4625,
+        "completion_tokens": 1827,
+        "total_tokens": 6452,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21727,
+      "completion_tokens": 9360,
+      "total_tokens": 31087,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 55136
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "CONTENT_MAIN",
+      "n_fido": "CONTENT_MAIN",
+      "rapporto": "CONTENT_MAIN",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "CONTENT_MAIN",
+      "importo_euro": "CONTENT_MAIN",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "3749 - GRUGLIASCO",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "BPI Mutui",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "testata"
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "M.CONSAP >=80%",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "158.800",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "034 3749 0017 05531236",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "15/09/2055",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "In Lavoraz.",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "F1",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "fidi"
+      },
+      {
+        "schema_key": "tooltip_descrizione_consap_dr_bis",
+        "display_name": "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "garanzie"
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "OK"
+  },
+  "screen 8": {
+    "fields": {
+      "ndg": {
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "TESTATA"
+      },
+      "denominazione": {
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "TESTATA"
+      },
+      "tipo": {
+        "value": "BPI Mutui",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "TESTATA"
+      },
+      "stato": {},
+      "fase": {},
+      "creazione": null,
+      "evidenze": {},
+      "filiale_relazione": {
+        "value": "3749",
+        "confidence": 0.98,
+        "evidence_text": "Filiale: 3749-GRUGLIASCO",
+        "section": "intestazione"
+      },
+      "n_fido": {
+        "value": "F1",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "rapporto": {
+        "value": "034 3749 0017 05531236",
+        "confidence": 0.95,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "descrizione": {
+        "value": "M.CONSAP >=80%",
+        "confidence": 0.95,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "scadenza": {
+        "value": "15/09/2055",
+        "confidence": 0.97,
+        "evidence_text": "15/09/2055",
+        "section": "fidi_table"
+      },
+      "importo_euro": {
+        "value": "158.800",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "tipo_op": {
+        "value": "In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      "note_della_richiesta": {},
+      "tooltip_descrizione_bmb": null,
+      "tooltip_evidenze_b": null,
+      "tooltip_descrizione_m_consap": null,
+      "tooltip_descrizione_consap_dr_bis": null,
+      "tooltip_descrizione_ipoteca": {
+        "value": "55-IPOTECA DI PRIMO GRADO",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "GARANZIE"
+      },
+      "ndg_1": {},
+      "denominazione_1": {},
+      "ruolo_1": {},
+      "ndg_2": {},
+      "denominazione_2": {},
+      "ruolo_2": {},
+      "ndg_3": {},
+      "denominazione_3": {},
+      "ruolo_3": {},
+      "ndg_4": {},
+      "denominazione_4": {},
+      "ruolo_4": {},
+      "dal": {},
+      "datore_di_lavoro_anagrafica": {},
+      "di_cui_percepiscono_reddito": {},
+      "importo_totale_annuo_nucleo": {},
+      "note_scheda_privati": {},
+      "nr_altri_componenti_nucleo": {},
+      "numero_mensilita": {},
+      "professione_principale": {},
+      "rating_ufficiale": {},
+      "retribuzione_annua_netta": {},
+      "score_cgs": {},
+      "tipo_contratto": {},
+      "ultima_validazione_scheda": {}
+    },
+    "soggetti": [],
+    "fidi": [
+      {
+        "n_fido": "F1",
+        "rapporto": "034 3749 0017 05531236",
+        "descrizione": "M.CONSAP >=80%",
+        "scadenza": "15/09/2055",
+        "importo_euro": "158.800",
+        "tipo_op": "In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null
+      }
+    ],
+    "garanzie": [
+      {
+        "n_gar": "G1",
+        "descrizione": "CONSAP DR BIS",
+        "fido": "F1",
+        "ndg": "11153238",
+        "denominazione": "FONDO DI G",
+        "importo_percentuale": "127.040",
+        "tipo_op": "Nuova / In Lavoraz.",
+        "confidence": 0.94,
+        "evidence_text": null
+      },
+      {
+        "n_gar": "G2",
+        "descrizione": "IPOTECA I GR.",
+        "fido": "F1",
+        "ndg": null,
+        "denominazione": null,
+        "importo_percentuale": "285.840",
+        "tipo_op": "Nuova / In Lavoraz.",
+        "confidence": 0.95,
+        "evidence_text": null
+      }
+    ],
+    "_meta": {
+      "model": "gemini-3.8-flash",
+      "screen_id": "screen 8",
+      "attempt": "CONTENT_MAIN",
+      "latency_ms": 40074,
+      "prompt_tokens": 5333,
+      "completion_tokens": 2473,
+      "total_tokens": 7806,
+      "estimated_cost_usd": 0.0
+    },
+    "screen_id": "screen 8",
+    "attempt": "CONTENT_MAIN",
+    "_attempts": [
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 8",
+        "attempt": "ANCHOR_HEADER",
+        "latency_ms": 3143,
+        "prompt_tokens": 2213,
+        "completion_tokens": 586,
+        "total_tokens": 2799,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 8",
+        "attempt": "CONTENT_MAIN",
+        "latency_ms": 40074,
+        "prompt_tokens": 5333,
+        "completion_tokens": 2473,
+        "total_tokens": 7806,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 8",
+        "attempt": "RETRY_FOOTER",
+        "latency_ms": 2963,
+        "prompt_tokens": 4460,
+        "completion_tokens": 485,
+        "total_tokens": 4945,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 8",
+        "attempt": "RETRY_BODY",
+        "latency_ms": 4439,
+        "prompt_tokens": 5096,
+        "completion_tokens": 953,
+        "total_tokens": 6049,
+        "estimated_cost_usd": 0.0
+      },
+      {
+        "model": "gemini-3.8-flash",
+        "screen_id": "screen 8",
+        "attempt": "RETRY_HEADER",
+        "latency_ms": 4617,
+        "prompt_tokens": 4625,
+        "completion_tokens": 1068,
+        "total_tokens": 5693,
+        "estimated_cost_usd": 0.0
+      }
+    ],
+    "_meta_agg": {
+      "model_main": "gemini-3.8-flash",
+      "model_anchor": "gemini-3.8-flash",
+      "calls": 5,
+      "prompt_tokens": 21727,
+      "completion_tokens": 5565,
+      "total_tokens": 27292,
+      "estimated_cost_usd": 0.0,
+      "latency_ms": 55236
+    },
+    "_field_sources": {
+      "ndg": "CONTENT_MAIN",
+      "denominazione": "CONTENT_MAIN",
+      "tipo": "CONTENT_MAIN",
+      "stato": "CONTENT_MAIN",
+      "fase": "CONTENT_MAIN",
+      "creazione": "CONTENT_MAIN",
+      "evidenze": "CONTENT_MAIN",
+      "filiale_relazione": "RETRY_HEADER",
+      "n_fido": "CONTENT_MAIN",
+      "rapporto": "CONTENT_MAIN",
+      "descrizione": "CONTENT_MAIN",
+      "scadenza": "RETRY_BODY",
+      "importo_euro": "CONTENT_MAIN",
+      "tipo_op": "CONTENT_MAIN",
+      "note_della_richiesta": "CONTENT_MAIN",
+      "tooltip_descrizione_bmb": "CONTENT_MAIN",
+      "tooltip_evidenze_b": "CONTENT_MAIN",
+      "tooltip_descrizione_m_consap": "CONTENT_MAIN",
+      "tooltip_descrizione_consap_dr_bis": "CONTENT_MAIN",
+      "tooltip_descrizione_ipoteca": "CONTENT_MAIN",
+      "ndg_1": "CONTENT_MAIN",
+      "denominazione_1": "CONTENT_MAIN",
+      "ruolo_1": "CONTENT_MAIN",
+      "ndg_2": "CONTENT_MAIN",
+      "denominazione_2": "CONTENT_MAIN",
+      "ruolo_2": "CONTENT_MAIN",
+      "ndg_3": "CONTENT_MAIN",
+      "denominazione_3": "CONTENT_MAIN",
+      "ruolo_3": "CONTENT_MAIN",
+      "ndg_4": "CONTENT_MAIN",
+      "denominazione_4": "CONTENT_MAIN",
+      "ruolo_4": "CONTENT_MAIN",
+      "dal": "CONTENT_MAIN",
+      "datore_di_lavoro_anagrafica": "CONTENT_MAIN",
+      "di_cui_percepiscono_reddito": "CONTENT_MAIN",
+      "importo_totale_annuo_nucleo": "CONTENT_MAIN",
+      "note_scheda_privati": "CONTENT_MAIN",
+      "nr_altri_componenti_nucleo": "CONTENT_MAIN",
+      "numero_mensilita": "CONTENT_MAIN",
+      "professione_principale": "CONTENT_MAIN",
+      "rating_ufficiale": "CONTENT_MAIN",
+      "retribuzione_annua_netta": "CONTENT_MAIN",
+      "score_cgs": "CONTENT_MAIN",
+      "tipo_contratto": "CONTENT_MAIN",
+      "ultima_validazione_scheda": "CONTENT_MAIN"
+    },
+    "_content_crop": "calibrated",
+    "canonical_fields": [
+      {
+        "schema_key": "denominazione",
+        "display_name": "DENOMINAZIONE",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "LUNARDI GIANMARCO",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "TESTATA"
+      },
+      {
+        "schema_key": "evidenze",
+        "display_name": "Evidenze",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "fase",
+        "display_name": "Fase",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "filiale_relazione",
+        "display_name": "Filiale relazione",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "3749",
+        "confidence": 0.98,
+        "evidence_text": "Filiale: 3749-GRUGLIASCO",
+        "section": "intestazione"
+      },
+      {
+        "schema_key": "ndg",
+        "display_name": "NDG",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "26871394",
+        "confidence": 0.98,
+        "evidence_text": null,
+        "section": "TESTATA"
+      },
+      {
+        "schema_key": "stato",
+        "display_name": "Stato",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo",
+        "display_name": "Tipo",
+        "page_key": "risultato_ricerca",
+        "page_name": "Risultato ricerca",
+        "value": "BPI Mutui",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "TESTATA"
+      },
+      {
+        "schema_key": "denominazione_1",
+        "display_name": "DENOMINAZIONE 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_2",
+        "display_name": "DENOMINAZIONE 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_3",
+        "display_name": "DENOMINAZIONE 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "denominazione_4",
+        "display_name": "DENOMINAZIONE 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_1",
+        "display_name": "NDG 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_2",
+        "display_name": "NDG 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_3",
+        "display_name": "NDG 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ndg_4",
+        "display_name": "NDG 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_1",
+        "display_name": "RUOLO 1",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_2",
+        "display_name": "RUOLO 2",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_3",
+        "display_name": "RUOLO 3",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ruolo_4",
+        "display_name": "RUOLO 4",
+        "page_key": "elenco_soggetti",
+        "page_name": "Elenco Soggetti",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "descrizione",
+        "display_name": "Descrizione",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "M.CONSAP >=80%",
+        "confidence": 0.95,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "importo_euro",
+        "display_name": "Importo (€)",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "158.800",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "rapporto",
+        "display_name": "Rapporto",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "034 3749 0017 05531236",
+        "confidence": 0.95,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "scadenza",
+        "display_name": "Scadenza",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "15/09/2055",
+        "confidence": 0.97,
+        "evidence_text": "15/09/2055",
+        "section": "fidi_table"
+      },
+      {
+        "schema_key": "tipo_op",
+        "display_name": "Tipo Op.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "In Lavoraz.",
+        "confidence": 0.96,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "n_fido",
+        "display_name": "n° FIDO",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "F1",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "FIDI"
+      },
+      {
+        "schema_key": "tooltip_descrizione_ipoteca",
+        "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+        "page_key": "gestione_fidi_e_garanzie",
+        "page_name": "Gestione Fidi e Garanzie",
+        "value": "55-IPOTECA DI PRIMO GRADO",
+        "confidence": 0.97,
+        "evidence_text": null,
+        "section": "GARANZIE"
+      },
+      {
+        "schema_key": "dal",
+        "display_name": "DAL",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "datore_di_lavoro_anagrafica",
+        "display_name": "DATORE DI LAVORO ANAGRAFICA",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "di_cui_percepiscono_reddito",
+        "display_name": "Di cui percepiscono reddito",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "importo_totale_annuo_nucleo",
+        "display_name": "Importo totale annuo altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_scheda_privati",
+        "display_name": "Note Scheda Privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "note_della_richiesta",
+        "display_name": "Note della richiesta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "nr_altri_componenti_nucleo",
+        "display_name": "Nr altri componenti nucleo familiare",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "numero_mensilita",
+        "display_name": "Numero mensilità",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "professione_principale",
+        "display_name": "Professione principale",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "rating_ufficiale",
+        "display_name": "RATING UFFICIALE",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "retribuzione_annua_netta",
+        "display_name": "Retribuzione annua netta",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "score_cgs",
+        "display_name": "SCORE CGS",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "tipo_contratto",
+        "display_name": "Tipo contratto",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      },
+      {
+        "schema_key": "ultima_validazione_scheda",
+        "display_name": "Ultima validazione scheda privati",
+        "page_key": "note_da_richiesta",
+        "page_name": "Note da Richiesta",
+        "value": null,
+        "confidence": null,
+        "evidence_text": null,
+        "section": null
+      }
+    ],
+    "_status": "OK"
+  }
+}

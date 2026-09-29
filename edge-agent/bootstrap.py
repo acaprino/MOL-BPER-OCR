@@ -20,6 +20,7 @@ from typing import Optional
 from PyQt6 import QtCore, QtWidgets
 
 import app_paths
+import env_key
 import page_classifier
 from config import AgentConfig
 from page_classifier import (
@@ -33,7 +34,7 @@ from page_classifier import (
 ENV_TEMPLATE = (
     "# Configurazione Edge Agent\n"
     "LLM_PROVIDER=gemini\n"
-    "LLM_MODEL=gemini-3.6-flash\n"
+    "LLM_MODEL=gemini-3.8-flash\n"
     "LLM_API_KEY=\n"
 )
 
@@ -53,47 +54,6 @@ def _env_template_text() -> str:
     except Exception:  # noqa: BLE001
         pass
     return ENV_TEMPLATE
-
-
-def _save_env_key(env_path: Path, key: str) -> None:
-    """
-    Salva LLM_API_KEY nel .env indicato, preservando le altre righe.
-
-    Se il file non esiste viene creato dal template; se la riga esiste
-    viene sostituita, altrimenti appesa. Rifiuta chiavi multi-riga: una
-    newline nel valore diventerebbe una entry .env arbitraria.
-    """
-    if "\r" in key or "\n" in key:
-        raise ValueError("la chiave non può contenere andate a capo")
-
-    if env_path.exists():
-        lines = env_path.read_text(encoding="utf-8").splitlines()
-    else:
-        lines = _env_template_text().strip("\n").splitlines()
-
-    replaced = False
-    for i, line in enumerate(lines):
-        if line.strip().startswith("LLM_API_KEY="):
-            lines[i] = f"LLM_API_KEY={key}"
-            replaced = True
-            break
-    if not replaced:
-        lines.append(f"LLM_API_KEY={key}")
-
-    env_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-
-def _sanitize_key_input(raw: str) -> Optional[str]:
-    """
-    Normalizza l'input del dialog chiave: strip, tollera 'LLM_API_KEY=...'
-    incollato per intero. Ritorna None se l'input non è una chiave valida.
-    """
-    key = (raw or "").strip()
-    if key.upper().startswith("LLM_API_KEY="):
-        key = key.split("=", 1)[1].strip()
-    if not key or any(c in key for c in "\r\n="):
-        return None
-    return key
 
 
 def _has_api_key() -> bool:
@@ -242,12 +202,13 @@ def _ensure_api_key(parent: Optional[QtWidgets.QWidget]) -> bool:
         raw, ok = QtWidgets.QInputDialog.getText(
             parent,
             "Configurazione iniziale",
-            "Primo avvio: incolla la chiave API Gemini\n"
+            "Primo avvio: incolla la chiave API Gemini.\n"
+            "Se non ce l'hai, chiedila a chi ti ha consegnato il programma.\n"
             "(viene salvata su questo computer e non verrà più richiesta):",
             QtWidgets.QLineEdit.EchoMode.Password,
         )
         if ok:
-            key = _sanitize_key_input(raw)
+            key = env_key.sanitize_key(raw)
             if key is None:
                 QtWidgets.QMessageBox.warning(
                     parent, "Edge Agent",
@@ -256,7 +217,7 @@ def _ensure_api_key(parent: Optional[QtWidgets.QWidget]) -> bool:
                 )
                 continue
             try:
-                _save_env_key(env_path, key)
+                env_key.write_key(env_path, key, _env_template_text())
                 # Carica anche provider/modello del template appena scritto:
                 # extraction li legge dall'ambiente del processo.
                 _load_local_env()

@@ -216,7 +216,7 @@ Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR`, poi:
 - scrive `mnt/data/poc_debug_improved.csv`: separatore punto e virgola, `utf-8-sig` (amichevole per Excel, `extraction/evaluation.py:15`);
 - stampa chiamate/token/USD per schermata via `print_cost_summary()`.
 
-Non c'è alcuna baseline committata, quindi "la mia modifica ha aiutato?" significa confrontare questi numeri con un'esecuzione che hai salvato tu stesso prima di cambiare qualsiasi cosa. Salva prima il JSON precedente e il riepilogo stampato.
+La prima baseline con un provider reale (2026-09-29, `gemini-3.8-flash`, tre run: 93,5-94,8%, circa $0,04 a schermata) è in `.codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`, con il ground truth che l'ha prodotta e la soglia di accettazione proposta. Per sapere se una modifica ha aiutato, rilancia sullo stesso `dati.csv` e confronta con quei numeri; se cambi il ground truth, salva prima il JSON precedente e il riepilogo stampato.
 
 ### Estrarre qualche immagine senza ground truth (Tkinter)
 
@@ -284,15 +284,31 @@ python main.py
 
 Lo script usa `edge_agent.spec` per una build PyInstaller `onedir`, produce
 `dist/EdgeAgent/` e lo ZIP `dist/EdgeAgent_YYYY-MM-DD.zip`. Copia configurazione,
-asset e prompt modificabili, oltre al template dell'ambiente senza chiave. Il
-preflight del pacchetto prepara i componenti mancanti e chiede la credenziale al
-primo avvio. Non basta consegnare il solo `.exe`: va distribuita l'intera cartella.
-<!-- Source: build_exe.bat:5; build_exe.bat:79; build_exe.bat:86; build_exe.bat:101; edge_agent.spec:1; edge-agent/bootstrap.py:489 -->
+asset e prompt modificabili, oltre al template dell'ambiente. Il preflight del
+pacchetto prepara i componenti mancanti e, se la chiave manca, la chiede al primo
+avvio. Non basta consegnare il solo `.exe`: va distribuita l'intera cartella.
+<!-- Source: build_exe.bat:85; build_exe.bat:91; build_exe.bat:99; build_exe.bat:113; edge_agent.spec:1; edge-agent/bootstrap.py:450 -->
+
+Per un tester che non sa cosa sia una chiave API, la build può consegnare il
+pacchetto già configurato. All'avvio lo script chiede la chiave da includere
+(INVIO per nessuna), oppure la legge da `EDGE_AGENT_PACKAGE_KEY`:
+
+```powershell
+$env:EDGE_AGENT_PACKAGE_KEY = "<chiave dedicata alla beta>"
+.\build_exe.bat
+```
+
+`edge-agent/env_key.py`, lo stesso modulo che salva la chiave inserita nel dialog
+di primo avvio, la scrive solo nel `.env` del pacchetto e rifiuta valori vuoti,
+multi-riga o con `=`. Lo zip prende il suffisso `_CON-CHIAVE` e il preflight non
+chiede nulla. Chi riceve quello zip può leggere la chiave: usane una dedicata alla
+beta, con limite di spesa, e revocala alla fine.
+<!-- Source: build_exe.bat:10; build_exe.bat:103; edge-agent/env_key.py:66; tests/test_env_key.py:39 -->
 
 La build rimuove la precedente `dist/EdgeAgent` e rifiuta un `api_key` non vuoto
 nell'INI. Se Python 3.13/3.12 è assente, lo script tenta anche l'installazione
 automatica: avvialo su una macchina di build predisposta a queste operazioni.
-<!-- Source: build_exe.bat:10; build_exe.bat:61; build_exe.bat:71 -->
+<!-- Source: build_exe.bat:19; build_exe.bat:68; build_exe.bat:76 -->
 
 ## Trabocchetti
 

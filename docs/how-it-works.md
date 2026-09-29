@@ -169,7 +169,7 @@ BPERCaptureWorker (QThread)
     latency. Via the OpenAI client, provider-aware:
     `AgentConfig.resolve_llm_settings()` (`edge-agent/config.py`) picks key/endpoint/model from
     `[llm] provider`; explicit INI values are authoritative, provider defaults fill only blank
-    entries (config.ini ships `gemini` + `gemini-3.6-flash` through Google's OpenAI-compatible
+    entries (config.ini ships `gemini` + `gemini-3.8-flash` through Google's OpenAI-compatible
     endpoint); reads page definitions from `assets/templates/bper/prompts.json`. Router failures
     are logged in the capture feed (deduped per distinct error).
   - `hybrid` -- tries LLM first, falls back to ML.

@@ -17,7 +17,7 @@ Il sistema riceve screenshot (da file o cattura in tempo reale) e, attraverso tr
 Il coordinamento dell'estrazione e i risultati risiedono nell'applicazione. La lettura delle immagini chiama i provider AI configurati e richiede rete; non serve un backend applicativo separato per il percorso BPER.
 Modelli elencati nel catalogo locale (`PROVIDER_MODELS` in `extraction/config.py`; la disponibilità presso il provider va verificata quando si configura l'applicazione):
 - **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `o1`, `o1-mini`.
-- **Google Gemini**: `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-exp`, `gemini-2.0-flash-thinking-exp`, `gemini-3-flash-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.6-flash`.
+- **Google Gemini**: `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-exp`, `gemini-2.0-flash-thinking-exp`, `gemini-3-flash-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.6-flash`, `gemini-3.8-flash` (default).
 
 Caratteristiche principali:
 - **Edge Agent (GUI)**: Cattura screenshot in tempo reale dal monitor selezionato, riconosce la pagina corrente (router LLM o ML) e avvia l'estrazione locale.
@@ -115,9 +115,16 @@ Il repository include il build portable dell'edge-agent tramite [build_exe.bat](
 build_exe.bat
 ```
 
-Lo script prepara Python e le dipendenze se mancanti, rimuove la precedente `dist/EdgeAgent` e genera un bundle PyInstaller `onedir`. Copia configurazione, asset e prompt, include un template `.env` senza credenziale e produce `dist/EdgeAgent_YYYY-MM-DD.zip`.
+Lo script prepara Python e le dipendenze se mancanti, rimuove la precedente `dist/EdgeAgent` e genera un bundle PyInstaller `onedir`. Copia configurazione, asset e prompt, include un template `.env` e produce `dist/EdgeAgent_YYYY-MM-DD.zip`.
 
-Consegnare l'intera cartella del pacchetto, non soltanto l'eseguibile. Il build rifiuta un `config.ini` con `api_key` valorizzata. Al primo avvio il preflight prepara i componenti e richiede la chiave. Dettagli in [Avvio e sviluppo](docs/07-getting-started.md).
+**Pacchetto già configurato.** Un tester non deve sapere cos'è una chiave API: all'avvio lo script chiede la chiave da includere (INVIO per nessuna), oppure la legge da `EDGE_AGENT_PACKAGE_KEY`. La chiave finisce solo nel `.env` del pacchetto, mai nel `config.ini` tracciato, e lo zip prende il suffisso `_CON-CHIAVE`. Chi riceve quello zip può leggerla: usa una chiave dedicata alla beta, con limite di spesa, e revocala alla fine.
+
+```bat
+set EDGE_AGENT_PACKAGE_KEY=<chiave dedicata alla beta>
+build_exe.bat
+```
+
+Consegnare l'intera cartella del pacchetto, non soltanto l'eseguibile. Il build rifiuta un `config.ini` con `api_key` valorizzata. Al primo avvio il preflight prepara i componenti e, se il pacchetto non ha la chiave, la richiede. Dettagli in [Avvio e sviluppo](docs/07-getting-started.md).
 
 ## I 45 campi estratti
 

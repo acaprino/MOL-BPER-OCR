@@ -81,18 +81,25 @@ All defaults verified against `extraction/config.py`.
   `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY`, for `openai` `OPENAI_API_KEY` →
   `LLM_API_KEY`. Leave `api_key` empty in the INI to use env keys -- `build_exe.bat` refuses
   to package a config.ini with a non-blank `api_key`.
+- To ship a package a tester can run without knowing what an API key is, `build_exe.bat` bakes a
+  key into `dist\EdgeAgent\.env` only (prompted at build start, or `EDGE_AGENT_PACKAGE_KEY`) and
+  suffixes the zip `_CON-CHIAVE`. `edge-agent/env_key.py` is the single writer of `LLM_API_KEY`,
+  shared with the first-run dialog. Anyone holding that zip can read the key: use a dedicated,
+  spend-capped key and revoke it after the beta.
 - `AgentConfig.save()` re-persists `llm_api_key` back into `config.ini`
   (`edge-agent/config.py:326-332`; currently uncalled). Do not wire it up with a real key loaded.
 - Real keys belong in `.env` (gitignored; template in `.env.example`).
 
 ## Testing & Validation
 
-A pytest suite lives in `tests/` (`python -m pytest tests`, 116 tests) covering the page registry,
+A pytest suite lives in `tests/` (`python -m pytest tests`, 178 tests) covering the page registry,
 the capture stability tracker, the daemon thread pool, the async local-extraction client, the prompt
 catalog, frame normalization (`test_frame_normalize.py`), the worker's capture framing
 (`test_bper_capture_framing.py`), page recognition from live-shaped frames
 (`test_page_classifier.py`), retry-area selection (`test_pipeline_retry.py`) and the content-crop
-family gate with off-calibration anchor/table behavior (`test_content_crop.py`). The rest of the
+family gate with off-calibration anchor/table behavior (`test_content_crop.py`), the API key
+baked into a packaged `.env` (`test_env_key.py`) and a price for every shipped default model
+(`test_pricing.py`). The rest of the
 extraction pipeline (anchor confidence gate, scalar merge order, coherence check, flatten) is
 still untested.
 
@@ -339,6 +346,12 @@ in `extraction/evaluation.py` auto-detects alternative column names (`Screenshot
 copy exists in the working tree. `python main.py` raises `FileNotFoundError` without it
 (`extraction/cli.py:320`) -- obtain it separately and place it at `mnt/data/dati.csv`. The
 Tkinter GUI and the edge-agent work without it (evaluation is optional there).
+Do not restore the `dati.csv` still in git history (removed in `e8c677c`): it describes 5 older
+screenshots of the old PEF UI (practice TICCHI/CABRAS, ~2150px wide), not the current 9 "Nuova PEF
+3.0" screens (practice LUNARDI), so every row would be scored against the wrong image. A draft
+ground truth for the current 9 screens, the first real-provider baseline (`gemini-3.8-flash`,
+3 runs, 93.5-94.8%, ~$0.04/screen) and the proposed acceptance threshold live in
+`.codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`.
 
 **Field classification** -- `classify_field()` labels each extracted field as one of:
 - **OK** -- matches ground truth
@@ -398,6 +411,8 @@ Called out individually, because the filename alone does not tell you:
 
 - `app_paths.py` -- every path in the app resolves through here, and it answers differently from
   source and from a PyInstaller bundle (`env_file()`, `templates_dir()`, `prompts_dir()`).
+- `env_key.py` -- stdlib-only, the single writer of `LLM_API_KEY` into a `.env`: used by the
+  first-run dialog and run as a script by `build_exe.bat` to bake a key into the package.
 - `bootstrap.py` -- `run_preflight()` creates/loads the local `.env`; `_ensure_files()` re-seeds
   `prompts/` from the bundle only when missing or empty. Must run *before* `ui.main_window` is
   imported (Constraint 3).

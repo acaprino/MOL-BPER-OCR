@@ -26,6 +26,8 @@ La pipeline ha due entry point per scelta: `extract_from_screen()` normalizza in
 ## Logica di business
 
 ### Dove vive il `mnt/data/dati.csv` canonico, e chi ne è il proprietario?
+**Aggiornamento 2026-09-29.** Il `dati.csv` ancora presente nella storia git (rimosso in `e8c677c`) descrive 5 screenshot della vecchia interfaccia PEF, non i 9 attuali: non va ripristinato. Per i 9 screenshot attuali esiste una bozza di 77 righe, trascritta a vista e da verificare, copiata in `.codebase-xray/baselines/2026-09-29-gemini-3.8-flash/dati.csv`.
+
 La CLI lo richiede tassativamente (`FileNotFoundError` a `extraction/cli.py:315-316`), il README ne documenta il formato (`README.md:221-241`) e l'intero apparato di valutazione è costruito attorno a esso; eppure il file non esiste né nel working tree né in alcun punto di git (`.gitignore:9` esclude `/mnt`; solo i 9 PNG sono stati aggiunti con force-add). Esiste una copia autorevole (quante righe, quali campi per schermata) e può essere condivisa con ogni sviluppatore? Senza un file di GT comune, `python main.py` non può girare su un clone fresco e i numeri di accuratezza di due sviluppatori non sono confrontabili.
 
 ### Le sovrascritture del controllo di coerenza sono regole BPER universalmente valide?
@@ -60,6 +62,8 @@ Esistono `build_exe.bat` e `edge_agent.spec`: generano `dist/EdgeAgent` e uno ZI
 ## Processo
 
 ### Dove vive la baseline di accuratezza e costo con provider reali?
+**Parzialmente risolta (2026-09-29).** La prima baseline (`gemini-3.8-flash`, tre run, 93,5-94,8%) e la soglia proposta sono in `.codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`. Restano aperte la verifica umana del ground truth, l'approvazione della soglia e una baseline su più pratiche.
+
 La suite `tests/` è eseguibile con `python -m pytest tests`. Copre anche i contratti di ordinamento, esito della cattura e scatto manuale. Non sostituisce però una baseline condivisa dei risultati VLM sulle schermate reali: `mnt/` è ignorata e il CSV di ground truth non è nel repository. Dove si conserva tale baseline, quale variazione di accuratezza è accettabile e chi approva lo smoke test del provider e della GUI?
 
 ### Qual è il modello di branching e release sulla storia riscritta?

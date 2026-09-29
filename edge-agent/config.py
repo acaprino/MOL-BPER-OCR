@@ -33,7 +33,7 @@ class AgentConfig:
     DEFAULT_ROUTER_MODE = "ml"
     DEFAULT_LLM_PROVIDER = "openai"
     DEFAULT_LLM_MODEL = "gpt-4o-mini"
-    DEFAULT_GEMINI_MODEL = "gemini-3.6-flash"
+    DEFAULT_GEMINI_MODEL = "gemini-3.8-flash"
     GEMINI_OPENAI_COMPAT_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
     DEFAULT_LLM_TIMEOUT = 60
     DEFAULT_DATASET_ENABLED = True

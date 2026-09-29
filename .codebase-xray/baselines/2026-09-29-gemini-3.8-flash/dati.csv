@@ -1,0 +1,78 @@
+﻿Fotogramma,Denominazione da attribuire,Valore rilevato
+screen 1,NDG,26871394
+screen 1,DENOMINAZIONE,LUNARDI GIANMARCO
+screen 1,Stato,LAV
+screen 1,Fase,VEP
+screen 1,Creazione,09/09/2025
+screen 1,Evidenze,B
+screen 1,Tipo,
+screen 2,NDG,26871394
+screen 2,DENOMINAZIONE,LUNARDI GIANMARCO
+screen 2,Creazione,09/09/2025
+screen 2,Evidenze,B
+screen 3,Evidenze,B
+screen 3,tooltip su valore campo Evidenze: B,Origination BSTORE
+screen 4,NDG,26871394
+screen 4,DENOMINAZIONE,LUNARDI GIANMARCO
+screen 4,Tipo,BPI Mutui
+screen 4,Filiale relazione,3749 - GRUGLIASCO
+screen 4,NDG 1,26871394
+screen 4,DENOMINAZIONE 1,LUNARDI GIANMARCO
+screen 4,RUOLO 1,Richiedente
+screen 4,NDG 2,11153238
+screen 4,DENOMINAZIONE 2,FONDO DI GARANZIA PER LA PRIMA CASA
+screen 4,RUOLO 2,Nuovo Garante/nuovo Datore Di Pegno
+screen 4,NDG 3,29011926
+screen 4,DENOMINAZIONE 3,CARRER MONICA LUNARDI GIANMARCO
+screen 4,RUOLO 3,Cointestazione
+screen 4,NDG 4,
+screen 4,DENOMINAZIONE 4,
+screen 4,RUOLO 4,
+screen 5,NDG,26871394
+screen 5,DENOMINAZIONE,LUNARDI GIANMARCO
+screen 5,Tipo,BPI Mutui
+screen 5,Filiale relazione,3749 - GRUGLIASCO
+screen 5,n° FIDO,F1
+screen 5,Rapporto,034 3749 0017 05531236
+screen 5,Descrizione,M.CONSAP >=80%
+screen 5,Scadenza,15/09/2055
+screen 5,Importo (€),158.800
+screen 5,Tipo Op.,In Lavoraz.
+screen 6,NDG,26871394
+screen 6,DENOMINAZIONE,LUNARDI GIANMARCO
+screen 6,Tipo,BPI Mutui
+screen 6,Filiale relazione,3749 - GRUGLIASCO
+screen 6,n° FIDO,F1
+screen 6,Rapporto,034 3749 0017 05531236
+screen 6,Descrizione,M.CONSAP >=80%
+screen 6,Scadenza,15/09/2055
+screen 6,Importo (€),158.800
+screen 6,Tipo Op.,In Lavoraz.
+screen 6,tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%,340176 - MUTUO FOND PRIV CONSAP >=80%
+screen 7,NDG,26871394
+screen 7,DENOMINAZIONE,LUNARDI GIANMARCO
+screen 7,Tipo,BPI Mutui
+screen 7,Filiale relazione,3749 - GRUGLIASCO
+screen 7,n° FIDO,F1
+screen 7,Rapporto,034 3749 0017 05531236
+screen 7,Descrizione,M.CONSAP >=80%
+screen 7,Scadenza,15/09/2055
+screen 7,Importo (€),158.800
+screen 7,Tipo Op.,In Lavoraz.
+screen 7,tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS,457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS
+screen 8,NDG,26871394
+screen 8,DENOMINAZIONE,LUNARDI GIANMARCO
+screen 8,Tipo,BPI Mutui
+screen 8,Filiale relazione,3749 - GRUGLIASCO
+screen 8,n° FIDO,F1
+screen 8,Rapporto,034 3749 0017 05531236
+screen 8,Descrizione,M.CONSAP >=80%
+screen 8,Scadenza,15/09/2055
+screen 8,Importo (€),158.800
+screen 8,Tipo Op.,In Lavoraz.
+screen 8,tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.,55-IPOTECA DI PRIMO GRADO
+screen 9,NDG,26871394
+screen 9,DENOMINAZIONE,LUNARDI GIANMARCO
+screen 9,Tipo,BPI Mutui
+screen 9,Filiale relazione,3749 - GRUGLIASCO
+screen 9,Note della richiesta,"- Numero Finanziamento FICS: 017/5531236 - Numero proposta DESK: 2602257 - Importo perizia: N.D. - Valore immobile presunto: 160.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 158.800,00 € IMPORTO PER PRIMA CASA : 158.800,00 € IMPORTO RICHIESTO : 158.800,00 € - Codice immobile: 4781760; RICHIESTA DI MUTUO CONSAP PRIORITARIO CON FINANZIAMENTO DEGLI ONERI NOTARILI. LUNARDI GIANMARCO - 32 ANNI. CELIBE. VIVE IN AFFITTO E PAGA UN CANONE MENSILE DI EURO 500,00. DIPENDENTE CON CONTRATTO A TEMPO INDETERMINATO PRESSO LA SOCIETA' ELITECHGROUP SPA CON REDDITO MENSILIZZATO DI EURO 2.350,00. NON HA ALTRI IMPEGNI RATEALI IN CORSO."

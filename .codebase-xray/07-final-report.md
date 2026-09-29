@@ -289,4 +289,5 @@ Sono priorità derivate dai finding consegnati, non nuove modifiche applicative 
 - Verifica corrente del coordinatore: 173 passed, 3 warnings, 38.20s, exit 0. [Comando e ambiente](D:/Projects/poc-data-extraction/.codebase-xray/runs/poc-data-extraction-20260912-175144/validation/test-command.json), [log](D:/Projects/poc-data-extraction/.codebase-xray/runs/poc-data-extraction-20260912-175144/validation/pytest.txt).
 - Provider/live: nessuna chiamata estrattiva e nessuna sessione bancaria reale; risultati non equivalenti a una misura attuale di accuratezza VLM.
 - Stato delle evidenze: verified = derivato/verificato nel perimetro dichiarato; documented = intenzione; unverified = assunzione; disputed = discrepanza.
+- Aggiornamento incrementale 2026-09-29 (working tree non committato su `4b5cac6`): [09-incremental-2026-09-29.md](09-incremental-2026-09-29.md), con DQ-04 risolto, XQ-R12 e XQ-D05 nuovi, 178 test eseguiti e la prima baseline con provider reale (`gemini-3.8-flash`, 93,5-94,8%).
 - Run storico padre: poc-data-extraction-20260911-154206, conservato senza modifiche. Le verifiche storiche non sono presentate come esecuzioni nuove.

@@ -7,6 +7,15 @@ rem Build del pacchetto portable EdgeAgent (PyInstaller onedir)
 rem Output: dist\EdgeAgent  (da zippare per la consegna)
 rem ============================================================
 
+rem --- Chiave API opzionale da precompilare nel pacchetto ---
+rem Finisce SOLO in dist\EdgeAgent\.env, mai nel config.ini tracciato: il tester
+rem non deve configurare nulla, ma chiunque abbia lo zip puo' leggerla. Usa una
+rem chiave dedicata alla beta, con limite di spesa, da revocare a fine beta.
+rem Chiesta subito, cosi' la build di alcuni minuti poi procede da sola.
+if not defined EDGE_AGENT_PACKAGE_KEY (
+    set /p "EDGE_AGENT_PACKAGE_KEY=Chiave API da includere nel pacchetto - INVIO per nessuna: "
+)
+
 rem --- Assicura Python (3.13 o 3.12), installandolo se assente ---
 set "PY_CMD="
 py -3.13 -c "pass" >nul 2>&1
@@ -68,6 +77,7 @@ findstr /r /c:"^api_key *= *[^ ]" "edge-agent\config.ini" >nul 2>&1
 if not errorlevel 1 (
     echo [ERRORE] edge-agent\config.ini contiene una api_key valorizzata:
     echo          svuotala prima di creare il pacchetto.
+    echo          Per consegnarlo con la chiave usa EDGE_AGENT_PACKAGE_KEY.
     exit /b 1
 )
 
@@ -86,20 +96,38 @@ rem Solo i .json: la cartella sorgente non deve poter spedire altri file nello z
 if not exist "dist\EdgeAgent\prompts" mkdir "dist\EdgeAgent\prompts"
 copy /y "prompts\*.json" "dist\EdgeAgent\prompts" >nul
 
-rem Template .env SENZA chiave (fonte unica: edge-agent\defaults\env.template);
-rem la chiave viene chiesta al primo avvio.
+rem Template .env (fonte unica: edge-agent\defaults\env.template). Senza chiave
+rem precompilata, la chiave viene chiesta al primo avvio.
 copy /y "edge-agent\defaults\env.template" "dist\EdgeAgent\.env" >nul
+set "ZIP_SUFFIX="
+if defined EDGE_AGENT_PACKAGE_KEY (
+    echo [INFO] Precompilo la chiave API nel .env del pacchetto...
+    ".venv\Scripts\python.exe" "edge-agent\env_key.py" "dist\EdgeAgent\.env"
+    if errorlevel 1 goto key_failed
+    set "ZIP_SUFFIX=_CON-CHIAVE"
+)
 
 echo [INFO] Creo lo zip finale (puo' richiedere qualche minuto)...
 for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyy-MM-dd"') do set BUILD_DATE=%%i
-powershell -NoProfile -Command "Compress-Archive -Path 'dist\EdgeAgent' -DestinationPath 'dist\EdgeAgent_%BUILD_DATE%.zip' -Force"
+set "ZIP_PATH=dist\EdgeAgent_%BUILD_DATE%%ZIP_SUFFIX%.zip"
+powershell -NoProfile -Command "Compress-Archive -Path 'dist\EdgeAgent' -DestinationPath '%ZIP_PATH%' -Force"
 if errorlevel 1 (
     echo [ERRORE] Creazione zip fallita.
     exit /b 1
 )
 
 echo.
-echo [OK] Pacchetto finale pronto: dist\EdgeAgent_%BUILD_DATE%.zip
-echo      Consegnalo cosi' com'e': al primo avvio scarica i componenti AI
-echo      e chiede la chiave API.
+echo [OK] Pacchetto finale pronto: %ZIP_PATH%
+if defined ZIP_SUFFIX (
+    echo [ATTENZIONE] Lo zip contiene la chiave API: chi lo riceve puo' usarla.
+    echo      Consegnalo solo ai tester e revoca la chiave a fine beta.
+    echo      Al primo avvio scarica i componenti AI; la chiave non viene chiesta.
+) else (
+    echo      Consegnalo cosi' com'e': al primo avvio scarica i componenti AI
+    echo      e chiede la chiave API.
+)
 endlocal
+exit /b 0
+
+:key_failed
+exit /b 1
