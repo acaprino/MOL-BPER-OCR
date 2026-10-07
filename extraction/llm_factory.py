@@ -7,6 +7,9 @@ from typing import Optional
 from langchain_core.language_models import BaseChatModel
 
 from extraction.config import LLM_THINKING_LEVEL
+from extraction.model_adapters import adapter_for, validate_thinking_level
+
+_PROVIDERS = ("openai", "gemini")
 
 # Legacy env vars — checked as fallback so existing deployments keep working.
 _LEGACY_KEY_VARS = {
@@ -20,11 +23,14 @@ def create_chat_model(
     *,
     model: str,
     api_key: Optional[str] = None,
+    thinking_level: Optional[str] = None,
 ) -> BaseChatModel:
     """Create a LangChain ChatModel for the given provider.
 
-    Lazy imports ensure only the installed provider's package is loaded.
-    Returned instances are thread-safe.
+    The model family (extraction/model_adapters.py) decides how the model is
+    built; thinking_level defaults to LLM_THINKING_LEVEL. Lazy imports ensure
+    only the installed provider's package is loaded. Returned instances are
+    thread-safe.
     """
     provider = provider_name.strip().lower()
     model = model.strip()
@@ -45,37 +51,15 @@ def create_chat_model(
             "API key required. Set LLM_API_KEY env var or pass api_key=."
         )
 
-    if provider == "openai":
-        from langchain_openai import ChatOpenAI
+    if provider not in _PROVIDERS:
+        raise ValueError(f"Unknown provider: {provider_name!r}. Available: {list(_PROVIDERS)}")
 
-        if model.startswith("gemini"):
-            raise ValueError(
-                f"Model {model!r} looks like a Gemini model but provider is 'openai'. "
-                f"Set LLM_PROVIDER=gemini or choose an OpenAI model."
-            )
-        return ChatOpenAI(model=model, api_key=key)
+    adapter = adapter_for(model)
+    if adapter.provider != provider:
+        raise ValueError(
+            f"Model {model!r} is a {adapter.family} model but provider is {provider!r}. "
+            f"Set LLM_PROVIDER={adapter.provider} or choose a {provider} model."
+        )
 
-    if provider == "gemini":
-        from langchain_google_genai import ChatGoogleGenerativeAI
-        
-        if model.startswith("gpt-"):
-            raise ValueError(
-                f"Model {model!r} looks like an OpenAI model but provider is 'gemini'. "
-                f"Set LLM_MODEL to a Gemini model (e.g. 'gemini-1.5-flash')."
-            )
-        # Safety filters disabled by design: inputs are legitimate banking-UI
-        # OCR screenshots, and the default filters produce spurious refusals on
-        # them. Accepted risk — the only provider-side content filter is off.
-        kwargs = {
-            "safety_settings": {
-                "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
-                "HARM_CATEGORY_HATE_SPEECH": "BLOCK_NONE",
-                "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_NONE",
-                "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE",
-            }
-        }
-        if LLM_THINKING_LEVEL in ("low", "medium", "high") and "thinking" in model.lower():
-            kwargs["thinking_level"] = LLM_THINKING_LEVEL
-        return ChatGoogleGenerativeAI(model=model, google_api_key=key, **kwargs)
-
-    raise ValueError(f"Unknown provider: {provider_name!r}. Available: ['openai', 'gemini']")
+    level = validate_thinking_level(LLM_THINKING_LEVEL if thinking_level is None else thinking_level)
+    return adapter.build(model, key, level)

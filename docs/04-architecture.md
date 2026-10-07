@@ -6,7 +6,7 @@ CLI, GUI Tkinter e edge-agent PyQt6 condividono un motore di estrazione senza di
 ## Diagramma dei componenti
 
 Il coordinamento risiede nel processo locale; la lettura delle immagini usa API di modelli esterni. Il router LLM ha un proprio percorso di rete, separato dalle chiamate del motore. Le frecce tratteggiate indicano notifiche Qt; il dettaglio temporale è nei [workflow](05-workflows.md).
-<!-- Source: extraction/vlm_client.py:123; edge-agent/llm_router.py:172; edge-agent/local_extraction_client.py:87 -->
+<!-- Source: extraction/vlm_client.py:22; edge-agent/llm_router.py:172; edge-agent/local_extraction_client.py:87 -->
 
 ```mermaid
 flowchart TB
@@ -128,11 +128,11 @@ Il motore distingue due ingressi. `extract_from_screen()` apre il file, esegue `
 
 ### Layer LLM e prompt
 
-`llm_factory.create_chat_model()` è la factory del motore. Rifiuta chiavi mancanti, provider sconosciuti e combinazioni provider/modello incoerenti; accetta ancora variabili di credenziale precedenti con avviso di deprecazione. `vlm_client` gestisce invocazione, validazione e costo. OpenAI usa output strutturato; `gemini-1.5*` usa `json_mode`; le altre famiglie Gemini percorrono JSON libero con validazione Pydantic manuale. Queste sono diramazioni dell'implementazione, non una garanzia sulla compatibilità futura dei provider.
-<!-- Source: extraction/llm_factory.py:18; extraction/vlm_client.py:21; extraction/vlm_client.py:52; extraction/vlm_client.py:123 -->
+`llm_factory.create_chat_model()` è la factory del motore. Rifiuta chiavi mancanti, provider sconosciuti, nomi che non appartengono a nessuna famiglia e combinazioni provider/modello incoerenti; accetta ancora variabili di credenziale precedenti con avviso di deprecazione. Tutto ciò che cambia per famiglia sta in `extraction/model_adapters.py`, un adapter per famiglia scelto da `adapter_for()` ([ADR 0016](adr/0016-adapter-per-famiglia-di-modelli.md)): OpenAI usa output strutturato; `gemini-1.5*` usa `json_mode`; le altre famiglie Gemini percorrono JSON libero con validazione Pydantic manuale, e la famiglia Gemini 3 riceve `LLM_THINKING_LEVEL`. `vlm_client.call_vlm()` delega all'adapter e calcola `_meta` e costo. Queste sono diramazioni dell'implementazione, non una garanzia sulla compatibilità futura dei provider.
+<!-- Source: extraction/llm_factory.py:21; extraction/model_adapters.py:207; extraction/model_adapters.py:218; extraction/vlm_client.py:22 -->
 
 Il wrapper ritenta fino a tre volte le eccezioni diverse da `ValueError`, `KeyError` e `IndexError`, che propagano immediatamente. Ogni chiamata conclusa produce `_meta`; la pipeline aggrega token, costo e latenza. Un modello assente da `PRICING_PER_1M` vale zero nella stima, non è necessariamente gratuito. Le chiamate del router LLM usano direttamente l'SDK OpenAI compatibile e non rientrano nella contabilità di `vlm_client`.
-<!-- Source: extraction/vlm_client.py:26; extraction/vlm_client.py:230; extraction/pipeline.py:383; edge-agent/llm_router.py:224 -->
+<!-- Source: extraction/vlm_client.py:14; extraction/vlm_client.py:63; extraction/pipeline.py:383; edge-agent/llm_router.py:224 -->
 
 I testi LLM sono dati in `prompts/*.json`, caricati e validati una volta da `prompt_store.py`, modulo solo stdlib condiviso anche dal router. Parti e placeholder devono corrispondere a `CATALOG`. Il primo catalogo caricabile vince; nel bundle la copia interna può sostituire una copia esterna danneggiata, mentre `PROMPTS_DIR` esplicito non ammette fallback. Non esiste reload parziale. Il catalogo delle pagine in `assets/templates/bper/prompts.json` è distinto: il suo errore degrada il riconoscimento; un catalogo di testi inutilizzabile solleva un errore. Il router importa lo store pigramente affinché il proprio errore resti gestibile nell'inizializzazione del router.
 <!-- Source: prompt_store.py:62; prompt_store.py:139; prompt_store.py:220; prompt_store.py:262; prompt_store.py:284; edge-agent/llm_router.py:102; edge-agent/llm_router.py:111; edge-agent/workers/capture/bper_capture_worker.py:204 -->

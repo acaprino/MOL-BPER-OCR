@@ -139,7 +139,7 @@ Tutte le variabili della pipeline sono lette via `os.getenv()` **al momento dell
 | `LLM_PROVIDER` | `openai` | no | Selettore di provider: `openai` o `gemini` | `extraction/config.py:17` |
 | `LLM_MODEL` | `gpt-4o` | no | Modello per il passaggio principale | `extraction/config.py:18` |
 | `LLM_MODEL_ANCHOR` | = `LLM_MODEL` | no | Modello per il passaggio anchor | `extraction/config.py:19` |
-| `LLM_THINKING_LEVEL` | non impostata | no | `low`/`medium`/`high`; applicata solo se il nome modello contiene `thinking` | `extraction/config.py:20`, `extraction/llm_factory.py:72-74` |
+| `LLM_THINKING_LEVEL` | non impostata | no | `low`/`medium`/`high`; inviata come `thinking_level` alla famiglia Gemini 3, ignorata con avviso dalle altre, rifiutata se non valida | `extraction/config.py:19`, `extraction/model_adapters.py:196`, `extraction/model_adapters.py:228` |
 | `INPUT_DIR` | `mnt/data` | no | Directory dati: screenshot, `dati.csv`, output CLI | `extraction/config.py:8` |
 | `PARALLEL_ENABLED` | `1` | no | `0` disabilita il thread pool del batch | `extraction/config.py:12` |
 | `PARALLEL_WORKERS` | `4` | no | Worker del batch e del pool asincrono dell’edge-agent | `extraction/config.py`, `edge-agent/local_extraction_client.py` |

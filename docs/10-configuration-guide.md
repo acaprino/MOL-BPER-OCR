@@ -77,7 +77,7 @@ Modelli Gemini validi (`extraction/config.py:24-32`): `gemini-1.5-pro`, `gemini-
 Due manopole extra:
 
 - `LLM_MODEL_ANCHOR` (`extraction/config.py:19`) fa usare al passaggio anchor (economico) un modello diverso dal main; default = `LLM_MODEL`.
-- `LLM_THINKING_LEVEL` (`extraction/config.py:20`) -- `low`/`medium`/`high`; applicata solo quando il nome del modello contiene `thinking` (`extraction/llm_factory.py:72-74`). Un no-op per ogni altro modello.
+- `LLM_THINKING_LEVEL` (`extraction/config.py:19`) -- `low`/`medium`/`high`. La decide la famiglia del modello (`extraction/model_adapters.py`, [ADR 0016](adr/0016-adapter-per-famiglia-di-modelli.md)): la famiglia Gemini 3 la riceve come `thinking_level`; se non la imposti vale il default del modello, che per Gemini 3 è `high`, il più lento e costoso. Le altre famiglie la ignorano con un avviso all'avvio; un valore diverso dai tre ammessi blocca l'avvio con un errore.
 
 > **Servizio esterno:** entrambi i profili chiamano un'API a pagamento di terzi (OpenAI o Google) via rete. Serve una chiave valida e con credito per il provider scelto. La suite locale sostituisce il confine di rete; le esecuzioni dell’applicazione richiedono il provider reale.
 

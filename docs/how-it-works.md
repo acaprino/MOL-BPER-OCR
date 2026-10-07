@@ -45,7 +45,7 @@ The call budget counts logical passes, not HTTP requests. `call_vlm_with_retry()
 attempt each pass up to three times. It immediately re-raises `ValueError`, `KeyError`
 and `IndexError`; other exceptions enter backoff. Anchor and main still run when the
 configured budget is below two, unless the early anchor exit applies.
-<!-- Source: extraction/vlm_client.py:230; extraction/pipeline.py:151; extraction/pipeline.py:305 -->
+<!-- Source: extraction/vlm_client.py:63; extraction/pipeline.py:151; extraction/pipeline.py:305 -->
 
 Post-processing order is load-bearing (`pipeline.py:154-176`): anchors are merged back and `tipo`
 normalized *before* retries; the coherence check (repairs `evidenze` / `tipo` from their tooltips)

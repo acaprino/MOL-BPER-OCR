@@ -151,7 +151,7 @@ Tutte le variabili sono configurabili via environment (lette a import time da `e
 | `LLM_API_KEY` | *(obbligatoria)* | Chiave API (OpenAI o Gemini a seconda del provider). Fallback legacy `OPENAI_API_KEY`/`GEMINI_API_KEY` con DeprecationWarning |
 | `LLM_MODEL` | `gpt-4o` | Modello per estrazione principale |
 | `LLM_MODEL_ANCHOR` | come `LLM_MODEL` | Modello per il pass anchor |
-| `LLM_THINKING_LEVEL` | *(nessuno)* | Thinking budget `low`/`medium`/`high`; applicato solo ai modelli il cui nome contiene `thinking` |
+| `LLM_THINKING_LEVEL` | *(nessuno)* | Profondità di ragionamento `low`/`medium`/`high`, inviata come `thinking_level` alla famiglia Gemini 3; se assente vale il default del modello (`high` per Gemini 3). Le altre famiglie la ignorano con un avviso; un valore diverso blocca l'avvio |
 | `INPUT_DIR` | `mnt/data` | Directory dati (screenshot + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `PARALLEL_ENABLED` | `1` | Elaborazione parallela (`0` per disattivarla) |

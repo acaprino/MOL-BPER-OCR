@@ -57,6 +57,7 @@ tarati, e nessun test lo verificava.
 | [0013](0013-risultati-nell-ordine-di-acquisizione.md) | Pubblicare i risultati nell'ordine di acquisizione | Accettato |
 | [0014](0014-acquisizione-per-visita-con-esito.md) | Acquisire per visita e confermare l'esito dell'estrazione | Accettato |
 | [0015](0015-scatto-manuale-nel-thread-di-cattura.md) | Eseguire lo scatto manuale nel thread di cattura | Accettato |
+| [0016](0016-adapter-per-famiglia-di-modelli.md) | Un adapter per famiglia di modelli | Accettato |
 
 ## Da scrivere
 
@@ -72,4 +73,5 @@ Candidati, in ordine di quanto costerebbe scoprirli nel modo sbagliato:
 - Edge-agent solo locale, senza backend remoto
 - Configurazione via variabili d'ambiente lette a import-time, e l'ordine di bootstrap che ne dipende
 - Cattura ed estrazione disaccoppiate su un pool di thread daemon
-- Output strutturato via Pydantic, con il ripiego a JSON libero sui Gemini recenti
+- Output strutturato via Pydantic, con il ripiego a JSON libero sui Gemini recenti (la scelta per
+  famiglia è nello [0016](0016-adapter-per-famiglia-di-modelli.md); manca il perché del ripiego)

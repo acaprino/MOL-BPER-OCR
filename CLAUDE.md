@@ -65,7 +65,7 @@ All defaults verified against `extraction/config.py`.
 | `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Max VLM calls per screen (1 anchor + 1 main + 1 retry per retry area). Lowering it starves the trailing areas of `AREA_TO_FIELDS` |
 | `ANCHOR_CONF_MIN` | `0.95` | Anchor confidence gate; below it the anchor value is nulled and never reaches the merge or the main-pass hint |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Early exit when both anchor values are null |
-| `LLM_THINKING_LEVEL` | *(unset)* | Thinking budget `low`/`medium`/`high`; applied only to models whose name contains `thinking` |
+| `LLM_THINKING_LEVEL` | *(unset)* | Reasoning depth `low`/`medium`/`high`, sent as `thinking_level` to the Gemini 3 family; unset keeps the model default (`high` on Gemini 3). Other families warn and ignore it; any other value is refused at model creation (`extraction/model_adapters.py`, ADR 0016) |
 | `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `extraction/cli.py` (`config.py:108`) |
 | `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to `INPUT_DIR/debug_crops` |
 | `PROMPTS_DIR` | *(unset)* | Override the prompt catalog directory (read in `prompt_store.py`, not `config.py`); default is `prompts/` at the repo root, or next to the exe when frozen. An explicit override fails closed: no fallback to the bundled copy |
@@ -92,14 +92,15 @@ All defaults verified against `extraction/config.py`.
 
 ## Testing & Validation
 
-A pytest suite lives in `tests/` (`python -m pytest tests`, 178 tests) covering the page registry,
+A pytest suite lives in `tests/` (`python -m pytest tests`, 190 tests) covering the page registry,
 the capture stability tracker, the daemon thread pool, the async local-extraction client, the prompt
 catalog, frame normalization (`test_frame_normalize.py`), the worker's capture framing
 (`test_bper_capture_framing.py`), page recognition from live-shaped frames
 (`test_page_classifier.py`), retry-area selection (`test_pipeline_retry.py`) and the content-crop
 family gate with off-calibration anchor/table behavior (`test_content_crop.py`), the API key
-baked into a packaged `.env` (`test_env_key.py`) and a price for every shipped default model
-(`test_pricing.py`). The rest of the
+baked into a packaged `.env` (`test_env_key.py`), a price for every shipped default model
+(`test_pricing.py`), the per-family model adapters (`test_llm_factory.py`) and how each family is
+asked and read by `call_vlm()` (`test_vlm_call.py`, provider SDK faked). The rest of the
 extraction pipeline (anchor confidence gate, scalar merge order, coherence check, flatten) is
 still untested.
 
@@ -209,7 +210,11 @@ downstream effects.
    `extraction/cli.py`.
 5. **Structured output** -- VLM calls use LangChain's `.with_structured_output(PydanticModel)` for
    OpenAI and Gemini 1.5; newer Gemini models fall back to free-form JSON plus manual Pydantic
-   validation (`extraction/vlm_client.py`). Pydantic models live in `extraction/schemas.py`.
+   validation. Everything that differs by model family (construction, reasoning depth, output
+   strategy) lives in one adapter per family in `extraction/model_adapters.py`, and
+   `adapter_for()` is the only name-to-family rule: a name outside every family is refused, never
+   guessed. Do not re-add model-name checks to `llm_factory.py` or `vlm_client.py` (ADR 0016).
+   Pydantic models live in `extraction/schemas.py`.
    `call_vlm_with_retry()` retries only transient errors; `ValueError` (parse failures) is re-raised
    immediately.
 6. **Field source tracking** -- the `_field_sources` dict records which pass (ANCHOR_HEADER,
@@ -386,6 +391,7 @@ Flat package, no sub-packages, one module per concern. Grouped by role:
   `AREA_TO_FIELDS`/`FIELD_RETRY_MAP`.
 - **Pipeline** -- `pipeline.py` (`ExtractionPipeline`), `vlm_client.py` (the single VLM call path,
   `call_vlm_with_retry()`, `estimate_cost_usd()`), `llm_factory.py` (`create_chat_model()`),
+  `model_adapters.py` (one adapter per model family, `adapter_for()`),
   `schemas.py` (Pydantic models), `prompts.py` (constants resolved from `prompt_store`).
 - **Support** -- `normalization.py` (`classify_field()`, `pick_best()`,
   `dataset_mismatch_guard()`), `imaging.py` (`normalize_image()`, `crop_relative()`,
