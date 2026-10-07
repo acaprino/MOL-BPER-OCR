@@ -1,0 +1,82 @@
+[PROMPTS] catalog loaded from D:\Projects\poc-data-extraction\prompts
+Parallel enabled: workers=4, screens=23
+Done 51185037__Soggetti
+Done 51531667__Soggetti
+Done 51659595__Soggetti
+Done 51185037__GestioneFidi
+Done 52060489__Soggetti
+Done 52062600__Soggetti
+Done 52060489__GestioneFidi
+Done 51531667__GestioneFidi
+Done 52067184__Soggetti
+Done 52062600__GestioneFidi
+Done 52068422__Soggetti
+Done 52068422__GestioneFidi
+Done 52067184__GestioneFidi
+Done 52080223__Soggetti
+Done 52102599__Soggetti
+Done 52126316__Soggetti
+Done 52080223__GestioneFidi
+Done 52102599__GestioneFidi
+Done 52130861__Soggetti
+ERROR extracting 52135039__Soggetti: JSON decode error in model response: Expecting ',' delimiter: line 117 column 3 (char 2821)
+Text: '{\n  "fields": {\n    "ndg": {\n      "value": "36306911",\n      "confidence": 0.98,\n      "evidence_text": null,\n      "section": "Dettaglio Pratica"\n    },\n    "denominazione": {\n      "value": "KASDAS'
+Done 52126316__GestioneFidi
+Done 52130861__GestioneFidi
+Done 52135039__GestioneFidi
+
+OVERALL (RAW):      224/234 = 95.73%
+OVERALL (FILTERED): 224/234 = 95.73%
+
+Per-field (FILTERED):
+  denominazione                             18/ 18 = 100.00%
+  denominazione_1                            9/  9 = 100.00%
+  denominazione_2                            9/  9 = 100.00%
+  denominazione_3                            9/  9 = 100.00%
+  denominazione_4                            9/  9 = 100.00%
+  descrizione                                9/  9 = 100.00%
+  filiale_relazione                         17/ 18 = 94.44%
+  importo_euro                               9/  9 = 100.00%
+  n_fido                                     9/  9 = 100.00%
+  ndg                                       18/ 18 = 100.00%
+  ndg_1                                      9/  9 = 100.00%
+  ndg_2                                      7/  9 = 77.78%
+  ndg_3                                      7/  9 = 77.78%
+  ndg_4                                      6/  9 = 66.67%
+  rapporto                                   9/  9 = 100.00%
+  ruolo_1                                    9/  9 = 100.00%
+  ruolo_2                                    9/  9 = 100.00%
+  ruolo_3                                    9/  9 = 100.00%
+  ruolo_4                                    9/  9 = 100.00%
+  scadenza                                   7/  9 = 77.78%
+  tipo                                      18/ 18 = 100.00%
+  tipo_op                                    9/  9 = 100.00%
+
+COST SUMMARY (per screen):
+  51185037__Soggetti  calls= 5  tokens=39630  cost=$0.0828  status=OK
+  51531667__Soggetti  calls= 5  tokens=44582  cost=$0.1014  status=OK
+  51659595__Soggetti  calls= 5  tokens=39926  cost=$0.0842  status=OK
+  51185037__GestioneFidi  calls= 5  tokens=72773  cost=$0.2071  status=OK
+  52060489__Soggetti  calls= 5  tokens=48520  cost=$0.1162  status=OK
+  52062600__Soggetti  calls= 5  tokens=59444  cost=$0.1573  status=OK
+  52060489__GestioneFidi  calls= 5  tokens=107258  cost=$0.3367  status=OK
+  51531667__GestioneFidi  calls= 5  tokens=121891  cost=$0.3915  status=OK
+  52067184__Soggetti  calls= 5  tokens=36199  cost=$0.0699  status=OK
+  52062600__GestioneFidi  calls= 5  tokens=103347  cost=$0.3220  status=OK
+  52068422__Soggetti  calls= 5  tokens=42557  cost=$0.0940  status=OK
+  52068422__GestioneFidi  calls= 5  tokens=64399  cost=$0.1762  status=OK
+  52067184__GestioneFidi  calls= 5  tokens=82290  cost=$0.2428  status=OK
+  52080223__Soggetti  calls= 5  tokens=56908  cost=$0.1478  status=OK
+  52102599__Soggetti  calls= 5  tokens=35695  cost=$0.0680  status=OK
+  52126316__Soggetti  calls= 5  tokens=37120  cost=$0.0736  status=OK
+  52080223__GestioneFidi  calls= 5  tokens=94134  cost=$0.2875  status=OK
+  52102599__GestioneFidi  calls= 5  tokens=77101  cost=$0.2236  status=OK
+  52130861__Soggetti  calls= 5  tokens=31348  cost=$0.0520  status=OK
+  52126316__GestioneFidi  calls= 5  tokens=88548  cost=$0.2665  status=OK
+  52130861__GestioneFidi  calls= 5  tokens=93449  cost=$0.2849  status=OK
+  52135039__GestioneFidi  calls= 5  tokens=78431  cost=$0.2285  status=OK
+
+TOTAL: calls=110  tokens=1455550  cost=$4.0146
+
+Saved outputs: C:/Users/alfio/AppData/Local/Temp/claude/D--Projects-poc-data-extraction/78792b1b-9549-4140-ac7a-08e49adff415/scratchpad/high/input\poc_outputs_improved.json
+Saved debug report: C:/Users/alfio/AppData/Local/Temp/claude/D--Projects-poc-data-extraction/78792b1b-9549-4140-ac7a-08e49adff415/scratchpad/high/input\poc_debug_improved.csv

@@ -1,0 +1,121 @@
+{
+  "pratica": "51659595",
+  "screenshots": {
+    "Elenco": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32221698", "Denom.": "LANDOGNA CORRADO", "N°": "51659595", "Tipo": "BMB", "Importo €": "135.800", "Stato": "APP", "Fase": "", "Creazione": "13/02/2026", "Data Ass./Del.": "26/02/2026", "Assegnata": "", "Dest.": "", "Delib.": "2077", "D.R.": "MD-DREG", "Area": "MO-SU"},
+        "evidenze_icons": ["graffetta", "fumetto", "B", "rombo", "cerchio", "P", "2.0"]
+      },
+      "tooltip": null,
+      "uncertain": [
+        "elenco.row.Area: the cell is clipped on the right by the pinned Evidenze column (no ellipsis). Fully visible: 'MO-S'; the next glyph shows only its left stroke, read as 'U'. Recorded 'MO-SU'; alternative literal reading 'MO-S'. The Filiale column is not on screen in this screenshot.",
+        "elenco.evidenze_icons: pictogram names are my own labels. 'fumetto' = pink speech bubble with two lines, 'rombo' = grey diamond outline, 'cerchio' = grey circular arrow; 'B' is green, 'P' is pink inside a circle."
+      ]
+    },
+    "Elenco_dx": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32221698", "Denom.": "LANDOGNA CORRADO", "Tipo": "BMB", "Importo €": "135.800", "Stato": "APP", "Fase": "", "Creazione": "13/02/2026", "Data Ass./Del.": "26/02/2026", "Assegnata": "", "Dest.": "", "Delib.": "2077", "D.R.": "MD-DREG", "Area": "MO-SUD", "Filiale": "21"},
+        "evidenze_icons": ["graffetta", "fumetto", "B", "rombo", "cerchio", "P", "2.0"]
+      },
+      "tooltip": null,
+      "uncertain": [
+        "elenco.row.Tipo: header and cell are clipped on the left by the pinned Denom. column. Header shows 'ipo' preceded by the right part of 'T'; the cell shows 'MB' preceded by the right half of a glyph that looks like '3' (right half of 'B'). Recorded 'BMB'; alternative literal reading 'MB'.",
+        "The N° column is scrolled under the pinned left columns and is not visible, so it is not listed in columns_visible."
+      ]
+    },
+    "Elenco_tooltip1": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32221698", "Denom.": "LANDOGNA CORRADO", "N°": "9595", "Tipo": "BMB", "Importo €": "135.800", "Stato": "APP", "Fase": "", "Creazione": "13/02/2026", "Data Ass./Del.": "26/02/2026", "Assegnata": "", "Dest.": "", "Delib.": "2077", "D.R.": "MD-DREG", "Area": "MO-SUD", "Filiale": null},
+        "evidenze_icons": ["graffetta", "fumetto", "B", "rombo", "cerchio", "P", "2.0"]
+      },
+      "tooltip": {"text": "BPI Mutui Origination Bstore", "anchor_table": "elenco", "anchor_column": "Tipo", "anchor_row": 1, "anchor_cell_value": "BMB"},
+      "uncertain": [
+        "elenco.row.N°: header and cell are clipped on the left by the pinned Denom. column. Only the tail of the number is on screen: '595' fully visible, preceded by the right half of a glyph read as '9'. Recorded '9595'; alternative literal reading '595'. The leading digits are hidden.",
+        "elenco.row.Filiale: the header is on screen but clipped on the right ('Filial' plus part of 'e'); its cell is hidden under the pinned Evidenze column, so the value is null.",
+        "tooltip anchor: the mouse pointer is not captured. The popover's top-left corner sits just below the right end of the 'BMB' text in the Tipo column, which is why it is attributed to that cell."
+      ]
+    },
+    "Elenco_tooltip2": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32221698", "Denom.": "LANDOGNA CORRADO", "N°": "9595", "Tipo": "BMB", "Importo €": "135.800", "Stato": "APP", "Fase": "", "Creazione": "13/02/2026", "Data Ass./Del.": "26/02/2026", "Assegnata": "", "Dest.": "", "Delib.": "2077", "D.R.": "MD-DREG", "Area": "MO-SUD", "Filiale": null},
+        "evidenze_icons": ["graffetta", "fumetto", "B", "rombo", "cerchio", "P", "2.0"]
+      },
+      "tooltip": {"text": "Origination BSTORE", "anchor_table": "elenco", "anchor_column": "Evidenze", "anchor_row": 1, "anchor_cell_value": "B"},
+      "uncertain": [
+        "tooltip anchor: the popover is in the Evidenze cell, but which icon it belongs to is a best guess. The mouse pointer is not captured; the popover's top-left corner sits below the gap between the green 'B' icon and the diamond icon ('rombo'). In Elenco_tooltip1 the popover opens just below and to the right of the hovered text, which points to 'B' here. Alternative: the diamond icon ('rombo').",
+        "elenco.row.N°: header and cell are clipped on the left by the pinned Denom. column. Only the tail of the number is on screen: '595' fully visible, preceded by the right half of a glyph read as '9'. Recorded '9595'; alternative literal reading '595'. The leading digits are hidden.",
+        "elenco.row.Filiale: the header is on screen but clipped on the right ('Filial' plus part of 'e'); its cell is hidden under the pinned Evidenze column, so the value is null."
+      ]
+    },
+    "Soggetti": {
+      "kind": "soggetti",
+      "header": {"ndg": "32221698", "denominazione": "LANDOGNA CORRADO", "tipo_pratica": "BPI Mutui", "n_pratica": "51659595", "filiale_relazione": "21 - CASTELFRANCO"},
+      "soggetti": [
+        {"ndg": "32221698", "denominazione": "LANDOGNA CORRADO", "ruolo": "Richiedente"},
+        {"ndg": "32462622", "denominazione": "LANDOGNA ANTONINO", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"},
+        {"ndg": "32462667", "denominazione": "ADERNO' GIOVANNA", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"},
+        {"ndg": "32292028", "denominazione": "CRISTIANO MARIA SIMONA,LANDOGNA CORR", "ruolo": "Cointestazione"}
+      ],
+      "tooltip": null,
+      "uncertain": [
+        "soggetti[4].denominazione: wraps on two lines ('CRISTIANO MARIA SIMONA,LANDOGNA' / 'CORR') and ends at 'CORR' with no ellipsis on screen. Recorded as shown, joined with one space. No space is visible after the comma."
+      ]
+    },
+    "GestioneFidi_Tooltip1": {
+      "kind": "fidi",
+      "header": {"ndg": "32221698", "denominazione": "LANDOGNA CORRADO", "tipo_pratica": "BPI Mutui", "n_pratica": "51659595", "filiale_relazione": "21 - CASTELFRANCO"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0021 0017 05585799", "descrizione": "M.FOND.PRIVATI", "scadenza": "301 mesi", "importo": "135.800", "tipo_op": "Nuova Finanza"}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "FID LIM INATTO", "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": {"text": "340170 - MUTUO FONDIARIO PRIVATI", "anchor_table": "fidi", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "M.FOND.PRIVATI"},
+      "uncertain": [
+        "tooltip anchor: the mouse pointer is not captured. The popover's top-left corner sits just below the right end of 'M.FOND.PRIVATI' in the only FIDI row, so it is attributed to that Descrizione cell. The popover hides no table cell."
+      ]
+    },
+    "GestioneFidi_Tooltip2": {
+      "kind": "fidi",
+      "header": {"ndg": "32221698", "denominazione": "LANDOGNA CORRADO", "tipo_pratica": "BPI Mutui", "n_pratica": "51659595", "filiale_relazione": "21 - CASTELFRANCO"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0021 0017 05585799", "descrizione": "M.FOND.PRIVATI", "scadenza": "301 mesi", "importo": "135.800", "tipo_op": "Nuova Finanza"}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": null, "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": {"text": "55-IPOTECA DI PRIMO GRADO", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "IPOTECA I GR."},
+      "uncertain": [
+        "garanzie[2].descrizione: partly covered by the popover, so recorded null. What stays visible is 'FID L' on the first line (the rest is hidden) and 'INATTO' on the second line.",
+        "garanzie[2].fido: the upper part of 'F1' is cut by the popover's bottom edge; read as 'F1'. garanzie[1].fido 'F1' touches the popover's top edge but is readable.",
+        "tooltip anchor: the mouse pointer is not captured. The popover's top-left corner sits just right of 'GR.' in the G1 Descrizione cell, so it is attributed to row 1."
+      ]
+    },
+    "Note": {
+      "kind": "note",
+      "header": {"ndg": "32221698", "denominazione": "LANDOGNA CORRADO", "tipo_pratica": "BPI Mutui", "n_pratica": "51659595", "filiale_relazione": "21 - CASTELFRANCO"},
+      "active_tab": "Note da Richiesta",
+      "note": {
+        "box_title": "Nota della richiesta",
+        "text": "Landogna Corrado, nuovo cliente BPER, intende acquistare immobile in Modena. Prezzo di acquisto: 165.000 euro ; in richiesta mutuo promo assicurato gennaio 2026 di euro 135.800 da restituire in 25 anni a TF. Effettuato check up assicurativo e questionario Arca meet you. Infermiere a tempo indeterminato (presso Ausl di Modena da 01/2021 a 01/2026 e ora presso Azienda Ospedaliero-Universitaria di Modena da 02/2026) percepisce redditi netti annui desunti da CAREN CUD 2025 di circa 24.726 euro. Attualmente vive con la ex compagna in affitto pagando un canone mensile di circa euro 484 totali (circa 242 euro a testa). In richiesta mutuo per acquisto immobile in cui andare a vivere da solo. Inserite garanzie dei due genitori (fideiussione solidale limitata in atto) in quanto mutuo non fondiario e il cliente riferisce di aver vinto un concorso e quindi di aver cambiato lavoro (a tempo indeterminato e senza prova) da Azienda AUSL di Modena a Azienda Ospedaliero - Universitaria di Modena. Sopra si è inserito reddito desunto da CAREN CUD 2025; la decorrenza del nuovo contratto è a partire dal 04/02/2026. Unico impegno a sistema: PP con rata mensile di euro 266 e con scadenza 2030. - Numero Finanziamento FICS: 017/5585799 - Numero proposta DESK: 2790868 - Importo perizia: 176.000,00 € - Valore immobile presunto: 165.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 135.800,00 € IMPORTO PER PRIMA CASA : 135.800,00 € IMPORTO RICHIESTO : 135.800,00 € - Codice immobile: 4805275; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garanti ANTONINO LANDOGNA (32462622), GIOVANNA ADERNO' (32462667)",
+        "starts_at_beginning": true,
+        "cut_at_bottom": false
+      },
+      "uncertain": []
+    }
+  }
+}

@@ -11,6 +11,11 @@ della beta e a riconoscere una regressione, non a dimostrare l'accuratezza sul t
 - **Comando:** `python main.py` dalla radice, `LLM_PROVIDER=gemini`,
   `LLM_MODEL=LLM_MODEL_ANCHOR=gemini-3.8-flash`, `MAX_CALLS_PER_SCREEN=5`, `PARALLEL_WORKERS=4`,
   prompt da `prompts/`. Tre esecuzioni identiche per misurare la variabilità del modello.
+- **Livello di ragionamento: `high` di fatto.** Il `.env` locale conteneva `LLM_THINKING_LEVEL=low`,
+  ma il codice di allora lo inviava solo ai modelli con `thinking` nel nome: a `gemini-3.8-flash`
+  non arrivava nulla e vale il default del modello, `high`. Il confronto con `low`, misurato dopo
+  l'[ADR 0016](../../../docs/adr/0016-adapter-per-famiglia-di-modelli.md), è in
+  [2026-09-29-gemini-3.8-flash-thinking-low](../2026-09-29-gemini-3.8-flash-thinking-low/README.md).
 - **Immagini:** i 9 screenshot tracciati in `mnt/data/screen *.png` (848x679, "Nuova PEF 3.0",
   pratica NDG 26871394).
 - **Ground truth:** [`dati.csv`](dati.csv), copia di `mnt/data/dati.csv`. 77 righe trascritte a vista

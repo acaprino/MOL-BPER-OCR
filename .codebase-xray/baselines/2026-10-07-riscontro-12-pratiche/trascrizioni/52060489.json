@@ -1,0 +1,141 @@
+{
+  "pratica": "52060489",
+  "screenshots": {
+    "Elenco": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "36248986", "Denom.": "ZHENG L...", "N°": "52060489", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "27/08/2026", "Data Ass./Del.": "28/08/2026", "Assegnata": "827170", "Dest.": "", "Delib.": "", "D.R.": "LO-DREG", "Area": "VS-AREA", "Filiale": "3217"},
+        "evidenze_icons": ["graffetta", "B", "2.0"],
+        "stato_icon": "fumetto"
+      },
+      "tooltip": null,
+      "uncertain": []
+    },
+    "Elenco_tooltip1": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "36248986", "Denom.": "ZHENG L...", "N°": "52060489", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "27/08/2026", "Data Ass./Del.": "28/08/2026", "Assegnata": "827170", "Dest.": "", "Delib.": "", "D.R.": "LO-DREG", "Area": "VS-AREA", "Filiale": "3217"},
+        "evidenze_icons": ["graffetta", "B", "2.0"],
+        "stato_icon": "fumetto"
+      },
+      "tooltip": {"text": "Origination BSTORE", "anchor_table": "elenco", "anchor_column": "Evidenze", "anchor_row": 1, "anchor_cell_value": "B"},
+      "uncertain": [
+        "tooltip anchor: the mouse pointer is not visible; the popover sits just below the Evidenze icons with its left edge under the '2.0' badge. Assigned to the 'B' icon (the text reads 'Origination BSTORE' and the box opens to the right of the pointer, as in Elenco_tooltip2); alternative anchor: the '2.0' badge"
+      ]
+    },
+    "Elenco_tooltip2": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "36248986", "Denom.": "ZHENG L...", "N°": "52060489", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "27/08/2026", "Data Ass./Del.": "28/08/2026", "Assegnata": "827170", "Dest.": "", "Delib.": "", "D.R.": "LO-DREG", "Area": "VS-AREA", "Filiale": "3217"},
+        "evidenze_icons": ["graffetta", "B", "2.0"],
+        "stato_icon": "fumetto"
+      },
+      "tooltip": {"text": "BPI Mutui Origination Bstore", "anchor_table": "elenco", "anchor_column": "Tipo", "anchor_row": 1, "anchor_cell_value": "BMB"},
+      "uncertain": [
+        "elenco.row['Importo €']: the lower half of the cell is overlapped by the popover; the upper half of the text band is visible and shows no text, so it is transcribed as an empty string (alternative: null as covered)"
+      ]
+    },
+    "Soggetti": {
+      "kind": "soggetti",
+      "header": {"ndg": "36248986", "denominazione": "ZHENG LINA,CHEN WEIHUA", "tipo_pratica": "BPI Mutui", "n_pratica": "52060489", "filiale_relazione": "3217 - GALLARATE MA"},
+      "soggetti": [
+        {"ndg": "36248986", "denominazione": "ZHENG LINA,CHEN WEIHUA", "ruolo": "Richiedente"},
+        {"ndg": "20515962", "denominazione": "CHEN WEIHUA", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"},
+        {"ndg": "21310900", "denominazione": "ZHENG LINA", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"}
+      ],
+      "tooltip": null,
+      "uncertain": []
+    },
+    "GestioneFidi": {
+      "kind": "fidi",
+      "header": {"ndg": "36248986", "denominazione": "ZHENG LINA,CHEN WEIHUA", "tipo_pratica": "BPI Mutui", "n_pratica": "52060489", "filiale_relazione": "3217 - GALLARATE MA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 3217 0017 05666365", "descrizione": "M.FOND.PRIVATI", "scadenza": "15/09/2056", "importo": "210.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."},
+        {"n_gar": "G2", "descrizione": "IP.II. BANCA I", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": null,
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip1": {
+      "kind": "fidi",
+      "header": {"ndg": "36248986", "denominazione": "ZHENG LINA,CHEN WEIHUA", "tipo_pratica": "BPI Mutui", "n_pratica": "52060489", "filiale_relazione": "3217 - GALLARATE MA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 3217 0017 05666365", "descrizione": "M.FOND.PRIVATI", "scadenza": "15/09/2056", "importo": "210.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."},
+        {"n_gar": "G2", "descrizione": "IP.II. BANCA I", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": {"text": "340170 - MUTUO FONDIARIO PRIVATI", "anchor_table": "fidi", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "M.FOND.PRIVATI"},
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip2": {
+      "kind": "fidi",
+      "header": {"ndg": "36248986", "denominazione": "ZHENG LINA,CHEN WEIHUA", "tipo_pratica": "BPI Mutui", "n_pratica": "52060489", "filiale_relazione": "3217 - GALLARATE MA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 3217 0017 05666365", "descrizione": "M.FOND.PRIVATI", "scadenza": "15/09/2056", "importo": "210.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."},
+        {"n_gar": "G2", "descrizione": null, "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": {"text": "55-IPOTECA DI PRIMO GRADO", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "IPOTECA I GR."},
+      "uncertain": [
+        "garanzie[1].descrizione (row G2): partly covered by the popover; only 'IP.II. B' on the first line and 'I' on the second line remain visible, so the value is set to null",
+        "garanzie[1].fido (row G2): the top two pixel rows of the text are hidden under the popover border; best reading 'F1' (alternative: null as covered)",
+        "tooltip anchor: the mouse pointer is not visible and the box straddles rows G1 and G2; assigned to row G1 because the text spells out 'IPOTECA I GR.' (alternative: row G2)"
+      ]
+    },
+    "GestioneFidi_Tooltip3": {
+      "kind": "fidi",
+      "header": {"ndg": "36248986", "denominazione": "ZHENG LINA,CHEN WEIHUA", "tipo_pratica": "BPI Mutui", "n_pratica": "52060489", "filiale_relazione": "3217 - GALLARATE MA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 3217 0017 05666365", "descrizione": "M.FOND.PRIVATI", "scadenza": "15/09/2056", "importo": "210.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."},
+        {"n_gar": "G2", "descrizione": "IP.II. BANCA I", "fido": "F1", "tipo_op": null}
+      ],
+      "tooltip": {"text": "285-IPOT. SEC. GRADO CON PRIMO STESSA BANCA", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 2, "anchor_cell_value": "IP.II. BANCA I"},
+      "uncertain": [
+        "garanzie[1].tipo_op (row G2): the second line of the cell is covered by the popover; only 'Nuova / In' remains visible, so the value is set to null"
+      ]
+    },
+    "OffTopic1": {
+      "kind": "offtopic",
+      "description": "Dettaglio pratica, tab 'Note a Istruttoria': riquadri 'Precedente nota all'Istruttoria' e 'Nota all'istruttoria' (Note al quadro fidi e garanzie), nessun campo d'interesse"
+    },
+    "OffTopic2": {
+      "kind": "offtopic",
+      "description": "Dettaglio pratica scorso verso il basso: riquadro 'Nota all'istruttoria' (Note al quadro fidi e garanzie) e riquadri 'Patrimonio Responsabile/Patrimonio Netto Tangibile', nessun campo d'interesse"
+    },
+    "Note": {
+      "kind": "note",
+      "header": {"ndg": "36248986", "denominazione": "ZHENG LINA,CHEN WEIHUA", "tipo_pratica": "BPI Mutui", "n_pratica": "52060489", "filiale_relazione": "3217 - GALLARATE MA"},
+      "active_tab": "Note da Richiesta",
+      "note": {
+        "box_title": "Nota della richiesta",
+        "text": "- Numero Finanziamento FICS: 017/5666365 - Numero proposta DESK: 3062700 - Importo perizia: N.D. - Valore immobile presunto: 260.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 210.000,00 € IMPORTO PER PRIMA CASA : 210.000,00 € IMPORTO RICHIESTO : 210.000,00 € - Codice immobile: 3365402; 5101639; 1 RICHIEDENTE. La cliente, classe 1991 cittadinanza cinese residente in Italia dal 2012. Lavora con contratto a tempo indeterminato dal 12/2012 preso il ristorante del compagno FELICE FAMIGLIA SAS (ndg 20515962 cliente da oltre 14 anni rating 2 cribis class D) Reddito netto annuo da cud 2026 euro 18955,00. Nubile, convive con il sig. Chen Weihua, in casa di proprieta' sita in Gallarate Via Varese 27 su cui grava nostro mutuo ipotecario in regolare ammortamento con debito residuo di euro 25.175,86 € e rata mensile di euro 330,00. Valore immobile da valutazione dinamica scheda immobile 114.951euro Su questo immobile iscriveremo ipoteca di secondo grado primo sostanziale in modo da diminuire il capitale residuo di questo nuovo mutuo all'atto della vendita, che avverrà nei tempi previsti per usufruire dei benefici prima casa. La cliente ha  3 figli di 14- 13  e 1 anno per i quali percepisce assegno unico di euro 812,00 2 RICHIEDENTE  classe 1987, celibe titolare del ristorante FELICE FAMIGLIA SAS reddito netto da pf2025 euro 27863,00. Ci viene richiesto mutuo ipotecario per acquisto e ristrutturazione di casa indipendente sita in Gallarate via Varese 46 dove la famiglia andra' a vivere l'immobile sara' intestato unicamente alla sig.a ZHEN LINA Importo acquisto euro 200.000,00 Caparra 2000,00 in sede di proposta Rogito a saldo Importo computo metrico estimativo euro 100.660,00 Importo mutuo totale 210.000,00 cosi' suddiviso: Importo mutuo per acquisto 160.000,00 Importo mutuo a sal per ristrutturazione 50.000,00 Durata 360 mesi di cui 12 di preammortamento Importo rata 990,00 euro Tasso fisso 3,90% LTV 54% LTC 70%",
+        "starts_at_beginning": true,
+        "cut_at_bottom": false
+      },
+      "uncertain": [
+        "note.text: three double spaces are visible on screen and were kept as two spaces: 'ha  3 figli', '13  e 1 anno', 'RICHIEDENTE  classe' (gaps of 6-7 px against 3-4 px for a single space on the same lines); collapse them if the scorer normalizes whitespace"
+      ]
+    }
+  }
+}

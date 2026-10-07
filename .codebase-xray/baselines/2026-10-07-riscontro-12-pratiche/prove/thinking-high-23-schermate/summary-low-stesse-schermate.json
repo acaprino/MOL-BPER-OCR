@@ -1,0 +1,287 @@
+{
+  "screens": 23,
+  "rows": 302,
+  "ok": 290,
+  "filtered": [
+    290,
+    302
+  ],
+  "guard_excluded_screens": [],
+  "statuses": {
+    "OK": 243,
+    "WRONG": 12,
+    "OK_NULL": 47
+  },
+  "by_kind": {
+    "Soggetti": [
+      184,
+      192
+    ],
+    "Fidi": [
+      106,
+      110
+    ]
+  },
+  "by_field": {
+    "ndg": [
+      23,
+      23
+    ],
+    "denominazione": [
+      23,
+      23
+    ],
+    "tipo": [
+      23,
+      23
+    ],
+    "filiale_relazione": [
+      22,
+      23
+    ],
+    "ndg_1": [
+      12,
+      12
+    ],
+    "denominazione_1": [
+      12,
+      12
+    ],
+    "ruolo_1": [
+      12,
+      12
+    ],
+    "ndg_2": [
+      10,
+      12
+    ],
+    "denominazione_2": [
+      12,
+      12
+    ],
+    "ruolo_2": [
+      12,
+      12
+    ],
+    "ndg_3": [
+      9,
+      12
+    ],
+    "denominazione_3": [
+      12,
+      12
+    ],
+    "ruolo_3": [
+      12,
+      12
+    ],
+    "ndg_4": [
+      9,
+      12
+    ],
+    "denominazione_4": [
+      12,
+      12
+    ],
+    "ruolo_4": [
+      12,
+      12
+    ],
+    "n_fido": [
+      11,
+      11
+    ],
+    "rapporto": [
+      11,
+      11
+    ],
+    "descrizione": [
+      11,
+      11
+    ],
+    "scadenza": [
+      8,
+      11
+    ],
+    "importo_euro": [
+      11,
+      11
+    ],
+    "tipo_op": [
+      11,
+      11
+    ]
+  },
+  "by_practice": {
+    "51185037": [
+      25,
+      26
+    ],
+    "51531667": [
+      25,
+      26
+    ],
+    "51659595": [
+      14,
+      16
+    ],
+    "52060489": [
+      26,
+      26
+    ],
+    "52062600": [
+      22,
+      26
+    ],
+    "52067184": [
+      26,
+      26
+    ],
+    "52068422": [
+      24,
+      26
+    ],
+    "52080223": [
+      25,
+      26
+    ],
+    "52102599": [
+      26,
+      26
+    ],
+    "52126316": [
+      26,
+      26
+    ],
+    "52130861": [
+      25,
+      26
+    ],
+    "52135039": [
+      26,
+      26
+    ]
+  },
+  "identity": [
+    134,
+    142
+  ],
+  "errors": 12,
+  "errors_form_only": 0,
+  "errors_by_field": {
+    "ndg_4": 3,
+    "ndg_2": 2,
+    "ndg_3": 3,
+    "scadenza": 3,
+    "filiale_relazione": 1
+  },
+  "error_rows": [
+    {
+      "screen": "51185037__Soggetti",
+      "field": "ndg_4",
+      "status": "WRONG",
+      "gt": "31950226",
+      "pred": "31950228",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "51531667__Soggetti",
+      "field": "ndg_4",
+      "status": "WRONG",
+      "gt": "10364373",
+      "pred": "10384373",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "51659595__Soggetti",
+      "field": "ndg_2",
+      "status": "WRONG",
+      "gt": "32462622",
+      "pred": "32462822",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "51659595__Soggetti",
+      "field": "ndg_3",
+      "status": "WRONG",
+      "gt": "32462667",
+      "pred": "32462867",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "52062600__Soggetti",
+      "field": "ndg_2",
+      "status": "WRONG",
+      "gt": "36214602",
+      "pred": "36214802",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "52062600__Soggetti",
+      "field": "ndg_3",
+      "status": "WRONG",
+      "gt": "36214640",
+      "pred": "36214840",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "52062600__Soggetti",
+      "field": "ndg_4",
+      "status": "WRONG",
+      "gt": "36215691",
+      "pred": "36215891",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "52062600__GestioneFidi",
+      "field": "scadenza",
+      "status": "WRONG",
+      "gt": "361 mesi",
+      "pred": "381 mesi",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "52068422__GestioneFidi",
+      "field": "filiale_relazione",
+      "status": "WRONG",
+      "gt": "305 - MI CERTOSA",
+      "pred": "0305",
+      "source": "RETRY_HEADER"
+    },
+    {
+      "screen": "52068422__GestioneFidi",
+      "field": "scadenza",
+      "status": "WRONG",
+      "gt": "361 mesi",
+      "pred": "381 mesi",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "52080223__Soggetti",
+      "field": "ndg_3",
+      "status": "WRONG",
+      "gt": "7726737",
+      "pred": "7728737",
+      "source": "CONTENT_MAIN"
+    },
+    {
+      "screen": "52130861__GestioneFidi",
+      "field": "scadenza",
+      "status": "WRONG",
+      "gt": "15/10/2036",
+      "pred": "15/10/2038",
+      "source": "CONTENT_MAIN"
+    }
+  ],
+  "screen_status": {
+    "OK": 23
+  },
+  "content_crop": {
+    "full-frame": 23
+  },
+  "calls": 115,
+  "prompt_tokens": 503520,
+  "completion_tokens": 58471,
+  "cost_usd": 0.5969,
+  "latency_s_per_screen": 29.8
+}

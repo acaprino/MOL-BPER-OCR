@@ -1,0 +1,119 @@
+{
+  "pratica": "52126316",
+  "screenshots": {
+    "Elenco": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "36210255", "Denom.": "SANTINI EMANUELE", "N°": "52126316", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "25/09/2026", "Data Ass./Del.": "30/09/2026", "Assegnata": "827170", "Dest.": "", "Delib.": "", "D.R.": "BF-DREG", "Area": "CE-AREA", "Filiale": "800"},
+        "evidenze_icons": ["graffetta", "BM", "2.0"]
+      },
+      "tooltip": null,
+      "uncertain": [
+        "elenco.row.Stato: the cell shows the text 'ABB' followed by a speech-bubble pictogram (not text, not transcribed).",
+        "elenco.evidenze_icons: 'BM' is a single green two-letter icon, transcribed as one element (alternative: two icons 'B' and 'M')."
+      ]
+    },
+    "Elenco_tooltip1": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "36210255", "Denom.": "SANTINI EMANUELE", "N°": "52126316", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "25/09/2026", "Data Ass./Del.": "30/09/2026", "Assegnata": "827170", "Dest.": "", "Delib.": "", "D.R.": "BF-DREG", "Area": "CE-AREA", "Filiale": "800"},
+        "evidenze_icons": ["graffetta", "BM", "2.0"]
+      },
+      "tooltip": {"text": "BPI Mutui Origination Bstore", "anchor_table": "elenco", "anchor_column": "Tipo", "anchor_row": 1, "anchor_cell_value": "BMB"},
+      "uncertain": [
+        "elenco.row.Stato: the cell shows the text 'ABB' followed by a speech-bubble pictogram (not text, not transcribed).",
+        "elenco.evidenze_icons: 'BM' is a single green two-letter icon, transcribed as one element (alternative: two icons 'B' and 'M')."
+      ]
+    },
+    "Elenco_tooltip2": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "36210255", "Denom.": "SANTINI EMANUELE", "N°": "52126316", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "25/09/2026", "Data Ass./Del.": "30/09/2026", "Assegnata": "827170", "Dest.": "", "Delib.": "", "D.R.": "BF-DREG", "Area": "CE-AREA", "Filiale": "800"},
+        "evidenze_icons": ["graffetta", "BM", "2.0"]
+      },
+      "tooltip": {"text": "Origination BSTORE Mediatori", "anchor_table": "elenco", "anchor_column": "Evidenze", "anchor_row": 1, "anchor_cell_value": "BM"},
+      "uncertain": [
+        "tooltip anchor: the popover is drawn just below the row, under the Area and Filiale cells, with its right edge under the 'BM' icon; no pointer is visible. Best guess: the 'BM' icon in Evidenze (the text describes that icon). Alternative: the Area cell 'CE-AREA'.",
+        "elenco.row.Stato: the cell shows the text 'ABB' followed by a speech-bubble pictogram (not text, not transcribed).",
+        "elenco.evidenze_icons: 'BM' is a single green two-letter icon, transcribed as one element (alternative: two icons 'B' and 'M')."
+      ]
+    },
+    "Soggetti": {
+      "kind": "soggetti",
+      "header": {"ndg": "36210255", "denominazione": "SANTINI EMANUELE", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "52126316", "filiale_relazione": "800 - RAVENNA"},
+      "soggetti": [{"ndg": "36210255", "denominazione": "SANTINI EMANUELE", "ruolo": "Richiedente"}],
+      "tooltip": null,
+      "uncertain": []
+    },
+    "GestioneFidi": {
+      "kind": "fidi",
+      "header": {"ndg": "36210255", "denominazione": "SANTINI EMANUELE", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "52126316", "filiale_relazione": "800 - RAVENNA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0800 0017 05678022", "descrizione": "M.FOND.PRIVATI", "scadenza": "25/09/2026", "importo": "160.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": null,
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip1": {
+      "kind": "fidi",
+      "header": {"ndg": "36210255", "denominazione": "SANTINI EMANUELE", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "52126316", "filiale_relazione": "800 - RAVENNA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0800 0017 05678022", "descrizione": "M.FOND.PRIVATI", "scadenza": "25/09/2026", "importo": "160.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": {"text": "340170 - MUTUO FONDIARIO PRIVATI", "anchor_table": "fidi", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "M.FOND.PRIVATI"},
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip2": {
+      "kind": "fidi",
+      "header": {"ndg": "36210255", "denominazione": "SANTINI EMANUELE", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "52126316", "filiale_relazione": "800 - RAVENNA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0800 0017 05678022", "descrizione": "M.FOND.PRIVATI", "scadenza": "25/09/2026", "importo": "160.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": {"text": "55-IPOTECA DI PRIMO GRADO", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "IPOTECA I GR."},
+      "uncertain": []
+    },
+    "Note": {
+      "kind": "note",
+      "header": {"ndg": "36210255", "denominazione": "SANTINI EMANUELE", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "52126316", "filiale_relazione": "800 - RAVENNA"},
+      "active_tab": "Note da Richiesta",
+      "note": {
+        "box_title": "Nota della richiesta",
+        "text": "- Numero Finanziamento FICS: 017/5678022 - Numero proposta DESK: N.D. - Importo perizia: N.D. - Valore immobile presunto: 270000 - Immobile da ipotecare è ad uso abitativo: SI - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 160.000,00 € IMPORTO PER PRIMA CASA : 160.000,00 € IMPORTO RICHIESTO : 160.000,00 € - Codice immobile: 5150258; CLIENTE NUOVO PRESENTATO DA PIU’ MUTUI CASA (CODICE 7320774) IN RICHIESTA MUTUO DI EURO 160.000 DA RESTITUIRE IN 30 ANNI – CONDIZIONI COME DA PROMO GREEN – CLASSE ENERGETICA C. L’IMMOBILE OGGETO D’IPOTECA E’ SITUATO A RAVENNA IN VIA J. LANDONI ED E’ COMPOSTO DA 5.5 VANI (110 MQ) PIU’ RELATIVO C6 DI 15MQ. L’IMMOBILE AVRA’ UN VALORE DI COMPRAVENDITA DI EURO 270.000 (LTV 60%) – LA DIFFERENZA DEL SALDO PREZZO DERIVA DA PROPRI RISPARMI (COME INDICATO DAL MEDIATORE). IL SIG. SANTINI LAVORA A TEMPO INDETERMINATO DAL 30/10/2017 PER OBI ITALIA SRL CON LA MANSIONE DI CAPOSETTORE PRESSO LA SEDE DI RAVENNA. DA CAREN SU CUD 2026 RISULTA UN REDDITO ANNUO NETTO PARI A EURO 33.000 – MENSILIZZATO EUR 2750. DICHIARA DI NON AVERE NESSUN DEBITO IN CORSO E NESSUNA PERSONA A CARICO. RATA DI EUR 692 SOSTENIBILE (SOSTITUISCE L’AFFITTO CHE STA PAGANDO DI EURO 850)",
+        "starts_at_beginning": true,
+        "cut_at_bottom": false
+      },
+      "uncertain": [
+        "note.text apostrophes: every apostrophe in the free text (PIU’, L’IMMOBILE, D’IPOTECA, E’, AVRA’, L’AFFITTO) is drawn as a slanted typographic mark and is transcribed as U+2019; alternative: the plain apostrophe U+0027.",
+        "note.text dashes: the long dashes in 'ANNI – CONDIZIONI', 'GREEN – CLASSE', '60%) – LA' and '33.000 – MENSILIZZATO' are about twice as wide as the hyphens that start the first lines and are transcribed as U+2013 (en dash); alternative: hyphen-minus U+002D.",
+        "note.text 'PER OBI ITALIA SRL': written with one space between OBI and ITALIA, as rendered in this box (gap between the two I stems about 6 px, consistent with a single space); the same text shown in a textarea on the OffTopic2 screenshot has a visibly wider gap there, so the stored text may contain two spaces.",
+        "note.text 'OGGETO' is spelled with a single T on screen and is transcribed as shown."
+      ]
+    },
+    "OffTopic": {
+      "kind": "offtopic",
+      "description": "Dettaglio pratica, tab 'Note a Istruttoria': riquadri 'Precedente nota all'Istruttoria' e 'Nota all'istruttoria' con area di testo scorrevole; pagina fuori ambito"
+    },
+    "OffTopic2": {
+      "kind": "offtopic",
+      "description": "Dettaglio pratica, tab 'Note a Istruttoria' scorsa verso il basso: riquadro 'Nota all'istruttoria' con area di testo scorrevole e riquadri Patrimonio Responsabile vuoti; pagina fuori ambito"
+    }
+  }
+}

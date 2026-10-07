@@ -1,0 +1,153 @@
+{
+  "pratica": "52068422",
+  "screenshots": {
+    "Elenco": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "30473741", "Denom.": "HETTIAR...", "N°": "52068422", "Tipo": "BMS", "Importo €": "115.000", "Stato": "LAV", "Fase": "PRO", "Creazione": "01/09/2026", "Data Ass./Del.": "05/10/2026", "Assegnata": "61680", "Dest.": "417100", "Delib.": "417100", "D.R.": "LO-DREG", "Area": "MZ-AREA", "Filiale": "305"},
+        "evidenze_icons": ["graffetta", "P", "2.0"]
+      },
+      "tooltip": null,
+      "uncertain": [
+        "evidenze_icons[1]: the letter P sits inside a pink circle (a single icon); recorded as \"P\""
+      ]
+    },
+    "Elenco_tooltip1": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "30473741", "Denom.": "HETTIAR...", "N°": "52068422", "Tipo": "BMS", "Importo €": "115.000", "Stato": "LAV", "Fase": "PRO", "Creazione": "01/09/2026", "Data Ass./Del.": "05/10/2026", "Assegnata": "61680", "Dest.": "417100", "Delib.": "417100", "D.R.": "LO-DREG", "Area": "MZ-AREA", "Filiale": "305"},
+        "evidenze_icons": ["graffetta", "P", "2.0"]
+      },
+      "tooltip": {"text": "BPI Mutui Standard", "anchor_table": "elenco", "anchor_column": "Tipo", "anchor_row": 1, "anchor_cell_value": "BMS"},
+      "uncertain": [
+        "evidenze_icons[1]: the letter P sits inside a pink circle (a single icon); recorded as \"P\""
+      ]
+    },
+    "Soggetti": {
+      "kind": "soggetti",
+      "header": {"ndg": "30473741", "denominazione": "HETTIARACHCHIGE MENISHA DULASHANI SI", "tipo_pratica": "BPI Mutui", "n_pratica": "52068422", "filiale_relazione": "305 - MI CERTOSA"},
+      "soggetti": [
+        {"ndg": "30473741", "denominazione": "HETTIARACHCHIGE MENISHA DULASHANI SI", "ruolo": "Richiedente"},
+        {"ndg": "11153238", "denominazione": "FONDO DI GARANZIA PER LA PRIMA CASA", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"}
+      ],
+      "tooltip": null,
+      "uncertain": [
+        "header.denominazione and soggetti[0].denominazione: the name ends with \"SI\" and no ellipsis is shown (the application appears to cut it); copied as displayed. The same banner text is on every detail page of this practice",
+        "soggetti[1].ndg: \"11153238\", small font; the 5, the 3s and the final 8 were checked glyph by glyph at sub-pixel level (alternatives for the last digit: 6, 9)"
+      ]
+    },
+    "GestioneFidi": {
+      "kind": "fidi",
+      "header": {"ndg": "30473741", "denominazione": "HETTIARACHCHIGE MENISHA DULASHANI SI", "tipo_pratica": "BPI Mutui", "n_pratica": "52068422", "filiale_relazione": "305 - MI CERTOSA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0305 0017 05678008", "descrizione": "M.CONSAP >=80%", "scadenza": "361 mesi", "importo": "115.000", "tipo_op": "Nuova Finanza"}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "CONSAP DR BIS", "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": null,
+      "uncertain": [
+        "fidi[0].scadenza: \"361 mesi\", middle digit 6 vs 8 (an enlarged view suggests 8); at native resolution the glyph is identical to the 6 of \"05678008\" in the Rapporto cell and differs from its 8s, so 6",
+        "fidi[0].rapporto: second line \"05678008\", small font; read at sub-pixel level as 6 in third position and 8 in fifth and last position (alternatives: 6 and 8 swapped)"
+      ]
+    },
+    "GestioneFidi_tooltip1": {
+      "kind": "fidi",
+      "header": {"ndg": "30473741", "denominazione": "HETTIARACHCHIGE MENISHA DULASHANI SI", "tipo_pratica": "BPI Mutui", "n_pratica": "52068422", "filiale_relazione": "305 - MI CERTOSA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0305 0017 05678008", "descrizione": "M.CONSAP >=80%", "scadenza": "361 mesi", "importo": "115.000", "tipo_op": "Nuova Finanza"}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "CONSAP DR BIS", "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": {"text": "340176 - MUTUO FOND PRIV CONSAP >=80%", "anchor_table": "fidi", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "M.CONSAP >=80%"},
+      "uncertain": [
+        "fidi[0].scadenza: \"361 mesi\", middle digit 6 vs 8 (an enlarged view suggests 8); at native resolution the glyph is identical to the 6 of \"05678008\" in the Rapporto cell and differs from its 8s, so 6",
+        "fidi[0].rapporto: second line \"05678008\", small font; read at sub-pixel level as 6 in third position and 8 in fifth and last position (alternatives: 6 and 8 swapped)"
+      ]
+    },
+    "GestioneFidi_Tooltip2": {
+      "kind": "fidi",
+      "header": {"ndg": "30473741", "denominazione": "HETTIARACHCHIGE MENISHA DULASHANI SI", "tipo_pratica": "BPI Mutui", "n_pratica": "52068422", "filiale_relazione": "305 - MI CERTOSA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0305 0017 05678008", "descrizione": "M.CONSAP >=80%", "scadenza": "361 mesi", "importo": "115.000", "tipo_op": "Nuova Finanza"}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "CONSAP DR BIS", "fido": null, "tipo_op": "Nuova"}
+      ],
+      "tooltip": {"text": "55-IPOTECA DI PRIMO GRADO", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "IPOTECA I GR."},
+      "uncertain": [
+        "garanzie[1].fido: covered by the popover, only the bottom pixels of the glyphs show; set to null (the other screenshots of this page show \"F1\")",
+        "fidi[0].scadenza: \"361 mesi\", middle digit 6 vs 8 (an enlarged view suggests 8); at native resolution the glyph is identical to the 6 of \"05678008\" in the Rapporto cell and differs from its 8s, so 6",
+        "fidi[0].rapporto: second line \"05678008\", small font; read at sub-pixel level as 6 in third position and 8 in fifth and last position (alternatives: 6 and 8 swapped)"
+      ]
+    },
+    "GestioneFidi_Tooltip3": {
+      "kind": "fidi",
+      "header": {"ndg": "30473741", "denominazione": "HETTIARACHCHIGE MENISHA DULASHANI SI", "tipo_pratica": "BPI Mutui", "n_pratica": "52068422", "filiale_relazione": "305 - MI CERTOSA"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0305 0017 05678008", "descrizione": "M.CONSAP >=80%", "scadenza": "361 mesi", "importo": "115.000", "tipo_op": "Nuova Finanza"}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "CONSAP DR BIS", "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": {"text": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 2, "anchor_cell_value": "CONSAP DR BIS"},
+      "uncertain": [
+        "fidi[0].scadenza: \"361 mesi\", middle digit 6 vs 8 (an enlarged view suggests 8); at native resolution the glyph is identical to the 6 of \"05678008\" in the Rapporto cell and differs from its 8s, so 6",
+        "fidi[0].rapporto: second line \"05678008\", small font; read at sub-pixel level as 6 in third position and 8 in fifth and last position (alternatives: 6 and 8 swapped)"
+      ]
+    },
+    "OffTopic2": {"kind": "offtopic", "description": "Dettaglio pratica, tab 'Note a Istruttoria': precedente nota e nota all'istruttoria (note al quadro fidi e garanzie), nessun campo d'interesse"},
+    "OffTopic1": {"kind": "offtopic", "description": "Dettaglio pratica, voce 'Recupero Segnalazioni' della Verifica Preliminare: Banche Dati Interne/Esterne, Politiche Creditizie, Accordato/Utilizzato, nessun campo d'interesse"},
+    "Note1": {
+      "kind": "note",
+      "header": {"ndg": "30473741", "denominazione": "HETTIARACHCHIGE MENISHA DULASHANI SI", "tipo_pratica": "BPI Mutui", "n_pratica": "52068422", "filiale_relazione": "305 - MI CERTOSA"},
+      "active_tab": "Note da Richiesta",
+      "note": {
+        "box_title": "Nota della richiesta",
+        "text": "RICHIESTA MUTUO PRIMA CASA CON GARANZIA CONSAP PRATICA PRESENTATA DA UNIPOL SAI Trattasi di richiesta mutuo per acquisto finalità prima casa; Tipologia Tasso Fisso Finito - Assistito da garanzia Consap Under 36 Prioritari - LTV 100% Importo Desiderato € 115.000,00  - Durata rimborso Anni 30. HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ) ?:+39 320 321 5985 ?: menishasilva1994@gmail.com Trattasi di richiesta mutuo per acquisto prima casa ATTESTAZIONE ISEE < 40ek RICHIEDENTE MUTUO RESIDENTE NEL COMUNE DI NOVIGLIO ( MI ) L'immobile oggetto di Acquisto è stato individuato nel comune di Palazzo Pignano ( CR ), è stato formalizzato un preliminare di compravendita, appartamento + cantina e ripostiglio per l'importo di € 115.000,00. Richiedente mutuo e intestatario immobile Sig.ra  HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ). La Sig.ra HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ) di anni 32,con cittadinanza SRI LANKA, coniugata in regime di separazione dei beni e residente in Italia dal 2016 in possesso di regolare permesso di soggiorno in corso di validità. Attualmente la Richiedente è residente con il marito Sig. WARNAKULASURIYA SHANE KANISHKA, che non interviene nel mutuo ed è economicamente autonomo ( si forniscono in carico pratica le sue buste paga ), nell'immobile di proprietà della sorella e del cognato nel Comune di Noviglio. Si conferma che la Richiedente, in data 21 Ottobre 2025,  ha tramite atto di rinuncia abdicativa alla quota di comproprietà trasferito la sua quota di proprietà dell'immobile ( dove attualmente ancora risiede con marito, sorella e cognato ) alla sorella e al cognato si fornisce copia dell'atto in carico pratica, la richiedente non è più intestataria dell'immobile. Inoltre, confermiamo che Banca MPS ha fornito lettera di accollo liberatorio mutuo, alla Ns richiedente del mutuo sottoscritto con la sorella e il cognato finalizzato all'acquisto del suddetto immobile ( prima casa ). Nucleo familiare costituendo, composto dal solo Richiedente n° 1 Componente. HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ).",
+        "starts_at_beginning": true,
+        "cut_at_bottom": true
+      },
+      "uncertain": [
+        "note.cut_at_bottom: the box has no bottom border on screen and the text continues below the edge (see Note2); the last visible line is intact, not sliced, and is included",
+        "note.text \"ha fornito lettera\": \"rn\" vs \"m\" (fornito / fomito); the stems match the \"rn\" of \"forniscono\" on the same page, read as \"fornito\"",
+        "note.text: three gaps are one space wider than a normal gap and are kept as double spaces: \"115.000,00  - Durata\", \"Sig.ra  HETTIARACHCHIGE\", \"2025,  ha\"",
+        "note.text: the two contact lines start with a literal question mark (\"?:+39 320 321 5985\", \"?: menishasilva1994@gmail.com\"); copied as shown"
+      ]
+    },
+    "Note2": {
+      "kind": "note",
+      "kind_note": "Same tab scrolled down: the page starts at the 'Nota della richiesta' box, so the NDG banner, the 'Tipo Pratica / N° Pratica' line, the 'Filiale relazione' box and the tab strip are not on screen. Only the browser-level tab label 'PEF 2.0 - Pratica: 52068422' is visible above the box. The note is shown from its first line to its closing border",
+      "header": {"ndg": null, "denominazione": null, "tipo_pratica": null, "n_pratica": null, "filiale_relazione": null},
+      "active_tab": null,
+      "note": {
+        "box_title": "Nota della richiesta",
+        "text": "RICHIESTA MUTUO PRIMA CASA CON GARANZIA CONSAP PRATICA PRESENTATA DA UNIPOL SAI Trattasi di richiesta mutuo per acquisto finalità prima casa; Tipologia Tasso Fisso Finito - Assistito da garanzia Consap Under 36 Prioritari - LTV 100% Importo Desiderato € 115.000,00  - Durata rimborso Anni 30. HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ) ?:+39 320 321 5985 ?: menishasilva1994@gmail.com Trattasi di richiesta mutuo per acquisto prima casa ATTESTAZIONE ISEE < 40ek RICHIEDENTE MUTUO RESIDENTE NEL COMUNE DI NOVIGLIO ( MI ) L'immobile oggetto di Acquisto è stato individuato nel comune di Palazzo Pignano ( CR ), è stato formalizzato un preliminare di compravendita, appartamento + cantina e ripostiglio per l'importo di € 115.000,00. Richiedente mutuo e intestatario immobile Sig.ra  HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ). La Sig.ra HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ) di anni 32,con cittadinanza SRI LANKA, coniugata in regime di separazione dei beni e residente in Italia dal 2016 in possesso di regolare permesso di soggiorno in corso di validità. Attualmente la Richiedente è residente con il marito Sig. WARNAKULASURIYA SHANE KANISHKA, che non interviene nel mutuo ed è economicamente autonomo ( si forniscono in carico pratica le sue buste paga ), nell'immobile di proprietà della sorella e del cognato nel Comune di Noviglio. Si conferma che la Richiedente, in data 21 Ottobre 2025,  ha tramite atto di rinuncia abdicativa alla quota di comproprietà trasferito la sua quota di proprietà dell'immobile ( dove attualmente ancora risiede con marito, sorella e cognato ) alla sorella e al cognato si fornisce copia dell'atto in carico pratica, la richiedente non è più intestataria dell'immobile. Inoltre, confermiamo che Banca MPS ha fornito lettera di accollo liberatorio mutuo, alla Ns richiedente del mutuo sottoscritto con la sorella e il cognato finalizzato all'acquisto del suddetto immobile ( prima casa ). Nucleo familiare costituendo, composto dal solo Richiedente n° 1 Componente. HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ). Percepisce reddito da lavoro dipendente presso l'Azienda GXO LOGISTICS PHARMA ITALY SPA, con mansione di impiegata addetta al magazzino con contratto di assunzione a tempo indeterminato full/time dal 01/05/2025; precedentemente la cliente dal 01/01/2024 sino al 30/04/2025 ha lavorato con stessa mansione presso l'Azienda GXO LOGISTICS ITALY SPA, che ha, poi ceduto il contratto all'attuale azienda ( IN CARICO PRATICA FORNIAMO A SUPPORTO DOCUMENTAZIONE MOD. UNILAV ). Reddito lordo mensile € 1804,51 su 14 mensilità ne consegue un reddito lordo annuo dell'importo di € 25.000,00, reddito annuo netto dell'importo di € 20.000,00 mensile netto dell'importo di € 1.667,00. ( FORNIAMO IN CARICO PRATICA  LE N° 2 CU PER L'ANNO 2026 , GXO LOGISTICS PHARMA ITALY SPA e GXO LOGISTICS ITALY SPA ). IMPEGNI IN CORSO La Richiedente conferma di non avere impegni in corso.",
+        "starts_at_beginning": true,
+        "cut_at_bottom": false
+      },
+      "uncertain": [
+        "header and active_tab: not on screen (page scrolled down), all set to null",
+        "note.text \"ha fornito lettera\": \"rn\" vs \"m\" (fornito / fomito); the stems match the \"rn\" of \"forniscono\" on the same page, read as \"fornito\"",
+        "note.text: four gaps are one space wider than a normal gap and are kept as double spaces: \"115.000,00  - Durata\", \"Sig.ra  HETTIARACHCHIGE\", \"2025,  ha\", \"PRATICA  LE\"",
+        "note.text: the two contact lines start with a literal question mark (\"?:+39 320 321 5985\", \"?: menishasilva1994@gmail.com\"); copied as shown",
+        "note.text \"2026 , GXO\": a space precedes the comma on screen; copied as shown"
+      ]
+    }
+  }
+}

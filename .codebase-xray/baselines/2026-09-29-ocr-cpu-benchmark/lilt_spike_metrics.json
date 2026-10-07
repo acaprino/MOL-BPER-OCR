@@ -1,0 +1,81 @@
+{
+ "train": {
+  "sequences": 1949,
+  "epochs": 6,
+  "loss": [
+   0.4996,
+   0.0076,
+   0.0026,
+   0.0012,
+   0.0006,
+   0.0005
+  ],
+  "train_seconds": 661.5
+ },
+ "cpu_inference": [
+  {
+   "profile": "pc4",
+   "int8": false,
+   "threads": 4,
+   "seconds": {
+    "screen 1": 0.154,
+    "screen 2": 0.168,
+    "screen 3": 0.164,
+    "screen 4": 0.497,
+    "screen 5": 0.607,
+    "screen 6": 0.643,
+    "screen 7": 0.643,
+    "screen 8": 0.584,
+    "screen 9": 0.572
+   }
+  },
+  {
+   "profile": "pc4",
+   "int8": true,
+   "threads": 4,
+   "seconds": {
+    "screen 1": 0.157,
+    "screen 2": 0.165,
+    "screen 3": 0.163,
+    "screen 4": 0.615,
+    "screen 5": 0.706,
+    "screen 6": 0.717,
+    "screen 7": 0.713,
+    "screen 8": 0.728,
+    "screen 9": 0.719
+   }
+  },
+  {
+   "profile": "vdi2",
+   "int8": false,
+   "threads": 2,
+   "seconds": {
+    "screen 1": 0.306,
+    "screen 2": 0.369,
+    "screen 3": 0.351,
+    "screen 4": 0.941,
+    "screen 5": 1.133,
+    "screen 6": 1.074,
+    "screen 7": 0.993,
+    "screen 8": 1.08,
+    "screen 9": 1.057
+   }
+  },
+  {
+   "profile": "vdi2",
+   "int8": true,
+   "threads": 2,
+   "seconds": {
+    "screen 1": 0.188,
+    "screen 2": 0.21,
+    "screen 3": 0.203,
+    "screen 4": 0.619,
+    "screen 5": 0.77,
+    "screen 6": 0.768,
+    "screen 7": 0.794,
+    "screen 8": 0.781,
+    "screen 9": 0.751
+   }
+  }
+ ]
+}

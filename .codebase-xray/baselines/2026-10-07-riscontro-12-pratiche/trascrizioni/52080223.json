@@ -1,0 +1,119 @@
+{
+  "pratica": "52080223",
+  "screenshots": {
+    "Elenco": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32403261", "Denom.": "LA MOR...", "N°": "52080223", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "07/09/2026", "Data Ass./Del.": "09/09/2026", "Assegnata": "828620", "Dest.": "", "Delib.": "", "D.R.": "MD-DREG", "Area": "MO-AREA", "Filiale": "37"},
+        "evidenze_icons": ["graffetta", "B", "2.0"]
+      },
+      "tooltip": null,
+      "uncertain": [
+        "row.Stato: the cell shows \"ABB\" followed by a speech-bubble pictogram; only the text is transcribed"
+      ]
+    },
+    "Elenco_tooltip1": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32403261", "Denom.": "LA MOR...", "N°": "52080223", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "07/09/2026", "Data Ass./Del.": "09/09/2026", "Assegnata": "828620", "Dest.": "", "Delib.": "", "D.R.": "MD-DREG", "Area": "MO-AREA", "Filiale": "37"},
+        "evidenze_icons": ["graffetta", "B", "2.0"]
+      },
+      "tooltip": {"text": "BPI Mutui Origination Bstore", "anchor_table": "elenco", "anchor_column": "Tipo", "anchor_row": 1, "anchor_cell_value": "BMB"},
+      "uncertain": [
+        "row.Stato: the cell shows \"ABB\" followed by a speech-bubble pictogram; only the text is transcribed",
+        "row[\"Importo €\"]: the popover starts just under the text band of this empty cell; the band itself is visible and empty, so \"\""
+      ]
+    },
+    "Elenco_tooltip2": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32403261", "Denom.": "LA MOR...", "N°": "52080223", "Tipo": "BMB", "Importo €": "", "Stato": "ABB", "Fase": "IST", "Creazione": "07/09/2026", "Data Ass./Del.": "09/09/2026", "Assegnata": "828620", "Dest.": "", "Delib.": "", "D.R.": "MD-DREG", "Area": "MO-AREA", "Filiale": "37"},
+        "evidenze_icons": ["graffetta", "B", "2.0"]
+      },
+      "tooltip": {"text": "Origination BSTORE", "anchor_table": "elenco", "anchor_column": "Evidenze", "anchor_row": 1, "anchor_cell_value": "2.0"},
+      "uncertain": [
+        "row.Stato: the cell shows \"ABB\" followed by a speech-bubble pictogram; only the text is transcribed",
+        "tooltip: the popover hangs under the \"2.0\" badge of the Evidenze cell and covers its bottom edge; the cell holds icons only, so anchor_cell_value is given as the badge text \"2.0\""
+      ]
+    },
+    "Soggetti": {
+      "kind": "soggetti",
+      "header": {"ndg": "32403261", "denominazione": "LA MORGIA ANDREA,LA MORGIA MATTEO", "tipo_pratica": "BPI Mutui", "n_pratica": "52080223", "filiale_relazione": "37 - MO GIARDINI"},
+      "soggetti": [
+        {"ndg": "32403261", "denominazione": "LA MORGIA ANDREA,LA MORGIA MATTEO", "ruolo": "Richiedente"},
+        {"ndg": "2210829", "denominazione": "ORI PAOLA", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"},
+        {"ndg": "7726737", "denominazione": "LA MORGIA MATTEO", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"},
+        {"ndg": "32201099", "denominazione": "LA MORGIA ANDREA", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"},
+        {"ndg": "36128161", "denominazione": "ORI ROBERTO", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"}
+      ],
+      "tooltip": null,
+      "uncertain": [
+        "soggetti[4].ndg: \"36128161\", second and seventh digit are 6 vs 8 (an enlarged view reads like \"38128181\"); at sub-pixel level both glyphs are identical to the 6 of \"32403261\" in row 1 and differ from the 8 of \"2210829\" in row 2, and the same NDG in the GARANZIE table of GestioneFidi shows the same pattern, so 6 in both places and 8 only in fifth position",
+        "soggetti[1].ndg \"2210829\" (8, 9), soggetti[2].ndg \"7726737\" (6) and soggetti[3].ndg \"32201099\" (9, 9): small font, each 6/8/9 checked glyph by glyph at sub-pixel level"
+      ]
+    },
+    "Note": {
+      "kind": "note",
+      "header": {"ndg": "32403261", "denominazione": "LA MORGIA ANDREA,LA MORGIA MATTEO", "tipo_pratica": "BPI Mutui", "n_pratica": "52080223", "filiale_relazione": "37 - MO GIARDINI"},
+      "active_tab": "Note da Richiesta",
+      "note": {
+        "box_title": "Nota della richiesta",
+        "text": "- Numero Finanziamento FICS: 017/5669132 - Numero proposta DESK: 3072546 - Importo perizia: 417.843,00 € - Valore immobile presunto: 700.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 329.000,00 € IMPORTO PER PRIMA CASA : 329.000,00 € IMPORTO RICHIESTO : 329.000,00 € - Codice immobile: 4849846; ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: mutuo ristrutturazione preammortamento 12 mesi incluso nei 300 IN RICHIESTA MUTUO IPOTECARIO PER RISTRUTTURAZIONE IMMOBILE DA ADIBIRE A PRIMA CASA ED ABITAZIONE PRINCIPALE. L’IMMOBILE è PERVENUTO AI FRATELLI ANDREA E MATTEO PER SUCCESSIONE. TRA GLI EREDI VI SONO ANCHE GLI ZII ORI PAOLA E ORI ROBERTO CHE COMPARIRANNO COME TERZI DATORI DI IPOTECA. ANDREA, CELIBE, LAVORA CON CONTRATTO A TEMPO INDETERMINATO CON REDDITI DI CA 30MILA EURO, NESSUN FINANZIAMENTO IN ESSERE MATTEO, CELIBE, è LAVORATORE AUTONOMO COME LIBERO PROFESSIONISTA, REDDITI ANNUI DI 31MILA EURO, NESSUN FINANZIAMENTO IN ESSERE L’IMMOBILE, GIA PERIZIATO A LAVORI ULTIMATI AVRA’ UN VALORE DI 1MILIONE DI EURO. I LAVORI DA PERIZIA ALLEGATA SONO STATI QUANTIFICATI IN 625MILA EURO. PARTE DI QUESTI LAVORI è GIA STATA ESEGUITA E SI RICHIEDE UNA PRIMA EROGAZIONE DI EURO 72600 (VD TICKET ALLEGATO) A FINE LAVORI L’IMMOBILE VERRA’ SUDDIVISO IN DUE UNITA’ IMMOBILIARI, DIVISE TRA I DUE RICHIEDENTI",
+        "starts_at_beginning": true,
+        "cut_at_bottom": false
+      },
+      "uncertain": [
+        "note.text: the apostrophes are drawn comma-shaped, i.e. typographic ’ (U+2019), in L’IMMOBILE (three times), AVRA’, VERRA’ and UNITA’; the alternative is the ASCII apostrophe",
+        "note.text: the separator line between \"4849846;\" and \"mutuo ristrutturazione\" is a run of colons; 99 were counted from the 3 px pitch, the count could be off by one or two",
+        "note.text: the three indented IMPORTO lines are joined with single spaces, their leading indentation is dropped"
+      ]
+    },
+    "OffTopic1": {"kind": "offtopic", "description": "Dettaglio pratica, tab 'Note a Istruttoria': precedente nota e nota all'istruttoria (note al quadro fidi e garanzie), nessun campo d'interesse"},
+    "OffTopic2": {"kind": "offtopic", "description": "Dettaglio pratica, 'Gestione Documentale': filtro documenti ed elenco dei documenti della controparte, nessun campo d'interesse"},
+    "GestioneFidi": {
+      "kind": "fidi",
+      "header": {"ndg": "32403261", "denominazione": "LA MORGIA ANDREA,LA MORGIA MATTEO", "tipo_pratica": "BPI Mutui", "n_pratica": "52080223", "filiale_relazione": "37 - MO GIARDINI"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0037 0017 05669132", "descrizione": "M.FOND.PRIVATI", "scadenza": "15/09/2051", "importo": "329.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": null,
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip1": {
+      "kind": "fidi",
+      "header": {"ndg": "32403261", "denominazione": "LA MORGIA ANDREA,LA MORGIA MATTEO", "tipo_pratica": "BPI Mutui", "n_pratica": "52080223", "filiale_relazione": "37 - MO GIARDINI"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0037 0017 05669132", "descrizione": "M.FOND.PRIVATI", "scadenza": "15/09/2051", "importo": "329.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": {"text": "340170 - MUTUO FONDIARIO PRIVATI", "anchor_table": "fidi", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "M.FOND.PRIVATI"},
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip2": {
+      "kind": "fidi",
+      "header": {"ndg": "32403261", "denominazione": "LA MORGIA ANDREA,LA MORGIA MATTEO", "tipo_pratica": "BPI Mutui", "n_pratica": "52080223", "filiale_relazione": "37 - MO GIARDINI"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [
+        {"n_fido": "F1", "rapporto": "034 0037 0017 05669132", "descrizione": "M.FOND.PRIVATI", "scadenza": "15/09/2051", "importo": "329.000", "tipo_op": "In Lavoraz."}
+      ],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova / In Lavoraz."}
+      ],
+      "tooltip": {"text": "55-IPOTECA DI PRIMO GRADO", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "IPOTECA I GR."},
+      "uncertain": []
+    }
+  }
+}

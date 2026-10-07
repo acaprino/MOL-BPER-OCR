@@ -55,3 +55,54 @@ Osservazioni dalla baseline, non ancora promosse a finding:
   `gemini-3.8-flash`, che pure supporta i livelli di ragionamento. I token di completamento
   (5-7 mila per schermata) pesano circa il 57% del costo; se includano il ragionamento non è
   stato verificato.
+
+## Seconda parte: adapter per famiglia di modelli (non committata sopra `a4f4cda`)
+
+Stato alla data dell'analisi. Questa parte è stata poi committata il 2026-10-07 in `acb0cc0`, senza altre modifiche.
+
+| File | Modifica |
+|---|---|
+| `extraction/model_adapters.py` | **Nuovo.** `ModelAdapter` e le famiglie `OpenAIAdapter`, `GeminiAdapter` (2.x), `Gemini15Adapter`, `Gemini3Adapter` (`extraction/model_adapters.py:83`, `:118`, `:137`, `:184`, `:196`); `_FAMILIES` e `adapter_for` (`:207`, `:218`) sono l'unica regola nome → famiglia; `validate_thinking_level` (`:228`). Contiene ora `_extract_json_str` (`:61`) e le due istruzioni del catalogo prompt usate per l'output. |
+| `extraction/llm_factory.py` | `create_chat_model` (`extraction/llm_factory.py:21`) accetta `thinking_level` (default `LLM_THINKING_LEVEL`), rifiuta nomi fuori famiglia e provider incoerenti, delega la costruzione all'adapter. |
+| `extraction/vlm_client.py` | `call_vlm` (`extraction/vlm_client.py:22`) delega all'adapter e costruisce `_meta` una volta; eliminati `_GEMINI_JSON_SCHEMA_MODELS` e `_call_vlm_gemini_freeform`. `estimate_cost_usd` ora a `:14`, `call_vlm_with_retry` a `:63`. |
+| `tests/test_llm_factory.py`, `tests/test_vlm_call.py` | 6 + 6 test (vedi sotto). |
+| `docs/adr/0016-adapter-per-famiglia-di-modelli.md` e indice | Decisione, alternative, misura. |
+| `CLAUDE.md`, `AGENTS.md`, `README.md`, `docs/02`, `docs/04`, `docs/09`, `docs/10`, `docs/how-it-works.md` | Vincolo 5, riga `LLM_THINKING_LEVEL`, elenco moduli, conteggio test 190, riferimenti di riga. |
+
+Riferimenti superati: XQ-R11 cita `_extract_json_str` a `extraction/vlm_client.py:42`, ora
+`extraction/model_adapters.py:61`; XQ-R07 cita `estimate_cost_usd` a `extraction/vlm_client.py:26` e
+il parsing a `:198`, ora `:14` e `extraction/model_adapters.py:161` (`GeminiAdapter.invoke`). Il
+contenuto dei due finding non cambia.
+
+### Verifiche di questa parte
+
+| Verifica | Esito |
+|---|---|
+| `tests/test_vlm_call.py` sul codice **precedente** | 6 passed (caratterizzazione). Con strategia Gemini 1.5, ruolo del prompt OpenAI e MIME JSON alterati: 3 falliti, poi ripristinato. |
+| `tests/test_llm_factory.py` sul codice precedente, con il solo parametro aggiunto | 4 falliti per le ragioni attese (livello `None` invece di `low`, nessun avviso, livello non valido e modello fuori famiglia accettati), 2 passati (default e provider incoerente, invariati). |
+| `python -m pytest tests` dopo il refactoring | **190 passed, 3 warnings in 50.39s** (solo xFormers). |
+| `python main.py`, `gemini-3.8-flash`, `LLM_THINKING_LEVEL=low`, 3 run | 72, 73, 73 su 77, identico a `high`; costo $0,211-0,222 contro $0,332-0,364; token di output -65%; latenza per schermata dimezzata. `filiale_relazione` troncata 9/18 contro 5/18. [Dettagli](baselines/2026-09-29-gemini-3.8-flash-thinking-low/README.md). |
+
+### Rischio collegato, non introdotto ma ampliato
+
+`edge-agent/edge_agent.py::main` crea `MainWindow(config)` fuori dal `try` che protegge l'import:
+un `ValueError` da `create_chat_model` (chiave mancante o provider incoerente già prima; ora anche
+livello di ragionamento non valido o modello fuori famiglia) chiude l'eseguibile windowed senza
+finestra, con la sola traccia in `edge-agent.log`. Con il template spedito non si verifica.
+
+## Terza parte: benchmark OCR su CPU e prova di fine-tuning (nessuna modifica al codice)
+
+Solo misure: nessun file sorgente, test o configurazione modificato. Rapporto completo in
+[baselines/2026-09-29-ocr-cpu-benchmark](baselines/2026-09-29-ocr-cpu-benchmark/README.md).
+
+- OCR classici e VLM confrontati su profili CPU `pc4` (4 core) e `vdi2` (2 core) su Modal: RapidOCR
+  PP-OCRv6 small legge 64/72 valori in 1,9 s (2,5 s su 2 core); i VLM (LightOnOCR, PaddleOCR-VL)
+  richiedono minuti per schermata; Falcon-OCR non esegue su CPU.
+- Prima prova RapidOCR + LiLT (MIT) addestrato su 38 scatti live con etichette Gemini: 61% dei
+  campi sulla pratica LUNARDI mai vista, +0,45 s su 4 core. Limite: dati di addestramento.
+- Osservazione che tocca il vincolo 13: gli scatti live sono finestre "Pool01-VDI" a ~1890 px, fuori
+  dalla famiglia calibrata; la baseline Gemini del 2026-09-29 ha girato tutta sul percorso file
+  calibrato (`_content_crop: calibrated` su 9/9), quindi non rappresenta il percorso live.
+- Dal conteggio delle sorgenti nelle 6 baseline Gemini: il retry HEADER, quando decide il valore,
+  sbaglia 14 volte su 16; il passaggio anchor non decide mai un valore valutato.
+- Risorsa esterna creata: volume Modal `bper-lilt-spike` con i pesi addestrati (dati BPER), da cancellare.

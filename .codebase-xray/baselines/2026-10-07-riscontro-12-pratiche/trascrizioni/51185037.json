@@ -1,0 +1,114 @@
+{
+  "pratica": "51185037",
+  "screenshots": {
+    "Elenco": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32015734", "Denom.": "LUCIAC ...", "N°": "51185037", "Tipo": "BMM", "Importo €": "150.000", "Stato": "APP", "Fase": "", "Creazione": "10/06/2025", "Data Ass./Del.": "07/07/2025", "Assegnata": "", "Dest.": "", "Delib.": "11156", "D.R.": "MD-DREG", "Area": "RE-AREA", "Filiale": "145"},
+        "evidenze_icons": ["graffetta", "fumetto", "rombo", "P", "2.0"]
+      },
+      "tooltip": null,
+      "uncertain": [
+        "row.Denom.: the cell shows LUCIAC, then a gap of about one space (4 px against 1-3 px between letters), then the ellipsis; transcribed 'LUCIAC ...' with the space kept. Alternative: 'LUCIAC...'",
+        "evidenze_icons: the 2nd icon is a pink speech balloon with two horizontal lines and no letter (written 'fumetto'), the 3rd is an empty grey diamond (written 'rombo'); the Italian words are my naming"
+      ]
+    },
+    "Elenco_tooltip1": {
+      "kind": "elenco",
+      "elenco": {
+        "columns_visible": ["ABI", "NDG", "Denom.", "N°", "Tipo", "Importo €", "Stato", "Fase", "Creazione", "Data Ass./Del.", "Assegnata", "Dest.", "Delib.", "D.R.", "Area", "Filiale", "Evidenze"],
+        "row": {"ABI": "5387", "NDG": "32015734", "Denom.": "LUCIAC ...", "N°": "51185037", "Tipo": "BMM", "Importo €": "150.000", "Stato": "APP", "Fase": "", "Creazione": "10/06/2025", "Data Ass./Del.": "07/07/2025", "Assegnata": "", "Dest.": "", "Delib.": "11156", "D.R.": "MD-DREG", "Area": "RE-AREA", "Filiale": "145"},
+        "evidenze_icons": ["graffetta", "fumetto", "rombo", "P", "2.0"]
+      },
+      "tooltip": {"text": "BPI Mutui Mediatori Creditizi", "anchor_table": "elenco", "anchor_column": "Tipo", "anchor_row": 1, "anchor_cell_value": "BMM"},
+      "uncertain": [
+        "row.Denom.: same reading as on Elenco, 'LUCIAC ...' with a space before the ellipsis. Alternative: 'LUCIAC...'",
+        "evidenze_icons: 2nd icon is a pink speech balloon with two lines (written 'fumetto'), 3rd is an empty grey diamond (written 'rombo'); the Italian words are my naming"
+      ]
+    },
+    "Soggetti": {
+      "kind": "soggetti",
+      "header": {"ndg": "32015734", "denominazione": "LUCIAC NICOLAS,LUCIAC MIHAIL", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "51185037", "filiale_relazione": "145 - PR S LAZZARO"},
+      "soggetti": [
+        {"ndg": "32015734", "denominazione": "LUCIAC NICOLAS,LUCIAC MIHAIL", "ruolo": "Richiedente"},
+        {"ndg": "2924479", "denominazione": "IVANOV VIORICA", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"},
+        {"ndg": "31950200", "denominazione": "LUCIAC NICOLAS", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"},
+        {"ndg": "31950226", "denominazione": "LUCIAC MIHAIL", "ruolo": "Nuovo Garante/nuovo Datore Di Pegno"}
+      ],
+      "tooltip": null,
+      "uncertain": [
+        "soggetti[3].ndg: the last digit is hard to tell on screen (6 or 8). Read as 6, giving 31950226: at pixel level the glyph has the left stem joined to a middle bar and an open upper right, like the 6 of the status line and unlike the 8 of the FIDI rapporto. Alternative: 31950228"
+      ]
+    },
+    "GestioneFidi": {
+      "kind": "fidi",
+      "header": {"ndg": "32015734", "denominazione": "LUCIAC NICOLAS,LUCIAC MIHAIL", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "51185037", "filiale_relazione": "145 - PR S LAZZARO"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [{"n_fido": "F1", "rapporto": "034 0145 0017 05508922", "descrizione": "M.FOND.PRIVATI", "scadenza": "241 mesi", "importo": "150.000", "tipo_op": "Nuova Finanza"}],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "FID LIM INATTO", "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": null,
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip1": {
+      "kind": "fidi",
+      "header": {"ndg": "32015734", "denominazione": "LUCIAC NICOLAS,LUCIAC MIHAIL", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "51185037", "filiale_relazione": "145 - PR S LAZZARO"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [{"n_fido": "F1", "rapporto": "034 0145 0017 05508922", "descrizione": "M.FOND.PRIVATI", "scadenza": "241 mesi", "importo": "150.000", "tipo_op": "Nuova Finanza"}],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "FID LIM INATTO", "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": {"text": "340170 - MUTUO FONDIARIO PRIVATI", "anchor_table": "fidi", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "M.FOND.PRIVATI"},
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip2": {
+      "kind": "fidi",
+      "header": {"ndg": "32015734", "denominazione": "LUCIAC NICOLAS,LUCIAC MIHAIL", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "51185037", "filiale_relazione": "145 - PR S LAZZARO"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [{"n_fido": "F1", "rapporto": "034 0145 0017 05508922", "descrizione": "M.FOND.PRIVATI", "scadenza": "241 mesi", "importo": "150.000", "tipo_op": "Nuova Finanza"}],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "FID LIM INATTO", "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": {"text": "55-IPOTECA DI PRIMO GRADO", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 1, "anchor_cell_value": "IPOTECA I GR."},
+      "uncertain": []
+    },
+    "GestioneFidi_Tooltip3": {
+      "kind": "fidi",
+      "header": {"ndg": "32015734", "denominazione": "LUCIAC NICOLAS,LUCIAC MIHAIL", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "51185037", "filiale_relazione": "145 - PR S LAZZARO"},
+      "active_tab": "Gestione Fidi e Garanzie",
+      "fidi_table_visible": true,
+      "fidi": [{"n_fido": "F1", "rapporto": "034 0145 0017 05508922", "descrizione": "M.FOND.PRIVATI", "scadenza": "241 mesi", "importo": "150.000", "tipo_op": "Nuova Finanza"}],
+      "garanzie": [
+        {"n_gar": "G1", "descrizione": "IPOTECA I GR.", "fido": "F1", "tipo_op": "Nuova"},
+        {"n_gar": "G2", "descrizione": "FID LIM INATTO", "fido": "F1", "tipo_op": "Nuova"}
+      ],
+      "tooltip": {"text": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO", "anchor_table": "garanzie", "anchor_column": "Descrizione", "anchor_row": 2, "anchor_cell_value": "FID LIM INATTO"},
+      "uncertain": []
+    },
+    "Note": {
+      "kind": "note",
+      "header": {"ndg": "32015734", "denominazione": "LUCIAC NICOLAS,LUCIAC MIHAIL", "tipo_pratica": "BPI Mutui / Med. Creditizi", "n_pratica": "51185037", "filiale_relazione": "145 - PR S LAZZARO"},
+      "active_tab": "Note da Richiesta",
+      "note": {
+        "box_title": "Nota della richiesta",
+        "text": "MUTUO IPOTECARIO PER ACQUISTO IMMOBILE + RISTRUTTURAZIONE DI TOTALI 150.000 EURO (80.000 EURO ACQUISTO + 70.000 EURO PER RISTRUTTURAZIONE) Presentato da mediatore WE UNIT, Francesca Delfanti DURATA 240 MESI ( 228 MESI DI AMMORTAMENTO + 12 MESI DI PRE AMMORTAMENTO) PREZZO DI ACQUISTO 100.000 EURO (IMMOBILE GIA’ ACQUISTATO IN DATA 05/06, COME DA CERTIFICATO DI AVVENUTA STIPULA) COSTO RISTRUTTURAZIONE 180.000 EURO PERIZIA GIA’ EFFETTUATA, ALLEGATA - Valore immobile iniziale: 252.239 euro - Valore immobile a fine lavori: 353.000 euro L’IMMOBILE VERRA’ INTESTATO COME SEGUE: 50% LUCIAC MIHAIL 49% LUCIAC NICOLAS 1% IVANOV VIORICA (RISPETTIVAMENTE MOGLIE E MADRE DEI RICHIEDENTI) INSERIAMO LA SIGNORA VIORICA COME DATORE DI IPOTECA Prima erogazione: 80.000 (80% prezzo di acquisto) SAL ATTUALE 0% LUCIAC MIHAIL è dipendente a tempo indeterminato dal 2012 come operaio presso MELANDRI EMANUELE, impresa individuale del settore logistica. REDDITO NETTO ANNUO DA CAREN 23.953, MENSILIZZATI 1996 EURO PER 12 MESI NESSUNA USCITA MENSILE LUCIAC NICOLAS è dipendente di DI BACCO TRASPORTI come impiegato dal 11/2024. Inizialmente dipendente a tempo determinato part time, dal 02/2025 è inquadrato come apprendista full time. Stipendio netto mensile 1500 euro Nessuna uscita mensile La signora Ivanov Viorica, rispettivamente moglie e madre dei richiedenti, economicamente autonoma andrà ad abitare con loro. Avanziamo favorevolmente anche considerando i mezzi propri del nucleo familiare impiegati per l’operazione",
+        "starts_at_beginning": true,
+        "cut_at_bottom": false
+      },
+      "uncertain": [
+        "note.text apostrophes: the five apostrophes (GIA’ twice, L’IMMOBILE, VERRA’, l’operazione) render as the typographic mark U+2019, comma-shaped at subpixel level (top blob, tail drifting left), so they are written as ’. Alternative: the straight apostrophe ' (U+0027)",
+        "note.text: 'MESI ( 228 MESI' is transcribed with a space after the opening parenthesis, as the gap on screen is one space wide. Alternative: '(228'",
+        "note.cut_at_bottom: the bottom border of the note box is not on screen. The last visible line ('... impiegati per l’operazione') is intact and followed by blank space down to the screenshot edge, so no glyph is cut and the flag is false, but text further down the box cannot be excluded"
+      ]
+    },
+    "OffTopic1": {"kind": "offtopic", "description": "Dettaglio pratica, tab 'Dettaglio BPI': rapporto rata reddito, indicatori SI/NO, checkbox di deroga, nessun campo d'interesse"}
+  }
+}

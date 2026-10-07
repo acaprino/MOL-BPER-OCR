@@ -177,6 +177,40 @@
       },
       "scope": "env_key.py and packaged key in build_exe.bat; default model gemini-3.8-flash with pricing; first real-provider baseline; docs; tests 178 passed",
       "baseline": "baselines/2026-09-29-gemini-3.8-flash"
+    },
+    {
+      "date": "2026-09-29",
+      "file": "09-incremental-2026-09-29.md",
+      "section": "Seconda parte: adapter per famiglia di modelli",
+      "base_run": "poc-data-extraction-20260912-175144",
+      "git": {
+        "branch": "develop",
+        "commit": "a4f4cda",
+        "dirty": true
+      },
+      "scope": "extraction/model_adapters.py, llm_factory/vlm_client delegate to adapters, ADR 0016, thinking low baseline; tests 190 passed",
+      "baseline": "baselines/2026-09-29-gemini-3.8-flash-thinking-low"
+    },
+    {
+      "date": "2026-09-29",
+      "file": "09-incremental-2026-09-29.md",
+      "section": "Terza parte: benchmark OCR su CPU e prova di fine-tuning",
+      "code_changes": false,
+      "baseline": "baselines/2026-09-29-ocr-cpu-benchmark"
+    },
+    {
+      "date": "2026-10-07",
+      "file": "10-incremental-2026-10-07.md",
+      "base_run": "poc-data-extraction-20260912-175144",
+      "git": {
+        "branch": "develop",
+        "commit": "a4f4cda",
+        "dirty": true
+      },
+      "code_changes": false,
+      "scope": "first measurement on 12 practices at full-screen framing (113 screens, 1008 ground-truth rows): gemini-3.8-flash low 947 correct; local RapidOCR read 874/920 values; RapidOCR + LiLT model_v2 677 correct; dependency upgrade evaluated in a throwaway venv; new findings XQ-R13, XQ-R14, XQ-D06; tests 190 passed; manual-review workbook of the 1008 ground-truth values redone after wrong frames in its first version (924 frames on the value, 84 zones; every frame looked at, 896 of 906 red frames hold exactly the value per OCR)",
+      "baseline": "baselines/2026-10-07-riscontro-12-pratiche",
+      "provider_spend_usd": 7.31
     }
   ]
 }
