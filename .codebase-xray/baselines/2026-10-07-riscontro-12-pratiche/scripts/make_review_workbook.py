@@ -9,8 +9,10 @@ a line are placed on the runs of its ink. A value is then looked for only inside
 belongs to (the banner, a table row, the proposed-loans half of the loans table): word by word with
 align_value from ft_data.py and, where the OCR split a cell into other words, letter by letter.
 A long note is framed as the block of lines whose text is a piece of it.
-Where the value is not found the frame is orange and marks the zone where it should be. Small-font
-numbers also get a pixel-by-pixel drawing, because a smoothed enlargement makes a 6 look like an 8.
+Where the value is not found the frame is orange and marks the zone where it should be. Where the
+value is expected empty the frame is blue, says so above the picture, and marks only what must be
+blank: one colour for both cases made an empty frame look like a mistake. Small-font numbers also get
+a pixel-by-pixel drawing, because a smoothed enlargement makes a 6 look like an 8.
 """
 import csv
 import json
@@ -29,7 +31,7 @@ from openpyxl.drawing.spreadsheet_drawing import AnchorMarker, TwoCellAnchor
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils.units import pixels_to_EMU
 from openpyxl.worksheet.datavalidation import DataValidation
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 input_dir, baseline_dir, out_path, work_dir = (os.path.abspath(p) for p in sys.argv[1:5])
 sys.path.insert(0, os.path.join(os.path.dirname(baseline_dir), "2026-09-29-ocr-cpu-benchmark", "scripts"))
@@ -628,7 +630,7 @@ def locate_screen(stem: str, fields: List[Tuple[str, str]], lines: List[dict],
     def in_table(i: int) -> bool:
         return words[i]["row"] not in ndg_rows and not words[i]["text"].rstrip().endswith(":")
 
-    def elenco_zone(field: str) -> Optional[Box]:
+    def elenco_zone(field: str, empty: bool) -> Optional[Box]:
         data = elenco_row()
         label = find_label(words, ELENCO_LABELS[field], first_table)
         if data is None:
@@ -636,23 +638,25 @@ def locate_screen(stem: str, fields: List[Tuple[str, str]], lines: List[dict],
         if label is None:  # column scrolled out of view or clipped: show the stretch of the row where it would be
             return (size[0] - 900, data["y0"] - 16, size[0], data["y1"] + 16) if field == "Evidenze" else (0, data["y0"] - 16, 1000, data["y1"] + 16)
         if field == "Evidenze":  # a run of icons to the right of the column title
-            return (label["x0"] - 45, data["y0"] - 12, label["x1"] + 75, data["y1"] + 12)
+            # when no letter is expected keep the branch number of the previous column out of the frame
+            return (label["x0"] - (8 if empty else 45), data["y0"] - 12, label["x1"] + 75, data["y1"] + 12)
         return (label["x0"] - 25, data["y0"] - 12, label["x1"] + 45, data["y1"] + 12)
 
-    def fidi_zone(field: str) -> Optional[Box]:
+    def fidi_zone(field: str, empty: bool) -> Optional[Box]:
         label = find_label(words, FIDI_FIELDS[field], in_fidi)
         top, bottom = (first_fido[0][1] - 12, first_fido[0][3] + 12) if first_fido else (None, None)
         if label is not None:  # cells are centred under their title and about as wide: stay clear of the next column
-            return (label["x0"] - 16, label["y1"] - 6 if top is None else top, label["x1"] + 16, label["y1"] + 44 if bottom is None else bottom)
+            side = 6 if empty else 16  # an empty cell needs no room, and must not take in the digits next to it
+            return (label["x0"] - side, label["y1"] - 6 if top is None else top, label["x1"] + side, label["y1"] + 44 if bottom is None else bottom)
         amount = find_label(words, "importo", in_fidi)
         if field == "Tipo Op." and amount is not None:  # this header is often clipped: it is the column after the amount
             right = amount["x1"] + 88 if limit is None else min(amount["x1"] + 88, limit)
-            return (amount["x1"] + 2, amount["y1"] - 6 if top is None else top, right, amount["y1"] + 44 if bottom is None else bottom)
+            return (amount["x1"] + (8 if empty else 2), amount["y1"] - 6 if top is None else top, right, amount["y1"] + 44 if bottom is None else bottom)
         anchor = next((w for w in words if w["text"].strip() == "FIDI"), None)
         inside = [i for i, w in enumerate(words) if in_fidi(i) and anchor is not None and w["x0"] >= anchor["x0"] - 20]
         return union(words, inside) if inside else None
 
-    def soggetti_zone(column: str, slot: int) -> Optional[Box]:
+    def soggetti_zone(column: str, slot: int, empty: bool) -> Optional[Box]:
         labels = {name: find_label(words, key, in_table) for name, key in SOGGETTI_COLUMNS.items()}
         label = labels[column]
         if label is None:
@@ -661,6 +665,15 @@ def locate_screen(stem: str, fields: List[Tuple[str, str]], lines: List[dict],
             ndg = slots[slot]
             right = labels["RUOLO"]["x0"] - 8 if column == "DENOMINAZIONE" and labels["RUOLO"] is not None else label["x0"] + 260
             return (label["x0"] - 10, ndg[1] - 14, right, ndg[3] + 14)
+        if empty and slots:  # the table ends before this row: frame the blank stretch right under its last row
+            last = max(slots)
+            pitch = 34.0
+            top = slots[last][3] + 10  # the same place for every missing row, so the last row stays in the picture
+            if column == "NDG":  # the title is aligned right over numbers wider than it
+                return (label["x1"] - 62, top, label["x1"] + 6, top + pitch - 8)
+            role = labels["RUOLO"]
+            right = role["x0"] - 8 if column == "DENOMINAZIONE" and role is not None else label["x0"] + 190
+            return (label["x0"] - 6, top, right, top + pitch - 8)
         left = labels["NDG"]["x0"] - 50 if labels["NDG"] is not None else label["x0"] - 60
         right = labels["RUOLO"]["x0"] + 260 if labels["RUOLO"] is not None else label["x0"] + 700
         bottom = max([b[3] for b in slots.values()] + [label["y1"]]) + 70
@@ -670,15 +683,19 @@ def locate_screen(stem: str, fields: List[Tuple[str, str]], lines: List[dict],
         label = find_label(words, SCHEDA_LABELS[field])
         return None if label is None else (label["x0"] - 140, label["y1"] + 2, label["x0"] + 480, label["y1"] + 70)
 
-    def zone(field: str) -> Optional[Box]:
+    def zone(field: str, empty: bool) -> Optional[Box]:
+        """Where a value should be; for a value expected empty, only the stretch that must be blank."""
         slot = SLOT.fullmatch(field)
         if kind.startswith("elenco") and field in ELENCO_LABELS:
-            return elenco_zone(field)
+            return elenco_zone(field, empty)
         if field in FIDI_FIELDS:
-            return fidi_zone(field)
+            return fidi_zone(field, empty)
         if slot:
-            return soggetti_zone(slot.group(1), int(slot.group(2)))
+            return soggetti_zone(slot.group(1), int(slot.group(2)), empty)
         if field in SCHEDA_LABELS:
+            label = find_label(words, SCHEDA_LABELS[field])
+            if empty and label is not None:  # the input line right under the label
+                return (label["x0"] - 6, label["y1"] + 3, label["x0"] + 300, label["y1"] + 30)
             return scheda_zone(field)
         if detail and field in ("NDG", "DENOMINAZIONE"):
             label = find_label(words, "ndg", ends_with_colon)
@@ -769,7 +786,7 @@ def locate_screen(stem: str, fields: List[Tuple[str, str]], lines: List[dict],
             if field == "n° FIDO":
                 first_fido.append(found[field][0])
         else:
-            area = zone(field)
+            area = zone(field, not value.strip())
             found[field] = (area, "zona") if area is not None else (None, "nessuna")
     return found
 
@@ -778,8 +795,29 @@ def clamp(box: Box, size: Tuple[int, int]) -> Tuple[int, int, int, int]:
     return (max(0, int(box[0])), max(0, int(box[1])), min(size[0], int(box[2] + 0.999)), min(size[1], int(box[3] + 0.999)))
 
 
-def context_crop(img: Image.Image, box: Optional[Box], how: str, wide_page: bool, path: str) -> Tuple[int, int]:
-    """Crop around the value with a frame on it; returns the display size in pixels."""
+FRAME_COLOURS = {"rosso": (220, 30, 30), "arancione": (240, 140, 0), "azzurro": (30, 110, 200)}
+
+
+def empty_caption(field: str) -> str:
+    """What the reviewer has to confirm when the value is expected empty."""
+    if field == "Evidenze":
+        return "Atteso vuoto: nel riquadro azzurro non devono esserci sigle (B, P, BM...)"
+    if SLOT.fullmatch(field):
+        return "Atteso vuoto: la tabella finisce prima di questa riga"
+    return "Atteso vuoto: nel riquadro azzurro non deve esserci nulla"
+
+
+def frame_colour(how: str, empty: bool) -> str:
+    """Red: the value is here. Orange: it should be here, the OCR did not find it. Blue: nothing must be here."""
+    return "rosso" if how == "esatta" else "azzurro" if empty else "arancione"
+
+
+def context_crop(img: Image.Image, box: Optional[Box], how: str, wide_page: bool, path: str, empty: bool = False,
+                 caption: str = "") -> Tuple[int, int]:
+    """Crop around the value with a frame on it; returns the display size in pixels.
+
+    For a value expected empty, `caption` is written in a strip above the picture.
+    """
     if box is None:
         crop_box = (0, 0, img.width, img.height) if wide_page or img.width <= 1200 else (150, 255, min(1100, img.width), img.height)
         crop = img.crop(crop_box)
@@ -787,7 +825,11 @@ def context_crop(img: Image.Image, box: Optional[Box], how: str, wide_page: bool
     else:
         pad_x = max(36.0, (380 - (box[2] - box[0])) / 2)
         pad_y = max(16.0, (64 - (box[3] - box[1])) / 2)
-        crop_box = clamp((box[0] - pad_x, box[1] - pad_y, box[2] + pad_x, box[3] + pad_y), img.size)
+        # a zone holds no text to recognise it by, an empty cell least of all: show the column title or
+        # the label above it
+        above = pad_y if how == "esatta" else max(pad_y, 64.0)
+        below = pad_y
+        crop_box = clamp((box[0] - pad_x, box[1] - above, box[2] + pad_x, box[3] + below), img.size)
         crop = img.crop(crop_box)
         scale = min(2.0, 760 / crop.width, 520 / crop.height)
     shown = (max(1, int(crop.width * scale)), max(1, int(crop.height * scale)))
@@ -797,9 +839,22 @@ def context_crop(img: Image.Image, box: Optional[Box], how: str, wide_page: bool
     crop = crop.resize((max(1, int(crop.width * stored)), max(1, int(crop.height * stored))), Image.LANCZOS)
     if box is not None:
         draw = ImageDraw.Draw(crop)
+        colour = FRAME_COLOURS[frame_colour(how, empty)]
         x0, y0 = (box[0] - 3 - crop_box[0]) * stored, (box[1] - 3 - crop_box[1]) * stored
         x1, y1 = (box[2] + 3 - crop_box[0]) * stored, (box[3] + 3 - crop_box[1]) * stored
-        draw.rectangle((x0, y0, x1, y1), outline=(220, 30, 30) if how == "esatta" else (240, 140, 0), width=round(3 * stored / scale))
+        draw.rectangle((x0, y0, x1, y1), outline=colour, width=round(3 * stored / scale))
+    if box is not None and empty:  # said on the picture too: a frame around nothing looks like a mistake
+        size = max(10, round(13 * stored / scale))
+        try:
+            font = ImageFont.truetype("arialbd.ttf", size)
+        except OSError:
+            font = ImageFont.load_default()
+        strip = round(20 * stored / scale)
+        framed = Image.new("RGB", (crop.width, crop.height + strip), (255, 255, 255))
+        framed.paste(crop, (0, strip))
+        ImageDraw.Draw(framed).text((4, round(3 * stored / scale)), caption, fill=FRAME_COLOURS["azzurro"], font=font)
+        crop = framed
+        shown = (shown[0], shown[1] + round(strip * scale / stored))
     # 64 colours are enough for a screenshot and keep the workbook a quarter of the size
     crop.quantize(colors=64, dither=Image.Dither.NONE).save(path, optimize=True)
     return shown
@@ -863,7 +918,7 @@ def main() -> None:
     wb = Workbook()
     ws = wb.active
     ws.title = "Revisione"
-    headers = ["N.", "Pratica", "Schermata", "Campo", "Immagine (riquadro rosso = valore da leggere)",
+    headers = ["N.", "Pratica", "Schermata", "Campo", "Immagine (rosso = valore da leggere, arancione = posizione stimata, azzurro = atteso vuoto)",
                "Pixel per pixel (solo numeri piccoli)", "Valore letto", "Esito", "Valore corretto", "Note",
                "Priorità", "Perché guardarlo con attenzione", "Gemini ha letto", "Riquadro", "ID schermata"]
     widths = [6, 11, 30, 30, 112, 68, 44, 16, 44, 30, 10, 52, 30, 10, 34]
@@ -879,7 +934,7 @@ def main() -> None:
     ws.row_dimensions[1].height = 32
     ws.freeze_panes = "E2"
 
-    counts = {"esatta": 0, "zona": 0, "nessuna": 0, "alta": 0}
+    counts = {"esatta": 0, "zona": 0, "nessuna": 0, "alta": 0, "vuoti": 0}
     excel_row = 1
     for screen in sorted(by_screen, key=screen_key):
         practice, stem = screen.split("__", 1)
@@ -893,9 +948,10 @@ def main() -> None:
             field, value = row["Denominazione da attribuire"], row["Valore rilevato"]
             box, how = located[field]
             counts[how] += 1
+            counts["vuoti"] += how == "zona" and not value.strip()
             excel_row += 1
             crop_path = os.path.join(work_dir, f"{screen}__{index:02d}.png")
-            size = context_crop(img, box, how, wide_page, crop_path)
+            size = context_crop(img, box, how, wide_page, crop_path, empty=not value.strip(), caption=empty_caption(field))
             place(ws, crop_path, size, 4, excel_row - 1)
             height = size[1]
             small = field in SMALL_DIGITS and not kind_of(stem).startswith("elenco")
@@ -944,7 +1000,7 @@ def main() -> None:
 
             values = [excel_row - 1, practice, f"{practice}\\{stem}.png", field, None, None, value if value.strip() else "(vuoto)",
                       None, None, None, priority, "; ".join(reasons + checked), "" if gemini is None else str(gemini),
-                      {"esatta": "rosso", "zona": "arancione", "nessuna": "assente"}[how], screen]
+                      "assente" if how == "nessuna" else frame_colour(how, not value.strip()), screen]
             for col, item in enumerate(values, start=1):
                 cell = ws.cell(row=excel_row, column=col, value=item)
                 cell.font, cell.alignment, cell.border = font, wrap, Border(bottom=thin)
@@ -967,11 +1023,13 @@ def main() -> None:
         (f"{last - 1} valori di {len(by_screen)} schermate (12 pratiche). Foglio \"Revisione\": una riga per valore.", False),
         ("", False),
         ("Cosa compilare: solo le celle gialle (colonne Esito, Valore corretto, Note).", True),
-        ("1. Guarda l'immagine: il riquadro rosso segna il valore da leggere. Arancione = zona dove dovrebbe trovarsi.", False),
+        ("1. Guarda l'immagine. Riquadro rosso: è il valore da leggere.", False),
+        ("   Riquadro arancione: il valore c'è ma la posizione è stimata, cercalo dentro il riquadro o lì vicino.", False),
+        ("   Riquadro azzurro: lì non deve esserci nulla (valore atteso vuoto). Sopra la cella si vede il titolo della colonna.", False),
         ("2. Confronta con la colonna \"Valore letto\".", False),
         ("3. Esito: OK se coincide carattere per carattere, ERRATO se è diverso, NON LEGGIBILE se dall'immagine non si capisce.", False),
         ("4. Se ERRATO scrivi il valore giusto in \"Valore corretto\". Se OK lascialo vuoto.", False),
-        ("5. \"(vuoto)\" significa che a schermo non deve esserci nulla per quel campo: OK se è così.", False),
+        ("5. \"(vuoto)\" con riquadro azzurro significa che a schermo non deve esserci nulla per quel campo: OK se la cella è vuota.", False),
         ("   Se invece un valore c'è scrivilo in \"Valore corretto\"; se il valore letto non doveva esserci scrivi (vuoto).", False),
         ("", False),
         ("Numeri piccoli (NDG dei soggetti, rapporto, scadenza, importo dei fidi).", True),
@@ -1005,7 +1063,9 @@ def main() -> None:
                 cell.fill = yellow
     wb.active = 1
     wb.save(out_path)
-    print(f"rows={last - 1} frame on the value={counts['esatta']} zone={counts['zona']} no position={counts['nessuna']} priority ALTA={counts['alta']}")
+    print(f"rows={last - 1} frame on the value={counts['esatta']} zone={counts['zona']} "
+          f"(expected empty={counts['vuoti']}, value not located={counts['zona'] - counts['vuoti']}) "
+          f"no position={counts['nessuna']} priority ALTA={counts['alta']}")
     print("automatic 6/8 check:", {k[6:]: v for k, v in counts.items() if k.startswith("pixel ")})
     print("saved", out_path, f"{os.path.getsize(out_path) / 1e6:.1f} MB")
 

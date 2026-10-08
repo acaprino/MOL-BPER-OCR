@@ -37,6 +37,11 @@ riquadri sbagliati ed è stata rifatta: i 1008 riquadri della seconda sono stati
 e su 906 riquadri rossi fuori dalle note l'OCR legge dentro il riquadro il valore atteso in 896, con
 nessun riquadro che lascia fuori parte del valore. Cause e controlli nel README della baseline.
 
+Aggiunta dell'8 ottobre, sopra `fd043e8`: una terza versione del file distingue con
+un riquadro azzurro i 70 valori attesi vuoti, che nella seconda erano arancioni come i 14 valori non
+trovati dall'OCR e a chi revisionava sembravano riquadri sbagliati. I 924 riquadri rossi non sono
+cambiati. Toccati solo `scripts/make_review_workbook.py` e il README della baseline.
+
 ## Stato dei finding
 
 | ID | Stato | Nota |

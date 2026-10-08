@@ -221,7 +221,7 @@ Non verificato: se qualcuna di queste 12 pratiche fosse già fra le schermate us
 ## Revisione manuale del ground truth
 
 Il ground truth resta una bozza finché una persona non lo controlla. Per farlo c'è un file Excel,
-`mnt/riscontro-2026-10-07/revisione/revisione_ground_truth_v2.xlsx` (11 MB, ignorato da git), generato da
+`mnt/riscontro-2026-10-07/revisione/revisione_ground_truth_v3.xlsx` (11 MB, ignorato da git), generato da
 [`scripts/make_review_workbook.py`](scripts/make_review_workbook.py): una riga per ciascuno dei 1008
 valori, con il ritaglio dello screenshot, un riquadro sul valore, il valore trascritto e tre celle
 gialle da compilare (Esito, Valore corretto, Note).
@@ -229,10 +229,11 @@ gialle da compilare (Esito, Valore corretto, Note).
 - **Posizione dei valori:** dalle righe dell'OCR locale. L'OCR dà una casella per riga, non per
   parola: le parole sono collocate sulle macchie d'inchiostro della riga, e ogni valore è cercato
   solo nella regione del suo campo (la testata, la riga della tabella, la metà dei fidi proposti).
-  Una nota è incorniciata come blocco di righe. 924 valori hanno il riquadro rosso sul testo; 84 un
-  riquadro arancione sulla zona dove dovrebbero trovarsi: 70 perché il valore atteso è vuoto, 14
-  perché l'OCR non ha letto la cella (icone a lettera, celle coperte in parte da un tooltip, la
-  testata di una schermata).
+  Una nota è incorniciata come blocco di righe.
+- **Colore del riquadro:** rosso su 924 valori, il riquadro è sul testo. Arancione su 14: il valore è
+  a schermo ma l'OCR non ha letto la cella (icone a lettera, celle coperte in parte da un tooltip, la
+  testata di una schermata), e il riquadro segna la zona dove cercarlo. Azzurro su 70: il valore
+  atteso è vuoto, il riquadro segna solo ciò che deve restare bianco e sopra l'immagine c'è scritto.
 - **Priorità:** 85 righe sono marcate `ALTA` (Gemini o l'OCR leggono altro, posizione stimata,
   cifre piccole non verificate in automatico).
 - **Cifre piccole:** anche un disegno pixel per pixel inganna l'occhio, quindi ogni 6 e 8 delle
@@ -244,10 +245,14 @@ gialle da compilare (Esito, Valore corretto, Note).
 - **Ritorno:** [`scripts/apply_review.py`](scripts/apply_review.py) rilegge il file compilato e scrive
   `dati_revisionato.csv` con le correzioni, l'esito e il valore precedente; elenca le righe marcate
   ERRATO senza valore corretto. Provato su una copia del file con 4 esiti di prova.
+- **Schermate intere:** nella stessa cartella c'è `schermate_riferimento.zip` (16 MB, ignorato da
+  git) per chi revisiona, quando il ritaglio non basta. Contiene i 113 PNG di
+  `mnt/riscontro-2026-10-07/`, identici byte per byte e con lo stesso nome, cioè il valore della
+  colonna `ID schermata` più `.png`.
 
 ### La prima versione aveva riquadri sbagliati
 
-Il primo file (rinominato `revisione_ground_truth_v1_scartato.xlsx`, stessa cartella) è stato scartato alla prima apertura:
+Il primo file (ora in `mnt/riscontro-2026-10-07/revisione_versioni_superate/`, con la seconda versione) è stato scartato alla prima apertura:
 diversi riquadri non erano sul valore. Le cause, tutte nello script e non nel ground truth:
 
 | Causa | Effetto |
@@ -262,10 +267,24 @@ diversi riquadri non erano sul valore. Le cause, tutte nello script e non nel gr
 `align_note` è anche la funzione che il 29/09 ha etichettato le note per l'addestramento di LiLT: la
 stessa perdita è probabile in quelle etichette, e va verificata prima del prossimo addestramento.
 
-### Come sono stati controllati i riquadri della seconda versione
+### La seconda versione usava l'arancione per due cose
+
+Alla prima apertura della seconda versione il revisore ha segnalato riquadri arancioni su un'area
+vuota (righe 195, 202, 210: la cella `Fase` di una pratica che non ha una fase). Erano corretti, ma
+non si capiva: l'arancione valeva sia per "valore non trovato" sia per "qui non deve esserci nulla",
+e il ritaglio non mostrava il titolo della colonna. Nella terza versione i 70 valori attesi vuoti
+hanno il riquadro azzurro, una scritta sopra l'immagine e il titolo della colonna o l'etichetta nel
+ritaglio. Il riquadro è stato anche ristretto a ciò che deve essere bianco: per le righe di soggetti
+che non esistono segnava l'intera tabella, righe piene comprese, e per le evidenze vuote includeva il
+numero di filiale della colonna accanto. I 924 riquadri rossi sono identici a quelli della seconda
+versione.
+
+### Come sono stati controllati i riquadri
 
 - **A vista, tutti.** I 1008 riquadri sono stati guardati uno per uno su tavole di ritagli raggruppate
   per campo, non a campione. Trovato e corretto 1 riquadro sbagliato (la graffetta) e alcuni bordi larghi.
+  Dopo la terza versione sono stati riguardati tutti gli 84 riquadri azzurri e arancioni, sulle
+  immagini contenute nel file.
 - **In automatico.** [`scripts/check_review_frames.py`](scripts/check_review_frames.py) confronta il
   valore con quello che l'OCR legge dentro il riquadro, contando 6 e 8 come la stessa cifra. Sui 906
   riquadri rossi fuori dalle note: 896 contengono esattamente il valore, 4 differiscono per uno o due
