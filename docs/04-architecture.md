@@ -1,7 +1,7 @@
 # Architettura
 
 CLI, GUI Tkinter e edge-agent PyQt6 condividono un motore di estrazione senza dipendenze dalla UI. `ExtractionPipeline` legge gli identificativi, esegue la lettura principale e rilegge le aree deboli, poi restituisce campi e metadati. L'edge-agent aggiunge cattura, riconoscimento della pagina e consolidamento: i frame di una stessa pratica confluiscono in una riga consultabile ed esportabile.
-<!-- Source: extraction/pipeline.py:55; extraction/cli.py:157; gui_app.py:238; edge-agent/local_extraction_client.py:90; edge-agent/practice_consolidation.py:105 -->
+<!-- Source: extraction/pipeline.py:55; extraction/cli.py:157; gui_app.py:238; edge-agent/local_extraction_client.py:90; edge-agent/practice_consolidation.py:87 -->
 
 ## Diagramma dei componenti
 
@@ -115,8 +115,8 @@ CLI e Tkinter riusano `BatchRunner`: la creazione dei modelli, l'esecuzione para
 
 <!-- Source: extraction/fields.py:12; extraction/schemas.py:31; extraction/schemas.py:73; extraction/field_definitions.py:1; extraction/page_definitions.py:5; extraction/canonical_mapping.py:20 -->
 
-`FieldsModel` è generato da `FIELD_KEYS`: lo schema segue automaticamente le 45 chiavi. Le altre corrispondenze restano esplicite: un nuovo campo richiede di aggiornare mapping CSV, area di retry, definizione canonica e prompt. `FieldResult` contiene valore facoltativo, confidenza ricondotta a 0–1, testo di evidenza e sezione. `ExtractionResponse` aggiunge le liste tabellari; `AnchorResponse` contiene soltanto NDG e denominazione. I dettagli sono nel [modello dei dati](06-data-model.md).
-<!-- Source: extraction/schemas.py:11; extraction/schemas.py:31; extraction/schemas.py:73; extraction/schemas.py:76; extraction/schemas.py:82; extraction/config.py:101 -->
+`FieldsModel` è generato da `FIELD_KEYS`: lo schema segue automaticamente le 45 chiavi. Le altre corrispondenze restano esplicite: un nuovo campo richiede di aggiornare mapping CSV, area di retry o esclusione deliberata in `UNRETRIED_FIELDS`, definizione canonica e prompt. `FieldResult` contiene valore facoltativo, confidenza ricondotta a 0–1, testo di evidenza e sezione. `ExtractionResponse` aggiunge le liste tabellari; `AnchorResponse` contiene soltanto NDG e denominazione. I dettagli sono nel [modello dei dati](06-data-model.md).
+<!-- Source: extraction/schemas.py:11; extraction/schemas.py:31; extraction/schemas.py:73; extraction/schemas.py:76; extraction/schemas.py:82; extraction/config.py:105 -->
 
 ### Layer delle immagini
 
@@ -124,7 +124,7 @@ L'inquadratura precede qualsiasi consumatore del frame dal vivo: `_grab_raw()` u
 <!-- Source: edge-agent/workers/capture/bper_capture_worker.py:444; edge-agent/workers/capture/bper_capture_worker.py:536; edge-agent/frame_normalize.py:209 -->
 
 Il motore distingue due ingressi. `extract_from_screen()` apre il file, esegue `normalize_image()` e autorizza il controllo del ritaglio calibrato. `extract_from_image()` salta quel preprocessing e, per default, conserva l'immagine intera; impone comunque il limite dimensionale `MAX_IMAGE_LONG_SIDE`. Il ritaglio di contenuto è ammesso solo quando rapporto d'aspetto e lato lungo corrispondono alla famiglia di riferimento 848×679: tolleranza d'aspetto 5%, lato lungo 800–900 pixel. Fuori calibrazione anche l'anchor legge l'immagine intera e il retry BODY può riempire una tabella vuota, ma non sostituirne una esistente. Vedi [ADR 0010](adr/0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md).
-<!-- Source: extraction/imaging.py:19; extraction/imaging.py:52; extraction/config.py:78; extraction/pipeline.py:92; extraction/pipeline.py:138; extraction/pipeline.py:223; extraction/pipeline.py:258 -->
+<!-- Source: extraction/imaging.py:19; extraction/imaging.py:52; extraction/config.py:78; extraction/pipeline.py:92; extraction/pipeline.py:138; extraction/pipeline.py:231; extraction/pipeline.py:266 -->
 
 ### Layer LLM e prompt
 
@@ -132,7 +132,7 @@ Il motore distingue due ingressi. `extract_from_screen()` apre il file, esegue `
 <!-- Source: extraction/llm_factory.py:21; extraction/model_adapters.py:207; extraction/model_adapters.py:218; extraction/vlm_client.py:22 -->
 
 Il wrapper ritenta fino a tre volte le eccezioni diverse da `ValueError`, `KeyError` e `IndexError`, che propagano immediatamente. Ogni chiamata conclusa produce `_meta`; la pipeline aggrega token, costo e latenza. Un modello assente da `PRICING_PER_1M` vale zero nella stima, non è necessariamente gratuito. Le chiamate del router LLM usano direttamente l'SDK OpenAI compatibile e non rientrano nella contabilità di `vlm_client`.
-<!-- Source: extraction/vlm_client.py:14; extraction/vlm_client.py:63; extraction/pipeline.py:383; edge-agent/llm_router.py:224 -->
+<!-- Source: extraction/vlm_client.py:14; extraction/vlm_client.py:63; extraction/pipeline.py:396; edge-agent/llm_router.py:224 -->
 
 I testi LLM sono dati in `prompts/*.json`, caricati e validati una volta da `prompt_store.py`, modulo solo stdlib condiviso anche dal router. Parti e placeholder devono corrispondere a `CATALOG`. Il primo catalogo caricabile vince; nel bundle la copia interna può sostituire una copia esterna danneggiata, mentre `PROMPTS_DIR` esplicito non ammette fallback. Non esiste reload parziale. Il catalogo delle pagine in `assets/templates/bper/prompts.json` è distinto: il suo errore degrada il riconoscimento; un catalogo di testi inutilizzabile solleva un errore. Il router importa lo store pigramente affinché il proprio errore resti gestibile nell'inizializzazione del router.
 <!-- Source: prompt_store.py:62; prompt_store.py:139; prompt_store.py:220; prompt_store.py:262; prompt_store.py:284; edge-agent/llm_router.py:102; edge-agent/llm_router.py:111; edge-agent/workers/capture/bper_capture_worker.py:204 -->
@@ -140,18 +140,18 @@ I testi LLM sono dati in `prompts/*.json`, caricati e validati una volta da `pro
 ### Layer di orchestrazione
 
 `ExtractionPipeline` conserva l'ordine anchor → main → merge → normalizzazione `tipo` → retry → coerenza → metadati → appiattimento soggetti → campi canonici → stato. Il gate anchor annulla realmente i valori sotto `ANCHOR_CONF_MIN` prima di hint e merge. I retry selezionano le aree deboli nell'ordine HEADER, BODY, FOOTER e le eseguono in parallelo entro il budget disponibile. Vedi il [flusso multi-pass](05-workflows.md#pipeline-di-estrazione-multi-pass).
-<!-- Source: extraction/pipeline.py:110; extraction/pipeline.py:122; extraction/pipeline.py:284 -->
+<!-- Source: extraction/pipeline.py:110; extraction/pipeline.py:122; extraction/pipeline.py:295 -->
 
 `BatchRunner` e `LocalExtractionClient` costruiscono ciascuno una pipeline con due ChatModel condivisi fra i propri worker. I retry aggiungono un executor temporaneo per immagine. Il codice assume l'uso concorrente dei modelli; il numero di richieste simultanee può quindi superare il numero di immagini elaborate contemporaneamente.
-<!-- Source: extraction/cli.py:184; extraction/cli.py:237; edge-agent/local_extraction_client.py:100; edge-agent/local_extraction_client.py:114; extraction/pipeline.py:338 -->
+<!-- Source: extraction/cli.py:184; extraction/cli.py:237; edge-agent/local_extraction_client.py:100; edge-agent/local_extraction_client.py:114; extraction/pipeline.py:349 -->
 
-Restano limiti del risultato: l'appiattimento dei primi quattro soggetti sovrascrive i dodici campi numerati senza aggiornare `_field_sources`; i retry falliti conservano i dati precedenti ma non aggiungono metadati; `creazione` e i cinque tooltip non hanno un'area di retry. La coerenza delle mappe di campo non è verificata da guardie all'avvio.
-<!-- Source: extraction/pipeline.py:203; extraction/pipeline.py:342; extraction/config.py:101; extraction/fields.py:12 -->
+L'appiattimento dei primi quattro soggetti usa lo stesso `pick_best()` dei retry per le dodici chiavi numerate e aggiorna `_field_sources` solo quando vince il candidato tabellare, con la sorgente della tabella accettata ([ADR 0018](adr/0018-appiattimento-soggetti-con-merge-e-provenienza.md)). Restano limiti del risultato: i campi prodotti dal flatten non aggiungono `evidence_text`, il main assegna una sorgente anche ai campi assenti, le correzioni di coerenza non registrano la trasformazione e i retry falliti non aggiungono metadati. `creazione` appartiene a HEADER; solo i cinque tooltip sono esclusi esplicitamente dai retry in `UNRETRIED_FIELDS`, perché la loro posizione transitoria non autorizza un ritaglio fisso. La suite verifica che ogni campo abbia esattamente una politica di retry e che mapping CSV e definizioni canoniche coprano `FIELD_KEYS`; non sono guardie di avvio.
+<!-- Source: extraction/pipeline.py:180; extraction/pipeline.py:203; extraction/pipeline.py:353; extraction/pipeline.py:378; extraction/config.py:105; extraction/config.py:122; tests/test_domain_vocabulary.py:11; tests/test_pipeline_postprocessing.py:187 -->
 
 ### Layer di valutazione
 
 `evaluation.py` carica la ground truth, calcola accuratezza RAW/FILTERED ed esporta report. `normalization.py` contiene confronti, normalizzazioni, `pick_best()` e `dataset_mismatch_guard()`. La funzione di modulo `build_debug_report(outputs, gt, path)` riceve la ground truth; il metodo `Evaluator.build_debug_report(outputs, path)` usa quella già conservata nell'istanza. Vedi [valutazione dell'accuratezza](05-workflows.md#valutazione-dellaccuratezza).
-<!-- Source: extraction/evaluation.py:47; extraction/evaluation.py:88; extraction/evaluation.py:139; extraction/evaluation.py:269; extraction/normalization.py:104; extraction/normalization.py:195 -->
+<!-- Source: extraction/evaluation.py:47; extraction/evaluation.py:88; extraction/evaluation.py:139; extraction/evaluation.py:269; extraction/normalization.py:120; extraction/normalization.py:218 -->
 
 ### Layer di cattura e rilevamento dell'edge-agent
 
@@ -170,15 +170,15 @@ Le strategie ML, LLM, hybrid e il comportamento effettivo di local-first sono de
 ## Flusso dei dati
 
 Il contratto centrale è un risultato per immagine: campi, liste tabellari, `canonical_fields`, `_attempts`, `_meta_agg`, `_field_sources`, `_content_crop` e `_status`. L'uscita anticipata senza anchor omette `canonical_fields`. Il client aggiunge pagina, numero, confidenza del routing e `_capture_sequence`; un'eccezione del motore diventa un risultato ridotto `ERROR` con campi vuoti. Un errore diagnostico aggiunge `_diagnostic_error` conservando il risultato.
-<!-- Source: extraction/pipeline.py:151; extraction/pipeline.py:194; edge-agent/local_extraction_client.py:170; edge-agent/local_extraction_client.py:182 -->
+<!-- Source: extraction/pipeline.py:151; extraction/pipeline.py:196; edge-agent/local_extraction_client.py:170; edge-agent/local_extraction_client.py:182 -->
 
 Nel batch gli output sono indicizzati dallo stem del file e salvati prima della valutazione. Dal vivo restano in memoria sotto il job: `consolidate()` li raggruppa per NDG normalizzato, applica `pick_best()` e produce `PracticeRecord`. La tabella e l'export Excel riusano questa fusione. Excel contiene 45 colonne, NDG e denominazione all'inizio, due righe di intestazione e una riga per pratica; i valori sono testo anche quando iniziano con `=` o hanno segno negativo.
-<!-- Source: extraction/imaging.py:29; extraction/cli.py:344; edge-agent/practice_consolidation.py:46; edge-agent/practice_consolidation.py:85; edge-agent/practice_consolidation.py:105; edge-agent/ui/data_table_tab.py:194; edge-agent/excel_export.py:92; edge-agent/excel_export.py:124; edge-agent/excel_export.py:177 -->
+<!-- Source: extraction/imaging.py:29; extraction/cli.py:344; extraction/normalization.py:40; edge-agent/practice_consolidation.py:67; edge-agent/practice_consolidation.py:87; edge-agent/ui/data_table_tab.py:194; edge-agent/excel_export.py:92; edge-agent/excel_export.py:124; edge-agent/excel_export.py:177 -->
 
 ## Configurazione
 
 Le impostazioni del motore vengono dall'ambiente; quelle della cattura e del router da `AgentConfig`. Le geometrie delle immagini e la mappa delle aree sono costanti del motore, mentre `RETRY_CONF_MIN`, `MAX_IMAGE_LONG_SIDE` e i limiti di parallelismo possono essere configurati via ambiente. I prompt hanno un catalogo dedicato e le pagine un catalogo distinto. Non è presente un sistema separato di feature flag o profili dev/staging/prod: i punti di variazione sono ambiente, INI, parametri Python e scelte della UI.
-<!-- Source: extraction/config.py:7; extraction/config.py:59; extraction/config.py:65; extraction/config.py:101; edge-agent/config.py:123; prompt_store.py:220; edge-agent/page_registry.py:40 -->
+<!-- Source: extraction/config.py:7; extraction/config.py:59; extraction/config.py:65; extraction/config.py:105; edge-agent/config.py:123; prompt_store.py:220; edge-agent/page_registry.py:40 -->
 
 Le credenziali del router seguono la precedenza INI non vuoto, poi variabili del provider, poi `LLM_API_KEY`; lasciare vuota la voce INI permette di usare l'ambiente. `AgentConfig.save()` può ripersistire la credenziale configurata. Per configurazione operativa e gestione delle chiavi usare la [guida dedicata](10-configuration-guide.md); per avvio e comandi, [Per iniziare](07-getting-started.md).
 <!-- Source: edge-agent/config.py:292; edge-agent/config.py:339 -->

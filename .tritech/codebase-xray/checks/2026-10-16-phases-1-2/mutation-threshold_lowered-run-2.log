@@ -1,0 +1,61 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+___________ test_an_anchor_below_threshold_is_returned_as_null[ndg] ___________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025D3FBB5E00>
+key = 'ndg'
+
+    @pytest.mark.parametrize("key", ["ndg", "denominazione"])
+    def test_an_anchor_below_threshold_is_returned_as_null(
+        monkeypatch: pytest.MonkeyPatch, key: str,
+    ) -> None:
+        install_fake_vlm(
+            monkeypatch, lambda kwargs: None,
+            responder=lambda kwargs: _reply({key: _field("UNTRUSTED", 0.94)}),
+        )
+        monkeypatch.setattr(pipeline_mod, "ANCHOR_CONF_MIN", 0.95)
+        pipeline = ExtractionPipeline(None, None, "test-model", "test-model")
+    
+        anchors = pipeline.extract_anchors(Image.new("RGB", (320, 240)), "screen test")
+    
+>       assert anchors[key]["value"] is None
+E       AssertionError: assert 'UNTRUSTED' is None
+
+tests\test_pipeline_postprocessing.py:72: AssertionError
+______ test_an_anchor_below_threshold_is_returned_as_null[denominazione] ______
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025D3FBB7CE0>
+key = 'denominazione'
+
+    @pytest.mark.parametrize("key", ["ndg", "denominazione"])
+    def test_an_anchor_below_threshold_is_returned_as_null(
+        monkeypatch: pytest.MonkeyPatch, key: str,
+    ) -> None:
+        install_fake_vlm(
+            monkeypatch, lambda kwargs: None,
+            responder=lambda kwargs: _reply({key: _field("UNTRUSTED", 0.94)}),
+        )
+        monkeypatch.setattr(pipeline_mod, "ANCHOR_CONF_MIN", 0.95)
+        pipeline = ExtractionPipeline(None, None, "test-model", "test-model")
+    
+        anchors = pipeline.extract_anchors(Image.new("RGB", (320, 240)), "screen test")
+    
+>       assert anchors[key]["value"] is None
+E       AssertionError: assert 'UNTRUSTED' is None
+
+tests\test_pipeline_postprocessing.py:72: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\config\__init__.py:1345
+  D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\config\__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+.venv\Lib\site-packages\_pytest\config\__init__.py:1345
+  D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\config\__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; langsmith
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_pipeline_postprocessing.py::test_an_anchor_below_threshold_is_returned_as_null[ndg]
+FAILED tests/test_pipeline_postprocessing.py::test_an_anchor_below_threshold_is_returned_as_null[denominazione]
+2 failed, 29 deselected, 2 warnings in 0.42s
+MUTATION_RESULT={"mutation": "threshold_lowered", "exit_code": 1, "passed": 0, "skipped": 0, "failed": 2, "errors": 0, "assertion_failures": 2, "failed_tests": ["tests/test_pipeline_postprocessing.py::test_an_anchor_below_threshold_is_returned_as_null[ndg]", "tests/test_pipeline_postprocessing.py::test_an_anchor_below_threshold_is_returned_as_null[denominazione]"]}

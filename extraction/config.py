@@ -94,7 +94,7 @@ HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)
 
 # Targeted retry crops (grouped by functional area)
 RETRY_AREAS = {
-    "HEADER": (0.00, 0.00, 1.00, 0.35),  # ndg, den, tipo, stato, fase, evidenze
+    "HEADER": (0.00, 0.00, 1.00, 0.35),  # ndg, den, tipo, stato, fase, creazione, evidenze
     "BODY": (0.00, 0.25, 1.00, 0.75),    # fidi, garanzie, soggetti
     "FOOTER": (0.00, 0.65, 1.00, 1.00),  # note_della_richiesta
 }
@@ -103,7 +103,7 @@ RETRY_AREAS = {
 # retries weak areas in this order under the per-screen call budget, so HEADER
 # must stay first. Do not alphabetize.
 AREA_TO_FIELDS = {
-    "HEADER": ["ndg", "denominazione", "tipo", "stato", "fase", "evidenze", "filiale_relazione", "ultima_validazione_scheda"],
+    "HEADER": ["ndg", "denominazione", "tipo", "stato", "fase", "creazione", "evidenze", "filiale_relazione", "ultima_validazione_scheda"],
     "BODY": [
         "n_fido", "rapporto", "descrizione", "scadenza", "importo_euro", "tipo_op",
         "ndg_1", "denominazione_1", "ruolo_1",
@@ -116,6 +116,16 @@ AREA_TO_FIELDS = {
     ],
     "FOOTER": ["note_della_richiesta", "note_scheda_privati"]
 }
+
+# Tooltips are transient overlays without a reliable fixed retry crop.
+# They are read by the main pass only; every other field belongs to one area.
+UNRETRIED_FIELDS: frozenset[str] = frozenset({
+    "tooltip_descrizione_bmb",
+    "tooltip_evidenze_b",
+    "tooltip_descrizione_m_consap",
+    "tooltip_descrizione_consap_dr_bis",
+    "tooltip_descrizione_ipoteca",
+})
 
 # 1 anchor + 1 main + one retry per declared area. Derived, not a literal: the
 # retry budget is spent in AREA_TO_FIELDS order, so anything below this leaves

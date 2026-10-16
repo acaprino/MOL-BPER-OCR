@@ -1,0 +1,36 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________ test_uncertain_anchors_can_stop_before_the_main_pass _____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000019376AE1BA0>
+
+    def test_uncertain_anchors_can_stop_before_the_main_pass(
+        monkeypatch: pytest.MonkeyPatch,
+    ) -> None:
+        result, calls = _run(monkeypatch, {
+            "ANCHOR_HEADER": _reply({"ndg": _field("12345", 0.94),
+                                     "denominazione": _field(None, 1.0)}),
+        }, stop_on_uncertain=True)
+    
+        assert result["_status"] == "ANCHOR_UNCERTAIN"
+>       assert [call["attempt"] for call in calls] == ["ANCHOR_HEADER"]
+E       AssertionError: assert ['ANCHOR_HEAD... 'RETRY_BODY'] == ['ANCHOR_HEADER']
+E         
+E         Left contains 4 more items, first extra item: 'CONTENT_MAIN'
+E         Use -v to get more diff
+
+tests\test_pipeline_postprocessing.py:107: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\_pytest\config\__init__.py:1345
+  D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\config\__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; anyio
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+.venv\Lib\site-packages\_pytest\config\__init__.py:1345
+  D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\config\__init__.py:1345: PytestAssertRewriteWarning: Module already imported so cannot be rewritten; langsmith
+    self._mark_plugins_for_rewrite(hook, disable_autoload)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_pipeline_postprocessing.py::test_uncertain_anchors_can_stop_before_the_main_pass
+1 failed, 30 deselected, 2 warnings in 0.78s
+MUTATION_RESULT={"mutation": "ignore_early_stop", "exit_code": 1, "passed": 0, "skipped": 0, "failed": 1, "errors": 0, "assertion_failures": 1, "failed_tests": ["tests/test_pipeline_postprocessing.py::test_uncertain_anchors_can_stop_before_the_main_pass"]}

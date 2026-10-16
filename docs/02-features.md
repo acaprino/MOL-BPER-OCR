@@ -30,7 +30,7 @@ Ogni risposta deve rispettare uno schema Pydantic: OpenAI e Gemini 1.5 usano l�
 
 ### Confidenza e provenienza per campo
 
-Ogni campo registra quale passaggio ha prodotto il suo valore finale (`ANCHOR_HEADER`, `CONTENT_MAIN` o `RETRY_{HEADER|BODY|FOOTER}`) nella mappa `_field_sources` costruita in `extraction/pipeline.py`, esposta come colonna `source_attempt` del report di debug. Un'eccezione: l'appiattimento dei soggetti sovrascrive le dodici chiavi `ndg_1..4`/`denominazione_1..4`/`ruolo_1..4` senza aggiornarne la sorgente, quindi la provenienza di quelle chiavi può risultare obsoleta (vedi [Data Model](06-data-model.md)). È così che capisci non solo *cosa* è stato estratto ma *come*, ed è ciò su cui si basa la logica di retry.
+La mappa `_field_sources`, costruita in `extraction/pipeline.py` ed esposta come `source_attempt` nel report di debug, registra il passaggio vincente (`ANCHOR_HEADER`, `CONTENT_MAIN` o `RETRY_{HEADER|BODY|FOOTER}`). L'appiattimento dei soggetti confronta ciascuna delle dodici chiavi `ndg_1..4`/`denominazione_1..4`/`ruolo_1..4` con il valore scalare già presente usando `pick_best()`: il non nullo prevale sul nullo, poi conta la confidenza e a parità resta il corrente. Se vince il valore tabellare, la sorgente diventa quella della tabella accettata, `CONTENT_MAIN` o `RETRY_BODY` ([ADR 0018](adr/0018-appiattimento-soggetti-con-merge-e-provenienza.md)). Restano limiti diagnostici: il main assegna una sorgente anche ai campi assenti e le correzioni di coerenza non registrano una nuova provenienza. I campi prodotti dal flatten non aggiungono `evidence_text` (vedi [Data Model](06-data-model.md)).
 
 ### Regole di coerenza di dominio e normalizzazione
 
@@ -50,7 +50,7 @@ Ogni campo estratto viene confrontato con il valore atteso di `mnt/data/dati.csv
 
 ### Metriche RAW e FILTERED
 
-L'accuratezza viene riportata due volte. **RAW** conta ogni schermata; **FILTERED** scarta le schermate in cui `dataset_mismatch_guard()` (`extraction/normalization.py`) rileva che `ndg`/`denominazione` estratti non concordano con la ground truth: se il motore ha letto il cliente sbagliato, valutare gli altri campi sarebbe solo rumore.
+L'accuratezza viene riportata due volte. **RAW** conta ogni schermata; **FILTERED** scarta le schermate in cui `dataset_mismatch_guard()` (`extraction/normalization.py`) rileva che `ndg`/`denominazione` estratti non concordano con la ground truth: se il motore ha letto il cliente sbagliato, valutare gli altri campi sarebbe solo rumore. Gli NDG, compresi `ndg_1..4`, vengono confrontati con `normalize_ndg()`, la stessa funzione usata dal consolidamento live: separatori e zeri iniziali dei soli identificatori numerici non creano differenze, mentre i suffissi alfanumerici restano distinti ([ADR 0017](adr/0017-identita-ndg-condivisa-tra-valutazione-e-consolidamento.md)).
 
 ### Conteggio di token e costi
 

@@ -58,6 +58,8 @@ tarati, e nessun test lo verificava.
 | [0014](0014-acquisizione-per-visita-con-esito.md) | Acquisire per visita e confermare l'esito dell'estrazione | Accettato |
 | [0015](0015-scatto-manuale-nel-thread-di-cattura.md) | Eseguire lo scatto manuale nel thread di cattura | Accettato |
 | [0016](0016-adapter-per-famiglia-di-modelli.md) | Un adapter per famiglia di modelli | Accettato |
+| [0017](0017-identita-ndg-condivisa-tra-valutazione-e-consolidamento.md) | Identità NDG condivisa tra valutazione e consolidamento | Accettato |
+| [0018](0018-appiattimento-soggetti-con-merge-e-provenienza.md) | Appiattire i soggetti con merge e provenienza del vincitore | Accettato |
 
 ## Da scrivere
 

@@ -92,7 +92,7 @@ All defaults verified against `extraction/config.py`.
 
 ## Testing & Validation
 
-A pytest suite lives in `tests/` (`python -m pytest tests`, 190 tests) covering the page registry,
+A pytest suite lives in `tests/` (`python -m pytest tests`) covering the page registry,
 the capture stability tracker, the daemon thread pool, the async local-extraction client, the prompt
 catalog, frame normalization (`test_frame_normalize.py`), the worker's capture framing
 (`test_bper_capture_framing.py`), page recognition from live-shaped frames
@@ -100,9 +100,10 @@ catalog, frame normalization (`test_frame_normalize.py`), the worker's capture f
 family gate with off-calibration anchor/table behavior (`test_content_crop.py`), the API key
 baked into a packaged `.env` (`test_env_key.py`), a price for every shipped default model
 (`test_pricing.py`), the per-family model adapters (`test_llm_factory.py`) and how each family is
-asked and read by `call_vlm()` (`test_vlm_call.py`, provider SDK faked). The rest of the
-extraction pipeline (anchor confidence gate, scalar merge order, coherence check, flatten) is
-still untested.
+asked and read by `call_vlm()` (`test_vlm_call.py`, provider SDK faked). Core behavioral tests
+cover the anchor confidence gate, scalar merge order, tooltip coherence and subject flattening
+with source attribution (`test_pipeline_postprocessing.py`), shared NDG identity in evaluation
+(`test_normalization.py`) and field vocabulary/retry-policy consistency (`test_domain_vocabulary.py`).
 
 `test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s, and it rebuilds the prototype
 cache the first time after any geometry change); it skips via
@@ -218,8 +219,12 @@ downstream effects.
    `call_vlm_with_retry()` retries only transient errors; `ValueError` (parse failures) is re-raised
    immediately.
 6. **Field source tracking** -- the `_field_sources` dict records which pass (ANCHOR_HEADER,
-   CONTENT_MAIN, RETRY_{area}) produced each field's final value. Caveat: the soggetti flatten does
-   *not* update it for `ndg_1..ruolo_4`.
+   CONTENT_MAIN, RETRY_{area}) won each scalar merge. Subject flattening uses `pick_best()` too:
+   non-null wins, then higher confidence, with the current scalar winning ties. A winning table
+   candidate records the accepted table's origin (CONTENT_MAIN or RETRY_BODY); a rejected retry
+   table must not change that origin. Table origins stay local to each extraction, with no new
+   output metadata (ADR 0018). Caveats: main-pass labels include absent fields, coherence repairs
+   do not record a new origin, and flattened table candidates still omit `evidence_text`.
 7. **Dataset mismatch guard** -- `dataset_mismatch_guard()` detects when extracted NDG/DENOMINAZIONE
    differs from ground truth, preventing false negatives in evaluation. See
    `extraction/normalization.py`.
@@ -232,11 +237,13 @@ downstream effects.
 9. **Screenshot discovery** -- the CLI scans `INPUT_DIR` directly for `.png/.jpg/.jpeg`
    (`cli.py:326-330`). `get_screenshot_paths()` in `extraction/config.py` currently has no caller.
    Do not reintroduce the old mutable global `SCREENSHOTS` list.
-10. **No startup guards** -- contrary to what this file used to claim, there are **no** `if/raise`
-    guards validating `FIELD_RETRY_MAP`/`AREA_TO_FIELDS` against `FIELD_KEYS` (and no
-    `_FIELD_COMPARATORS` exists anywhere). Dict consistency is by convention only: a key missing
-    from `AREA_TO_FIELDS` is silently never retried. When adding a field, update `FIELD_KEYS`,
-    `AREA_TO_FIELDS`, `CSV_TO_SCHEMA`, `field_definitions.py`, and the prompts.
+10. **Field vocabulary consistency** -- `test_domain_vocabulary.py` checks that CSV mappings and
+    canonical definitions cover `FIELD_KEYS`, and that each field has exactly one retry policy:
+    one `AREA_TO_FIELDS` area or an explicit `UNRETRIED_FIELDS` exclusion. `creazione` belongs to
+    HEADER; only the five transient tooltip fields are explicitly unretried. These are suite
+    checks, not startup guards. There is no `FIELD_RETRY_MAP` or `_FIELD_COMPARATORS`. When adding
+    a field, update `FIELD_KEYS`, `CSV_TO_SCHEMA`, `field_definitions.py`, the prompts and either
+    `AREA_TO_FIELDS` or the deliberate exclusion, then run the vocabulary tests.
 11. **Edge-agent is local-only** -- `LocalExtractionClient` is the only client the edge-agent uses;
     there is no remote API backend. Do not reintroduce remote upload logic into the BPER path.
 12. **Edge-agent preprocessing** -- `BPERCaptureWorker` preprocesses via
@@ -290,8 +297,8 @@ downstream effects.
     - **`normalize_ndg()` is not `norm_number_str()`.** The latter is a *quantity* normalizer: it
       turns `12.345` into `12.35` (splitting one practice across two rows) and `12345/A` into
       `12345.00` (merging two distinct practices). An NDG is an identifier.
-      `dataset_mismatch_guard()` still uses `norm_number_str()` on NDGs and has the same flaw; it is
-      ground-truth evaluation code and was left alone.
+      `normalize_ndg()` lives in `extraction/normalization.py` and is shared by consolidation,
+      `classify_field()` for `ndg`/`ndg_1..4`, and `dataset_mismatch_guard()` (ADR 0017).
     - **In xlsx, neutralize formulas with `cell.data_type = "s"`, never `escape_csv_formula()`.**
       The apostrophe is the CSV convention and stays visible in a spreadsheet cell, and the function
       also prefixes `-` and `+`, which would corrupt every negative amount.
@@ -337,8 +344,8 @@ different page of the BPER credit-management application.
 **Crop regions** (relative coords, `extraction/config.py`):
 - `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` -- full content area (main pass); applied only on the file path (`extract_from_screen()`) and only when the image matches the calibration family in BOTH aspect (within 5% of 848/679) and size (long side 800-900px) -- aspect alone is not identity: 1280x1024 sits 0.09% from the calibrated aspect (`select_content_crop()`, ADR 0010). The live path (`extract_from_image()`) never crops, and off calibration the anchor pass reads the whole image and retry tables may only fill, never replace
 - `HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)` -- header strip (anchor pass)
-- Per-area retry crops in `RETRY_AREAS`; field-to-area mapping in `AREA_TO_FIELDS` (from which
-  `FIELD_RETRY_MAP` is derived)
+- Per-area retry crops in `RETRY_AREAS`; field-to-area mapping in `AREA_TO_FIELDS`, including
+  `creazione` in HEADER. `UNRETRIED_FIELDS` explicitly excludes only the five tooltip fields.
 
 ## Data & Evaluation
 
@@ -388,12 +395,12 @@ Flat package, no sub-packages, one module per concern. Grouped by role:
   `field_definitions.py` (field → display-name / page-key), `page_definitions.py` (canonical page
   names), `canonical_mapping.py` (`build_canonical_field_entries()` for client-facing output).
 - **Configuration** -- `config.py`: env-var snapshot, crop constants, pricing,
-  `AREA_TO_FIELDS`/`FIELD_RETRY_MAP`.
+  `AREA_TO_FIELDS`/`UNRETRIED_FIELDS`.
 - **Pipeline** -- `pipeline.py` (`ExtractionPipeline`), `vlm_client.py` (the single VLM call path,
   `call_vlm_with_retry()`, `estimate_cost_usd()`), `llm_factory.py` (`create_chat_model()`),
   `model_adapters.py` (one adapter per model family, `adapter_for()`),
   `schemas.py` (Pydantic models), `prompts.py` (constants resolved from `prompt_store`).
-- **Support** -- `normalization.py` (`classify_field()`, `pick_best()`,
+- **Support** -- `normalization.py` (`normalize_ndg()`, `classify_field()`, `pick_best()`,
   `dataset_mismatch_guard()`), `imaging.py` (`normalize_image()`, `crop_relative()`,
   `save_debug_crop()`).
 - **Batch & reporting** -- `cli.py` (`BatchRunner`, `run_extraction_batch()`, `main()`),
@@ -488,6 +495,6 @@ pyinstaller>=6.10,<7    # portable package build only (build_exe.bat); the dist 
 
 Not yet implemented:
 - `pyproject.toml` -- dependencies are listed in `requirements.txt` but not version-pinned
-- Tests -- unit suite in `tests/` covers the edge-agent pure logic (page registry, stability tracker, extraction pool, async client, frame normalization, capture framing), the prompt catalog, page recognition, retry-area selection and the content-crop family gate; the rest of the extraction pipeline (anchor confidence gate, scalar merge order, coherence check, flatten) is still untested
+- Provider and GUI validation -- the suite covers core post-processing, field/retry vocabulary, NDG evaluation and the edge-agent contracts; real-provider accuracy and a live banking GUI session still require separate validation
 - CI/CD -- no pipeline configured
 - Docker -- no containerization

@@ -1,6 +1,6 @@
 """Retry-area selection: which areas actually get a second read."""
 
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import pytest
 from PIL import Image
@@ -76,3 +76,45 @@ def test_every_declared_retry_area_gets_a_read_when_all_are_weak(recorded_attemp
     assert sorted(recorded_attempts) == sorted(
         f"RETRY_{area}" for area in AREA_TO_FIELDS
     )
+
+
+def test_missing_creazione_is_recovered_by_header_retry(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A missing creation date alone must trigger the header's second read."""
+    calls: Dict[str, Dict[str, Any]] = {}
+
+    def record_call(kwargs: Dict[str, Any]) -> None:
+        calls[kwargs["attempt"]] = kwargs
+
+    def respond(kwargs: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        if kwargs["attempt"] == "CONTENT_MAIN":
+            fields = {
+                key: {"value": "letto", "confidence": 0.98, "section": "Header"}
+                for key in FIELD_KEYS
+            }
+            fields["creazione"] = {
+                "value": None, "confidence": 0.0, "section": "Header"
+            }
+        elif kwargs["attempt"] == "RETRY_HEADER":
+            fields = {
+                "creazione": {
+                    "value": "16/10/2026", "confidence": 0.98, "section": "Header"
+                }
+            }
+        else:
+            return None
+        return {
+            "fields": fields, "soggetti": [], "fidi": [], "garanzie": [], "_meta": {}
+        }
+
+    install_fake_vlm(monkeypatch, record_call, responder=respond)
+
+    result = _pipeline().extract_from_image(
+        Image.new("RGB", (400, 300), "white"), "Risultato ricerca"
+    )
+
+    assert "RETRY_HEADER" in calls
+    assert "creazione" in calls["RETRY_HEADER"]["prompt"]
+    assert result["fields"]["creazione"]["value"] == "16/10/2026"
+    assert result["_field_sources"]["creazione"] == "RETRY_HEADER"

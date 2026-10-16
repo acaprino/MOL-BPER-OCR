@@ -8,10 +8,10 @@ Per le responsabilità dei componenti vedere [Architettura](04-architecture.md);
 ## Pipeline di estrazione multi-pass
 
 L'anchor è la prima lettura di NDG e denominazione. Una volta filtrati per confidenza, questi identificativi possono guidare il passaggio principale. I retry successivi rileggono ritagli contenenti campi nulli o poco affidabili. L'ordine dei passaggi è rilevante: i retry vedono gli anchor già fusi e il controllo di coerenza legge il risultato dei retry.
-<!-- Source: extraction/pipeline.py:78; extraction/pipeline.py:181; extraction/pipeline.py:235; extraction/pipeline.py:284 -->
+<!-- Source: extraction/pipeline.py:78; extraction/pipeline.py:180; extraction/pipeline.py:243; extraction/pipeline.py:295 -->
 
 **Trigger:** `extract_from_screen(path)` per i file; `extract_from_image(img, screen_id)` per i frame già preparati. Il primo apre il file in RGB, normalizza l'immagine e autorizza il controllo della famiglia calibrata; il secondo lascia quel ritaglio disabilitato per default. Entrambi passano dal limite dimensionale `MAX_IMAGE_LONG_SIDE`, default 2000 pixel.
-<!-- Source: extraction/pipeline.py:122; extraction/pipeline.py:138; extraction/pipeline.py:223; extraction/config.py:65 -->
+<!-- Source: extraction/pipeline.py:122; extraction/pipeline.py:138; extraction/pipeline.py:231; extraction/config.py:65 -->
 
 ```mermaid
 flowchart TD
@@ -28,7 +28,7 @@ flowchart TD
     Meta --> Canonical["Campi canonici e stato finale"]
 ```
 
-<!-- Source: extraction/pipeline.py:110; extraction/pipeline.py:138; extraction/pipeline.py:151; extraction/pipeline.py:181; extraction/pipeline.py:194; extraction/pipeline.py:203; extraction/pipeline.py:214 -->
+<!-- Source: extraction/pipeline.py:110; extraction/pipeline.py:138; extraction/pipeline.py:151; extraction/pipeline.py:180; extraction/pipeline.py:196; extraction/pipeline.py:203; extraction/pipeline.py:224 -->
 
 ### Spiegazione passo per passo
 
@@ -40,22 +40,22 @@ flowchart TD
 6. **Retry condizionale.** Un campo nullo o sotto `RETRY_CONF_MIN`, default 0.60, rende candidata la propria area. HEADER, BODY e FOOTER vengono selezionate nell'ordine dichiarato in `AREA_TO_FIELDS`, fino a `max(0, MAX_CALLS_PER_SCREEN-2)`, poi eseguite in parallelo. HEADER e BODY ricevono anche un incremento di contrasto e nitidezza. Il default del budget è `2 + len(AREA_TO_FIELDS)`, oggi 5: ridurlo può escludere le aree in coda, come spiegato nell'[ADR 0004](adr/0004-budget-retry-derivato-dalle-aree.md).
 7. **Fusione.** `pick_best()` preferisce il valore non nullo e poi la confidenza maggiore; a parità conserva il corrente. `_field_sources` cambia se vince il candidato. Solo BODY può proporre tabelle: su immagini calibrate prevalgono più righe, poi la confidenza media; fuori calibrazione può solo riempire una tabella vuota.
 8. **Coerenza.** Un tooltip delle evidenze B può correggere `evidenze` nullo o numerico in `B`; un tooltip BMB può riempire `tipo` nullo con `BMB`.
-9. **Risultato finale.** La pipeline aggrega metadati, appiattisce i primi quattro soggetti nei dodici campi numerati, costruisce `canonical_fields` e assegna `OK` solo se NDG e denominazione sono entrambi presenti; altrimenti assegna `ANCHOR_UNCERTAIN`.
+9. **Risultato finale.** La pipeline aggrega metadati e confronta i primi quattro soggetti con i dodici campi numerati tramite `pick_best()`: il non nullo prevale, poi conta la confidenza; a parità resta lo scalare corrente. Se vince il candidato tabellare, `_field_sources` registra il passaggio che ha prodotto la tabella accettata (`CONTENT_MAIN` o `RETRY_BODY`). Infine costruisce `canonical_fields` e assegna `OK` solo se NDG e denominazione sono entrambi presenti; altrimenti assegna `ANCHOR_UNCERTAIN`. Vedi [ADR 0018](adr/0018-appiattimento-soggetti-con-merge-e-provenienza.md).
 
-<!-- Source: extraction/imaging.py:19; extraction/imaging.py:52; extraction/config.py:78; extraction/pipeline.py:78; extraction/pipeline.py:110; extraction/pipeline.py:151; extraction/pipeline.py:235; extraction/pipeline.py:244; extraction/normalization.py:16; extraction/normalization.py:104; extraction/pipeline.py:258; extraction/pipeline.py:284; extraction/pipeline.py:366; extraction/pipeline.py:194; prompts/extraction_anchor.json:1 -->
+<!-- Source: extraction/imaging.py:19; extraction/imaging.py:52; extraction/config.py:78; extraction/pipeline.py:78; extraction/pipeline.py:110; extraction/pipeline.py:151; extraction/pipeline.py:243; extraction/pipeline.py:252; extraction/normalization.py:16; extraction/normalization.py:120; extraction/pipeline.py:266; extraction/pipeline.py:295; extraction/pipeline.py:378; extraction/pipeline.py:196; prompts/extraction_anchor.json:1 -->
 
 ### Gestione degli errori e casi limite
 
 `MAX_CALLS_PER_SCREEN` regola i **passaggi logici**, non un tetto alle richieste HTTP. Anchor e main restano due letture anche se il valore configurato è inferiore a due, salvo uscita anticipata; ogni invocazione può essere ritentata dal wrapper di trasporto. Le aree vengono selezionate in ordine di priorità, ma completano in qualunque ordine.
-<!-- Source: extraction/pipeline.py:151; extraction/pipeline.py:168; extraction/pipeline.py:304; extraction/pipeline.py:338; extraction/vlm_client.py:230 -->
+<!-- Source: extraction/pipeline.py:151; extraction/pipeline.py:168; extraction/pipeline.py:317; extraction/pipeline.py:349; extraction/vlm_client.py:230 -->
 
 - **Errori delle prime letture:** propagano al chiamante. `ValueError`, `KeyError` e `IndexError` non vengono ritentati dal wrapper; le altre eccezioni possono produrre fino a tre tentativi, con pausa `min(8.0, 2**i * 0.8) + 0.05*i` secondi.
 - **Errore di un retry di area:** produce un avviso e conserva i valori precedenti. Non aggiunge `_meta`, quindi i tentativi falliti possono essere assenti dal conto di chiamate e costi.
-- **Campi non coperti dai retry:** `creazione` e i cinque `tooltip_*` non appartengono ad alcuna area. Non esistono guardie di avvio che verifichino la copertura.
-- **Appiattimento soggetti:** sovrascrive i dodici campi numerati anche dopo un retry, senza aggiornare la provenienza. I consumatori non devono interpretare `_field_sources` come traccia completa di tutte le trasformazioni.
+- **Copertura dei retry:** `creazione` appartiene a HEADER. I cinque `tooltip_*` sono dichiarati in `UNRETRIED_FIELDS` e letti solo dal main: sono sovrapposizioni transitorie senza un ritaglio fisso affidabile. `test_domain_vocabulary.py` verifica che ogni campo appartenga a una sola area o all'esclusione esplicita; non esistono guardie di avvio equivalenti.
+- **Appiattimento soggetti:** conserva gli scalari migliori e registra la sorgente dei candidati tabellari vincenti; questi candidati non aggiungono `evidence_text`. `_field_sources` resta parziale per i campi assenti inizializzati dal main e per le correzioni di coerenza.
 - **Stime:** un modello non presente in `PRICING_PER_1M` costa zero nel report; la latenza aggregata somma le chiamate e non misura il tempo totale percepito quando i retry sono paralleli.
 
-<!-- Source: extraction/vlm_client.py:230; extraction/pipeline.py:342; extraction/config.py:101; extraction/fields.py:12; extraction/pipeline.py:203; extraction/vlm_client.py:26; extraction/pipeline.py:383 -->
+<!-- Source: extraction/vlm_client.py:230; extraction/pipeline.py:353; extraction/config.py:105; extraction/config.py:122; tests/test_domain_vocabulary.py:19; extraction/pipeline.py:203; extraction/vlm_client.py:26; extraction/pipeline.py:396 -->
 
 La forma di output del modello dipende dal provider: OpenAI usa output strutturato, `gemini-1.5*` usa `json_mode`, le altre famiglie Gemini percorrono JSON libero e validazione Pydantic. Il [layer LLM](04-architecture.md#layer-llm-e-prompt) descrive anche il catalogo prompt.
 <!-- Source: extraction/vlm_client.py:21; extraction/vlm_client.py:52; extraction/vlm_client.py:123 -->
@@ -100,14 +100,14 @@ Il confronto avviene per chiave di schermata e campo: non ricostruisce le pratic
 1. **Caricamento CSV.** Il loader rileva il separatore e prova `utf-8-sig`, `cp1252`, `latin-1`; normalizza gli spazi delle intestazioni e riconosce varianti per schermata, nome campo e valore. Una colonna indispensabile non riconosciuta solleva `ValueError`.
 2. **Allineamento della schermata.** Per ogni schermata GT viene cercato l'output con la stessa chiave. Una predizione assente viene saltata, non contata automaticamente come estrazione mancante. Anche etichette senza mapping in `CSV_TO_SCHEMA` vengono saltate.
 3. **Guardia di mismatch.** Quando gli identificativi sono disponibili da entrambi i lati, `dataset_mismatch_guard()` confronta NDG e denominazione; può ricavare il valore predetto anche dai soggetti quando manca nell'intestazione. Una differenza marca la schermata come `DATASET_MISMATCH`.
-4. **Classificazione.** Ogni valore diventa `OK`, `WRONG`, `MISSING`, `HALLUCINATED` o `OK_NULL`. I campi la cui chiave contiene `importo_euro`, `ndg` o `n_fido` usano normalizzazione numerica; il testo GT normalizzato oltre 20 caratteri può passare con similarità `SequenceMatcher` almeno 0.85. Sono nulli anche stringhe vuote, `n/d`, `nd`, `---`, `null`, `none`, `nan`.
+4. **Classificazione.** Ogni valore diventa `OK`, `WRONG`, `MISSING`, `HALLUCINATED` o `OK_NULL`. `ndg` e `ndg_1..4` usano `normalize_ndg()` e richiedono identità dopo la normalizzazione; le chiavi contenenti `importo_euro` o `n_fido` mantengono il confronto numerico. Il testo GT normalizzato oltre 20 caratteri può passare con similarità `SequenceMatcher` almeno 0.85. Sono nulli anche stringhe vuote, `n/d`, `nd`, `---`, `null`, `none`, `nan`.
 5. **Metriche.** RAW include i campi valutati; FILTERED esclude quelli delle schermate in mismatch. Il dettaglio per campo è FILTERED. Correttezza significa `OK` o `OK_NULL`.
 6. **Report.** Una riga per coppia schermata/campo GT registra valore, confidenza, evidenza, stato, provenienza e metadati. Su una schermata in mismatch lo stato del report diventa `DATASET_MISMATCH`. I CSV neutralizzano le stringhe interpretabili come formule prima della scrittura.
 
-<!-- Source: extraction/evaluation.py:25; extraction/evaluation.py:32; extraction/evaluation.py:47; extraction/evaluation.py:88; extraction/normalization.py:183; extraction/normalization.py:195; extraction/normalization.py:134; extraction/normalization.py:28; extraction/evaluation.py:139; extraction/evaluation.py:15 -->
+<!-- Source: extraction/evaluation.py:25; extraction/evaluation.py:32; extraction/evaluation.py:47; extraction/evaluation.py:88; extraction/normalization.py:206; extraction/normalization.py:218; extraction/normalization.py:150; extraction/normalization.py:28; extraction/evaluation.py:139; extraction/evaluation.py:15 -->
 
-La normalizzazione numerica del valutatore resta distinta da `normalize_ndg()` del consolidamento: trattare un identificatore come quantità può alterarlo. I risultati live usano `screen_id` pari al nome pagina o `pagina N`; non sono automaticamente allineati a chiavi GT come `screen 1`. Serve un mapping esplicito per confrontarli con quel dataset.
-<!-- Source: extraction/normalization.py:40; extraction/normalization.py:195; edge-agent/practice_consolidation.py:46; edge-agent/local_extraction_client.py:168 -->
+Valutazione, guardia di mismatch e consolidamento importano la stessa `normalize_ndg()` da `extraction/normalization.py`: elimina i separatori, uniforma le lettere e toglie gli zeri iniziali solo agli identificatori interamente numerici. `12345/A` resta distinto da `12345/B` e da `12345` ([ADR 0017](adr/0017-identita-ndg-condivisa-tra-valutazione-e-consolidamento.md)). I risultati live usano `screen_id` pari al nome pagina o `pagina N`; non sono automaticamente allineati a chiavi GT come `screen 1`. Serve un mapping esplicito per confrontarli con quel dataset.
+<!-- Source: extraction/normalization.py:40; edge-agent/practice_consolidation.py:22; edge-agent/local_extraction_client.py:168 -->
 
 ## Cattura dal vivo dell'edge-agent (modalità BPER)
 
@@ -186,7 +186,7 @@ sequenceDiagram
 <!-- Source: edge-agent/local_extraction_client.py:145; edge-agent/local_extraction_client.py:194; edge-agent/local_extraction_client.py:204; edge-agent/ui/data_table_tab.py:194 -->
 
 `consolidate()` usa `normalize_ndg()` come chiave: elimina separatori, uniforma le lettere e rimuove gli zeri iniziali soltanto se restano cifre. Un frame senza NDG si associa alla pratica precedente in ordine di cattura; quelli iniziali attendono la prima identificata. Se nessun frame ha NDG, nasce un solo record anonimo. La fusione dei campi passa da `pick_best()`, condiviso con la pipeline.
-<!-- Source: edge-agent/practice_consolidation.py:46; edge-agent/practice_consolidation.py:85; edge-agent/practice_consolidation.py:105 -->
+<!-- Source: extraction/normalization.py:40; edge-agent/practice_consolidation.py:67; edge-agent/practice_consolidation.py:87 -->
 
 Entrambi i pulsanti Excel usano `export_results()`: consolidamento, 45 colonne canoniche, NDG e denominazione all'inizio, intestazione su due righe, una riga per pratica. I valori vengono scritti come testo tramite il tipo della cella: le stringhe che iniziano con `=` non diventano formule e i valori negativi conservano il segno. Le rinomine delle colonne in Dati Estratti modificano le etichette, non le chiavi del motore.
 <!-- Source: edge-agent/ui/capture_tab.py:332; edge-agent/ui/data_table_tab.py:255; edge-agent/excel_export.py:92; edge-agent/excel_export.py:124; edge-agent/excel_export.py:177; edge-agent/excel_export.py:217 -->
@@ -255,7 +255,7 @@ In `local-first`, un prototipo di scarto termina la decisione senza rete; una pa
 | Executor dei retry | Pool temporaneo per le aree deboli di ogni immagine, annidato al livello batch o live. |
 | Preflight Qt | Preparazione di pesi e classificatore prima della UI principale, con worker dedicato al download. |
 
-<!-- Source: edge-agent/workers/capture/base_capture_worker.py:43; edge-agent/extraction_pool.py:14; edge-agent/extraction_pool.py:41; edge-agent/local_extraction_client.py:114; extraction/cli.py:237; extraction/pipeline.py:338; edge-agent/bootstrap.py:284; edge-agent/bootstrap.py:489 -->
+<!-- Source: edge-agent/workers/capture/base_capture_worker.py:43; edge-agent/extraction_pool.py:14; edge-agent/extraction_pool.py:41; edge-agent/local_extraction_client.py:114; extraction/cli.py:237; extraction/pipeline.py:349; edge-agent/bootstrap.py:284; edge-agent/bootstrap.py:489 -->
 
 Il worker generico resta un percorso separato: cattura e invia frame a `{api.base_url}/jobs/{job_id}/frames`. Il repository non implementa il server destinatario e quel percorso non esegue l'estrazione locale BPER. La presenza di quell'upload non descrive un'API HTTP disponibile in questo progetto.
 <!-- Source: edge-agent/workers/capture/default_capture_worker.py:34; edge-agent/ui/main_window.py:36; edge-agent/workers/capture/bper_capture_worker.py:687 -->

@@ -178,6 +178,7 @@ class ExtractionPipeline:
 
         attempts_meta: List[Dict[str, Any]] = [anchors["_meta"], main_out["_meta"]]
         field_sources: Dict[str, str] = {k: "CONTENT_MAIN" for k in FIELD_KEYS}
+        table_sources: Dict[str, str] = {k: "CONTENT_MAIN" for k in ("soggetti", "fidi", "garanzie")}
         result = main_out
 
         # 3) Merge anchors & post-process
@@ -186,7 +187,7 @@ class ExtractionPipeline:
 
         # 4) Retry areas
         self._retry_areas(content_img, screen_id, result, field_sources, attempts_meta,
-                          calibrated=calibrated)
+                          calibrated=calibrated, table_sources=table_sources)
 
         # 5) Coherence check
         self._coherence_check(result)
@@ -202,9 +203,16 @@ class ExtractionPipeline:
         for i, s in enumerate(soggetti[:4]):
             idx = i + 1
             conf = s.get("confidence", 0.0)
-            result["fields"][f"ndg_{idx}"] = {"value": s.get("ndg"), "confidence": conf, "section": "soggetti_table"}
-            result["fields"][f"denominazione_{idx}"] = {"value": s.get("denominazione"), "confidence": conf, "section": "soggetti_table"}
-            result["fields"][f"ruolo_{idx}"] = {"value": s.get("ruolo"), "confidence": conf, "section": "soggetti_table"}
+            for key in ("ndg", "denominazione", "ruolo"):
+                field_key = f"{key}_{idx}"
+                candidate = {"value": s.get(key), "confidence": conf, "section": "soggetti_table"}
+                result["fields"][field_key] = merge_field_sources(
+                    field_sources=field_sources,
+                    field_key=field_key,
+                    current=result["fields"].get(field_key) or {},
+                    candidate=candidate,
+                    candidate_source=table_sources["soggetti"],
+                )
         
         result["canonical_fields"] = build_canonical_field_entries(
             result.get("fields", {})
@@ -256,7 +264,8 @@ class ExtractionPipeline:
 
     @staticmethod
     def _merge_tables(result: Dict[str, Any], retry_out: Dict[str, Any], area_name: str,
-                      *, calibrated: bool = True) -> None:
+                      *, calibrated: bool = True,
+                      table_sources: Dict[str, str] | None = None) -> None:
         if area_name != "BODY":
             return
         for tbl in ["soggetti", "fidi", "garanzie"]:
@@ -271,15 +280,17 @@ class ExtractionPipeline:
             if not calibrated:
                 if new_data and not old_data:
                     result[tbl] = new_data
+                    if table_sources is not None:
+                        table_sources[tbl] = f"RETRY_{area_name}"
                 continue
 
             new_conf = sum(row.get("confidence", 0) for row in new_data) / max(1, len(new_data))
             old_conf = sum(row.get("confidence", 0) for row in old_data) / max(1, len(old_data))
 
-            if len(new_data) > len(old_data):
+            if len(new_data) > len(old_data) or (len(new_data) == len(old_data) and new_conf > old_conf):
                 result[tbl] = new_data
-            elif len(new_data) == len(old_data) and new_conf > old_conf:
-                result[tbl] = new_data
+                if table_sources is not None:
+                    table_sources[tbl] = f"RETRY_{area_name}"
 
     def _retry_areas(
         self,
@@ -290,6 +301,7 @@ class ExtractionPipeline:
         attempts_meta: List[Dict[str, Any]],
         *,
         calibrated: bool = True,
+        table_sources: Dict[str, str] | None = None,
     ) -> None:
         areas_to_retry: Set[str] = set()
         for area, fields in AREA_TO_FIELDS.items():
@@ -359,7 +371,8 @@ class ExtractionPipeline:
                         candidate_source=f"RETRY_{area_name}",
                     )
 
-                self._merge_tables(result, retry_out, area_name, calibrated=calibrated)
+                self._merge_tables(result, retry_out, area_name, calibrated=calibrated,
+                                   table_sources=table_sources)
 
     @staticmethod
     def _coherence_check(result: Dict[str, Any]) -> None:

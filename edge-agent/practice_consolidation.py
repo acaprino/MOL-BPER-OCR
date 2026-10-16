@@ -8,7 +8,6 @@ for one subject, so frames are grouped by NDG and merged field by field.
 
 from __future__ import annotations
 
-import re
 import sys
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
@@ -20,7 +19,7 @@ if not app_paths.is_frozen() and _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
 from extraction.fields import FIELD_KEYS
-from extraction.normalization import is_nullish, pick_best, safe_field
+from extraction.normalization import is_nullish, normalize_ndg, pick_best, safe_field
 
 # ============================================================
 # Record
@@ -41,23 +40,6 @@ class PracticeRecord:
 # ============================================================
 # NDG identity
 # ============================================================
-
-
-def normalize_ndg(value: Any) -> Optional[str]:
-    """Group key for an NDG, or None when it was not read.
-
-    Deliberately not norm_number_str(): that is a quantity normalizer and reads
-    the dot as a decimal separator, so "12.345" becomes "12.35" (splitting one
-    practice in two) and "12345/A" becomes "12345.00" (merging two distinct
-    practices). An NDG is an identifier: keep the alphanumerics, uppercase, and
-    drop leading zeros only when what remains is all digits.
-    """
-    if is_nullish(value):
-        return None
-    cleaned = re.sub(r"[^0-9A-Za-z]", "", str(value)).upper()
-    if cleaned.isdigit():
-        cleaned = cleaned.lstrip("0") or "0"
-    return cleaned or None
 
 
 def _frame_ndg(result: Dict[str, Any]) -> Optional[str]:

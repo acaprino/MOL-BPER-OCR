@@ -37,6 +37,22 @@ def norm_text(x: Any) -> str:
     s = re.sub(r"\s+", " ", s)
     return s.lower()
 
+def normalize_ndg(value: Any) -> Optional[str]:
+    """Identity key for an NDG, or None when it was not read.
+
+    Deliberately not norm_number_str(): that is a quantity normalizer and reads
+    the dot as a decimal separator, so "12.345" becomes "12.35" (splitting one
+    practice in two) and "12345/A" becomes "12345.00" (merging two distinct
+    practices). An NDG is an identifier: keep the alphanumerics, uppercase, and
+    drop leading zeros only when what remains is all digits.
+    """
+    if is_nullish(value):
+        return None
+    cleaned = re.sub(r"[^0-9A-Za-z]", "", str(value)).upper()
+    if cleaned.isdigit():
+        cleaned = cleaned.lstrip("0") or "0"
+    return cleaned or None
+
 def norm_number_str(x: Any) -> str:
     if x is None:
         return ""
@@ -144,8 +160,15 @@ def classify_field(gt_val: Any, pred_val: Any, field_key: Optional[str] = None) 
         return "HALLUCINATED", f"Valore estratto ('{pred_val}') ma assente in GT."
 
     # Both present
+    if field_key and field_key.lower() in ("ndg", "ndg_1", "ndg_2", "ndg_3", "ndg_4"):
+        gt_ndg = normalize_ndg(gt_val)
+        pr_ndg = normalize_ndg(pred_val)
+        if gt_ndg == pr_ndg:
+            return "OK", ""
+        return "WRONG", f"Mismatch NDG: GT='{gt_ndg}' vs PRED='{pr_ndg}'"
+
     # Check if it's a numeric field
-    numeric_fields = ["importo_euro", "ndg", "n_fido"]
+    numeric_fields = ["importo_euro", "n_fido"]
     if field_key and any(nf in field_key.lower() for nf in numeric_fields):
         gt_n = norm_number_str(gt_val)
         pr_n = norm_number_str(pred_val)
@@ -203,7 +226,7 @@ def dataset_mismatch_guard(gt_kv: Dict[str, Any], pred: Dict[str, Any]) -> bool:
     pr_ndg = _resolve_anchor_value(pred_fields, soggetti, "ndg")
     pr_den = _resolve_anchor_value(pred_fields, soggetti, "denominazione")
     
-    if gt_ndg and pr_ndg and norm_number_str(gt_ndg) != norm_number_str(pr_ndg):
+    if gt_ndg and pr_ndg and normalize_ndg(gt_ndg) != normalize_ndg(pr_ndg):
         return True
     if gt_den and pr_den and norm_text(gt_den) != norm_text(pr_den):
         return True

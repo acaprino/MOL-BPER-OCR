@@ -13,8 +13,8 @@ Each screenshot is processed in three stages by `ExtractionPipeline` in `extract
    or the whole image off calibration, and extracts only NDG +
    DENOMINAZIONE. A confidence gate (`>= 0.95`, `ANCHOR_CONF_MIN`) nulls the `value` of any anchor
    read below the threshold, and it **is** effective: `safe_field()` returns a fresh dict
-   (`normalization.py:77-86`) and the gate mutates those same dicts in place before returning them
-   (`pipeline.py:98-103`). Below threshold the value reaches neither `_merge_anchors()` nor the
+   (`extraction/normalization.py`) and the gate mutates those same dicts in place before returning
+   them from `extract_anchors()`. Below threshold the value reaches neither `_merge_anchors()` nor the
    main-pass hint, so the model-reported confidence is a binary switch here, not a soft signal.
    With `STOP_ON_ANCHOR_UNCERTAIN=1` the pipeline exits early when both anchor *values* are null.
 2. **Main pass** -- the selected content crop, or the whole image when cropping is not
@@ -24,9 +24,9 @@ Each screenshot is processed in three stages by `ExtractionPipeline` in `extract
 3. **Conditional retry** -- an area (HEADER / BODY / FOOTER) is retried when any of its fields is
    nullish or below `RETRY_CONF_MIN` (default `0.60`). Each area gets a dedicated crop and an
    area-specific Italian prompt; only BODY (contrast 1.3 / sharpness 2.5) and HEADER (1.4 / 3.5)
-   also get an image boost, FOOTER gets none (`pipeline.py:274-282`). At most
+   also get an image boost, FOOTER gets none (`ExtractionPipeline._retry_areas()`). At most
    `max(0, MAX_CALLS_PER_SCREEN - 2)` areas are retried (anchor + main already count,
-   `pipeline.py:305-317`), selected in `AREA_TO_FIELDS` declaration order and then executed
+   `ExtractionPipeline._retry_areas()`), selected in `AREA_TO_FIELDS` declaration order and then executed
    concurrently. `MAX_CALLS_PER_SCREEN` therefore
    defaults to `2 + len(AREA_TO_FIELDS)` (= 5), derived rather than a literal: below that the
    trailing areas are structurally unreachable. A page showing a single section makes every *other*
@@ -36,24 +36,37 @@ Each screenshot is processed in three stages by `ExtractionPipeline` in `extract
    The per-field winner is chosen by
    `pick_best()`: non-null beats null; on equal nullness the current value wins unless the candidate
    has strictly higher confidence. Only the retried area's own fields are merged back, and the
-   arrays only for BODY (`pipeline.py:305-318`).
-   **Retry coverage gap:** `creazione` and the 5 `tooltip_*` fields belong to *no* retry area
-   (`AREA_TO_FIELDS`, `extraction/config.py:81`), so they can never be retried. A failed area
-   retry is non-fatal (main-pass values are kept, warning printed).
+   arrays only for BODY (`ExtractionPipeline._merge_tables()`).
+   `creazione` belongs to HEADER. The five `tooltip_*` fields are explicitly listed in
+   `UNRETRIED_FIELDS`: they are transient overlays with no reliable fixed retry crop, so only
+   the main pass reads them. `test_domain_vocabulary.py` checks that every field has exactly
+   one retry policy, either an area or this explicit exclusion; these are test checks, not
+   startup guards. A failed area retry is non-fatal (main-pass values are kept, warning printed).
 
 The call budget counts logical passes, not HTTP requests. `call_vlm_with_retry()` can
 attempt each pass up to three times. It immediately re-raises `ValueError`, `KeyError`
 and `IndexError`; other exceptions enter backoff. Anchor and main still run when the
 configured budget is below two, unless the early anchor exit applies.
-<!-- Source: extraction/vlm_client.py:63; extraction/pipeline.py:151; extraction/pipeline.py:305 -->
+<!-- Source: extraction/vlm_client.py:63; extraction/pipeline.py:151; extraction/pipeline.py:317 -->
 
-Post-processing order is load-bearing (`pipeline.py:154-176`): anchors are merged back and `tipo`
+Post-processing order is load-bearing in `ExtractionPipeline.extract_from_image()`: anchors are merged back and `tipo`
 normalized *before* retries; the coherence check (repairs `evidenze` / `tipo` from their tooltips)
 runs *after* retries; then `soggetti[:4]` are flattened to `ndg_1..4` / `denominazione_1..4` /
-`ruolo_1..4` for CSV-style evaluation. This flatten runs after the retry merge and overwrites those
-fields from the soggetti rows (even with `None` values) without updating `_field_sources`
-(`pipeline.py:169-176`) -- but only for rows actually present, so with an empty `soggetti` the flat
-values the model produced survive.
+`ruolo_1..4` for CSV-style evaluation. Each table value competes with the current scalar through
+`pick_best()`: non-null wins, then higher confidence, and the current scalar wins ties. When the
+table value wins, `_field_sources` records the accepted table's origin (`CONTENT_MAIN` or
+`RETRY_BODY`); a rejected retry table cannot change that origin. Only rows actually present
+produce candidates, so an empty `soggetti` leaves scalar values intact
+([ADR 0018](adr/0018-appiattimento-soggetti-con-merge-e-provenienza.md)). Flattened candidates
+still omit `evidence_text`. Main-pass source labels for absent fields and coherence repairs
+remain limitations of `_field_sources`.
+
+Evaluation compares `ndg` and `ndg_1..4` with the same `normalize_ndg()` used by the dataset
+mismatch guard and live practice consolidation. It lives in `extraction/normalization.py`,
+preserves alphanumeric suffixes and removes leading zeros only for entirely numeric
+identifiers ([ADR 0017](adr/0017-identita-ndg-condivisa-tra-valutazione-e-consolidamento.md)).
+Quantity comparison for `importo_euro` and `n_fido` continues to use `norm_number_str()`.
+<!-- Source: extraction/normalization.py:40; extraction/normalization.py:150; extraction/normalization.py:218; edge-agent/practice_consolidation.py:22; tests/test_normalization.py:22 -->
 
 Two entry methods exist by design:
 - `extract_from_screen(path)` -- used by CLI and the Tkinter GUI; normalizes the image internally

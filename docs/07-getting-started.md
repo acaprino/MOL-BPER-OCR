@@ -157,13 +157,13 @@ Ordinati per valore di apprendimento: dal contratto dati verso l'orchestrazione 
 8. **`edge-agent/local_extraction_client.py`**: Corto e portante: il ponte QObject tra la UI PyQt6 e `ExtractionPipeline`, la giuntura `ingest_frame()` e il segnale `result_ready` che riattraversa il confine verso il thread della UI.
 9. **`edge-agent/workers/capture/bper_capture_worker.py`**: Il loop di cattura: screenshot mss, `preprocess_for_ocr()`, deduplica pHash, routing di pagina, gate di stabilità di 2 secondi, poi l’accodamento asincrono con `ingest_frame()` e la conferma dell’esito; anche lo scatto manuale passa dal loop del worker. Leggilo dopo avere compreso la pipeline.
 
-<!-- Source: extraction/fields.py:12; extraction/schemas.py:31; extraction/pipeline.py:122; extraction/pipeline.py:223; extraction/config.py:7; extraction/cli.py:164; extraction/vlm_client.py:123; extraction/evaluation.py:88; edge-agent/local_extraction_client.py:127; edge-agent/workers/capture/bper_capture_worker.py:346 -->
+<!-- Source: extraction/fields.py:12; extraction/schemas.py:31; extraction/pipeline.py:122; extraction/pipeline.py:231; extraction/config.py:7; extraction/cli.py:164; extraction/vlm_client.py:123; extraction/evaluation.py:88; edge-agent/local_extraction_client.py:127; edge-agent/workers/capture/bper_capture_worker.py:346 -->
 
 ## Dove intervenire e cosa verificare
 
 | Se vuoi cambiare… | Parti da… | Verifica… |
 |---|---|---|
-| Un campo estratto | `extraction/fields.py`, `schemas.py`, `field_definitions.py`, `config.py` e `prompts/` | Chiave, mapping CSV, retry e colonna canonica coerenti; test di retry ed Excel. |
+| Un campo estratto | `extraction/fields.py`, `schemas.py`, `field_definitions.py`, `config.py` e `prompts/` | Chiave, mapping CSV, area di retry o esclusione esplicita e colonna canonica coerenti; test del vocabolario, retry ed Excel. |
 | Lettura o fusione dei valori | `extraction/pipeline.py`, `extraction/normalization.py` | Anchor, budget e ordine dei passaggi; `test_pipeline_retry.py`, `test_content_crop.py`. |
 | Inquadratura e ritagli | `edge-agent/frame_normalize.py`, `extraction/imaging.py`, `edge-agent/page_classifier.py` | `test_frame_normalize.py`, `test_bper_capture_framing.py`, `test_page_classifier.py`, `test_content_crop.py`. |
 | Quando acquisire di nuovo | `edge-agent/workers/capture/bper_capture_worker.py`, `edge-agent/stability.py` | `test_bper_capture_lifecycle.py`: cambiamenti piccoli, errori, conferme vecchie e scatto manuale. |
@@ -177,7 +177,7 @@ Ordinati per valore di apprendimento: dal contratto dati verso l'orchestrazione 
 | Riconoscimento pagina | `edge-agent/llm_router.py`, `page_classifier.py`, `page_registry.py` e catalogo pagine | `test_page_registry.py`, `test_page_classifier.py`; modalità in `config.ini`. |
 | Impostazioni di cattura | `edge-agent/config.py`, `edge-agent/config.ini` | Monitor, FPS, routing e risoluzione delle credenziali separata dal motore. |
 
-<!-- Source: extraction/fields.py:12; extraction/pipeline.py:284; extraction/normalization.py:104; edge-agent/frame_normalize.py:209; edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/local_extraction_client.py:194; edge-agent/excel_export.py:217; prompt_store.py:62; extraction/cli.py:285; edge-agent/ui/main_window.py:66; edge-agent/config.py:292 -->
+<!-- Source: extraction/fields.py:12; extraction/pipeline.py:295; extraction/normalization.py:120; edge-agent/frame_normalize.py:209; edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/local_extraction_client.py:194; edge-agent/excel_export.py:217; prompt_store.py:62; extraction/cli.py:285; edge-agent/ui/main_window.py:66; edge-agent/config.py:292 -->
 
 I percorsi di test indicati nella tabella sono sotto `tests/`. Le firme complete,
 i valori restituiti e gli errori delle API principali sono nel
@@ -189,13 +189,16 @@ i valori restituiti e gli errori delle API principali sono nel
 python -m pytest tests
 ```
 
-La suite comprende catalogo prompt, geometria e ritagli, riconoscimento pagina,
-retry, pool, client asincrono, ciclo di cattura, consolidamento ed Excel. Le prove
+La suite comprende catalogo prompt, coerenza dei vocabolari di campo, geometria
+e ritagli, riconoscimento pagina, retry, gate anchor, merge scalare, coerenza dei
+tooltip e appiattimento dei soggetti con provenienza. Verifica anche l'identità
+NDG condivisa fra valutazione e consolidamento, pool, client asincrono, ciclo di
+cattura ed Excel. Le prove
 del client usano una pipeline finta sul confine con il provider; non misurano
 l'accuratezza di lettura del modello. `test_page_classifier.py` usa DINOv2 su CPU,
 può ricostruire la cache e viene saltato se torch non è disponibile; al primo uso
 dei pesi può essere necessaria la rete.
-<!-- Source: tests/test_local_extraction_client.py:18; tests/test_page_classifier.py:1; tests/test_excel_export.py:22; tests/test_bper_capture_lifecycle.py:105 -->
+<!-- Source: tests/test_domain_vocabulary.py:11; tests/test_pipeline_postprocessing.py:60; tests/test_normalization.py:22; tests/test_local_extraction_client.py:18; tests/test_page_classifier.py:1; tests/test_excel_export.py:22; tests/test_bper_capture_lifecycle.py:105 -->
 
 Per una modifica al comportamento, esegui prima la regressione mirata e poi la
 suite completa; per l'accuratezza estrattiva serve anche il confronto sul dataset.
@@ -262,7 +265,7 @@ mostra il traffico del router, non sostituisce la diagnostica dell'estrazione.
 2. Mappa l'etichetta del CSV di ground truth in `CSV_TO_SCHEMA` (`extraction/fields.py`).
 3. Aggiungi `display_name` + `page_key` in `CANONICAL_FIELD_DEFINITIONS` e l'alias in `FIELD_LABEL_ALIASES` (`extraction/field_definitions.py`), così l'export canonico e il raggruppamento per pagina della UI lo intercettano.
 4. Assegnalo a un'area di retry in `AREA_TO_FIELDS` se va ritentato quando è nullo o a bassa confidenza.
-<!-- Source: extraction/config.py:101 -->
+<!-- Source: extraction/config.py:105 -->
 5. Descrivilo nel prompt italiano (`prompts/extraction_main.json`), così il modello sa di doverlo cercare.
 
 ### Fare debug di un'estrazione sbagliata
@@ -321,7 +324,7 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
 <!-- Source: edge-agent/config.py:339 -->
 
 - **Le estrazioni reali chiamano un provider, e i modelli sconosciuti riportano $0.00.** Per schermata: 1 chiamata anchor + 1 chiamata principale + fino a `MAX_CALLS_PER_SCREEN - 2` retry, uno per area debole, in parallelo tra le schermate. Il default di `MAX_CALLS_PER_SCREEN` è derivato da `2 + len(AREA_TO_FIELDS)` (= 5), quindi sono ammessi fino a 5 passaggi logici. I retry di trasporto possono portare a più richieste di rete, e il router LLM effettua chiamate separate. `estimate_cost_usd()` restituisce `0.0` per qualsiasi modello assente da `PRICING_PER_1M`: dato che `LLM_MODEL` è testo libero, un nome di modello sbagliato o datato (es. `gpt-4o-2024-11-20`) azzera in silenzio il report dei costi invece di fallire.
-<!-- Source: extraction/pipeline.py:305; extraction/vlm_client.py:26 -->
+<!-- Source: extraction/pipeline.py:317; extraction/vlm_client.py:26 -->
 
 - **Le variabili d'ambiente vengono lette al momento dell'import.** `extraction/config.py` valuta ogni `os.getenv()` all'import del modulo. In una REPL o in un notebook imposta l’ambiente prima di `import extraction`. Lo stesso vale per Tkinter, che non carica `.env`; l’avvio diretto dell’edge-agent rinvia invece l’import della UI fino al preflight. La scorciatoia `main.py --gui` ha già importato il motore prima di quel passaggio.
 
@@ -333,7 +336,7 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
   da `FIELD_KEYS`, ma non ci sono guardie di avvio che confrontino tutte le chiavi
   con mapping CSV, retry e colonne canoniche. Una nuova chiave va propagata alle
   strutture indicate sopra. Le firme da usare sono nel [riferimento API](12-python-api.md).
-  <!-- Source: extraction/schemas.py:68; extraction/config.py:101; edge-agent/excel_export.py:92 -->
+  <!-- Source: extraction/schemas.py:68; extraction/config.py:105; edge-agent/excel_export.py:92 -->
 
 - **Il riconoscimento ML richiede pesi disponibili.** L'edge-agent prepara i pesi
   durante il preflight nelle modalità `ml` e `hybrid`; il caricamento del modello

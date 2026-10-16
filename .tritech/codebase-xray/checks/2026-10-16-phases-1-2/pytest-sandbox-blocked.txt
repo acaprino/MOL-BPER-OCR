@@ -1,0 +1,193 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-9.1.1, pluggy-1.6.0 -- D:\Projects\poc-data-extraction\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: D:\Projects\poc-data-extraction
+plugins: anyio-4.13.0, langsmith-0.8.6
+collecting ... collected 303 items
+
+tests/test_base_capture_worker.py::test_stop_before_run_skips_the_loop PASSED [  0%]
+tests/test_base_capture_worker.py::test_run_without_prior_stop_executes_loop PASSED [  0%]
+tests/test_bper_capture_framing.py::test_grab_raw_crops_the_monitor_down_to_the_app_window PASSED [  0%]
+tests/test_bper_capture_framing.py::test_grab_raw_keeps_the_full_frame_when_no_window_can_be_located PASSED [  1%]
+tests/test_bper_capture_framing.py::test_grab_raw_announces_which_framing_strategy_ran PASSED [  1%]
+tests/test_bper_capture_framing.py::test_the_framing_announcement_is_not_repeated_every_frame PASSED [  1%]
+tests/test_bper_capture_framing.py::test_grab_raw_warns_when_the_frame_is_passed_through_uncropped PASSED [  2%]
+tests/test_bper_capture_framing.py::test_an_unchanged_screen_is_acquired_without_a_second_route PASSED [  2%]
+tests/test_bper_capture_framing.py::test_a_confident_local_answer_does_not_call_the_router PASSED [  2%]
+tests/test_bper_capture_framing.py::test_a_low_margin_answer_defers_to_the_router PASSED [  3%]
+tests/test_bper_capture_framing.py::test_a_frame_rejected_locally_does_not_call_the_router PASSED [  3%]
+tests/test_bper_capture_lifecycle.py::test_queued_page_is_not_reported_as_completed PASSED [  3%]
+tests/test_bper_capture_lifecycle.py::test_stationary_page_is_not_rerouted_after_completion PASSED [  4%]
+tests/test_bper_capture_lifecycle.py::test_failed_extraction_rearms_the_stationary_page PASSED [  4%]
+tests/test_bper_capture_lifecycle.py::test_rejected_enqueue_does_not_consume_the_page PASSED [  4%]
+tests/test_bper_capture_lifecycle.py::test_small_identity_change_on_the_same_page_can_be_acquired PASSED [  5%]
+tests/test_bper_capture_lifecycle.py::test_returning_to_a_page_is_a_new_visit PASSED [  5%]
+tests/test_bper_capture_lifecycle.py::test_old_failure_does_not_release_the_current_pending_visit PASSED [  5%]
+tests/test_bper_capture_lifecycle.py::test_uncertain_anchor_does_not_trigger_endless_recapture PASSED [  6%]
+tests/test_bper_capture_lifecycle.py::test_manual_request_waits_for_the_capture_thread PASSED [  6%]
+tests/test_bper_capture_lifecycle.py::test_stop_discards_queued_manual_requests PASSED [  6%]
+tests/test_bper_capture_lifecycle.py::test_manual_request_during_pending_extraction_is_coalesced PASSED [  7%]
+tests/test_bper_capture_lifecycle.py::test_manual_request_after_success_can_capture_again PASSED [  7%]
+tests/test_bper_capture_lifecycle.py::test_first_manual_capture_retries_the_operator_page_after_error PASSED [  7%]
+tests/test_bper_capture_lifecycle.py::test_manual_retry_does_not_reuse_automatic_route_metadata PASSED [  8%]
+tests/test_content_crop.py::test_the_calibrated_family_keeps_the_calibrated_crop PASSED [  8%]
+tests/test_content_crop.py::test_a_divergent_aspect_is_not_cropped PASSED [  8%]
+tests/test_content_crop.py::test_a_matching_aspect_at_a_foreign_size_is_not_cropped PASSED [  9%]
+tests/test_content_crop.py::test_a_live_frame_is_never_cropped_even_at_the_calibrated_aspect PASSED [  9%]
+tests/test_content_crop.py::test_the_anchor_pass_reads_the_whole_image_when_the_crop_was_skipped PASSED [  9%]
+tests/test_content_crop.py::test_the_live_result_states_that_no_crop_was_applied PASSED [ 10%]
+tests/test_content_crop.py::test_a_reference_shaped_file_still_gets_the_calibrated_crop PASSED [ 10%]
+tests/test_content_crop.py::test_the_anchor_band_still_applies_on_the_calibrated_file_path PASSED [ 10%]
+tests/test_content_crop.py::test_an_out_of_family_file_is_not_amputated[size0] PASSED [ 11%]
+tests/test_content_crop.py::test_an_out_of_family_file_is_not_amputated[size1] PASSED [ 11%]
+tests/test_content_crop.py::test_a_longer_retry_table_does_not_replace_rows_off_calibration PASSED [ 11%]
+tests/test_content_crop.py::test_a_longer_retry_table_still_fills_an_empty_one_off_calibration PASSED [ 12%]
+tests/test_content_crop.py::test_a_longer_retry_table_still_replaces_on_the_calibrated_path PASSED [ 12%]
+tests/test_domain_vocabulary.py::test_canonical_definitions_cover_the_field_vocabulary PASSED [ 12%]
+tests/test_domain_vocabulary.py::test_csv_mappings_cover_the_field_vocabulary PASSED [ 13%]
+tests/test_domain_vocabulary.py::test_every_field_has_exactly_one_retry_policy PASSED [ 13%]
+tests/test_domain_vocabulary.py::test_only_the_five_tooltips_are_explicitly_unretried PASSED [ 13%]
+tests/test_domain_vocabulary.py::test_every_retry_area_has_an_image_crop PASSED [ 14%]
+tests/test_domain_vocabulary.py::test_every_retry_area_has_a_dedicated_prompt PASSED [ 14%]
+tests/test_env_key.py::test_packaged_env_hands_the_key_to_the_first_run PASSED [ 14%]
+tests/test_env_key.py::test_packaged_env_is_refused_without_a_key PASSED [ 15%]
+tests/test_env_key.py::test_packaged_env_is_refused_for_a_key_with_a_line_break PASSED [ 15%]
+tests/test_excel_export.py::test_ndg_and_denominazione_are_pinned_first PASSED [ 15%]
+tests/test_excel_export.py::test_all_45_canonical_fields_are_columns PASSED [ 16%]
+tests/test_excel_export.py::test_columns_are_grouped_by_page_without_gaps PASSED [ 16%]
+tests/test_excel_export.py::test_user_label_overrides_the_display_name PASSED [ 16%]
+tests/test_excel_export.py::test_header_row_one_holds_merged_page_bands PASSED [ 17%]
+tests/test_excel_export.py::test_header_row_two_holds_field_labels PASSED [ 17%]
+tests/test_excel_export.py::test_data_starts_at_row_three_one_row_per_practice PASSED [ 17%]
+tests/test_excel_export.py::test_panes_are_frozen_below_the_two_header_rows PASSED [ 18%]
+tests/test_excel_export.py::test_autofilter_covers_the_label_row_and_the_data PASSED [ 18%]
+tests/test_excel_export.py::test_a_value_starting_with_equals_is_inert_text PASSED [ 18%]
+tests/test_excel_export.py::test_a_negative_amount_keeps_its_minus_sign PASSED [ 19%]
+tests/test_excel_export.py::test_unextracted_field_leaves_the_cell_empty PASSED [ 19%]
+tests/test_excel_export.py::test_export_results_consolidates_and_returns_the_practice_count PASSED [ 19%]
+tests/test_excel_export.py::test_export_results_applies_renamed_labels PASSED [ 20%]
+tests/test_extraction_pool.py::test_submitted_tasks_execute_with_args PASSED [ 20%]
+tests/test_extraction_pool.py::test_threads_are_daemon PASSED            [ 20%]
+tests/test_extraction_pool.py::test_exception_does_not_kill_worker PASSED [ 21%]
+tests/test_extraction_pool.py::test_concurrency_is_bounded_by_max_workers PASSED [ 21%]
+tests/test_extraction_pool.py::test_stop_discards_queued_tasks_and_rejects_new_ones PASSED [ 21%]
+tests/test_frame_normalize.py::test_crop_to_rect_maps_virtual_screen_coordinates_to_monitor_local_ones PASSED [ 22%]
+tests/test_frame_normalize.py::test_crop_to_rect_keeps_the_frame_when_the_window_is_on_another_monitor PASSED [ 22%]
+tests/test_frame_normalize.py::test_crop_to_rect_clamps_a_window_hanging_off_the_monitor_edge PASSED [ 22%]
+tests/test_frame_normalize.py::test_detect_app_rect_finds_a_window_on_a_uniform_desktop PASSED [ 23%]
+tests/test_frame_normalize.py::test_detect_app_rect_gives_up_when_the_app_fills_the_frame PASSED [ 23%]
+tests/test_frame_normalize.py::test_normalize_frame_prefers_the_window_rect_over_content_detection PASSED [ 23%]
+tests/test_frame_normalize.py::test_normalize_frame_falls_back_to_content_detection_without_a_window_rect PASSED [ 24%]
+tests/test_frame_normalize.py::test_normalize_frame_keeps_the_frame_when_nothing_can_be_located PASSED [ 24%]
+tests/test_frame_normalize.py::test_normalize_frame_survives_a_window_rect_provider_that_raises PASSED [ 24%]
+tests/test_frame_normalize.py::test_window_selection_never_returns_our_own_window PASSED [ 25%]
+tests/test_frame_normalize.py::test_window_selection_gives_up_when_only_our_own_window_matches PASSED [ 25%]
+tests/test_frame_normalize.py::test_window_selection_arbitrates_by_area_instead_of_enumeration_order PASSED [ 25%]
+tests/test_frame_normalize.py::test_window_selection_returns_none_when_nothing_matches PASSED [ 26%]
+tests/test_frame_normalize.py::test_window_selection_ignores_degenerate_rectangles PASSED [ 26%]
+Timeout (0:01:00)!
+Thread 0x0000bda4 (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 359 in wait
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\queue.py", line 199 in get
+  File "D:\Projects\poc-data-extraction\edge-agent\extraction_pool.py", line 57 in _run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 995 in run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1044 in _bootstrap_inner
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1015 in _bootstrap
+
+Thread 0x00009b4c (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 359 in wait
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\queue.py", line 199 in get
+  File "D:\Projects\poc-data-extraction\edge-agent\extraction_pool.py", line 57 in _run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 995 in run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1044 in _bootstrap_inner
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1015 in _bootstrap
+
+Thread 0x00004574 (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 359 in wait
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\queue.py", line 199 in get
+  File "D:\Projects\poc-data-extraction\edge-agent\extraction_pool.py", line 57 in _run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 995 in run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1044 in _bootstrap_inner
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1015 in _bootstrap
+
+Thread 0x0000b1e8 (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 359 in wait
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\queue.py", line 199 in get
+  File "D:\Projects\poc-data-extraction\edge-agent\extraction_pool.py", line 57 in _run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 995 in run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1044 in _bootstrap_inner
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1015 in _bootstrap
+
+Thread 0x0000a184 (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 359 in wait
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\queue.py", line 199 in get
+  File "D:\Projects\poc-data-extraction\edge-agent\extraction_pool.py", line 57 in _run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 995 in run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1044 in _bootstrap_inner
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1015 in _bootstrap
+
+Thread 0x00005304 (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 359 in wait
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\queue.py", line 199 in get
+  File "D:\Projects\poc-data-extraction\edge-agent\extraction_pool.py", line 57 in _run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 995 in run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1044 in _bootstrap_inner
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1015 in _bootstrap
+
+Thread 0x00007c5c (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 359 in wait
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\queue.py", line 199 in get
+  File "D:\Projects\poc-data-extraction\edge-agent\extraction_pool.py", line 57 in _run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 995 in run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1044 in _bootstrap_inner
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1015 in _bootstrap
+
+Thread 0x000029d8 (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 359 in wait
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\queue.py", line 199 in get
+  File "D:\Projects\poc-data-extraction\edge-agent\extraction_pool.py", line 57 in _run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 995 in run
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1044 in _bootstrap_inner
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\threading.py", line 1015 in _bootstrap
+
+Thread 0x00006528 (most recent call first):
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\socket.py", line 295 in accept
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\socket.py", line 627 in _fallback_socketpair
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\asyncio\proactor_events.py", line 785 in _make_self_pipe
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\asyncio\proactor_events.py", line 639 in __init__
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\asyncio\windows_events.py", line 316 in __init__
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 737 in new_event_loop
+  File "C:\Users\alfio\AppData\Local\Programs\Python\Python313\Lib\asyncio\events.py", line 840 in new_event_loop
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\langchain_google_genai\chat_models.py", line 2598 in __del__
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\python.py", line 167 in pytest_pyfunc_call
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_callers.py", line 121 in _multicall
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_hooks.py", line 512 in __call__
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\python.py", line 1707 in runtest
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\runner.py", line 184 in pytest_runtest_call
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_callers.py", line 121 in _multicall
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_hooks.py", line 512 in __call__
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\runner.py", line 250 in <lambda>
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\runner.py", line 361 in from_call
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\runner.py", line 249 in call_and_report
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\runner.py", line 139 in runtestprotocol
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\runner.py", line 118 in pytest_runtest_protocol
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_callers.py", line 121 in _multicall
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_hooks.py", line 512 in __call__
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\main.py", line 408 in pytest_runtestloop
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_callers.py", line 121 in _multicall
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_hooks.py", line 512 in __call__
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\main.py", line 384 in _main
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\main.py", line 330 in wrap_session
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\main.py", line 377 in pytest_cmdline_main
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_callers.py", line 121 in _multicall
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_manager.py", line 120 in _hookexec
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pluggy\_hooks.py", line 512 in __call__
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\config\__init__.py", line 229 in _main
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\_pytest\config\__init__.py", line 253 in _console_main
+  File "D:\Projects\poc-data-extraction\.venv\Lib\site-packages\pytest\__main__.py", line 9 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 203 in _run_module_as_main
