@@ -60,7 +60,7 @@ Python 3.12/3.13 come target pratico: **`run_edge_agent.bat`** prova prima il 3.
 | Entry point | `main.py` (CLI; `--gui` → edge-agent), `gui_app.py` (Tkinter), `edge-agent/edge_agent.py` (PyQt6) |
 | Motore core | Pacchetto `extraction/`, senza UI |
 | Cattura dal vivo | `edge-agent/` - mss, pHash via imagehash, routing pagine DINOv2 o OpenAI Vision |
-| Dominio | 9 schermate di gestione credito BPER, 45 chiavi di campo italiane, 4 pagine canoniche |
+| Dominio | 9 varianti di schermata BPER, 45 chiavi di campo italiane, 5 pagine sorgenti e 4 gruppi di export |
 | Persistenza | Dizionari in memoria; export JSON/CSV nel batch e Tkinter, Excel nell’edge-agent |
 | Configurazione | Variabili d'ambiente per il motore (`extraction/config.py`); `edge-agent/config.ini` per l'agente |
 | Test / packaging | Suite pytest in `tests/`; build portable `build_exe.bat` + `edge_agent.spec` |

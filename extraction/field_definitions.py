@@ -113,55 +113,68 @@ CANONICAL_FIELD_DEFINITIONS: Dict[str, Dict[str, str]] = {
     },
     "dal": {
         "display_name": "DAL",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "datore_di_lavoro_anagrafica": {
         "display_name": "DATORE DI LAVORO ANAGRAFICA",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "di_cui_percepiscono_reddito": {
         "display_name": "Di cui percepiscono reddito",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "importo_totale_annuo_nucleo": {
         "display_name": "Importo totale annuo altri componenti nucleo familiare",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "note_scheda_privati": {
         "display_name": "Note Scheda Privati",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "nr_altri_componenti_nucleo": {
         "display_name": "Nr altri componenti nucleo familiare",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "numero_mensilita": {
         "display_name": "Numero mensilità",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "professione_principale": {
         "display_name": "Professione principale",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "rating_ufficiale": {
         "display_name": "RATING UFFICIALE",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "retribuzione_annua_netta": {
         "display_name": "Retribuzione annua netta",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "score_cgs": {
         "display_name": "SCORE CGS",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "tipo_contratto": {
         "display_name": "Tipo contratto",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "ultima_validazione_scheda": {
         "display_name": "Ultima validazione scheda privati",
-        "page_key": "note_da_richiesta",
+        "page_key": "scheda_privati",
+        "export_group_key": "note_da_richiesta",
     },
     "tooltip_descrizione_bmb": {
         "display_name": "tooltip su valore campo Descrizione: BMB",
@@ -260,3 +273,11 @@ def resolve_field_page_key(schema_key: str) -> Optional[str]:
     if definition is None:
         return None
     return definition["page_key"]
+
+
+def resolve_field_export_group_key(schema_key: str) -> Optional[str]:
+    """Return the spreadsheet group, which can differ from the source page."""
+    definition = CANONICAL_FIELD_DEFINITIONS.get(schema_key)
+    if definition is None:
+        return None
+    return definition.get("export_group_key", definition["page_key"])

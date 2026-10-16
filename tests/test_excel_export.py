@@ -131,3 +131,33 @@ def test_export_results_applies_renamed_labels(tmp_path: Path) -> None:
     path = tmp_path / "out.xlsx"
     export_results([_frame("12345")], str(path), labels={"ndg": "Codice cliente"})
     assert load_workbook(path).active.cell(row=2, column=1).value == "Codice cliente"
+
+
+def test_all_column_positions_keep_the_legacy_workbook_contract() -> None:
+    assert [column.schema_key for column in build_columns()] == [
+        "ndg", "denominazione", "creazione", "evidenze", "fase", "filiale_relazione",
+        "stato", "tipo", "tooltip_evidenze_b",
+        "denominazione_1", "denominazione_2", "denominazione_3", "denominazione_4",
+        "ndg_1", "ndg_2", "ndg_3", "ndg_4", "ruolo_1", "ruolo_2", "ruolo_3", "ruolo_4",
+        "descrizione", "importo_euro", "rapporto", "scadenza", "tipo_op", "n_fido",
+        "tooltip_descrizione_consap_dr_bis", "tooltip_descrizione_m_consap",
+        "tooltip_descrizione_ipoteca", "tooltip_descrizione_bmb",
+        "dal", "datore_di_lavoro_anagrafica", "di_cui_percepiscono_reddito",
+        "importo_totale_annuo_nucleo", "note_scheda_privati", "note_della_richiesta",
+        "nr_altri_componenti_nucleo", "numero_mensilita", "professione_principale",
+        "rating_ufficiale", "retribuzione_annua_netta", "score_cgs", "tipo_contratto",
+        "ultima_validazione_scheda",
+    ]
+
+
+def test_workbook_keeps_the_four_legacy_band_ranges(tmp_path: Path) -> None:
+    path = tmp_path / "out.xlsx"
+    write_workbook(consolidate([_frame("12345")]), build_columns(), str(path))
+    ws = load_workbook(path).active
+
+    assert {str(merged) for merged in ws.merged_cells.ranges} == {
+        "A1:I1", "J1:U1", "V1:AE1", "AF1:AS1"
+    }
+    assert [ws[address].value for address in ("A1", "J1", "V1", "AF1")] == [
+        "Risultato ricerca", "Elenco Soggetti", "Gestione Fidi e Garanzie", "Note da Richiesta"
+    ]

@@ -272,6 +272,17 @@ class ExtractionPipeline:
             new_data = retry_out.get(tbl) or []
             old_data = result.get(tbl, [])
 
+            # An empty subject table is also normal on pages without subjects.
+            # Seed it only with confident, identified rows; discard weak or
+            # anonymous rows independently so they cannot reach the flatten.
+            if tbl == "soggetti" and not old_data:
+                new_data = [
+                    row for row in new_data
+                    if row.get("confidence", 0.0) >= RETRY_CONF_MIN
+                    and (not is_nullish(row.get("ndg"))
+                         or not is_nullish(row.get("denominazione")))
+                ]
+
             # Off calibration the BODY crop is a band of the raw window and
             # includes the navigator column, so a longer retry table may be
             # padded with rows read out of menu text. There it may only fill an

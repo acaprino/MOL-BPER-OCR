@@ -10,7 +10,7 @@ La **[documentazione ufficiale](docs/INDEX.md)** raccoglie [istruzioni di avvio]
 
 ## Cosa fa
 
-Il sistema riceve screenshot (da file o cattura in tempo reale) e, attraverso tre passaggi VLM successivi (anchor, main, retry), estrae i campi strutturati con valori di confidenza. Ogni campo viene restituito con `value`, `confidence`, `evidence_text` e `section`. La pipeline include un meccanismo di retry mirato per i campi con confidenza bassa o valore nullo tramite ritagli (crop) per area (HEADER / BODY / FOOTER) dell'immagine.
+Il sistema riceve screenshot (da file o cattura in tempo reale) e, attraverso tre passaggi VLM successivi (anchor, main, retry), estrae i campi strutturati con valori di confidenza. Lo schema dei campi prevede `value`, `confidence`, `evidence_text` e `section`; i candidati prodotti dall'appiattimento dei soggetti non aggiungono `evidence_text`. La pipeline include un meccanismo di retry mirato per i campi con confidenza bassa o valore nullo tramite ritagli (crop) per area (HEADER / BODY / FOOTER) dell'immagine.
 
 ## Stato Attuale
 
@@ -70,7 +70,7 @@ Su Windows il modo più rapido è il launcher, che crea/ripara la `.venv`, insta
 run_edge_agent.bat
 ```
 
-> **Attenzione - ground truth mancante:** il file `mnt/data/dati.csv` **non è nel repository** (`/mnt` è in `.gitignore`; solo i 9 PNG sono tracciati). Su un clone fresco `python main.py` fallisce subito con `FileNotFoundError: Ground truth CSV not found: mnt/data/dati.csv` (`extraction/cli.py:315-316`). Procurarsi il file e metterlo in `mnt/data/` prima di usare la CLI: formato in [Ground truth CSV](#ground-truth-csv). GUI Tkinter ed Edge Agent funzionano anche senza.
+> **Attenzione - ground truth mancante:** il file `mnt/data/dati.csv` **non è nel repository** (`/mnt` è in `.gitignore`; solo i 9 PNG sono tracciati). Su un clone fresco `python main.py` fallisce subito con `FileNotFoundError: Ground truth CSV not found: mnt/data/dati.csv` (`extraction/cli.py::main`). Procurarsi il file e metterlo in `mnt/data/` prima di usare la CLI: formato in [Ground truth CSV](#ground-truth-csv). GUI Tkinter ed Edge Agent funzionano anche senza.
 
 ### 2. Avvio interfacce
 
@@ -94,7 +94,7 @@ Per l'applicazione desktop nativa:
 python gui_app.py
 ```
 
-L'avvio diretto di Tkinter non carica `.env`: esportare prima le variabili oppure inserire la chiave nella GUI. Per il primo avvio dell'edge-agent usare il launcher o `edge-agent/edge_agent.py`, che eseguono il preflight prima di importare la UI e il motore. Le procedure complete sono in [Avvio e sviluppo](docs/07-getting-started.md).
+Tkinter carica `.env` prima di importare il motore e inizializza provider e modello dalla configurazione effettiva, conservando anche un modello personalizzato. La chiave può essere inserita nella GUI. Per il primo avvio dell'edge-agent usare il launcher o `edge-agent/edge_agent.py`, che eseguono il preflight prima di importare la UI e il motore. Le procedure complete sono in [Avvio e sviluppo](docs/07-getting-started.md).
 
 ---
 
@@ -133,13 +133,13 @@ Consegnare l'intera cartella del pacchetto, non soltanto l'eseguibile. Il build 
 | Gruppo | Campi | Area retry |
 |---|---|---|
 | Identificatori header | `ndg`, `denominazione` | HEADER |
-| Metadati pratica | `tipo`, `stato`, `fase`, `creazione`, `evidenze` | HEADER; `creazione` esclusa dai retry |
+| Metadati pratica | `tipo`, `stato`, `fase`, `creazione`, `evidenze` | HEADER |
 | Dati fido | `filiale_relazione`, `n_fido`, `rapporto`, `descrizione`, `scadenza`, `importo_euro`, `tipo_op` | HEADER / BODY |
 | Note e tooltip | `note_della_richiesta`, `tooltip_descrizione_bmb`, `tooltip_evidenze_b`, `tooltip_descrizione_m_consap`, `tooltip_descrizione_consap_dr_bis`, `tooltip_descrizione_ipoteca` | FOOTER per la nota; i cinque tooltip sono esclusi dai retry |
 | Soggetti appiattiti (screen 2-3) | `ndg_1..4`, `denominazione_1..4`, `ruolo_1..4` (fino a 4 cointestatari) | BODY |
 | Scheda privati (screen 4-5) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` | HEADER / BODY / FOOTER |
 
-Le chiavi sono termini di dominio bancario in italiano e non vanno tradotte. Il mapping campo -> area di retry è in `AREA_TO_FIELDS` (`extraction/config.py`).
+Le chiavi sono termini di dominio bancario in italiano e non vanno tradotte. Il mapping campo -> area di retry è in `AREA_TO_FIELDS` (`extraction/config.py`); `UNRETRIED_FIELDS` dichiara l'esclusione dei cinque tooltip. Un retry riempie una tabella `soggetti` vuota solo con righe a confidenza almeno `RETRY_CONF_MIN` e con NDG o denominazione leggibili. Le voci canoniche distinguono cinque pagine di origine dai quattro gruppi dell'Excel: i tredici campi Scheda Privati riportano `page_key=scheda_privati`, conservando il gruppo di export `note_da_richiesta` e le stesse 45 colonne.
 
 ## Configurazione
 
@@ -230,6 +230,8 @@ poc-data-extraction/
   gui_app.py               # Entry point Desktop (Tkinter)
   run_edge_agent.bat       # Launcher Windows: bootstrap .venv + avvio Edge Agent
   requirements.txt         # Unico file dipendenze (core + edge-agent)
+  pyproject.toml           # Solo configurazione pytest e marker slow
+  tools/check.py           # Verifica rapida: esclude i casi DINOv2 marcati slow
   prompt_store.py          # Loader del catalogo prompt (solo stdlib), condiviso da core ed Edge Agent
   prompts/                 # Catalogo prompt LLM: un file JSON per prompt, letto all'avvio
   edge-agent/              # Edge Agent (PyQt6)
@@ -247,8 +249,8 @@ poc-data-extraction/
     __init__.py            # Re-export API pubblica
     config.py              # Configurazione env-var, crop, pricing
     fields.py              # 45 field keys + CSV_TO_SCHEMA mapping
-    field_definitions.py   # Display name + pagina canonica per campo
-    page_definitions.py    # Nomi canonici delle pagine
+    field_definitions.py   # Display name + pagina di origine e gruppo export
+    page_definitions.py    # Cinque pagine di origine, quattro gruppi export
     canonical_mapping.py   # build_canonical_field_entries() per output client
     schemas.py             # Pydantic models per output strutturato
     prompts.py             # Costanti dei prompt VLM, lette dal catalogo prompts/

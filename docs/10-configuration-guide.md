@@ -32,11 +32,11 @@ Copy-Item .env.example .env
 API key required. Set LLM_API_KEY env var or pass api_key=.
 ```
 
-Sostituisci il placeholder di `.env.example:5` (`LLM_API_KEY=your-api-key-here`) con una chiave reale. La GUI Tkinter è l'eccezione: `gui_app.py:24` mostra un campo API key precompilato da `LLM_API_KEY` (con fallback su `OPENAI_API_KEY`), quindi puoi eseguirla senza `.env` incollando la chiave. Attenzione però: `gui_app.py` **non carica `.env`** -- se non usi il campo in-app, le variabili devono essere già esportate nella shell.
+Sostituisci il placeholder di `.env.example` con una chiave reale. Anche `gui_app.py` carica `.env` prima del motore, senza sovrascrivere le variabili già esportate. Il campo API key resta precompilato da `LLM_API_KEY`, con fallback `OPENAI_API_KEY`, e consente di inserire la chiave manualmente. I selettori iniziali usano provider e modello effettivi ([ADR 0021](adr/0021-dotenv-prima-del-motore-nella-gui-tkinter.md)).
 
 **Passo 4 -- Scegliere provider e modello (opzionale).** I default in `extraction/config.py:17-18` sono `LLM_PROVIDER=openai` e `LLM_MODEL=gpt-4o`. Con una chiave OpenAI non cambi nulla. Per passare a Gemini, vedi Profili d'ambiente -- provider e modello devono muoversi insieme o la factory li rifiuta.
 
-**Passo 5 -- Mettere i dati dove la CLI li cerca.** La CLI legge screenshot e CSV di ground truth da `INPUT_DIR`, default `mnt/data` (`extraction/config.py:8`); il percorso della ground truth ne deriva come `mnt/data/dati.csv` (`extraction/config.py:9`). **`dati.csv` non è nel repository** (`/mnt` è in gitignore; solo i 9 file `screen *.png` sono stati forzati), e la CLI fallisce duramente senza (`extraction/cli.py:315-316`) -- vedi Risoluzione dei problemi. Procurati il file separatamente e mettilo in `mnt/data/` prima di lanciare `python main.py`. La GUI Tkinter e l'edge-agent non ne hanno bisogno: la GUI Tkinter è l'alternativa per estrarre **senza** ground truth.
+**Passo 5 -- Mettere i dati dove la CLI li cerca.** La CLI legge screenshot e CSV di ground truth da `INPUT_DIR`, default `mnt/data` (`extraction/config.py:8`); il percorso della ground truth ne deriva come `mnt/data/dati.csv` (`extraction/config.py:9`). **`dati.csv` non è nel repository** (`/mnt` è in gitignore; solo i 9 file `screen *.png` sono stati forzati), e la CLI fallisce duramente senza (`extraction/cli.py::main`) -- vedi Risoluzione dei problemi. Procurati il file separatamente e mettilo in `mnt/data/` prima di lanciare `python main.py`. La GUI Tkinter e l'edge-agent non ne hanno bisogno: la GUI Tkinter è l'alternativa per estrarre **senza** ground truth.
 
 **Passo 6 -- Solo edge-agent in modalità `llm`: fornire la chiave del router.** Serve con la configurazione spedita, che usa `router = llm`. In quel caso `[llm] api_key` nel `config.ini` spedito è **vuota** per scelta, e la chiave viene raccolta dall'ambiente in base al provider -- vedi la ricetta più avanti.
 
@@ -96,7 +96,7 @@ Le modalità `ml`/`hybrid` degradano con grazia: se l'import di torch fallisce, 
 
 Tre interruttori indipendenti, nessuno legato a un "ambiente":
 
-- `DEBUG_MODE=1` -- stampa log `[DEBUG]` di batch/pipeline (`extraction/cli.py:31-34`; default `0` in `extraction/config.py:92`). **Non elencata in `.env.example`** -- esiste solo nel codice.
+- `DEBUG_MODE=1` -- stampa log `[DEBUG]` di batch/pipeline (`extraction/cli.py::_debug_log`; default `0` in `extraction/config.py:92`). **Non elencata in `.env.example`** -- esiste solo nel codice.
 - `DEBUG_SAVE_CROPS=1` -- scrive i crop intermedi in `mnt/data/debug_crops` (`extraction/config.py:93-94`).
 - Flag `--debug` dell'edge-agent -- aggiunge il tab "Debug LLM" con prompt/risposta grezzi del router (`edge-agent/edge_agent.py:51`). La chiave `[debug] show_llm_tab=true` in `config.ini:32` abilita in aggiunta l'emissione del segnale di debug; servono entrambi per vedere il traffico del router.
 
@@ -125,7 +125,7 @@ LLM_MODEL=gpt-4o
 LLM_MODEL_ANCHOR=gpt-4o-mini
 ```
 
-Risultato: l'estrazione anchor dell'intestazione usa il modello economico mentre il passaggio main sull'intero contenuto usa `gpt-4o`. Entrambi i nomi fluiscono in `BatchRunner` (`extraction/cli.py:176-177`), che crea due istanze ChatModel condivise separate (`extraction/cli.py:181-191`).
+Risultato: l'estrazione anchor dell'intestazione usa il modello economico mentre il passaggio main sull'intero contenuto usa `gpt-4o`. Entrambi i nomi fluiscono in `BatchRunner` (`extraction/cli.py::BatchRunner.__init__`), che crea due istanze ChatModel condivise separate (`extraction/cli.py::BatchRunner.__init__`).
 
 ### Puntare la pipeline a un'altra cartella dati
 
@@ -135,7 +135,7 @@ In `.env`:
 INPUT_DIR=C:\data\bper_screens
 ```
 
-Risultato: la CLI elenca `*.png`/`*.jpg`/`*.jpeg` da quella directory (`extraction/cli.py:322-327`), si aspetta `dati.csv` al suo interno (`extraction/config.py:9`) e vi scrive `poc_outputs_improved.json` / `poc_debug_improved.csv` (`extraction/cli.py:337,345`). Da impostare prima del lancio.
+Risultato: la CLI elenca `*.png`/`*.jpg`/`*.jpeg` da quella directory (`extraction/cli.py::main`), si aspetta `dati.csv` al suo interno (`extraction/config.py:9`) e vi scrive `poc_outputs_improved.json` / `poc_debug_improved.csv` (`extraction/cli.py::main`). Da impostare prima del lancio.
 
 ### Modificare i prompt o puntare a un catalogo alternativo
 
@@ -160,7 +160,7 @@ DEBUG_MODE=1
 DEBUG_SAVE_CROPS=1
 ```
 
-Risultato: la console mostra righe `[DEBUG]` per batch e avanzamento per schermata, e ogni crop intermedio finisce in `INPUT_DIR/debug_crops` (nomi tipo `screen 1__CONTENT.png`, `screen 1__HEADER_IN_CONTENT.png`, `screen 1__RETRY_HEADER.png`). Al termine la CLI stampa `Saved debug crops to: ...` (`extraction/cli.py:351-352`).
+Risultato: la console mostra righe `[DEBUG]` per batch e avanzamento per schermata, e ogni crop intermedio finisce in `INPUT_DIR/debug_crops` (nomi tipo `screen 1__CONTENT.png`, `screen 1__HEADER_IN_CONTENT.png`, `screen 1__RETRY_HEADER.png`). Al termine la CLI stampa `Saved debug crops to: ...` (`extraction/cli.py::main`).
 
 ### Regolare il parallelismo
 
@@ -171,7 +171,7 @@ PARALLEL_WORKERS=8
 PARALLEL_ENABLED=1
 ```
 
-Risultato: il batch runner usa un `ThreadPoolExecutor` a 8 thread quando c'è più di una schermata (`extraction/cli.py:229-233`). Default: `4` e `1` (`extraction/config.py:11-12`) -- il default nel codice e quello in `.env.example` oggi coincidono. Imposta `PARALLEL_ENABLED=0` per forzare l'elaborazione sequenziale -- utile per leggere l'output per schermata o isolare un guasto.
+Risultato: il batch runner usa un `ThreadPoolExecutor` a 8 thread quando c'è più di una schermata (`extraction/cli.py::BatchRunner.run`). Default: `4` e `1` (`extraction/config.py:11-12`) -- il default nel codice e quello in `.env.example` oggi coincidono. Imposta `PARALLEL_ENABLED=0` per forzare l'elaborazione sequenziale -- utile per leggere l'output per schermata o isolare un guasto.
 
 ### Far fermare una schermata sull'incertezza degli anchor
 
@@ -244,13 +244,13 @@ Non ci sono database, migrazioni, cache né server long-running -- molte operazi
 python main.py
 ```
 
-Cosa fa (`extraction/cli.py:314-352`): verifica che `mnt/data/dati.csv` esista, elenca ogni immagine in `INPUT_DIR`, esegue l'estrazione multi-passaggio (in parallelo con più di un'immagine), valuta rispetto alla ground truth e scrive i risultati. Output atteso, grosso modo in ordine:
+Cosa fa (`extraction/cli.py::main`): verifica che `mnt/data/dati.csv` esista, elenca ogni immagine in `INPUT_DIR`, esegue l'estrazione multi-passaggio (in parallelo con più di un'immagine), valuta rispetto alla ground truth e scrive i risultati. Output atteso, grosso modo in ordine:
 
-- `Parallel enabled: workers=4, screens=9` (`extraction/cli.py:230-232`)
-- `Done screen 1` ... per ogni schermata completata (`extraction/cli.py:245`)
-- Tabelle di accuratezza RAW e FILTERED da `evaluator.eval()` (`extraction/cli.py:343`)
-- Un riepilogo token/costi per schermata da `print_cost_summary()` (`extraction/cli.py:347`)
-- `Saved outputs: mnt/data\poc_outputs_improved.json` e `Saved debug report: mnt/data\poc_debug_improved.csv` (`extraction/cli.py:349-350`)
+- `Parallel enabled: workers=4, screens=9` (`extraction/cli.py::BatchRunner.run`)
+- `Done screen 1` ... per ogni schermata completata (`extraction/cli.py::BatchRunner.run`)
+- Tabelle di accuratezza RAW e FILTERED da `evaluator.eval()` (`extraction/cli.py::main`)
+- Un riepilogo token/costi per schermata da `print_cost_summary()` (`extraction/cli.py::main`)
+- `Saved outputs: mnt/data\poc_outputs_improved.json` e `Saved debug report: mnt/data\poc_debug_improved.csv` (`extraction/cli.py::main`)
 
 ### Avviare la GUI desktop Tkinter
 
@@ -310,7 +310,7 @@ Ogni sintomo qui sotto è ancorato a una stringa d'errore o a un comportamento r
 FileNotFoundError: Ground truth CSV not found: mnt/data\dati.csv
 ```
 
-**Causa:** `python main.py` controlla la presenza di `dati.csv` in `INPUT_DIR` prima di ogni altra cosa (`extraction/cli.py:315-316`). Il file è assente dal repository (`/mnt` è in gitignore; solo i PNG sono tracciati), quindi questo fallimento è garantito su un clone fresco.
+**Causa:** `python main.py` controlla la presenza di `dati.csv` in `INPUT_DIR` prima di ogni altra cosa (`extraction/cli.py::main`). Il file è assente dal repository (`/mnt` è in gitignore; solo i PNG sono tracciati), quindi questo fallimento è garantito su un clone fresco.
 
 **Soluzione:** procurati `dati.csv` e mettilo in `mnt/data/` (formato in `README.md:221-241`: colonne `Fotogramma`, `Denominazione da attribuire`, `Valore rilevato`). Per estrarre senza ground truth, usa `python gui_app.py` -- lì il CSV è opzionale (`gui_app.py:263`). Dove risieda il `dati.csv` canonico è una questione aperta -- vedi [Domande aperte](08-open-questions.md).
 
@@ -450,7 +450,7 @@ e la schermata indicata è proprio quella che l'operatore ha davanti. Un nome pa
 
 **Sintomo:** `ERROR extracting screen 3: <messaggio>` nell'output CLI, o `Warning: File not found <path>` all'inizio del batch.
 
-**Causa:** un singolo screenshot ha sollevato durante l'estrazione; il runner parallelo lo cattura per schermata e continua (`extraction/cli.py:246-251`). Il warning di file mancante significa che un percorso elencato non esiste (`extraction/cli.py:215-217`).
+**Causa:** un singolo screenshot ha sollevato durante l'estrazione; il runner parallelo lo cattura per schermata e continua (`extraction/cli.py::BatchRunner.run`). Il warning di file mancante significa che un percorso elencato non esiste (`extraction/cli.py::BatchRunner.run`).
 
 **Soluzione:** leggi il messaggio sottostante (immagine corrotta, retry API esauriti). Il batch si completa e riporta sulle schermate riuscite. Nell'edge-agent la stessa situazione produce un risultato memorizzato con `_status: "ERROR"` (`edge-agent/local_extraction_client.py:87-92`).
 
@@ -460,7 +460,7 @@ Non può accadere da questo progetto -- non apre **nessuna** porta. Le voci `htt
 
 ### Dipendenze mancanti / versioni discordanti
 
-`requirements.txt` usa vincoli laschi e non c'è lockfile né `pyproject.toml`. Se un import fallisce, reinstalla nella venv. Occhio agli import pigri: `langchain-google-genai` si carica solo con `LLM_PROVIDER=gemini` (`extraction/llm_factory.py:57`), quindi un pacchetto Gemini mancante emerge solo quando cambi provider; `qt-material` è opzionale e la sua assenza fa solo perdere il tema (`edge-agent/edge_agent.py:37-44`).
+`requirements.txt` usa vincoli laschi e non c'è lockfile; `pyproject.toml` contiene soltanto la configurazione dei marker pytest, non dipendenze o metadati di build. Se un import fallisce, reinstalla nella venv. Occhio agli import pigri: `langchain-google-genai` si carica solo con `LLM_PROVIDER=gemini` (`extraction/llm_factory.py:57`), quindi un pacchetto Gemini mancante emerge solo quando cambi provider; `qt-material` è opzionale e la sua assenza fa solo perdere il tema (`edge-agent/edge_agent.py:37-44`).
 
 ## Riferimento rapido
 

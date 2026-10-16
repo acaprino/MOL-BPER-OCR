@@ -3,18 +3,19 @@
 from typing import Any, Dict, List, Tuple
 
 from extraction.fields import get_canonical_field_metadata
+from extraction.field_definitions import resolve_field_export_group_key
 from extraction.page_definitions import PAGE_SHEET_ORDER
 
 def _canonical_entry_sort_key(entry: Dict[str, Any]) -> Tuple[int, str, str]:
     """Return a stable sort key for canonical field entries."""
-    page_key = entry.get("page_key")
+    schema_key = str(entry.get("schema_key") or "")
+    export_group_key = resolve_field_export_group_key(schema_key) or entry.get("page_key")
     try:
-        page_index = PAGE_SHEET_ORDER.index(page_key)
+        page_index = PAGE_SHEET_ORDER.index(export_group_key)
     except ValueError:
         page_index = len(PAGE_SHEET_ORDER)
 
     display_name = str(entry.get("display_name") or "")
-    schema_key = str(entry.get("schema_key") or "")
     return (page_index, display_name, schema_key)
 
 def build_canonical_field_entries(fields: Dict[str, Any]) -> List[Dict[str, Any]]:

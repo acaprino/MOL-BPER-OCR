@@ -5,7 +5,7 @@ Puoi lavorare su file con CLI o Tkinter, oppure acquisire dal vivo con l'edge-ag
 PyQt6. La suite pytest verifica diversi comportamenti senza chiamare i provider;
 per un'estrazione reale servono connessione e credenziali LLM. La CLI richiede
 anche il CSV di riferimento, mentre le due GUI possono lavorare senza.
-<!-- Source: extraction/cli.py:318; gui_app.py:238; edge-agent/local_extraction_client.py:90; tests/test_local_extraction_client.py:46 -->
+<!-- Source: extraction/cli.py::main; gui_app.py:238; edge-agent/local_extraction_client.py:90; tests/test_local_extraction_client.py:46 -->
 
 Leggi questa guida insieme ad [Architettura](04-architecture.md),
 [Workflow](05-workflows.md) e [API Python](12-python-api.md). I comandi seguenti
@@ -26,7 +26,7 @@ partono dalla radice del repository; gli esempi di configurazione sono segnapost
   file comune; il preflight dell'edge-agent gestisce preparazione e warm-up. Il primo
   avvio può richiedere download anche prima di iniziare una cattura.
 
-<!-- Source: run_edge_agent.bat:43; extraction/config.py:16; extraction/llm_factory.py:18; extraction/cli.py:318; edge-agent/workers/capture/bper_capture_worker.py:442; edge-agent/bootstrap.py:489; requirements.txt:13 -->
+<!-- Source: run_edge_agent.bat:43; extraction/config.py:16; extraction/llm_factory.py:18; extraction/cli.py::main; edge-agent/workers/capture/bper_capture_worker.py:442; edge-agent/bootstrap.py:489; requirements.txt:13 -->
 
 I comandi sono PowerShell-first, con l'equivalente bash per il setup manuale.
 `pyscreenshot` è una dipendenza condizionale per Linux; i launcher `.bat` e la build
@@ -91,11 +91,11 @@ Apri `.env` e imposta come minimo:
 LLM_API_KEY=<la tua chiave>
 ```
 
-`main.py` carica `.env` prima di importare `extraction`. L'avvio diretto
-dell'edge-agent carica l'ambiente e completa il preflight prima di importare la
-UI, che a sua volta importa il motore. **Tkinter non chiama `load_dotenv()`**:
-avviando `python gui_app.py`, esporta prima le variabili nella shell oppure
-inserisci la chiave nella GUI. Per esempio, in PowerShell:
+`main.py` e `gui_app.py` caricano `.env` prima di importare `extraction`. Tkinter
+inizializza provider e modello dalla configurazione effettiva e conserva anche
+un modello personalizzato. L'avvio diretto dell'edge-agent carica l'ambiente e
+completa il preflight prima di importare la UI, che a sua volta importa il motore.
+Puoi anche esportare le variabili o inserire la chiave nella GUI. Per esempio, in PowerShell:
 
 ```powershell
 $env:LLM_API_KEY = "<la tua chiave>"
@@ -128,7 +128,7 @@ nel [modello dati](06-data-model.md#ground-truth-csv).
 La GUI Tkinter e l'edge-agent funzionano senza questo file; la CLI ne verifica
 l'esistenza prima di creare il batch. Non usare dati di esempio come baseline di
 accuratezza: serve il dataset di riferimento autorizzato.
-<!-- Source: extraction/cli.py:318; gui_app.py:263 -->
+<!-- Source: extraction/cli.py::main; gui_app.py:263 -->
 
 ### 5. Esegui
 
@@ -157,7 +157,7 @@ Ordinati per valore di apprendimento: dal contratto dati verso l'orchestrazione 
 8. **`edge-agent/local_extraction_client.py`**: Corto e portante: il ponte QObject tra la UI PyQt6 e `ExtractionPipeline`, la giuntura `ingest_frame()` e il segnale `result_ready` che riattraversa il confine verso il thread della UI.
 9. **`edge-agent/workers/capture/bper_capture_worker.py`**: Il loop di cattura: screenshot mss, `preprocess_for_ocr()`, deduplica pHash, routing di pagina, gate di stabilità di 2 secondi, poi l’accodamento asincrono con `ingest_frame()` e la conferma dell’esito; anche lo scatto manuale passa dal loop del worker. Leggilo dopo avere compreso la pipeline.
 
-<!-- Source: extraction/fields.py:12; extraction/schemas.py:31; extraction/pipeline.py:122; extraction/pipeline.py:231; extraction/config.py:7; extraction/cli.py:164; extraction/vlm_client.py:123; extraction/evaluation.py:88; edge-agent/local_extraction_client.py:127; edge-agent/workers/capture/bper_capture_worker.py:346 -->
+<!-- Source: extraction/fields.py:12; extraction/schemas.py:31; extraction/pipeline.py:122; extraction/pipeline.py:231; extraction/config.py:7; extraction/cli.py::BatchRunner.__init__; extraction/vlm_client.py:123; extraction/evaluation.py:88; edge-agent/local_extraction_client.py:127; edge-agent/workers/capture/bper_capture_worker.py:346 -->
 
 ## Dove intervenire e cosa verificare
 
@@ -177,7 +177,7 @@ Ordinati per valore di apprendimento: dal contratto dati verso l'orchestrazione 
 | Riconoscimento pagina | `edge-agent/llm_router.py`, `page_classifier.py`, `page_registry.py` e catalogo pagine | `test_page_registry.py`, `test_page_classifier.py`; modalità in `config.ini`. |
 | Impostazioni di cattura | `edge-agent/config.py`, `edge-agent/config.ini` | Monitor, FPS, routing e risoluzione delle credenziali separata dal motore. |
 
-<!-- Source: extraction/fields.py:12; extraction/pipeline.py:295; extraction/normalization.py:120; edge-agent/frame_normalize.py:209; edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/local_extraction_client.py:194; edge-agent/excel_export.py:217; prompt_store.py:62; extraction/cli.py:285; edge-agent/ui/main_window.py:66; edge-agent/config.py:292 -->
+<!-- Source: extraction/fields.py:12; extraction/pipeline.py:295; extraction/normalization.py:120; edge-agent/frame_normalize.py:209; edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/local_extraction_client.py:194; edge-agent/excel_export.py:217; prompt_store.py:62; extraction/cli.py::BatchRunner.run; edge-agent/ui/main_window.py:66; edge-agent/config.py:292 -->
 
 I percorsi di test indicati nella tabella sono sotto `tests/`. Le firme complete,
 i valori restituiti e gli errori delle API principali sono nel
@@ -189,11 +189,25 @@ i valori restituiti e gli errori delle API principali sono nel
 python -m pytest tests
 ```
 
+Per una verifica senza i casi che eseguono DINOv2:
+
+```powershell
+python tools/check.py
+# equivalente: python -m pytest tests -m "not slow"
+```
+
+Il marker `slow`, registrato in `pyproject.toml`, riguarda i 18 casi di inferenza
+del classificatore. I due controlli puri della cache restano nella verifica rapida.
+`tools/check.py` usa l'interprete attivo e accetta altri argomenti pytest, per
+esempio `python tools/check.py -q`. Il comando completo non applica filtri
+predefiniti; la durata di entrambi dipende anche dagli import e dall'ambiente.
+
 La suite comprende catalogo prompt, coerenza dei vocabolari di campo, geometria
 e ritagli, riconoscimento pagina, retry, gate anchor, merge scalare, coerenza dei
 tooltip e appiattimento dei soggetti con provenienza. Verifica anche l'identità
 NDG condivisa fra valutazione e consolidamento, pool, client asincrono, ciclo di
-cattura ed Excel. Le prove
+cattura ed Excel. Comprende anche ammissione dei soggetti da retry, separazione
+pagina di origine/gruppo di export e avvio Tkinter dalla configurazione. Le prove
 del client usano una pipeline finta sul confine con il provider; non misurano
 l'accuratezza di lettura del modello. `test_page_classifier.py` usa DINOv2 su CPU,
 può ricostruire la cache e viene saltato se torch non è disponibile; al primo uso
@@ -212,9 +226,9 @@ python main.py
 ```
 
 Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR`, poi:
-<!-- Source: extraction/cli.py:326 -->
+<!-- Source: extraction/cli.py::main -->
 
-- scrive `mnt/data/poc_outputs_improved.json` (risultati completi per schermata, `extraction/cli.py:344`);
+- scrive `mnt/data/poc_outputs_improved.json` (risultati completi per schermata, `extraction/cli.py::main`);
 - stampa l'accuratezza RAW e FILTERED con il dettaglio per campo;
 - scrive `mnt/data/poc_debug_improved.csv`: separatore punto e virgola, `utf-8-sig` (amichevole per Excel, `extraction/evaluation.py:15`);
 - stampa chiamate/token/USD per schermata via `print_cost_summary()`.
@@ -316,7 +330,7 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
 ## Trabocchetti
 
 - **La CLI si arresta senza `mnt/data/dati.csv`.** Il dataset non è distribuito con il repository: senza il file `python main.py` solleva `FileNotFoundError: Ground truth CSV not found: mnt/data/dati.csv`. Procurati il file dal team prima di tentare un'esecuzione CLI; le due GUI funzionano senza.
-<!-- Source: extraction/cli.py:318 -->
+<!-- Source: extraction/cli.py::main -->
 
 - **La storia git è stata riscritta il 2026-07-21: i cloni stantii sono pericolosi.** Una chiave OpenAI era stata committata in `edge-agent/config.ini`; è stata ripulita dall'intera storia con `git filter-repo` e force-pushata. Ogni hash di commit è cambiato. Se il clone precede la riscrittura, conserva separatamente il lavoro locale utile e usa un clone nuovo; evita merge o push della vecchia storia.
 
@@ -326,7 +340,7 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
 - **Le estrazioni reali chiamano un provider, e i modelli sconosciuti riportano $0.00.** Per schermata: 1 chiamata anchor + 1 chiamata principale + fino a `MAX_CALLS_PER_SCREEN - 2` retry, uno per area debole, in parallelo tra le schermate. Il default di `MAX_CALLS_PER_SCREEN` è derivato da `2 + len(AREA_TO_FIELDS)` (= 5), quindi sono ammessi fino a 5 passaggi logici. I retry di trasporto possono portare a più richieste di rete, e il router LLM effettua chiamate separate. `estimate_cost_usd()` restituisce `0.0` per qualsiasi modello assente da `PRICING_PER_1M`: dato che `LLM_MODEL` è testo libero, un nome di modello sbagliato o datato (es. `gpt-4o-2024-11-20`) azzera in silenzio il report dei costi invece di fallire.
 <!-- Source: extraction/pipeline.py:317; extraction/vlm_client.py:26 -->
 
-- **Le variabili d'ambiente vengono lette al momento dell'import.** `extraction/config.py` valuta ogni `os.getenv()` all'import del modulo. In una REPL o in un notebook imposta l’ambiente prima di `import extraction`. Lo stesso vale per Tkinter, che non carica `.env`; l’avvio diretto dell’edge-agent rinvia invece l’import della UI fino al preflight. La scorciatoia `main.py --gui` ha già importato il motore prima di quel passaggio.
+- **Le variabili d'ambiente vengono lette al momento dell'import.** `extraction/config.py` valuta ogni `os.getenv()` all'import del modulo. In una REPL o in un notebook imposta l’ambiente prima di `import extraction`. Tkinter carica `.env` prima del motore; l’avvio diretto dell’edge-agent rinvia l’import della UI fino al preflight. La scorciatoia `main.py --gui` ha già importato il motore prima di quel passaggio.
 
 - **L'edge-agent si configura via INI, non via env.** FPS, modalità router, indice del monitor, soglia di dedup: tutto da `edge-agent/config.ini`. Il motore di estrazione legge invece l’ambiente; `resolve_llm_settings()` gestisce separatamente credenziale, endpoint e modello del router.
 

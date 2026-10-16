@@ -153,7 +153,7 @@ def test_an_out_of_family_file_is_not_amputated(call_sizes, tmp_path, size):
 
 
 def _row(conf: float) -> Dict[str, Any]:
-    return {"ndg": None, "denominazione": None, "ruolo": None, "confidence": conf}
+    return {"ndg": "12345", "denominazione": None, "ruolo": None, "confidence": conf}
 
 
 def _responder_with_body_retry(main_soggetti: List[Dict[str, Any]],

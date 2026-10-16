@@ -29,7 +29,7 @@ Se sei nuovo del progetto, leggi prima la [Sintesi per tutti](00-executive-summa
 | **rating ufficiale / score CGS** | Valutazioni creditizie del cliente secondo la banca (campi della scheda privati). |
 | **campi tooltip** (`tooltip_*`) | Testo che nella UI BPER appare solo al passaggio del mouse; cinque campi lo catturano, e due di essi alimentano le regole di riparazione per coerenza di `evidenze` e `tipo`. |
 | **Fotogramma** | La colonna del CSV di ground truth che indica a quale screenshot appartiene un valore. |
-| **pagine canoniche** | Il raggruppamento fisso in quattro pagine usato per l'export e la visualizzazione client-facing: `risultato_ricerca`, `elenco_soggetti`, `gestione_fidi_e_garanzie`, `note_da_richiesta`. |
+| **pagine canoniche** | Le cinque pagine sorgenti dei campi: `risultato_ricerca`, `elenco_soggetti`, `gestione_fidi_e_garanzie`, `note_da_richiesta`, `scheda_privati`. Il gruppo di export è distinto: i tredici campi privati condividono la banda `note_da_richiesta`, mantenendo quattro gruppi visualizzati. |
 | **"Altro / Non riconosciuto"** | La definizione di pagina catch-all "altro / non riconosciuto"; l'edge-agent non la cattura mai. |
 | **ground truth** / `dati.csv` | Il foglio delle risposte con i valori attesi verificati da una persona, usato per dare un voto all'estrazione. Il codice non lo modifica mai (e il file non è nel repository). |
 

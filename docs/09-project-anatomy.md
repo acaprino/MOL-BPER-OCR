@@ -4,7 +4,7 @@ Questa è la mappa operativa di `poc-data-extraction`: moduli, configurazione, c
 
 Tre fatti orientano la lettura di tutto il resto:
 
-- **Gli entry point sono script Python**, con launcher Windows `run_edge_agent.bat` e build portable `build_exe.bat` + `edge_agent.spec`. Non esistono `pyproject.toml`, `Makefile` o `setup.py`.
+- **Gli entry point sono script Python**, con launcher Windows `run_edge_agent.bat` e build portable `build_exe.bat` + `edge_agent.spec`. `pyproject.toml` registra solo i marker pytest; non esistono metadati di build, `Makefile` o `setup.py`.
 - **Esiste una suite pytest** in `tests/`, con dipendenza di sviluppo in `requirements-dev.txt`. CI e Docker restano assenti; l’accuratezza con provider reali richiede una baseline esterna.
 - **Coesistono due sistemi di configurazione:** ambiente per il motore, INI per cattura e routing. Il router risolve chiave, endpoint e modello tramite `AgentConfig.resolve_llm_settings()` con fallback ambientali; il motore continua a leggere le proprie variabili.
 
@@ -36,7 +36,7 @@ poc-data-extraction/
     config.py                  # Configurazione import-time della pipeline + coordinate crop, pricing, mappe aree di retry
     fields.py                  # FIELD_KEYS (45 chiavi), mappatura CSV_TO_SCHEMA per la ground truth
     field_definitions.py       # Display-name canonico + page_key per ogni chiave schema
-    page_definitions.py        # Chiavi/nomi canonici delle pagine e ordine dei fogli (4 pagine)
+    page_definitions.py        # Chiavi/nomi canonici delle pagine e cinque pagine sorgenti e quattro gruppi export
     canonical_mapping.py       # build_canonical_field_entries() -- forma di output client-facing
     schemas.py                 # Modelli Pydantic: ExtractionResponse, AnchorResponse, FieldResult, ...
     prompts.py                 # Costanti dei prompt VLM (main, anchor, 3 retry per area) lette da prompts/*.json
@@ -95,7 +95,7 @@ poc-data-extraction/
 
 ### Configurazione dell'applicazione
 
-- **`.env.example`** (committato) -- il template delle variabili d'ambiente della pipeline, con commenti in italiano. Copialo in `.env` e imposta `LLM_API_KEY`; tutto il resto ha un default funzionante. La tabella più avanti include anche le variabili lette dal codice che il template non elenca. **`.env`** è in gitignore (`.gitignore:12-14`) e viene caricato automaticamente da `main.py:7`, `edge-agent/edge_agent.py:9-13` e `edge-agent/local_extraction_client.py:21-25` -- ma **non** da `gui_app.py`, che non chiama `load_dotenv` e conta su variabili già esportate nella shell (oppure sulla API key digitata nella sua UI).
+- **`.env.example`** (committato) -- il template delle variabili d'ambiente della pipeline, con commenti in italiano. Copialo in `.env` e imposta `LLM_API_KEY`; tutto il resto ha un default funzionante. La tabella più avanti include anche le variabili lette dal codice che il template non elenca. **`.env`** è in gitignore (`.gitignore:12-14`) e viene caricato automaticamente da `main.py:7`, `edge-agent/edge_agent.py:9-13` e `edge-agent/local_extraction_client.py:21-25` e da `gui_app.py`, che carica dotenv prima di importare il motore. La GUI consente anche di digitare la chiave nella sua UI.
 
 - **`edge-agent/config.ini`** (committato, tracciato) -- l'intera configurazione dell'edge-agent, parsata da `AgentConfig` (`edge-agent/config.py:109-269`). Le chiavi mancanti ricadono su default per singola chiave; le credenziali restano esterne al file. Sezioni:
   - `[agent]` -- la sezione viva. `fps` (frequenza di cattura), `router = llm` (modalità di routing pagina: `ml` | `llm` | `hybrid` | `local-first`), `monitor_index = 1` (numerazione monitor di mss, 1..N), `show_capture_border = true` (overlay rosso), `route_retry_seconds = 1.0` (throttle del routing sui frame duplicati), `window_title_contains = BPER` (usata da `frame_normalize.find_window_rect()` per ritagliare il frame sulla finestra applicativa dopo la cattura del monitor intero). La sezione accetta anche chiavi di preprocessing non presenti nel file committato (`image_scale`, `unsharp_amount`, `unsharp_radius`, `unsharp_threshold`, `upload_format`, `dedup_threshold`, `required_pages_only`, `required_pages_csv` -- default in `edge-agent/config.py:39-49`).
@@ -126,7 +126,7 @@ Committati: `.env.example`, `edge-agent/config.ini`, il catalogo delle pagine e 
 
 ## Variabili d'ambiente
 
-Tutte le variabili della pipeline sono lette via `os.getenv()` **al momento dell'import del modulo** in `extraction/config.py` -- vengono fotografate in costanti quando `extraction` viene importato la prima volta. Conseguenze: (a) vanno impostate prima di qualsiasi `import extraction`, ed è per questo che ogni entry point tranne `gui_app.py` chiama prima `load_dotenv()`; (b) valori numerici malformati (`PARALLEL_WORKERS`, `MAX_CALLS_PER_SCREEN`, `ANCHOR_CONF_MIN`) sollevano `ValueError` all'import, non all'uso (`extraction/config.py:10,58,102`).
+Tutte le variabili della pipeline sono lette via `os.getenv()` **al momento dell'import del modulo** in `extraction/config.py` -- vengono fotografate in costanti quando `extraction` viene importato la prima volta. Conseguenze: (a) vanno impostate prima di qualsiasi `import extraction`, ed è per questo che gli entry point CLI e Tkinter chiamano prima `load_dotenv()`, mentre l’edge-agent completa il preflight prima di importare il motore; (b) valori numerici malformati (`PARALLEL_WORKERS`, `MAX_CALLS_PER_SCREEN`, `ANCHOR_CONF_MIN`) sollevano `ValueError` all'import, non all'uso (`extraction/config.py:10,58,102`).
 
 | Variabile | Default | Obbligatoria | Scopo | Letta in |
 |---|---|---|---|---|
@@ -162,9 +162,9 @@ Non esiste un registro di script; questi sono tutti gli eseguibili del repo.
 
 ### Sviluppo / esecuzione
 
-- `python main.py` -- estrazione batch CLI + valutazione. Richiede obbligatoriamente `mnt/data/dati.csv` (`extraction/cli.py:315-316` solleva `FileNotFoundError` -- garantito su un clone fresco, perché il file non è tracciato) e una `LLM_API_KEY` valida. Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR` (ordinati lessicalmente), poi scrive `mnt/data/poc_outputs_improved.json` e `mnt/data/poc_debug_improved.csv` e stampa le accuratezze RAW/FILTERED più la tabella dei costi per schermata (`extraction/cli.py:333-352`).
+- `python main.py` -- estrazione batch CLI + valutazione. Richiede obbligatoriamente `mnt/data/dati.csv` (`extraction/cli.py::main` solleva `FileNotFoundError` -- garantito su un clone fresco, perché il file non è tracciato) e una `LLM_API_KEY` valida. Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR` (ordinati lessicalmente), poi scrive `mnt/data/poc_outputs_improved.json` e `mnt/data/poc_debug_improved.csv` e stampa le accuratezze RAW/FILTERED più la tabella dei costi per schermata (`extraction/cli.py::main`).
 - `python main.py --gui` -- stesso shim, ma inserisce `edge-agent/` in `sys.path` e avvia l'edge-agent (`main.py:15-20`).
-- `python gui_app.py` -- GUI desktop Tkinter. Esegue `run_extraction_batch()` su un thread in background; scrive `poc_outputs_gui.json`, `poc_results_gui.csv` e (se è stato selezionato un CSV di ground truth) `poc_debug_gui.csv` nella **directory di lavoro corrente** (`gui_app.py:250-273`), non in `INPUT_DIR`. Ricorda: questo entry point non carica `.env`.
+- `python gui_app.py` -- GUI desktop Tkinter. Esegue `run_extraction_batch()` su un thread in background; scrive `poc_outputs_gui.json`, `poc_results_gui.csv` e (se è stato selezionato un CSV di ground truth) `poc_debug_gui.csv` nella **directory di lavoro corrente** (`gui_app.py:250-273`), non in `INPUT_DIR`. Carica `.env` prima del motore e usa provider/modello effettivi nei selettori iniziali.
 - `python edge-agent/edge_agent.py [--debug]` -- l'edge-agent PyQt6 direttamente. `--debug` aggiunge il tab "Debug LLM" (`edge-agent/edge_agent.py:51`).
 - `run_edge_agent.bat [--debug]` -- launcher Windows. Sonda `.venv\Scripts\python.exe` e ricostruisce la venv se il suo interprete di base è sparito (self-heal); alla prima esecuzione crea la venv (preferendo `py -3.13`, poi `py -3.12`, poi `python` -- deliberatamente non il semplice `py -3`, che potrebbe scegliere una 3.14 senza wheel di torch) e installa `requirements.txt`, quindi avvia l'edge-agent inoltrando tutti gli argomenti (`run_edge_agent.bat:19-75`).
 
@@ -172,7 +172,7 @@ Non esiste un registro di script; questi sono tutti gli eseguibili del repo.
 
 - `py -3.13 -m venv .venv` + `pip install -r requirements.txt` -- setup manuale dell'ambiente (il batch automatizza esattamente questo). torch rende lenta la prima installazione.
 - `build_exe.bat` -- costruisce il portable con `edge_agent.spec`, copia configurazione, prompt e asset e genera `dist/EdgeAgent_<data>.zip`. Distribuire tutta la cartella, non il solo eseguibile. Rifiuta un `config.ini` con `api_key` valorizzata; può invece precompilare la chiave nel `.env` del pacchetto tramite `edge-agent/env_key.py` (zip `_CON-CHIAVE`).
-- `pip install -r requirements-dev.txt` e `python -m pytest tests` -- installazione ed esecuzione della suite locale.
+- `pip install -r requirements-dev.txt` e `python -m pytest tests` -- installazione ed esecuzione della suite completa. `python tools/check.py` seleziona `not slow`, mantenendo i controlli puri della cache ed escludendo le inferenze DINOv2.
 
 ### Utility
 
@@ -186,13 +186,13 @@ Non esistono comandi di lint o migrazione database; il progetto non avvia un ser
 
 1. **`main.py`** sopprime gli `UserWarning` di pydantic/langchain (`main.py:3-5`), poi carica `.env` (`main.py:7`).
 2. `from extraction import *` -- questo import è il momento della configurazione: `extraction/config.py` fotografa tutte le env var in costanti adesso.
-3. `extraction.cli.main()` (`extraction/cli.py:314`): verifica che `GROUND_TRUTH_CSV` esista → carica la ground truth → raccoglie gli screenshot da `INPUT_DIR` → `BatchRunner` costruisce i due ChatModel LangChain condivisi (main + anchor) **una volta sola, prima del pool** (`extraction/cli.py:182-191`) -- una API key mancante/invalida fallisce qui con `ValueError: API key required...` (`extraction/llm_factory.py:41-44`) → `ThreadPoolExecutor` (se `PARALLEL_ENABLED`) esegue `ExtractionPipeline.extract_from_screen()` per immagine → output salvati, valutazione e riepilogo costi stampati.
+3. `extraction.cli.main()` (`extraction/cli.py::main`): verifica che `GROUND_TRUTH_CSV` esista → carica la ground truth → raccoglie gli screenshot da `INPUT_DIR` → `BatchRunner` costruisce i due ChatModel LangChain condivisi (main + anchor) **una volta sola, prima del pool** (`extraction/cli.py::BatchRunner.__init__`) -- una API key mancante/invalida fallisce qui con `ValueError: API key required...` (`extraction/llm_factory.py:41-44`) → `ThreadPoolExecutor` (se `PARALLEL_ENABLED`) esegue `ExtractionPipeline.extract_from_screen()` per immagine → output salvati, valutazione e riepilogo costi stampati.
 4. **Verifica di funzionamento:** l'esecuzione termina con le righe `Saved outputs: ...` / `Saved debug report: ...` più le tabelle di accuratezza e costo su stdout.
 
 ### GUI Tkinter (`python gui_app.py`)
 
-1. L'import del modulo trascina subito `extraction` (`gui_app.py:6-14`) -- **senza** `load_dotenv`, quindi esporta prima le env var nella shell oppure affidati al campo API key in-app (precompilato da `LLM_API_KEY`, poi `OPENAI_API_KEY`, `gui_app.py:24`).
-2. La finestra si apre con i dropdown provider/modello alimentati da `PROVIDER_MODELS` (`extraction/config.py:22-33`). L'estrazione parte solo alla pressione del pulsante; la costruzione dei modelli (e quindi la validazione della chiave) avviene dentro `run_extraction_batch()` in quel momento.
+1. `gui_app.py` carica `.env` prima di importare `extraction`. La configurazione già esportata prevale sul file; la chiave può anche essere inserita nel campo in-app ([ADR 0021](adr/0021-dotenv-prima-del-motore-nella-gui-tkinter.md)).
+2. La finestra si apre con provider e modello effettivi e suggerimenti del provider selezionato; la creazione del menu conserva anche un modello configurato fuori catalogo. I suggerimenti sono alimentati da `PROVIDER_MODELS` (`extraction/config.py:22-33`). L'estrazione parte solo alla pressione del pulsante; la costruzione dei modelli (e quindi la validazione della chiave) avviene dentro `run_extraction_batch()` in quel momento.
 3. **Verifica:** l'albero dei risultati si popola, il pannello di riepilogo mostra accuratezza/costi, i file di output compaiono nella directory di lavoro.
 
 ### Edge-agent (`python edge-agent/edge_agent.py`, `run_edge_agent.bat`, oppure `python main.py --gui`)

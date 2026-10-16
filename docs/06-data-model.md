@@ -2,7 +2,7 @@
 
 Questo progetto non ha un database. Il suo paesaggio dati è fatto di dict Python in memoria, modelli Pydantic che definiscono la forma dell'output dell'LLM e file piatti su disco: un CSV di ground truth rispetto a cui l'estrazione viene valutata e i report JSON/CSV scritti dopo un'esecuzione. Il centro del modello è il **dict risultato**: l'unica struttura che esce dalla pipeline ed entra in ogni consumatore a valle (valutazione, export CSV, la vista risultati Tkinter e il consolidamento delle pratiche nell'edge-agent).
 
-Tre concetti ancorano tutto. **`FIELD_KEYS`** è l'elenco canonico di esattamente 45 campi scalari e l'unica fonte di verità: il modello Pydantic dei campi viene generato da esso, e la mappatura CSV, le definizioni canoniche e le aree di retry devono restargli allineate. Gli **schemi Pydantic** (`extraction/schemas.py`) definiscono che aspetto ha una risposta LLM valida. Le **definizioni canoniche di campo/pagina** (`extraction/field_definitions.py`, `extraction/page_definitions.py`) mappano ogni campo su un nome visualizzato italiano e su una delle quattro pagine BPER, ed è così che i valori vengono raggruppati per export e visualizzazione. Le chiavi dei campi sono termini italiani del dominio bancario (`professione_principale`, `filiale_relazione`, ...) e sono portanti: devono corrispondere alle etichette della ground truth tramite `CSV_TO_SCHEMA` e non vanno mai tradotte. Le definizioni in linguaggio semplice dei termini di dominio sono nel [Glossario](11-glossary.md).
+Tre concetti ancorano tutto. **`FIELD_KEYS`** è l'elenco canonico di esattamente 45 campi scalari e l'unica fonte di verità: il modello Pydantic dei campi viene generato da esso, e la mappatura CSV, le definizioni canoniche e le aree di retry devono restargli allineate. Gli **schemi Pydantic** (`extraction/schemas.py`) definiscono che aspetto ha una risposta LLM valida. Le **definizioni canoniche di campo/pagina** (`extraction/field_definitions.py`, `extraction/page_definitions.py`) mappano ogni campo su un nome visualizzato italiano e una delle cinque pagine di origine; il gruppo di export è una proprietà distinta e conserva quattro bande di colonne. Le chiavi dei campi sono termini italiani del dominio bancario (`professione_principale`, `filiale_relazione`, ...) e sono portanti: devono corrispondere alle etichette della ground truth tramite `CSV_TO_SCHEMA` e non vanno mai tradotte. Le definizioni in linguaggio semplice dei termini di dominio sono nel [Glossario](11-glossary.md).
 <!-- Source: extraction/fields.py:12-54 -->
 
 Il diagramma seguente mappa come queste strutture si relazionano:
@@ -53,7 +53,7 @@ erDiagram
     CANONICAL-FIELD-ENTRY {
         string schema_key PK "membro di FIELD_KEYS"
         string display_name "etichetta italiana per il cliente"
-        string page_key FK "una delle 4 pagine canoniche"
+        string page_key FK "una delle 5 pagine di origine"
         string value
         float confidence
     }
@@ -119,7 +119,7 @@ finale è `OK` quando NDG e denominazione non sono nulli dopo tutti i passaggi; 
 `INPUT_DIR/poc_outputs_improved.json`; Tkinter scrive `poc_outputs_gui.json` nella
 directory corrente. Il client live conserva risultati e completamenti in memoria,
 protetti da lock, fino alla chiusura del processo; l'export Excel è esplicito.
-<!-- Source: extraction/cli.py:344; gui_app.py:250; edge-agent/local_extraction_client.py:114; edge-agent/ui/data_table_tab.py:255 -->
+<!-- Source: extraction/cli.py::main; gui_app.py:250; edge-agent/local_extraction_client.py:114; edge-agent/ui/data_table_tab.py:255 -->
 
 ### Ordine di acquisizione e disponibilità dei risultati
 
@@ -205,19 +205,21 @@ delle capacità o disponibilità dei modelli esterni.
 Una voce canonica abbina il valore estratto alla sua etichetta italiana e alla
 pagina BPER di appartenenza. `build_canonical_field_entries()` produce
 `schema_key`, `display_name`, `page_key`, `page_name`, `value`, `confidence`,
-`evidence_text` e `section`. Ordina per `PAGE_SHEET_ORDER`, poi per etichetta e
-chiave; una pagina sconosciuta va in coda. Il binding viene dalle definizioni
+`evidence_text` e `section`. Ordina per il gruppo risolto da
+`resolve_field_export_group_key()` nell'ordine `PAGE_SHEET_ORDER`, poi per etichetta
+e chiave; un gruppo sconosciuto va in coda. `page_key` e `page_name` conservano la
+pagina di origine. Il binding viene dalle definizioni
 canoniche dei campi, non dalla pagina riconosciuta sul frame.
 <!-- Source: extraction/canonical_mapping.py:8; extraction/canonical_mapping.py:20; extraction/fields.py:112 -->
 
 `export_to_csv()` e l'albero Tkinter usano queste voci, con fallback su `fields`.
-La deduplica batch disabilitata le consulta per individuare una pagina. La tabella
-live e il suo Excel usano invece direttamente `fields` tramite `consolidate()`.
-<!-- Source: extraction/evaluation.py:191; extraction/cli.py:44; extraction/cli.py:271; gui_app.py:333; edge-agent/ui/data_table_tab.py:194 -->
+Il batch non deduplica gli output per pagina. La tabella live e il suo Excel
+usano invece direttamente `fields` tramite `consolidate()`.
+<!-- Source: extraction/evaluation.py:191; gui_app.py:333; edge-agent/ui/data_table_tab.py:194 -->
 
 ## Pagina canonica
 
-**Significato di dominio:** le quattro pagine logiche della UI di gestione del credito BPER che organizzano i 45 campi per export e visualizzazione, un raggruppamento fisso di colonne, non una proprietà scoperta a runtime.
+**Significato di dominio:** le cinque pagine logiche di origine dei campi BPER. Il gruppo di presentazione nell'Excel è distinto dalla pagina di origine e conserva il layout a quattro bande.
 
 **Definizione**:
 <!-- Source: extraction/page_definitions.py:5-28 -->
@@ -227,15 +229,17 @@ live e il suo Excel usano invece direttamente `fields` tramite `consolidate()`.
 | `risultato_ricerca` | Risultato ricerca | Identificativi di intestazione, metadati della pratica |
 | `elenco_soggetti` | Elenco Soggetti | I 12 campi soggetti appiattiti |
 | `gestione_fidi_e_garanzie` | Gestione Fidi e Garanzie | I campi delle linee di credito |
-| `note_da_richiesta` | Note da Richiesta | `note_della_richiesta` e i campi Scheda Privati |
+| `note_da_richiesta` | Note da Richiesta | `note_della_richiesta` |
+| `scheda_privati` | Scheda Privati | I tredici campi della scheda privati |
 
-Ogni campo è legato staticamente a esattamente una pagina in `CANONICAL_FIELD_DEFINITIONS`. Il binding è metadato, non provenienza: i campi Scheda Privati come `professione_principale` sono legati a `note_da_richiesta` anche se hanno origine su una schermata BPER diversa.
+Ogni campo è legato staticamente a una pagina in `CANONICAL_FIELD_DEFINITIONS`. I tredici campi Scheda Privati hanno `page_key=scheda_privati` ed `export_group_key=note_da_richiesta`. Per gli altri campi `resolve_field_export_group_key()` usa `page_key` come gruppo predefinito. Lo stesso resolver serve all'ordinamento canonico e alle colonne Excel: restano quattro gruppi in `PAGE_SHEET_ORDER` e 45 colonne, mentre il risultato canonico riporta la pagina corretta ([ADR 0020](adr/0020-pagina-sorgente-separata-dal-gruppo-export.md)). `export_group_key` è metadato della definizione, non una nuova chiave delle voci restituite da `build_canonical_field_entries()`.
 
 Il catalogo di riconoscimento contiene le varianti delle schermate; `_page_type`
 conserva il nome riconosciuto, che può essere più specifico della pagina canonica.
 Il client non lo converte con `resolve_page_key()`. I campi restano raggruppati
-secondo il loro binding statico: la pagina canonica descrive dove mostrarli,
-mentre `_page_type` descrive quale schermata è stata acquisita.
+secondo il loro binding statico: `page_key` descrive l'origine del campo e
+`_page_type` quale variante è stata acquisita; il gruppo di export decide la banda
+di colonne. Questi metadati non selezionano i retry per pagina.
 <!-- Source: edge-agent/local_extraction_client.py:183; extraction/page_definitions.py:35; extraction/field_definitions.py:1 -->
 
 ## Ground truth (CSV)
@@ -267,7 +271,7 @@ schermata/campo ripetuta nel CSV conserva l'ultima riga letta.
 è distribuito con il repository. Tkinter può ricevere un CSV facoltativo, mentre
 l'edge-agent non ne ha bisogno. Il formato completo dei risultati e le funzioni
 di accesso sono nel [riferimento API](12-python-api.md).
-<!-- Source: extraction/config.py:8; extraction/cli.py:318; gui_app.py:263; edge-agent/local_extraction_client.py:90 -->
+<!-- Source: extraction/config.py:8; extraction/cli.py::main; gui_app.py:263; edge-agent/local_extraction_client.py:90 -->
 
 ## Una riga per pratica: PracticeRecord
 
@@ -381,11 +385,17 @@ limiti di provenienza: il main assegna `CONTENT_MAIN` anche ai campi assenti e
 il controllo di coerenza non registra le proprie correzioni.
 <!-- Source: extraction/pipeline.py:180; extraction/pipeline.py:203; extraction/pipeline.py:378 -->
 
+Se un retry BODY propone righe per una tabella `soggetti` ancora vuota, ogni riga
+deve avere confidenza almeno `RETRY_CONF_MIN` e NDG o denominazione non nulli.
+La selezione precede il merge e il flatten, sia in calibrazione sia fuori.
+Le tabelle già popolate e `fidi`/`garanzie` conservano i criteri precedenti
+([ADR 0019](adr/0019-filtro-soggetti-da-retry-su-tabella-vuota.md)).
+
 **Durata dei dati.** Il client non espone un'operazione di cancellazione dei risultati.
 Una nuova acquisizione aggiunge un risultato di frame; la tabella ed Excel lo
-fondono nella pratica corrispondente. La deduplica batch per pagina è implementata
-ma la sua invocazione resta disabilitata.
-<!-- Source: edge-agent/local_extraction_client.py:114; edge-agent/local_extraction_client.py:194; edge-agent/practice_consolidation.py:87; extraction/cli.py:271 -->
+fondono nella pratica corrispondente. Il batch conserva gli output delle schermate
+senza deduplicarli per pagina canonica.
+<!-- Source: edge-agent/local_extraction_client.py:114; edge-agent/local_extraction_client.py:194; edge-agent/practice_consolidation.py:87; extraction/cli.py::_debug_log -->
 
 ## Validazione
 

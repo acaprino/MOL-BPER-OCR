@@ -63,6 +63,7 @@ def classifier():
     )
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("screen", SCREENS)
 def test_recognizes_each_page_from_a_full_monitor_frame(classifier, screen):
     label, score = classifier.classify(_as_worker_sees_it(_live_frame(TEMPLATES / f"{screen}.png")))
@@ -70,6 +71,7 @@ def test_recognizes_each_page_from_a_full_monitor_frame(classifier, screen):
     assert label == screen, f"got {label!r} at score {score:.3f}"
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("scale", [0.8, 1.4])
 def test_recognition_survives_a_differently_sized_window(classifier, scale):
     # The operator's browser will not be 848x679. Recognition must not depend on
@@ -86,6 +88,7 @@ def test_recognition_survives_a_differently_sized_window(classifier, scale):
     assert misread == []
 
 
+@pytest.mark.slow
 def test_rejects_a_frame_that_is_not_a_bper_page(classifier):
     # A blank desktop must not be labelled as a page: a false positive burns the
     # page slot for the whole job and the operator cannot capture it again.
@@ -180,6 +183,7 @@ def rejecting_classifier(tmp_path_factory):
                                        similarity_threshold=0.0, device="cpu")
 
 
+@pytest.mark.slow
 def test_a_reject_prototype_wins_instead_of_a_page(rejecting_classifier):
     """Without a reject class the classifier must pick a page, whatever it sees.
 
@@ -192,12 +196,14 @@ def test_a_reject_prototype_wins_instead_of_a_page(rejecting_classifier):
     assert label is None, f"un negativo e' stato etichettato {label!r}"
 
 
+@pytest.mark.slow
 def test_a_page_still_wins_when_reject_prototypes_exist(rejecting_classifier):
     label, _score = rejecting_classifier.classify(_page_like(0))
 
     assert label == "pagina a"
 
 
+@pytest.mark.slow
 def test_classify_reports_the_margin_over_the_runner_up(rejecting_classifier):
     """The margin is what the LLM fallback is gated on, so it must be reported.
 
@@ -212,6 +218,7 @@ def test_classify_reports_the_margin_over_the_runner_up(rejecting_classifier):
     assert result.runner_up != result.label
 
 
+@pytest.mark.slow
 def test_a_rejected_frame_is_reported_as_rejected_not_as_unknown(rejecting_classifier):
     """A frame that lost to a reject prototype is not the same as one below
     threshold: the first was actively recognised as a non-page, the second was
@@ -241,6 +248,7 @@ def test_cache_is_stale_when_reject_classes_appear(tmp_path):
     assert without != with_three
 
 
+@pytest.mark.slow
 def test_reject_classes_do_not_cost_page_recognition(classifier):
     """Adding reject prototypes must not disturb the pages.
 
@@ -258,6 +266,7 @@ def test_reject_classes_do_not_cost_page_recognition(classifier):
     assert misread == []
 
 
+@pytest.mark.slow
 def test_a_blank_desktop_is_rejected_by_a_named_class(classifier):
     """Before reject classes existed the only possible answer was a page or a
     below-threshold None. Naming which reject class won tells the caller the frame

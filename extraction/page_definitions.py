@@ -7,6 +7,7 @@ CANONICAL_PAGE_NAMES: Dict[str, str] = {
     "elenco_soggetti": "Elenco Soggetti",
     "gestione_fidi_e_garanzie": "Gestione Fidi e Garanzie",
     "note_da_richiesta": "Note da Richiesta",
+    "scheda_privati": "Scheda Privati",
 }
 
 PAGE_NAME_ALIASES: Dict[str, str] = {
@@ -18,8 +19,12 @@ PAGE_NAME_ALIASES: Dict[str, str] = {
     "gestione_fidi_e_garanzie": "gestione_fidi_e_garanzie",
     "note da richiesta": "note_da_richiesta",
     "note_da_richiesta": "note_da_richiesta",
+    "scheda privati": "scheda_privati",
+    "scheda_privati": "scheda_privati",
 }
 
+# Spreadsheet groups preserve the established four-band export layout.
+# Source pages such as Scheda Privati may share a group with another page.
 PAGE_SHEET_ORDER = (
     "risultato_ricerca",
     "elenco_soggetti",

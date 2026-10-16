@@ -36,7 +36,11 @@ Each screenshot is processed in three stages by `ExtractionPipeline` in `extract
    The per-field winner is chosen by
    `pick_best()`: non-null beats null; on equal nullness the current value wins unless the candidate
    has strictly higher confidence. Only the retried area's own fields are merged back, and the
-   arrays only for BODY (`ExtractionPipeline._merge_tables()`).
+   arrays only for BODY (`ExtractionPipeline._merge_tables()`). An empty subject table can only
+   be seeded with rows at or above `RETRY_CONF_MIN` containing a non-nullish NDG or denomination;
+   each row is filtered independently, both on and off calibration
+   ([ADR 0019](adr/0019-filtro-soggetti-da-retry-su-tabella-vuota.md)). Populated-table selection
+   and fidi/garanzie admission stay unchanged.
    `creazione` belongs to HEADER. The five `tooltip_*` fields are explicitly listed in
    `UNRETRIED_FIELDS`: they are transient overlays with no reliable fixed retry crop, so only
    the main pass reads them. `test_domain_vocabulary.py` checks that every field has exactly
@@ -80,15 +84,21 @@ Two entry methods exist by design:
 
 - **CLI** (`python main.py`): batch-processes every `.png/.jpg/.jpeg` in `INPUT_DIR`, writes JSON
   results, prints accuracy metrics and a cost summary. Hard-requires `mnt/data/dati.csv`
-  (`FileNotFoundError` at `extraction/cli.py:320`); the CSV is **not** in the repo -- see
+  (`FileNotFoundError` at `extraction/cli.py::main`); the CSV is **not** in the repo -- see
   Data & Evaluation.
 - **Tkinter GUI** (`python gui_app.py`): desktop window for uploading screenshots, picking
-  provider/model, viewing per-screen results, and exporting CSV/JSON. Imports
+  provider/model, viewing per-screen results, and exporting CSV/JSON. It loads dotenv before
+  the engine and initializes its selections from effective configuration. Imports
   `run_extraction_batch()` from the `extraction` package.
 - **Edge-agent** (`python edge-agent/edge_agent.py`, or `python main.py --gui`): PyQt6 app that
   captures BPER screens in real time, detects the page type, and runs extraction locally via
   `LocalExtractionClient`. The direct entry runs preflight before importing the UI and engine;
   `main.py --gui` has already imported `extraction` and requires the environment to be ready.
+
+Canonical metadata names five source pages; the thirteen private-sheet fields belong to
+`scheda_privati`. A separate export-group override preserves the four existing UI/Excel bands
+and all 45 column positions ([ADR 0020](adr/0020-pagina-sorgente-separata-dal-gruppo-export.md)).
+The batch keeps all processed screenshots; no canonical-page deduplication is applied.
 
 CLI and the Tkinter GUI share `run_extraction_batch()` in `extraction/cli.py` -- do not duplicate the
 `ThreadPoolExecutor` logic.

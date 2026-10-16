@@ -44,9 +44,9 @@ python main.py
 ```
 
 `LLM_API_KEY` must be set (or entered in the Tkinter GUI, which pre-fills from
-`LLM_API_KEY`/`OPENAI_API_KEY`). Note: `gui_app.py` does **not** call `load_dotenv()` -- env vars
-must already be exported when launching it directly (`main.py`, `edge_agent.py`, and
-`local_extraction_client.py` do load `.env`). The edge-agent's capture/router settings come from
+`LLM_API_KEY`/`OPENAI_API_KEY`). `gui_app.py` calls `load_dotenv()` before importing `extraction`,
+as do the CLI and direct edge-agent entry points. Its initial provider/model selection uses the
+effective configuration and keeps a configured custom model available. The edge-agent's capture/router settings come from
 `edge-agent/config.ini`; its extraction engine still reads the env vars below.
 
 ## Configuration (Environment Variables)
@@ -104,6 +104,9 @@ asked and read by `call_vlm()` (`test_vlm_call.py`, provider SDK faked). Core be
 cover the anchor confidence gate, scalar merge order, tooltip coherence and subject flattening
 with source attribution (`test_pipeline_postprocessing.py`), shared NDG identity in evaluation
 (`test_normalization.py`) and field vocabulary/retry-policy consistency (`test_domain_vocabulary.py`).
+Retry subject-row admission, source-page/export-group metadata and GUI environment startup have
+dedicated regressions in `test_pipeline_retry_subjects.py`, `test_page_metadata.py` and
+`test_gui_config.py`.
 
 `test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s, and it rebuilds the prototype
 cache the first time after any geometry change); it skips via
@@ -111,6 +114,11 @@ cache the first time after any geometry change); it skips via
 the reference templates rather than feeding the classifier its own prototypes back, so it fails if
 the ROI, the resize or the scoring rule regress. Do not "simplify" it into classifying the templates
 directly: that variant passes even with the geometry that recognized 1 page out of 9 in the field.
+
+`pyproject.toml` only registers pytest's `slow` marker. `python tools/check.py` runs the fast
+lane (`python -m pytest tests -m "not slow"`) and accepts additional pytest arguments. It excludes
+the 18 DINOv2 model cases while keeping the two pure cache checks; `python -m pytest tests`
+still runs the full suite. No default marker filter, build metadata or CI is configured.
 
 Dev dependencies for the suite install via `pip install -r requirements-dev.txt`. To
 verify changes manually:
@@ -194,7 +202,10 @@ downstream effects.
 
 1. **Multi-pass pipeline** -- the anchor → main → retry pattern is critical for accuracy. Retries
    use area-specific crops and are capped at `MAX_CALLS_PER_SCREEN - 2`. Post-processing order is
-   sequenced (merge → tipo-normalize → retry → coherence → flatten → canonical → status). See
+   sequenced (merge → tipo-normalize → retry → coherence → flatten → canonical → status).
+   A retry may seed an empty `soggetti` table only with rows at or above `RETRY_CONF_MIN` that
+   contain a non-nullish NDG or denomination; this applies both on and off calibration. Existing
+   table replacement rules and `fidi`/`garanzie` admission remain unchanged. See
    `extraction/pipeline.py`.
 2. **Cost tracking** -- every VLM call must populate `_meta` with `estimated_cost_usd`,
    `prompt_tokens`, `completion_tokens`, `latency_ms`, aggregated in `_meta_agg`. Models absent
@@ -232,10 +243,10 @@ downstream effects.
    `BatchRunner`) is used by both `main()` and the Tkinter GUI (`gui_app.py`). It accepts optional
    `model_main`/`model_anchor` overrides (the GUI provider/model dropdown). Callbacks
    (`on_complete`, `on_error`) run on the calling thread, not on worker threads. Do not
-   re-implement batch/threading logic elsewhere. `_deduplicate_same_page_outputs()` exists but its
-   call is commented out (`cli.py:271-276`, "TEMP TEST" pending page_key mapping validation).
+   re-implement batch/threading logic elsewhere. Batch output keeps every processed screenshot;
+   there is no deduplication by canonical page. The unused deduplication helpers were removed.
 9. **Screenshot discovery** -- the CLI scans `INPUT_DIR` directly for `.png/.jpg/.jpeg`
-   (`cli.py:326-330`). `get_screenshot_paths()` in `extraction/config.py` currently has no caller.
+   in `extraction/cli.py::main()`. There is no `get_screenshot_paths()` helper in the current config.
    Do not reintroduce the old mutable global `SCREENSHOTS` list.
 10. **Field vocabulary consistency** -- `test_domain_vocabulary.py` checks that CSV mappings and
     canonical definitions cover `FIELD_KEYS`, and that each field has exactly one retry policy:
@@ -289,8 +300,10 @@ downstream effects.
 14. **Edge-agent shows business data only** -- the UI presents the 45 canonical fields, one row per
     consolidated practice. Confidence, status, cost, tokens, latency and field provenance go to
     `edge-agent.log` via `_log_extraction()`, never back into a tab. Notes:
-    - **One row = one practice.** The router recognises 9 screens but they are variants of the 4
-      canonical pages (`PAGE_SHEET_ORDER`) of a single practice: a scrolled table or an open tooltip
+    - **One row = one practice.** The router recognises 9 screen variants. Field metadata names
+      five source pages; `PAGE_SHEET_ORDER` defines four export groups for the 45 columns. The
+      13 Scheda Privati fields have `page_key=scheda_privati` and `export_group_key=note_da_richiesta`;
+      `resolve_field_export_group_key()` owns this layout mapping. A scrolled table or an open tooltip
       carries 1-6 useful fields. `consolidate()` groups frames by normalized NDG (a frame whose NDG
       was not read attaches to the most recent practice; frames before the first readable NDG wait
       in a buffer) and merges fields with `pick_best()` -- do not write a second merge semantics.
@@ -356,7 +369,7 @@ in `extraction/evaluation.py` auto-detects alternative column names (`Screenshot
 
 **The CSV is NOT in the repo:** `/mnt` is gitignored (only the 9 PNGs are force-tracked), and no
 copy exists in the working tree. `python main.py` raises `FileNotFoundError` without it
-(`extraction/cli.py:320`) -- obtain it separately and place it at `mnt/data/dati.csv`. The
+(`extraction/cli.py::main`) -- obtain it separately and place it at `mnt/data/dati.csv`. The
 Tkinter GUI and the edge-agent work without it (evaluation is optional there).
 Do not restore the `dati.csv` still in git history (removed in `e8c677c`): it describes 5 older
 screenshots of the old PEF UI (practice TICCHI/CABRAS, ~2150px wide), not the current 9 "Nuova PEF
@@ -382,7 +395,7 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 | File | Purpose |
 |---|---|
 | `main.py` | Shim: loads `.env` via `python-dotenv`, then `from extraction import *`. `python main.py` runs the CLI; `python main.py --gui` launches the edge-agent. |
-| `gui_app.py` | Tkinter GUI: upload screenshots, pick provider/model, process, display, export CSV/JSON. Imports `run_extraction_batch` from `extraction`. Does not load `.env`. |
+| `gui_app.py` | Tkinter GUI: loads `.env` before importing `extraction`, initializes matching provider/model menus, uploads screenshots, processes, displays and exports CSV/JSON via the shared batch runner. |
 | `edge-agent/edge_agent.py` | PyQt6 entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow`. `--debug` adds the Debug LLM tab (`ui/debug_tab.py`), but the router traffic only reaches it when `config.ini` also has `[debug] show_llm_tab = true`, which gates the `llm_debug` signal. Both are required. |
 | `run_edge_agent.bat` | Windows launcher: bootstraps/self-heals `.venv` (Python 3.13, then 3.12), installs `requirements.txt`, starts the edge-agent. |
 | `prompt_store.py` | Prompt catalog loader shared by `extraction/` and the edge-agent router. Stdlib-only and deliberately outside `extraction/`, so reading a prompt does not import LangChain. `CATALOG`, `get_text()`, `get_part()`, `catalog_source()`. |
@@ -392,8 +405,9 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 Flat package, no sub-packages, one module per concern. Grouped by role:
 
 - **Domain vocabulary** -- `fields.py` (`FIELD_KEYS`, 45 fields; `CSV_TO_SCHEMA`),
-  `field_definitions.py` (field → display-name / page-key), `page_definitions.py` (canonical page
-  names), `canonical_mapping.py` (`build_canonical_field_entries()` for client-facing output).
+  `field_definitions.py` (field → display-name / source page / export group), `page_definitions.py`
+  (five source-page names, four export groups), `canonical_mapping.py`
+  (`build_canonical_field_entries()` for client-facing output).
 - **Configuration** -- `config.py`: env-var snapshot, crop constants, pricing,
   `AREA_TO_FIELDS`/`UNRETRIED_FIELDS`.
 - **Pipeline** -- `pipeline.py` (`ExtractionPipeline`), `vlm_client.py` (the single VLM call path,
@@ -469,7 +483,7 @@ langchain-openai        # LangChain OpenAI ChatModel
 langchain-google-genai  # LangChain Gemini ChatModel (required if LLM_PROVIDER=gemini)
 Pillow>=10.0.0          # Image processing (PIL)
 pandas                  # CSV/data handling
-python-dotenv           # .env loading (main.py, edge_agent.py, local_extraction_client.py -- NOT gui_app.py)
+python-dotenv           # .env loading before extraction imports (CLI, Tkinter and edge-agent)
 openpyxl>=3.1.2         # Excel export (edge-agent/excel_export.py)
 ```
 
@@ -494,7 +508,7 @@ pyinstaller>=6.10,<7    # portable package build only (build_exe.bat); the dist 
 ## Missing Infrastructure
 
 Not yet implemented:
-- `pyproject.toml` -- dependencies are listed in `requirements.txt` but not version-pinned
+- Packaging metadata and dependency locking -- `pyproject.toml` configures pytest only; dependencies remain in `requirements.txt` with loose bounds
 - Provider and GUI validation -- the suite covers core post-processing, field/retry vocabulary, NDG evaluation and the edge-agent contracts; real-provider accuracy and a live banking GUI session still require separate validation
 - CI/CD -- no pipeline configured
 - Docker -- no containerization

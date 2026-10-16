@@ -60,6 +60,9 @@ tarati, e nessun test lo verificava.
 | [0016](0016-adapter-per-famiglia-di-modelli.md) | Un adapter per famiglia di modelli | Accettato |
 | [0017](0017-identita-ndg-condivisa-tra-valutazione-e-consolidamento.md) | Identità NDG condivisa tra valutazione e consolidamento | Accettato |
 | [0018](0018-appiattimento-soggetti-con-merge-e-provenienza.md) | Appiattire i soggetti con merge e provenienza del vincitore | Accettato |
+| [0019](0019-filtro-soggetti-da-retry-su-tabella-vuota.md) | Filtrare i soggetti del retry che riempie una tabella vuota | Accettato |
+| [0020](0020-pagina-sorgente-separata-dal-gruppo-export.md) | Separare la pagina sorgente dal gruppo di esportazione | Accettato |
+| [0021](0021-dotenv-prima-del-motore-nella-gui-tkinter.md) | Caricare dotenv prima del motore nella GUI Tkinter | Accettato |
 
 ## Da scrivere
 

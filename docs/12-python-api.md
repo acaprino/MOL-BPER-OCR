@@ -37,7 +37,7 @@ Restituisce `{screen_id: risultato}`; salta i percorsi inesistenti con un avviso
 Le callback sono eseguite dal thread che chiama il batch. In parallelo un errore viene
 segnalato a `on_error` oppure stampato; in sequenziale, senza `on_error`, viene rilanciato.
 Se `model_main` è esplicito e manca `model_anchor`, entrambi usano il modello scelto.
-<!-- Source: extraction/cli.py:177; extraction/cli.py:210 -->
+<!-- Source: extraction/cli.py::BatchRunner.__init__; extraction/cli.py::BatchRunner.run -->
 
 ## Pipeline per una singola immagine
 
@@ -108,6 +108,13 @@ non devono modificarli. `requeue_job()` è uno stub che restituisce `True`, non 
 
 ## Consolidamento ed esportazione
 
+`resolve_field_page_key(schema_key)` restituisce la pagina sorgente, inclusa `scheda_privati`.
+`resolve_field_export_group_key(schema_key)` restituisce il gruppo di presentazione e usa
+`page_key` come fallback. I tredici campi privati condividono il gruppo `note_da_richiesta`.
+`ColumnSpec.page_key/page_name` descrivono tale gruppo, mentre le voci canoniche emettono la
+pagina sorgente; l’ordine e le 45 colonne restano compatibili
+([ADR 0020](adr/0020-pagina-sorgente-separata-dal-gruppo-export.md)).
+
 ```python
 def consolidate(results: Sequence[Dict[str, Any]]) -> List[PracticeRecord]:
 
@@ -139,7 +146,7 @@ salvataggio non sono intercettati dall'API di esportazione.
   I thread daemon possono proseguire finché il processo resta attivo; chiudere
   l'applicazione non garantisce di completare tutti i risultati prima dell'export.
 
-<!-- Source: extraction/cli.py:210; edge-agent/local_extraction_client.py:127; edge-agent/local_extraction_client.py:157; edge-agent/local_extraction_client.py:214; edge-agent/local_extraction_client.py:222; edge-agent/extraction_pool.py:45 -->
+<!-- Source: extraction/cli.py::BatchRunner.run; edge-agent/local_extraction_client.py:127; edge-agent/local_extraction_client.py:157; edge-agent/local_extraction_client.py:214; edge-agent/local_extraction_client.py:222; edge-agent/extraction_pool.py:45 -->
 
 I diagrammi e i percorsi di errore sono nel capitolo [Workflow](05-workflows.md).
 Le strutture restituite e la regola una riga per pratica sono nel [Modello dei dati](06-data-model.md).

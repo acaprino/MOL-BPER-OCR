@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+markers = [
+    "slow: runs DINOv2 model inference on CPU",
+]

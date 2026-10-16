@@ -1,7 +1,7 @@
 # Architettura
 
 CLI, GUI Tkinter e edge-agent PyQt6 condividono un motore di estrazione senza dipendenze dalla UI. `ExtractionPipeline` legge gli identificativi, esegue la lettura principale e rilegge le aree deboli, poi restituisce campi e metadati. L'edge-agent aggiunge cattura, riconoscimento della pagina e consolidamento: i frame di una stessa pratica confluiscono in una riga consultabile ed esportabile.
-<!-- Source: extraction/pipeline.py:55; extraction/cli.py:157; gui_app.py:238; edge-agent/local_extraction_client.py:90; edge-agent/practice_consolidation.py:87 -->
+<!-- Source: extraction/pipeline.py:55; extraction/cli.py::_debug_log; gui_app.py:238; edge-agent/local_extraction_client.py:90; edge-agent/practice_consolidation.py:87 -->
 
 ## Diagramma dei componenti
 
@@ -44,7 +44,7 @@ flowchart TB
     PROMPTS --> ROUTER
 ```
 
-<!-- Source: extraction/cli.py:184; extraction/cli.py:230; edge-agent/workers/capture/bper_capture_worker.py:687; edge-agent/local_extraction_client.py:145; edge-agent/local_extraction_client.py:170; edge-agent/excel_export.py:217; extraction/prompts.py:1; edge-agent/llm_router.py:111 -->
+<!-- Source: extraction/cli.py::BatchRunner.__init__; extraction/cli.py::BatchRunner.run; edge-agent/workers/capture/bper_capture_worker.py:687; edge-agent/local_extraction_client.py:145; edge-agent/local_extraction_client.py:170; edge-agent/excel_export.py:217; extraction/prompts.py:1; edge-agent/llm_router.py:111 -->
 
 ## Struttura delle directory
 
@@ -87,13 +87,13 @@ Per orientarsi dentro `extraction/`, usare la tabella seguente; per le firme dei
 ### Layer delle interfacce
 
 - **CLI:** `main.py` carica `.env`, importa `extraction` e avvia il batch. `--gui` inoltra all'edge-agent dopo quell'import: non ha lo stesso ordine di inizializzazione dell'avvio diretto Qt.
-- **Tkinter:** `gui_app.py` seleziona file, provider e modello, poi chiama `run_extraction_batch()` da un thread di background. La valutazione richiede un CSV facoltativo. Non carica `.env`: l'ambiente deve essere già disponibile.
+- **Tkinter:** `gui_app.py` carica `.env` prima del motore, inizializza menu provider/modello coerenti con la configurazione effettiva e conserva un eventuale modello personalizzato. Chiama `run_extraction_batch()` da un thread di background sui file selezionati; la valutazione usa un CSV facoltativo ([ADR 0021](adr/0021-dotenv-prima-del-motore-nella-gui-tkinter.md)).
 - **PyQt6:** `MainWindow` condivide un `LocalExtractionClient` fra Cattura e Dati Estratti. La scheda Debug LLM richiede `--debug`; il flusso di diagnostica del router richiede anche `show_llm_tab` nell'INI. La tabella ordinaria contiene dati di pratica, mentre costo, confidenza e provenienza sono registrati dal client su stdout, reindirizzato a `edge-agent.log` nel bundle senza console.
 
 <!-- Source: main.py:4; gui_app.py:24; gui_app.py:225; gui_app.py:238; edge-agent/ui/main_window.py:31; edge-agent/ui/main_window.py:43; edge-agent/edge_agent.py:15; edge-agent/edge_agent.py:87; edge-agent/workers/capture/bper_capture_worker.py:636; edge-agent/local_extraction_client.py:41 -->
 
 CLI e Tkinter riusano `BatchRunner`: la creazione dei modelli, l'esecuzione parallela e le callback hanno un solo proprietario. `on_complete` e `on_error` vengono chiamate dal thread che esegue il batch, non dai suoi worker.
-<!-- Source: extraction/cli.py:157; extraction/cli.py:210; extraction/cli.py:285 -->
+<!-- Source: extraction/cli.py::_debug_log; extraction/cli.py::BatchRunner.run; extraction/cli.py::BatchRunner.run -->
 
 ### Layer di configurazione
 
@@ -109,8 +109,8 @@ CLI e Tkinter riusano `BatchRunner`: la creazione dei modelli, l'esecuzione para
 |---|---|
 | [fields.py](../extraction/fields.py) | `FIELD_KEYS` e corrispondenza delle etichette CSV con le chiavi italiane. |
 | [schemas.py](../extraction/schemas.py) | `FieldResult`, risposte anchor/main e righe soggetti, fidi, garanzie. |
-| [field_definitions.py](../extraction/field_definitions.py) | Nome visualizzato e pagina canonica di ogni campo. |
-| [page_definitions.py](../extraction/page_definitions.py) | Quattro pagine canoniche e ordine di presentazione. |
+| [field_definitions.py](../extraction/field_definitions.py) | Nome visualizzato, pagina di origine e gruppo di export di ogni campo. |
+| [page_definitions.py](../extraction/page_definitions.py) | Cinque pagine di origine e quattro gruppi di export. |
 | [canonical_mapping.py](../extraction/canonical_mapping.py) | Trasformazione dei campi in voci rivolte al cliente. |
 
 <!-- Source: extraction/fields.py:12; extraction/schemas.py:31; extraction/schemas.py:73; extraction/field_definitions.py:1; extraction/page_definitions.py:5; extraction/canonical_mapping.py:20 -->
@@ -118,12 +118,14 @@ CLI e Tkinter riusano `BatchRunner`: la creazione dei modelli, l'esecuzione para
 `FieldsModel` è generato da `FIELD_KEYS`: lo schema segue automaticamente le 45 chiavi. Le altre corrispondenze restano esplicite: un nuovo campo richiede di aggiornare mapping CSV, area di retry o esclusione deliberata in `UNRETRIED_FIELDS`, definizione canonica e prompt. `FieldResult` contiene valore facoltativo, confidenza ricondotta a 0–1, testo di evidenza e sezione. `ExtractionResponse` aggiunge le liste tabellari; `AnchorResponse` contiene soltanto NDG e denominazione. I dettagli sono nel [modello dei dati](06-data-model.md).
 <!-- Source: extraction/schemas.py:11; extraction/schemas.py:31; extraction/schemas.py:73; extraction/schemas.py:76; extraction/schemas.py:82; extraction/config.py:105 -->
 
+`page_key` descrive l'origine del campo; `export_group_key` ne può separare il raggruppamento di presentazione. I tredici campi Scheda Privati hanno origine `scheda_privati` e gruppo `note_da_richiesta`. `resolve_field_export_group_key()` è la regola condivisa da ordinamento canonico e colonne Excel, che mantengono quattro bande e 45 colonne ([ADR 0020](adr/0020-pagina-sorgente-separata-dal-gruppo-export.md)). Questo metadato non introduce selezione dei retry per pagina.
+
 ### Layer delle immagini
 
 L'inquadratura precede qualsiasi consumatore del frame dal vivo: `_grab_raw()` usa `normalize_frame()` per riportare il monitor sulla finestra, poi il worker calcola identità e pHash e applica `preprocess_for_ocr()`. La ROI del classificatore e le bande di retry assumono quella inquadratura; applicare la normalizzazione soltanto a uno dei consumatori rende incoerenti gli altri. La motivazione è nell'[ADR 0001](adr/0001-normalizzazione-inquadratura-frame.md).
 <!-- Source: edge-agent/workers/capture/bper_capture_worker.py:444; edge-agent/workers/capture/bper_capture_worker.py:536; edge-agent/frame_normalize.py:209 -->
 
-Il motore distingue due ingressi. `extract_from_screen()` apre il file, esegue `normalize_image()` e autorizza il controllo del ritaglio calibrato. `extract_from_image()` salta quel preprocessing e, per default, conserva l'immagine intera; impone comunque il limite dimensionale `MAX_IMAGE_LONG_SIDE`. Il ritaglio di contenuto è ammesso solo quando rapporto d'aspetto e lato lungo corrispondono alla famiglia di riferimento 848×679: tolleranza d'aspetto 5%, lato lungo 800–900 pixel. Fuori calibrazione anche l'anchor legge l'immagine intera e il retry BODY può riempire una tabella vuota, ma non sostituirne una esistente. Vedi [ADR 0010](adr/0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md).
+Il motore distingue due ingressi. `extract_from_screen()` apre il file, esegue `normalize_image()` e autorizza il controllo del ritaglio calibrato. `extract_from_image()` salta quel preprocessing e, per default, conserva l'immagine intera; impone comunque il limite dimensionale `MAX_IMAGE_LONG_SIDE`. Il ritaglio di contenuto è ammesso solo quando rapporto d'aspetto e lato lungo corrispondono alla famiglia di riferimento 848×679: tolleranza d'aspetto 5%, lato lungo 800–900 pixel. Fuori calibrazione anche l'anchor legge l'immagine intera e il retry BODY può riempire una tabella vuota, ma non sostituirne una esistente. Per riempire `soggetti` vuoto, sia in calibrazione sia fuori, ogni riga proposta deve raggiungere `RETRY_CONF_MIN` e contenere NDG o denominazione non nulli; le altre righe vengono scartate. Vedi [ADR 0010](adr/0010-ritaglio-autorizzato-dal-percorso-e-dalla-famiglia.md) e [0019](adr/0019-filtro-soggetti-da-retry-su-tabella-vuota.md).
 <!-- Source: extraction/imaging.py:19; extraction/imaging.py:52; extraction/config.py:78; extraction/pipeline.py:92; extraction/pipeline.py:138; extraction/pipeline.py:231; extraction/pipeline.py:266 -->
 
 ### Layer LLM e prompt
@@ -143,7 +145,7 @@ I testi LLM sono dati in `prompts/*.json`, caricati e validati una volta da `pro
 <!-- Source: extraction/pipeline.py:110; extraction/pipeline.py:122; extraction/pipeline.py:295 -->
 
 `BatchRunner` e `LocalExtractionClient` costruiscono ciascuno una pipeline con due ChatModel condivisi fra i propri worker. I retry aggiungono un executor temporaneo per immagine. Il codice assume l'uso concorrente dei modelli; il numero di richieste simultanee può quindi superare il numero di immagini elaborate contemporaneamente.
-<!-- Source: extraction/cli.py:184; extraction/cli.py:237; edge-agent/local_extraction_client.py:100; edge-agent/local_extraction_client.py:114; extraction/pipeline.py:349 -->
+<!-- Source: extraction/cli.py::BatchRunner.__init__; extraction/cli.py::BatchRunner.run; edge-agent/local_extraction_client.py:100; edge-agent/local_extraction_client.py:114; extraction/pipeline.py:349 -->
 
 L'appiattimento dei primi quattro soggetti usa lo stesso `pick_best()` dei retry per le dodici chiavi numerate e aggiorna `_field_sources` solo quando vince il candidato tabellare, con la sorgente della tabella accettata ([ADR 0018](adr/0018-appiattimento-soggetti-con-merge-e-provenienza.md)). Restano limiti del risultato: i campi prodotti dal flatten non aggiungono `evidence_text`, il main assegna una sorgente anche ai campi assenti, le correzioni di coerenza non registrano la trasformazione e i retry falliti non aggiungono metadati. `creazione` appartiene a HEADER; solo i cinque tooltip sono esclusi esplicitamente dai retry in `UNRETRIED_FIELDS`, perché la loro posizione transitoria non autorizza un ritaglio fisso. La suite verifica che ogni campo abbia esattamente una politica di retry e che mapping CSV e definizioni canoniche coprano `FIELD_KEYS`; non sono guardie di avvio.
 <!-- Source: extraction/pipeline.py:180; extraction/pipeline.py:203; extraction/pipeline.py:353; extraction/pipeline.py:378; extraction/config.py:105; extraction/config.py:122; tests/test_domain_vocabulary.py:11; tests/test_pipeline_postprocessing.py:187 -->
@@ -173,7 +175,7 @@ Il contratto centrale è un risultato per immagine: campi, liste tabellari, `can
 <!-- Source: extraction/pipeline.py:151; extraction/pipeline.py:196; edge-agent/local_extraction_client.py:170; edge-agent/local_extraction_client.py:182 -->
 
 Nel batch gli output sono indicizzati dallo stem del file e salvati prima della valutazione. Dal vivo restano in memoria sotto il job: `consolidate()` li raggruppa per NDG normalizzato, applica `pick_best()` e produce `PracticeRecord`. La tabella e l'export Excel riusano questa fusione. Excel contiene 45 colonne, NDG e denominazione all'inizio, due righe di intestazione e una riga per pratica; i valori sono testo anche quando iniziano con `=` o hanno segno negativo.
-<!-- Source: extraction/imaging.py:29; extraction/cli.py:344; extraction/normalization.py:40; edge-agent/practice_consolidation.py:67; edge-agent/practice_consolidation.py:87; edge-agent/ui/data_table_tab.py:194; edge-agent/excel_export.py:92; edge-agent/excel_export.py:124; edge-agent/excel_export.py:177 -->
+<!-- Source: extraction/imaging.py:29; extraction/cli.py::main; extraction/normalization.py:40; edge-agent/practice_consolidation.py:67; edge-agent/practice_consolidation.py:87; edge-agent/ui/data_table_tab.py:194; edge-agent/excel_export.py:92; edge-agent/excel_export.py:124; edge-agent/excel_export.py:177 -->
 
 ## Configurazione
 

@@ -3,6 +3,10 @@ from tkinter import filedialog, messagebox, scrolledtext, ttk
 import os
 import threading
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from extraction import (
     run_extraction_batch,
     load_ground_truth,
@@ -10,11 +14,13 @@ from extraction import (
     build_debug_report,
     export_to_csv,
     FIELD_KEYS,
+    LLM_PROVIDER,
+    LLM_MODEL,
     PROVIDER_MODELS
 )
 
 class App(tk.Tk):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self.title("AI Data Extractor - Multi-LLM Support")
@@ -24,12 +30,12 @@ class App(tk.Tk):
         self.api_key = tk.StringVar(value=os.getenv("LLM_API_KEY", os.getenv("OPENAI_API_KEY", "")))
         self.image_paths = []
         self.csv_path = tk.StringVar()
-        self.provider_choice = tk.StringVar(value="openai")
-        self.model_choice = tk.StringVar(value="gpt-4o")
+        self.provider_choice = tk.StringVar(value=LLM_PROVIDER)
+        self.model_choice = tk.StringVar(value=LLM_MODEL)
 
         self.create_widgets()
 
-    def create_widgets(self):
+    def create_widgets(self) -> None:
         # Notebook per i Tab
         self.notebook = ttk.Notebook(self)
         self.notebook.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -82,7 +88,7 @@ class App(tk.Tk):
         self.model_menu = tk.OptionMenu(
             prov_mod_frame,
             self.model_choice,
-            *PROVIDER_MODELS["openai"],
+            *PROVIDER_MODELS[self.provider_choice.get()],
         )
         self.model_menu.grid(row=1, column=1, sticky=tk.W)
 

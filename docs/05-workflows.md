@@ -1,7 +1,7 @@
 # Workflow
 
 Il motore estrae campi da una singola immagine. CLI e Tkinter lo applicano a file scelti; l'edge-agent lo alimenta con frame acquisiti durante la navigazione e riunisce i risultati per pratica. Questo capitolo segue i dati dalla lettura dell'immagine fino alla valutazione o all'Excel, indicando anche dove errori e attese cambiano il flusso.
-<!-- Source: extraction/pipeline.py:122; extraction/cli.py:285; gui_app.py:238; edge-agent/local_extraction_client.py:127; edge-agent/excel_export.py:217 -->
+<!-- Source: extraction/pipeline.py:122; extraction/cli.py::BatchRunner.run; gui_app.py:238; edge-agent/local_extraction_client.py:127; edge-agent/excel_export.py:217 -->
 
 Per le responsabilità dei componenti vedere [Architettura](04-architecture.md); per firme, parametri e ritorni, [API Python](12-python-api.md).
 
@@ -38,7 +38,7 @@ flowchart TD
 4. **Lettura principale.** Il prompt incorpora solo gli anchor non nulli. La risposta contiene i 45 campi e le liste soggetti, fidi e garanzie. Gli anchor validi sovrascrivono poi gli omologhi del main e ricevono provenienza `ANCHOR_HEADER`.
 5. **Normalizzazione di tipo.** `normalize_tipo()` riconduce i sinonimi di mutuo previsti dal codice a `BPI Mutui`; la stessa regola si applica ai candidati del retry per `tipo`.
 6. **Retry condizionale.** Un campo nullo o sotto `RETRY_CONF_MIN`, default 0.60, rende candidata la propria area. HEADER, BODY e FOOTER vengono selezionate nell'ordine dichiarato in `AREA_TO_FIELDS`, fino a `max(0, MAX_CALLS_PER_SCREEN-2)`, poi eseguite in parallelo. HEADER e BODY ricevono anche un incremento di contrasto e nitidezza. Il default del budget è `2 + len(AREA_TO_FIELDS)`, oggi 5: ridurlo può escludere le aree in coda, come spiegato nell'[ADR 0004](adr/0004-budget-retry-derivato-dalle-aree.md).
-7. **Fusione.** `pick_best()` preferisce il valore non nullo e poi la confidenza maggiore; a parità conserva il corrente. `_field_sources` cambia se vince il candidato. Solo BODY può proporre tabelle: su immagini calibrate prevalgono più righe, poi la confidenza media; fuori calibrazione può solo riempire una tabella vuota.
+7. **Fusione.** `pick_best()` preferisce il valore non nullo e poi la confidenza maggiore; a parità conserva il corrente. `_field_sources` cambia se vince il candidato. Solo BODY può proporre tabelle: su immagini calibrate prevalgono più righe, poi la confidenza media; fuori calibrazione può solo riempire una tabella vuota. Quando `soggetti` è vuoto, in entrambi i casi vengono prima scartate le righe sotto `RETRY_CONF_MIN` o senza NDG e denominazione leggibili. Il filtro opera per riga; le regole delle tabelle già popolate e di `fidi`/`garanzie` restano invariate ([ADR 0019](adr/0019-filtro-soggetti-da-retry-su-tabella-vuota.md)).
 8. **Coerenza.** Un tooltip delle evidenze B può correggere `evidenze` nullo o numerico in `B`; un tooltip BMB può riempire `tipo` nullo con `BMB`.
 9. **Risultato finale.** La pipeline aggrega metadati e confronta i primi quattro soggetti con i dodici campi numerati tramite `pick_best()`: il non nullo prevale, poi conta la confidenza; a parità resta lo scalare corrente. Se vince il candidato tabellare, `_field_sources` registra il passaggio che ha prodotto la tabella accettata (`CONTENT_MAIN` o `RETRY_BODY`). Infine costruisce `canonical_fields` e assegna `OK` solo se NDG e denominazione sono entrambi presenti; altrimenti assegna `ANCHOR_UNCERTAIN`. Vedi [ADR 0018](adr/0018-appiattimento-soggetti-con-merge-e-provenienza.md).
 
@@ -63,7 +63,7 @@ La forma di output del modello dipende dal provider: OpenAI usa output struttura
 ## Estrazione batch da CLI
 
 **Trigger:** `python main.py`, eseguito dalla radice del repository. Carica `.env` prima dell'import del motore, poi `main()` richiede `INPUT_DIR/dati.csv`, carica la ground truth e cerca tutte le immagini PNG/JPG/JPEG direttamente in `INPUT_DIR`, ordinate per nome. Il CSV non è distribuito con il repository; l'avvio CLI si ferma con `FileNotFoundError` se manca.
-<!-- Source: main.py:4; extraction/cli.py:318; extraction/config.py:10; .gitignore:1 -->
+<!-- Source: main.py:4; extraction/cli.py::main; extraction/config.py:10; .gitignore:1 -->
 
 ```mermaid
 flowchart LR
@@ -76,18 +76,18 @@ flowchart LR
     Eval --> Report["CSV di debug e costi"]
 ```
 
-<!-- Source: extraction/cli.py:184; extraction/cli.py:235; extraction/cli.py:318; extraction/cli.py:344 -->
+<!-- Source: extraction/cli.py::BatchRunner.__init__; extraction/cli.py::BatchRunner.run; extraction/cli.py::main; extraction/cli.py::main -->
 
-`BatchRunner` usa il pool solo quando il parallelismo è attivo, ci sono più worker e più immagini esistenti. I percorsi mancanti sono segnalati e saltati; una cartella senza immagini fa terminare la CLI dopo un messaggio. Ogni risultato è indicizzato dallo stem del file: `a.png` e `a.jpg` hanno la stessa chiave e possono sovrascriversi. La deduplica per pagina canonica è implementata ma la sua chiamata è disabilitata in attesa di validazione del mapping.
-<!-- Source: extraction/cli.py:210; extraction/cli.py:235; extraction/cli.py:271; extraction/cli.py:333; extraction/imaging.py:29 -->
+`BatchRunner` usa il pool solo quando il parallelismo è attivo, ci sono più worker e più immagini esistenti. I percorsi mancanti sono segnalati e saltati; una cartella senza immagini fa terminare la CLI dopo un messaggio. Ogni risultato è indicizzato dallo stem del file: `a.png` e `a.jpg` hanno la stessa chiave e possono sovrascriversi. Il batch conserva gli output delle schermate senza deduplicarli per pagina canonica.
+<!-- Source: extraction/cli.py::BatchRunner.run; extraction/cli.py::BatchRunner.run; extraction/cli.py::BatchRunner.run; extraction/cli.py::main; extraction/imaging.py:29 -->
 
 Il JSON completo viene scritto in `INPUT_DIR/poc_outputs_improved.json`. Il valutatore stampa accuratezza e riepilogo dei costi e scrive `INPUT_DIR/poc_debug_improved.csv` con separatore `;` e codifica `utf-8-sig`. Se manca `on_error`, il batch parallelo stampa l'errore e continua, mentre quello sequenziale rilancia l'eccezione. Le callback girano sempre nel thread che chiama il batch.
-<!-- Source: extraction/cli.py:244; extraction/cli.py:260; extraction/cli.py:344; extraction/evaluation.py:15 -->
+<!-- Source: extraction/cli.py::BatchRunner.run; extraction/cli.py::BatchRunner.run; extraction/cli.py::main; extraction/evaluation.py:15 -->
 
 ### Variante Tkinter
 
-`gui_app.py` avvia il batch da un thread di background con chiave, provider e modello selezionati. Passa fino a `min(numero immagini, 12)` worker. Quando `model_main` è esplicito e `model_anchor` è omesso, il runner usa il modello scelto per entrambi: non recupera un anchor incompatibile dall'ambiente. Tkinter non chiama `load_dotenv()`.
-<!-- Source: gui_app.py:24; gui_app.py:225; gui_app.py:238; extraction/cli.py:177 -->
+`gui_app.py` carica `.env` prima di importare `extraction`; provider e modello iniziali seguono la configurazione effettiva e il menu conserva anche un modello personalizzato. Avvia il batch da un thread di background con chiave, provider e modello selezionati, passando fino a `min(numero immagini, 12)` worker. Quando `model_main` è esplicito e `model_anchor` è omesso, il runner usa il modello scelto per entrambi ([ADR 0021](adr/0021-dotenv-prima-del-motore-nella-gui-tkinter.md)).
+<!-- Source: gui_app.py:24; gui_app.py:225; gui_app.py:238; extraction/cli.py::BatchRunner.__init__ -->
 
 La GUI scrive `poc_outputs_gui.json` e `poc_results_gui.csv` nella directory corrente; se è stato scelto il CSV di riferimento esegue anche valutazione e report di debug. Per comandi e prerequisiti vedere [Per iniziare](07-getting-started.md).
 <!-- Source: gui_app.py:250; gui_app.py:265 -->
@@ -211,7 +211,7 @@ I compromessi sono espliciti negli [ADR 0013](adr/0013-risultati-nell-ordine-di-
 
 ## Routing di pagina (edge-agent)
 
-Il routing assegna una pagina alla schermata prima dell'estrazione. `RouterResult` trasporta `page_type`, `confidence`, `fields`, `reason` ed `expected`; `PageRegistry` collega nomi visualizzati e stem dei template. Questi nomi distinguono varianti della schermata; le quattro pagine canoniche dell'output sono invece assegnate ai campi da `field_definitions.py`, non dal nome ritornato dal router.
+Il routing assegna una pagina alla schermata prima dell'estrazione. `RouterResult` trasporta `page_type`, `confidence`, `fields`, `reason` ed `expected`; `PageRegistry` collega nomi visualizzati e stem dei template. Questi nomi distinguono varianti della schermata. Le cinque pagine di origine dei campi sono assegnate da `field_definitions.py`, non dal nome ritornato dal router; i quattro gruppi di export sono definiti separatamente ([ADR 0020](adr/0020-pagina-sorgente-separata-dal-gruppo-export.md)). Il mapping non riduce il numero di retry delle aree deboli.
 <!-- Source: edge-agent/llm_router.py:29; edge-agent/page_registry.py:69; extraction/field_definitions.py:1; extraction/page_definitions.py:5 -->
 
 | Modalità | Percorso effettivo |
@@ -255,7 +255,7 @@ In `local-first`, un prototipo di scarto termina la decisione senza rete; una pa
 | Executor dei retry | Pool temporaneo per le aree deboli di ogni immagine, annidato al livello batch o live. |
 | Preflight Qt | Preparazione di pesi e classificatore prima della UI principale, con worker dedicato al download. |
 
-<!-- Source: edge-agent/workers/capture/base_capture_worker.py:43; edge-agent/extraction_pool.py:14; edge-agent/extraction_pool.py:41; edge-agent/local_extraction_client.py:114; extraction/cli.py:237; extraction/pipeline.py:349; edge-agent/bootstrap.py:284; edge-agent/bootstrap.py:489 -->
+<!-- Source: edge-agent/workers/capture/base_capture_worker.py:43; edge-agent/extraction_pool.py:14; edge-agent/extraction_pool.py:41; edge-agent/local_extraction_client.py:114; extraction/cli.py::BatchRunner.run; extraction/pipeline.py:349; edge-agent/bootstrap.py:284; edge-agent/bootstrap.py:489 -->
 
 Il worker generico resta un percorso separato: cattura e invia frame a `{api.base_url}/jobs/{job_id}/frames`. Il repository non implementa il server destinatario e quel percorso non esegue l'estrazione locale BPER. La presenza di quell'upload non descrive un'API HTTP disponibile in questo progetto.
 <!-- Source: edge-agent/workers/capture/default_capture_worker.py:34; edge-agent/ui/main_window.py:36; edge-agent/workers/capture/bper_capture_worker.py:687 -->

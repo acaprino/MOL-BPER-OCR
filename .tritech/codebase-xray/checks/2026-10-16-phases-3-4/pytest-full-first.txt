@@ -1,0 +1,40 @@
+........................................................................ [ 17%]
+........................................................................ [ 34%]
+........................................................................ [ 51%]
+........................................................................ [ 69%]
+........................................................................ [ 86%]
+.........F..............................................                 [100%]
+================================== FAILURES ===================================
+__________ test_supervises_verified_validation_date_without_ocr_typo __________
+
+    def test_supervises_verified_validation_date_without_ocr_typo() -> None:
+        words = [{"text": text, "x0": index*30, "y0": 0, "x1": index*30+20, "y1": 10, "fitted": True}
+                 for index, text in enumerate(["30/09/2026", "glorni"])]
+        alignment = {"indices": [0, 1], "verified_indices": [0], "bbox": (0, 0, 50, 10),
+                     "status": "aligned", "exact_text": False}
+        labels, _ = apply_supervision(words, {"Ultima validazione scheda privati": alignment},
+                                     {"Ultima validazione scheda privati": "ultima_validazione_scheda"})
+>       assert labels == ["ultima_validazione_scheda", "IGNORE"]
+E       AssertionError: assert ['IGNORE', 'IGNORE'] == ['ultima_vali...da', 'IGNORE']
+E         
+E         At index 0 diff: 'IGNORE' != 'ultima_validazione_scheda'
+E         Use -v to get more diff
+
+tests\test_training_dataset.py:95: AssertionError
+============================== warnings summary ===============================
+tests/test_page_classifier.py::test_recognizes_each_page_from_a_full_monitor_frame[screen 1]
+  C:\Users\alfio/.cache\torch\hub\facebookresearch_dinov2_7764ea0f912e53c92e82eb78a2a1631e92725fc8\dinov2\layers\swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+    warnings.warn("xFormers is not available (SwiGLU)")
+
+tests/test_page_classifier.py::test_recognizes_each_page_from_a_full_monitor_frame[screen 1]
+  C:\Users\alfio/.cache\torch\hub\facebookresearch_dinov2_7764ea0f912e53c92e82eb78a2a1631e92725fc8\dinov2\layers\attention.py:33: UserWarning: xFormers is not available (Attention)
+    warnings.warn("xFormers is not available (Attention)")
+
+tests/test_page_classifier.py::test_recognizes_each_page_from_a_full_monitor_frame[screen 1]
+  C:\Users\alfio/.cache\torch\hub\facebookresearch_dinov2_7764ea0f912e53c92e82eb78a2a1631e92725fc8\dinov2\layers\block.py:40: UserWarning: xFormers is not available (Block)
+    warnings.warn("xFormers is not available (Block)")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_training_dataset.py::test_supervises_verified_validation_date_without_ocr_typo
+1 failed, 415 passed, 3 warnings in 147.51s (0:02:27)

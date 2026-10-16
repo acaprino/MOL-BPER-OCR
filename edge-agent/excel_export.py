@@ -21,7 +21,10 @@ _PROJECT_ROOT = str(app_paths.project_root())
 if not app_paths.is_frozen() and _PROJECT_ROOT not in sys.path:
     sys.path.insert(0, _PROJECT_ROOT)
 
-from extraction.field_definitions import CANONICAL_FIELD_DEFINITIONS
+from extraction.field_definitions import (
+    CANONICAL_FIELD_DEFINITIONS,
+    resolve_field_export_group_key,
+)
 from extraction.page_definitions import CANONICAL_PAGE_NAMES, PAGE_SHEET_ORDER
 
 from practice_consolidation import PracticeRecord, consolidate
@@ -72,7 +75,7 @@ _BORDER = Border(left=_THIN, right=_THIN, top=_THIN, bottom=_THIN)
 
 @dataclass(frozen=True)
 class ColumnSpec:
-    """One spreadsheet column bound to a canonical field."""
+    """A canonical field column; page_key/name describe its spreadsheet group."""
 
     schema_key: str
     label: str
@@ -82,8 +85,9 @@ class ColumnSpec:
 
 def _canonical_sort_key(schema_key: str) -> tuple:
     definition = CANONICAL_FIELD_DEFINITIONS[schema_key]
+    export_group_key = resolve_field_export_group_key(schema_key) or definition["page_key"]
     return (
-        PAGE_SHEET_ORDER.index(definition["page_key"]),
+        PAGE_SHEET_ORDER.index(export_group_key),
         definition["display_name"],
         schema_key,
     )
@@ -104,7 +108,7 @@ def build_columns(labels: Optional[Mapping[str, str]] = None) -> List[ColumnSpec
     columns: List[ColumnSpec] = []
     for schema_key in list(PINNED_KEYS) + rest:
         definition = CANONICAL_FIELD_DEFINITIONS[schema_key]
-        page_key = definition["page_key"]
+        page_key = resolve_field_export_group_key(schema_key) or definition["page_key"]
         columns.append(
             ColumnSpec(
                 schema_key=schema_key,
