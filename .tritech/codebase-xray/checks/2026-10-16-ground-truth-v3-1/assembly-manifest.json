@@ -1,0 +1,1361 @@
+{
+  "source": "C:\\Users\\alfio\\Desktop\\Revisione_ground_truth_v3_02.xlsx",
+  "source_sha256": "5ad66a8c2a0beb79c6a7e07d7fc12ab8169c1b5af3d9362238ec1b049bee6c3f",
+  "output": "D:\\Projects\\poc-data-extraction\\mnt\\riscontro-2026-10-07\\revisione\\Revisione_ground_truth_v3_1.xlsx",
+  "output_sha256": "483e1ab4f48b47de757a13b564ab4a3c102e2c6f39675721b2698da8ce3b20d4",
+  "images_corrected": 63,
+  "source_images_preserved_byte_for_byte": true,
+  "changes": [
+    {
+      "row": 8,
+      "screen": "51185037__Elenco",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1918,
+        1012
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 15,
+      "screen": "51185037__Elenco_tooltip1",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1916,
+        1006
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 84,
+      "screen": "51531667__Elenco",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1913,
+        1025
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 91,
+      "screen": "51531667__Elenco_dx",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1912,
+        1027
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 98,
+      "screen": "51531667__Elenco_tooltip1",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1913,
+        1022
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 191,
+      "screen": "51659595__Elenco",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1918,
+        1027
+      ],
+      "rectangle": [
+        1685,
+        462,
+        1697,
+        477
+      ],
+      "caption": "Valore corretto da Rita: B. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 198,
+      "screen": "51659595__Elenco_dx",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1916,
+        1026
+      ],
+      "rectangle": [
+        1683,
+        462,
+        1695,
+        477
+      ],
+      "caption": "Valore corretto da Rita: B. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 205,
+      "screen": "51659595__Elenco_tooltip1",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1917,
+        1022
+      ],
+      "rectangle": [
+        1683,
+        462,
+        1695,
+        477
+      ],
+      "caption": "Valore corretto da Rita: B. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 213,
+      "screen": "51659595__Elenco_tooltip2",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1917,
+        1028
+      ],
+      "rectangle": [
+        1684,
+        462,
+        1696,
+        477
+      ],
+      "caption": "Valore corretto da Rita: B. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 293,
+      "screen": "52060489__Soggetti",
+      "field": "NDG 4",
+      "crop": [
+        340,
+        489,
+        1083,
+        637
+      ],
+      "source_size": [
+        1912,
+        1011
+      ],
+      "rectangle": [
+        376,
+        610,
+        419,
+        621
+      ],
+      "caption": "NDG 4: vuoto confermato. Riquadro sull’ultima riga reale, soggetto 3."
+    },
+    {
+      "row": 294,
+      "screen": "52060489__Soggetti",
+      "field": "DENOMINAZIONE 4",
+      "crop": [
+        340,
+        489,
+        1083,
+        637
+      ],
+      "source_size": [
+        1912,
+        1011
+      ],
+      "rectangle": [
+        421,
+        610,
+        477,
+        621
+      ],
+      "caption": "DENOMINAZIONE 4: vuoto confermato. Riquadro sull’ultima riga reale, soggetto 3."
+    },
+    {
+      "row": 295,
+      "screen": "52060489__Soggetti",
+      "field": "RUOLO 4",
+      "crop": [
+        340,
+        489,
+        1083,
+        637
+      ],
+      "source_size": [
+        1912,
+        1011
+      ],
+      "rectangle": [
+        599,
+        603,
+        719,
+        629
+      ],
+      "caption": "RUOLO 4: vuoto confermato. Riquadro sull’ultima riga reale, soggetto 3."
+    },
+    {
+      "row": 348,
+      "screen": "52062600__Elenco",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1906,
+        1022
+      ],
+      "rectangle": [
+        1712,
+        461,
+        1724,
+        476
+      ],
+      "caption": "Valore corretto da Rita: B. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 355,
+      "screen": "52062600__Elenco_tooltip1",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1893,
+        1017
+      ],
+      "rectangle": [
+        1701,
+        459,
+        1713,
+        474
+      ],
+      "caption": "Valore corretto da Rita: B. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 363,
+      "screen": "52062600__Elenco_tooltip2",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1895,
+        1021
+      ],
+      "rectangle": [
+        1702,
+        462,
+        1714,
+        477
+      ],
+      "caption": "Valore corretto da Rita: B. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 480,
+      "screen": "52067184__Soggetti",
+      "field": "NDG 3",
+      "crop": [
+        319,
+        470,
+        1062,
+        586
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        322,
+        473,
+        1059,
+        583
+      ],
+      "caption": "NDG 3: soggetto 3 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 481,
+      "screen": "52067184__Soggetti",
+      "field": "DENOMINAZIONE 3",
+      "crop": [
+        319,
+        470,
+        1062,
+        586
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        322,
+        473,
+        1059,
+        583
+      ],
+      "caption": "DENOMINAZIONE 3: soggetto 3 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 482,
+      "screen": "52067184__Soggetti",
+      "field": "RUOLO 3",
+      "crop": [
+        319,
+        470,
+        1062,
+        586
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        322,
+        473,
+        1059,
+        583
+      ],
+      "caption": "RUOLO 3: soggetto 3 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 483,
+      "screen": "52067184__Soggetti",
+      "field": "NDG 4",
+      "crop": [
+        319,
+        470,
+        1062,
+        586
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        322,
+        473,
+        1059,
+        583
+      ],
+      "caption": "NDG 4: soggetto 4 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 484,
+      "screen": "52067184__Soggetti",
+      "field": "DENOMINAZIONE 4",
+      "crop": [
+        319,
+        470,
+        1062,
+        586
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        322,
+        473,
+        1059,
+        583
+      ],
+      "caption": "DENOMINAZIONE 4: soggetto 4 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 485,
+      "screen": "52067184__Soggetti",
+      "field": "RUOLO 4",
+      "crop": [
+        319,
+        470,
+        1062,
+        586
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        322,
+        473,
+        1059,
+        583
+      ],
+      "caption": "RUOLO 4: soggetto 4 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 540,
+      "screen": "52068422__Elenco",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1906,
+        1027
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 547,
+      "screen": "52068422__Elenco_tooltip1",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 548,
+      "screen": "52068422__Soggetti",
+      "field": "NDG",
+      "crop": [
+        321,
+        470,
+        1064,
+        599
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": [
+        356,
+        538,
+        398,
+        549
+      ],
+      "caption": "NDG: valore evidenziato nella tabella Elenco Soggetti."
+    },
+    {
+      "row": 549,
+      "screen": "52068422__Soggetti",
+      "field": "DENOMINAZIONE",
+      "crop": [
+        321,
+        470,
+        1064,
+        599
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": [
+        402,
+        531,
+        534,
+        556
+      ],
+      "caption": "DENOMINAZIONE: valore evidenziato nella tabella Elenco Soggetti."
+    },
+    {
+      "row": 558,
+      "screen": "52068422__Soggetti",
+      "field": "NDG 3",
+      "crop": [
+        321,
+        470,
+        1064,
+        599
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": [
+        324,
+        473,
+        1061,
+        596
+      ],
+      "caption": "NDG 3: soggetto 3 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 559,
+      "screen": "52068422__Soggetti",
+      "field": "DENOMINAZIONE 3",
+      "crop": [
+        321,
+        470,
+        1064,
+        599
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": [
+        324,
+        473,
+        1061,
+        596
+      ],
+      "caption": "DENOMINAZIONE 3: soggetto 3 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 560,
+      "screen": "52068422__Soggetti",
+      "field": "RUOLO 3",
+      "crop": [
+        321,
+        470,
+        1064,
+        599
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": [
+        324,
+        473,
+        1061,
+        596
+      ],
+      "caption": "RUOLO 3: soggetto 3 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 561,
+      "screen": "52068422__Soggetti",
+      "field": "NDG 4",
+      "crop": [
+        321,
+        470,
+        1064,
+        599
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": [
+        324,
+        473,
+        1061,
+        596
+      ],
+      "caption": "NDG 4: soggetto 4 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 562,
+      "screen": "52068422__Soggetti",
+      "field": "DENOMINAZIONE 4",
+      "crop": [
+        321,
+        470,
+        1064,
+        599
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": [
+        324,
+        473,
+        1061,
+        596
+      ],
+      "caption": "DENOMINAZIONE 4: soggetto 4 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 563,
+      "screen": "52068422__Soggetti",
+      "field": "RUOLO 4",
+      "crop": [
+        321,
+        470,
+        1064,
+        599
+      ],
+      "source_size": [
+        1912,
+        1022
+      ],
+      "rectangle": [
+        324,
+        473,
+        1061,
+        596
+      ],
+      "caption": "RUOLO 4: soggetto 4 assente. La tabella contiene 2 righe reali."
+    },
+    {
+      "row": 723,
+      "screen": "52102599__Soggetti",
+      "field": "NDG 2",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "NDG 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 724,
+      "screen": "52102599__Soggetti",
+      "field": "DENOMINAZIONE 2",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "DENOMINAZIONE 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 725,
+      "screen": "52102599__Soggetti",
+      "field": "RUOLO 2",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "RUOLO 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 726,
+      "screen": "52102599__Soggetti",
+      "field": "NDG 3",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "NDG 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 727,
+      "screen": "52102599__Soggetti",
+      "field": "DENOMINAZIONE 3",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "DENOMINAZIONE 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 728,
+      "screen": "52102599__Soggetti",
+      "field": "RUOLO 3",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "RUOLO 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 729,
+      "screen": "52102599__Soggetti",
+      "field": "NDG 4",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "NDG 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 730,
+      "screen": "52102599__Soggetti",
+      "field": "DENOMINAZIONE 4",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "DENOMINAZIONE 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 731,
+      "screen": "52102599__Soggetti",
+      "field": "RUOLO 4",
+      "crop": [
+        320,
+        469,
+        1063,
+        551
+      ],
+      "source_size": [
+        1912,
+        1002
+      ],
+      "rectangle": [
+        323,
+        472,
+        1060,
+        548
+      ],
+      "caption": "RUOLO 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 811,
+      "screen": "52126316__Soggetti",
+      "field": "NDG 2",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "NDG 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 812,
+      "screen": "52126316__Soggetti",
+      "field": "DENOMINAZIONE 2",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "DENOMINAZIONE 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 813,
+      "screen": "52126316__Soggetti",
+      "field": "RUOLO 2",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "RUOLO 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 814,
+      "screen": "52126316__Soggetti",
+      "field": "NDG 3",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "NDG 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 815,
+      "screen": "52126316__Soggetti",
+      "field": "DENOMINAZIONE 3",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "DENOMINAZIONE 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 816,
+      "screen": "52126316__Soggetti",
+      "field": "RUOLO 3",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "RUOLO 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 817,
+      "screen": "52126316__Soggetti",
+      "field": "NDG 4",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "NDG 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 818,
+      "screen": "52126316__Soggetti",
+      "field": "DENOMINAZIONE 4",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "DENOMINAZIONE 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 819,
+      "screen": "52126316__Soggetti",
+      "field": "RUOLO 4",
+      "crop": [
+        336,
+        472,
+        1079,
+        554
+      ],
+      "source_size": [
+        1918,
+        1031
+      ],
+      "rectangle": [
+        339,
+        475,
+        1076,
+        551
+      ],
+      "caption": "RUOLO 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 899,
+      "screen": "52130861__Soggetti",
+      "field": "NDG 2",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "NDG 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 900,
+      "screen": "52130861__Soggetti",
+      "field": "DENOMINAZIONE 2",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "DENOMINAZIONE 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 901,
+      "screen": "52130861__Soggetti",
+      "field": "RUOLO 2",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "RUOLO 2: soggetto 2 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 902,
+      "screen": "52130861__Soggetti",
+      "field": "NDG 3",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "NDG 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 903,
+      "screen": "52130861__Soggetti",
+      "field": "DENOMINAZIONE 3",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "DENOMINAZIONE 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 904,
+      "screen": "52130861__Soggetti",
+      "field": "RUOLO 3",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "RUOLO 3: soggetto 3 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 905,
+      "screen": "52130861__Soggetti",
+      "field": "NDG 4",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "NDG 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 906,
+      "screen": "52130861__Soggetti",
+      "field": "DENOMINAZIONE 4",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "DENOMINAZIONE 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 907,
+      "screen": "52130861__Soggetti",
+      "field": "RUOLO 4",
+      "crop": [
+        335,
+        486,
+        1078,
+        568
+      ],
+      "source_size": [
+        1912,
+        1028
+      ],
+      "rectangle": [
+        338,
+        489,
+        1075,
+        565
+      ],
+      "caption": "RUOLO 4: soggetto 4 assente. La tabella contiene 1 righe reali."
+    },
+    {
+      "row": 950,
+      "screen": "52135039__Elenco",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1918,
+        1012
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 957,
+      "screen": "52135039__Elenco_tooltip1",
+      "field": "Evidenze",
+      "crop": [
+        1560,
+        398,
+        1840,
+        525
+      ],
+      "source_size": [
+        1912,
+        1003
+      ],
+      "rectangle": null,
+      "caption": "Valore corretto da Rita: vuoto. La P cerchiata del segmento Privati è esclusa."
+    },
+    {
+      "row": 971,
+      "screen": "52135039__Soggetti",
+      "field": "NDG 4",
+      "crop": [
+        322,
+        484,
+        1065,
+        632
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        325,
+        487,
+        1062,
+        629
+      ],
+      "caption": "NDG 4: soggetto 4 assente. La tabella contiene 3 righe reali."
+    },
+    {
+      "row": 972,
+      "screen": "52135039__Soggetti",
+      "field": "DENOMINAZIONE 4",
+      "crop": [
+        322,
+        484,
+        1065,
+        632
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        325,
+        487,
+        1062,
+        629
+      ],
+      "caption": "DENOMINAZIONE 4: soggetto 4 assente. La tabella contiene 3 righe reali."
+    },
+    {
+      "row": 973,
+      "screen": "52135039__Soggetti",
+      "field": "RUOLO 4",
+      "crop": [
+        322,
+        484,
+        1065,
+        632
+      ],
+      "source_size": [
+        1912,
+        1007
+      ],
+      "rectangle": [
+        325,
+        487,
+        1062,
+        629
+      ],
+      "caption": "RUOLO 4: soggetto 4 assente. La tabella contiene 3 righe reali."
+    }
+  ],
+  "pending_user_confirmation": [],
+  "confirmed_by_user": {
+    "date": "2026-10-16",
+    "rows": [
+      293,
+      294,
+      295
+    ],
+    "decision": "Keep the last real row in subject 3; subject 4 remains empty."
+  }
+}

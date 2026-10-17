@@ -36,3 +36,4 @@ la valutazione di accuratezza richiede un CSV di riferimento separato.
 | 12 | [API Python](12-python-api.md) | Firme e contratti di batch, pipeline, client locale, consolidamento ed export. |
 | — | [Decisioni architetturali](adr/README.md) | Contesto, alternative e conseguenze delle decisioni accettate. |
 | — | [How It Works](how-it-works.md) | Riferimento dei meccanismi interni in inglese. |
+| — | [Addestramento locale LiLT](../training/README.md) | Preparazione da revisione umana, separazione delle pratiche e modello caricabile su CPU. |

@@ -1,0 +1,71 @@
+{
+  "git_revision": "3be17a8ae7c15a4b33183044c70da9fe5591470f",
+  "dirty": true,
+  "scope": "current uncommitted offline training code including post-run native-version transport fix; actual executed hashes retained separately",
+  "files": {
+    "training/__init__.py": {
+      "bytes": 69,
+      "sha256": "0b43884f8e427f7e655e47fe5ddb7ab3e4570bb88c3623d9212b9b4b0340351d"
+    },
+    "training/alignment.py": {
+      "bytes": 40540,
+      "sha256": "05eee33bc1a1054080e20182d4a18891cd743fe187f7517fdf840c5dd161ea95"
+    },
+    "training/dataset.py": {
+      "bytes": 16338,
+      "sha256": "35d258126329137d484238ef9a148dab0cb86dfaf4fdd1296324c7eacc90da57"
+    },
+    "training/evaluation.py": {
+      "bytes": 14267,
+      "sha256": "b65eec62a5d517fa6886aa85af592fafee53018ae3a10543ef5dae262975e89a"
+    },
+    "training/modal_train.py": {
+      "bytes": 5951,
+      "sha256": "2a5dac9d59bcd640647863e1bc633407f6d041e66add91e1b406667e0ff41615"
+    },
+    "training/model.py": {
+      "bytes": 21427,
+      "sha256": "ef07e20997853e04d81b080d5a27305f933109f10015c1f7f8c644593f93e860"
+    },
+    "training/schema.py": {
+      "bytes": 1517,
+      "sha256": "faae913b077cb487e49087f472094f597053ac181eb4fa3fde64d25e726c0b24"
+    },
+    "tests/test_training_alignment.py": {
+      "bytes": 7200,
+      "sha256": "d6154b91cdb35c3aeaaf28769e3ac393a21968a272b20696ae43791de39314ed"
+    },
+    "tests/test_training_dataset.py": {
+      "bytes": 5769,
+      "sha256": "66471ad04ded7f649ff80632c01a933c59984670e8bf2ccdd1f613aaaac4de29"
+    },
+    "tests/test_training_evaluation.py": {
+      "bytes": 10334,
+      "sha256": "105626705d9db9eddec87838e980555ed84965ef485de48b5133a54b38cf3602"
+    },
+    "tests/test_training_model.py": {
+      "bytes": 8985,
+      "sha256": "097264d13b6a4c88c46c762ac9bdbdbbb70f2ee4b8f6ea0e80dda0bc80100c45"
+    },
+    "requirements.txt": {
+      "bytes": 560,
+      "sha256": "08a45e4202b6911970131197094213b41df57eb279fff0bc7a5e270ef7fb6201"
+    },
+    "training/README.md": {
+      "bytes": 3913,
+      "sha256": "6120d524239e2bcdef7ed2ba806b0596e6d7d6cbbce436e313fa6b19a15f1060"
+    },
+    "docs/INDEX.md": {
+      "bytes": 2823,
+      "sha256": "a4ebdc0a022af59299652f2318ac82037765e163a9e7e7f0ab55100d7634404b"
+    },
+    "docs/adr/README.md": {
+      "bytes": 6233,
+      "sha256": "bdcaa6b8a4680cb222f11bbf729f1ea9623ad8fc0d2fa46bfb6156c22d29f19e"
+    },
+    "docs/adr/0022-addestramento-lilt-da-revisione-umana.md": {
+      "bytes": 2708,
+      "sha256": "b83d76bf9bff8cef436fa130ea282ffbec44f6223e67db3139fa85760bb8a2f9"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "path": "D:\\Projects\\poc-data-extraction\\training\\model.py",
+    "sha256": "027834af91f3c20d1503e8edd4382f89c17ae7a6348b1c047e74719d97007f98"
+  },
+  {
+    "path": "D:\\Projects\\poc-data-extraction\\training\\modal_train.py",
+    "sha256": "20d3e6eb48f2059663745d890b3b9820c49b5242cc42b7b6635a7b33fb309a23"
+  },
+  {
+    "path": "D:\\Projects\\poc-data-extraction\\tests\\test_training_model.py",
+    "sha256": "be4b2fc60a280ed3c166d7ca6c28d4a3e09a3a52c043e954e729f0a9cc4d16e0"
+  }
+]

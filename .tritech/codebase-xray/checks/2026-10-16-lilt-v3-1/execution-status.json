@@ -1,0 +1,61 @@
+{
+  "status": "complete",
+  "attempt_process_created": true,
+  "training_started": true,
+  "gpu_consumed": true,
+  "automatic_review": "Rejected before process creation: banking personal data transfer to Modal requires explicit user consent. Original screenshots are not in the planned payload; OCR text and labels still contain personal banking data.",
+  "question_presented": true,
+  "planned_destination": "existing Modal app bper-lilt-reviewed-v3-1, volume bper-lilt-spike",
+  "planned_resources": {
+    "gpu": "L4",
+    "max_seconds": 1800,
+    "containers": 1,
+    "retries": 0
+  },
+  "planned_payload": [
+    "OCR words",
+    "coordinates",
+    "labels",
+    "reviewed values",
+    "manifests"
+  ],
+  "screenshots_or_workbook_in_payload": false,
+  "history": [
+    {
+      "status": "awaiting_explicit_external_transfer_consent",
+      "automatic_review": "Rejected before process creation: banking personal data transfer to Modal requires explicit user consent. Original screenshots are not in the planned payload; OCR text and labels still contain personal banking data.",
+      "training_started": false
+    },
+    {
+      "status": "server_configuration_rejected_before_entrypoint",
+      "app_url": "https://modal.com/apps/alfio-caprino/main/ap-7djraWnU29uDDOOTK6z69W",
+      "reason": "scaledown_window=1 rejected; allowed minimum2",
+      "gpu_training_started": false,
+      "correction": "scaledown_window=2; same frozen dataset resealed without changing examples"
+    }
+  ],
+  "user_confirmation": "Ma sono dati del cliente che ci paga per allenare il suo sistema",
+  "confirmation_context": "Direct reply to explicit question asking authorization for transfer of banking OCR text and coordinates to Modal",
+  "app_url": "https://modal.com/apps/alfio-caprino/main/ap-F5mwZELp5C5XOBmo6GhZ5h",
+  "console_encoding_retry": {
+    "initial_attempt": "Windows cp1252 could not print initialized checkmark; failed before local entrypoint and output directory creation",
+    "retry": "UTF-8 console environment; no duplicate training function"
+  },
+  "remote_function": "run_training",
+  "completed_epochs_observed": 8,
+  "training_completed": true,
+  "gpu_training_executions": 1,
+  "best_epoch": 8,
+  "train_seconds": 325.42,
+  "remote_wall_seconds": null,
+  "remote_model_dir": "model_v3_1_cbc98601c0262b11",
+  "cpu_model_verified": true,
+  "quality_acceptance": "insufficient for adoption; small improvement, not integrated into edge-agent",
+  "recovery": {
+    "local_return_error": "TorchVersion required torch in local Modal CLI environment; training completed and volume committed before this error",
+    "download_recovery": "public per-file Volume.read_file; all11files bytes/hash verified independently; no retraining",
+    "cli_folder_download_error": "CLI destination did not preexist as directory; concurrent files collided. Invalid generated download removed after hash/size record; sources and verified model preserved.",
+    "current_source_fix": "Dependency versions returned as built-in str; real tiny CPU regression RED thenGREEN11modeltests; fullsuite430passed",
+    "exact_function_wall_time": "not persisted; unavailable, not invented"
+  }
+}

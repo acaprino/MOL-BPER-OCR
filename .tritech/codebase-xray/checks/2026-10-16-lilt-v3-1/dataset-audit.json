@@ -1,0 +1,44 @@
+{
+  "audit_status": "passed",
+  "checked_utc": "2026-10-16T16:21:30.473270+00:00",
+  "reviewed_excel_csv_rows": 1008,
+  "effective_excel_values_equal_exported_csv": true,
+  "original_valore_letto_equal_historical_csv": true,
+  "formula_cells_in_review_rows": 0,
+  "screens_with_identical_source_ocr_word_tokens": 113,
+  "ocr_word_count": 32040,
+  "ocr_words_rewritten": false,
+  "source_workbook_hash_matches_manifest": true,
+  "source_ocr_hash_matches_manifest": true,
+  "dataset_content_hash_matches_manifest": true,
+  "role_vocabulary_count_including_background": 37,
+  "target_roles_excluding_background": 36,
+  "all_roles_have_training_tokens": true,
+  "minimum_training_tokens_per_role": 1,
+  "partial_note_training_tokens": 2337,
+  "validation_date_training_tokens": 4,
+  "screens_by_split": {
+    "train": 75,
+    "test": 22,
+    "val": 16
+  },
+  "practice_counts_by_split": {
+    "train": 8,
+    "test": 2,
+    "val": 2
+  },
+  "cross_split_practice_collisions": 0,
+  "cross_split_subject_ndg_collisions": 0,
+  "cross_split_source_image_collisions": 0,
+  "cross_split_decoded_pixel_collisions": 0,
+  "supervision_counts": {
+    "supervised": 844,
+    "ignored_ocr_mismatch": 55,
+    "empty": 79,
+    "partial_supervision": 17,
+    "ignored_alignment": 13
+  },
+  "strict_supervised_text_mismatches": 0,
+  "partial_verified_tokens_absent_from_reviewed_text": 0,
+  "coverage_limitations": "The thirteen Scheda Privati fields have one practice only; no independent positive test coverage."
+}

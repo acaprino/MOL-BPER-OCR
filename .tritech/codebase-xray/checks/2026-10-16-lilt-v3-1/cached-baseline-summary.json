@@ -1,0 +1,591 @@
+{
+  "metric_version": "strict-v2-punctuation-spacing",
+  "split": "test",
+  "screens": 22,
+  "reviewed_fields": 192,
+  "examples_sha256": "7c1bebe7e68121cd9c5e6df78610b9409e972d17d51246560904db7d46902834",
+  "decoder_sha256": "b65eec62a5d517fa6886aa85af592fafee53018ae3a10543ef5dae262975e89a",
+  "baselines": {
+    "lilt_v2": {
+      "source": ".tritech/codebase-xray/baselines/2026-10-07-riscontro-12-pratiche/prove/lilt-model-v2/outputs.json",
+      "source_sha256": "e5dbda60da4c67dfd8a73e6c6f4adaa5a64fee3cc8bab2a1e7202b9e0c4538e7",
+      "total": 192,
+      "correct": 124,
+      "accuracy": 0.6458333333333334,
+      "counts": {
+        "correct": 115,
+        "correct_null": 9,
+        "wrong": 59,
+        "missing": 9
+      },
+      "missing_screen_count": 0,
+      "excluded_reviewed_fields": 0
+    },
+    "gemini_run1": {
+      "source": ".tritech/codebase-xray/baselines/2026-10-07-riscontro-12-pratiche/run1.outputs.json",
+      "source_sha256": "8dfc581fd78726b3b3baf3e9a460908b278c95265d9531b7242962366ad84551",
+      "total": 192,
+      "correct": 180,
+      "accuracy": 0.9375,
+      "counts": {
+        "correct": 171,
+        "correct_null": 9,
+        "wrong": 11,
+        "missing": 1
+      },
+      "missing_screen_count": 0,
+      "excluded_reviewed_fields": 0
+    }
+  },
+  "gold_role_oracle": {
+    "total": 192,
+    "correct": 179,
+    "accuracy": 0.9322916666666666,
+    "counts": {
+      "correct": 170,
+      "correct_null": 9,
+      "missing": 11,
+      "wrong": 2
+    },
+    "content_availability": {
+      "total": 192,
+      "available": 179,
+      "unavailable": 13,
+      "rate": 0.9322916666666666,
+      "non_null_total": 183,
+      "non_null_available": 170,
+      "non_null_rate": 0.9289617486338798
+    },
+    "by_field": {
+      "creazione": {
+        "total": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 6
+        },
+        "content_availability": {
+          "total": 6,
+          "available": 6,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 6,
+          "non_null_available": 6,
+          "non_null_rate": 1.0
+        }
+      },
+      "denominazione": {
+        "total": 17,
+        "correct": 17,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 17
+        },
+        "content_availability": {
+          "total": 17,
+          "available": 17,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 17,
+          "non_null_available": 17,
+          "non_null_rate": 1.0
+        }
+      },
+      "denominazione_1": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 2,
+          "non_null_available": 2,
+          "non_null_rate": 1.0
+        }
+      },
+      "denominazione_2": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 2,
+          "non_null_available": 2,
+          "non_null_rate": 1.0
+        }
+      },
+      "denominazione_3": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 2,
+          "non_null_available": 2,
+          "non_null_rate": 1.0
+        }
+      },
+      "denominazione_4": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 1,
+          "correct_null": 1
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 1,
+          "non_null_available": 1,
+          "non_null_rate": 1.0
+        }
+      },
+      "descrizione": {
+        "total": 12,
+        "correct": 12,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 12
+        },
+        "content_availability": {
+          "total": 12,
+          "available": 12,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 12,
+          "non_null_available": 12,
+          "non_null_rate": 1.0
+        }
+      },
+      "evidenze": {
+        "total": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "counts": {
+          "correct_null": 3,
+          "correct": 3
+        },
+        "content_availability": {
+          "total": 6,
+          "available": 6,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 3,
+          "non_null_available": 3,
+          "non_null_rate": 1.0
+        }
+      },
+      "fase": {
+        "total": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "counts": {
+          "correct_null": 3,
+          "correct": 3
+        },
+        "content_availability": {
+          "total": 6,
+          "available": 6,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 3,
+          "non_null_available": 3,
+          "non_null_rate": 1.0
+        }
+      },
+      "filiale_relazione": {
+        "total": 15,
+        "correct": 15,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 15
+        },
+        "content_availability": {
+          "total": 15,
+          "available": 15,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 15,
+          "non_null_available": 15,
+          "non_null_rate": 1.0
+        }
+      },
+      "importo_euro": {
+        "total": 12,
+        "correct": 12,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 12
+        },
+        "content_availability": {
+          "total": 12,
+          "available": 12,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 12,
+          "non_null_available": 12,
+          "non_null_rate": 1.0
+        }
+      },
+      "n_fido": {
+        "total": 12,
+        "correct": 12,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 12
+        },
+        "content_availability": {
+          "total": 12,
+          "available": 12,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 12,
+          "non_null_available": 12,
+          "non_null_rate": 1.0
+        }
+      },
+      "ndg": {
+        "total": 17,
+        "correct": 17,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 17
+        },
+        "content_availability": {
+          "total": 17,
+          "available": 17,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 17,
+          "non_null_available": 17,
+          "non_null_rate": 1.0
+        }
+      },
+      "ndg_1": {
+        "total": 2,
+        "correct": 1,
+        "accuracy": 0.5,
+        "counts": {
+          "correct": 1,
+          "missing": 1
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 1,
+          "unavailable": 1,
+          "rate": 0.5,
+          "non_null_total": 2,
+          "non_null_available": 1,
+          "non_null_rate": 0.5
+        }
+      },
+      "ndg_2": {
+        "total": 2,
+        "correct": 1,
+        "accuracy": 0.5,
+        "counts": {
+          "correct": 1,
+          "missing": 1
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 1,
+          "unavailable": 1,
+          "rate": 0.5,
+          "non_null_total": 2,
+          "non_null_available": 1,
+          "non_null_rate": 0.5
+        }
+      },
+      "ndg_3": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 2,
+          "non_null_available": 2,
+          "non_null_rate": 1.0
+        }
+      },
+      "ndg_4": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 1,
+          "correct_null": 1
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 1,
+          "non_null_available": 1,
+          "non_null_rate": 1.0
+        }
+      },
+      "note_della_richiesta": {
+        "total": 2,
+        "correct": 0,
+        "accuracy": 0.0,
+        "counts": {
+          "wrong": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 0,
+          "unavailable": 2,
+          "rate": 0.0,
+          "non_null_total": 2,
+          "non_null_available": 0,
+          "non_null_rate": 0.0
+        }
+      },
+      "rapporto": {
+        "total": 12,
+        "correct": 3,
+        "accuracy": 0.25,
+        "counts": {
+          "correct": 3,
+          "missing": 9
+        },
+        "content_availability": {
+          "total": 12,
+          "available": 3,
+          "unavailable": 9,
+          "rate": 0.25,
+          "non_null_total": 12,
+          "non_null_available": 3,
+          "non_null_rate": 0.25
+        }
+      },
+      "ruolo_1": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 2,
+          "non_null_available": 2,
+          "non_null_rate": 1.0
+        }
+      },
+      "ruolo_2": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 2,
+          "non_null_available": 2,
+          "non_null_rate": 1.0
+        }
+      },
+      "ruolo_3": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 2,
+          "non_null_available": 2,
+          "non_null_rate": 1.0
+        }
+      },
+      "ruolo_4": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 1,
+          "correct_null": 1
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 1,
+          "non_null_available": 1,
+          "non_null_rate": 1.0
+        }
+      },
+      "scadenza": {
+        "total": 12,
+        "correct": 12,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 12
+        },
+        "content_availability": {
+          "total": 12,
+          "available": 12,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 12,
+          "non_null_available": 12,
+          "non_null_rate": 1.0
+        }
+      },
+      "stato": {
+        "total": 6,
+        "correct": 6,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 6
+        },
+        "content_availability": {
+          "total": 6,
+          "available": 6,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 6,
+          "non_null_available": 6,
+          "non_null_rate": 1.0
+        }
+      },
+      "tipo": {
+        "total": 17,
+        "correct": 17,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 17
+        },
+        "content_availability": {
+          "total": 17,
+          "available": 17,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 17,
+          "non_null_available": 17,
+          "non_null_rate": 1.0
+        }
+      },
+      "tipo_op": {
+        "total": 12,
+        "correct": 12,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 12
+        },
+        "content_availability": {
+          "total": 12,
+          "available": 12,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 12,
+          "non_null_available": 12,
+          "non_null_rate": 1.0
+        }
+      },
+      "tooltip_descrizione_bmb": {
+        "total": 1,
+        "correct": 1,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 1
+        },
+        "content_availability": {
+          "total": 1,
+          "available": 1,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 1,
+          "non_null_available": 1,
+          "non_null_rate": 1.0
+        }
+      },
+      "tooltip_descrizione_ipoteca": {
+        "total": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 2
+        },
+        "content_availability": {
+          "total": 2,
+          "available": 2,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 2,
+          "non_null_available": 2,
+          "non_null_rate": 1.0
+        }
+      },
+      "tooltip_evidenze_b": {
+        "total": 1,
+        "correct": 1,
+        "accuracy": 1.0,
+        "counts": {
+          "correct": 1
+        },
+        "content_availability": {
+          "total": 1,
+          "available": 1,
+          "unavailable": 0,
+          "rate": 1.0,
+          "non_null_total": 1,
+          "non_null_available": 1,
+          "non_null_rate": 1.0
+        }
+      }
+    },
+    "excluded_reviewed_fields": 0
+  },
+  "field_alignment_status_counts": {
+    "aligned": 183,
+    "empty": 9
+  },
+  "notes": [
+    "Every reviewed test field remains in the denominator, including OCR mismatches and alignment exclusions.",
+    "Cached baselines are scored from canonical fields[field].value, never legacy word arrays.",
+    "Gold-role oracle measures OCR content plus deterministic reconstruction, not a trained-model result.",
+    "Raw OCR subject-row markers identify geometry only; only predicted identifier-role tokens are emitted."
+  ]
+}

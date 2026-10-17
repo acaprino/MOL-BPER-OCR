@@ -1,0 +1,22 @@
+{
+  "output": "D:\\Projects\\poc-data-extraction\\mnt\\riscontro-2026-10-07\\revisione\\Revisione_ground_truth_v3_1.xlsx",
+  "sha256": "483e1ab4f48b47de757a13b564ab4a3c102e2c6f39675721b2698da8ce3b20d4",
+  "rows": 1008,
+  "screens": 113,
+  "states": {
+    "Confermato da Rita": 989,
+    "Corretto da Rita": 16,
+    "Confermato dall'utente": 3
+  },
+  "original_media_unchanged": 929,
+  "updated_pictures": 63,
+  "exact_source_pixel_crops_verified": 23,
+  "xml_parse": "passed",
+  "reviewer_notes_preserved": true,
+  "pending_user_confirmation": [],
+  "confirmed_by_user": [
+    293,
+    294,
+    295
+  ]
+}

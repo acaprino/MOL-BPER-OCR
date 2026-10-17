@@ -35,3 +35,4 @@ poc_debug*.csv
 __pycache__/
 *.pyc
 .venv/
+.tritech/local/

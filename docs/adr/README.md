@@ -63,6 +63,7 @@ tarati, e nessun test lo verificava.
 | [0019](0019-filtro-soggetti-da-retry-su-tabella-vuota.md) | Filtrare i soggetti del retry che riempie una tabella vuota | Accettato |
 | [0020](0020-pagina-sorgente-separata-dal-gruppo-export.md) | Separare la pagina sorgente dal gruppo di esportazione | Accettato |
 | [0021](0021-dotenv-prima-del-motore-nella-gui-tkinter.md) | Caricare dotenv prima del motore nella GUI Tkinter | Accettato |
+| [0022](0022-addestramento-lilt-da-revisione-umana.md) | Addestrare LiLT da valori revisionati e pratiche separate | Accettato |
 
 ## Da scrivere
 
