@@ -257,6 +257,17 @@ L'analisi delle confusioni su `train` e `val` ha individuato e risolto nel pacch
    `tests/test_training_model.py` (falliti prima del fix e passati dopo); suite
    completa: **436 passed, 3 warnings in 119.43s**. Nessun nuovo addestramento GPU
    è stato ancora avviato con questi aggiornamenti.
+6. **Igiene e riordino della repository:** rimosse le 4 cartelle temporanee di pytest
+   in `mnt/tmp-training-model-*`, i 4 file duplicati `poc_outputs_improved.json` /
+   `poc_debug_improved.csv` in `mnt/data/` e `mnt/riscontro-2026-10-07/` (identici
+   per SHA-256 alle copie archiviate in `.tritech/codebase-xray/baselines/`), il file
+   scratch orfano `tests/fixtures/frames/_relocalize_subset.json` e le directory/note
+   di analisi superate (`.deep-dive/`, `.team-review/`, `docs/superpowers/`,
+   `OPEN_POINTS.md`). Spostato `revisione_ground_truth_v3.xlsx` in
+   `mnt/riscontro-2026-10-07/revisione_versioni_superate/`, creato `mnt/README.md` e
+   allineati `AGENTS.md`, `CLAUDE.md`, `README.md`, `docs/09-project-anatomy.md` e
+   `.gitignore`. Verifica rapida (`python tools/check.py -q`): **418 passed, 18
+   deselected in 70.39s**.
 
 ## Risorse e costo
 

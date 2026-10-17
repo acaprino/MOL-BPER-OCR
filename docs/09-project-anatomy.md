@@ -17,19 +17,29 @@ poc-data-extraction/
   main.py                      # Shim di ingresso: carica .env, `from extraction import *`; default = CLI batch, --gui = edge-agent
   gui_app.py                   # Entry point GUI Tkinter (campo API key, dropdown provider/modello, batch + export)
   run_edge_agent.bat           # Launcher Windows: bootstrap auto-riparante della .venv (preferisce Python 3.13) + avvio edge-agent
-  claude_.bat                  # Helper di sviluppo (non tracciato): avvia Claude Code con il flag agent-teams
-  requirements.txt             # Dipendenze applicative e PyInstaller (vincoli laschi)
+  requirements.txt             # Dipendenze applicative, training offline e PyInstaller (vincoli laschi)
   requirements-dev.txt         # pytest
   build_exe.bat                # Build e ZIP portable dell’edge-agent
   edge_agent.spec              # Specifica PyInstaller
-  tests/                       # Suite automatica della logica locale
+  tests/                       # Suite automatica della logica locale (estrazione, edge-agent, training)
+  tools/                       # Script di verifica (check.py) e calibrazione prototipi/frame
+  processes/                   # Definizioni JSON del processo BPER (bper-p1.json)
   prompt_store.py              # Loader del catalogo prompt: solo stdlib, fuori da extraction/ per non tirarsi dietro LangChain
   prompts/                     # Catalogo prompt LLM: un JSON per prompt, letto e validato una volta all'avvio
   .env.example                 # Template delle env var (commenti in italiano); da copiare in .env
   .env                         # Segreti locali (in gitignore, presente solo in locale)
   .gitignore                   # Esclude .env*, /mnt, .venv/, build/, dist/, *.spec, src/, temp_uploads/, test_no_gt/
-  CLAUDE.md                    # Guida di progetto per l'assistente AI
+  AGENTS.md / CLAUDE.md        # Guide operative e vincoli architetturali per gli assistenti AI
   README.md                    # README in italiano, incl. la ricetta di build PyInstaller
+
+  training/                    # Package offline per dataset supervisionato e addestramento LiLT
+    schema.py                  # Vocabolario dei 45 campi e 37 ruoli semantici (letto da extraction/fields.py)
+    alignment.py               # Allineamento dei valori revisionati sui token RapidOCR e geometria delle celle
+    dataset.py                 # Costruzione bundle train/val/test da Excel v3.1, supervisione e audit anti-leakage
+    model.py                   # Chunking senza taglio tabella FIDI, augmentation, training LiLT e inferenza CPU/GPU
+    evaluation.py              # Decoder campi e metriche rigorose (disponibilità OCR, F1 parole, accuratezza campi)
+    modal_train.py             # Entry point remoto Modal per training GPU e scaricamento cpu_model
+    README.md                  # Istruzioni per preparazione dataset e training locale/remoto
 
   extraction/                  # Package del motore -- pipeline, valutazione, nessuna UI
     __init__.py                # Re-export dell'API pubblica (la superficie di `from extraction import *`)

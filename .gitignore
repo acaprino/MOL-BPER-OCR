@@ -27,12 +27,16 @@ poc_outputs*.json
 poc_results*.csv
 poc_debug*.csv
 
-# Cross-model peer-review transcripts: generated, several MB, and mostly from
-# sessions unrelated to this repository.
+# Cross-model peer-review and temporary review/scratch directories
 .peer-review/
+.deep-dive/
+.team-review/
+.superpowers/
 
 # Python
 __pycache__/
 *.pyc
 .venv/
+.pytest_cache/
+.ruff_cache/
 .tritech/local/

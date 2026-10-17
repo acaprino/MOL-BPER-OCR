@@ -261,10 +261,20 @@ poc-data-extraction/
     pipeline.py            # Pipeline 3-pass (anchor -> main -> retry)
     evaluation.py          # Metriche accuratezza + debug report
     cli.py                 # Batch runner con ThreadPoolExecutor
+  training/                # Pipeline offline di allineamento OCR, dataset e training LiLT
+    schema.py              # Vocabolario canonico dei 45 campi e 37 ruoli semantici
+    alignment.py           # Allineamento geometrico/testuale dei valori revisionati sui token OCR
+    dataset.py             # Lettura revisione Excel v3.1, supervisione BIO, audit anti-leakage e manifest
+    model.py               # Chunking 512 token, augmentation, training LiLT, selezione checkpoint e inferenza CPU/GPU
+    evaluation.py          # Ricostruzione rigorosa dei 45 campi e metriche per campo/ruolo/split
+    modal_train.py         # Esecuzione GPU limitata su Modal e download del modello CPU
+    README.md              # Guida operativa per la rigenerazione del dataset e l'addestramento
+  tests/                   # Suite pytest (motore, edge-agent, classificatore DINOv2 e training LiLT)
   mnt/data/
     dati.csv               # Ground truth - NON incluso nel repo, da procurarsi a parte
     screen *.png           # Screenshot di test (9 immagini, tracciate)
-  docs/              # Documentazione narrativa in italiano (INDEX.md)
+  docs/                    # Documentazione narrativa in italiano (INDEX.md) e ADR (docs/adr/)
+  .tritech/codebase-xray/  # Analisi tecnica, baseline storiche e verifiche riproducibili
   .env.example             # Template variabili d'ambiente
 ```
 

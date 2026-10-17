@@ -106,7 +106,9 @@ with source attribution (`test_pipeline_postprocessing.py`), shared NDG identity
 (`test_normalization.py`) and field vocabulary/retry-policy consistency (`test_domain_vocabulary.py`).
 Retry subject-row admission, source-page/export-group metadata and GUI environment startup have
 dedicated regressions in `test_pipeline_retry_subjects.py`, `test_page_metadata.py` and
-`test_gui_config.py`.
+`test_gui_config.py`. The offline LiLT training and evaluation package (`training/`) is covered by
+`test_training_alignment.py`, `test_training_dataset.py`, `test_training_model.py` and
+`test_training_evaluation.py`.
 
 `test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s, and it rebuilds the prototype
 cache the first time after any geometry change); it skips via
@@ -453,12 +455,38 @@ Called out individually, because the filename alone does not tell you:
 - `default_capture_worker.py` -- generic mode, uploads raw frames to a remote API. **No such backend
   exists in this repo**; do not use it as a model for the BPER path (Constraint 11).
 
+### `training/` package (offline OCR + LiLT training and evaluation)
+
+Self-contained offline package for building the human-reviewed token-classification dataset and
+training/evaluating the local LiLT model (see `training/README.md` and ADR 0022):
+
+- `schema.py` -- reads `FIELD_KEYS` and `CSV_TO_SCHEMA` from `extraction/fields.py` via AST without
+  importing the VLM runtime; maps the 45 fields onto 36 semantic roles plus `O`.
+- `alignment.py` -- aligns reviewed field values to RapidOCR word boxes (`align_screen()`), orders
+  multi-line table cells by local visual lines (`_order_cell_indices()`), and scopes unresolved
+  field uncertainty boxes to their candidate region.
+- `dataset.py` -- reads the approved v3.1 Excel workbook (`read_reviewed_truth()`), applies BIO/role
+  supervision (`apply_supervision()`), enforces cross-split practice/NDG/image isolation
+  (`audit_splits()`), and seals the bundle (`build_dataset()`, `seal_dataset()`).
+- `model.py` -- normalizes word boxes to `0..1000`, builds 512-subword chunks without splitting the
+  `FIDI` table block from its header (`encode_chunks()`), augments training copies (`_augment()`),
+  trains `LiltForTokenClassification` selecting checkpoints on validation whole-field accuracy
+  (`train_model()`, `score_predictions()`), and runs CPU/GPU inference (`predict()`).
+- `evaluation.py` -- reconstructs the 45 fields from predicted word roles (`decode_fields()`) and
+  reports strict whole-field accuracy, content availability, and word-level F1
+  (`evaluate_predictions()`, `word_metrics()`).
+- `modal_train.py` -- bounded GPU entrypoint on Modal that writes an immutable run and downloads the
+  CPU-loadable model (`cpu_model/`).
+
 ### Data files
 
 | File | Purpose |
 |---|---|
+| `mnt/README.md` | Overview of the local data, 12-practice corpus, and training directories under `mnt/` |
 | `mnt/data/dati.csv` | Ground-truth dataset -- **expected here but absent from repo and git** (`/mnt` gitignored); required by the CLI |
 | `mnt/data/screen *.png` | Test banking screenshots (9 BPER images, force-tracked in git) |
+| `mnt/riscontro-2026-10-07/` | 12-practice BPER corpus (113 screenshots + `revisione/Revisione_ground_truth_v3_1.xlsx`, local only) |
+| `mnt/training/` | Sealed `ground-truth-v3.1/` dataset bundle and downloaded `runs/` models (local only) |
 | `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `prompt_store.py` |
 | `edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
 
@@ -469,7 +497,8 @@ Called out individually, because the filename alone does not tell you:
 | `docs/how-it-works.md` | The pipeline mechanics extracted from this file: multi-pass stages, three run modes, edge-agent capture flow. In English, like this file, because it is the same document split for size |
 | `docs/` | Narrative codebase guide in Italian (start at `docs/INDEX.md`) |
 | `docs/adr/` | Architecture Decision Records in Italian, one decision per file, numbered and immutable once accepted (start at `docs/adr/README.md`). A decision that changes behaviour gets an ADR *and* a test; the ADR explains why, the test keeps it true |
-| `.codebase-map/` | Generated technical map (start at `.codebase-map/INDEX.md`); `_internal/context-brief.md` and `_internal/interconnect.md` hold code-verified facts with file:line citations |
+| `training/README.md` | Operational guide in Italian for preparing the reviewed v3.1 dataset and running offline LiLT training |
+| `.tritech/codebase-xray/` | Technical X-ray analysis, historical provider/OCR baselines, and reproducible verification checks |
 
 ## Dependencies
 
