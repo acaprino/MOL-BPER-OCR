@@ -8,12 +8,12 @@ desktop GUI, and a PyQt6 edge-agent that captures the screen live.
 
 - **Language/runtime:** Python 3.12/3.13 (practical target: `run_edge_agent.bat` probes
   `py -3.13` then `py -3.12` and errors otherwise; no packaging metadata pins a version)
-- **LLM access:** LangChain. `create_chat_model()` in `extraction/llm_factory.py` is the single
+- **LLM access:** LangChain. `create_chat_model()` in `src/extraction/llm_factory.py` is the single
   factory that selects the provider from the `LLM_PROVIDER` env var (OpenAI GPT-4o or Google Gemini).
 - **Core libs:** LangChain (`langchain-openai` / `langchain-google-genai`), Pillow, Pandas
 - **UI:** Tkinter (stdlib) for `gui_app.py`; PyQt6 + qt-material for the edge-agent
 - **Entry points:** `main.py` (CLI batch; `--gui` launches the edge-agent), `gui_app.py`
-  (Tkinter GUI), `edge-agent/edge_agent.py` (PyQt6 edge-agent)
+  (Tkinter GUI), `src/edge-agent/edge_agent.py` (PyQt6 edge-agent)
 
 ## How It Works
 
@@ -29,9 +29,9 @@ OpenAI (default):
 
 ```bash
 export LLM_API_KEY="sk-..."
-python main.py                        # CLI batch mode (requires mnt/data/dati.csv)
+python main.py                        # CLI batch mode (requires data/reference/dati.csv)
 python gui_app.py                     # Tkinter desktop GUI
-python edge-agent/edge_agent.py       # Edge-agent UI (or: python main.py --gui)
+python src/edge-agent/edge_agent.py       # Edge-agent UI (or: python main.py --gui)
 ```
 
 Google Gemini:
@@ -47,11 +47,11 @@ python main.py
 `LLM_API_KEY`/`OPENAI_API_KEY`). `gui_app.py` calls `load_dotenv()` before importing `extraction`,
 as do the CLI and direct edge-agent entry points. Its initial provider/model selection uses the
 effective configuration and keeps a configured custom model available. The edge-agent's capture/router settings come from
-`edge-agent/config.ini`; its extraction engine still reads the env vars below.
+`src/edge-agent/config.ini`; its extraction engine still reads the env vars below.
 
 ## Configuration (Environment Variables)
 
-All defaults verified against `extraction/config.py`.
+All defaults verified against `src/extraction/config.py`.
 
 | Variable | Default | Description |
 |---|---|---|
@@ -59,35 +59,35 @@ All defaults verified against `extraction/config.py`.
 | `LLM_API_KEY` | *(required)* | API credential (OpenAI or Gemini key) |
 | `LLM_MODEL` | `gpt-4o` | Model for the main pass |
 | `LLM_MODEL_ANCHOR` | same as `LLM_MODEL` | Model for the anchor pass |
-| `INPUT_DIR` | `mnt/data` | Data directory (screenshots + ground truth) |
+| `INPUT_DIR` | `data/reference` | Data directory (screenshots + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Thread pool size |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
 | `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Max VLM calls per screen (1 anchor + 1 main + 1 retry per retry area). Lowering it starves the trailing areas of `AREA_TO_FIELDS` |
 | `ANCHOR_CONF_MIN` | `0.95` | Anchor confidence gate; below it the anchor value is nulled and never reaches the merge or the main-pass hint |
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Early exit when both anchor values are null |
-| `LLM_THINKING_LEVEL` | *(unset)* | Reasoning depth `low`/`medium`/`high`, sent as `thinking_level` to the Gemini 3 family; unset keeps the model default (`high` on Gemini 3). Other families warn and ignore it; any other value is refused at model creation (`extraction/model_adapters.py`, ADR 0016) |
-| `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `extraction/cli.py` (`config.py:108`) |
+| `LLM_THINKING_LEVEL` | *(unset)* | Reasoning depth `low`/`medium`/`high`, sent as `thinking_level` to the Gemini 3 family; unset keeps the model default (`high` on Gemini 3). Other families warn and ignore it; any other value is refused at model creation (`src/extraction/model_adapters.py`, ADR 0016) |
+| `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `src/extraction/cli.py` (`config.py:108`) |
 | `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to `INPUT_DIR/debug_crops` |
-| `PROMPTS_DIR` | *(unset)* | Override the prompt catalog directory (read in `prompt_store.py`, not `config.py`); default is `prompts/` at the repo root, or next to the exe when frozen. An explicit override fails closed: no fallback to the bundled copy |
+| `PROMPTS_DIR` | *(unset)* | Override the prompt catalog directory (read in `src/prompt_store.py`, not `config.py`); default is `prompts/` at the repo root, or next to the exe when frozen. An explicit override fails closed: no fallback to the bundled copy |
 
 ### Secrets policy
 
-- **Never commit API keys.** An OpenAI key was once committed at `edge-agent/config.ini` `[llm]
+- **Never commit API keys.** An OpenAI key was once committed at `src/edge-agent/config.ini` `[llm]
   api_key`; on 2026-07-21 it was scrubbed from the entire git history (`git filter-repo`,
   force-pushed). The line now ships blank; `AgentConfig` also treats any `REDACTED*` value as
   empty (a leftover placeholder once shadowed the env keys and silently broke the LLM router).
-- Router key precedence (`AgentConfig.resolve_llm_settings()` in `edge-agent/config.py`,
+- Router key precedence (`AgentConfig.resolve_llm_settings()` in `src/edge-agent/config.py`,
   provider-aware): `config.ini [llm] api_key` first if non-blank; else for `gemini`
   `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY`, for `openai` `OPENAI_API_KEY` →
   `LLM_API_KEY`. Leave `api_key` empty in the INI to use env keys -- `build_exe.bat` refuses
   to package a config.ini with a non-blank `api_key`.
 - To ship a package a tester can run without knowing what an API key is, `build_exe.bat` bakes a
   key into `dist\EdgeAgent\.env` only (prompted at build start, or `EDGE_AGENT_PACKAGE_KEY`) and
-  suffixes the zip `_CON-CHIAVE`. `edge-agent/env_key.py` is the single writer of `LLM_API_KEY`,
+  suffixes the zip `_CON-CHIAVE`. `src/edge-agent/env_key.py` is the single writer of `LLM_API_KEY`,
   shared with the first-run dialog. Anyone holding that zip can read the key: use a dedicated,
   spend-capped key and revoke it after the beta.
 - `AgentConfig.save()` re-persists `llm_api_key` back into `config.ini`
-  (`edge-agent/config.py:326-332`; currently uncalled). Do not wire it up with a real key loaded.
+  (`src/edge-agent/config.py:326-332`; currently uncalled). Do not wire it up with a real key loaded.
 - Real keys belong in `.env` (gitignored; template in `.env.example`).
 
 ## Testing & Validation
@@ -106,7 +106,7 @@ with source attribution (`test_pipeline_postprocessing.py`), shared NDG identity
 (`test_normalization.py`) and field vocabulary/retry-policy consistency (`test_domain_vocabulary.py`).
 Retry subject-row admission, source-page/export-group metadata and GUI environment startup have
 dedicated regressions in `test_pipeline_retry_subjects.py`, `test_page_metadata.py` and
-`test_gui_config.py`. The offline LiLT training and evaluation package (`training/`) is covered by
+`test_gui_config.py`. The offline LiLT training and evaluation package (`src/training/`) is covered by
 `test_training_alignment.py`, `test_training_dataset.py`, `test_training_model.py` and
 `test_training_evaluation.py`.
 
@@ -126,7 +126,7 @@ Dev dependencies for the suite install via `pip install -r requirements-dev.txt`
 verify changes manually:
 
 1. **Run extraction:** `python main.py` -- should complete without errors (needs `LLM_API_KEY`
-   and a local `mnt/data/dati.csv`).
+   and a local `data/reference/dati.csv`).
 2. **Check accuracy:** output includes a per-field accuracy breakdown (RAW + FILTERED). Compare
    against a baseline.
 3. **Check costs:** `print_cost_summary()` reports per-screen token counts and USD costs. Watch for
@@ -134,7 +134,7 @@ verify changes manually:
 4. **Tkinter GUI smoke test:** `python gui_app.py` -- upload a screenshot, verify results display.
 5. **Ground-truth eval:** `eval_outputs()` classifies each field as OK / WRONG / MISSING /
    HALLUCINATED / OK_NULL.
-6. **Edge-agent smoke test:** `python edge-agent/edge_agent.py` -- start capture in BPER mode, verify
+6. **Edge-agent smoke test:** `python src/edge-agent/edge_agent.py` -- start capture in BPER mode, verify
    `ingest_frame()` is called and that one screen's worth of capture yields **one** row in Dati
    Estratti, not one per frame; export the workbook and check the two-level header.
 
@@ -208,27 +208,27 @@ downstream effects.
    A retry may seed an empty `soggetti` table only with rows at or above `RETRY_CONF_MIN` that
    contain a non-nullish NDG or denomination; this applies both on and off calibration. Existing
    table replacement rules and `fidi`/`garanzie` admission remain unchanged. See
-   `extraction/pipeline.py`.
+   `src/extraction/pipeline.py`.
 2. **Cost tracking** -- every VLM call must populate `_meta` with `estimated_cost_usd`,
    `prompt_tokens`, `completion_tokens`, `latency_ms`, aggregated in `_meta_agg`. Models absent
    from `PRICING_PER_1M` silently cost `$0.00` (`estimate_cost_usd()` returns 0.0), so cost
-   reports can under-count. See `extraction/vlm_client.py`.
+   reports can under-count. See `src/extraction/vlm_client.py`.
 3. **Environment-based config** -- all configuration via `os.getenv()` with sensible defaults,
-   read at *import time* in `extraction/config.py`. Env (or `.env`) must be populated before
+   read at *import time* in `src/extraction/config.py`. Env (or `.env`) must be populated before
    importing `extraction`. In the edge-agent this is why `edge_agent.main()` imports
    `ui.main_window` (which transitively imports `extraction`) only *after*
    `bootstrap.run_preflight()` has created/loaded the local `.env` -- do not hoist that import
    to module scope.
 4. **Thread safety** -- LangChain ChatModel instances are treated as thread-safe and shared across
    all workers. Created once in `BatchRunner.__init__()` before the thread pool. See
-   `extraction/cli.py`.
+   `src/extraction/cli.py`.
 5. **Structured output** -- VLM calls use LangChain's `.with_structured_output(PydanticModel)` for
    OpenAI and Gemini 1.5; newer Gemini models fall back to free-form JSON plus manual Pydantic
    validation. Everything that differs by model family (construction, reasoning depth, output
-   strategy) lives in one adapter per family in `extraction/model_adapters.py`, and
+   strategy) lives in one adapter per family in `src/extraction/model_adapters.py`, and
    `adapter_for()` is the only name-to-family rule: a name outside every family is refused, never
    guessed. Do not re-add model-name checks to `llm_factory.py` or `vlm_client.py` (ADR 0016).
-   Pydantic models live in `extraction/schemas.py`.
+   Pydantic models live in `src/extraction/schemas.py`.
    `call_vlm_with_retry()` retries only transient errors; `ValueError` (parse failures) is re-raised
    immediately.
 6. **Field source tracking** -- the `_field_sources` dict records which pass (ANCHOR_HEADER,
@@ -240,15 +240,15 @@ downstream effects.
    do not record a new origin, and flattened table candidates still omit `evidence_text`.
 7. **Dataset mismatch guard** -- `dataset_mismatch_guard()` detects when extracted NDG/DENOMINAZIONE
    differs from ground truth, preventing false negatives in evaluation. See
-   `extraction/normalization.py`.
-8. **Shared batch runner** -- `run_extraction_batch()` in `extraction/cli.py` (a wrapper over
+   `src/extraction/normalization.py`.
+8. **Shared batch runner** -- `run_extraction_batch()` in `src/extraction/cli.py` (a wrapper over
    `BatchRunner`) is used by both `main()` and the Tkinter GUI (`gui_app.py`). It accepts optional
    `model_main`/`model_anchor` overrides (the GUI provider/model dropdown). Callbacks
    (`on_complete`, `on_error`) run on the calling thread, not on worker threads. Do not
    re-implement batch/threading logic elsewhere. Batch output keeps every processed screenshot;
    there is no deduplication by canonical page. The unused deduplication helpers were removed.
 9. **Screenshot discovery** -- the CLI scans `INPUT_DIR` directly for `.png/.jpg/.jpeg`
-   in `extraction/cli.py::main()`. There is no `get_screenshot_paths()` helper in the current config.
+   in `src/extraction/cli.py::main()`. There is no `get_screenshot_paths()` helper in the current config.
    Do not reintroduce the old mutable global `SCREENSHOTS` list.
 10. **Field vocabulary consistency** -- `test_domain_vocabulary.py` checks that CSV mappings and
     canonical definitions cover `FIELD_KEYS`, and that each field has exactly one retry policy:
@@ -265,7 +265,7 @@ downstream effects.
     extraction are decoupled: `ingest_frame()` queues and returns, extraction runs on
     `PARALLEL_WORKERS` daemon threads sharing one pipeline (same pattern as `BatchRunner`).
 13. **Every relative crop assumes window framing** -- the classifier ROI and the pipeline's
-    `RETRY_AREAS` bands are fractions calibrated on the 848x679 window screenshots in `mnt/data`
+    `RETRY_AREAS` bands are fractions calibrated on the 848x679 window screenshots in `data/reference`
     (`CONTENT_CROP`/`HEADER_IN_CONTENT` now apply only on the file path over the calibrated
     family, ADR 0010; off calibration the anchor pass reads the whole image). `_grab_raw()` captures the whole monitor, so
     `frame_normalize.normalize_frame()` must run there, before dedup, routing and extraction: with a
@@ -274,10 +274,10 @@ downstream effects.
     that re-derives crops from a raw monitor grab.
     See `docs/adr/0001-normalizzazione-inquadratura-frame.md`.
 14. **Prompts are data** -- every LLM prompt lives in `prompts/*.json` (one file per prompt) and is
-    read once at import by the root-level `prompt_store.py`, then served from memory. Do not re-add
-    prompt literals to Python: `extraction/prompts.py`, `vlm_client.py`, `pipeline.py` and the
+    read once at import by the shared `src/prompt_store.py`, then served from memory. Do not re-add
+    prompt literals to Python: `src/extraction/prompts.py`, `vlm_client.py`, `pipeline.py` and the
     edge-agent `llm_router.py` all resolve theirs through the store. The store is stdlib-only and
-    lives outside `extraction/` on purpose, so the edge-agent router can read a prompt without
+    lives outside `src/extraction/` on purpose, so the edge-agent router can read a prompt without
     importing LangChain. Notes:
     - `CATALOG` declares, per prompt id, the `parts` the code looks up and the `{placeholder}`
       fields it formats. Both are validated at load, so a stray brace fails at startup instead of
@@ -285,7 +285,7 @@ downstream effects.
       placeholder means updating `CATALOG` and the JSON file together.
     - **Fail-fast is deliberate, and asymmetric with the page catalog.** A corrupt prompt is worse
       than a missing file: the pipeline would keep running and emit wrong fields that look right.
-      `edge-agent/assets/templates/bper/prompts.json` does the opposite and degrades to an empty
+      `src/edge-agent/assets/templates/bper/prompts.json` does the opposite and degrades to an empty
       spec, because a missed page detection is visible to the operator. Keep that asymmetry.
     - Candidate directories are tried in order and the first that *loads* wins, so a damaged
       editable copy next to the exe falls back to the bundled one. `bootstrap._ensure_files()`
@@ -312,7 +312,7 @@ downstream effects.
     - **`normalize_ndg()` is not `norm_number_str()`.** The latter is a *quantity* normalizer: it
       turns `12.345` into `12.35` (splitting one practice across two rows) and `12345/A` into
       `12345.00` (merging two distinct practices). An NDG is an identifier.
-      `normalize_ndg()` lives in `extraction/normalization.py` and is shared by consolidation,
+      `normalize_ndg()` lives in `src/extraction/normalization.py` and is shared by consolidation,
       `classify_field()` for `ndg`/`ndg_1..4`, and `dataset_mismatch_guard()` (ADR 0017).
     - **In xlsx, neutralize formulas with `cell.data_type = "s"`, never `escape_csv_formula()`.**
       The apostrophe is the CSV convention and stays visible in a spreadsheet cell, and the function
@@ -342,10 +342,10 @@ downstream effects.
 
 ## BPER Domain
 
-The extractor targets **9 BPER banking screens** (`mnt/data/screen 1.png` ... `screen 9.png`), each a
+The extractor targets **9 BPER banking screens** (`data/reference/screen 1.png` ... `screen 9.png`), each a
 different page of the BPER credit-management application.
 
-**Extracted fields** -- 45 entries in `FIELD_KEYS` (`extraction/fields.py`):
+**Extracted fields** -- 45 entries in `FIELD_KEYS` (`src/extraction/fields.py`):
 
 | Group | Fields |
 |---|---|
@@ -356,7 +356,7 @@ different page of the BPER credit-management application.
 | Soggetti (screens 2-3) | `ndg_1/2/3/4`, `denominazione_1/2/3/4`, `ruolo_1/2/3/4` |
 | Privati scheda (screens 4-5) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` |
 
-**Crop regions** (relative coords, `extraction/config.py`):
+**Crop regions** (relative coords, `src/extraction/config.py`):
 - `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` -- full content area (main pass); applied only on the file path (`extract_from_screen()`) and only when the image matches the calibration family in BOTH aspect (within 5% of 848/679) and size (long side 800-900px) -- aspect alone is not identity: 1280x1024 sits 0.09% from the calibrated aspect (`select_content_crop()`, ADR 0010). The live path (`extract_from_image()`) never crops, and off calibration the anchor pass reads the whole image and retry tables may only fill, never replace
 - `HEADER_IN_CONTENT = (0.00, 0.00, 1.00, 0.22)` -- header strip (anchor pass)
 - Per-area retry crops in `RETRY_AREAS`; field-to-area mapping in `AREA_TO_FIELDS`, including
@@ -364,20 +364,20 @@ different page of the BPER credit-management application.
 
 ## Data & Evaluation
 
-**Ground-truth CSV** (`mnt/data/dati.csv`) uses three columns: `Fotogramma` (screen ID),
+**Ground-truth CSV** (`data/reference/dati.csv`) uses three columns: `Fotogramma` (screen ID),
 `Denominazione da attribuire` (field name), `Valore rilevato` (expected value). `load_ground_truth()`
-in `extraction/evaluation.py` auto-detects alternative column names (`Screenshot`/`Screen`,
+in `src/extraction/evaluation.py` auto-detects alternative column names (`Screenshot`/`Screen`,
 `Campo`/`Field`, `Valore`/`Value`) via `_find_column()`.
 
-**The CSV is NOT in the repo:** `/mnt` is gitignored (only the 9 PNGs are force-tracked), and no
-copy exists in the working tree. `python main.py` raises `FileNotFoundError` without it
-(`extraction/cli.py::main`) -- obtain it separately and place it at `mnt/data/dati.csv`. The
-Tkinter GUI and the edge-agent work without it (evaluation is optional there).
-Do not restore the `dati.csv` still in git history (removed in `e8c677c`): it describes 5 older
-screenshots of the old PEF UI (practice TICCHI/CABRAS, ~2150px wide), not the current 9 "Nuova PEF
-3.0" screens (practice LUNARDI), so every row would be scored against the wrong image. A draft
-ground truth for the current 9 screens, the first real-provider baseline (`gemini-3.8-flash`,
-3 runs, 93.5-94.8%, ~$0.04/screen) and the proposed acceptance threshold live in
+**Tracked data under `data/`:** `data/` is versioned in git (except `*.safetensors` model weights
+> 1 GB and `data/reference/debug_crops/`). `python main.py` reads `data/reference/dati.csv` (the
+ground truth for the 9 reference screens, practice LUNARDI) and raises `FileNotFoundError` if
+`INPUT_DIR` is pointed at a folder without `dati.csv` (`src/extraction/cli.py::main`). The
+Tkinter GUI and the edge-agent work without a CSV (evaluation is optional there).
+Do not restore the older `dati.csv` from commit `e8c677c`: it describes 5 older screenshots of the
+old PEF UI (practice TICCHI/CABRAS, ~2150px wide), not the current 9 "Nuova PEF 3.0" screens
+(practice LUNARDI). The first real-provider baseline (`gemini-3.8-flash`, 3 runs, 93.5-94.8%,
+~$0.04/screen) and the proposed acceptance threshold live in
 `.codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`.
 
 **Field classification** -- `classify_field()` labels each extracted field as one of:
@@ -392,17 +392,21 @@ Metrics are reported in two variants: **RAW** (all screens) and **FILTERED** (ex
 
 ## Project Structure
 
-### Entry points
+### Entry points and `src/` layout
+
+All Python packages and shared source modules live under `src/` (`src/extraction/`,
+`src/edge-agent/`, `src/training/`, `src/prompt_store.py`), while thin entry points and launchers
+stay at the repository root:
 
 | File | Purpose |
 |---|---|
-| `main.py` | Shim: loads `.env` via `python-dotenv`, then `from extraction import *`. `python main.py` runs the CLI; `python main.py --gui` launches the edge-agent. |
-| `gui_app.py` | Tkinter GUI: loads `.env` before importing `extraction`, initializes matching provider/model menus, uploads screenshots, processes, displays and exports CSV/JSON via the shared batch runner. |
-| `edge-agent/edge_agent.py` | PyQt6 entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow`. `--debug` adds the Debug LLM tab (`ui/debug_tab.py`), but the router traffic only reaches it when `config.ini` also has `[debug] show_llm_tab = true`, which gates the `llm_debug` signal. Both are required. |
-| `run_edge_agent.bat` | Windows launcher: bootstraps/self-heals `.venv` (Python 3.13, then 3.12), installs `requirements.txt`, starts the edge-agent. |
-| `prompt_store.py` | Prompt catalog loader shared by `extraction/` and the edge-agent router. Stdlib-only and deliberately outside `extraction/`, so reading a prompt does not import LangChain. `CATALOG`, `get_text()`, `get_part()`, `catalog_source()`. |
+| `main.py` | Shim: adds `src/` to `sys.path`, loads `.env` via `python-dotenv`, then `from extraction import *`. `python main.py` runs the CLI; `python main.py --gui` launches the edge-agent. |
+| `gui_app.py` | Tkinter GUI: adds `src/` to `sys.path`, loads `.env` before importing `extraction`, initializes matching provider/model menus, uploads screenshots, processes, displays and exports CSV/JSON via the shared batch runner. |
+| `src/edge-agent/edge_agent.py` | PyQt6 entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow`. `--debug` adds the Debug LLM tab (`ui/debug_tab.py`), but the router traffic only reaches it when `config.ini` also has `[debug] show_llm_tab = true`, which gates the `llm_debug` signal. Both are required. |
+| `run_edge_agent.bat` | Windows launcher: bootstraps/self-heals `.venv` (Python 3.13, then 3.12), installs `requirements.txt`, starts `src\edge-agent\edge_agent.py`. |
+| `src/prompt_store.py` | Prompt catalog loader shared by `src/extraction/` and the edge-agent router. Stdlib-only and deliberately outside `src/extraction/`, so reading a prompt does not import LangChain. `CATALOG`, `get_text()`, `get_part()`, `catalog_source()`. |
 
-### `extraction/` package (core engine)
+### `src/extraction/` package (core engine)
 
 Flat package, no sub-packages, one module per concern. Grouped by role:
 
@@ -423,7 +427,7 @@ Flat package, no sub-packages, one module per concern. Grouped by role:
   `evaluation.py` (`eval_outputs()`, `print_cost_summary()`, `load_ground_truth()`).
 - `__init__.py` re-exports the public API for backward compatibility.
 
-### `edge-agent/` package (live capture)
+### `src/edge-agent/` package (live capture)
 
 Flat modules plus two sub-packages: `ui/` (one module per PyQt6 tab, plus `main_window.py` and the
 `overlay.py` capture border) and `workers/capture/` (`BaseCaptureWorker` with one subclass per
@@ -455,12 +459,12 @@ Called out individually, because the filename alone does not tell you:
 - `default_capture_worker.py` -- generic mode, uploads raw frames to a remote API. **No such backend
   exists in this repo**; do not use it as a model for the BPER path (Constraint 11).
 
-### `training/` package (offline OCR + LiLT training and evaluation)
+### `src/training/` package (offline OCR + LiLT training and evaluation)
 
 Self-contained offline package for building the human-reviewed token-classification dataset and
-training/evaluating the local LiLT model (see `training/README.md` and ADR 0022):
+training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0022):
 
-- `schema.py` -- reads `FIELD_KEYS` and `CSV_TO_SCHEMA` from `extraction/fields.py` via AST without
+- `schema.py` -- reads `FIELD_KEYS` and `CSV_TO_SCHEMA` from `src/extraction/fields.py` via AST without
   importing the VLM runtime; maps the 45 fields onto 36 semantic roles plus `O`.
 - `alignment.py` -- aligns reviewed field values to RapidOCR word boxes (`align_screen()`), orders
   multi-line table cells by local visual lines (`_order_cell_indices()`), and scopes unresolved
@@ -482,13 +486,14 @@ training/evaluating the local LiLT model (see `training/README.md` and ADR 0022)
 
 | File | Purpose |
 |---|---|
-| `mnt/README.md` | Overview of the local data, 12-practice corpus, and training directories under `mnt/` |
-| `mnt/data/dati.csv` | Ground-truth dataset -- **expected here but absent from repo and git** (`/mnt` gitignored); required by the CLI |
-| `mnt/data/screen *.png` | Test banking screenshots (9 BPER images, force-tracked in git) |
-| `mnt/riscontro-2026-10-07/` | 12-practice BPER corpus (113 screenshots + `revisione/Revisione_ground_truth_v3_1.xlsx`, local only) |
-| `mnt/training/` | Sealed `ground-truth-v3.1/` dataset bundle and downloaded `runs/` models (local only) |
-| `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `prompt_store.py` |
-| `edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
+| `data/README.md` | Overview of the datasets, 23-practice screenshot collection, and training directories under `data/` |
+| `data/reference/dati.csv` | Ground-truth dataset for the 9 reference screens (tracked in git; required by the CLI) |
+| `data/reference/screen *.png` | Test banking screenshots (9 BPER images, tracked in git) |
+| `data/pratiche/` | Unified per-practice screenshot dataset (23 practices, 156 in-scope + 22 off-topic PNGs, `manifest.json`) |
+| `data/revisione/` | Reviewed ground-truth workbook (`revisione/Revisione_ground_truth_v3_1.xlsx`), crops, and 12-practice `dati.csv` |
+| `data/training/` | Sealed `ground-truth-v3.1/` dataset bundle and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
+| `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `src/prompt_store.py` |
+| `src/edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
 
 ### Documentation
 
@@ -497,12 +502,12 @@ training/evaluating the local LiLT model (see `training/README.md` and ADR 0022)
 | `docs/how-it-works.md` | The pipeline mechanics extracted from this file: multi-pass stages, three run modes, edge-agent capture flow. In English, like this file, because it is the same document split for size |
 | `docs/` | Narrative codebase guide in Italian (start at `docs/INDEX.md`) |
 | `docs/adr/` | Architecture Decision Records in Italian, one decision per file, numbered and immutable once accepted (start at `docs/adr/README.md`). A decision that changes behaviour gets an ADR *and* a test; the ADR explains why, the test keeps it true |
-| `training/README.md` | Operational guide in Italian for preparing the reviewed v3.1 dataset and running offline LiLT training |
+| `src/training/README.md` | Operational guide in Italian for preparing the reviewed v3.1 dataset and running offline LiLT training |
 | `.tritech/codebase-xray/` | Technical X-ray analysis, historical provider/OCR baselines, and reproducible verification checks |
 
 ## Dependencies
 
-All dependencies live in a single root `requirements.txt`; there is **no** `edge-agent/requirements.txt`.
+All dependencies live in a single root `requirements.txt`; there is **no** `src/edge-agent/requirements.txt`.
 Versions are loosely bounded, not strictly pinned.
 
 **Extraction pipeline:**
@@ -513,17 +518,17 @@ langchain-google-genai  # LangChain Gemini ChatModel (required if LLM_PROVIDER=g
 Pillow>=10.0.0          # Image processing (PIL)
 pandas                  # CSV/data handling
 python-dotenv           # .env loading before extraction imports (CLI, Tkinter and edge-agent)
-openpyxl>=3.1.2         # Excel export (edge-agent/excel_export.py)
+openpyxl>=3.1.2         # Excel export (src/edge-agent/excel_export.py)
 ```
 
 **Edge-agent (PyQt6 live capture):**
 ```
 PyQt6>=6.4.0            # Desktop UI framework
-qt-material>=2.14       # PyQt6 Material theme (edge-agent/edge_agent.py)
+qt-material>=2.14       # PyQt6 Material theme (src/edge-agent/edge_agent.py)
 mss>=9.0.0             # Fast screenshot capture
 pyscreenshot>=3.1      # Screenshot fallback (Linux-only env marker)
 imagehash>=4.3.0       # pHash for frame dedup
-torch, torchvision     # DINOv2 ViT-S/14 ML page classifier (edge-agent/page_classifier.py)
+torch, torchvision     # DINOv2 ViT-S/14 ML page classifier (src/edge-agent/page_classifier.py)
 openai>=1.51.0         # SDK for the page router in `llm` mode; endpoint and model come from
                        # config.ini [llm], so it also talks to non-OpenAI providers
 requests>=2.31.0       # Remote upload in DefaultCaptureWorker (generic mode only)

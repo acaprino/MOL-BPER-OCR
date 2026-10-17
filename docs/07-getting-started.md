@@ -1,11 +1,11 @@
 # Per iniziare
 
-Il progetto estrae campi da screenshot BPER tramite il motore Python `extraction/`.
+Il progetto estrae campi da screenshot BPER tramite il motore Python `src/extraction/`.
 Puoi lavorare su file con CLI o Tkinter, oppure acquisire dal vivo con l'edge-agent
 PyQt6. La suite pytest verifica diversi comportamenti senza chiamare i provider;
 per un'estrazione reale servono connessione e credenziali LLM. La CLI richiede
 anche il CSV di riferimento, mentre le due GUI possono lavorare senza.
-<!-- Source: extraction/cli.py::main; gui_app.py:238; edge-agent/local_extraction_client.py:90; tests/test_local_extraction_client.py:46 -->
+<!-- Source: src/extraction/cli.py::main; gui_app.py:238; src/edge-agent/local_extraction_client.py:90; tests/test_local_extraction_client.py:46 -->
 
 Leggi questa guida insieme ad [Architettura](04-architecture.md),
 [Workflow](05-workflows.md) e [API Python](12-python-api.md). I comandi seguenti
@@ -26,7 +26,7 @@ partono dalla radice del repository; gli esempi di configurazione sono segnapost
   file comune; il preflight dell'edge-agent gestisce preparazione e warm-up. Il primo
   avvio può richiedere download anche prima di iniziare una cattura.
 
-<!-- Source: run_edge_agent.bat:43; extraction/config.py:16; extraction/llm_factory.py:18; extraction/cli.py::main; edge-agent/workers/capture/bper_capture_worker.py:442; edge-agent/bootstrap.py:489; requirements.txt:13 -->
+<!-- Source: run_edge_agent.bat:43; src/extraction/config.py:16; src/extraction/llm_factory.py:18; src/extraction/cli.py::main; src/edge-agent/workers/capture/bper_capture_worker.py:442; src/edge-agent/bootstrap.py:489; requirements.txt:13 -->
 
 I comandi sono PowerShell-first, con l'equivalente bash per il setup manuale.
 `pyscreenshot` è una dipendenza condizionale per Linux; i launcher `.bat` e la build
@@ -37,7 +37,7 @@ portable sono destinati a Windows.
 
 ### 0. Se hai clonato prima del 2026-07-21: ri-clona
 
-L'intera storia git è stata riscritta con `git filter-repo` e force-pushata per ripulire una chiave OpenAI trapelata da `edge-agent/config.ini`. Tutti gli hash dei commit sono cambiati. Un clone precedente può contenere la vecchia storia e rischia di reintrodurre la chiave in un merge o push. Non mergiare e non pushare da un vecchio clone; riparti da zero:
+L'intera storia git è stata riscritta con `git filter-repo` e force-pushata per ripulire una chiave OpenAI trapelata da `src/edge-agent/config.ini`. Tutti gli hash dei commit sono cambiati. Un clone precedente può contenere la vecchia storia e rischia di reintrodurre la chiave in un merge o push. Non mergiare e non pushare da un vecchio clone; riparti da zero:
 
 ```powershell
 git clone <origin-url> poc-data-extraction
@@ -102,7 +102,7 @@ $env:LLM_API_KEY = "<la tua chiave>"
 python gui_app.py
 ```
 
-<!-- Source: main.py:4; edge-agent/edge_agent.py:28; edge-agent/edge_agent.py:63; gui_app.py:1; gui_app.py:24 -->
+<!-- Source: main.py:4; src/edge-agent/edge_agent.py:28; src/edge-agent/edge_agent.py:63; gui_app.py:1; gui_app.py:24 -->
 
 Per Gemini invece:
 
@@ -113,71 +113,71 @@ LLM_MODEL=<modello Gemini abilitato per la tua chiave>
 ```
 
 La factory rifiuta le coppie disallineate: un modello `gemini-*` con `LLM_PROVIDER=openai` (o `gpt-*` con `gemini`) solleva `ValueError`.
-<!-- Source: extraction/llm_factory.py:49-63 -->
+<!-- Source: src/extraction/llm_factory.py:49-63 -->
 
 ### 4. Fornisci il CSV di ground truth (solo CLI)
 
-Colloca `dati.csv` in `INPUT_DIR` (default `mnt/data`). Il formato è long, con
+Colloca `dati.csv` in `INPUT_DIR` (default `data/reference`). Il formato è long, con
 intestazioni `Fotogramma`, `Denominazione da attribuire` e `Valore rilevato`.
 `Fotogramma` deve coincidere con il nome dell'immagine senza estensione: per
 `screen 1.png` usa `screen 1`, non `1` né `screen 1.png`. Il loader non converte
 automaticamente questi identificativi. Formati e intestazioni alternative sono
 nel [modello dati](06-data-model.md#ground-truth-csv).
-<!-- Source: extraction/config.py:8; extraction/evaluation.py:49; extraction/imaging.py:29 -->
+<!-- Source: src/extraction/config.py:8; src/extraction/evaluation.py:49; src/extraction/imaging.py:29 -->
 
 La GUI Tkinter e l'edge-agent funzionano senza questo file; la CLI ne verifica
 l'esistenza prima di creare il batch. Non usare dati di esempio come baseline di
 accuratezza: serve il dataset di riferimento autorizzato.
-<!-- Source: extraction/cli.py::main; gui_app.py:263 -->
+<!-- Source: src/extraction/cli.py::main; gui_app.py:263 -->
 
 ### 5. Esegui
 
 ```powershell
-python main.py                            # batch CLI su ogni immagine in mnt/data/
+python main.py                            # batch CLI su ogni immagine in data/reference/
 python gui_app.py                         # GUI desktop Tkinter (scegli i file a mano)
 python main.py --gui                      # edge-agent (PyQt6) con cattura dal vivo
-python edge-agent/edge_agent.py           # edge-agent, lanciato direttamente
-python edge-agent/edge_agent.py --debug   # edge-agent + tab Debug del router LLM
+python src/edge-agent/edge_agent.py           # edge-agent, lanciato direttamente
+python src/edge-agent/edge_agent.py --debug   # edge-agent + tab Debug del router LLM
 ```
 
-`main.py --gui` inoltra l’avvio a `edge_agent.main()`, ma ha già importato `extraction` prima del preflight: per il primo avvio preferisci il launcher o `python edge-agent/edge_agent.py`, così l’ambiente può essere predisposto prima della lettura della configurazione del motore. Il flag `--debug` sblocca la tab Debug LLM, che richiede in aggiunta `show_llm_tab = true` nella sezione `[debug]` di `edge-agent/config.ini`.
-<!-- Source: edge-agent/edge_agent.py:87 -->
+`main.py --gui` inoltra l’avvio a `edge_agent.main()`, ma ha già importato `extraction` prima del preflight: per il primo avvio preferisci il launcher o `python src/edge-agent/edge_agent.py`, così l’ambiente può essere predisposto prima della lettura della configurazione del motore. Il flag `--debug` sblocca la tab Debug LLM, che richiede in aggiunta `show_llm_tab = true` nella sezione `[debug]` di `src/edge-agent/config.ini`.
+<!-- Source: src/edge-agent/edge_agent.py:87 -->
 
 ## File chiave da leggere per primi
 
 Ordinati per valore di apprendimento: dal contratto dati verso l'orchestrazione e la UI.
 
-1. **`extraction/fields.py`**: `FIELD_KEYS` (45 chiavi, righe 12-54) è l'unica fonte di verità per tutto ciò che il sistema estrae. Lo schema Pydantic, la mappatura CSV, le metriche e la mappa di retry si agganciano tutti a questa lista; leggila per prima e il vocabolario di dominio (`ndg`, `fido`, `professione_principale`) smette di essere rumore.
-2. **`extraction/schemas.py`**: Il contratto di output dell'LLM: `FieldResult` (value/confidence/evidence/section), `Soggetto`, `Fido`, `Garanzia`, `ExtractionResponse`, `AnchorResponse`. `FieldsModel` è generato dinamicamente da `FIELD_KEYS`, motivo per cui `fields.py` viene prima.
-3. **`extraction/pipeline.py`**: `ExtractionPipeline`, il cuore del sistema: passaggio anchor → passaggio principale → retry condizionali per area → controllo di coerenza → appiattimento dei soggetti. Se leggi un solo file, leggi questo; nota i due entry point `extract_from_screen()` (CLI/Tkinter) ed `extract_from_image()` (edge-agent, immagine già preprocessata dalla cattura, con il limite dimensionale comunque applicato dalla pipeline).
-4. **`extraction/config.py`**: Ogni manopola regolabile: config da variabili d'ambiente, coordinate di ritaglio (`CONTENT_CROP`, `HEADER_IN_CONTENT`, `RETRY_AREAS`), la mappa campo-area di retry (`AREA_TO_FIELDS`) e la tabella dei prezzi (`PRICING_PER_1M`). Le variabili d'ambiente vengono lette **al momento dell'import** (`os.getenv` a livello di modulo), il che conta: vedi Trabocchetti.
-5. **`extraction/cli.py`**: `BatchRunner` e `run_extraction_batch()`, il motore batch condiviso usato sia dalla CLI sia dalla GUI Tkinter. Mostra il modello di threading: ChatModel creati una volta, condivisi sul `ThreadPoolExecutor`. `main()` è il flusso CLI end-to-end.
-6. **`extraction/vlm_client.py`**: Le chiamate LLM di basso livello e le strategie di output strutturato per provider (`.with_structured_output()` per OpenAI, json_mode per Gemini 1.5, JSON in forma libera + validazione manuale per Gemini 2.0+/3.x, discriminati da `_GEMINI_JSON_SCHEMA_MODELS`). È anche dove viene popolato il tracciamento dei costi `_meta`.
-7. **`extraction/evaluation.py`**: `load_ground_truth()`, `eval_outputs()` e la classificazione OK / WRONG / MISSING / HALLUCINATED / OK_NULL; spiega la separazione tra metriche RAW e FILTERED guidata da `dataset_mismatch_guard()`.
-8. **`edge-agent/local_extraction_client.py`**: Corto e portante: il ponte QObject tra la UI PyQt6 e `ExtractionPipeline`, la giuntura `ingest_frame()` e il segnale `result_ready` che riattraversa il confine verso il thread della UI.
-9. **`edge-agent/workers/capture/bper_capture_worker.py`**: Il loop di cattura: screenshot mss, `preprocess_for_ocr()`, deduplica pHash, routing di pagina, gate di stabilità di 2 secondi, poi l’accodamento asincrono con `ingest_frame()` e la conferma dell’esito; anche lo scatto manuale passa dal loop del worker. Leggilo dopo avere compreso la pipeline.
+1. **`src/extraction/fields.py`**: `FIELD_KEYS` (45 chiavi, righe 12-54) è l'unica fonte di verità per tutto ciò che il sistema estrae. Lo schema Pydantic, la mappatura CSV, le metriche e la mappa di retry si agganciano tutti a questa lista; leggila per prima e il vocabolario di dominio (`ndg`, `fido`, `professione_principale`) smette di essere rumore.
+2. **`src/extraction/schemas.py`**: Il contratto di output dell'LLM: `FieldResult` (value/confidence/evidence/section), `Soggetto`, `Fido`, `Garanzia`, `ExtractionResponse`, `AnchorResponse`. `FieldsModel` è generato dinamicamente da `FIELD_KEYS`, motivo per cui `fields.py` viene prima.
+3. **`src/extraction/pipeline.py`**: `ExtractionPipeline`, il cuore del sistema: passaggio anchor → passaggio principale → retry condizionali per area → controllo di coerenza → appiattimento dei soggetti. Se leggi un solo file, leggi questo; nota i due entry point `extract_from_screen()` (CLI/Tkinter) ed `extract_from_image()` (edge-agent, immagine già preprocessata dalla cattura, con il limite dimensionale comunque applicato dalla pipeline).
+4. **`src/extraction/config.py`**: Ogni manopola regolabile: config da variabili d'ambiente, coordinate di ritaglio (`CONTENT_CROP`, `HEADER_IN_CONTENT`, `RETRY_AREAS`), la mappa campo-area di retry (`AREA_TO_FIELDS`) e la tabella dei prezzi (`PRICING_PER_1M`). Le variabili d'ambiente vengono lette **al momento dell'import** (`os.getenv` a livello di modulo), il che conta: vedi Trabocchetti.
+5. **`src/extraction/cli.py`**: `BatchRunner` e `run_extraction_batch()`, il motore batch condiviso usato sia dalla CLI sia dalla GUI Tkinter. Mostra il modello di threading: ChatModel creati una volta, condivisi sul `ThreadPoolExecutor`. `main()` è il flusso CLI end-to-end.
+6. **`src/extraction/vlm_client.py`**: Le chiamate LLM di basso livello e le strategie di output strutturato per provider (`.with_structured_output()` per OpenAI, json_mode per Gemini 1.5, JSON in forma libera + validazione manuale per Gemini 2.0+/3.x, discriminati da `_GEMINI_JSON_SCHEMA_MODELS`). È anche dove viene popolato il tracciamento dei costi `_meta`.
+7. **`src/extraction/evaluation.py`**: `load_ground_truth()`, `eval_outputs()` e la classificazione OK / WRONG / MISSING / HALLUCINATED / OK_NULL; spiega la separazione tra metriche RAW e FILTERED guidata da `dataset_mismatch_guard()`.
+8. **`src/edge-agent/local_extraction_client.py`**: Corto e portante: il ponte QObject tra la UI PyQt6 e `ExtractionPipeline`, la giuntura `ingest_frame()` e il segnale `result_ready` che riattraversa il confine verso il thread della UI.
+9. **`src/edge-agent/workers/capture/bper_capture_worker.py`**: Il loop di cattura: screenshot mss, `preprocess_for_ocr()`, deduplica pHash, routing di pagina, gate di stabilità di 2 secondi, poi l’accodamento asincrono con `ingest_frame()` e la conferma dell’esito; anche lo scatto manuale passa dal loop del worker. Leggilo dopo avere compreso la pipeline.
 
-<!-- Source: extraction/fields.py:12; extraction/schemas.py:31; extraction/pipeline.py:122; extraction/pipeline.py:231; extraction/config.py:7; extraction/cli.py::BatchRunner.__init__; extraction/vlm_client.py:123; extraction/evaluation.py:88; edge-agent/local_extraction_client.py:127; edge-agent/workers/capture/bper_capture_worker.py:346 -->
+<!-- Source: src/extraction/fields.py:12; src/extraction/schemas.py:31; src/extraction/pipeline.py:122; src/extraction/pipeline.py:231; src/extraction/config.py:7; src/extraction/cli.py::BatchRunner.__init__; src/extraction/vlm_client.py:123; src/extraction/evaluation.py:88; src/edge-agent/local_extraction_client.py:127; src/edge-agent/workers/capture/bper_capture_worker.py:346 -->
 
 ## Dove intervenire e cosa verificare
 
 | Se vuoi cambiare… | Parti da… | Verifica… |
 |---|---|---|
-| Un campo estratto | `extraction/fields.py`, `schemas.py`, `field_definitions.py`, `config.py` e `prompts/` | Chiave, mapping CSV, area di retry o esclusione esplicita e colonna canonica coerenti; test del vocabolario, retry ed Excel. |
-| Lettura o fusione dei valori | `extraction/pipeline.py`, `extraction/normalization.py` | Anchor, budget e ordine dei passaggi; `test_pipeline_retry.py`, `test_content_crop.py`. |
-| Inquadratura e ritagli | `edge-agent/frame_normalize.py`, `extraction/imaging.py`, `edge-agent/page_classifier.py` | `test_frame_normalize.py`, `test_bper_capture_framing.py`, `test_page_classifier.py`, `test_content_crop.py`. |
-| Quando acquisire di nuovo | `edge-agent/workers/capture/bper_capture_worker.py`, `edge-agent/stability.py` | `test_bper_capture_lifecycle.py`: cambiamenti piccoli, errori, conferme vecchie e scatto manuale. |
-| Ordine e parallelismo live | `edge-agent/local_extraction_client.py`, `edge-agent/extraction_pool.py` | `test_local_extraction_client.py`: frame senza NDG, completamenti fuori ordine, errori e diagnostica non scrivibile. |
-| Una riga per pratica o l'Excel | `edge-agent/practice_consolidation.py`, `edge-agent/excel_export.py` | `test_practice_consolidation.py`, `test_excel_export.py`; riusare `pick_best()`. |
-| Prompt o placeholder | `prompts/*.json`, `prompt_store.py` | `test_prompt_store.py`; aggiornare `CATALOG` insieme al JSON e riavviare. |
-| Provider o costi stimati | `extraction/llm_factory.py`, `extraction/vlm_client.py`, `extraction/config.py` | Errori di configurazione e parsing, metadati, modello nella tabella prezzi. |
-| Valutazione o caricamento GT | `extraction/evaluation.py`, `extraction/normalization.py` | Join sugli ID delle immagini e confronto con una baseline autorizzata. |
-| Flusso batch | `extraction/cli.py` | CLI e Tkinter condividono `run_extraction_batch()`; le callback operano sul thread chiamante. |
-| UI desktop | `gui_app.py` oppure `edge-agent/ui/` | Prova del percorso interessato; la UI live mostra Cattura e Dati Estratti, con Debug LLM facoltativo. |
-| Riconoscimento pagina | `edge-agent/llm_router.py`, `page_classifier.py`, `page_registry.py` e catalogo pagine | `test_page_registry.py`, `test_page_classifier.py`; modalità in `config.ini`. |
-| Impostazioni di cattura | `edge-agent/config.py`, `edge-agent/config.ini` | Monitor, FPS, routing e risoluzione delle credenziali separata dal motore. |
+| Un campo estratto | `src/extraction/fields.py`, `schemas.py`, `field_definitions.py`, `config.py` e `prompts/` | Chiave, mapping CSV, area di retry o esclusione esplicita e colonna canonica coerenti; test del vocabolario, retry ed Excel. |
+| Lettura o fusione dei valori | `src/extraction/pipeline.py`, `src/extraction/normalization.py` | Anchor, budget e ordine dei passaggi; `test_pipeline_retry.py`, `test_content_crop.py`. |
+| Inquadratura e ritagli | `src/edge-agent/frame_normalize.py`, `src/extraction/imaging.py`, `src/edge-agent/page_classifier.py` | `test_frame_normalize.py`, `test_bper_capture_framing.py`, `test_page_classifier.py`, `test_content_crop.py`. |
+| Quando acquisire di nuovo | `src/edge-agent/workers/capture/bper_capture_worker.py`, `src/edge-agent/stability.py` | `test_bper_capture_lifecycle.py`: cambiamenti piccoli, errori, conferme vecchie e scatto manuale. |
+| Ordine e parallelismo live | `src/edge-agent/local_extraction_client.py`, `src/edge-agent/extraction_pool.py` | `test_local_extraction_client.py`: frame senza NDG, completamenti fuori ordine, errori e diagnostica non scrivibile. |
+| Una riga per pratica o l'Excel | `src/edge-agent/practice_consolidation.py`, `src/edge-agent/excel_export.py` | `test_practice_consolidation.py`, `test_excel_export.py`; riusare `pick_best()`. |
+| Prompt o placeholder | `prompts/*.json`, `src/prompt_store.py` | `test_prompt_store.py`; aggiornare `CATALOG` insieme al JSON e riavviare. |
+| Provider o costi stimati | `src/extraction/llm_factory.py`, `src/extraction/vlm_client.py`, `src/extraction/config.py` | Errori di configurazione e parsing, metadati, modello nella tabella prezzi. |
+| Valutazione o caricamento GT | `src/extraction/evaluation.py`, `src/extraction/normalization.py` | Join sugli ID delle immagini e confronto con una baseline autorizzata. |
+| Flusso batch | `src/extraction/cli.py` | CLI e Tkinter condividono `run_extraction_batch()`; le callback operano sul thread chiamante. |
+| UI desktop | `gui_app.py` oppure `src/edge-agent/ui/` | Prova del percorso interessato; la UI live mostra Cattura e Dati Estratti, con Debug LLM facoltativo. |
+| Riconoscimento pagina | `src/edge-agent/llm_router.py`, `page_classifier.py`, `page_registry.py` e catalogo pagine | `test_page_registry.py`, `test_page_classifier.py`; modalità in `config.ini`. |
+| Impostazioni di cattura | `src/edge-agent/config.py`, `src/edge-agent/config.ini` | Monitor, FPS, routing e risoluzione delle credenziali separata dal motore. |
 
-<!-- Source: extraction/fields.py:12; extraction/pipeline.py:295; extraction/normalization.py:120; edge-agent/frame_normalize.py:209; edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/local_extraction_client.py:194; edge-agent/excel_export.py:217; prompt_store.py:62; extraction/cli.py::BatchRunner.run; edge-agent/ui/main_window.py:66; edge-agent/config.py:292 -->
+<!-- Source: src/extraction/fields.py:12; src/extraction/pipeline.py:295; src/extraction/normalization.py:120; src/edge-agent/frame_normalize.py:209; src/edge-agent/workers/capture/bper_capture_worker.py:299; src/edge-agent/local_extraction_client.py:194; src/edge-agent/excel_export.py:217; src/prompt_store.py:62; src/extraction/cli.py::BatchRunner.run; src/edge-agent/ui/main_window.py:66; src/edge-agent/config.py:292 -->
 
 I percorsi di test indicati nella tabella sono sotto `tests/`. Le firme complete,
 i valori restituiti e gli errori delle API principali sono nel
@@ -226,11 +226,11 @@ python main.py
 ```
 
 Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR`, poi:
-<!-- Source: extraction/cli.py::main -->
+<!-- Source: src/extraction/cli.py::main -->
 
-- scrive `mnt/data/poc_outputs_improved.json` (risultati completi per schermata, `extraction/cli.py::main`);
+- scrive `data/reference/poc_outputs_improved.json` (risultati completi per schermata, `src/extraction/cli.py::main`);
 - stampa l'accuratezza RAW e FILTERED con il dettaglio per campo;
-- scrive `mnt/data/poc_debug_improved.csv`: separatore punto e virgola, `utf-8-sig` (amichevole per Excel, `extraction/evaluation.py:15`);
+- scrive `data/reference/poc_debug_improved.csv`: separatore punto e virgola, `utf-8-sig` (amichevole per Excel, `src/extraction/evaluation.py:15`);
 - stampa chiamate/token/USD per schermata via `print_cost_summary()`.
 
 La prima baseline con un provider reale (2026-09-29, `gemini-3.8-flash`, tre run: 93,5-94,8%, circa $0,04 a schermata) è in `.codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`, con il ground truth che l'ha prodotta e la soglia di accettazione proposta. Per sapere se una modifica ha aiutato, rilancia sullo stesso `dati.csv` e confronta con quei numeri; se cambi il ground truth, salva prima il JSON precedente e il riepilogo stampato.
@@ -255,7 +255,7 @@ finestra, riconosciuto e atteso fino alla stabilità; l'estrazione prosegue poi 
 pool senza bloccare la cattura. Controlla in *Dati Estratti* che i frame della
 stessa pratica producano una sola riga, poi esporta l'Excel e verifica le due
 righe di intestazione e le 45 colonne.
-<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:346; edge-agent/local_extraction_client.py:127; edge-agent/ui/data_table_tab.py:194; edge-agent/excel_export.py:177 -->
+<!-- Source: src/edge-agent/workers/capture/bper_capture_worker.py:346; src/edge-agent/local_extraction_client.py:127; src/edge-agent/ui/data_table_tab.py:194; src/edge-agent/excel_export.py:177 -->
 
 *Acquisisci ora* accoda uno scatto per la pagina selezionata: il thread di cattura
 lo esegue senza routing e senza attesa di stabilità. Se il router è già occupato,
@@ -263,23 +263,23 @@ il comando può attendere: viene acquisita la schermata visibile al momento
 dell'esecuzione. Le animazioni riavviano l'attesa automatica e possono richiedere
 lo scatto manuale. Un errore di estrazione permette una nuova acquisizione;
 una pagina accodata non è ancora una pagina estratta.
-<!-- Source: edge-agent/workers/capture/bper_capture_worker.py:299; edge-agent/workers/capture/bper_capture_worker.py:329; edge-agent/workers/capture/bper_capture_worker.py:722; tests/test_bper_capture_lifecycle.py:183 -->
+<!-- Source: src/edge-agent/workers/capture/bper_capture_worker.py:299; src/edge-agent/workers/capture/bper_capture_worker.py:329; src/edge-agent/workers/capture/bper_capture_worker.py:722; tests/test_bper_capture_lifecycle.py:183 -->
 
 Confidenza, costi, token e provenienza sono diagnostica del client, visibile sulla
 console o in `edge-agent.log` nel bundle senza console. Il log include valori
 estratti. La tab Debug LLM richiede sia `--debug` sia `[debug] show_llm_tab = true`;
 mostra il traffico del router, non sostituisce la diagnostica dell'estrazione.
-<!-- Source: edge-agent/local_extraction_client.py:41; edge-agent/edge_agent.py:15; edge-agent/edge_agent.py:87; edge-agent/workers/capture/bper_capture_worker.py:123 -->
+<!-- Source: src/edge-agent/local_extraction_client.py:41; src/edge-agent/edge_agent.py:15; src/edge-agent/edge_agent.py:87; src/edge-agent/workers/capture/bper_capture_worker.py:123 -->
 
 ### Aggiungere un nuovo campo
 
 `FIELD_KEYS` si dirama ampiamente; un nuovo campo tocca quattro o cinque file:
 
-1. Aggiungi la chiave a `FIELD_KEYS` in `extraction/fields.py`: il `FieldsModel` Pydantic si rigenera automaticamente da lì.
-2. Mappa l'etichetta del CSV di ground truth in `CSV_TO_SCHEMA` (`extraction/fields.py`).
-3. Aggiungi `display_name` + `page_key` in `CANONICAL_FIELD_DEFINITIONS` e l'alias in `FIELD_LABEL_ALIASES` (`extraction/field_definitions.py`), così l'export canonico e il raggruppamento per pagina della UI lo intercettano.
+1. Aggiungi la chiave a `FIELD_KEYS` in `src/extraction/fields.py`: il `FieldsModel` Pydantic si rigenera automaticamente da lì.
+2. Mappa l'etichetta del CSV di ground truth in `CSV_TO_SCHEMA` (`src/extraction/fields.py`).
+3. Aggiungi `display_name` + `page_key` in `CANONICAL_FIELD_DEFINITIONS` e l'alias in `FIELD_LABEL_ALIASES` (`src/extraction/field_definitions.py`), così l'export canonico e il raggruppamento per pagina della UI lo intercettano.
 4. Assegnalo a un'area di retry in `AREA_TO_FIELDS` se va ritentato quando è nullo o a bassa confidenza.
-<!-- Source: extraction/config.py:105 -->
+<!-- Source: src/extraction/config.py:105 -->
 5. Descrivilo nel prompt italiano (`prompts/extraction_main.json`), così il modello sa di doverlo cercare.
 
 ### Fare debug di un'estrazione sbagliata
@@ -291,7 +291,7 @@ python main.py
 ```
 
 `DEBUG_MODE` attiva il logging batch verboso e `DEBUG_SAVE_CROPS` salva i ritagli intermedi in `INPUT_DIR/debug_crops/`. Vedere esattamente quale ritaglio è andato al modello è il modo più rapido per diagnosticare un campo sbagliato. Incrocia con `_field_sources` nel JSON di output per scoprire quale passaggio (ANCHOR_HEADER / CONTENT_MAIN / RETRY_*) ha prodotto il valore finale.
-<!-- Source: extraction/config.py:129 -->
+<!-- Source: src/extraction/config.py:129 -->
 
 ### Creare il pacchetto portable Windows
 
@@ -304,7 +304,7 @@ Lo script usa `edge_agent.spec` per una build PyInstaller `onedir`, produce
 asset e prompt modificabili, oltre al template dell'ambiente. Il preflight del
 pacchetto prepara i componenti mancanti e, se la chiave manca, la chiede al primo
 avvio. Non basta consegnare il solo `.exe`: va distribuita l'intera cartella.
-<!-- Source: build_exe.bat:85; build_exe.bat:91; build_exe.bat:99; build_exe.bat:113; edge_agent.spec:1; edge-agent/bootstrap.py:450 -->
+<!-- Source: build_exe.bat:85; build_exe.bat:91; build_exe.bat:99; build_exe.bat:113; edge_agent.spec:1; src/edge-agent/bootstrap.py:450 -->
 
 Per un tester che non sa cosa sia una chiave API, la build può consegnare il
 pacchetto già configurato. All'avvio lo script chiede la chiave da includere
@@ -315,12 +315,12 @@ $env:EDGE_AGENT_PACKAGE_KEY = "<chiave dedicata alla beta>"
 .\build_exe.bat
 ```
 
-`edge-agent/env_key.py`, lo stesso modulo che salva la chiave inserita nel dialog
+`src/edge-agent/env_key.py`, lo stesso modulo che salva la chiave inserita nel dialog
 di primo avvio, la scrive solo nel `.env` del pacchetto e rifiuta valori vuoti,
 multi-riga o con `=`. Lo zip prende il suffisso `_CON-CHIAVE` e il preflight non
 chiede nulla. Chi riceve quello zip può leggere la chiave: usane una dedicata alla
 beta, con limite di spesa, e revocala alla fine.
-<!-- Source: build_exe.bat:10; build_exe.bat:103; edge-agent/env_key.py:66; tests/test_env_key.py:39 -->
+<!-- Source: build_exe.bat:10; build_exe.bat:103; src/edge-agent/env_key.py:66; tests/test_env_key.py:39 -->
 
 La build rimuove la precedente `dist/EdgeAgent` e rifiuta un `api_key` non vuoto
 nell'INI. Se Python 3.13/3.12 è assente, lo script tenta anche l'installazione
@@ -329,20 +329,20 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
 
 ## Trabocchetti
 
-- **La CLI si arresta senza `mnt/data/dati.csv`.** Il dataset non è distribuito con il repository: senza il file `python main.py` solleva `FileNotFoundError: Ground truth CSV not found: mnt/data/dati.csv`. Procurati il file dal team prima di tentare un'esecuzione CLI; le due GUI funzionano senza.
-<!-- Source: extraction/cli.py::main -->
+- **La CLI si arresta senza `data/reference/dati.csv`.** Il dataset non è distribuito con il repository: senza il file `python main.py` solleva `FileNotFoundError: Ground truth CSV not found: data/reference/dati.csv`. Procurati il file dal team prima di tentare un'esecuzione CLI; le due GUI funzionano senza.
+<!-- Source: src/extraction/cli.py::main -->
 
-- **La storia git è stata riscritta il 2026-07-21: i cloni stantii sono pericolosi.** Una chiave OpenAI era stata committata in `edge-agent/config.ini`; è stata ripulita dall'intera storia con `git filter-repo` e force-pushata. Ogni hash di commit è cambiato. Se il clone precede la riscrittura, conserva separatamente il lavoro locale utile e usa un clone nuovo; evita merge o push della vecchia storia.
+- **La storia git è stata riscritta il 2026-07-21: i cloni stantii sono pericolosi.** Una chiave OpenAI era stata committata in `src/edge-agent/config.ini`; è stata ripulita dall'intera storia con `git filter-repo` e force-pushata. Ogni hash di commit è cambiato. Se il clone precede la riscrittura, conserva separatamente il lavoro locale utile e usa un clone nuovo; evita merge o push della vecchia storia.
 
-- **Mai mettere una chiave reale in `edge-agent/config.ini`.** La riga `[llm] api_key` è in un file tracciato e ora è **vuota**. La ricerca della chiave del router preferisce il valore INI rispetto all'ambiente ed è consapevole del provider (`AgentConfig.resolve_llm_settings()`): per `gemini` ricade su `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY`, per `openai` su `OPENAI_API_KEY` → `LLM_API_KEY`. Il pattern sicuro è: lascia la riga vuota nell'INI e imposta la chiave in `.env`. Qualunque valore che inizi per `REDACTED` viene trattato come vuoto, perché un placeholder rimasto in giro aveva già oscurato le chiavi da ambiente rompendo il router in silenzio. Trappola aggiuntiva: `AgentConfig.save()` scrive `llm_api_key` di nuovo dentro `config.ini`; al momento nulla chiama `save()`, ma collegarlo a un pulsante della UI ri-persisterebbe segreti in un file tracciato.
-<!-- Source: edge-agent/config.py:339 -->
+- **Mai mettere una chiave reale in `src/edge-agent/config.ini`.** La riga `[llm] api_key` è in un file tracciato e ora è **vuota**. La ricerca della chiave del router preferisce il valore INI rispetto all'ambiente ed è consapevole del provider (`AgentConfig.resolve_llm_settings()`): per `gemini` ricade su `GEMINI_API_KEY` → `GOOGLE_API_KEY` → `LLM_API_KEY`, per `openai` su `OPENAI_API_KEY` → `LLM_API_KEY`. Il pattern sicuro è: lascia la riga vuota nell'INI e imposta la chiave in `.env`. Qualunque valore che inizi per `REDACTED` viene trattato come vuoto, perché un placeholder rimasto in giro aveva già oscurato le chiavi da ambiente rompendo il router in silenzio. Trappola aggiuntiva: `AgentConfig.save()` scrive `llm_api_key` di nuovo dentro `config.ini`; al momento nulla chiama `save()`, ma collegarlo a un pulsante della UI ri-persisterebbe segreti in un file tracciato.
+<!-- Source: src/edge-agent/config.py:339 -->
 
 - **Le estrazioni reali chiamano un provider, e i modelli sconosciuti riportano $0.00.** Per schermata: 1 chiamata anchor + 1 chiamata principale + fino a `MAX_CALLS_PER_SCREEN - 2` retry, uno per area debole, in parallelo tra le schermate. Il default di `MAX_CALLS_PER_SCREEN` è derivato da `2 + len(AREA_TO_FIELDS)` (= 5), quindi sono ammessi fino a 5 passaggi logici. I retry di trasporto possono portare a più richieste di rete, e il router LLM effettua chiamate separate. `estimate_cost_usd()` restituisce `0.0` per qualsiasi modello assente da `PRICING_PER_1M`: dato che `LLM_MODEL` è testo libero, un nome di modello sbagliato o datato (es. `gpt-4o-2024-11-20`) azzera in silenzio il report dei costi invece di fallire.
-<!-- Source: extraction/pipeline.py:317; extraction/vlm_client.py:26 -->
+<!-- Source: src/extraction/pipeline.py:317; src/extraction/vlm_client.py:26 -->
 
-- **Le variabili d'ambiente vengono lette al momento dell'import.** `extraction/config.py` valuta ogni `os.getenv()` all'import del modulo. In una REPL o in un notebook imposta l’ambiente prima di `import extraction`. Tkinter carica `.env` prima del motore; l’avvio diretto dell’edge-agent rinvia l’import della UI fino al preflight. La scorciatoia `main.py --gui` ha già importato il motore prima di quel passaggio.
+- **Le variabili d'ambiente vengono lette al momento dell'import.** `src/extraction/config.py` valuta ogni `os.getenv()` all'import del modulo. In una REPL o in un notebook imposta l’ambiente prima di `import extraction`. Tkinter carica `.env` prima del motore; l’avvio diretto dell’edge-agent rinvia l’import della UI fino al preflight. La scorciatoia `main.py --gui` ha già importato il motore prima di quel passaggio.
 
-- **L'edge-agent si configura via INI, non via env.** FPS, modalità router, indice del monitor, soglia di dedup: tutto da `edge-agent/config.ini`. Il motore di estrazione legge invece l’ambiente; `resolve_llm_settings()` gestisce separatamente credenziale, endpoint e modello del router.
+- **L'edge-agent si configura via INI, non via env.** FPS, modalità router, indice del monitor, soglia di dedup: tutto da `src/edge-agent/config.ini`. Il motore di estrazione legge invece l’ambiente; `resolve_llm_settings()` gestisce separatamente credenziale, endpoint e modello del router.
 
 - **La cattura è dell'intero monitor, ma il frame viene ritagliato sulla finestra.** `_grab_raw()` prende il monitor via `mss`, poi `frame_normalize.normalize_frame()` lo riporta sulla finestra applicativa: prima cercando il titolo che contiene `window_title_contains` (`config.ini`), poi deducendo il rettangolo dallo sfondo del desktop, altrimenti lasciando il frame com'è. Non è un dettaglio cosmetico: ogni ritaglio a valle (ROI del classificatore, bande `RETRY_AREAS` della pipeline) è una frazione tarata su screenshot di finestra, e su un monitor intero cade altrove. Senza il ritaglio il riconoscimento pagina passa da 9 corrette su 9 a 1 su 9 ([ADR 0001](adr/0001-normalizzazione-inquadratura-frame.md)).
 
@@ -350,7 +350,7 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
   da `FIELD_KEYS`, ma non ci sono guardie di avvio che confrontino tutte le chiavi
   con mapping CSV, retry e colonne canoniche. Una nuova chiave va propagata alle
   strutture indicate sopra. Le firme da usare sono nel [riferimento API](12-python-api.md).
-  <!-- Source: extraction/schemas.py:68; extraction/config.py:105; edge-agent/excel_export.py:92 -->
+  <!-- Source: src/extraction/schemas.py:68; src/extraction/config.py:105; src/edge-agent/excel_export.py:92 -->
 
 - **Il riconoscimento ML richiede pesi disponibili.** L'edge-agent prepara i pesi
   durante il preflight nelle modalità `ml` e `hybrid`; il caricamento del modello
@@ -358,14 +358,14 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
   senza accesso esterno occorre predisporre la cache: un download fallito può
   impedire il completamento del preflight. La [guida alla configurazione](10-configuration-guide.md)
   descrive il percorso operativo.
-  <!-- Source: edge-agent/bootstrap.py:489; edge-agent/page_classifier.py:33; edge-agent/page_classifier.py:363 -->
+  <!-- Source: src/edge-agent/bootstrap.py:489; src/edge-agent/page_classifier.py:33; src/edge-agent/page_classifier.py:363 -->
 
 - **I completamenti sono paralleli, la visualizzazione segue l'ordine di cattura.**
   Un frame già estratto può attendere quello precedente prima di comparire. Non
   costruire una lista dai segnali `result_ready`: rileggi `get_results()` per
   preservare l'associazione delle note senza NDG. Arrestare il pool scarta la coda,
   non attende tutte le estrazioni della sessione.
-  <!-- Source: edge-agent/local_extraction_client.py:194; edge-agent/local_extraction_client.py:214; tests/test_local_extraction_client.py:117 -->
+  <!-- Source: src/edge-agent/local_extraction_client.py:194; src/edge-agent/local_extraction_client.py:214; tests/test_local_extraction_client.py:117 -->
 
 - **L'italiano è intenzionale.** I prompt del VLM, le chiavi dei campi (`professione_principale`), le stringhe UI di PyQt6/Tkinter e le intestazioni CSV sono termini di dominio italiani: non tradurli. Codice, identificatori, commenti e messaggi di commit restano in inglese (policy linguistica nelle istruzioni del repository).
 

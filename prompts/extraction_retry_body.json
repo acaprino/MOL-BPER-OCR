@@ -3,7 +3,7 @@
   "description": "Retry area BODY: seconda lettura dei 29 campi di AREA_TO_FIELDS['BODY'], che comprendono le tabelle Soggetti / Fidi / Garanzie e gli 11 campi non tabellari della scheda privati. Il merge legge solo quei campi più i 3 array. Il blocco CONFIDENCE è condiviso parola per parola con extraction_main.",
   "language": "it",
   "used_by": [
-    "extraction/pipeline.py::ExtractionPipeline._do_retry (area BODY)"
+    "src/extraction/pipeline.py::ExtractionPipeline._do_retry (area BODY)"
   ],
   "text": [
     "Rilettura di verifica dell'area centrale di una schermata BPER. Questo ritaglio ha contrasto e nitidezza aumentati: rileggi i valori con più precisione della passata precedente.",

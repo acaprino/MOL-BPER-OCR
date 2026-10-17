@@ -1,4 +1,4 @@
-"""Tests for edge-agent/page_registry.py."""
+"""Tests for src/edge-agent/page_registry.py."""
 
 import json
 from pathlib import Path
@@ -9,7 +9,7 @@ from page_registry import PageDef, PageRegistry, slugify
 
 REAL_PROMPTS = (
     Path(__file__).resolve().parent.parent
-    / "edge-agent" / "assets" / "templates" / "bper" / "prompts.json"
+    / "src" / "edge-agent" / "assets" / "templates" / "bper" / "prompts.json"
 )
 
 

@@ -18,14 +18,14 @@ Result table and interpretation: docs/adr/0008.
 """
 import json, random, sys
 from pathlib import Path
-sys.path.insert(0,"edge-agent")
+sys.path.insert(0, "src/edge-agent")
 import torch, torch.nn.functional as F
 from PIL import Image
 from torchvision import transforms as T
 from page_classifier import DINOV2_HUB_REPO, DINOV2_MODEL_NAME
 
 NORM=T.Normalize(mean=[0.485,0.456,0.406],std=[0.229,0.224,0.225])
-FD=Path('tests/fixtures/frames'); TPL=Path('mnt/data')
+FD=Path('tests/fixtures/frames'); TPL=Path('data/reference')
 reg=json.loads((FD/'registry.json').read_text(encoding='utf-8'))
 new=json.loads((FD/'relocalized.json').read_text(encoding='utf-8'))
 model=torch.hub.load(DINOV2_HUB_REPO,DINOV2_MODEL_NAME); model.eval()

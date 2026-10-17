@@ -45,7 +45,7 @@ geometria oltre che al contenuto. Non e' separabile con il materiale attuale.
 
 Non si cabla nulla: i template spediti restano nove riferimenti + tre classi di
 scarto, e la baseline sui riferimenti non si tocca. Gli scatti restano nel corpus
-(`tests/fixtures/frames/tooltips-rita/`) come materiale di misura.
+(`tests/fixtures/frames/tooltips/`) come materiale di misura.
 
 Il pezzo mancante e' piccolo e concreto: **scatti diretti delle pagine base (1, 2, 4,
 5, 9) senza tooltip**, nella stessa forma. Con quelli si costruisce un set di

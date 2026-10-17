@@ -38,7 +38,7 @@ def load_localizer() -> Any:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="tests/fixtures/frames/relocalized.json")
-    ap.add_argument("--templates", default="edge-agent/assets/templates/bper")
+    ap.add_argument("--templates", default="src/edge-agent/assets/templates/bper")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--subset", default="",
                     help="json list of frame paths to restrict the run to; the rest of "

@@ -1,7 +1,0 @@
-{
-  "path": "D:\\Projects\\poc-data-extraction\\mnt\\training\\runs\\lilt-v3.1-20261016\\failed-cli-download.bin",
-  "bytes": 1134412212,
-  "sha256": "6AA5D738046CF7A38B987AE1C5569219C8271B01B0E2BDDAB319A0FC25E80802",
-  "reason": "Concurrent CLI folder download to a nonexistent file destination mixed file contents; replaced with per-file verified public SDK download",
-  "removed": true
-}

@@ -62,7 +62,7 @@ def _startup_config(
         env[variable] = "1"
     completed = subprocess.run(
         [sys.executable, "-c", _READ_CONFIG, "widgets" if widgets else "import",
-         str(directory), str(REPO_ROOT)],
+         str(directory), str(REPO_ROOT / "src")],
         cwd=directory, env=env, capture_output=True, text=True,
         encoding="utf-8", errors="replace", timeout=60,
     )

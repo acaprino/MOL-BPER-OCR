@@ -3,8 +3,8 @@
   "description": "Passata principale: estrae tutti i campi scalari e le tabelle soggetti/fidi/garanzie dal crop dell'area contenuto. Il blocco CONFIDENCE e' condiviso parola per parola con i tre prompt di retry: se lo cambi qui cambialo anche li', altrimenti i confronti di pick_best() smettono di essere omogenei.",
   "language": "it",
   "used_by": [
-    "extraction/pipeline.py::ExtractionPipeline._build_anchor_hint_prompt",
-    "extraction/pipeline.py::ExtractionPipeline._do_retry (fallback area senza prompt dedicato)"
+    "src/extraction/pipeline.py::ExtractionPipeline._build_anchor_hint_prompt",
+    "src/extraction/pipeline.py::ExtractionPipeline._do_retry (fallback area senza prompt dedicato)"
   ],
   "text": [
     "Sei un esperto di trascrizione OCR da schermate dell'applicativo bancario BPER. Trascrivi soltanto ciò che è realmente visibile in questa immagine.",

@@ -9,7 +9,7 @@ riproducibili se le registrazioni si perdono.
 
 Fino al 2026-08-18 ogni misura sul riconoscimento pagina e sull'inquadratura era
 fatta su materiale costruito in laboratorio: i 9 screenshot di riferimento in
-`mnt/data`, oppure composizioni sintetiche. La peer review incrociata
+`data/reference`, oppure composizioni sintetiche. La peer review incrociata
 (`.peer-review/2026-08-17-2114-.../04-verdict.md`, finding F01, accettato e
 certificato) ha stabilito che quel materiale non è un campione della distribuzione
 di produzione, quindi non può sostenere una decisione.
@@ -56,7 +56,7 @@ stessa peer review.
 
 ## Dati reali
 
-Contengono nominativi, NDG e importi di clienti veri, come i 9 screenshot in `mnt/data`.
+Contengono nominativi, NDG e importi di clienti veri, come i 9 screenshot in `data/reference`.
 Il repository è privato. Non renderlo pubblico senza averli rimossi dalla cronologia,
 non solo dal working tree: questo repository ha già dovuto riscrivere la propria storia
 una volta, il 2026-07-21, per una chiave API committata.
@@ -147,7 +147,7 @@ registrazioni intercetta le lunghe sessioni di gestione documentale.
 Le quattro pagine scarse sono le quattro con tooltip, e la scarsità non dipende da
 come sono state cercate. Un tooltip esiste solo mentre il cursore ci resta sopra, e
 un operatore non ci passa: conosce già quei codici. Chi ha prodotto i nove
-screenshot di riferimento in `mnt/data` ci è passato **apposta**, per documentarli.
+screenshot di riferimento in `data/reference` ci è passato **apposta**, per documentarli.
 
 Altre estrazioni hanno quindi rendimento marginale su quelle quattro. La strada è
 chiedere screenshot mirati a chi usa l'applicativo.
@@ -164,7 +164,7 @@ un giudizio sul catalogo di processo, e il campo `agreement_caveat` lo ripete l�
 
 ## Screenshot mirati (2026-08-19)
 
-`tooltips-rita/` contiene 17 catture dirette, a finestra intera, consegnate su
+`tooltips/` contiene 17 catture dirette, a finestra intera, consegnate su
 richiesta da chi usa l'applicativo: pratiche diverse fra loro, ognuna con un
 tooltip aperto. Sono esattamente il materiale che le registrazioni non potevano
 dare (un tooltip vive solo finche' il mouse ci sta fermo sopra, e un operatore
@@ -181,14 +181,14 @@ Con queste, ogni pagina del processo ha esempi reali.
 
 ## Screenshot mirati, secondo giro (2026-08-21)
 
-`no-tooltip-rita/` contiene 21 catture dirette delle **pagine base senza
+`no-tooltip/` contiene 21 catture dirette delle **pagine base senza
 tooltip**, richieste per costruire un set di prototipi interamente dentro la
 popolazione live (l'ADR 0011 documenta perche' mescolare popolazioni dentro una
 classe distrugge i prototipi). Stessa operatrice, stessa forma dei 17 scatti
 precedenti: finestra intera ~1890x1015.
 
 Verificate immagine per immagine; due avvertenze dal verbale
-(`no-tooltip-rita/manifest.json`):
+(`no-tooltip/manifest.json`):
 
 - le coppie consegnate come "Note da richiesta 1b/1c" sono in realta' sulla tab
   **Note a Istruttoria**, che non e' tra le 9 classi: etichettate `altro-bper` e
@@ -208,7 +208,7 @@ Copertura per pagina dopo i due giri (scatti diretti + registrazioni):
 | esempi | 19 | 13 | 7 | 38 | 47 | 7 | **4** | 8 | 121 |
 
 La pagina 7 resta la piu' scarsa (un solo esemplare mirato). I manifesti curati
-(`tooltips-rita/manifest.json`, `no-tooltip-rita/manifest.json`,
-`reference-screens.json`, che verbalizza anche i nove riferimenti di mnt/data)
+(`tooltips/manifest.json`, `no-tooltip/manifest.json`,
+`reference-screens.json`, che verbalizza anche i nove riferimenti di data/reference)
 vengono fusi nel registro a ogni rebuild da `tools/build_frame_registry.py`,
 cosi' rieseguire gli strumenti non li perde.

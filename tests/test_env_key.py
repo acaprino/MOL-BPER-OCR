@@ -1,4 +1,4 @@
-"""Tests for edge-agent/env_key.py: the API key written into a packaged .env.
+"""Tests for src/edge-agent/env_key.py: the API key written into a packaged .env.
 
 A beta tester cannot be expected to know what a Gemini key is, so the build can
 bake one into the portable package's .env. These tests drive the same entry
@@ -15,8 +15,8 @@ from pathlib import Path
 from dotenv import dotenv_values
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-ENV_KEY_SCRIPT = REPO_ROOT / "edge-agent" / "env_key.py"
-ENV_TEMPLATE = REPO_ROOT / "edge-agent" / "defaults" / "env.template"
+ENV_KEY_SCRIPT = REPO_ROOT / "src" / "edge-agent" / "env_key.py"
+ENV_TEMPLATE = REPO_ROOT / "src" / "edge-agent" / "defaults" / "env.template"
 
 
 def _bake(env_path: Path, key: str) -> subprocess.CompletedProcess:

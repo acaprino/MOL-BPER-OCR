@@ -1,4 +1,4 @@
-"""Tests for edge-agent/extraction_pool.py (daemon worker pool)."""
+"""Tests for src/edge-agent/extraction_pool.py (daemon worker pool)."""
 
 import threading
 import time

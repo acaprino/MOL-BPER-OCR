@@ -120,7 +120,7 @@ def compose(
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--pages", default="edge-agent/assets/templates/bper",
+    ap.add_argument("--pages", default="src/edge-agent/assets/templates/bper",
                     help="directory of source page images (default: the BPER templates)")
     ap.add_argument("--out", required=True, help="output directory")
     ap.add_argument("--per-page", type=int, default=8, help="compositions per source page")

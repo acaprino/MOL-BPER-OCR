@@ -6,7 +6,7 @@
     "value"
   ],
   "used_by": [
-    "extraction/pipeline.py::ExtractionPipeline._build_anchor_hint_prompt"
+    "src/extraction/pipeline.py::ExtractionPipeline._build_anchor_hint_prompt"
   ],
   "parts": {
     "ndg": "INDIZIO NON AUTORITATIVO, da una lettura precedente della sola intestazione: l'NDG della pratica dovrebbe essere {value}. Usalo solo per capire di quale pratica si tratta. Verificalo sull'immagine: se leggi un NDG diverso, riporta quello che leggi tu. Non inserirlo in righe di tabella in cui non compare.",

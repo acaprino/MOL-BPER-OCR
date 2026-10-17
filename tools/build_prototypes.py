@@ -27,7 +27,7 @@ by eye during review, and keeping them apart takes false positives from 44% to 2
 at no cost in page accuracy; k-means over the same negatives buys a few more points
 of rejection and pays 10 to 50 points of accuracy.
 
-    python tools/build_prototypes.py --out edge-agent/assets/templates/bper
+    python tools/build_prototypes.py --out src/edge-agent/assets/templates/bper
 """
 
 from __future__ import annotations
@@ -43,7 +43,7 @@ from typing import Dict, List, Optional, Tuple
 from PIL import Image
 
 FRAMES = Path("tests/fixtures/frames")
-REFERENCES = Path("mnt/data")
+REFERENCES = Path("data/reference")
 REJECT_PREFIX = "SCARTO"
 
 # The classifier drops this fraction off the top before embedding (DEFAULT_CROP_ROI).
@@ -84,7 +84,7 @@ def widen_for_roi(rect: Optional[Tuple[int, int, int, int]],
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--out", default="edge-agent/assets/templates/bper")
+    ap.add_argument("--out", default="src/edge-agent/assets/templates/bper")
     ap.add_argument("--per-class", type=int, default=25,
                     help="cap on crops per class; prototypes are means, so more images "
                          "past a point only slow the build")

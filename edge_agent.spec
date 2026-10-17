@@ -10,9 +10,9 @@ from PyInstaller.utils.hooks import collect_data_files, collect_submodules
 
 # Default dentro il bundle: il bootstrap li semina/ripristina accanto all'exe.
 datas = [
-    ("edge-agent/config.ini", "defaults"),
-    ("edge-agent/defaults/env.template", "defaults"),
-    ("edge-agent/assets", "assets"),
+    ("src/edge-agent/config.ini", "defaults"),
+    ("src/edge-agent/defaults/env.template", "defaults"),
+    ("src/edge-agent/assets", "assets"),
     # Catalogo prompt LLM: il loader preferisce la copia accanto all'exe
     # (creata da build_exe.bat) e usa questa come fallback.
     ("prompts/*.json", "prompts"),
@@ -25,8 +25,8 @@ hiddenimports += collect_submodules("langchain_google_genai")
 hiddenimports += collect_submodules("langchain_openai")
 
 a = Analysis(
-    ["edge-agent/edge_agent.py"],
-    pathex=["edge-agent", "."],
+    ["src/edge-agent/edge_agent.py"],
+    pathex=["src/edge-agent", "src", "."],
     binaries=[],
     datas=datas,
     hiddenimports=hiddenimports,

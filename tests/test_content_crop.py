@@ -11,7 +11,7 @@ from extraction.config import CONTENT_CROP
 from extraction.imaging import select_content_crop
 from extraction.pipeline import ExtractionPipeline
 
-CALIBRATED = (848, 679)             # the mnt/data reference framing (846-850 wide, ADR 0001)
+CALIBRATED = (848, 679)             # the reference framing in data/reference (846-850 wide, ADR 0001)
 MEASURED_AMPUTATION = (1536, 1032)  # real capture: crop's left edge cut NDG/Denom/Tipo/Importo
 LEGACY_5_4 = (1280, 1024)           # 5:4 full-screen grab: 0.09% from the calibrated aspect
 
@@ -114,7 +114,7 @@ def test_the_live_result_states_that_no_crop_was_applied(call_sizes):
 
 
 def test_a_reference_shaped_file_still_gets_the_calibrated_crop(call_sizes, tmp_path):
-    """extract_from_screen serves the mnt/data reference family: there the crop
+    """extract_from_screen serves the data/reference family: there the crop
     is calibrated, measured, and must keep applying or the CLI baseline moves."""
     path = tmp_path / "screen x.png"
     Image.new("RGB", CALIBRATED, "white").save(path)

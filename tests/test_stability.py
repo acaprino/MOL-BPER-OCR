@@ -1,4 +1,4 @@
-"""Tests for edge-agent/stability.py (page stability state machine)."""
+"""Tests for src/edge-agent/stability.py (page stability state machine)."""
 
 from stability import StabilityConfig, StabilityTracker
 

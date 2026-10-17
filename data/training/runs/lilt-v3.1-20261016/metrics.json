@@ -1,0 +1,670 @@
+{
+  "validation": {
+    "precision": 0.978984238178634,
+    "recall": 0.9772727272727273,
+    "f1": 0.9781277340332458,
+    "word_accuracy": 0.995258,
+    "evaluated_words": 3163,
+    "ignored_words": 968,
+    "per_role": {
+      "ndg": {
+        "tp": 16,
+        "fp": 0,
+        "fn": 0,
+        "support": 16,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "denominazione": {
+        "tp": 28,
+        "fp": 1,
+        "fn": 2,
+        "support": 30,
+        "precision": 0.9655172413793104,
+        "recall": 0.9333333333333333,
+        "f1": 0.9491525423728814
+      },
+      "tipo": {
+        "tp": 39,
+        "fp": 0,
+        "fn": 0,
+        "support": 39,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "stato": {
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "support": 7,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "fase": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "support": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "creazione": {
+        "tp": 7,
+        "fp": 0,
+        "fn": 0,
+        "support": 7,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "evidenze": {
+        "tp": 5,
+        "fp": 2,
+        "fn": 2,
+        "support": 7,
+        "precision": 0.7142857142857143,
+        "recall": 0.7142857142857143,
+        "f1": 0.7142857142857143
+      },
+      "filiale_relazione": {
+        "tp": 24,
+        "fp": 0,
+        "fn": 0,
+        "support": 24,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "n_fido": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 1,
+        "support": 5,
+        "precision": 1.0,
+        "recall": 0.8,
+        "f1": 0.8888888888888888
+      },
+      "rapporto": {
+        "tp": 16,
+        "fp": 1,
+        "fn": 0,
+        "support": 16,
+        "precision": 0.9411764705882353,
+        "recall": 1.0,
+        "f1": 0.9696969696969697
+      },
+      "descrizione": {
+        "tp": 5,
+        "fp": 0,
+        "fn": 0,
+        "support": 5,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "scadenza": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 0,
+        "support": 3,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571
+      },
+      "importo_euro": {
+        "tp": 1,
+        "fp": 0,
+        "fn": 3,
+        "support": 4,
+        "precision": 1.0,
+        "recall": 0.25,
+        "f1": 0.4
+      },
+      "tipo_op": {
+        "tp": 6,
+        "fp": 2,
+        "fn": 0,
+        "support": 6,
+        "precision": 0.75,
+        "recall": 1.0,
+        "f1": 0.8571428571428571
+      },
+      "note_della_richiesta": {
+        "tp": 356,
+        "fp": 0,
+        "fn": 0,
+        "support": 356,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "tooltip_descrizione_bmb": {
+        "tp": 8,
+        "fp": 3,
+        "fn": 0,
+        "support": 8,
+        "precision": 0.7272727272727273,
+        "recall": 1.0,
+        "f1": 0.8421052631578947
+      },
+      "tooltip_evidenze_b": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 2,
+        "support": 2,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "tooltip_descrizione_m_consap": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "tooltip_descrizione_consap_dr_bis": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "tooltip_descrizione_ipoteca": {
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "support": 8,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "sogg_ndg": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 2,
+        "support": 5,
+        "precision": 1.0,
+        "recall": 0.6,
+        "f1": 0.75
+      },
+      "sogg_denominazione": {
+        "tp": 8,
+        "fp": 2,
+        "fn": 0,
+        "support": 8,
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.8888888888888888
+      },
+      "sogg_ruolo": {
+        "tp": 12,
+        "fp": 0,
+        "fn": 1,
+        "support": 13,
+        "precision": 1.0,
+        "recall": 0.9230769230769231,
+        "f1": 0.96
+      },
+      "dal": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "datore_di_lavoro_anagrafica": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "di_cui_percepiscono_reddito": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "importo_totale_annuo_nucleo": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "note_scheda_privati": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "nr_altri_componenti_nucleo": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "numero_mensilita": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "professione_principale": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "rating_ufficiale": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "retribuzione_annua_netta": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "score_cgs": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "tipo_contratto": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "ultima_validazione_scheda": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      }
+    }
+  },
+  "test": {
+    "precision": 0.8308457711442786,
+    "recall": 0.9556509298998569,
+    "f1": 0.8888888888888888,
+    "word_accuracy": 0.97645,
+    "evaluated_words": 6709,
+    "ignored_words": 147,
+    "per_role": {
+      "ndg": {
+        "tp": 17,
+        "fp": 13,
+        "fn": 0,
+        "support": 17,
+        "precision": 0.5666666666666667,
+        "recall": 1.0,
+        "f1": 0.723404255319149
+      },
+      "denominazione": {
+        "tp": 40,
+        "fp": 15,
+        "fn": 0,
+        "support": 40,
+        "precision": 0.7272727272727273,
+        "recall": 1.0,
+        "f1": 0.8421052631578947
+      },
+      "tipo": {
+        "tp": 28,
+        "fp": 0,
+        "fn": 0,
+        "support": 28,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "stato": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "support": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "fase": {
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "support": 3,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "creazione": {
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "support": 6,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "evidenze": {
+        "tp": 3,
+        "fp": 2,
+        "fn": 0,
+        "support": 3,
+        "precision": 0.6,
+        "recall": 1.0,
+        "f1": 0.75
+      },
+      "filiale_relazione": {
+        "tp": 51,
+        "fp": 1,
+        "fn": 0,
+        "support": 51,
+        "precision": 0.9807692307692307,
+        "recall": 1.0,
+        "f1": 0.9902912621359223
+      },
+      "n_fido": {
+        "tp": 8,
+        "fp": 6,
+        "fn": 4,
+        "support": 12,
+        "precision": 0.5714285714285714,
+        "recall": 0.6666666666666666,
+        "f1": 0.6153846153846154
+      },
+      "rapporto": {
+        "tp": 8,
+        "fp": 37,
+        "fn": 4,
+        "support": 12,
+        "precision": 0.17777777777777778,
+        "recall": 0.6666666666666666,
+        "f1": 0.2807017543859649
+      },
+      "descrizione": {
+        "tp": 11,
+        "fp": 0,
+        "fn": 1,
+        "support": 12,
+        "precision": 1.0,
+        "recall": 0.9166666666666666,
+        "f1": 0.9565217391304348
+      },
+      "scadenza": {
+        "tp": 18,
+        "fp": 13,
+        "fn": 1,
+        "support": 19,
+        "precision": 0.5806451612903226,
+        "recall": 0.9473684210526315,
+        "f1": 0.72
+      },
+      "importo_euro": {
+        "tp": 4,
+        "fp": 0,
+        "fn": 8,
+        "support": 12,
+        "precision": 1.0,
+        "recall": 0.3333333333333333,
+        "f1": 0.5
+      },
+      "tipo_op": {
+        "tp": 8,
+        "fp": 3,
+        "fn": 8,
+        "support": 16,
+        "precision": 0.7272727272727273,
+        "recall": 0.5,
+        "f1": 0.5925925925925926
+      },
+      "note_della_richiesta": {
+        "tp": 411,
+        "fp": 0,
+        "fn": 1,
+        "support": 412,
+        "precision": 1.0,
+        "recall": 0.9975728155339806,
+        "f1": 0.9987849331713244
+      },
+      "tooltip_descrizione_bmb": {
+        "tp": 4,
+        "fp": 1,
+        "fn": 0,
+        "support": 4,
+        "precision": 0.8,
+        "recall": 1.0,
+        "f1": 0.8888888888888888
+      },
+      "tooltip_evidenze_b": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 2,
+        "support": 2,
+        "precision": null,
+        "recall": 0.0,
+        "f1": 0.0
+      },
+      "tooltip_descrizione_m_consap": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "tooltip_descrizione_consap_dr_bis": {
+        "tp": 0,
+        "fp": 2,
+        "fn": 0,
+        "support": 0,
+        "precision": 0.0,
+        "recall": null,
+        "f1": 0.0
+      },
+      "tooltip_descrizione_ipoteca": {
+        "tp": 8,
+        "fp": 22,
+        "fn": 0,
+        "support": 8,
+        "precision": 0.26666666666666666,
+        "recall": 1.0,
+        "f1": 0.42105263157894735
+      },
+      "sogg_ndg": {
+        "tp": 3,
+        "fp": 1,
+        "fn": 2,
+        "support": 5,
+        "precision": 0.75,
+        "recall": 0.6,
+        "f1": 0.6666666666666666
+      },
+      "sogg_denominazione": {
+        "tp": 16,
+        "fp": 8,
+        "fn": 0,
+        "support": 16,
+        "precision": 0.6666666666666666,
+        "recall": 1.0,
+        "f1": 0.8
+      },
+      "sogg_ruolo": {
+        "tp": 15,
+        "fp": 12,
+        "fn": 0,
+        "support": 15,
+        "precision": 0.5555555555555556,
+        "recall": 1.0,
+        "f1": 0.7142857142857143
+      },
+      "dal": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "datore_di_lavoro_anagrafica": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "di_cui_percepiscono_reddito": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "importo_totale_annuo_nucleo": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "note_scheda_privati": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "nr_altri_componenti_nucleo": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "numero_mensilita": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "professione_principale": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "rating_ufficiale": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "retribuzione_annua_netta": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "score_cgs": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "tipo_contratto": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      },
+      "ultima_validazione_scheda": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 0,
+        "support": 0,
+        "precision": null,
+        "recall": null,
+        "f1": null
+      }
+    }
+  }
+}

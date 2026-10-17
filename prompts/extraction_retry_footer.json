@@ -3,7 +3,7 @@
   "description": "Retry area FOOTER: copia letterale dei due campi di AREA_TO_FIELDS['FOOTER'] (note_della_richiesta, note_scheda_privati). Il ritaglio NON riceve boost di contrasto o nitidezza, a differenza di HEADER e BODY: gli unici vantaggi rispetto alla passata principale sono il ritaglio più stretto e questo prompt. Il blocco CONFIDENCE è condiviso parola per parola con extraction_main.",
   "language": "it",
   "used_by": [
-    "extraction/pipeline.py::ExtractionPipeline._do_retry (area FOOTER)"
+    "src/extraction/pipeline.py::ExtractionPipeline._do_retry (area FOOTER)"
   ],
   "text": [
     "Sei un trascrittore di testi lunghi da interfacce bancarie. Questo ritaglio è la fascia inferiore della schermata.",

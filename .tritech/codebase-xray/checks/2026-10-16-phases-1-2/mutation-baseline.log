@@ -1,3 +1,0 @@
-...............................                                          [100%]
-31 passed in 8.22s
-MUTATION_RESULT={"mutation": "baseline", "exit_code": 0, "passed": 31, "skipped": 0, "failed": 0, "errors": 0, "assertion_failures": 0, "failed_tests": []}

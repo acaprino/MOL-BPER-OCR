@@ -3,7 +3,7 @@
   "description": "Retry area HEADER: seconda lettura dei 9 campi di AREA_TO_FIELDS['HEADER'] (ndg, denominazione, tipo, stato, fase, creazione, evidenze, filiale_relazione, ultima_validazione_scheda) su un ritaglio con contrasto e nitidezza aumentati. Il merge legge solo quei 9 campi e scarta array e campi fuori area. Il blocco CONFIDENCE è condiviso parola per parola con extraction_main.",
   "language": "it",
   "used_by": [
-    "extraction/pipeline.py::ExtractionPipeline._do_retry (area HEADER)"
+    "src/extraction/pipeline.py::ExtractionPipeline._do_retry (area HEADER)"
   ],
   "text": [
     "Sei un esperto di lettura di interfacce bancarie BPER. Questa è una seconda lettura di verifica dell'intestazione: la passata principale ha lasciato valori mancanti o incerti. Il ritaglio è la fascia superiore della schermata, con contrasto e nitidezza aumentati.",

@@ -36,7 +36,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-sys.path.insert(0, "edge-agent")
+sys.path.insert(0, "src/edge-agent")
 
 import torch
 import torch.nn.functional as F
@@ -158,7 +158,7 @@ def main() -> None:
     ap.add_argument("--frames", required=True, help="json list of frame paths")
     ap.add_argument("--out", required=True, help="directory for crops and labels.json")
     ap.add_argument("--process", default="bper-p1")
-    ap.add_argument("--templates", default="edge-agent/assets/templates/bper")
+    ap.add_argument("--templates", default="src/edge-agent/assets/templates/bper")
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--batch", type=int, default=50,
                     help="frames per batch; results are checkpointed after each one")
@@ -193,7 +193,7 @@ def main() -> None:
     from config import AgentConfig
     from openai import OpenAI
 
-    cfg = AgentConfig(Path("edge-agent/config.ini"))
+    cfg = AgentConfig(Path("src/edge-agent/config.ini"))
     key, base_url, model_name = cfg.resolve_llm_settings()
     client = OpenAI(api_key=key, base_url=base_url)
 

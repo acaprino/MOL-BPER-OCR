@@ -73,9 +73,9 @@ if exist "dist\EdgeAgent" (
 
 rem Guardia segreti: mai spedire una api_key scritta nell'INI (finirebbe nello
 rem zip in 2 copie, una invisibile dentro _internal). Vale anche per i REDACTED.
-findstr /r /c:"^api_key *= *[^ ]" "edge-agent\config.ini" >nul 2>&1
+findstr /r /c:"^api_key *= *[^ ]" "src\edge-agent\config.ini" >nul 2>&1
 if not errorlevel 1 (
-    echo [ERRORE] edge-agent\config.ini contiene una api_key valorizzata:
+    echo [ERRORE] src\edge-agent\config.ini contiene una api_key valorizzata:
     echo          svuotala prima di creare il pacchetto.
     echo          Per consegnarlo con la chiave usa EDGE_AGENT_PACKAGE_KEY.
     exit /b 1
@@ -89,20 +89,20 @@ if errorlevel 1 (
 )
 
 echo [INFO] Copio config, prompt e asset nella cartella portable...
-copy /y "edge-agent\config.ini" "dist\EdgeAgent\config.ini" >nul
-xcopy /e /i /y "edge-agent\assets" "dist\EdgeAgent\assets" >nul
+copy /y "src\edge-agent\config.ini" "dist\EdgeAgent\config.ini" >nul
+xcopy /e /i /y "src\edge-agent\assets" "dist\EdgeAgent\assets" >nul
 rem Prompt LLM modificabili senza rebuild: questa copia ha la precedenza sul bundle.
 rem Solo i .json: la cartella sorgente non deve poter spedire altri file nello zip.
 if not exist "dist\EdgeAgent\prompts" mkdir "dist\EdgeAgent\prompts"
 copy /y "prompts\*.json" "dist\EdgeAgent\prompts" >nul
 
-rem Template .env (fonte unica: edge-agent\defaults\env.template). Senza chiave
+rem Template .env (fonte unica: src\edge-agent\defaults\env.template). Senza chiave
 rem precompilata, la chiave viene chiesta al primo avvio.
-copy /y "edge-agent\defaults\env.template" "dist\EdgeAgent\.env" >nul
+copy /y "src\edge-agent\defaults\env.template" "dist\EdgeAgent\.env" >nul
 set "ZIP_SUFFIX="
 if defined EDGE_AGENT_PACKAGE_KEY (
     echo [INFO] Precompilo la chiave API nel .env del pacchetto...
-    ".venv\Scripts\python.exe" "edge-agent\env_key.py" "dist\EdgeAgent\.env"
+    ".venv\Scripts\python.exe" "src\edge-agent\env_key.py" "dist\EdgeAgent\.env"
     if errorlevel 1 goto key_failed
     set "ZIP_SUFFIX=_CON-CHIAVE"
 )

@@ -11,7 +11,7 @@ accodano in sequenza: `bper-p1` è il primo, e altri potranno seguirlo.
 ## Perché esiste
 
 Fino al 2026-08-18 il processo non era scritto da nessuna parte. Le sole descrizioni erano
-i campi `hints` dentro `edge-agent/assets/templates/bper/prompts.json`, che descrivono le
+i campi `hints` dentro `src/edge-agent/assets/templates/bper/prompts.json`, che descrivono le
 singole pagine ma non dicono a quale **applicativo** appartengano, non prevedono che di
 processi ce ne possa essere più d'uno, e non distinguono ciò che una pagina è da ciò che
 una pagina *non* è.
@@ -81,7 +81,7 @@ comportamento e merita la sua decisione.
 ## Rapporto con `prompts.json`
 
 Questo catalogo è la **formalizzazione**, non ancora il file che il programma legge a runtime:
-l'edge-agent continua a leggere `edge-agent/assets/templates/bper/prompts.json`. I due
+l'edge-agent continua a leggere `src/edge-agent/assets/templates/bper/prompts.json`. I due
 divergono di proposito su un punto, documentato nel campo `note` della pagina 9.
 
 Collegare il runtime a questo catalogo è una modifica di comportamento e merita una

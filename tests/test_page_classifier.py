@@ -9,7 +9,7 @@ from PIL import Image, ImageDraw
 from frame_normalize import normalize_frame
 from image_ops import preprocess_for_ocr
 
-TEMPLATES = Path(__file__).resolve().parent.parent / "edge-agent" / "assets" / "templates" / "bper"
+TEMPLATES = Path(__file__).resolve().parent.parent / "src" / "edge-agent" / "assets" / "templates" / "bper"
 SCREENS = [f"screen {n}" for n in range(1, 10)]
 
 MONITOR = {"left": 0, "top": 0, "width": 1920, "height": 1080}

@@ -8,7 +8,7 @@
     "hints"
   ],
   "used_by": [
-    "edge-agent/llm_router.py::LLMPageRouter._build_user_prompt"
+    "src/edge-agent/llm_router.py::LLMPageRouter._build_user_prompt"
   ],
   "parts": {
     "header": "CATALOGO PAGINE, tratti distintivi di ogni classe in ordine di flusso: sono evidenza descrittiva e, dove contraddicono la procedura del messaggio di sistema, vince la procedura.",

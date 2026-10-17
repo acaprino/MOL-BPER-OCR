@@ -44101,7 +44101,7 @@
    "localization_score": 0.7403
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-1a.png",
+   "frame": "tooltips/tooltip-1a.png",
    "cluster": "3",
    "process": "bper-p1",
    "step": 3,
@@ -44112,13 +44112,13 @@
     "claude": "3"
    },
    "tooltip_text": "Origination BSTORE Mediatori",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-1b.png",
+   "frame": "tooltips/tooltip-1b.png",
    "cluster": "3",
    "process": "bper-p1",
    "step": 3,
@@ -44129,13 +44129,13 @@
     "claude": "3"
    },
    "tooltip_text": "Origination BSTORE Comparatori",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-1c.png",
+   "frame": "tooltips/tooltip-1c.png",
    "cluster": "3",
    "process": "bper-p1",
    "step": 3,
@@ -44146,13 +44146,13 @@
     "claude": "3"
    },
    "tooltip_text": "Origination BSTORE Mediatori",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-1d.png",
+   "frame": "tooltips/tooltip-1d.png",
    "cluster": "3",
    "process": "bper-p1",
    "step": 3,
@@ -44163,13 +44163,13 @@
     "claude": "3"
    },
    "tooltip_text": "Origination BSTORE Intestatari",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-2a.png",
+   "frame": "tooltips/tooltip-2a.png",
    "cluster": "6",
    "process": "bper-p1",
    "step": 6,
@@ -44180,13 +44180,13 @@
     "claude": "6"
    },
    "tooltip_text": "340176 - MUTUO FOND PRIV CONSAP >=80%",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-2b.png",
+   "frame": "tooltips/tooltip-2b.png",
    "cluster": "6",
    "process": "bper-p1",
    "step": 6,
@@ -44197,13 +44197,13 @@
     "claude": "6"
    },
    "tooltip_text": "340110 - MUTUO IPO NON FONDIARIO PRIVATI",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-2c.png",
+   "frame": "tooltips/tooltip-2c.png",
    "cluster": "6",
    "process": "bper-p1",
    "step": 6,
@@ -44214,13 +44214,13 @@
     "claude": "6"
    },
    "tooltip_text": "340110 - MUTUO IPO NON FONDIARIO PRIVATI",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-2d.png",
+   "frame": "tooltips/tooltip-2d.png",
    "cluster": "6",
    "process": "bper-p1",
    "step": 6,
@@ -44231,13 +44231,13 @@
     "claude": "6"
    },
    "tooltip_text": "340176 - MUTUO FOND PRIV CONSAP >=80%",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-2e.png",
+   "frame": "tooltips/tooltip-2e.png",
    "cluster": "6",
    "process": "bper-p1",
    "step": 6,
@@ -44248,13 +44248,13 @@
     "claude": "6"
    },
    "tooltip_text": "340170 - MUTUO FONDIARIO PRIVATI",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-3a.png",
+   "frame": "tooltips/tooltip-3a.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -44265,13 +44265,13 @@
     "claude": "8"
    },
    "tooltip_text": "55-IPOTECA DI PRIMO GRADO (unica garanzia della pratica, in riga 1)",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-3b.png",
+   "frame": "tooltips/tooltip-3b.png",
    "cluster": "7",
    "process": "bper-p1",
    "step": 7,
@@ -44282,13 +44282,13 @@
     "claude": "7"
    },
    "tooltip_text": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-3c.png",
+   "frame": "tooltips/tooltip-3c.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -44299,13 +44299,13 @@
     "claude": "8"
    },
    "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-3d.png",
+   "frame": "tooltips/tooltip-3d.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -44316,13 +44316,13 @@
     "claude": "8"
    },
    "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-4a.png",
+   "frame": "tooltips/tooltip-4a.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -44333,13 +44333,13 @@
     "claude": "8"
    },
    "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-4b.png",
+   "frame": "tooltips/tooltip-4b.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -44350,13 +44350,13 @@
     "claude": "8"
    },
    "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-4c.png",
+   "frame": "tooltips/tooltip-4c.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -44367,13 +44367,13 @@
     "claude": "8"
    },
    "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "tooltips-rita/rita-tooltip-4d.png",
+   "frame": "tooltips/tooltip-4d.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -44384,13 +44384,13 @@
     "claude": "8"
    },
    "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
-   "source": "screenshot mirati richiesti a Rita Macis, consegnati 2026-08-19",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 1.png",
+   "frame": "../../data/reference/screen 1.png",
    "cluster": "1",
    "process": "bper-p1",
    "step": 1,
@@ -44405,7 +44405,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 2.png",
+   "frame": "../../data/reference/screen 2.png",
    "cluster": "2",
    "process": "bper-p1",
    "step": 2,
@@ -44420,7 +44420,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 3.png",
+   "frame": "../../data/reference/screen 3.png",
    "cluster": "3",
    "process": "bper-p1",
    "step": 3,
@@ -44435,7 +44435,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 4.png",
+   "frame": "../../data/reference/screen 4.png",
    "cluster": "4",
    "process": "bper-p1",
    "step": 4,
@@ -44450,7 +44450,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 5.png",
+   "frame": "../../data/reference/screen 5.png",
    "cluster": "5",
    "process": "bper-p1",
    "step": 5,
@@ -44465,7 +44465,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 6.png",
+   "frame": "../../data/reference/screen 6.png",
    "cluster": "6",
    "process": "bper-p1",
    "step": 6,
@@ -44480,7 +44480,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 7.png",
+   "frame": "../../data/reference/screen 7.png",
    "cluster": "7",
    "process": "bper-p1",
    "step": 7,
@@ -44495,7 +44495,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 8.png",
+   "frame": "../../data/reference/screen 8.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -44510,7 +44510,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 9.png",
+   "frame": "../../data/reference/screen 9.png",
    "cluster": "9",
    "process": "bper-p1",
    "step": 9,
@@ -44525,7 +44525,7 @@
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-1a.png",
+   "frame": "no-tooltip/base-1a.png",
    "cluster": "1",
    "process": "bper-p1",
    "step": 1,
@@ -44536,13 +44536,13 @@
     "claude": "1"
    },
    "note": "lista pratiche, colonne iniziali; NDG 32526867",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-1b.png",
+   "frame": "no-tooltip/base-1b.png",
    "cluster": "1",
    "process": "bper-p1",
    "step": 1,
@@ -44553,13 +44553,13 @@
     "claude": "1"
    },
    "note": "lista pratiche, colonne iniziali; NDG 30429881",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-1c.png",
+   "frame": "no-tooltip/base-1c.png",
    "cluster": "1",
    "process": "bper-p1",
    "step": 1,
@@ -44570,13 +44570,13 @@
     "claude": "1"
    },
    "note": "lista pratiche, colonne iniziali; NDG 32669007",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-1d.png",
+   "frame": "no-tooltip/base-1d.png",
    "cluster": "1",
    "process": "bper-p1",
    "step": 1,
@@ -44587,13 +44587,13 @@
     "claude": "1"
    },
    "note": "lista pratiche, colonne iniziali; NDG 32740019",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-1e.png",
+   "frame": "no-tooltip/base-1e.png",
    "cluster": "1",
    "process": "bper-p1",
    "step": 1,
@@ -44604,13 +44604,13 @@
     "claude": "1"
    },
    "note": "lista pratiche con TUTTE le colonne visibili insieme (zoom ridotto): niente scorrimento, quindi stato base -> cluster 1, ma copre anche le colonne finali del cluster 2; NDG 32688380",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-2a.png",
+   "frame": "no-tooltip/base-2a.png",
    "cluster": "2",
    "process": "bper-p1",
    "step": 2,
@@ -44620,14 +44620,14 @@
     "filename": "no tooltip 1a_2.png",
     "claude": "2"
    },
-   "note": "stessa pratica di rita-base-1a, tabella scorsa a destra (Area/Filiale/Evidenze)",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "note": "stessa pratica di base-1a, tabella scorsa a destra (Area/Filiale/Evidenze)",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-2b.png",
+   "frame": "no-tooltip/base-2b.png",
    "cluster": "2",
    "process": "bper-p1",
    "step": 2,
@@ -44637,14 +44637,14 @@
     "filename": "no tooltip 1b_2.png",
     "claude": "2"
    },
-   "note": "stessa pratica di rita-base-1b, tabella scorsa a destra",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "note": "stessa pratica di base-1b, tabella scorsa a destra",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-2c.png",
+   "frame": "no-tooltip/base-2c.png",
    "cluster": "2",
    "process": "bper-p1",
    "step": 2,
@@ -44654,14 +44654,14 @@
     "filename": "no tooltip 1c_2.png",
     "claude": "2"
    },
-   "note": "stessa pratica di rita-base-1c, tabella scorsa a destra",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "note": "stessa pratica di base-1c, tabella scorsa a destra",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-2d.png",
+   "frame": "no-tooltip/base-2d.png",
    "cluster": "2",
    "process": "bper-p1",
    "step": 2,
@@ -44671,14 +44671,14 @@
     "filename": "no tooltip 1d_2.png",
     "claude": "2"
    },
-   "note": "stessa pratica di rita-base-1d, tabella scorsa a destra",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "note": "stessa pratica di base-1d, tabella scorsa a destra",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-4a.png",
+   "frame": "no-tooltip/base-4a.png",
    "cluster": "4",
    "process": "bper-p1",
    "step": 4,
@@ -44689,13 +44689,13 @@
     "claude": "4"
    },
    "note": "pratica 51800301, NDG 32731685 (3 soggetti in tabella)",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-4b.png",
+   "frame": "no-tooltip/base-4b.png",
    "cluster": "4",
    "process": "bper-p1",
    "step": 4,
@@ -44706,13 +44706,13 @@
     "claude": "4"
    },
    "note": "pratica 52032077, NDG 32661219 (2 soggetti in tabella)",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-4c.png",
+   "frame": "no-tooltip/base-4c.png",
    "cluster": "4",
    "process": "bper-p1",
    "step": 4,
@@ -44723,13 +44723,13 @@
     "claude": "4"
    },
    "note": "pratica 51788077, NDG 32688380 (1 soggetto in tabella)",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-5a.png",
+   "frame": "no-tooltip/base-5a.png",
    "cluster": "5",
    "process": "bper-p1",
    "step": 5,
@@ -44740,13 +44740,13 @@
     "claude": "5"
    },
    "note": "pratica 51800301: 1 fido + 1 garanzia (IPOTECA I GR.), nessun tooltip",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-5b.png",
+   "frame": "no-tooltip/base-5b.png",
    "cluster": "5",
    "process": "bper-p1",
    "step": 5,
@@ -44757,13 +44757,13 @@
     "claude": "5"
    },
    "note": "pratica 52032077: 1 fido + 2 garanzie (CONSAP L.BIL24, IPOTECA I GR.), nessun tooltip",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-5c.png",
+   "frame": "no-tooltip/base-5c.png",
    "cluster": "5",
    "process": "bper-p1",
    "step": 5,
@@ -44774,13 +44774,13 @@
     "claude": "5"
    },
    "note": "pratica 51788077: 1 fido + 1 garanzia, nessun tooltip",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-9a-chiuso.png",
+   "frame": "no-tooltip/base-9a-chiuso.png",
    "cluster": "9",
    "process": "bper-p1",
    "step": 9,
@@ -44791,13 +44791,13 @@
     "claude": "9"
    },
    "note": "pratica 51800301, tab 'Note da Richiesta', sezione nota COMPRESSA: e' la prima visualizzazione che l'operatore incontra (l'espansione richiede un click)",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-base-9a-aperto.png",
+   "frame": "no-tooltip/base-9a-aperto.png",
    "cluster": "9",
    "process": "bper-p1",
    "step": 9,
@@ -44808,13 +44808,13 @@
     "claude": "9"
    },
    "note": "pratica 51800301, tab 'Note da Richiesta', sezione nota ESPANSA (testo integrale)",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta (non da registrazione)",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-istruttoria-b-chiuso.png",
+   "frame": "no-tooltip/istruttoria-b-chiuso.png",
    "cluster": "altro-bper",
    "process": null,
    "step": null,
@@ -44825,13 +44825,13 @@
     "claude": "altro-bper"
    },
    "note": "NON e' 'Note da Richiesta': tab attiva 'Note a Istruttoria' (pratica 52032077), sezione 'Nota all'istruttoria' con scorrimento interno",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-istruttoria-b-aperto.png",
+   "frame": "no-tooltip/istruttoria-b-aperto.png",
    "cluster": "altro-bper",
    "process": null,
    "step": null,
@@ -44842,13 +44842,13 @@
     "claude": "altro-bper"
    },
    "note": "NON e' 'Note da Richiesta': tab attiva 'Note a Istruttoria' (pratica 52032077), nota integrale visibile",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-istruttoria-c-chiuso.png",
+   "frame": "no-tooltip/istruttoria-c-chiuso.png",
    "cluster": "altro-bper",
    "process": null,
    "step": null,
@@ -44859,13 +44859,13 @@
     "claude": "altro-bper"
    },
    "note": "NON e' 'Note da Richiesta': tab attiva 'Note a Istruttoria' (pratica 51788077), sezione con scorrimento interno",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
    "app_rect": null,
    "localization_score": null
   },
   {
-   "frame": "no-tooltip-rita/rita-istruttoria-c-aperto.png",
+   "frame": "no-tooltip/istruttoria-c-aperto.png",
    "cluster": "altro-bper",
    "process": null,
    "step": null,
@@ -44876,7 +44876,7 @@
     "claude": "altro-bper"
    },
    "note": "NON e' 'Note da Richiesta': tab attiva 'Note a Istruttoria' (pratica 51788077), nota integrale visibile",
-   "source": "screenshot mirati richiesti a Rita Macis (pagine base senza tooltip), consegnati 2026-08-21",
+   "source": "screenshot mirati richiesti all'operatore BPER (pagine base senza tooltip), consegnati 2026-08-21",
    "framing": "finestra intera, cattura diretta; zoom del browser ridotto per far entrare l'intera pagina",
    "app_rect": null,
    "localization_score": null

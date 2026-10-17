@@ -4,13 +4,13 @@ Riferimento delle interfacce usate dal batch e dall'edge-agent. Il repository es
 funzioni Python e segnali Qt; non implementa un server HTTP per l'estrazione BPER.
 I metodi che avviano la pipeline chiamano i provider configurati e richiedono rete
 oltre alle credenziali. Le firme qui riportate sono riferimenti, non script eseguibili.
-<!-- Source: extraction/__init__.py:11; extraction/llm_factory.py:18; edge-agent/local_extraction_client.py:90 -->
+<!-- Source: src/extraction/__init__.py:11; src/extraction/llm_factory.py:18; src/edge-agent/local_extraction_client.py:90 -->
 
-Prima di importare `extraction`, prepara l'ambiente: `extraction/config.py` legge
+Prima di importare `extraction`, prepara l'ambiente: `src/extraction/config.py` legge
 le impostazioni all'importazione. Per integrare i moduli dell'edge-agent segui
 l'avvio dell'applicazione e la sua risoluzione dei percorsi, descritti in
 [Avvio e sviluppo](07-getting-started.md) e [Architettura](04-architecture.md).
-<!-- Source: extraction/config.py:7; edge-agent/edge_agent.py:63; edge-agent/local_extraction_client.py:19 -->
+<!-- Source: src/extraction/config.py:7; src/edge-agent/edge_agent.py:63; src/edge-agent/local_extraction_client.py:19 -->
 
 Le firme seguenti sono trascritte dal codice; descrivono i punti di integrazione,
 non un inventario di tutti gli helper esportati per compatibilità da `extraction`.
@@ -37,7 +37,7 @@ Restituisce `{screen_id: risultato}`; salta i percorsi inesistenti con un avviso
 Le callback sono eseguite dal thread che chiama il batch. In parallelo un errore viene
 segnalato a `on_error` oppure stampato; in sequenziale, senza `on_error`, viene rilanciato.
 Se `model_main` è esplicito e manca `model_anchor`, entrambi usano il modello scelto.
-<!-- Source: extraction/cli.py::BatchRunner.__init__; extraction/cli.py::BatchRunner.run -->
+<!-- Source: src/extraction/cli.py::BatchRunner.__init__; src/extraction/cli.py::BatchRunner.run -->
 
 ## Pipeline per una singola immagine
 
@@ -104,7 +104,7 @@ sequenza da zero per job e solleva `RuntimeError` se il pool è chiuso, senza em
 `pending_extractions()` conta approssimativamente i lavori ancora in coda, escludendo
 quelli già iniziati. `get_results()` copia la lista, non i dizionari annidati: i consumatori
 non devono modificarli. `requeue_job()` è uno stub che restituisce `True`, non un retry.
-<!-- Source: edge-agent/local_extraction_client.py:123; edge-agent/local_extraction_client.py:145; edge-agent/local_extraction_client.py:157; edge-agent/local_extraction_client.py:206; edge-agent/local_extraction_client.py:222; edge-agent/extraction_pool.py:41 -->
+<!-- Source: src/edge-agent/local_extraction_client.py:123; src/edge-agent/local_extraction_client.py:145; src/edge-agent/local_extraction_client.py:157; src/edge-agent/local_extraction_client.py:206; src/edge-agent/local_extraction_client.py:222; src/edge-agent/extraction_pool.py:41 -->
 
 ## Consolidamento ed esportazione
 
@@ -131,7 +131,7 @@ L'input deve rispettare l'ordine di cattura. `consolidate()` non scrive su disco
 `export_results()` consolida, scrive il workbook e restituisce il numero di pratiche.
 `labels` sostituisce le etichette visualizzate per chiave di schema. Gli errori del
 salvataggio non sono intercettati dall'API di esportazione.
-<!-- Source: edge-agent/practice_consolidation.py:105; edge-agent/excel_export.py:92; edge-agent/excel_export.py:214; tests/test_excel_export.py:123 -->
+<!-- Source: src/edge-agent/practice_consolidation.py:105; src/edge-agent/excel_export.py:92; src/edge-agent/excel_export.py:214; tests/test_excel_export.py:123 -->
 
 ## Contratti da conservare
 
@@ -146,7 +146,7 @@ salvataggio non sono intercettati dall'API di esportazione.
   I thread daemon possono proseguire finché il processo resta attivo; chiudere
   l'applicazione non garantisce di completare tutti i risultati prima dell'export.
 
-<!-- Source: extraction/cli.py::BatchRunner.run; edge-agent/local_extraction_client.py:127; edge-agent/local_extraction_client.py:157; edge-agent/local_extraction_client.py:214; edge-agent/local_extraction_client.py:222; edge-agent/extraction_pool.py:45 -->
+<!-- Source: src/extraction/cli.py::BatchRunner.run; src/edge-agent/local_extraction_client.py:127; src/edge-agent/local_extraction_client.py:157; src/edge-agent/local_extraction_client.py:214; src/edge-agent/local_extraction_client.py:222; src/edge-agent/extraction_pool.py:45 -->
 
 I diagrammi e i percorsi di errore sono nel capitolo [Workflow](05-workflows.md).
 Le strutture restituite e la regola una riga per pratica sono nel [Modello dei dati](06-data-model.md).

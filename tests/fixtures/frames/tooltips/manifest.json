@@ -1,0 +1,295 @@
+{
+ "curated": true,
+ "note": "Etichette verificate a mano immagine per immagine. Tre correzioni rispetto ai nomi file di consegna (3a, 3c, 3d -> pagina 8): nella pratica di 3a esiste una sola garanzia e l'ipoteca sta in riga 1, prova che l'identita' delle pagine 7/8 e' il CONTENUTO del tooltip (CONSAP DR BIS vs IPOTECA), non il numero di riga.",
+ "frames": [
+  {
+   "frame": "tooltips/tooltip-1a.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "filename": "3",
+    "claude": "3"
+   },
+   "tooltip_text": "Origination BSTORE Mediatori",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-1b.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "filename": "3",
+    "claude": "3"
+   },
+   "tooltip_text": "Origination BSTORE Comparatori",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-1c.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "filename": "3",
+    "claude": "3"
+   },
+   "tooltip_text": "Origination BSTORE Mediatori",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-1d.png",
+   "cluster": "3",
+   "process": "bper-p1",
+   "step": 3,
+   "step_name": "Risultato ricerca - Tooltip mostrata",
+   "reviewed": true,
+   "proposals": {
+    "filename": "3",
+    "claude": "3"
+   },
+   "tooltip_text": "Origination BSTORE Intestatari",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-2a.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-2b.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340110 - MUTUO IPO NON FONDIARIO PRIVATI",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-2c.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340110 - MUTUO IPO NON FONDIARIO PRIVATI",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-2d.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-2e.png",
+   "cluster": "6",
+   "process": "bper-p1",
+   "step": 6,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Fidi",
+   "reviewed": true,
+   "proposals": {
+    "filename": "6",
+    "claude": "6"
+   },
+   "tooltip_text": "340170 - MUTUO FONDIARIO PRIVATI",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-3a.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "7",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO (unica garanzia della pratica, in riga 1)",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-3b.png",
+   "cluster": "7",
+   "process": "bper-p1",
+   "step": 7,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "7",
+    "claude": "7"
+   },
+   "tooltip_text": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-3c.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "7",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-3d.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "7",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-4a.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "8",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-4b.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "8",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-4c.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "8",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  },
+  {
+   "frame": "tooltips/tooltip-4d.png",
+   "cluster": "8",
+   "process": "bper-p1",
+   "step": 8,
+   "step_name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
+   "reviewed": true,
+   "proposals": {
+    "filename": "8",
+    "claude": "8"
+   },
+   "tooltip_text": "55-IPOTECA DI PRIMO GRADO",
+   "source": "screenshot mirati richiesti all'operatore BPER, consegnati 2026-08-19",
+   "framing": "finestra intera, cattura diretta (non da registrazione)",
+   "app_rect": null,
+   "localization_score": null
+  }
+ ]
+}

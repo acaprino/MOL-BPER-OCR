@@ -2,7 +2,7 @@
  "curated": true,
  "frames": [
   {
-   "frame": "../../mnt/data/screen 1.png",
+   "frame": "../../data/reference/screen 1.png",
    "cluster": "1",
    "process": "bper-p1",
    "step": 1,
@@ -17,7 +17,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 2.png",
+   "frame": "../../data/reference/screen 2.png",
    "cluster": "2",
    "process": "bper-p1",
    "step": 2,
@@ -32,7 +32,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 3.png",
+   "frame": "../../data/reference/screen 3.png",
    "cluster": "3",
    "process": "bper-p1",
    "step": 3,
@@ -47,7 +47,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 4.png",
+   "frame": "../../data/reference/screen 4.png",
    "cluster": "4",
    "process": "bper-p1",
    "step": 4,
@@ -62,7 +62,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 5.png",
+   "frame": "../../data/reference/screen 5.png",
    "cluster": "5",
    "process": "bper-p1",
    "step": 5,
@@ -77,7 +77,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 6.png",
+   "frame": "../../data/reference/screen 6.png",
    "cluster": "6",
    "process": "bper-p1",
    "step": 6,
@@ -92,7 +92,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 7.png",
+   "frame": "../../data/reference/screen 7.png",
    "cluster": "7",
    "process": "bper-p1",
    "step": 7,
@@ -107,7 +107,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 8.png",
+   "frame": "../../data/reference/screen 8.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -122,7 +122,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../mnt/data/screen 9.png",
+   "frame": "../../data/reference/screen 9.png",
    "cluster": "9",
    "process": "bper-p1",
    "step": 9,

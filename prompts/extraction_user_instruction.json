@@ -3,7 +3,7 @@
   "description": "Messaggio utente che accompagna l'immagine. Path OpenAI: è l'UNICO testo dell'HumanMessage, perché il prompt di passata è il SystemMessage. Path Gemini 1.5 json_mode: concatenato dopo il prompt. NON usato dal path Gemini free-form. Condiviso da tutte le passate (anchor, main, retry), quindi deve restare generico: qualunque riferimento a campi o aree sarebbe sbagliato in almeno una passata.",
   "language": "it",
   "used_by": [
-    "extraction/vlm_client.py::call_vlm"
+    "src/extraction/vlm_client.py::call_vlm"
   ],
   "text": "Estrai i campi richiesti dall'immagine allegata, leggendo solo quello che è visibile in questa immagine."
 }

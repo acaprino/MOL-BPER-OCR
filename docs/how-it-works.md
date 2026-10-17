@@ -6,14 +6,14 @@ The official Italian guide covers [architecture](04-architecture.md),
 
 ## Multi-pass extraction pipeline
 
-Each screenshot is processed in three stages by `ExtractionPipeline` in `extraction/pipeline.py`
+Each screenshot is processed in three stages by `ExtractionPipeline` in `src/extraction/pipeline.py`
 (`extract_from_screen()` / `extract_from_image()`):
 
 1. **Anchor pass** -- `extract_anchors()` reads the header region on calibrated file images,
    or the whole image off calibration, and extracts only NDG +
    DENOMINAZIONE. A confidence gate (`>= 0.95`, `ANCHOR_CONF_MIN`) nulls the `value` of any anchor
    read below the threshold, and it **is** effective: `safe_field()` returns a fresh dict
-   (`extraction/normalization.py`) and the gate mutates those same dicts in place before returning
+   (`src/extraction/normalization.py`) and the gate mutates those same dicts in place before returning
    them from `extract_anchors()`. Below threshold the value reaches neither `_merge_anchors()` nor the
    main-pass hint, so the model-reported confidence is a binary switch here, not a soft signal.
    With `STOP_ON_ANCHOR_UNCERTAIN=1` the pipeline exits early when both anchor *values* are null.
@@ -51,7 +51,7 @@ The call budget counts logical passes, not HTTP requests. `call_vlm_with_retry()
 attempt each pass up to three times. It immediately re-raises `ValueError`, `KeyError`
 and `IndexError`; other exceptions enter backoff. Anchor and main still run when the
 configured budget is below two, unless the early anchor exit applies.
-<!-- Source: extraction/vlm_client.py:63; extraction/pipeline.py:151; extraction/pipeline.py:317 -->
+<!-- Source: src/extraction/vlm_client.py:63; src/extraction/pipeline.py:151; src/extraction/pipeline.py:317 -->
 
 Post-processing order is load-bearing in `ExtractionPipeline.extract_from_image()`: anchors are merged back and `tipo`
 normalized *before* retries; the coherence check (repairs `evidenze` / `tipo` from their tooltips)
@@ -66,11 +66,11 @@ still omit `evidence_text`. Main-pass source labels for absent fields and cohere
 remain limitations of `_field_sources`.
 
 Evaluation compares `ndg` and `ndg_1..4` with the same `normalize_ndg()` used by the dataset
-mismatch guard and live practice consolidation. It lives in `extraction/normalization.py`,
+mismatch guard and live practice consolidation. It lives in `src/extraction/normalization.py`,
 preserves alphanumeric suffixes and removes leading zeros only for entirely numeric
 identifiers ([ADR 0017](adr/0017-identita-ndg-condivisa-tra-valutazione-e-consolidamento.md)).
 Quantity comparison for `importo_euro` and `n_fido` continues to use `norm_number_str()`.
-<!-- Source: extraction/normalization.py:40; extraction/normalization.py:150; extraction/normalization.py:218; edge-agent/practice_consolidation.py:22; tests/test_normalization.py:22 -->
+<!-- Source: src/extraction/normalization.py:40; src/extraction/normalization.py:150; src/extraction/normalization.py:218; src/edge-agent/practice_consolidation.py:22; tests/test_normalization.py:22 -->
 
 Two entry methods exist by design:
 - `extract_from_screen(path)` -- used by CLI and the Tkinter GUI; normalizes the image internally
@@ -83,14 +83,14 @@ Two entry methods exist by design:
 ## Three run modes
 
 - **CLI** (`python main.py`): batch-processes every `.png/.jpg/.jpeg` in `INPUT_DIR`, writes JSON
-  results, prints accuracy metrics and a cost summary. Hard-requires `mnt/data/dati.csv`
-  (`FileNotFoundError` at `extraction/cli.py::main`); the CSV is **not** in the repo -- see
+  results, prints accuracy metrics and a cost summary. Hard-requires `data/reference/dati.csv`
+  (`FileNotFoundError` at `src/extraction/cli.py::main`); the CSV is **not** in the repo -- see
   Data & Evaluation.
 - **Tkinter GUI** (`python gui_app.py`): desktop window for uploading screenshots, picking
   provider/model, viewing per-screen results, and exporting CSV/JSON. It loads dotenv before
   the engine and initializes its selections from effective configuration. Imports
   `run_extraction_batch()` from the `extraction` package.
-- **Edge-agent** (`python edge-agent/edge_agent.py`, or `python main.py --gui`): PyQt6 app that
+- **Edge-agent** (`python src/edge-agent/edge_agent.py`, or `python main.py --gui`): PyQt6 app that
   captures BPER screens in real time, detects the page type, and runs extraction locally via
   `LocalExtractionClient`. The direct entry runs preflight before importing the UI and engine;
   `main.py --gui` has already imported `extraction` and requires the environment to be ready.
@@ -100,7 +100,7 @@ Canonical metadata names five source pages; the thirteen private-sheet fields be
 and all 45 column positions ([ADR 0020](adr/0020-pagina-sorgente-separata-dal-gruppo-export.md)).
 The batch keeps all processed screenshots; no canonical-page deduplication is applied.
 
-CLI and the Tkinter GUI share `run_extraction_batch()` in `extraction/cli.py` -- do not duplicate the
+CLI and the Tkinter GUI share `run_extraction_batch()` in `src/extraction/cli.py` -- do not duplicate the
 `ThreadPoolExecutor` logic.
 
 ## Edge-agent capture flow
@@ -168,7 +168,7 @@ BPERCaptureWorker (QThread)
   downstream use *relative* coordinates calibrated on window-sized screenshots (the classifier's
   `DEFAULT_CROP_ROI` and the pipeline's `RETRY_AREAS` bands; `CONTENT_CROP` no longer applies on the live path, ADR 0010), so on a full-monitor frame those coordinates
   land on different content. See `docs/adr/0001-normalizzazione-inquadratura-frame.md`.
-- **Page routing modes** (set in `edge-agent/config.ini` `router=`). The shipped `config.ini` is
+- **Page routing modes** (set in `src/edge-agent/config.ini` `router=`). The shipped `config.ini` is
   `llm`; the code default `DEFAULT_ROUTER_MODE` stays `ml` **on purpose**, as the safe behaviour when
   `config.ini` is missing: starting up with network calls under a key that may not be configured is
   worse than starting up with a local recognizer. See
@@ -190,7 +190,7 @@ BPERCaptureWorker (QThread)
     position, possibly both within one job). Measured 8/9 against the prototype classifier's 4/9 on
     frames nested inside a desktop, at the cost of one VLM call per routed frame and 4-5 s of
     latency. Via the OpenAI client, provider-aware:
-    `AgentConfig.resolve_llm_settings()` (`edge-agent/config.py`) picks key/endpoint/model from
+    `AgentConfig.resolve_llm_settings()` (`src/edge-agent/config.py`) picks key/endpoint/model from
     `[llm] provider`; explicit INI values are authoritative, provider defaults fill only blank
     entries (config.ini ships `gemini` + `gemini-3.8-flash` through Google's OpenAI-compatible
     endpoint); reads page definitions from `assets/templates/bper/prompts.json`. Router failures

@@ -28,7 +28,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-sys.path.insert(0, "edge-agent")
+sys.path.insert(0, "src/edge-agent")
 
 import torch
 import torch.nn.functional as F

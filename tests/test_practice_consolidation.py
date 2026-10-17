@@ -1,4 +1,4 @@
-"""Tests for edge-agent/practice_consolidation.py (frame -> practice grouping)."""
+"""Tests for src/edge-agent/practice_consolidation.py (frame -> practice grouping)."""
 
 from typing import Any, Dict, Optional
 

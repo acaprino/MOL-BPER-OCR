@@ -1,9 +1,15 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox, scrolledtext, ttk
 import os
+from pathlib import Path
+import sys
 import threading
 import json
 from dotenv import load_dotenv
+
+_SRC_DIR = Path(__file__).resolve().parent / "src"
+if str(_SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(_SRC_DIR))
 
 load_dotenv()
 

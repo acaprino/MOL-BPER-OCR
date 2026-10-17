@@ -4,10 +4,9 @@ dist/
 *.spec
 !/edge_agent.spec
 
-# Old/unused package roots
-src/
-# Data (screenshots + generated outputs)
-/mnt
+# Model weight binaries (>1 GB; exceeds GitHub's 100 MB file limit) and debug crops
+*.safetensors
+/data/reference/debug_crops/
 
 # Secrets
 .env
@@ -19,8 +18,8 @@ temp_uploads/
 test_no_gt/
 
 # Runtime-regenerated caches
-edge-agent/assets/templates/bper/bper_page_prototypes.json
-edge-agent/edge-agent.log
+src/edge-agent/assets/templates/bper/bper_page_prototypes.json
+src/edge-agent/edge-agent.log
 
 # Generated extraction outputs (may contain banking PII)
 poc_outputs*.json

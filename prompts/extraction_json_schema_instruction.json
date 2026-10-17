@@ -6,7 +6,7 @@
     "schema"
   ],
   "used_by": [
-    "extraction/vlm_client.py::_call_vlm_gemini_freeform"
+    "src/extraction/vlm_client.py::_call_vlm_gemini_freeform"
   ],
   "text": [
     "Schema JSON della risposta attesa:",

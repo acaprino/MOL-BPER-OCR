@@ -2,7 +2,7 @@
 
 - **Stato:** Accettato
 - **Data:** 2026-08-21
-- **Interessa:** `tests/fixtures/frames/no-tooltip-rita/`, `tools/measure_tooltip_prototypes.py` (i template spediti restano invariati)
+- **Interessa:** `tests/fixtures/frames/no-tooltip/`, `tools/measure_tooltip_prototypes.py` (i template spediti restano invariati)
 - **Misura:** `tools/measure_tooltip_prototypes.py`
 - **Correlati:** [0011](0011-prototipi-tooltip-rimandati-purezza-di-popolazione.md), [0008](0008-classificatore-locale-prototipi-reali-e-classi-di-scarto.md), [0006](0006-router-llm-come-predefinito.md)
 
@@ -13,7 +13,7 @@ popolazioni di inquadratura dentro una classe (riferimenti ~848px, scatti ~1890p
 sposta la media verso nessuna delle due. Il pezzo mancante dichiarato: scatti diretti
 delle pagine base senza tooltip, nella stessa forma.
 
-Sono arrivati il 2026-08-21: 21 catture (`tests/fixtures/frames/no-tooltip-rita/`,
+Sono arrivati il 2026-08-21: 21 catture (`tests/fixtures/frames/no-tooltip/`,
 verbale nel manifest). Con i 17 del primo giro, tutte e nove le classi hanno per la
 prima volta prototipi possibili **dentro una sola popolazione**: quella live, l'unica
 che il classificatore serve (il percorso file non lo attraversa).
@@ -54,7 +54,7 @@ finestra a 848px, dove entrano meta' colonne e lo scorrimento crea due viste
 davvero diverse. A ~1890px la vista base mostra gia' quasi tutte le colonne: le due
 classi condividono il contenuto e l'unica adozione sbagliata della misura e' proprio
 `1 -> 2`, a un soffio dalla soglia (0.102). Con zoom ridotto e tutte le colonne
-visibili (`rita-base-1e`) il margine crolla a 0.001. Non si decide qui: un'eventuale
+visibili (`base-1e`) il margine crolla a 0.001. Non si decide qui: un'eventuale
 fusione 1+2 e' una decisione di catalogo (spec dei campi comprese) e merita il suo
 ADR quando il cablaggio del classificatore tornera' sul tavolo.
 

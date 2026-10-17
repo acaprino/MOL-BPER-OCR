@@ -3,7 +3,7 @@
   "description": "Passata anchor: estrae solo ndg e denominazione dal crop dell'intestazione. La confidence è load-bearing: extract_anchors() azzera il valore sotto ANCHOR_CONF_MIN (0.95), quindi sotto soglia il valore non arriva né al merge né all'hint della passata principale.",
   "language": "it",
   "used_by": [
-    "extraction/pipeline.py::ExtractionPipeline.extract_anchors"
+    "src/extraction/pipeline.py::ExtractionPipeline.extract_anchors"
   ],
   "text": [
     "Dal ritaglio, che è la fascia superiore di una schermata dell'applicativo bancario BPER, estrai SOLO ndg e denominazione della pratica.",

@@ -1,0 +1,428 @@
+{
+  "total_practices": 23,
+  "total_in_scope_screens": 156,
+  "total_offtopic_screens": 22,
+  "practices": [
+    {
+      "practice": "51185037",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "train",
+      "in_scope_count": 8,
+      "offtopic_count": 1,
+      "screens": [
+        "Elenco.png",
+        "Elenco_tooltip1.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic1.png"
+      ]
+    },
+    {
+      "practice": "51531667",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "test",
+      "in_scope_count": 13,
+      "offtopic_count": 1,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png",
+        "GestioneFidi_Tooltip4.png",
+        "GestioneFidi_Tooltip5.png",
+        "GestioneFidi_Tooltip6.png",
+        "GestioneFidi_down.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic.png"
+      ]
+    },
+    {
+      "practice": "51659595",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "val",
+      "in_scope_count": 8,
+      "offtopic_count": 0,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png",
+        "Elenco_tooltip2.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "51772928",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 6,
+      "offtopic_count": 0,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "51788077",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 5,
+      "offtopic_count": 2,
+      "screens": [
+        "Elenco.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "NoteIstruttoria_aperto.png",
+        "NoteIstruttoria_chiuso.png"
+      ]
+    },
+    {
+      "practice": "51792073",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 3,
+      "offtopic_count": 0,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "51798191",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 3,
+      "offtopic_count": 0,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "51800301",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 7,
+      "offtopic_count": 0,
+      "screens": [
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png",
+        "Note.png",
+        "Note_chiuso.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "51859514",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 3,
+      "offtopic_count": 0,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "51997531",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 1,
+      "offtopic_count": 0,
+      "screens": [
+        "GestioneFidi_Tooltip1.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "52013664",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 1,
+      "offtopic_count": 0,
+      "screens": [
+        "GestioneFidi_Tooltip1.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "52022324",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 2,
+      "offtopic_count": 0,
+      "screens": [
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png"
+      ],
+      "offtopic_screens": []
+    },
+    {
+      "practice": "52032077",
+      "batch": "lotto-2026-08-21",
+      "ground_truth_split": null,
+      "in_scope_count": 3,
+      "offtopic_count": 2,
+      "screens": [
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "NoteIstruttoria_aperto.png",
+        "NoteIstruttoria_chiuso.png"
+      ]
+    },
+    {
+      "practice": "52060489",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "test",
+      "in_scope_count": 9,
+      "offtopic_count": 2,
+      "screens": [
+        "Elenco.png",
+        "Elenco_tooltip1.png",
+        "Elenco_tooltip2.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic1.png",
+        "OffTopic2.png"
+      ]
+    },
+    {
+      "practice": "52062600",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "train",
+      "in_scope_count": 14,
+      "offtopic_count": 2,
+      "screens": [
+        "Elenco.png",
+        "Elenco_tooltip1.png",
+        "Elenco_tooltip2.png",
+        "GestioneFidi.png",
+        "GestioneFidi_tooltip1.png",
+        "GestioneFidi_tooltip2.png",
+        "Note.png",
+        "Note_down.png",
+        "Scheda_Privati_1.png",
+        "Scheda_Privati_2.png",
+        "Scheda_Privati_3.png",
+        "Scheda_Privati_4.png",
+        "Scheda_Privati_5.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic1.png",
+        "OffTopic2.png"
+      ]
+    },
+    {
+      "practice": "52067184",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "train",
+      "in_scope_count": 8,
+      "offtopic_count": 1,
+      "screens": [
+        "Elenco.png",
+        "Elenco_tooltip1.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic1.png"
+      ]
+    },
+    {
+      "practice": "52068422",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "train",
+      "in_scope_count": 9,
+      "offtopic_count": 2,
+      "screens": [
+        "Elenco.png",
+        "Elenco_tooltip1.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png",
+        "GestioneFidi_tooltip1.png",
+        "Note1.png",
+        "Note2.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic1.png",
+        "OffTopic2.png"
+      ]
+    },
+    {
+      "practice": "52080223",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "train",
+      "in_scope_count": 8,
+      "offtopic_count": 2,
+      "screens": [
+        "Elenco.png",
+        "Elenco_tooltip1.png",
+        "Elenco_tooltip2.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic1.png",
+        "OffTopic2.png"
+      ]
+    },
+    {
+      "practice": "52102599",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "train",
+      "in_scope_count": 11,
+      "offtopic_count": 1,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png",
+        "Elenco_tooltip2.png",
+        "GestioneFidi.png",
+        "GestioneFidi_tooltip1.png",
+        "GestioneFidi_tooltip2.png",
+        "GestioneFidi_tooltip3.png",
+        "Note.png",
+        "Note_down.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic.png"
+      ]
+    },
+    {
+      "practice": "52126316",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "val",
+      "in_scope_count": 8,
+      "offtopic_count": 2,
+      "screens": [
+        "Elenco.png",
+        "Elenco_tooltip1.png",
+        "Elenco_tooltip2.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic.png",
+        "OffTopic2.png"
+      ]
+    },
+    {
+      "practice": "52130861",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "train",
+      "in_scope_count": 10,
+      "offtopic_count": 3,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png",
+        "Elenco_tooltip2.png",
+        "Elenco_tooltip3.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip3.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic.png",
+        "OffTopic1.png",
+        "OffTopic2.png"
+      ]
+    },
+    {
+      "practice": "52135039",
+      "batch": "riscontro-2026-10-07",
+      "ground_truth_split": "train",
+      "in_scope_count": 7,
+      "offtopic_count": 1,
+      "screens": [
+        "Elenco.png",
+        "Elenco_tooltip1.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [
+        "OffTopic.png"
+      ]
+    },
+    {
+      "practice": "LUNARDI_26871394",
+      "batch": "reference-lunardi",
+      "ground_truth_split": null,
+      "in_scope_count": 9,
+      "offtopic_count": 0,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": []
+    }
+  ]
+}

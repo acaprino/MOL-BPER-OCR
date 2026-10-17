@@ -14,7 +14,7 @@ from dotenv import dotenv_values
 from extraction.vlm_client import estimate_cost_usd
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SHIPPED_ENV_FILES = ["edge-agent/defaults/env.template", ".env.example"]
+SHIPPED_ENV_FILES = ["src/edge-agent/defaults/env.template", ".env.example"]
 
 
 @pytest.mark.parametrize("env_file", SHIPPED_ENV_FILES)

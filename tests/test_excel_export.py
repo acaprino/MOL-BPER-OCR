@@ -1,4 +1,4 @@
-"""Tests for edge-agent/excel_export.py (formatted workbook writer)."""
+"""Tests for src/edge-agent/excel_export.py (formatted workbook writer)."""
 
 from pathlib import Path
 from typing import Any, Dict, Optional

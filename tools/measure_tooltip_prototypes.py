@@ -5,12 +5,12 @@ Storia della misura, perche' i numeri qui sotto abbiano un riferimento:
 1. Aggiungere CROP da registrazioni Teams alle classi pagina fece crollare i
    riferimenti da 9/9 a 1/9: un prototipo mediato su due popolazioni non
    somiglia a nessuna delle due.
-2. Il primo giro con gli scatti di Rita (ADR 0011) monto' le classi tooltip
+2. Il primo giro con gli scatti del revisore (ADR 0011) monto' le classi tooltip
    sopra i riferimenti (~848px) mescolandoli agli scatti (~1890px): stessa
    malattia, riferimenti a 5/9, errori tutti 6<->8 con margini 0.004-0.036.
 3. Questo giro fa cio' che l'ADR 0011 aveva dichiarato mancante: un set di
    prototipi PER TUTTE E NOVE LE CLASSI costruito solo con gli scatti diretti
-   di Rita (consegne 2026-08-19 tooltip e 2026-08-21 pagine base), senza
+   del revisore (consegne 2026-08-19 tooltip e 2026-08-21 pagine base), senza
    mescolare popolazioni. I 9 riferimenti non fanno piu' da prototipo: il
    classificatore serve solo il percorso live (router local-first), dove
    nessun frame e' un riferimento a 848px.
@@ -31,52 +31,52 @@ import sys
 import tempfile
 from pathlib import Path
 
-sys.path.insert(0, "edge-agent")
+sys.path.insert(0, "src/edge-agent")
 from PIL import Image
 
 REPO = Path(".")
-TPL = REPO / "edge-agent/assets/templates/bper"
-TOOLTIPS = REPO / "tests/fixtures/frames/tooltips-rita"
-BASE = REPO / "tests/fixtures/frames/no-tooltip-rita"
+TPL = REPO / "src/edge-agent/assets/templates/bper"
+TOOLTIPS = REPO / "tests/fixtures/frames/tooltips"
+BASE = REPO / "tests/fixtures/frames/no-tooltip"
 
-MARGIN_GATE = 0.10  # local_margin_min del router (edge-agent/config.py)
+MARGIN_GATE = 0.10  # local_margin_min del router (src/edge-agent/config.py)
 
 # (dir, file) per classe: meta' prototipo, meta' test
 PROTO = {
-    "screen 1": [(BASE, "rita-base-1a.png"), (BASE, "rita-base-1c.png")],
-    "screen 2": [(BASE, "rita-base-2a.png"), (BASE, "rita-base-2c.png")],
-    "screen 3": [(TOOLTIPS, "rita-tooltip-1a.png"), (TOOLTIPS, "rita-tooltip-1c.png")],
-    "screen 4": [(BASE, "rita-base-4a.png"), (BASE, "rita-base-4c.png")],
-    "screen 5": [(BASE, "rita-base-5a.png"), (BASE, "rita-base-5c.png")],
-    "screen 6": [(TOOLTIPS, "rita-tooltip-2a.png"), (TOOLTIPS, "rita-tooltip-2c.png"),
-                 (TOOLTIPS, "rita-tooltip-2e.png")],
-    "screen 7": [(TOOLTIPS, "rita-tooltip-3b.png")],
-    "screen 8": [(TOOLTIPS, "rita-tooltip-3a.png"), (TOOLTIPS, "rita-tooltip-3d.png"),
-                 (TOOLTIPS, "rita-tooltip-4b.png")],
+    "screen 1": [(BASE, "base-1a.png"), (BASE, "base-1c.png")],
+    "screen 2": [(BASE, "base-2a.png"), (BASE, "base-2c.png")],
+    "screen 3": [(TOOLTIPS, "tooltip-1a.png"), (TOOLTIPS, "tooltip-1c.png")],
+    "screen 4": [(BASE, "base-4a.png"), (BASE, "base-4c.png")],
+    "screen 5": [(BASE, "base-5a.png"), (BASE, "base-5c.png")],
+    "screen 6": [(TOOLTIPS, "tooltip-2a.png"), (TOOLTIPS, "tooltip-2c.png"),
+                 (TOOLTIPS, "tooltip-2e.png")],
+    "screen 7": [(TOOLTIPS, "tooltip-3b.png")],
+    "screen 8": [(TOOLTIPS, "tooltip-3a.png"), (TOOLTIPS, "tooltip-3d.png"),
+                 (TOOLTIPS, "tooltip-4b.png")],
     # Chiuso E aperto: con il solo chiuso, l'aperto finiva su screen 5 con margine
     # 0.220 (adozione sbagliata). Entrambi nel prototipo, classe non testabile.
-    "screen 9": [(BASE, "rita-base-9a-chiuso.png"), (BASE, "rita-base-9a-aperto.png")],
+    "screen 9": [(BASE, "base-9a-chiuso.png"), (BASE, "base-9a-aperto.png")],
     # Scarto live per le pagine BPER fuori processo: la classe SCARTO-fuori-processo
     # esistente e' popolata da ritagli di registrazione (altra popolazione) e non
     # cattura questi scatti; una classe separata evita di mescolare le popolazioni.
-    "SCARTO-fuori-processo-live": [(BASE, "rita-istruttoria-b-chiuso.png"),
-                                   (BASE, "rita-istruttoria-c-aperto.png")],
+    "SCARTO-fuori-processo-live": [(BASE, "istruttoria-b-chiuso.png"),
+                                   (BASE, "istruttoria-c-aperto.png")],
 }
 TEST = {
-    "screen 1": [(BASE, "rita-base-1b.png"), (BASE, "rita-base-1d.png"),
-                 (BASE, "rita-base-1e.png")],   # 1e: zoom ridotto, tutte le colonne
-    "screen 2": [(BASE, "rita-base-2b.png"), (BASE, "rita-base-2d.png")],
-    "screen 3": [(TOOLTIPS, "rita-tooltip-1b.png"), (TOOLTIPS, "rita-tooltip-1d.png")],
-    "screen 4": [(BASE, "rita-base-4b.png")],
-    "screen 5": [(BASE, "rita-base-5b.png")],
-    "screen 6": [(TOOLTIPS, "rita-tooltip-2b.png"), (TOOLTIPS, "rita-tooltip-2d.png")],
+    "screen 1": [(BASE, "base-1b.png"), (BASE, "base-1d.png"),
+                 (BASE, "base-1e.png")],   # 1e: zoom ridotto, tutte le colonne
+    "screen 2": [(BASE, "base-2b.png"), (BASE, "base-2d.png")],
+    "screen 3": [(TOOLTIPS, "tooltip-1b.png"), (TOOLTIPS, "tooltip-1d.png")],
+    "screen 4": [(BASE, "base-4b.png")],
+    "screen 5": [(BASE, "base-5b.png")],
+    "screen 6": [(TOOLTIPS, "tooltip-2b.png"), (TOOLTIPS, "tooltip-2d.png")],
     "screen 7": [],
-    "screen 8": [(TOOLTIPS, "rita-tooltip-3c.png"), (TOOLTIPS, "rita-tooltip-4a.png"),
-                 (TOOLTIPS, "rita-tooltip-4c.png"), (TOOLTIPS, "rita-tooltip-4d.png")],
+    "screen 8": [(TOOLTIPS, "tooltip-3c.png"), (TOOLTIPS, "tooltip-4a.png"),
+                 (TOOLTIPS, "tooltip-4c.png"), (TOOLTIPS, "tooltip-4d.png")],
     "screen 9": [],  # chiuso e aperto entrambi nel prototipo: non testabile
 }
 FUORI_PROCESSO = [  # BPER, tab 'Note a Istruttoria': tenute fuori dallo scarto live
-    "rita-istruttoria-b-aperto.png", "rita-istruttoria-c-chiuso.png",
+    "istruttoria-b-aperto.png", "istruttoria-c-chiuso.png",
 ]
 
 work = Path(tempfile.mkdtemp()) / "bper"
@@ -128,7 +128,7 @@ print(f"  {ok_neg}/{len(FUORI_PROCESSO)} sotto soglia o scartate\n")
 print("--- i 9 riferimenti (informativo: altra popolazione, percorso file) ---")
 ok = 0
 for n in range(1, 10):
-    r = clf.classify_detailed(Image.open(REPO / f"mnt/data/screen {n}.png"))
+    r = clf.classify_detailed(Image.open(REPO / f"data/reference/screen {n}.png"))
     good = r.label == f"screen {n}"
     ok += good
     flag = "OK " if good else ".. "

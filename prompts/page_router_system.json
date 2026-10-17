@@ -7,7 +7,7 @@
     "expected_page"
   ],
   "used_by": [
-    "edge-agent/llm_router.py::LLMPageRouter._build_system_prompt"
+    "src/edge-agent/llm_router.py::LLMPageRouter._build_system_prompt"
   ],
   "parts": {
     "base": [

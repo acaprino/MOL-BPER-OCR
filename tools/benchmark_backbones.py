@@ -139,7 +139,7 @@ def iou(a: Rect, b: Rect) -> float:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--corpus", required=True, help="dir with manifest.json from make_framing_corpus.py")
-    ap.add_argument("--pages", default="edge-agent/assets/templates/bper", help="source page images")
+    ap.add_argument("--pages", default="src/edge-agent/assets/templates/bper", help="source page images")
     ap.add_argument("--backbones", default="dinov2_vits14,dinov2_vits14_reg")
     ap.add_argument("--limit", type=int, default=0, help="cap frames per backbone (0 = all)")
     ap.add_argument("--report", default="", help="optional JSON output path")

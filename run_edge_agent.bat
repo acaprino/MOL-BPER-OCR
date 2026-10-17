@@ -14,7 +14,7 @@ set "ROOT=%~dp0"
 set "VENV_DIR=%ROOT%.venv"
 set "VENV_PY=%VENV_DIR%\Scripts\python.exe"
 set "REQS=%ROOT%requirements.txt"
-set "ENTRY=%ROOT%edge-agent\edge_agent.py"
+set "ENTRY=%ROOT%src\edge-agent\edge_agent.py"
 
 REM --- Drop a stale venv whose base interpreter is gone -------
 REM A venv records an absolute path to the Python it was built from.

@@ -284,8 +284,8 @@
     "bidirectional": true,
     "rationale": "L'operatore si muove liberamente: puo' tornare a una pagina gia' vista, riaprirla per un tooltip diverso, saltare a un altro passo e rientrare. Un modello a lista ordinata descrive il percorso suggerito, non quello percorso, e trattare l'ordine come vincolo produce due difetti: la guida chiede una pagina che l'operatore ha gia' davanti, e una pagina acquisita per errore non e' piu' recuperabile.",
     "observed_from": [
-      "mnt/data/screen 5.png: navigatore di fase e barra schede applicative",
-      "mnt/data/screen 9.png: schede di contenuto dentro un passo"
+      "data/reference/screen 5.png: navigatore di fase e barra schede applicative",
+      "data/reference/screen 9.png: schede di contenuto dentro un passo"
     ],
     "levels": [
       {
@@ -368,6 +368,6 @@
   "capture_policy": {
     "revisiting_allowed": true,
     "rationale": "Le pagine 6, 7 e 8 si raggiungono SOLO passando dalla 5 e aprendo un tooltip diverso: impedire il ritorno a una pagina gia' acquisita impedisce di raccoglierle. Piu' in generale, l'operatore torna indietro per motivi legittimi e il sistema deve seguirlo.",
-    "implementation_gap": "Il codice attuale non rispetta questo modello. `captured_page_types` in edge-agent/workers/capture/bper_capture_worker.py e' a sola aggiunta: una pagina acquisita fa uscire ogni frame successivo dal ramo 'gia' acquisita', e la guida continua a chiedere la pagina successiva secondo un ordine lineare. Il solo rientro possibile e' manuale, via 'Acquisisci ora' (force_capture), che non controlla l'appartenenza a quel set. Allineare il codice a questo modello e' una modifica di comportamento e merita una decisione a se'."
+    "implementation_gap": "Il codice attuale non rispetta questo modello. `captured_page_types` in src/edge-agent/workers/capture/bper_capture_worker.py e' a sola aggiunta: una pagina acquisita fa uscire ogni frame successivo dal ramo 'gia' acquisita', e la guida continua a chiedere la pagina successiva secondo un ordine lineare. Il solo rientro possibile e' manuale, via 'Acquisisci ora' (force_capture), che non controlla l'appartenenza a quel set. Allineare il codice a questo modello e' una modifica di comportamento e merita una decisione a se'."
   }
 }

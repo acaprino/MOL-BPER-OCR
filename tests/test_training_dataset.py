@@ -19,13 +19,13 @@ def _review(tmp_path: Path, rows: list[list[object]]) -> Path:
 
 
 def test_uses_reviewed_value_instead_of_original(tmp_path: Path) -> None:
-    path = _review(tmp_path, [["1", "1__Elenco", "Evidenze", "B P", "B", "Corretto da Rita"]])
+    path = _review(tmp_path, [["1", "1__Elenco", "Evidenze", "B P", "B", "Corretto"]])
     records = read_reviewed_truth(path, {"Evidenze": "evidenze"})
     assert records[0]["value"] == "B"
 
 
 def test_preserves_literal_not_available_label(tmp_path: Path) -> None:
-    path = _review(tmp_path, [["1", "1__Scheda", "SCORE CGS", "N/D", "N/D", "Confermato da Rita"]])
+    path = _review(tmp_path, [["1", "1__Scheda", "SCORE CGS", "N/D", "N/D", "Confermato"]])
     assert read_reviewed_truth(path, {"SCORE CGS": "score_cgs"})[0]["value"] == "N/D"
 
 
@@ -35,20 +35,30 @@ def test_rejects_pending_review(tmp_path: Path) -> None:
         read_reviewed_truth(path, {"NDG 4": "ndg_4"})
 
 
+def test_accepts_review_confirmed_by_named_reviewer(tmp_path: Path) -> None:
+    path = _review(tmp_path, [["1", "1__Elenco", "NDG", "123", "123", "Confermato da Rossi"]])
+    assert read_reviewed_truth(path, {"NDG": "ndg"})[0]["reviewer_status"] == "Confermato da Rossi"
+
+
+def test_accepts_review_corrected_by_named_reviewer(tmp_path: Path) -> None:
+    path = _review(tmp_path, [["1", "1__Elenco", "NDG", "123", "999", "Corretto da Rossi"]])
+    assert read_reviewed_truth(path, {"NDG": "ndg"})[0]["value"] == "999"
+
+
 def test_rejects_duplicate_field_in_same_screenshot(tmp_path: Path) -> None:
-    row = ["1", "1__Elenco", "NDG", "123", "123", "Confermato da Rita"]
+    row = ["1", "1__Elenco", "NDG", "123", "123", "Confermato"]
     with pytest.raises(ValueError, match="duplic"):
         read_reviewed_truth(_review(tmp_path, [row, row]), {"NDG": "ndg"})
 
 
 def test_rejects_formula_as_ground_truth(tmp_path: Path) -> None:
-    path = _review(tmp_path, [["1", "1__Elenco", "NDG", "123", "=1+2", "Confermato da Rita"]])
+    path = _review(tmp_path, [["1", "1__Elenco", "NDG", "123", "=1+2", "Confermato"]])
     with pytest.raises(ValueError, match="formul"):
         read_reviewed_truth(path, {"NDG": "ndg"})
 
 
 def test_rejects_mismatched_practice_metadata(tmp_path: Path) -> None:
-    path = _review(tmp_path, [["2", "1__Elenco", "NDG", "123", "123", "Confermato da Rita"]])
+    path = _review(tmp_path, [["2", "1__Elenco", "NDG", "123", "123", "Confermato"]])
     with pytest.raises(ValueError, match="pratic"):
         read_reviewed_truth(path, {"NDG": "ndg"})
 
@@ -114,3 +124,14 @@ def test_rejects_identical_image_across_splits() -> None:
                 {"id": "2__B", "practice": "2", "split": "test", "values": {}, "image_sha256": "same"}]
     with pytest.raises(ValueError, match="immagin|image"):
         audit_splits(examples)
+
+
+def test_resolves_screenshot_from_per_practice_folder(tmp_path: Path) -> None:
+    from training.dataset import resolve_screenshot_path
+
+    practice_dir = tmp_path / "pratiche" / "51185037"
+    practice_dir.mkdir(parents=True)
+    expected = practice_dir / "Elenco.png"
+    expected.write_bytes(b"png")
+    assert resolve_screenshot_path(tmp_path, "51185037__Elenco") == expected
+

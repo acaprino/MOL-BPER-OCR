@@ -1,4 +1,4 @@
-"""Tests for prompt_store.py (JSON prompt catalog)."""
+"""Tests for src/prompt_store.py (JSON prompt catalog)."""
 
 import json
 import shutil

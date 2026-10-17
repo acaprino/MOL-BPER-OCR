@@ -2,7 +2,7 @@
 
 **Python 3.12/3.13 | LangChain | OpenAI GPT-4o / Google Gemini | Pillow | Pandas | PyQt6**
 
-Estrazione automatica di dati strutturati da screenshot bancari italiani (applicazione BPER) tramite pipeline VLM (Vision Language Model) multi-pass con **LangChain**. Supporta l'acquisizione in tempo reale tramite un **Edge Agent** (PyQt6) che si collega direttamente alla pipeline di estrazione locale. Estrae **45 campi** (`FIELD_KEYS` in `extraction/fields.py`) da 9 tipi di schermata, valuta l'accuratezza rispetto a un ground truth CSV e produce metriche per campo e breakdown dei costi.
+Estrazione automatica di dati strutturati da screenshot bancari italiani (applicazione BPER) tramite pipeline VLM (Vision Language Model) multi-pass con **LangChain**. Supporta l'acquisizione in tempo reale tramite un **Edge Agent** (PyQt6) che si collega direttamente alla pipeline di estrazione locale. Estrae **45 campi** (`FIELD_KEYS` in `src/extraction/fields.py`) da 9 tipi di schermata, valuta l'accuratezza rispetto a un ground truth CSV e produce metriche per campo e breakdown dei costi.
 
 La **[documentazione ufficiale](docs/INDEX.md)** raccoglie [istruzioni di avvio](docs/07-getting-started.md), [architettura](docs/04-architecture.md), [flussi di elaborazione](docs/05-workflows.md), [modello dei dati](docs/06-data-model.md) e [API Python](docs/12-python-api.md). Le decisioni sono spiegate negli [ADR](docs/adr/README.md).
 
@@ -15,7 +15,7 @@ Il sistema riceve screenshot (da file o cattura in tempo reale) e, attraverso tr
 ## Stato Attuale
 
 Il coordinamento dell'estrazione e i risultati risiedono nell'applicazione. La lettura delle immagini chiama i provider AI configurati e richiede rete; non serve un backend applicativo separato per il percorso BPER.
-Modelli elencati nel catalogo locale (`PROVIDER_MODELS` in `extraction/config.py`; la disponibilità presso il provider va verificata quando si configura l'applicazione):
+Modelli elencati nel catalogo locale (`PROVIDER_MODELS` in `src/extraction/config.py`; la disponibilità presso il provider va verificata quando si configura l'applicazione):
 - **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `o1`, `o1-mini`.
 - **Google Gemini**: `gemini-1.5-pro`, `gemini-1.5-flash`, `gemini-2.0-flash`, `gemini-2.0-flash-exp`, `gemini-2.0-flash-thinking-exp`, `gemini-3-flash-preview`, `gemini-3.1-flash-lite-preview`, `gemini-3.6-flash`, `gemini-3.8-flash` (default).
 
@@ -30,7 +30,7 @@ Il progetto è un POC con dipendenze non bloccate a versioni esatte. Per eseguir
 
 ## Scopo dei Componenti
 
-### Core Pipeline (`extraction/`)
+### Core Pipeline (`src/extraction/`)
 Il package `extraction` contiene tutta la logica di business, separata dall'interfaccia utente:
 - `pipeline.py`: Orchestratore principale dei 3 passaggi (Anchor -> Main -> Retry).
 - `fields.py`: I 45 field keys (`FIELD_KEYS`) e il mapping CSV -> schema (`CSV_TO_SCHEMA`).
@@ -43,8 +43,8 @@ Il package `extraction` contiene tutta la logica di business, separata dall'inte
 - `cli.py`: `run_extraction_batch()`, il batch runner condiviso da CLI e GUI Tkinter.
 
 ### Interfacce Utente
-- **Edge Agent (`python edge-agent/edge_agent.py`, oppure `python main.py --gui`, oppure `run_edge_agent.bat` su Windows)**: Interfaccia per la cattura real-time e l'estrazione locale. Basata su **PyQt6**.
-- **Batch CLI (`python main.py`)**: Processamento batch dei file già salvati in `mnt/data/`. **Richiede** il ground truth `mnt/data/dati.csv`.
+- **Edge Agent (`python src/edge-agent/edge_agent.py`, oppure `python main.py --gui`, oppure `run_edge_agent.bat` su Windows)**: Interfaccia per la cattura real-time e l'estrazione locale. Basata su **PyQt6**.
+- **Batch CLI (`python main.py`)**: Processamento batch dei file già salvati in `data/reference/`. **Richiede** il ground truth `data/reference/dati.csv`.
 - **Desktop UI (`python gui_app.py`)**: Applicazione nativa **Tkinter** per processing di file selezionati manualmente (il CSV ground truth qui è opzionale).
 
 ---
@@ -70,20 +70,20 @@ Su Windows il modo più rapido è il launcher, che crea/ripara la `.venv`, insta
 run_edge_agent.bat
 ```
 
-> **Attenzione - ground truth mancante:** il file `mnt/data/dati.csv` **non è nel repository** (`/mnt` è in `.gitignore`; solo i 9 PNG sono tracciati). Su un clone fresco `python main.py` fallisce subito con `FileNotFoundError: Ground truth CSV not found: mnt/data/dati.csv` (`extraction/cli.py::main`). Procurarsi il file e metterlo in `mnt/data/` prima di usare la CLI: formato in [Ground truth CSV](#ground-truth-csv). GUI Tkinter ed Edge Agent funzionano anche senza.
+> **Nota su `data/reference/dati.csv`:** `data/` è versionata nel repository (inclusi `data/reference/dati.csv` e `data/pratiche/`, con la sola esclusione dei pesi binari `*.safetensors` > 1 GB). Se `INPUT_DIR` viene puntato a una cartella priva di `dati.csv`, `python main.py` solleva `FileNotFoundError` (`src/extraction/cli.py::main`); GUI Tkinter ed Edge Agent funzionano anche senza ground truth.
 
 ### 2. Avvio interfacce
 
 #### Edge Agent
 Per la cattura real-time e l'estrazione locale:
 ```bash
-python edge-agent/edge_agent.py        # avvio diretto (--debug aggiunge il tab Debug LLM)
+python src/edge-agent/edge_agent.py        # avvio diretto (--debug aggiunge il tab Debug LLM)
 python main.py --gui                   # importa extraction prima del preflight: ambiente già pronto
 run_edge_agent.bat                     # Windows: bootstrap venv + avvio
 ```
 
 #### Batch CLI
-Per un processing di tutti i file già presenti in `mnt/data/` (richiede `dati.csv`, vedi sopra):
+Per un processing di tutti i file già presenti in `data/reference/` (richiede `dati.csv`, vedi sopra):
 ```bash
 python main.py
 ```
@@ -94,14 +94,14 @@ Per l'applicazione desktop nativa:
 python gui_app.py
 ```
 
-Tkinter carica `.env` prima di importare il motore e inizializza provider e modello dalla configurazione effettiva, conservando anche un modello personalizzato. La chiave può essere inserita nella GUI. Per il primo avvio dell'edge-agent usare il launcher o `edge-agent/edge_agent.py`, che eseguono il preflight prima di importare la UI e il motore. Le procedure complete sono in [Avvio e sviluppo](docs/07-getting-started.md).
+Tkinter carica `.env` prima di importare il motore e inizializza provider e modello dalla configurazione effettiva, conservando anche un modello personalizzato. La chiave può essere inserita nella GUI. Per il primo avvio dell'edge-agent usare il launcher o `src/edge-agent/edge_agent.py`, che eseguono il preflight prima di importare la UI e il motore. Le procedure complete sono in [Avvio e sviluppo](docs/07-getting-started.md).
 
 ---
 
 ## Sicurezza: chiavi API e cronologia git
 
-- **2026-07-21**: una chiave OpenAI committata in `edge-agent/config.ini` è stata **rimossa dall'intera cronologia git** (`git filter-repo` + force-push). Tutti gli hash dei commit sono cambiati. **Chi ha clonato prima di quella data deve ri-clonare**: un push o merge da un clone vecchio reintrodurrebbe la chiave nella cronologia.
-- La riga `api_key` in `edge-agent/config.ini` ora è **vuota**. Il file è tracciato in git: **non inserire mai una chiave reale lì**. `AgentConfig` tratta come vuoto anche qualunque valore che inizi per `REDACTED`, perché un placeholder rimasto in giro aveva già oscurato le chiavi da ambiente rompendo il router in silenzio. `build_exe.bat` si rifiuta di impacchettare un `config.ini` con `api_key` non vuota.
+- **2026-07-21**: una chiave OpenAI committata in `src/edge-agent/config.ini` è stata **rimossa dall'intera cronologia git** (`git filter-repo` + force-push). Tutti gli hash dei commit sono cambiati. **Chi ha clonato prima di quella data deve ri-clonare**: un push o merge da un clone vecchio reintrodurrebbe la chiave nella cronologia.
+- La riga `api_key` in `src/edge-agent/config.ini` ora è **vuota**. Il file è tracciato in git: **non inserire mai una chiave reale lì**. `AgentConfig` tratta come vuoto anche qualunque valore che inizi per `REDACTED`, perché un placeholder rimasto in giro aveva già oscurato le chiavi da ambiente rompendo il router in silenzio. `build_exe.bat` si rifiuta di impacchettare un `config.ini` con `api_key` non vuota.
 - Le chiavi vanno in `.env` (gitignorato): `LLM_API_KEY` è l'unica variabile obbligatoria.
 - Il router dell'edge-agent risolve le credenziali separatamente dal motore. La configurazione inclusa usa `router = llm`, mentre il default di `AgentConfig` è `ml`. Quando viene usato il router LLM, `resolve_llm_settings()` sceglie `config.ini [llm] api_key` se non vuota, poi per `gemini` `GEMINI_API_KEY` -> `GOOGLE_API_KEY` -> `LLM_API_KEY`, per `openai` `OPENAI_API_KEY` -> `LLM_API_KEY`. Il riconoscimento ML può essere locale, ma l'estrazione richiede comunque la chiave del provider.
 
@@ -128,7 +128,7 @@ Consegnare l'intera cartella del pacchetto, non soltanto l'eseguibile. Il build 
 
 ## I 45 campi estratti
 
-`FIELD_KEYS` in `extraction/fields.py` definisce 45 chiavi, raggruppate così:
+`FIELD_KEYS` in `src/extraction/fields.py` definisce 45 chiavi, raggruppate così:
 
 | Gruppo | Campi | Area retry |
 |---|---|---|
@@ -139,11 +139,11 @@ Consegnare l'intera cartella del pacchetto, non soltanto l'eseguibile. Il build 
 | Soggetti appiattiti (screen 2-3) | `ndg_1..4`, `denominazione_1..4`, `ruolo_1..4` (fino a 4 cointestatari) | BODY |
 | Scheda privati (screen 4-5) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` | HEADER / BODY / FOOTER |
 
-Le chiavi sono termini di dominio bancario in italiano e non vanno tradotte. Il mapping campo -> area di retry è in `AREA_TO_FIELDS` (`extraction/config.py`); `UNRETRIED_FIELDS` dichiara l'esclusione dei cinque tooltip. Un retry riempie una tabella `soggetti` vuota solo con righe a confidenza almeno `RETRY_CONF_MIN` e con NDG o denominazione leggibili. Le voci canoniche distinguono cinque pagine di origine dai quattro gruppi dell'Excel: i tredici campi Scheda Privati riportano `page_key=scheda_privati`, conservando il gruppo di export `note_da_richiesta` e le stesse 45 colonne.
+Le chiavi sono termini di dominio bancario in italiano e non vanno tradotte. Il mapping campo -> area di retry è in `AREA_TO_FIELDS` (`src/extraction/config.py`); `UNRETRIED_FIELDS` dichiara l'esclusione dei cinque tooltip. Un retry riempie una tabella `soggetti` vuota solo con righe a confidenza almeno `RETRY_CONF_MIN` e con NDG o denominazione leggibili. Le voci canoniche distinguono cinque pagine di origine dai quattro gruppi dell'Excel: i tredici campi Scheda Privati riportano `page_key=scheda_privati`, conservando il gruppo di export `note_da_richiesta` e le stesse 45 colonne.
 
 ## Configurazione
 
-Tutte le variabili sono configurabili via environment (lette a import time da `extraction/config.py`). Vedi [`.env.example`](.env.example) per il template.
+Tutte le variabili sono configurabili via environment (lette a import time da `src/extraction/config.py`). Vedi [`.env.example`](.env.example) per il template.
 
 | Variabile | Default | Descrizione |
 |-----------|---------|-------------|
@@ -152,7 +152,7 @@ Tutte le variabili sono configurabili via environment (lette a import time da `e
 | `LLM_MODEL` | `gpt-4o` | Modello per estrazione principale |
 | `LLM_MODEL_ANCHOR` | come `LLM_MODEL` | Modello per il pass anchor |
 | `LLM_THINKING_LEVEL` | *(nessuno)* | Profondità di ragionamento `low`/`medium`/`high`, inviata come `thinking_level` alla famiglia Gemini 3; se assente vale il default del modello (`high` per Gemini 3). Le altre famiglie la ignorano con un avviso; un valore diverso blocca l'avvio |
-| `INPUT_DIR` | `mnt/data` | Directory dati (screenshot + ground truth) |
+| `INPUT_DIR` | `data/reference` | Directory dati (screenshot + ground truth) |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `PARALLEL_ENABLED` | `1` | Elaborazione parallela (`0` per disattivarla) |
 | `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Budget dei passaggi: 1 anchor + 1 main + un retry per area. Ridurlo elimina le aree in coda a `AREA_TO_FIELDS`; non limita i tentativi di trasporto |
@@ -162,13 +162,13 @@ Tutte le variabili sono configurabili via environment (lette a import time da `e
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Fermare il processing se l'anchor è incerto (`1` per attivare) |
 | `DEBUG_MODE` | `0` | Log `[DEBUG]` verbosi del batch |
 | `DEBUG_SAVE_CROPS` | `0` | Salvare i crop intermedi in `INPUT_DIR/debug_crops` |
-| `PROMPTS_DIR` | *(non impostata)* | Directory alternativa del catalogo prompt; viene letta da `prompt_store.py` e un override non valido interrompe il caricamento |
+| `PROMPTS_DIR` | *(non impostata)* | Directory alternativa del catalogo prompt; viene letta da `src/prompt_store.py` e un override non valido interrompe il caricamento |
 
-La cattura e il routing dell'edge-agent si configurano via `edge-agent/config.ini`; il motore di estrazione continua a leggere le variabili d'ambiente. Le modalità `ml`, `llm`, `hybrid` e `local-first` sono descritte nei [Workflow](docs/05-workflows.md), inclusi i limiti del percorso `local-first` corrente. Provider e modello devono essere coerenti: la factory rifiuta ad esempio un modello `gemini-*` con `LLM_PROVIDER=openai` (`extraction/llm_factory.py`).
+La cattura e il routing dell'edge-agent si configurano via `src/edge-agent/config.ini`; il motore di estrazione continua a leggere le variabili d'ambiente. Le modalità `ml`, `llm`, `hybrid` e `local-first` sono descritte nei [Workflow](docs/05-workflows.md), inclusi i limiti del percorso `local-first` corrente. Provider e modello devono essere coerenti: la factory rifiuta ad esempio un modello `gemini-*` con `LLM_PROVIDER=openai` (`src/extraction/llm_factory.py`).
 
 ## Output JSON
 
-Ogni screenshot produce un oggetto con questa struttura (costruita in `extraction/pipeline.py`):
+Ogni screenshot produce un oggetto con questa struttura (costruita in `src/extraction/pipeline.py`):
 
 ```json
 {
@@ -225,52 +225,53 @@ Le metriche sono calcolate in due varianti:
 ## Struttura progetto
 
 ```
-poc-data-extraction/
+poc-data-src/extraction/
   main.py                  # Entry point (CLI batch; --gui avvia l'Edge Agent)
   gui_app.py               # Entry point Desktop (Tkinter)
   run_edge_agent.bat       # Launcher Windows: bootstrap .venv + avvio Edge Agent
-  requirements.txt         # Unico file dipendenze (core + edge-agent)
-  pyproject.toml           # Solo configurazione pytest e marker slow
+  requirements.txt         # Unico file dipendenze (core + edge-agent + training)
+  pyproject.toml           # Configurazione pytest (pythonpath = ["src", "src/edge-agent"]) e marker slow
   tools/check.py           # Verifica rapida: esclude i casi DINOv2 marcati slow
-  prompt_store.py          # Loader del catalogo prompt (solo stdlib), condiviso da core ed Edge Agent
   prompts/                 # Catalogo prompt LLM: un file JSON per prompt, letto all'avvio
-  edge-agent/              # Edge Agent (PyQt6)
-    edge_agent.py          # Entry point GUI
-    config.py / config.ini # Configurazione agent (fps, router, monitor, [llm])
-    local_extraction_client.py # Ponte tra GUI e ExtractionPipeline
-    llm_router.py          # Router pagine: LLM (Vision) e ML (DINOv2, in vigore)
-    page_classifier.py     # Classificatore prototipi DINOv2 ViT-S/14, coseno centrato
-    frame_normalize.py     # Dal monitor intero alla finestra applicativa
-    image_ops.py           # Preprocessing cattura (scale, unsharp, autocontrast)
-    ui/                    # MainWindow, tab Cattura/Dati Estratti e Debug LLM opzionale
-    workers/capture/       # QThread di cattura (BPER + generico)
-    assets/templates/bper/ # prompts.json (definizioni pagine), embeddings, template
-  extraction/
-    __init__.py            # Re-export API pubblica
-    config.py              # Configurazione env-var, crop, pricing
-    fields.py              # 45 field keys + CSV_TO_SCHEMA mapping
-    field_definitions.py   # Display name + pagina di origine e gruppo export
-    page_definitions.py    # Cinque pagine di origine, quattro gruppi export
-    canonical_mapping.py   # build_canonical_field_entries() per output client
-    schemas.py             # Pydantic models per output strutturato
-    prompts.py             # Costanti dei prompt VLM, lette dal catalogo prompts/
-    normalization.py       # Normalizzazione testo, classify_field, pick_best
-    imaging.py             # Crop, resize, conversione immagini
-    vlm_client.py          # LangChain structured output + retry + costi
-    llm_factory.py         # LangChain ChatModel factory (create_chat_model)
-    pipeline.py            # Pipeline 3-pass (anchor -> main -> retry)
-    evaluation.py          # Metriche accuratezza + debug report
-    cli.py                 # Batch runner con ThreadPoolExecutor
-  training/                # Pipeline offline di allineamento OCR, dataset e training LiLT
-    schema.py              # Vocabolario canonico dei 45 campi e 37 ruoli semantici
-    alignment.py           # Allineamento geometrico/testuale dei valori revisionati sui token OCR
-    dataset.py             # Lettura revisione Excel v3.1, supervisione BIO, audit anti-leakage e manifest
-    model.py               # Chunking 512 token, augmentation, training LiLT, selezione checkpoint e inferenza CPU/GPU
-    evaluation.py          # Ricostruzione rigorosa dei 45 campi e metriche per campo/ruolo/split
-    modal_train.py         # Esecuzione GPU limitata su Modal e download del modello CPU
-    README.md              # Guida operativa per la rigenerazione del dataset e l'addestramento
+  src/                     # Sorgenti applicativi e di training
+    prompt_store.py        # Loader del catalogo prompt (solo stdlib), condiviso da core ed Edge Agent
+    edge-agent/            # Edge Agent (PyQt6)
+      edge_agent.py        # Entry point GUI
+      config.py / config.ini # Configurazione agent (fps, router, monitor, [llm])
+      local_extraction_client.py # Ponte tra GUI e ExtractionPipeline
+      llm_router.py        # Router pagine: LLM (Vision) e ML (DINOv2, in vigore)
+      page_classifier.py   # Classificatore prototipi DINOv2 ViT-S/14, coseno centrato
+      frame_normalize.py   # Dal monitor intero alla finestra applicativa
+      image_ops.py         # Preprocessing cattura (scale, unsharp, autocontrast)
+      ui/                  # MainWindow, tab Cattura/Dati Estratti e Debug LLM opzionale
+      workers/capture/     # QThread di cattura (BPER + generico)
+      assets/templates/bper/ # prompts.json (definizioni pagine), embeddings, template
+    extraction/            # Motore di estrazione VLM
+      __init__.py          # Re-export API pubblica
+      config.py            # Configurazione env-var, crop, pricing
+      fields.py            # 45 field keys + CSV_TO_SCHEMA mapping
+      field_definitions.py # Display name + pagina di origine e gruppo export
+      page_definitions.py  # Cinque pagine di origine, quattro gruppi export
+      canonical_mapping.py # build_canonical_field_entries() per output client
+      schemas.py           # Pydantic models per output strutturato
+      prompts.py           # Costanti dei prompt VLM, lette dal catalogo prompts/
+      normalization.py     # Normalizzazione testo, classify_field, pick_best
+      imaging.py           # Crop, resize, conversione immagini
+      vlm_client.py        # LangChain structured output + retry + costi
+      llm_factory.py       # LangChain ChatModel factory (create_chat_model)
+      pipeline.py          # Pipeline 3-pass (anchor -> main -> retry)
+      evaluation.py        # Metriche accuratezza + debug report
+      cli.py               # Batch runner con ThreadPoolExecutor
+    training/              # Pipeline offline di allineamento OCR, dataset e training LiLT
+      schema.py            # Vocabolario canonico dei 45 campi e 37 ruoli semantici
+      alignment.py         # Allineamento geometrico/testuale dei valori revisionati sui token OCR
+      dataset.py           # Lettura revisione Excel v3.1, supervisione BIO, audit anti-leakage e manifest
+      model.py             # Chunking 512 token, augmentation, training LiLT, selezione checkpoint e inferenza CPU/GPU
+      evaluation.py        # Ricostruzione rigorosa dei 45 campi e metriche per campo/ruolo/split
+      modal_train.py       # Esecuzione GPU limitata su Modal e download del modello CPU
+      README.md            # Guida operativa per la rigenerazione del dataset e l'addestramento
   tests/                   # Suite pytest (motore, edge-agent, classificatore DINOv2 e training LiLT)
-  mnt/data/
+  data/reference/
     dati.csv               # Ground truth - NON incluso nel repo, da procurarsi a parte
     screen *.png           # Screenshot di test (9 immagini, tracciate)
   docs/                    # Documentazione narrativa in italiano (INDEX.md) e ADR (docs/adr/)
@@ -280,7 +281,7 @@ poc-data-extraction/
 
 ## Ground truth CSV
 
-Il file `mnt/data/dati.csv` **non è versionato** (`/mnt` è in `.gitignore`): va ottenuto dal team e posizionato manualmente. La CLI non parte senza. Formato atteso (long format, 3 colonne):
+Il file `data/reference/dati.csv` **non è versionato** (`/data` è in `.gitignore`): va ottenuto dal team e posizionato manualmente. La CLI non parte senza. Formato atteso (long format, 3 colonne):
 
 ```
 Fotogramma,Denominazione da attribuire,Valore rilevato
@@ -296,6 +297,6 @@ screen 1,Tipo,BPI Mutui
 | `Denominazione da attribuire` | Nome del campo (es. "NDG", "Tipo contratto") |
 | `Valore rilevato` | Valore atteso per quel campo |
 
-Il loader (`load_ground_truth()` in `extraction/evaluation.py`) supporta nomi colonna alternativi: `Screenshot`/`Screen` per la colonna screen, `Campo`/`Field` per le chiavi, `Valore`/`Value` per i valori.
+Il loader (`load_ground_truth()` in `src/extraction/evaluation.py`) supporta nomi colonna alternativi: `Screenshot`/`Screen` per la colonna screen, `Campo`/`Field` per le chiavi, `Valore`/`Value` per i valori.
 
 Per aggiungere nuovi screenshot: inserire le righe nel CSV e posizionare l'immagine `.png` nella stessa directory con nome corrispondente alla colonna `Fotogramma`.
