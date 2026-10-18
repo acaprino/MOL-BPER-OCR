@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "updated_at_utc": "2026-10-18T16:40:34Z",
+  "head": "1e63322",
+  "scope": "Phase 1 of docs/next-ver-plan.md completed on Modal: A1-A3 scored, A0 control, stop/go measured",
+  "current_report": "runs/2026-10-18-phase1-modal-ocr/report.md",
+  "previous_state": "runs/2026-10-18-phase1-modal-ocr/analysis-state-before.json",
+  "previous_report": "runs/2026-10-18-phase1-ocr/report.md",
+  "covered_uncommitted_files": [
+    "src/training/ocr_runner.py",
+    "src/training/modal_ocr.py",
+    "tests/test_training_ocr_runner.py",
+    "src/training/README.md",
+    "CLAUDE.md",
+    ".gitignore",
+    ".codebase-xray/runs/2026-10-18-phase1-modal-ocr/",
+    ".codebase-xray/analysis-state.json"
+  ],
+  "unrelated_uncommitted_files": [
+    "uv.lock"
+  ],
+  "document_sha256": {
+    "docs/next-ver-plan.md": "d0423bcdfe125fe8a89872d4f6862a5dfc99ee2968f77f02f6abd055fac719c7"
+  },
+  "documentation_status": "plan unchanged in this record; Phase 1 stop/go measured on all of A0-A4: none passes val G1 and no combination can (130/133 ceiling); plan amendment (G1 population, note oracle R39, A1 as provisional base) pending the user's decision; resilience_and_coverage_blocking",
+  "runtime_resilience_status": "not_verified",
+  "full_suite": {
+    "command": ".venv\\Scripts\\python.exe -m pytest tests -q -p no:cacheprovider",
+    "python_version": "3.11.15",
+    "exit_code": 0,
+    "summary": "494 passed, 3 warnings in 39.35s",
+    "executed_in": "runs/2026-10-18-phase1-modal-ocr",
+    "log": "runs/2026-10-18-phase1-modal-ocr/pytest-full.txt"
+  },
+  "fast_lane": {
+    "command": ".venv\\Scripts\\python.exe tools\\check.py",
+    "python_version": "3.11.15",
+    "exit_code": 0,
+    "summary": "421 passed, 18 deselected in 43.28s",
+    "executed_in": "runs/2026-10-18-venv-dependencies (previous result, not re-executed)",
+    "log": "runs/2026-10-18-venv-dependencies/pytest-fast.txt"
+  },
+  "environment_notes": [
+    ".venv runs Python 3.11.15 (app and tests); .venv-ocr runs Python 3.13.14 from requirements-ocr.txt (rapidocr 3.9.2, onnxruntime 1.30.0; gitignored)",
+    "The session exports HTTPS_PROXY=http://127.0.0.1:18789, which the Modal client cannot traverse; Modal commands need HTTPS_PROXY/HTTP_PROXY unset",
+    "uv.lock is untracked and was left untouched; pyproject.toml declares no dependencies, so a bare uv sync empties .venv"
+  ],
+  "history_note": "Earlier scoped records stay as history; the reconciliation figures are in runs/2026-10-18-phase0-reconciliation. Gates G1-G8 remain open; a green suite is not evidence for them.",
+  "phase0": {
+    "a0_reproduced": "113/113 screens identical to cache e261c05b (rapidocr 3.9.2, onnxruntime 1.30.0, Python 3.13.14 in .venv-ocr)",
+    "bundle_rebuild": "labels, texts, alignment, coverage identical; examples.json x coordinates differ (1565 <=1e-6, 2 by 3px); fingerprint beca470c vs 469c26d1; open (R21)",
+    "b0_current_bundle_val": {
+      "strict": "124/146",
+      "fidi_non_null": "19/25",
+      "soggetti_non_null": "15/15",
+      "per_practice": {
+        "51659595": "52/72",
+        "52126316": "72/74"
+      },
+      "hallucinated": 4
+    },
+    "b0_current_bundle_test_regression_only": {
+      "strict": "144/192",
+      "fidi_non_null": "25/60",
+      "soggetti_non_null": "19/21"
+    },
+    "gates_on_val": {
+      "G4_min_129": "not met",
+      "G4_target_135": "not met",
+      "G5_fidi_23": "not met",
+      "G5_soggetti_14": "met",
+      "G1_131": "not met (124/133)"
+    },
+    "pending_steps": [
+      "G8: collect and review new practices per plan section 5.4 (outside the repository; needs the screenshot provider)",
+      "R21 rebuild reproducibility cause",
+      "More than 8 LiLT epochs: not run (bound in src/training/modal_train.py; paid run needs explicit approval)",
+      "A2 3-screen cost sample: not run (memory); restart only when the user asks"
+    ],
+    "field_evaluation": "evaluate_field_values() added (R24); role path unchanged on real B0 predictions (R25); field path matches role path record by record, negative control fails (R26)",
+    "runner": "src/training/ocr_runner.py (R27); A0 through the runner reproduces the bundle cache, 12/12 checks (R28); G8 plan 9/9 (R29); lotto partly exposed to page-classifier fixtures (R30)"
+  },
+  "plan_figure_checks": {
+    "script": "runs/2026-10-18-phase0-baseline/check_plan_reconciled.py",
+    "summary": "28/28 passed; negative control 26/28",
+    "log": "runs/2026-10-18-phase0-baseline/checks-plan.txt"
+  },
+  "phase1": {
+    "A0": "complete locally and on Modal (same texts 113/113); val OCR 124/133; 6->8 11; 6.14 s mean on the loaded desktop, 1.86 s on one Modal container",
+    "A1": "complete on Modal; val OCR 126/133 (best); NDG 26/26, rapporto 29/29, 6->8 0; Modal timing bimodal (5.3-8.2 or 39.6-44.7 s/screen)",
+    "A2": "complete on Modal; val OCR 124/133; train 582/613 (best); NDG 26/26, rapporto 29/29, 6->8 0",
+    "A3": "complete on Modal; val OCR 121/133; tiny detector loses tipo on 11 screens; 6->8 0",
+    "A4": "complete locally; val OCR 120/133, rapporto 18/29, 6->8 19; G3 fails",
+    "outcome": "no configuration passes val G1; 3 val values (tipo BMB, two long notes) read exactly by none, so no combination can (ceiling 130/133); promotion stops on measurement; supersedes the open stop/go of 1e63322",
+    "open": [
+      "R39 note oracle drops edge punctuation (src/training/alignment.py:642)",
+      "R40 G6 of the medium recognizer needs target hardware",
+      "R36 A0 G6 not established",
+      "plan amendment pending the user's decision"
+    ]
+  }
+}

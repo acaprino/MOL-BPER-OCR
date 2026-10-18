@@ -1,20 +1,21 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-10-18T16:40:34Z",
-  "head": "1e63322",
-  "scope": "Phase 1 of docs/next-ver-plan.md completed on Modal: A1-A3 scored, A0 control, stop/go measured",
-  "current_report": "runs/2026-10-18-phase1-modal-ocr/report.md",
-  "previous_state": "runs/2026-10-18-phase1-modal-ocr/analysis-state-before.json",
-  "previous_report": "runs/2026-10-18-phase1-ocr/report.md",
+  "updated_at_utc": "2026-10-18T19:05:00Z",
+  "head": "a043d29",
+  "scope": "Stage B measured on the stage A candidates: LiLT on A1 and A2 OCR, three seeds of A0 and A1; FIDI multi-row diagnosis",
+  "current_report": "runs/2026-10-18-phase2-lilt-on-a1-a2/report.md",
+  "previous_state": "runs/2026-10-18-phase2-lilt-on-a1-a2/analysis-state-before.json",
+  "previous_report": "runs/2026-10-18-phase1-modal-ocr/report.md",
   "covered_uncommitted_files": [
-    "src/training/ocr_runner.py",
-    "src/training/modal_ocr.py",
-    "tests/test_training_ocr_runner.py",
-    "src/training/README.md",
-    "CLAUDE.md",
-    ".gitignore",
-    ".codebase-xray/runs/2026-10-18-phase1-modal-ocr/",
-    ".codebase-xray/analysis-state.json"
+    ".codebase-xray/analysis-state.json",
+    ".codebase-xray/runs/2026-10-18-phase2-lilt-on-a1-a2/",
+    "data/README.md",
+    "data/training/runs/lilt-v3.1-20261018-A1-ocr/",
+    "data/training/runs/lilt-v3.1-20261018-A2-ocr/",
+    "data/training/runs/lilt-v3.1-20261018-A0-ocr-seed11/",
+    "data/training/runs/lilt-v3.1-20261018-A0-ocr-seed23/",
+    "data/training/runs/lilt-v3.1-20261018-A1-ocr-seed11/",
+    "data/training/runs/lilt-v3.1-20261018-A1-ocr-seed23/"
   ],
   "unrelated_uncommitted_files": [
     "uv.lock"
@@ -29,7 +30,7 @@
     "python_version": "3.11.15",
     "exit_code": 0,
     "summary": "494 passed, 3 warnings in 39.35s",
-    "executed_in": "runs/2026-10-18-phase1-modal-ocr",
+    "executed_in": "runs/2026-10-18-phase1-modal-ocr (previous result; no source changed in phase2)",
     "log": "runs/2026-10-18-phase1-modal-ocr/pytest-full.txt"
   },
   "fast_lane": {
@@ -97,6 +98,45 @@
       "R40 G6 of the medium recognizer needs target hardware",
       "R36 A0 G6 not established",
       "plan amendment pending the user's decision"
+    ]
+  },
+  "phase2": {
+    "protocol": "training.modal_train unchanged (L4, <=8 epochs, 2 variants, patience 2, epoch on val whole-field accuracy); each run decoded on its own OCR examples",
+    "val_strict": {
+      "A0": {
+        "s7": "124/146",
+        "s11": "131/146",
+        "s23": "128/146"
+      },
+      "A1": {
+        "s7": "134/146",
+        "s11": "133/146",
+        "s23": "133/146"
+      },
+      "A2": {
+        "s7": "123/146"
+      }
+    },
+    "val_fidi_g5": {
+      "A0": "19-21/25",
+      "A1": "22/25 every seed",
+      "needed": 23
+    },
+    "val_soggetti_g5": {
+      "A0": "14-15/15",
+      "A1": "12-13/15",
+      "needed": 14
+    },
+    "outcome": "A1 + LiLT beats A0 + LiLT under every seed (R41); passes G4 minimum, misses target 135 by 1-2; G5 Fidi fails everywhere; A1 loses Soggetti on val (R42)",
+    "open": [
+      "R43 test FIDI multi-row tables (validation has none)",
+      "R44 one-row FIDI decoder constraint: val unchanged, test +4..+18 (simulated, test seen)",
+      "R45 8-epoch cap binding on 6/7 runs",
+      "R42 'Di' cell boundary in Soggetti"
+    ],
+    "evidence": [
+      "runs/2026-10-18-phase2-lilt-on-a1-a2/lilt-compare-seeds.txt",
+      "runs/2026-10-18-phase2-lilt-on-a1-a2/fidi-row-simulation.txt"
     ]
   }
 }

@@ -1,0 +1,37 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/alfio-caprino/main/ap-x5YxB0iZTIKUkKdpIT5dAj
+✓ Created objects.
+├── ✓ Uploaded PythonPackage:training
+├── ✓ Uploaded PythonPackage:training
+└── ✓ Created Function run_training.
+
+[1ALoading weights:   0%|          | 0/398 [00:00<?, ?it/s]
+[1ALoading weights:  35%|███▍      | 138/398 [00:00<00:00, 1368.44it/s]
+[1ALoading weights:  71%|███████▏  | 284/398 [00:00<00:00, 1417.33it/s]Loading weights: 100%|██████████| 398/398 [00:00<00:00, 1473.06it/s]
+[transformers] [1mLiltForTokenClassification LOAD REPORT[0m from: /root/.cache/huggingface/hub/models--nielsr--lilt-xlm-roberta-base/snapshots/39325597c4aa6698a50323f444013287bae52e67
+Key                 | Status     | 
+--------------------+------------+-
+pooler.dense.bias   | UNEXPECTED | 
+pooler.dense.weight | UNEXPECTED | 
+classifier.bias     | MISSING    | 
+classifier.weight   | MISSING    | 
+
+Notes:
+- UNEXPECTED:   can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (789 > 512). Running this sequence through the model will result in indexing errors
+{"epoch": 1, "loss": 1.970859, "val_f1": 0.40540540540540543, "val_non_note_f1": 0.0, "val_field_accuracy": 0.08904109589041095, "val_credit_field_accuracy": 0.0}
+{"epoch": 2, "loss": 0.50211, "val_f1": 0.775, "val_non_note_f1": 0.2830188679245283, "val_field_accuracy": 0.14383561643835616, "val_credit_field_accuracy": 0.0}
+{"epoch": 3, "loss": 0.234725, "val_f1": 0.9252173913043479, "val_non_note_f1": 0.802784222737819, "val_field_accuracy": 0.5821917808219178, "val_credit_field_accuracy": 0.5333333333333333}
+{"epoch": 4, "loss": 0.111647, "val_f1": 0.9793459552495697, "val_non_note_f1": 0.9480812641083521, "val_field_accuracy": 0.815068493150685, "val_credit_field_accuracy": 0.8}
+{"epoch": 5, "loss": 0.065317, "val_f1": 0.9897435897435898, "val_non_note_f1": 0.975609756097561, "val_field_accuracy": 0.8767123287671232, "val_credit_field_accuracy": 0.8333333333333334}
+{"epoch": 6, "loss": 0.046644, "val_f1": 0.9897435897435898, "val_non_note_f1": 0.975609756097561, "val_field_accuracy": 0.8767123287671232, "val_credit_field_accuracy": 0.8333333333333334}
+{"epoch": 7, "loss": 0.033328, "val_f1": 0.9897260273972602, "val_non_note_f1": 0.9755011135857461, "val_field_accuracy": 0.8767123287671232, "val_credit_field_accuracy": 0.8666666666666667}
+
+[1AWriting model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+[1AWriting model shards: 100%|██████████| 1/1 [00:02<00:00,  2.09s/it]Writing model shards: 100%|██████████| 1/1 [00:02<00:00,  2.09s/it]
+{"best_epoch": 5, "train_seconds": 275.317, "val_f1": 0.9897435897435898, "test_f1": 0.9184210526315789, "remote_model_dir": "model_v3_1_f478582ad6e2adf1", "local_model_dir": "D:\\Projects\\poc-data-extraction\\data\\training\\runs\\lilt-v3.1-20261018-A0-ocr-seed23\\cpu_model"}
+✓ App completed. View run at 
+https://modal.com/apps/alfio-caprino/main/ap-x5YxB0iZTIKUkKdpIT5dAj
+exit 0
