@@ -1,0 +1,32 @@
+{
+  "changed": {
+    "CLAUDE.md": "9fd1443c92cec2104e11560e8783697fbd884352255a9e66848d5fdd14406793",
+    ".gitignore": "2f07d02de3fc8d1ca8b92796058affff918e34ae9458f7d5d20e0674f99d684e"
+  },
+  "run_outputs": {
+    "A0-pc4.report.txt": "8b84fbc09299779969adc5f4c241e84624c480c7bc6c66b389ebde3b0b9f1e06",
+    "A4-pc4.report.txt": "78fba051c81c3684708dce42262b8f45c5938a3a8f63e56b42381a3e5d067f24",
+    "analysis-state-before.json": "438a7cd258a4c7661492821bc3232540e8d8a6148e2b54ad053e15e5fd7e7c20",
+    "check-stage-a.txt": "714a834c105097acbe5ec4cf93e2525419e3f192959f6413b40a12d113d5b99a",
+    "check_stage_a.py": "3a574df398498e9d442b09ed4d46f7fc5142fa3c2e4c6e8bf595982c3421c114",
+    "claude-md.diff": "da2580038789f220233a8b89f4ece8e81ca873336375205c32ada06bf9953f02",
+    "compare_stage_a.py": "5ad0acda62b8c81e89a7d7ae4cacbd835e19d4eddf8e9a404e8c2865b3397bdd",
+    "cost_sample.py": "5113dd29a6620ca795d9112b69777a8a0a97e7b04add506a8a7d44c8acea14bb",
+    "report.md": "40fa83a350b1e9d9d41518c0ad6b7b6b9bdaa1eacb84f415b1883cabdd0196e9",
+    "run_stage_a.sh": "e0dc44acfbf470d3d05f0360dfa5a6e8b8037b088d063c76b9aa0ed8566a1ad4",
+    "stage-a-2.log": "1c79e860f37a345ef31a54b198a27a5c651b07a621d124470707fc7ac27545cf",
+    "stage-a-compare.json": "5c6bcd604e7b272c75912eecf93f9a388611b4c35c3bea66db7261d3f75c21c5",
+    "stage-a-compare.txt": "a573a0e4b5f26b0c668a74b51c689d12c5493174ce0a1f17755e127ec42c72d8",
+    "stage-a.log": "3f9426748dc59ebd9427c80b2c2476607f45bd3612cdafe213b4d5dbe22ab7ae"
+  },
+  "run_caches": {
+    "A0-pc4/cache.json": "606b5c8b6016a1175d8dac73cb91fb7d55df4e71ab8bf9a281f987325bd0b7a3",
+    "A4-pc4/cache.json": "72f709a53521a9714c5dd64337d667bc6cc9e711ae0316f3880447970267061e"
+  },
+  "run_manifests": {
+    "A0-pc4/manifest.json": "d8239a2612c91bd66f90577bc3a1956f21442618aa7b71f989bb03b248c91b09",
+    "A1-pc4/manifest.json": "b1ee0e572ab39ada75fd296469c4bee779810aa0eca8504ca9658d20429f3d01",
+    "A3-pc4-cost-sample3/manifest.json": "db36e73930c647b0eb943f317cbf87ff1fe794b69baa4667eb99d23e50ce7341",
+    "A4-pc4/manifest.json": "4efa3f186a30d87a0ea3b22f5a1856a832d565e0cc39e0c3f979dc4ffee2a87f"
+  }
+}

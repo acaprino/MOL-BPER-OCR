@@ -377,8 +377,9 @@ Tkinter GUI and the edge-agent work without a CSV (evaluation is optional there)
 Do not restore the older `dati.csv` from commit `e8c677c`: it describes 5 older screenshots of the
 old PEF UI (practice TICCHI/CABRAS, ~2150px wide), not the current 9 "Nuova PEF 3.0" screens
 (practice LUNARDI). The first real-provider baseline (`gemini-3.8-flash`, 3 runs, 93.5-94.8%,
-~$0.04/screen) and the proposed acceptance threshold live in
-`.codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`.
+~$0.04/screen) and the proposed acceptance threshold were recorded in
+`.tritech/codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`, removed from the working tree by
+`d9462a4`; read them from history (`git show d939ea5:<path>`).
 
 **Field classification** -- `classify_field()` labels each extracted field as one of:
 - **OK** -- matches ground truth
@@ -510,7 +511,7 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
 | `docs/` | Narrative codebase guide in Italian (start at `docs/INDEX.md`) |
 | `docs/adr/` | Architecture Decision Records in Italian, one decision per file, numbered and immutable once accepted (start at `docs/adr/README.md`). A decision that changes behaviour gets an ADR *and* a test; the ADR explains why, the test keeps it true |
 | `src/training/README.md` | Operational guide in Italian for preparing the reviewed v3.1 dataset and running offline LiLT training |
-| `.tritech/codebase-xray/` | Technical X-ray analysis, historical provider/OCR baselines, and reproducible verification checks |
+| `.codebase-xray/` | Current X-ray: `analysis-state.json` plus one directory per scoped run under `runs/` (reports, checks that can fail, hashes, test logs). The older analyses and provider/OCR baselines under `.tritech/codebase-xray/` were removed by `d9462a4` and survive in git history (last at `d939ea5`) |
 
 ## Dependencies
 

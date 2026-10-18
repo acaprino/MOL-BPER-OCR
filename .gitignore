@@ -37,6 +37,9 @@ __pycache__/
 *.pyc
 .venv/
 .venv-ocr/
+
+# Derived datasets of OCR comparison runs, rebuilt by `python -m training.ocr_runner report`
+.codebase-xray/runs/*/*/dataset/examples.json
 .pytest_cache/
 .ruff_cache/
 .tritech/local/

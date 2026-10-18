@@ -1,0 +1,3 @@
+cfg   trainOCR   valOCR  tvNDG  tvRAP  6->8  mean_s  p95_s  max_s    MB  G1 G3  +/- vs A0
+A0     562/613  124/133  21/26  28/29    11    6.14   8.76  11.19   585  no ok  +0/-0
+A4     553/613  120/133  21/26  18/29    19    5.46   7.55   9.23   498  no no  +26/-39

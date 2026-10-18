@@ -1,0 +1,13 @@
+PASS A0 train OCR non-null 562/613 
+PASS A0 val OCR non-null 124/133 
+PASS A0 train+val subject_ndg 21/26 
+PASS A0 train+val rapporto 28/29 
+PASS A0 has no historical test row in the comparison 
+PASS A4 train OCR non-null 553/613 
+PASS A4 val OCR non-null 120/133 
+PASS A4 train+val subject_ndg 21/26 
+PASS A4 train+val rapporto 18/29 
+PASS A4 has no historical test row in the comparison 
+PASS A0 figures quoted in the report ('562/613', '124/133', '28/29') 
+PASS A4 figures quoted in the report ('553/613', '120/133', '18/29') 
+12/12 checks passed

@@ -1,0 +1,32 @@
+== A4 ocr start 2026-10-18T12:24:23Z
+10/113 51531667__Elenco_dx 3.96s
+20/113 51531667__Note 7.35s
+30/113 52060489__Elenco 4.20s
+40/113 52062600__Elenco_tooltip1 4.61s
+50/113 52062600__Scheda_Privati_4 5.13s
+60/113 52067184__Soggetti 4.22s
+70/113 52080223__Elenco 4.28s
+80/113 52102599__Elenco_tooltip1 4.27s
+90/113 52126316__Elenco_tooltip1 4.38s
+100/113 52130861__Elenco_tooltip2 4.70s
+110/113 52135039__GestioneFidi_Tooltip1 6.18s
+113/113 52135039__Soggetti 4.95s
+{
+  "status": "complete",
+  "failed": {},
+  "pending": [],
+  "timing": {
+    "screens": 113,
+    "mean": 5.464884955752212,
+    "median": 5.397,
+    "p95": 7.5548,
+    "max": 9.226,
+    "sessions": 1,
+    "scope": "seconds per screen include PNG decoding; the warm-up read and engine loading are excluded"
+  }
+}
+== A4 report start 2026-10-18T12:34:48Z
+== A4 report done 2026-10-18T12:36:10Z
+== all done 2026-10-18T12:36:10Z
+== A3 cost sample start 2026-10-18T12:36:10Z
+== A3 cost sample FAILED
