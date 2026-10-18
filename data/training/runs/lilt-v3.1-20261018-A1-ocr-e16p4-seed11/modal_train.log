@@ -1,0 +1,46 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/alfio-caprino/main/ap-evpxXwaGjhkddDRwb7e3oo
+✓ Created objects.
+├── ✓ Uploaded PythonPackage:training
+├── ✓ Uploaded PythonPackage:training
+└── ✓ Created Function run_training.
+
+[1ALoading weights:   0%|          | 0/398 [00:00<?, ?it/s]
+[1ALoading weights:  43%|████▎     | 173/398 [00:00<00:00, 1723.69it/s]
+[1ALoading weights:  87%|████████▋ | 346/398 [00:00<00:00, 1344.43it/s]
+[1ALoading weights: 100%|██████████| 398/398 [00:00<00:00, 1444.94it/s]
+[transformers] [1mLiltForTokenClassification LOAD REPORT[0m from: /root/.cache/huggingface/hub/models--nielsr--lilt-xlm-roberta-base/snapshots/39325597c4aa6698a50323f444013287bae52e67
+Key                 | Status     | 
+--------------------+------------+-
+pooler.dense.bias   | UNEXPECTED | 
+pooler.dense.weight | UNEXPECTED | 
+classifier.bias     | MISSING    | 
+classifier.weight   | MISSING    | 
+
+Notes:
+- UNEXPECTED:   can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (770 > 512). Running this sequence through the model will result in indexing errors
+{"epoch": 1, "loss": 2.172085, "val_f1": 0.6757894736842105, "val_non_note_f1": 0.0, "val_field_accuracy": 0.08904109589041095, "val_credit_field_accuracy": 0.0}
+{"epoch": 2, "loss": 0.644816, "val_f1": 0.749003984063745, "val_non_note_f1": 0.08921933085501858, "val_field_accuracy": 0.08904109589041095, "val_credit_field_accuracy": 0.0}
+{"epoch": 3, "loss": 0.349017, "val_f1": 0.8799298860648553, "val_non_note_f1": 0.6666666666666666, "val_field_accuracy": 0.3904109589041096, "val_credit_field_accuracy": 0.06666666666666667}
+{"epoch": 4, "loss": 0.173502, "val_f1": 0.9865319865319865, "val_non_note_f1": 0.9650655021834061, "val_field_accuracy": 0.8561643835616438, "val_credit_field_accuracy": 0.8666666666666667}
+{"epoch": 5, "loss": 0.089875, "val_f1": 0.9899665551839465, "val_non_note_f1": 0.9742489270386266, "val_field_accuracy": 0.8972602739726028, "val_credit_field_accuracy": 0.9}
+{"epoch": 6, "loss": 0.050606, "val_f1": 0.9957947855340622, "val_non_note_f1": 0.9891067538126361, "val_field_accuracy": 0.9246575342465754, "val_credit_field_accuracy": 0.9}
+{"epoch": 7, "loss": 0.035939, "val_f1": 0.995787700084246, "val_non_note_f1": 0.9890590809628009, "val_field_accuracy": 0.9246575342465754, "val_credit_field_accuracy": 0.9}
+{"epoch": 8, "loss": 0.019869, "val_f1": 0.9966329966329966, "val_non_note_f1": 0.9912663755458515, "val_field_accuracy": 0.9246575342465754, "val_credit_field_accuracy": 0.9}
+{"epoch": 9, "loss": 0.014781, "val_f1": 0.9974811083123426, "val_non_note_f1": 0.9934924078091106, "val_field_accuracy": 0.9315068493150684, "val_credit_field_accuracy": 0.9}
+{"epoch": 10, "loss": 0.011041, "val_f1": 0.9974811083123426, "val_non_note_f1": 0.9934924078091106, "val_field_accuracy": 0.9315068493150684, "val_credit_field_accuracy": 0.9}
+{"epoch": 11, "loss": 0.009885, "val_f1": 0.9991603694374476, "val_non_note_f1": 0.9978308026030369, "val_field_accuracy": 0.9383561643835616, "val_credit_field_accuracy": 0.9}
+{"epoch": 12, "loss": 0.007237, "val_f1": 0.995787700084246, "val_non_note_f1": 0.9912663755458515, "val_field_accuracy": 0.9246575342465754, "val_credit_field_accuracy": 0.9}
+{"epoch": 13, "loss": 0.00597, "val_f1": 0.9949409780775716, "val_non_note_f1": 0.9890590809628009, "val_field_accuracy": 0.9246575342465754, "val_credit_field_accuracy": 0.9}
+{"epoch": 14, "loss": 0.00638, "val_f1": 0.9974811083123426, "val_non_note_f1": 0.9956709956709957, "val_field_accuracy": 0.9383561643835616, "val_credit_field_accuracy": 0.9}
+{"epoch": 15, "loss": 0.004912, "val_f1": 0.9949494949494949, "val_non_note_f1": 0.9891067538126361, "val_field_accuracy": 0.9315068493150684, "val_credit_field_accuracy": 0.9}
+
+[1AWriting model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+[1AWriting model shards: 100%|██████████| 1/1 [00:01<00:00,  1.50s/it]Writing model shards: 100%|██████████| 1/1 [00:01<00:00,  1.50s/it]
+{"best_epoch": 11, "train_seconds": 601.878, "val_f1": 0.9991603694374476, "test_f1": 0.9542036910457963, "remote_model_dir": "model_v3_1_f2d1288d544af274", "local_model_dir": "D:\\Projects\\poc-data-extraction\\data\\training\\runs\\lilt-v3.1-20261018-A1-ocr-e16p4-seed11\\cpu_model"}
+✓ App completed. View run at 
+https://modal.com/apps/alfio-caprino/main/ap-evpxXwaGjhkddDRwb7e3oo
+exit 0

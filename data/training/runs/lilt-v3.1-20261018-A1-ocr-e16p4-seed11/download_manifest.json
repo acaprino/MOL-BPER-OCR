@@ -1,0 +1,50 @@
+{
+  "volume": "bper-lilt-spike",
+  "remote_model_dir": "model_v3_1_f2d1288d544af274",
+  "files": {
+    "config.json": {
+      "bytes": 2800,
+      "sha256": "0961e0fa0c46453307ff6a5dcd7e9beaf76af7d9a72ec514fb9b03cfbf577f3f"
+    },
+    "labelmap.json": {
+      "bytes": 871,
+      "sha256": "5d278eee16e19449e0e44eabea1cd0ee9d2caa84e74fcd7186c2924546a39b17"
+    },
+    "metrics.json": {
+      "bytes": 13830,
+      "sha256": "4284c33da0cbbe9f7b199703d7c3ccdfebb09cd9a4eefefa71fdc4f35a2c75c4"
+    },
+    "model.safetensors": {
+      "bytes": 1134412212,
+      "sha256": "cc896eede0c7695e1578e8ddc75bd3a740bc5c08d88ae3a49ee9ead7721f5bd9"
+    },
+    "splits.json": {
+      "bytes": 4171,
+      "sha256": "094087eaf71bea7d5cf33b0bb5d6efdb6c7393d9a507d63730adf3dbdd39db63"
+    },
+    "test_predictions.json": {
+      "bytes": 200683,
+      "sha256": "2f6d3f1c9137a1b3301b650cbee12e470710967775e415bd9830a799c0ef29c5"
+    },
+    "tokenizer.json": {
+      "bytes": 17082734,
+      "sha256": "3a56def25aa40facc030ea8b0b87f3688e4b3c39eb8b45d5702b3a1300fe2a20"
+    },
+    "tokenizer_config.json": {
+      "bytes": 342,
+      "sha256": "0f078f36a89267073a1e44353823c663117b1e6dfbbda07680cdca9bbe94ba61"
+    },
+    "training_log.json": {
+      "bytes": 3127,
+      "sha256": "7458b8dee1c43904e72a496d7741b3071993179080e687dbb174520ee06911d2"
+    },
+    "training_manifest.json": {
+      "bytes": 6326,
+      "sha256": "54252e61abce029c2c386c9d87e35eb04bdd99a11f156fe101028088fed8b343"
+    },
+    "validation_predictions.json": {
+      "bytes": 124416,
+      "sha256": "0a5a1501abbce4089597359b77dd4f06c670abede6e8d876197cbaf1775dca64"
+    }
+  }
+}

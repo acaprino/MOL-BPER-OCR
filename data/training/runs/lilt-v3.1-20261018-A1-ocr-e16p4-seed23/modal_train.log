@@ -1,0 +1,44 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/alfio-caprino/main/ap-bBjY4bZ8aovkREZIT15lOM
+✓ Created objects.
+├── ✓ Uploaded PythonPackage:training
+├── ✓ Uploaded PythonPackage:training
+└── ✓ Created Function run_training.
+
+[1ALoading weights:   0%|          | 0/398 [00:00<?, ?it/s]
+[1ALoading weights:  42%|████▏     | 168/398 [00:00<00:00, 1638.19it/s]
+[1ALoading weights:  83%|████████▎ | 332/398 [00:00<00:00, 1565.08it/s]
+[1ALoading weights: 100%|██████████| 398/398 [00:00<00:00, 1599.93it/s]
+[transformers] [1mLiltForTokenClassification LOAD REPORT[0m from: /root/.cache/huggingface/hub/models--nielsr--lilt-xlm-roberta-base/snapshots/39325597c4aa6698a50323f444013287bae52e67
+Key                 | Status     | 
+--------------------+------------+-
+pooler.dense.bias   | UNEXPECTED | 
+pooler.dense.weight | UNEXPECTED | 
+classifier.weight   | MISSING    | 
+classifier.bias     | MISSING    | 
+
+Notes:
+- UNEXPECTED:   can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:      those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+[transformers] Token indices sequence length is longer than the specified maximum sequence length for this model (770 > 512). Running this sequence through the model will result in indexing errors
+{"epoch": 1, "loss": 2.377873, "val_f1": 0.013333333333333334, "val_non_note_f1": 0.0, "val_field_accuracy": 0.08904109589041095, "val_credit_field_accuracy": 0.0}
+{"epoch": 2, "loss": 0.615933, "val_f1": 0.6695727986050567, "val_non_note_f1": 0.09852216748768473, "val_field_accuracy": 0.08904109589041095, "val_credit_field_accuracy": 0.0}
+{"epoch": 3, "loss": 0.332557, "val_f1": 0.9115646258503401, "val_non_note_f1": 0.7685393258426966, "val_field_accuracy": 0.5342465753424658, "val_credit_field_accuracy": 0.4666666666666667}
+{"epoch": 4, "loss": 0.15513, "val_f1": 0.9679054054054054, "val_non_note_f1": 0.9162995594713657, "val_field_accuracy": 0.726027397260274, "val_credit_field_accuracy": 0.9}
+{"epoch": 5, "loss": 0.073639, "val_f1": 0.9805579036348268, "val_non_note_f1": 0.9515418502202643, "val_field_accuracy": 0.8287671232876712, "val_credit_field_accuracy": 0.9}
+{"epoch": 6, "loss": 0.039989, "val_f1": 0.9847198641765704, "val_non_note_f1": 0.9621380846325167, "val_field_accuracy": 0.863013698630137, "val_credit_field_accuracy": 0.9}
+{"epoch": 7, "loss": 0.023362, "val_f1": 0.9811965811965812, "val_non_note_f1": 0.9523809523809523, "val_field_accuracy": 0.8698630136986302, "val_credit_field_accuracy": 0.9}
+{"epoch": 8, "loss": 0.016871, "val_f1": 0.9915824915824916, "val_non_note_f1": 0.9781659388646288, "val_field_accuracy": 0.910958904109589, "val_credit_field_accuracy": 0.9}
+{"epoch": 9, "loss": 0.012693, "val_f1": 0.9915540540540541, "val_non_note_f1": 0.9802197802197802, "val_field_accuracy": 0.9041095890410958, "val_credit_field_accuracy": 0.9}
+{"epoch": 10, "loss": 0.010903, "val_f1": 0.988135593220339, "val_non_note_f1": 0.9711751662971175, "val_field_accuracy": 0.8972602739726028, "val_credit_field_accuracy": 0.9}
+{"epoch": 11, "loss": 0.008074, "val_f1": 0.9872988992379339, "val_non_note_f1": 0.9690265486725663, "val_field_accuracy": 0.8972602739726028, "val_credit_field_accuracy": 0.9}
+{"epoch": 12, "loss": 0.005981, "val_f1": 0.9873203719357565, "val_non_note_f1": 0.9668874172185431, "val_field_accuracy": 0.8904109589041096, "val_credit_field_accuracy": 0.9}
+
+[1AWriting model shards:   0%|          | 0/1 [00:00<?, ?it/s]
+[1AWriting model shards: 100%|██████████| 1/1 [00:01<00:00,  1.50s/it]
+[1AWriting model shards: 100%|██████████| 1/1 [00:01<00:00,  1.50s/it]
+{"best_epoch": 8, "train_seconds": 478.79, "val_f1": 0.9915824915824916, "test_f1": 0.9303251493032515, "remote_model_dir": "model_v3_1_7c793cb83ed85718", "local_model_dir": "D:\\Projects\\poc-data-extraction\\data\\training\\runs\\lilt-v3.1-20261018-A1-ocr-e16p4-seed23\\cpu_model"}
+✓ App completed. View run at 
+https://modal.com/apps/alfio-caprino/main/ap-bBjY4bZ8aovkREZIT15lOM
+exit 0

@@ -1,0 +1,98 @@
+[
+  {
+    "epoch": 1,
+    "loss": 2.377873,
+    "val_f1": 0.013333333333333334,
+    "val_non_note_f1": 0.0,
+    "val_field_accuracy": 0.08904109589041095,
+    "val_credit_field_accuracy": 0.0
+  },
+  {
+    "epoch": 2,
+    "loss": 0.615933,
+    "val_f1": 0.6695727986050567,
+    "val_non_note_f1": 0.09852216748768473,
+    "val_field_accuracy": 0.08904109589041095,
+    "val_credit_field_accuracy": 0.0
+  },
+  {
+    "epoch": 3,
+    "loss": 0.332557,
+    "val_f1": 0.9115646258503401,
+    "val_non_note_f1": 0.7685393258426966,
+    "val_field_accuracy": 0.5342465753424658,
+    "val_credit_field_accuracy": 0.4666666666666667
+  },
+  {
+    "epoch": 4,
+    "loss": 0.15513,
+    "val_f1": 0.9679054054054054,
+    "val_non_note_f1": 0.9162995594713657,
+    "val_field_accuracy": 0.726027397260274,
+    "val_credit_field_accuracy": 0.9
+  },
+  {
+    "epoch": 5,
+    "loss": 0.073639,
+    "val_f1": 0.9805579036348268,
+    "val_non_note_f1": 0.9515418502202643,
+    "val_field_accuracy": 0.8287671232876712,
+    "val_credit_field_accuracy": 0.9
+  },
+  {
+    "epoch": 6,
+    "loss": 0.039989,
+    "val_f1": 0.9847198641765704,
+    "val_non_note_f1": 0.9621380846325167,
+    "val_field_accuracy": 0.863013698630137,
+    "val_credit_field_accuracy": 0.9
+  },
+  {
+    "epoch": 7,
+    "loss": 0.023362,
+    "val_f1": 0.9811965811965812,
+    "val_non_note_f1": 0.9523809523809523,
+    "val_field_accuracy": 0.8698630136986302,
+    "val_credit_field_accuracy": 0.9
+  },
+  {
+    "epoch": 8,
+    "loss": 0.016871,
+    "val_f1": 0.9915824915824916,
+    "val_non_note_f1": 0.9781659388646288,
+    "val_field_accuracy": 0.910958904109589,
+    "val_credit_field_accuracy": 0.9
+  },
+  {
+    "epoch": 9,
+    "loss": 0.012693,
+    "val_f1": 0.9915540540540541,
+    "val_non_note_f1": 0.9802197802197802,
+    "val_field_accuracy": 0.9041095890410958,
+    "val_credit_field_accuracy": 0.9
+  },
+  {
+    "epoch": 10,
+    "loss": 0.010903,
+    "val_f1": 0.988135593220339,
+    "val_non_note_f1": 0.9711751662971175,
+    "val_field_accuracy": 0.8972602739726028,
+    "val_credit_field_accuracy": 0.9
+  },
+  {
+    "epoch": 11,
+    "loss": 0.008074,
+    "val_f1": 0.9872988992379339,
+    "val_non_note_f1": 0.9690265486725663,
+    "val_field_accuracy": 0.8972602739726028,
+    "val_credit_field_accuracy": 0.9
+  },
+  {
+    "epoch": 12,
+    "loss": 0.005981,
+    "val_f1": 0.9873203719357565,
+    "val_non_note_f1": 0.9668874172185431,
+    "val_field_accuracy": 0.8904109589041096,
+    "val_credit_field_accuracy": 0.9
+  }
+]
