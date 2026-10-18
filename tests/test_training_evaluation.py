@@ -172,6 +172,33 @@ def test_subject_rows_decode_without_any_predicted_identifier() -> None:
     }
 
 
+def test_fidi_fields_decode_from_the_first_table_row_only() -> None:
+    example = _example(
+        [_word("F1", 0, 40), _word("159.431", 200, 40),
+         _word("F2", 0, 72), _word("70.000", 200, 72)],
+        ["n_fido", "importo_euro", "n_fido", "importo_euro"], {},
+    )
+    assert decode_fields(example, example["labels"]) == {"n_fido": "F1", "importo_euro": "159.431"}
+
+
+def test_wrapped_fidi_cell_stays_with_its_row() -> None:
+    example = _example(
+        [_word("F1", 0, 40), _word("034", 50, 34), _word("05518084", 50, 48),
+         _word("F2", 0, 72), _word("034", 50, 66), _word("05672856", 50, 80)],
+        ["n_fido", "rapporto", "rapporto", "n_fido", "rapporto", "rapporto"], {},
+    )
+    assert decode_fields(example, example["labels"])["rapporto"] == "034 05518084"
+
+
+def test_fidi_row_ends_at_an_unpredicted_next_fido_number() -> None:
+    example = _example(
+        [_word("F1", 0, 40), _word("159.431", 200, 40),
+         _word("F2", 0, 72), _word("70.000", 200, 72)],
+        ["n_fido", "importo_euro", "O", "importo_euro"], {},
+    )
+    assert decode_fields(example, example["labels"])["importo_euro"] == "159.431"
+
+
 def test_missing_subject_four_is_correctly_empty() -> None:
     example = _example(
         [_word("21310900", 0, 10)], ["sogg_ndg"],

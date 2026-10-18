@@ -64,6 +64,7 @@ tarati, e nessun test lo verificava.
 | [0020](0020-pagina-sorgente-separata-dal-gruppo-export.md) | Separare la pagina sorgente dal gruppo di esportazione | Accettato |
 | [0021](0021-dotenv-prima-del-motore-nella-gui-tkinter.md) | Caricare dotenv prima del motore nella GUI Tkinter | Accettato |
 | [0022](0022-addestramento-lilt-da-revisione-umana.md) | Addestrare LiLT da valori revisionati e pratiche separate | Accettato |
+| [0023](0023-campi-fidi-dalla-prima-riga-della-tabella.md) | Ricostruire i campi Fidi dalla prima riga della tabella | Accettato |
 
 ## Da scrivere
 

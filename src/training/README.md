@@ -113,7 +113,8 @@ intestazione. La cartella `cpu_model` scaricata contiene pesi e tokenizer
 caricabili con Transformers su CPU, insieme a etichette, split e manifest. Le
 predizioni riportano un ruolo per ogni parola OCR. `training.evaluation` ricostruisce
 i 45 campi e misura corretto, errato, mancante, allucinato e assenza corretta sul
-ground truth completo. Il confronto conserva cifre e punteggiatura, tollerando
+ground truth completo. I campi della tabella `FIDI` vengono dalla sola riga più in
+alto, quella del primo numero di fido predetto (ADR 0023). Il confronto conserva cifre e punteggiatura, tollerando
 solo differenze di rappresentazione documentate nei test. Per un estrattore che
 produce direttamente i valori dei campi, `evaluate_field_values()` applica gli
 stessi confronti e riepiloghi a `{"fields": {campo: testo o None}, "abstained":

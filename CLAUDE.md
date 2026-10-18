@@ -477,7 +477,8 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   `FIDI` table block from its header (`encode_chunks()`), augments training copies (`_augment()`),
   trains `LiltForTokenClassification` selecting checkpoints on validation whole-field accuracy
   (`train_model()`, `score_predictions()`), and runs CPU/GPU inference (`predict()`).
-- `evaluation.py` -- reconstructs the 45 fields from predicted word roles (`decode_fields()`) and
+- `evaluation.py` -- reconstructs the 45 fields from predicted word roles (`decode_fields()`, which
+  keeps the FIDI fields to the topmost table row, ADR 0023) and
   reports strict whole-field accuracy, content availability, and word-level F1
   (`evaluate_predictions()`, `word_metrics()`); `evaluate_field_values()` scores field-level
   extractors (per screen `{"fields": ..., "abstained": [...]}`) with the same records, comparators

@@ -18,7 +18,8 @@ from training.schema import field_role, vocabulary
 
 IGNORED_LABELS = {"IGNORE", -100, None}
 SUBJECT_ROLES = {"sogg_ndg", "sogg_denominazione", "sogg_ruolo"}
-METRIC_VERSION = "strict-v2-punctuation-spacing"
+FIDI_ROLES = ("n_fido", "rapporto", "descrizione", "scadenza", "importo_euro", "tipo_op")
+METRIC_VERSION = "strict-v3-fidi-first-row"
 QUANTITY_FIELDS = {
     "importo_euro", "retribuzione_annua_netta", "importo_totale_annuo_nucleo",
     "nr_altri_componenti_nucleo", "di_cui_percepiscono_reddito", "numero_mensilita",
@@ -141,11 +142,36 @@ def _subject_row_centers(
     return centers, tolerance
 
 
+def _center_y(word: dict[str, Any]) -> float:
+    return (_box(word)[1] + _box(word)[3]) / 2
+
+
+def _first_fido_row(
+    words: list[dict[str, Any]], by_role: dict[str, list[dict[str, Any]]],
+) -> None:
+    """Keep the FIDI roles of the topmost table row; the reviewed values are one row."""
+    anchors = by_role.get("n_fido", [])
+    if not anchors:
+        return
+    anchor = min(anchors, key=_center_y)
+    left, height = _box(anchor)[0], max(1.0, _box(anchor)[3] - _box(anchor)[1])
+    below = [_center_y(w) for w in words
+             if abs(_box(w)[0] - left) <= height and _center_y(w) > _center_y(anchor) + height]
+    if not below:
+        return
+    bottom = (_center_y(anchor) + min(below)) / 2
+    for role in FIDI_ROLES:
+        if role in by_role:
+            by_role[role] = [w for w in by_role[role] if _center_y(w) < bottom]
+            if not by_role[role]:
+                del by_role[role]
+
+
 def decode_fields(
     example: dict[str, Any], predicted_roles: list[str],
     probabilities: list[float] | None = None,
 ) -> dict[str, str]:
-    """Decode raw OCR text using predicted roles and subject-row geometry.
+    """Decode raw OCR text using predicted roles, subject-row and FIDI-row geometry.
 
     The ground-truth values do not influence reconstruction. Probabilities are
     accepted for the prediction contract; no hidden confidence cutoff is used.
@@ -159,6 +185,7 @@ def decode_fields(
     for word, role in zip(words, predicted_roles):
         if role not in IGNORED_LABELS and role != "O":
             by_role[role].append(word)
+    _first_fido_row(words, by_role)
     fields = {role: _join(ws) for role, ws in by_role.items() if role not in SUBJECT_ROLES}
     centers, tolerance = _subject_row_centers(words, by_role)
     for index, center in enumerate(centers[:4]):
