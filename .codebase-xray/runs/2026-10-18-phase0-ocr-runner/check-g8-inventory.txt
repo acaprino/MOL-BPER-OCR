@@ -1,0 +1,10 @@
+PASS Scheda Privati screens only in 52062600, 5 of them 
+PASS lotto 2026-08-21: 10 practices, 34 in-scope screens, no reviewed split 
+PASS lotto has no Scheda Privati screen 
+PASS all 13 Scheda Privati fields have positives, only in 52062600 (train) 
+PASS CONSAP tooltips have positives only in 52067184 and 52068422 (train) 
+PASS page-classifier fixture cites 51788077, 51800301, 52032077 
+PASS plan has section 5.4 
+PASS plan cites the fixture directory and commit 
+PASS plan has 17 em dashes (none added) 
+9/9 checks passed

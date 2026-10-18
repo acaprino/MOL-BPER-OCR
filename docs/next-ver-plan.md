@@ -257,6 +257,13 @@ directory, senza mescolare OCR di motori differenti. Eventuali corpus aggiuntivi
 richiedono un contratto esplicito di preparazione, non la rimozione dei controlli
 del dataset revisionato.
 
+Il runner esiste: `python -m training.ocr_runner` (guida in `src/training/README.md`)
+salva ogni schermata appena letta, riprende una prova interrotta, produce
+`cache.json` solo quando tutte le 113 schermate hanno un risultato e rifiuta in una
+stessa cartella configurazioni o modelli diversi. Il suo comando `report` costruisce
+il dataset derivato e calcola le metriche OCR di selezione su train e validazione,
+senza il test storico. Eseguito con A0 riproduce la cache del bundle.
+
 **Valutazione comune.** `evaluate_predictions()` riceve un ruolo per parola e
 ricostruisce i campi con `decode_fields()`. Restituisce `overall.accuracy`,
 `overall.counts`, `by_field`, `by_split`, `records`, `missing_predictions` e metriche
@@ -336,6 +343,59 @@ codice, modelli e configurazione, hardware, limiti dichiarati, carico, guasti in
 e risultati effettivi. Un criterio non misurato resta **non verificato** e impedisce
 la promozione: la presenza di thread daemon non dimostra il recupero da un blocco.
 
+### 5.4 Piano di Raccolta per G8
+
+**Inventario attuale** (`data/pratiche/manifest.json` e bundle v3.1):
+
+- Le schermate Scheda Privati esistono soltanto in `52062600` (train, 5 schermate):
+  i 13 campi Scheda Privati hanno esempi positivi solo lì.
+- `tooltip_descrizione_m_consap` e `tooltip_descrizione_consap_dr_bis` hanno esempi
+  positivi solo nel train, nei tooltip `GestioneFidi` di `52067184` e `52068422`.
+- Le 10 pratiche del lotto 2026-08-21 (34 schermate) non hanno verità revisionata.
+  Contengono `Elenco`, `GestioneFidi` con tooltip, `Note` e `Soggetti`, nessuna Scheda
+  Privati; solo la revisione può dire se mostrano i tooltip CONSAP. Non sono mai
+  entrate nell'estrazione dei campi, ma almeno `51788077`, `51800301` e `52032077`
+  sono fixture del riconoscimento pagine (`tests/fixtures/frames/no-tooltip/`,
+  commit `7b70bf7`): valgono per le metriche di campo, non come prova cieca del
+  classificatore di pagina.
+- `LUNARDI_26871394` (9 schermate, verità in `data/reference/dati.csv`) è il corpus
+  di riferimento su cui il motore VLM è stato sviluppato e misurato: è esposta e non
+  vale come conferma.
+
+**Fabbisogno minimo.** Per ciascuno dei 15 campi scoperti servono almeno tre pratiche
+nuove con un valore non vuoto: una di validazione estesa e due di conferma. In
+pratica: almeno tre pratiche con le schermate Scheda Privati che valorizzino tutti
+i 13 campi, almeno tre con il tooltip M-CONSAP e tre con CONSAP DR BIS (le stesse,
+se li mostrano entrambi), cercate prima nel lotto 2026-08-21. Le pratiche del lotto, una volta revisionate, rafforzano anche i 30
+campi già coperti, divise tra validazione estesa e conferma.
+
+**Regole, fissate prima di qualunque prova:**
+
+1. La revisione segue la procedura del workbook v3.1 (valori, assenze, `N/D` come
+   testo visibile) e l'impronta del file è registrata prima delle misure.
+2. L'assegnazione è per pratica intera e avviene prima di eseguire OCR o modelli
+   sulle nuove schermate. Usa soltanto quali campi hanno un valore non vuoto nella
+   verità revisionata. Le pratiche si esaminano per numero crescente: ciascuna va al
+   gruppo di cui riduce di più il fabbisogno ancora scoperto (un esempio per campo
+   in validazione estesa, due pratiche per campo in conferma); a parità, o se non ne
+   riduce nessuno, i due gruppi si alternano iniziando dalla conferma. Pratiche,
+   regola ed esito vanno in un manifest con le impronte di immagini e workbook.
+3. Nessuna pratica, NDG dei soggetti o immagine (byte e pixel decodificati) è in
+   comune con le 12 pratiche v3.1 o tra validazione estesa e conferma: gli stessi
+   controlli di `audit_splits()`. Una pratica che viola l'isolamento resta fuori da
+   entrambi i gruppi.
+4. La conferma resta sigillata fino al congelamento: le sue schermate e la sua
+   verità servono soltanto all'assegnazione e alla verifica finale, senza OCR,
+   metriche o ispezioni per lo sviluppo.
+5. Le soglie restano quelle di §4, con i minimi ricalcolati con `ceil()` sui nuovi
+   denominatori al momento dell'assegnazione.
+
+**Richiesta a chi fornisce le schermate:** pratiche dell'ambiente di prova "Nuova PEF
+3.0" non presenti in `data/pratiche/`, con le pagine Scheda Privati compilate e con
+i tooltip M-CONSAP e CONSAP DR BIS, oltre alla revisione delle 10 pratiche del lotto
+2026-08-21. Finché non arrivano, G8 resta non soddisfatto e l'adozione sui 45 campi
+non può essere dichiarata.
+
 ---
 
 ## 6. Roadmap e Decisioni Stop/Go
@@ -345,7 +405,7 @@ la promozione: la presenza di thread daemon non dimostra il recupero da un blocc
 1. Recuperare gli strumenti storici necessari senza sovrascrivere le prove originali. Preparare un ambiente Python 3.12/3.13 con versioni riproducibili, dipendenze OCR/CPU, test e misurazione risorse. Congelare modelli e licenze; nessun download implicito nel runtime distribuito.
 2. Riconciliare il run LiLT storico con dataset, allineamenti e impronte. Ricostruire A0 e la valutazione delle predizioni compatibili in una nuova directory; registrare le differenze nella X-ray. Non confrontare candidati con baseline composte da snapshot diversi.
 3. Preparare il runner per cache complete e report separati per split, gli ingressi comuni di valutazione e i metadati delle correzioni. Scrivere prima i test comportamentali dei nuovi contratti e verificarne il fallimento atteso prima dell'implementazione.
-4. Preparare il piano delle nuove pratiche di G8 e congelare soglie, popolazioni e politiche di selezione. Le API e i controlli v3.1 restano operativi per il corpus storico.
+4. Preparare il piano delle nuove pratiche di G8 e congelare soglie, popolazioni e politiche di selezione (§5.4). Le API e i controlli v3.1 restano operativi per il corpus storico.
 
 **Stop/Go:** avviare i confronti soltanto con baseline, provenienza, licenze e
 contratti verificati. Questo piano non rappresenta codice già implementato.

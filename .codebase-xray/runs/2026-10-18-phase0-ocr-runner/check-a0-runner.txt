@@ -1,0 +1,13 @@
+PASS run is complete and binds its cache 
+PASS A0 models are v6 small det/rec and the v2.0 classifier 
+PASS pc4 threads 4/1 
+PASS 113/113 screens identical to the bundle's OCR cache (texts, scores, boxes) 
+PASS derived alignment_report.csv identical to the bundle's 
+PASS OCR non-null train 562/613, val 124/133, train+val 686/746 
+PASS subject NDG train 16/21, val 5/5 
+PASS rapporto train 23/24, val 5/5 
+PASS 6 read as 8: train 10, val 1 
+PASS 6 read as 8 per practice (observations, distinct values) 
+PASS historical test practices absent 
+PASS ten train+val practices 
+12/12 checks passed

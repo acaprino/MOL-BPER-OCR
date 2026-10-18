@@ -42,6 +42,30 @@ parola della cella è errata. Le celle multi-riga sono ordinate per righe visive
 interne alla cella. Il confronto finale resta sul valore completo. `N/D` è testo
 visibile; una cella effettivamente vuota rappresenta un'assenza.
 
+## Confronto dei motori OCR
+
+`training.ocr_runner` legge tutte le schermate revisionate con una configurazione
+dello Stadio A del piano (`A0`..`A4`) e un profilo CPU (`pc4`: 4 thread, `vdi2`: 2).
+Richiede un ambiente separato con RapidOCR, descritto in `requirements-ocr.txt`:
+
+```powershell
+uv venv .venv-ocr --python 3.13
+uv pip install --python .venv-ocr/Scripts/python.exe -r requirements-ocr.txt
+cd src
+../.venv-ocr/Scripts/python.exe -m training.ocr_runner run --config A1 --profile pc4 --examples ../data/training/ground-truth-v3.1/examples.json --screenshots ../data --out CARTELLA-NUOVA
+../.venv/Scripts/python.exe -m training.ocr_runner report --run CARTELLA-NUOVA --workbook ../data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx --screenshots ../data
+```
+
+Ogni schermata viene salvata appena letta: una prova interrotta riprende dalle
+schermate mancanti, e una schermata in errore non ferma le altre. `cache.json`
+nasce solo quando tutte le schermate hanno un risultato, con l'impronta registrata
+nel manifest insieme a modelli, versioni, thread e tempi. Una cartella non accetta
+un'altra configurazione o altri modelli. `report` costruisce il dataset derivato e
+scrive in `ocr_selection.json` disponibilità OCR, NDG dei soggetti, rapporti e
+letture 6→8 per pratica, solo per addestramento e validazione: il test storico non
+partecipa alla scelta del motore. Il dataset derivato serve alle misure e non
+sostituisce il bundle sigillato.
+
 ## Addestramento e modello locale
 
 L'addestramento parte dal modello pubblico `nielsr/lilt-xlm-roberta-base`, con una

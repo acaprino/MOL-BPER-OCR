@@ -483,6 +483,11 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   and summaries, and both report `complete` when every screen has an outcome.
 - `modal_train.py` -- bounded GPU entrypoint on Modal that writes an immutable run and downloads the
   CPU-loadable model (`cpu_model/`).
+- `ocr_runner.py` -- resumable stage A OCR runs (`run_ocr()`, configurations `A0`..`A4`, CPU
+  profiles `pc4`/`vdi2`): per-screen results, `cache.json` only when every screen succeeded, model
+  hashes in the manifest; `report()` builds the derived dataset and train/validation-only selection
+  metrics (`ocr_selection_metrics()`). Runs in the separate `.venv-ocr` (`requirements-ocr.txt`);
+  RapidOCR is imported only inside the engine factory, so the suite fakes the engine.
 
 ### Data files
 
@@ -509,8 +514,11 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
 
 ## Dependencies
 
-All dependencies live in a single root `requirements.txt`; there is **no** `src/edge-agent/requirements.txt`.
-Versions are loosely bounded, not strictly pinned.
+All application dependencies live in a single root `requirements.txt`; there is **no**
+`src/edge-agent/requirements.txt`. Versions are loosely bounded, not strictly pinned. The one
+exception is the offline OCR benchmark: `requirements-ocr.txt` pins RapidOCR 3.9.2, onnxruntime
+1.30.0 and their dependencies exactly for `src/training/ocr_runner.py` in a separate `.venv-ocr`
+(gitignored); no application module imports RapidOCR.
 
 **Extraction pipeline:**
 ```
