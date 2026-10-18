@@ -478,7 +478,9 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   (`train_model()`, `score_predictions()`), and runs CPU/GPU inference (`predict()`).
 - `evaluation.py` -- reconstructs the 45 fields from predicted word roles (`decode_fields()`) and
   reports strict whole-field accuracy, content availability, and word-level F1
-  (`evaluate_predictions()`, `word_metrics()`).
+  (`evaluate_predictions()`, `word_metrics()`); `evaluate_field_values()` scores field-level
+  extractors (per screen `{"fields": ..., "abstained": [...]}`) with the same records, comparators
+  and summaries, and both report `complete` when every screen has an outcome.
 - `modal_train.py` -- bounded GPU entrypoint on Modal that writes an immutable run and downloads the
   CPU-loadable model (`cpu_model/`).
 

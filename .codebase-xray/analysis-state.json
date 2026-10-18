@@ -1,27 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at_utc": "2026-10-18T10:51:02Z",
-  "head": "0fd7c07aba56f46da6060132fba83e4b76756b2f",
-  "scope": "Phase 0 of docs/next-ver-plan.md: plan sections 1.1/1.2 corrected, OCR cache restored, A0 reproduced, LiLT retrained on the current v3.1 bundle (Modal L4); no source or test change",
-  "current_report": "runs/2026-10-18-phase0-baseline/report.md",
-  "previous_state": "runs/2026-10-18-phase0-baseline/analysis-state-before.json",
-  "previous_report": "runs/2026-10-18-phase0-reconciliation/report.md",
+  "updated_at_utc": "2026-10-18T11:09:46Z",
+  "head": "5b429754bb549b1bf0e875b86a9280a2010a955d",
+  "scope": "Phase 0 step 3, first part: evaluate_field_values() in src/training/evaluation.py (tests first), shared records/summaries, complete flag; docs updated",
+  "current_report": "runs/2026-10-18-phase0-field-evaluation/report.md",
+  "previous_state": "runs/2026-10-18-phase0-field-evaluation/analysis-state-before.json",
+  "previous_report": "runs/2026-10-18-phase0-baseline/report.md",
   "covered_uncommitted_files": [
+    "src/training/evaluation.py",
+    "tests/test_training_evaluation.py",
     "docs/next-ver-plan.md",
-    "data/README.md",
     "src/training/README.md",
-    ".gitignore",
-    "data/training/ocr-cache/",
-    "data/training/runs/lilt-v3.1-20261018-current-bundle/",
-    ".codebase-xray/runs/2026-10-18-phase0-reconciliation/",
-    ".codebase-xray/runs/2026-10-18-phase0-baseline/",
+    "CLAUDE.md",
+    ".codebase-xray/runs/2026-10-18-phase0-field-evaluation/",
     ".codebase-xray/analysis-state.json"
   ],
   "unrelated_uncommitted_files": [
     "uv.lock"
   ],
   "document_sha256": {
-    "docs/next-ver-plan.md": "ec8941a7bb7014ed9c39352a563c1951c54948e5cf82aa4089707792c96b4859"
+    "docs/next-ver-plan.md": "2f2ff1b05dce8e3e0e9ee7b702916ffaa350b438268bc23c6e3d861e176b1116"
   },
   "documentation_status": "plan sections 1.1/1.2 reconciled (R19); B0 and the G4/G5 baseline column cite lilt-v3.1-20261018-current-bundle; resilience_and_coverage_blocking",
   "runtime_resilience_status": "not_verified",
@@ -29,9 +27,9 @@
     "command": ".venv\\Scripts\\python.exe -m pytest tests",
     "python_version": "3.11.15",
     "exit_code": 0,
-    "summary": "439 passed, 3 warnings in 34.59s",
-    "executed_in": "runs/2026-10-18-phase0-baseline (fresh run)",
-    "log": "runs/2026-10-18-phase0-baseline/pytest-full.txt"
+    "summary": "457 passed, 3 warnings in 38.65s",
+    "executed_in": "runs/2026-10-18-phase0-field-evaluation (fresh run)",
+    "log": "runs/2026-10-18-phase0-field-evaluation/pytest-full.txt"
   },
   "fast_lane": {
     "command": ".venv\\Scripts\\python.exe tools\\check.py",
@@ -73,11 +71,12 @@
       "G1_131": "not met (124/133)"
     },
     "pending_steps": [
-      "Phase 0 step 3: runner, field-value evaluation entry for B1, tests first",
+      "Phase 0 step 3 (rest): reproducible runner for complete OCR caches with manifests and resumable partial outputs",
       "Phase 0 step 4: G8 practice plan",
       "R21 rebuild reproducibility cause",
       "More than 8 LiLT epochs: not run (bound in src/training/modal_train.py; paid run needs explicit approval)"
-    ]
+    ],
+    "field_evaluation": "evaluate_field_values() added (R24); role path unchanged on real B0 predictions (R25); field path matches role path record by record, negative control fails (R26)"
   },
   "plan_figure_checks": {
     "script": "runs/2026-10-18-phase0-baseline/check_plan_reconciled.py",

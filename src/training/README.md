@@ -72,7 +72,11 @@ caricabili con Transformers su CPU, insieme a etichette, split e manifest. Le
 predizioni riportano un ruolo per ogni parola OCR. `training.evaluation` ricostruisce
 i 45 campi e misura corretto, errato, mancante, allucinato e assenza corretta sul
 ground truth completo. Il confronto conserva cifre e punteggiatura, tollerando
-solo differenze di rappresentazione documentate nei test.
+solo differenze di rappresentazione documentate nei test. Per un estrattore che
+produce direttamente i valori dei campi, `evaluate_field_values()` applica gli
+stessi confronti e riepiloghi a `{"fields": {campo: testo o None}, "abstained":
+[campi]}` per schermata, conta le astensioni e segnala con `complete` una prova
+priva dell'esito di qualche schermata; la F1 delle parole non si applica.
 
 Questo percorso è un esperimento offline. L'adozione nel flusso di cattura
 dell'edge-agent richiede una modifica successiva e una verifica su acquisizioni reali.

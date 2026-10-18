@@ -7,6 +7,7 @@ import pytest
 from training.evaluation import (
     classify_value,
     decode_fields,
+    evaluate_field_values,
     evaluate_predictions,
     word_metrics,
 )
@@ -257,3 +258,102 @@ def test_prediction_length_mismatch_is_rejected() -> None:
     example = _example([_word("101", 0, 0)], ["ndg"], {"ndg": "101"})
     with pytest.raises(ValueError, match="length"):
         decode_fields(example, [])
+
+
+def test_missing_screen_role_prediction_marks_report_incomplete() -> None:
+    example = _example([_word("101", 0, 10)], ["ndg"], {"ndg": "101"})
+    assert evaluate_predictions([example], {})["complete"] is False
+
+
+def test_role_predictions_for_every_screen_mark_report_complete() -> None:
+    example = _example([_word("101", 0, 10)], ["ndg"], {"ndg": "101"})
+    assert evaluate_predictions([example], {"screen": {"pred": ["ndg"]}})["complete"] is True
+
+
+def test_field_values_use_the_strict_comparator() -> None:
+    example = _example(
+        [_word("3281", 0, 10), _word("21310908", 0, 40)], ["O", "O"],
+        {"filiale_relazione": "3281-X", "ndg": "21310900"},
+    )
+    report = evaluate_field_values(
+        [example], {"screen": {"fields": {"filiale_relazione": "3281 - X", "ndg": "21310908"}}},
+    )
+    assert report["overall"]["counts"] == {"correct": 1, "wrong": 1}
+
+
+def test_field_values_score_like_the_same_fields_decoded_from_roles() -> None:
+    example = _example(
+        [_word("101", 0, 10), _word("ALFA", 50, 10), _word("Richiedente", 200, 10),
+         _word("202", 0, 40), _word("BETA", 50, 40), _word("Garante", 200, 40)],
+        ["sogg_ndg", "sogg_denominazione", "sogg_ruolo", "sogg_ndg", "sogg_denominazione", "sogg_ruolo"],
+        {"ndg_1": "101", "denominazione_1": "ALFA", "ruolo_1": "Garante",
+         "ndg_2": "202", "denominazione_2": "BETA", "ruolo_2": "Garante", "ndg_3": None},
+    )
+    by_roles = evaluate_predictions([example], {"screen": {"pred": example["labels"]}})
+    by_fields = evaluate_field_values([example], {"screen": {"fields": {
+        "ndg_1": "101", "denominazione_1": "ALFA", "ruolo_1": "Richiedente",
+        "ndg_2": "202", "denominazione_2": "BETA", "ruolo_2": "Garante",
+    }}})
+    assert by_fields["overall"]["counts"] == {"correct": 5, "wrong": 1, "correct_null": 1}
+    assert by_fields["by_field"] == by_roles["by_field"]
+
+
+def test_field_value_report_lists_every_screen_without_an_outcome() -> None:
+    first = _example([_word("101", 0, 10)], ["ndg"], {"ndg": "101"}, example_id="a")
+    second = _example([_word("202", 0, 10)], ["ndg"], {"ndg": "202"}, example_id="b")
+    report = evaluate_field_values([first, second], {"a": {"fields": {"ndg": "101"}}})
+    assert report["complete"] is False
+    assert report["missing_predictions"] == ["b"]
+    assert report["overall"]["counts"] == {"correct": 1, "missing": 1}
+
+
+def test_field_values_for_every_screen_mark_report_complete() -> None:
+    example = _example([_word("101", 0, 10)], ["ndg"], {"ndg": "101"})
+    assert evaluate_field_values([example], {"screen": {"fields": {}}})["complete"] is True
+
+
+def test_abstained_field_scores_as_absent() -> None:
+    example = _example([_word("101", 0, 10)], ["ndg"], {"ndg": "101", "evidenze": None})
+    report = evaluate_field_values([example], {"screen": {"fields": {}, "abstained": ["ndg", "evidenze"]}})
+    assert report["overall"]["counts"] == {"missing": 1, "correct_null": 1}
+
+
+def test_abstentions_are_counted_per_field() -> None:
+    example = _example([_word("101", 0, 10)], ["ndg"], {"ndg": "101", "evidenze": None})
+    report = evaluate_field_values([example], {"screen": {"fields": {}, "abstained": ["ndg"]}})
+    assert report["by_field"]["ndg"]["abstained"] == 1
+    assert report["by_field"]["evidenze"]["abstained"] == 0
+
+
+def test_ocr_availability_ignores_the_predicted_field_values() -> None:
+    example = _example([_word("108", 0, 10)], ["IGNORE"], {"ndg": "106"})
+    example["field_alignment"] = {"ndg": {"status": "ocr_mismatch"}}
+    report = evaluate_field_values([example], {"screen": {"fields": {"ndg": "106"}}})
+    assert report["overall"]["counts"] == {"correct": 1}
+    assert report["overall"]["content_availability"]["non_null_available"] == 0
+
+
+def test_word_metrics_are_not_reported_for_field_values() -> None:
+    example = _example([_word("101", 0, 10)], ["ndg"], {"ndg": "101"})
+    report = evaluate_field_values([example], {"screen": {"fields": {"ndg": "101"}}})
+    assert report["word_metrics"] is None
+    assert report["by_split"]["test"]["word_metrics"] is None
+
+
+@pytest.mark.parametrize(
+    ("predictions", "message"),
+    [
+        ({"other": {"fields": {}}}, "unknown screen"),
+        ({"screen": {"ndg": "101"}}, "fields"),
+        ({"screen": {"fields": {"ndg": ""}}}, "empty"),
+        ({"screen": {"fields": {"ndg": 101}}}, "string or None"),
+        ({"screen": {"fields": {"codice_inventato": "1"}}}, "unknown field"),
+        ({"screen": {"fields": {"ndg": "101"}, "abstained": ["ndg"]}}, "abstained"),
+        ({"screen": {"fields": {}, "abstained": ["codice_inventato"]}}, "unknown field"),
+        ({"screen": {"fields": {}, "notes": "x"}}, "unexpected key"),
+    ],
+)
+def test_malformed_field_predictions_are_rejected(predictions: dict[str, Any], message: str) -> None:
+    example = _example([_word("101", 0, 10)], ["ndg"], {"ndg": "101"})
+    with pytest.raises(ValueError, match=message):
+        evaluate_field_values([example], predictions)

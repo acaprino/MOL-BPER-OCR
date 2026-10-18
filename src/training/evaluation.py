@@ -8,11 +8,12 @@ end-to-end denominator, and no approximate text matching earns correctness.
 import re
 import unicodedata
 from collections import Counter, defaultdict
+from collections.abc import Callable
 from decimal import Decimal, InvalidOperation
 from statistics import median
 from typing import Any
 
-from training.schema import field_role
+from training.schema import field_role, vocabulary
 
 
 IGNORED_LABELS = {"IGNORE", -100, None}
@@ -224,57 +225,83 @@ def _availability(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def evaluate_predictions(
-    examples: list[dict[str, Any]], predictions: dict[str, Any],
+def _oracle(example: dict[str, Any]) -> dict[str, str]:
+    """Fields decoded from the reviewed labels: what the OCR words can yield."""
+    return decode_fields(example, example.get("labels", ["O"] * len(example["words"])))
+
+
+def _record(
+    example: dict[str, Any], field: str, expected: Any, predicted: Any,
+    oracle: dict[str, str], abstained: bool = False,
 ) -> dict[str, Any]:
-    """Measure every reviewed field, retaining OCR failures in the denominator."""
-    records: list[dict[str, Any]] = []
+    return {
+        "id": example["id"], "practice": example["practice"], "split": example["split"],
+        "field": field, "expected": expected, "predicted": predicted,
+        "status": classify_value(field, expected, predicted),
+        "content_available": _available(example, field, expected, oracle),
+        "abstained": abstained,
+    }
+
+
+def _field_report(
+    examples: list[dict[str, Any]], records: list[dict[str, Any]], missing: list[str],
+    word_metrics_for: Callable[[list[dict[str, Any]]], dict[str, Any]] | None,
+) -> dict[str, Any]:
+    """Summarize field records identically for role and field-value predictions."""
     all_fields = sorted({field for e in examples for field in e["values"]})
-    for example in examples:
-        roles, probabilities = _prediction(example, predictions)
-        fields = decode_fields(example, roles, probabilities)
-        oracle = decode_fields(example, example.get("labels", ["O"] * len(example["words"])))
-        for field, expected in example["values"].items():
-            predicted = fields.get(field)
-            records.append({
-                "id": example["id"], "practice": example["practice"], "split": example["split"],
-                "field": field, "expected": expected, "predicted": predicted,
-                "status": classify_value(field, expected, predicted),
-                "content_available": _available(example, field, expected, oracle),
-            })
 
     def summarize(selected: list[dict[str, Any]]) -> dict[str, Any]:
         summary = _summary([r["status"] for r in selected])
+        summary["abstained"] = sum(r["abstained"] for r in selected)
         summary["by_field"] = {}
         for field in all_fields:
             rows = [r for r in selected if r["field"] == field]
             summary["by_field"][field] = {
                 **_summary([r["status"] for r in rows]),
+                "abstained": sum(r["abstained"] for r in rows),
                 "content_availability": _availability(rows),
             }
         summary["content_availability"] = _availability(selected)
         return summary
 
+    def words(selected: list[dict[str, Any]]) -> dict[str, Any] | None:
+        return word_metrics_for(selected) if word_metrics_for else None
+
     overall = summarize(records)
     splits = sorted({"train", "val", "test"} | {e["split"] for e in examples})
     by_split = {split: summarize([r for r in records if r["split"] == split]) for split in splits}
-    roles = {field_role(field) for field in all_fields}
-
-    def covered_word_metrics(selected: list[dict[str, Any]]) -> dict[str, Any]:
-        metrics = word_metrics(selected, predictions)
-        for role in sorted(roles):
-            metrics["by_role"].setdefault(role, _role_scores(0, 0, 0))
-        return metrics
-
     for split, summary in by_split.items():
-        summary["word_metrics"] = covered_word_metrics([e for e in examples if e["split"] == split])
+        summary["word_metrics"] = words([e for e in examples if e["split"] == split])
     return {
         "metric_version": METRIC_VERSION,
         "overall": {k: v for k, v in overall.items() if k != "by_field"},
         "by_field": overall["by_field"], "by_split": by_split,
-        "word_metrics": covered_word_metrics(examples), "records": records,
-        "missing_predictions": [e["id"] for e in examples if e["id"] not in predictions],
+        "word_metrics": words(examples), "records": records,
+        "missing_predictions": missing, "complete": not missing,
     }
+
+
+def evaluate_predictions(
+    examples: list[dict[str, Any]], predictions: dict[str, Any],
+) -> dict[str, Any]:
+    """Measure every reviewed field, retaining OCR failures in the denominator."""
+    records: list[dict[str, Any]] = []
+    for example in examples:
+        roles, probabilities = _prediction(example, predictions)
+        fields = decode_fields(example, roles, probabilities)
+        oracle = _oracle(example)
+        records.extend(_record(example, field, expected, fields.get(field), oracle)
+                       for field, expected in example["values"].items())
+    covered_roles = {field_role(field) for e in examples for field in e["values"]}
+
+    def covered_word_metrics(selected: list[dict[str, Any]]) -> dict[str, Any]:
+        metrics = word_metrics(selected, predictions)
+        for role in sorted(covered_roles):
+            metrics["by_role"].setdefault(role, _role_scores(0, 0, 0))
+        return metrics
+
+    missing = [e["id"] for e in examples if e["id"] not in predictions]
+    return _field_report(examples, records, missing, covered_word_metrics)
 
 
 def _role_scores(tp: int, fp: int, fn: int) -> dict[str, Any]:
@@ -317,3 +344,55 @@ def word_metrics(
         "micro": _role_scores(totals["tp"], totals["fp"], totals["fn"]),
         "by_role": by_role, "ignored_words": ignored,
     }
+
+
+FIELD_PREDICTION_KEYS = {"fields", "abstained"}
+
+
+def _validate_field_prediction(screen: str, item: Any, known_fields: set[str]) -> None:
+    if not isinstance(item, dict) or not isinstance(item.get("fields"), dict):
+        raise ValueError(f"Prediction for {screen} needs a 'fields' mapping")
+    unexpected = sorted(set(item) - FIELD_PREDICTION_KEYS)
+    if unexpected:
+        raise ValueError(f"Prediction for {screen} has unexpected key(s): {unexpected}")
+    abstained = item.get("abstained", [])
+    if not isinstance(abstained, list) or not all(isinstance(field, str) for field in abstained):
+        raise ValueError(f"Prediction for {screen}: 'abstained' must be a list of field names")
+    for field in [*item["fields"], *abstained]:
+        if field not in known_fields:
+            raise ValueError(f"Prediction for {screen} names an unknown field: {field}")
+    for field, value in item["fields"].items():
+        if value is not None and not isinstance(value, str):
+            raise ValueError(f"Field {field} on {screen} must be a string or None")
+        if value is not None and not value.strip():
+            raise ValueError(f"Field {field} on {screen} is empty; use None for an absent value")
+    both = sorted(set(item["fields"]) & set(abstained))
+    if both:
+        raise ValueError(f"Field(s) {both} on {screen} are both predicted and abstained")
+
+
+def evaluate_field_values(
+    examples: list[dict[str, Any]], predictions: dict[str, Any],
+) -> dict[str, Any]:
+    """Measure field-level predictions with the comparator and summaries of the role path.
+
+    Each screen maps to ``{"fields": {field: text or None}, "abstained": [field, ...]}``.
+    Absent and abstained fields score as absent values. A screen without an entry
+    scores every field as absent and leaves the report incomplete. Word metrics
+    do not apply to field-level predictions and are reported as ``None``.
+    """
+    known_fields = set(vocabulary()[0])
+    unknown = sorted(set(predictions) - {e["id"] for e in examples})
+    if unknown:
+        raise ValueError(f"Field predictions for unknown screen(s): {unknown}")
+    for screen, item in predictions.items():
+        _validate_field_prediction(screen, item, known_fields)
+    records: list[dict[str, Any]] = []
+    for example in examples:
+        item = predictions.get(example["id"], {"fields": {}})
+        abstained = set(item.get("abstained", []))
+        oracle = _oracle(example)
+        records.extend(_record(example, field, expected, item["fields"].get(field), oracle, field in abstained)
+                       for field, expected in example["values"].items())
+    missing = [e["id"] for e in examples if e["id"] not in predictions]
+    return _field_report(examples, records, missing, None)

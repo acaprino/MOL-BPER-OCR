@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "updated_at_utc": "2026-10-18T10:51:02Z",
+  "head": "0fd7c07aba56f46da6060132fba83e4b76756b2f",
+  "scope": "Phase 0 of docs/next-ver-plan.md: plan sections 1.1/1.2 corrected, OCR cache restored, A0 reproduced, LiLT retrained on the current v3.1 bundle (Modal L4); no source or test change",
+  "current_report": "runs/2026-10-18-phase0-baseline/report.md",
+  "previous_state": "runs/2026-10-18-phase0-baseline/analysis-state-before.json",
+  "previous_report": "runs/2026-10-18-phase0-reconciliation/report.md",
+  "covered_uncommitted_files": [
+    "docs/next-ver-plan.md",
+    "data/README.md",
+    "src/training/README.md",
+    ".gitignore",
+    "data/training/ocr-cache/",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/",
+    ".codebase-xray/runs/2026-10-18-phase0-reconciliation/",
+    ".codebase-xray/runs/2026-10-18-phase0-baseline/",
+    ".codebase-xray/analysis-state.json"
+  ],
+  "unrelated_uncommitted_files": [
+    "uv.lock"
+  ],
+  "document_sha256": {
+    "docs/next-ver-plan.md": "ec8941a7bb7014ed9c39352a563c1951c54948e5cf82aa4089707792c96b4859"
+  },
+  "documentation_status": "plan sections 1.1/1.2 reconciled (R19); B0 and the G4/G5 baseline column cite lilt-v3.1-20261018-current-bundle; resilience_and_coverage_blocking",
+  "runtime_resilience_status": "not_verified",
+  "full_suite": {
+    "command": ".venv\\Scripts\\python.exe -m pytest tests",
+    "python_version": "3.11.15",
+    "exit_code": 0,
+    "summary": "439 passed, 3 warnings in 34.59s",
+    "executed_in": "runs/2026-10-18-phase0-baseline (fresh run)",
+    "log": "runs/2026-10-18-phase0-baseline/pytest-full.txt"
+  },
+  "fast_lane": {
+    "command": ".venv\\Scripts\\python.exe tools\\check.py",
+    "python_version": "3.11.15",
+    "exit_code": 0,
+    "summary": "421 passed, 18 deselected in 43.28s",
+    "executed_in": "runs/2026-10-18-venv-dependencies (previous result, not re-executed)",
+    "log": "runs/2026-10-18-venv-dependencies/pytest-fast.txt"
+  },
+  "environment_notes": [
+    ".venv runs Python 3.11.15 (app and tests); .venv-ocr runs Python 3.13.14 with rapidocr 3.9.2 and onnxruntime 1.30.0 (gitignored; freeze in runs/2026-10-18-phase0-baseline/ocr-venv-freeze.txt); requirements.txt still does not declare the OCR packages",
+    "The session exports HTTPS_PROXY=http://127.0.0.1:18789, which the Modal client cannot traverse; Modal commands need HTTPS_PROXY/HTTP_PROXY unset",
+    "uv.lock is untracked and was left untouched; pyproject.toml declares no dependencies, so a bare uv sync empties .venv"
+  ],
+  "history_note": "Earlier scoped records stay as history; the reconciliation figures are in runs/2026-10-18-phase0-reconciliation. Gates G1-G8 remain open; a green suite is not evidence for them.",
+  "phase0": {
+    "a0_reproduced": "113/113 screens identical to cache e261c05b (rapidocr 3.9.2, onnxruntime 1.30.0, Python 3.13.14 in .venv-ocr)",
+    "bundle_rebuild": "labels, texts, alignment, coverage identical; examples.json x coordinates differ (1565 <=1e-6, 2 by 3px); fingerprint beca470c vs 469c26d1; open (R21)",
+    "b0_current_bundle_val": {
+      "strict": "124/146",
+      "fidi_non_null": "19/25",
+      "soggetti_non_null": "15/15",
+      "per_practice": {
+        "51659595": "52/72",
+        "52126316": "72/74"
+      },
+      "hallucinated": 4
+    },
+    "b0_current_bundle_test_regression_only": {
+      "strict": "144/192",
+      "fidi_non_null": "25/60",
+      "soggetti_non_null": "19/21"
+    },
+    "gates_on_val": {
+      "G4_min_129": "not met",
+      "G4_target_135": "not met",
+      "G5_fidi_23": "not met",
+      "G5_soggetti_14": "met",
+      "G1_131": "not met (124/133)"
+    },
+    "pending_steps": [
+      "Phase 0 step 3: runner, field-value evaluation entry for B1, tests first",
+      "Phase 0 step 4: G8 practice plan",
+      "R21 rebuild reproducibility cause",
+      "More than 8 LiLT epochs: not run (bound in src/training/modal_train.py; paid run needs explicit approval)"
+    ]
+  },
+  "plan_figure_checks": {
+    "script": "runs/2026-10-18-phase0-baseline/check_plan_reconciled.py",
+    "summary": "28/28 passed; negative control 26/28",
+    "log": "runs/2026-10-18-phase0-baseline/checks-plan.txt"
+  }
+}
