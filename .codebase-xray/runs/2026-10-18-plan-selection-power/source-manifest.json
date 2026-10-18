@@ -1,0 +1,7 @@
+{
+  "docs/next-ver-plan.md": "a619655c487cf765d6add426bc106d33e5c9a17b6f126f91e9c55724ecb39d3c",
+  "src/training/evaluation.py": "b65eec62a5d517fa6886aa85af592fafee53018ae3a10543ef5dae262975e89a",
+  "data/training/ground-truth-v3.1/alignment_report.csv": "a92cc3f583933025493f2e25bebe7bae7c68640c1682a1d74b82e11454fab7e2",
+  ".codebase-xray/runs/2026-10-18-plan-selection-power/plan-before.md": "0a03e224de948f090f70ebfa05894702e914274c28fa04b3f20330d696789084",
+  ".codebase-xray/runs/2026-10-18-plan-selection-power/check_selection_power.py": "e0c59cf80b2a5e9c9e7cf107d5408760aa7f7fb0e51f0a2c745f64f9e6df922f"
+}

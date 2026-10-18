@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "updated_at_utc": "2026-10-18T07:05:00Z",
+  "head": "d9462a46b75a5cb50e58ad6c6ebb30ddec85b807",
+  "scope": "Environment repair of the empty .venv plus fresh full-suite verification; no source, test, configuration or documentation change",
+  "current_report": "runs/2026-10-18-venv-dependencies/report.md",
+  "previous_state": "runs/2026-10-18-venv-dependencies/analysis-state-before.json",
+  "previous_report": "runs/2026-10-18-plan-corrections/report.md",
+  "covered_uncommitted_files": ["docs/next-ver-plan.md", ".codebase-xray/"],
+  "unrelated_uncommitted_files": ["uv.lock"],
+  "document_sha256": {
+    "docs/next-ver-plan.md": "0a03e224de948f090f70ebfa05894702e914274c28fa04b3f20330d696789084"
+  },
+  "documentation_status": "review_findings_corrected_in_plan; resilience_and_coverage_blocking",
+  "runtime_resilience_status": "not_verified",
+  "full_suite": {
+    "command": ".venv\\Scripts\\python.exe -m pytest tests",
+    "python_version": "3.11.15",
+    "exit_code": 0,
+    "summary": "439 tests collected, 439 passed, 3 warnings in 56.88s",
+    "cause": "Environment repaired: uv pip install -r requirements.txt -r requirements-dev.txt into the empty .venv (PyQt6 and langchain_core were missing)",
+    "log": "runs/2026-10-18-venv-dependencies/pytest-full.txt"
+  },
+  "fast_lane": {
+    "command": ".venv\\Scripts\\python.exe tools\\check.py",
+    "python_version": "3.11.15",
+    "exit_code": 0,
+    "summary": "421 passed, 18 deselected in 43.28s",
+    "log": "runs/2026-10-18-venv-dependencies/pytest-fast.txt"
+  },
+  "environment_notes": [
+    ".venv runs Python 3.11.15 (uv base cpython-3.11.15); run_edge_agent.bat prefers 3.13 then 3.12 but self-heals only a broken venv, so this working one was kept",
+    "rapidocr and onnxruntime are absent: not declared in requirements.txt; Phase 1 of docs/next-ver-plan.md must add them explicitly",
+    "uv.lock is untracked and was left untouched; pyproject.toml declares no dependencies, so a bare uv sync empties .venv"
+  ],
+  "history_note": "This scoped record supersedes the full_suite result of runs/2026-10-18-plan-corrections (16 collection errors, exit 2), which stays as history. The plan findings R1-R12 and gates G1-G8 remain open; a green suite is not evidence for them."
+}
