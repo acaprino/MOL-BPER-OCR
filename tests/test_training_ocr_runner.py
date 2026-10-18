@@ -8,7 +8,7 @@ from typing import Any, Callable
 
 import pytest
 
-from training.ocr_runner import Screen, ocr_selection_metrics, report, run_ocr
+from training.ocr_runner import Screen, merge_runs, ocr_selection_metrics, report, run_ocr
 
 PROVENANCE = {"models": {"Det": {"file": "det.onnx", "sha256": "d1"}}, "versions": {"rapidocr": "test"}}
 
@@ -178,6 +178,129 @@ def test_report_refuses_a_cache_edited_after_the_run(tmp_path: Path) -> None:
     (tmp_path / "run" / "cache.json").write_text("{}", encoding="utf-8")
     with pytest.raises(ValueError, match="not a complete OCR run"):
         report(tmp_path / "run", tmp_path / "workbook.xlsx", tmp_path / "images")
+
+
+# ============================================================
+# Merging runs read in parallel
+# ============================================================
+
+
+def _shards(tmp_path: Path, screens: list[Screen], groups: tuple[tuple[int, ...], ...] = ((0,), (1, 2)),
+            engines: tuple[FakeEngine, ...] | None = None, configs: tuple[str, ...] | None = None) -> list[Path]:
+    paths = []
+    for number, group in enumerate(groups):
+        engine = engines[number] if engines else FakeEngine()
+        config = configs[number] if configs else "A0"
+        out = tmp_path / "shards" / str(number)
+        _run(out, [screens[index] for index in group], engine, config=config)
+        paths.append(out)
+    return paths
+
+
+def test_merged_cache_holds_every_shard_entry_in_screen_order(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    shards = _shards(tmp_path, screens, groups=((2,), (0, 1)))
+    merge_runs(shards, screens, tmp_path / "merged")
+    expected = {**_cache(shards[1]), **_cache(shards[0])}
+    assert list(_cache(tmp_path / "merged").items()) == [(s.id, expected[s.id]) for s in screens]
+
+
+def test_merged_run_is_marked_complete(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    merge_runs(_shards(tmp_path, screens), screens, tmp_path / "merged")
+    assert _manifest(tmp_path / "merged")["status"] == "complete"
+
+
+def test_merged_manifest_binds_the_cache_digest(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    merge_runs(_shards(tmp_path, screens), screens, tmp_path / "merged")
+    digest = hashlib.sha256((tmp_path / "merged" / "cache.json").read_bytes()).hexdigest()
+    assert _manifest(tmp_path / "merged")["cache_sha256"] == digest
+
+
+def test_merged_identity_names_the_whole_screen_set(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    merge_runs(_shards(tmp_path, screens), screens, tmp_path / "merged")
+    assert _manifest(tmp_path / "merged")["identity"]["screens"] == {s.id: s.sha256 for s in screens}
+
+
+def test_merged_timing_counts_every_screen(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    shards = _shards(tmp_path, screens)
+    merge_runs(shards, screens, tmp_path / "merged")
+    seconds = [entry["seconds"] for shard in shards for entry in _cache(shard).values()]
+    timing = _manifest(tmp_path / "merged")["timing"]
+    assert (timing["screens"], timing["max"]) == (3, pytest.approx(max(seconds)))
+
+
+def test_merged_timing_counts_the_sessions_of_every_shard(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    merge_runs(_shards(tmp_path, screens), screens, tmp_path / "merged")
+    assert _manifest(tmp_path / "merged")["timing"]["sessions"] == 2
+
+
+def test_shards_read_on_different_hosts_record_each_host(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    hosts = (FakeEngine(provenance={**PROVENANCE, "platform": {"processor": "cpu-x"}}),
+             FakeEngine(provenance={**PROVENANCE, "platform": {"processor": "cpu-y"}}))
+    merge_runs(_shards(tmp_path, screens, engines=hosts), screens, tmp_path / "merged")
+    assert _manifest(tmp_path / "merged")["provenance"]["platforms"] == [{"processor": "cpu-x"}, {"processor": "cpu-y"}]
+
+
+def test_merge_refuses_a_partial_shard(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    engines = (FakeEngine(), FakeEngine(fail_on=("p1__c",)))
+    with pytest.raises(ValueError, match="is not a complete OCR run"):
+        merge_runs(_shards(tmp_path, screens, engines=engines), screens, tmp_path / "merged")
+
+
+def test_merge_refuses_a_shard_cache_edited_after_its_run(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    shards = _shards(tmp_path, screens)
+    (shards[0] / "cache.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(ValueError, match="is not a complete OCR run"):
+        merge_runs(shards, screens, tmp_path / "merged")
+
+
+def test_merge_refuses_shards_that_leave_a_screen_unread(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    with pytest.raises(ValueError, match="leave unread: p1__c"):
+        merge_runs(_shards(tmp_path, screens, groups=((0,), (1,))), screens, tmp_path / "merged")
+
+
+def test_merge_refuses_shards_that_read_a_screen_twice(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    with pytest.raises(ValueError, match="read more than once: p1__b"):
+        merge_runs(_shards(tmp_path, screens, groups=((0, 1), (1, 2))), screens, tmp_path / "merged")
+
+
+def test_merge_refuses_a_shard_of_another_reviewed_image(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    shards = _shards(tmp_path, screens)
+    reviewed = [screens[0]._replace(sha256="0" * 64), *screens[1:]]
+    with pytest.raises(ValueError, match="differs from the reviewed image: p1__a"):
+        merge_runs(shards, reviewed, tmp_path / "merged")
+
+
+def test_merge_refuses_shards_of_another_configuration(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    with pytest.raises(ValueError, match="another configuration or profile"):
+        merge_runs(_shards(tmp_path, screens, configs=("A0", "A1")), screens, tmp_path / "merged")
+
+
+def test_merge_refuses_shards_of_another_engine_build(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    other = {**PROVENANCE, "models": {"Det": {"file": "det.onnx", "sha256": "d2"}}}
+    engines = (FakeEngine(), FakeEngine(provenance=other))
+    with pytest.raises(ValueError, match="another engine build"):
+        merge_runs(_shards(tmp_path, screens, engines=engines), screens, tmp_path / "merged")
+
+
+def test_merge_into_an_existing_directory_is_refused(tmp_path: Path) -> None:
+    screens = _screens(tmp_path)
+    (tmp_path / "merged").mkdir()
+    with pytest.raises(FileExistsError):
+        merge_runs(_shards(tmp_path, screens), screens, tmp_path / "merged")
 
 
 # ============================================================

@@ -489,6 +489,12 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   hashes in the manifest; `report()` builds the derived dataset and train/validation-only selection
   metrics (`ocr_selection_metrics()`). Runs in the separate `.venv-ocr` (`requirements-ocr.txt`);
   RapidOCR is imported only inside the engine factory, so the suite fakes the engine.
+  `merge_runs()` joins complete runs over disjoint parts of the screen set into one complete run,
+  refusing partial or edited shards, gaps, duplicates and mixed configurations or engine builds.
+- `modal_ocr.py` -- reads stage A configurations on Modal CPU containers (4 cores, the
+  `requirements-ocr.txt` pins and the local model files) as ordinary `run_ocr()` shards, merges
+  them locally with `merge_runs()`, and runs an optional same-host cost panel. Sends the
+  reviewed screenshots to Modal.
 
 ### Data files
 

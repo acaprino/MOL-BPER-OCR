@@ -1,0 +1,725 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "config": "A2",
+    "params": {
+      "Det.ocr_version": "PP-OCRv6",
+      "Det.model_type": "medium",
+      "Rec.ocr_version": "PP-OCRv6",
+      "Rec.model_type": "medium"
+    },
+    "profile": "pc4",
+    "threads": {
+      "intra_op": 4,
+      "inter_op": 1
+    },
+    "screens": {
+      "51185037__Elenco": "c4f7247d5769a2b68a214a1206df331b4791aea08a8d02042a7bffdda5c5baac",
+      "51185037__Elenco_tooltip1": "91145d9e6265b288124ced563e6eedde4ce9e383c9bd2c6b3c4ba5f58187e4d4",
+      "51185037__GestioneFidi": "924f1612a650c37576cb179bdbfcec52761ccd6630e2f5b64eb7d696c5cf52f0",
+      "51185037__GestioneFidi_Tooltip1": "3bd14ae8db86188945579388e31bd3dcaf3db74acb1e4b328a027a8314706e57",
+      "51185037__GestioneFidi_Tooltip2": "7df194107d38dee5b9fe8bb6ce3ef819a95f471ca5cabea987e03076b899a086",
+      "51185037__GestioneFidi_Tooltip3": "d832f1ef1257a57410121453f4f174740df06331f15adb9b5f78a4090e7c9d0c",
+      "51185037__Note": "3b6d0942274361988f7af89b939432cba895813b9c960aa802362cfdcd63c9e6",
+      "51185037__Soggetti": "0c430f685c1e7c9f21dbec0288527a1f04877646ec2c7a0d63b4f78442e7bf1a",
+      "51531667__Elenco": "1e16624ab3f3a95efdc3469f8360c1c1131e88a883f694188ac9052c3768bb8a",
+      "51531667__Elenco_dx": "9b45d3de40b0e2e8887a8cc2b145e24b81b87a5bd8e8233712ba7a19267e197d",
+      "51531667__Elenco_tooltip1": "a7fa1b3efae1d1d857867cb26951704f11196746f6b58709a7771c6086022c9d",
+      "51531667__GestioneFidi": "f7b3c8727c2489a9b4d7593aac23b0bb582cc5363a661f94552f8ec282998cd5",
+      "51531667__GestioneFidi_Tooltip1": "e1436d2cee2b29059fa628b6654783965de171289e810a4669b6c93ef100bc96",
+      "51531667__GestioneFidi_Tooltip2": "eb0f85b62cdd2ba22bccf1174247ae0a612c03504d6ae337686de5ee50db41db",
+      "51531667__GestioneFidi_Tooltip3": "d87e84c9e8756ae55f81f46a51ba516ae0875102c6cec6ed55b3d03f9b3c7808",
+      "51531667__GestioneFidi_Tooltip4": "ec1f78fe8b975c12a789245f57824a77799cfdb943573bd17d48e9ebd22a8f91",
+      "51531667__GestioneFidi_Tooltip5": "6c86a878a7615869862fe4d8506bd01fad08fed59f59595c6d5ccec240710b43",
+      "51531667__GestioneFidi_Tooltip6": "7c1236f3e792e6ee110aa61c9a4b3d5569f3ca21731d6097f8947b5b62309751",
+      "51531667__GestioneFidi_down": "d5481177ac4f02e55b03acad7f8110b2bf6fb1fe8b367eb90a55de3307f0954f",
+      "51531667__Note": "bf2fd35ddde79a56b959f9296fbb5ca0a054a7cc47e032b5c4960bac8e47f31f",
+      "51531667__Soggetti": "b4900718b8b87bfa5bdc03f8de7e9e28b6404d353d6c2524164d6fa0fac4df92",
+      "51659595__Elenco": "294528cb010626550e70a5378d5392e86ec13b156a5d9ec9336c1c7b55468f92",
+      "51659595__Elenco_dx": "1a5450fc1f5738d9c42d286980538c4a49e3bd981e09f3e1f3d3a3be53473752",
+      "51659595__Elenco_tooltip1": "877e5dcae367270a11bc97f4c96bd05d08a5141a942ae783f439ebec4d1540e1",
+      "51659595__Elenco_tooltip2": "74f0e3bcffe3cb769a39dd0466886b7c59b226f0a16cabd1c294e96c37d70168",
+      "51659595__GestioneFidi_Tooltip1": "f23a6e1251fa093a607d69eeaa64386012a8b4d2c8d6bcff69e3fb03e305284a",
+      "51659595__GestioneFidi_Tooltip2": "220d4bc854d425397b0c96c2627b4637e23bb0bc1331195eb566579adc2f113b",
+      "51659595__Note": "70d94ab5d633c2bb3d64f73854505c2fe12ecbc58ef6503be9033f38158d57ff",
+      "51659595__Soggetti": "f30306b5f89cd4d13bf2fef847e6d5ba6f0557d41429644b99adbd49ed6dcb76",
+      "52060489__Elenco": "29798fc26bcd9fd3956969f4afc0d9d7908c2c25f6b40314236ec146334e74bb",
+      "52060489__Elenco_tooltip1": "190da6ea103a4e344fb7415fed5024e87448dd4c744e35f7d783e611dc325640",
+      "52060489__Elenco_tooltip2": "7c8fa440cf68a2454373c8f9d9c5d082d2c14528e72c08829795af7b20ccf2ec",
+      "52060489__GestioneFidi": "cf339baa69cf2f03ece9a6308fcfbf4096e42bca57e021ce95f14184163f589e",
+      "52060489__GestioneFidi_Tooltip1": "950cfe9922de9f9605787f868927e89c20fb4091e1e7249104f7aeedb13d5a1d",
+      "52060489__GestioneFidi_Tooltip2": "29495040de47d0f2591f892ca398f39356e94fbfad559f3487a830b28971c130",
+      "52060489__GestioneFidi_Tooltip3": "1f0abdfab22a553d6338b3583f4ec8be973d2accd54e03e3c8de2288b8dc86e4",
+      "52060489__Note": "706366ab11fee4fc1d5323e95880a350c1757705c01c5f902862ae6163a42daf",
+      "52060489__Soggetti": "92188fe9391a57d61753c4938e6717209221e0d0434080582e7093fe7588f521",
+      "52062600__Elenco": "c320c0b52ed4fe45dfc8884b3cb35617a8afbfae3951ef3b511ee4072bf93935",
+      "52062600__Elenco_tooltip1": "3a708f9f7b3c50179c9885d6b3bf183a96fd076fbd6e8fedb675c483840b8f1f",
+      "52062600__Elenco_tooltip2": "d7cd199f64f73d90d09cc775793619cea64a2051a10f832cd4b0ca1bdf995ad9",
+      "52062600__GestioneFidi": "b979d441f29a93e8b7d1198ed3475b49c203f53dae4bec548f8761d6ce0361c1",
+      "52062600__GestioneFidi_tooltip1": "a198c8b6d7a933befb81b2456268b9e79788d7322826472688b47f743b41d91d",
+      "52062600__GestioneFidi_tooltip2": "cb0102729760e54a6b1745d8f93cd13feff08d2c0b7023fc71c5e8d1353d5c30",
+      "52062600__Note": "146d7c765392fc2ec73813bbbf4a2571f2924f0f159af45776e32f23b483238a",
+      "52062600__Note_down": "bfb85c27e934e9fe6f4821b28e7f5e27a5c734a546492a693c849d3f91261182",
+      "52062600__Scheda_Privati_1": "af9c537961429baa3301f7bf702e4e4e39b7ae84d7db71f2b62c57607d6e8a3f",
+      "52062600__Scheda_Privati_2": "0e7a0a8345f0ae04bfbb387756abfe4ea86487567234649c4be517aeaf9f17e1",
+      "52062600__Scheda_Privati_3": "de04ecb2984c15fbb383de9125860c86e1e756b39605a755a5a0fa7e4bbc6261",
+      "52062600__Scheda_Privati_4": "f0fd30700d7ce45314c4fec160f91a973bedcacf38078ac64e7e66077321eab7",
+      "52062600__Scheda_Privati_5": "e87e41e2b15672d15dc27840d4fa31fc272d1a3a58a9a633921b833c551cd188",
+      "52062600__Soggetti": "0b0d092ec4abcbe2165e75228adadde6405b287084ff273226c39d04ce2cde3d",
+      "52067184__Elenco": "784d475eac4ddcfde0c4b19e054574a48d0b3ed7b62a5799031e727a4a02b6b8",
+      "52067184__Elenco_tooltip1": "fba20e10cb6945377b012dbda4b4e7000336bf6d20a03b8bb1bb163948902db3",
+      "52067184__GestioneFidi": "bc3252f069bee3758a6b846243f7c7ae94acc06c52d0be9b84ce236effe1f3a6",
+      "52067184__GestioneFidi_Tooltip1": "1c3834991cb11aa48f2c46b710ea6c9271812f5ae7479bca941e7268c5ca1fff",
+      "52067184__GestioneFidi_Tooltip2": "a5fd9e4ffb3433b7ece7efaad29071d90b78ac67651ec18ae5c9f1f7545f4368",
+      "52067184__GestioneFidi_Tooltip3": "c4d649a9c3fc28bf986c232e089e3df9de5ebd1ba087692944410a4a1cb7000f",
+      "52067184__Note": "63309dc06a1ca0e600a8239f06f1fae8129705532e745b3604e5471944f02f79",
+      "52067184__Soggetti": "128d6aa43ddd066291e270295d9f55da7ee6b49491575d1f9e47e7481f9a17c7",
+      "52068422__Elenco": "471f142a54f916079e31384d578a447ac54df997cc1d9414bd531c638ea02ef1",
+      "52068422__Elenco_tooltip1": "80b5a23286a0c418d014bde8fe736b86fbdb07dc803459267bd7cc38146a8a5b",
+      "52068422__GestioneFidi": "12779e2a398413ebaef35b833cd886cee27dc5d9fa64665ab27256254595175b",
+      "52068422__GestioneFidi_Tooltip2": "65e1c22a7b272e88e39e92c3b177dc879039cfe3800d7d577227bb4a8c7f6570",
+      "52068422__GestioneFidi_Tooltip3": "9b28b55973f6f186260e20f52aa5e207a7f4be2898f281ae917dc83c23ed67ee",
+      "52068422__GestioneFidi_tooltip1": "e9db434faffa42440003e0f9e0f2ce3ef26afb111cebd4f6eb4f1ed4fef53be7",
+      "52068422__Note1": "a1747a9627bd13beb759da369048b649835440294bb8745ede4f0e0349512e24",
+      "52068422__Note2": "81703863302f627edac281d2fd9442150339253c1fd077e46b0ebeff0f027b7e",
+      "52068422__Soggetti": "2eddfbaaf9f80f8d737e76ba06e27582603359e8822b9a560eb47981b9ac6169",
+      "52080223__Elenco": "f8063d48fa81f38029a8d10652e6528a98354986c7dff2a51e3a04b8d6816440",
+      "52080223__Elenco_tooltip1": "25a01a6c7ea998434828bf75c19651bdcf2b1224be657380c2db44f0dd429c06",
+      "52080223__Elenco_tooltip2": "54f5021014e7c52aefb6acd0d89b22912fb6adb00927e5ce9250480398279678",
+      "52080223__GestioneFidi": "c2d605424faca8f6024914e73dbabfbe75e2e00889f275bc93773950f84da313",
+      "52080223__GestioneFidi_Tooltip1": "eae12b299b6a0f8deb3ec5f2102c8236b7abeafd29d0396284f09b24c1c2709e",
+      "52080223__GestioneFidi_Tooltip2": "b79174bef8da489428f43f82c1a9d751959a5b42a483ad0face71d35a3e31b1d",
+      "52080223__Note": "182b992282e7992aa876a77f268bfbc779e64ae40b7f636cf3c08e12e3bebb3d",
+      "52080223__Soggetti": "b3fb4010919d90dd54de8eae502f08cbfdc51ebcd61197ba7b62dae4887e5ba5",
+      "52102599__Elenco": "bc61240bdb2d4d27d304def369ad650360f32baaba42303cb375466d01dc95ab",
+      "52102599__Elenco_dx": "90bcbece279ff4c9161dc578f6915cf5283e14dd7ea826ef829c9fef9e3293b7",
+      "52102599__Elenco_tooltip1": "41be35da6abd8b0d099056ab080dd4e694b75a7e7afe3f1c13ebcb8c505b80e8",
+      "52102599__Elenco_tooltip2": "8fca45e8ce5ff500cf7cf2a57503e8555b6b517cca0e936eb342835b53ee0525",
+      "52102599__GestioneFidi": "efdd192650c0193ff9b647a9e0518170f2f10f55b9189e88d000a0cf353cdcf2",
+      "52102599__GestioneFidi_tooltip1": "c7eddbc6fa2758d537d54ad4b7ee451a170daeeb34776df339a08ac8ea032e65",
+      "52102599__GestioneFidi_tooltip2": "eff71adf3941f280d95c2c2c3b7fb4bc98301aef2474aa88f4d8048026c58046",
+      "52102599__GestioneFidi_tooltip3": "3b0599e28619b64bf8e67e0832d7726afcb4ff2c29298da5124b1e1897517435",
+      "52102599__Note": "ab0efe65115b630ec0b472194e48e1fd4ac3fa776a7178ab8a1acdd8ddbae0de",
+      "52102599__Note_down": "8b7827eef65a9674c5d5ce2709f185f791716b2cbe7a411af1f6b3911c7ab506",
+      "52102599__Soggetti": "367422378ac729bd5d67b51275bc9c28c79736cace2982f93fc55539d15ffbb1",
+      "52126316__Elenco": "ffd2567fc867f16ae719eb408116caf65b5d8b1f4f4e4e6fd4dc1cb2dae4f4f6",
+      "52126316__Elenco_tooltip1": "cced148f0b48d513ce50b5f2717665f9067d97c75130346ac3673da6445adc6c",
+      "52126316__Elenco_tooltip2": "f85f33f736a7042e3b755d8f64727051e9e0aca14392d9ac730eb8bd963b2690",
+      "52126316__GestioneFidi": "a86320a22ec1d051c4714d909a7c3f650083603eb59c71ab2356a7b5683653b1",
+      "52126316__GestioneFidi_Tooltip1": "997c3456187491c9f5d9e27de67df2280a704c9cb26925ca4cca54e1a5521645",
+      "52126316__GestioneFidi_Tooltip2": "76575950b1a820b5a74e3cb6a50757aad66a2f9661e06ec0ff5e94fff3b7f0c9",
+      "52126316__Note": "79378c47f0a5bfadbecf6b13a73f6ba18d239897b04de89ded36d8ca7494e91a",
+      "52126316__Soggetti": "235ab2ddc64cbb8609fc84f2caef1af0c8c093c0c6818bc4d7b623a67f547c83",
+      "52130861__Elenco": "ffa7b3f59ccccb3e000935c093bbdeb15d07195ac1d3139af857b848602b5149",
+      "52130861__Elenco_dx": "1d39a608f5b3480c223338dac5173ab7bbcfacdf9daa71492c0f4bcbaee8fdeb",
+      "52130861__Elenco_tooltip1": "31825f170018ef5dab95bbdbf25f0f8174398cd932be39dc1a591348bbf9c7da",
+      "52130861__Elenco_tooltip2": "f4aa76236117f3708cad1888cb897925e3e0ce8145f9ed3cf1a48028a77f7418",
+      "52130861__Elenco_tooltip3": "a51f770570b08a13fd0c2c50f699bad1a866dd9cd797396225edcd5b6b6c1eda",
+      "52130861__GestioneFidi": "7809ee2db50772f3ca9f617cde9605c0396be1ce193b9d5e33de67e7143689af",
+      "52130861__GestioneFidi_Tooltip1": "c7481236e3bc09796460fff449cb1df8712a6b1045d525b7e86ef5482a2aae86",
+      "52130861__GestioneFidi_Tooltip3": "b8344eb56d3ffc286dd1f44282534eae07cee5690e678d1ceefb79f09a4f4c0b",
+      "52130861__Note": "a550830a9da8eaf2bfeac94e0abf78ccdd22a8cc1600906b5c95c6ab415a0739",
+      "52130861__Soggetti": "694d0e536560d2026c155af750d172357a1f287902bf0080fb2e1436c8629552",
+      "52135039__Elenco": "4ed2154c19a5bb710961cc4c154ce70634206a28a81ec526fbc911f4b538795e",
+      "52135039__Elenco_tooltip1": "9522563afb25e9aa751dee3c27c545f3308406cb83e522699159b8171fa48a26",
+      "52135039__GestioneFidi": "02f82581a015d9a7b56a1ff6222e18b976ece7c5b2a9abcf306ba9fc0024303b",
+      "52135039__GestioneFidi_Tooltip1": "fb470db0f181862ddf1a692cd8385fb99993028bc291c06bd9b441964c2fc78a",
+      "52135039__GestioneFidi_Tooltip2": "03025e73c3ac342cc58931e1b5d0a1f6a31ef7e0e1a458a2b8313d5ac7bd46b2",
+      "52135039__Note": "1e34be413d899761d9ba633ed5a8fe4d6b68a57395ce6fb91f5ffb2a56f6dae9",
+      "52135039__Soggetti": "42396b215076155bd8b7a49047780c409ea0c58b0de70a66cdae808db5cd8f32"
+    }
+  },
+  "provenance": {
+    "models": {
+      "Det": {
+        "file": "PP-OCRv6_det_medium.onnx",
+        "sha256": "92078b7355007ccfffcd4c8cd441a3afd4538904d06881b29a155e1e679907c2",
+        "source": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv6/det/PP-OCRv6_det_medium.onnx"
+      },
+      "Cls": {
+        "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+        "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+        "source": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx"
+      },
+      "Rec": {
+        "file": "PP-OCRv6_rec_medium.onnx",
+        "sha256": "eef444829dbbe18d7fea59a3f6eb75647518d2b3a9568d27c92e42940204894b",
+        "source": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv6/rec/PP-OCRv6_rec_medium.onnx"
+      }
+    },
+    "effective_config": {
+      "Global": {
+        "text_score": 0.5,
+        "use_det": true,
+        "use_cls": true,
+        "use_rec": true,
+        "use_preprocess_img": true,
+        "min_side_len": 30,
+        "max_side_len": 2000,
+        "use_vertical_padding": true,
+        "min_height": 30,
+        "width_height_ratio": 8,
+        "return_word_box": false,
+        "return_single_char_box": false,
+        "font_path": null,
+        "log_level": "warning",
+        "model_root_dir": "/usr/local/lib/python3.13/site-packages/rapidocr/models"
+      },
+      "EngineConfig": {
+        "onnxruntime": {
+          "intra_op_num_threads": 4,
+          "inter_op_num_threads": 1,
+          "enable_cpu_mem_arena": false,
+          "cpu_ep_cfg": {
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "cudnn_conv_algo_search": "EXHAUSTIVE",
+            "do_copy_in_default_stream": true
+          },
+          "use_dml": false,
+          "dml_ep_cfg": null,
+          "use_cann": false,
+          "cann_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "npu_mem_limit": 21474836480,
+            "op_select_impl_mode": "high_performance",
+            "optypelist_for_implmode": "Gelu",
+            "enable_cann_graph": true
+          },
+          "use_coreml": false,
+          "coreml_ep_cfg": {
+            "ModelFormat": "MLProgram",
+            "MLComputeUnits": "ALL",
+            "RequireStaticInputShapes": 0,
+            "EnableOnSubgraphs": 0,
+            "SpecializationStrategy": "FastPrediction",
+            "ProfileComputePlan": 0,
+            "AllowLowPrecisionAccumulationOnGPU": 0,
+            "ModelCacheDirectory": "/tmp/RapidOCR"
+          }
+        },
+        "openvino": {
+          "inference_num_threads": -1,
+          "performance_hint": null,
+          "performance_num_requests": -1,
+          "enable_cpu_pinning": null,
+          "num_streams": -1,
+          "enable_hyper_threading": null,
+          "scheduling_core_type": null
+        },
+        "paddle": {
+          "cpu_math_library_num_threads": -1,
+          "use_npu": false,
+          "npu_ep_cfg": {
+            "device_id": 0,
+            "envs": {
+              "FLAGS_npu_jit_compile": 0,
+              "FLAGS_use_stride_kernel": 0,
+              "FLAGS_allocator_strategy": "auto_growth",
+              "CUSTOM_DEVICE_BLACK_LIST": "pad3d,pad3d_grad,set_value,set_value_with_tensor",
+              "FLAGS_npu_scale_aclnn": "True",
+              "FLAGS_npu_split_aclnn": "True"
+            }
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "gpu_mem": 500
+          }
+        },
+        "torch": {
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0
+          },
+          "use_npu": false,
+          "npu_ep_cfg": {
+            "device_id": 0
+          },
+          "use_mps": false
+        },
+        "tensorrt": {
+          "device_id": 0,
+          "use_fp16": true,
+          "use_int8": false,
+          "workspace_size": 1073741824,
+          "cache_dir": null,
+          "force_rebuild": false,
+          "det_profile": {
+            "min_shape": [
+              1,
+              3,
+              32,
+              32
+            ],
+            "opt_shape": [
+              1,
+              3,
+              736,
+              736
+            ],
+            "max_shape": [
+              1,
+              3,
+              2048,
+              2048
+            ]
+          },
+          "rec_profile": {
+            "min_shape": [
+              1,
+              3,
+              48,
+              32
+            ],
+            "opt_shape": [
+              6,
+              3,
+              48,
+              320
+            ],
+            "max_shape": [
+              6,
+              3,
+              48,
+              2048
+            ]
+          },
+          "cls_profile": {
+            "min_shape": [
+              1,
+              3,
+              48,
+              32
+            ],
+            "opt_shape": [
+              6,
+              3,
+              48,
+              192
+            ],
+            "max_shape": [
+              6,
+              3,
+              48,
+              192
+            ]
+          }
+        },
+        "mnn": {}
+      },
+      "Det": {
+        "engine_type": "onnxruntime",
+        "lang_type": "ch",
+        "model_type": "medium",
+        "ocr_version": "PP-OCRv6",
+        "task_type": "det",
+        "model_path": null,
+        "model_dir": null,
+        "limit_side_len": 736,
+        "limit_type": "min",
+        "std": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "mean": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "thresh": 0.3,
+        "box_thresh": 0.5,
+        "max_candidates": 1000,
+        "unclip_ratio": 1.6,
+        "use_dilation": true,
+        "score_mode": "fast",
+        "engine_cfg": {
+          "intra_op_num_threads": 4,
+          "inter_op_num_threads": 1,
+          "enable_cpu_mem_arena": false,
+          "cpu_ep_cfg": {
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "cudnn_conv_algo_search": "EXHAUSTIVE",
+            "do_copy_in_default_stream": true
+          },
+          "use_dml": false,
+          "dml_ep_cfg": null,
+          "use_cann": false,
+          "cann_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "npu_mem_limit": 21474836480,
+            "op_select_impl_mode": "high_performance",
+            "optypelist_for_implmode": "Gelu",
+            "enable_cann_graph": true
+          },
+          "use_coreml": false,
+          "coreml_ep_cfg": {
+            "ModelFormat": "MLProgram",
+            "MLComputeUnits": "ALL",
+            "RequireStaticInputShapes": 0,
+            "EnableOnSubgraphs": 0,
+            "SpecializationStrategy": "FastPrediction",
+            "ProfileComputePlan": 0,
+            "AllowLowPrecisionAccumulationOnGPU": 0,
+            "ModelCacheDirectory": "/tmp/RapidOCR"
+          }
+        },
+        "model_root_dir": "/usr/local/lib/python3.13/site-packages/rapidocr/models"
+      },
+      "Cls": {
+        "engine_type": "onnxruntime",
+        "lang_type": "ch",
+        "model_type": "mobile",
+        "ocr_version": "PP-OCRv4",
+        "task_type": "cls",
+        "model_path": null,
+        "model_dir": null,
+        "cls_image_shape": [
+          3,
+          48,
+          192
+        ],
+        "cls_batch_num": 6,
+        "cls_thresh": 0.9,
+        "label_list": [
+          "0",
+          "180"
+        ],
+        "engine_cfg": {
+          "intra_op_num_threads": 4,
+          "inter_op_num_threads": 1,
+          "enable_cpu_mem_arena": false,
+          "cpu_ep_cfg": {
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "cudnn_conv_algo_search": "EXHAUSTIVE",
+            "do_copy_in_default_stream": true
+          },
+          "use_dml": false,
+          "dml_ep_cfg": null,
+          "use_cann": false,
+          "cann_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "npu_mem_limit": 21474836480,
+            "op_select_impl_mode": "high_performance",
+            "optypelist_for_implmode": "Gelu",
+            "enable_cann_graph": true
+          },
+          "use_coreml": false,
+          "coreml_ep_cfg": {
+            "ModelFormat": "MLProgram",
+            "MLComputeUnits": "ALL",
+            "RequireStaticInputShapes": 0,
+            "EnableOnSubgraphs": 0,
+            "SpecializationStrategy": "FastPrediction",
+            "ProfileComputePlan": 0,
+            "AllowLowPrecisionAccumulationOnGPU": 0,
+            "ModelCacheDirectory": "/tmp/RapidOCR"
+          }
+        },
+        "model_root_dir": "/usr/local/lib/python3.13/site-packages/rapidocr/models"
+      },
+      "Rec": {
+        "engine_type": "onnxruntime",
+        "lang_type": "ch",
+        "model_type": "medium",
+        "ocr_version": "PP-OCRv6",
+        "task_type": "rec",
+        "model_path": null,
+        "model_dir": null,
+        "rec_keys_path": null,
+        "rec_img_shape": [
+          3,
+          48,
+          320
+        ],
+        "rec_batch_num": 6,
+        "engine_cfg": {
+          "intra_op_num_threads": 4,
+          "inter_op_num_threads": 1,
+          "enable_cpu_mem_arena": false,
+          "cpu_ep_cfg": {
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "cudnn_conv_algo_search": "EXHAUSTIVE",
+            "do_copy_in_default_stream": true
+          },
+          "use_dml": false,
+          "dml_ep_cfg": null,
+          "use_cann": false,
+          "cann_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "npu_mem_limit": 21474836480,
+            "op_select_impl_mode": "high_performance",
+            "optypelist_for_implmode": "Gelu",
+            "enable_cann_graph": true
+          },
+          "use_coreml": false,
+          "coreml_ep_cfg": {
+            "ModelFormat": "MLProgram",
+            "MLComputeUnits": "ALL",
+            "RequireStaticInputShapes": 0,
+            "EnableOnSubgraphs": 0,
+            "SpecializationStrategy": "FastPrediction",
+            "ProfileComputePlan": 0,
+            "AllowLowPrecisionAccumulationOnGPU": 0,
+            "ModelCacheDirectory": "/tmp/RapidOCR"
+          }
+        },
+        "font_path": null,
+        "model_root_dir": "/usr/local/lib/python3.13/site-packages/rapidocr/models"
+      }
+    },
+    "versions": {
+      "rapidocr": "3.9.2",
+      "onnxruntime": "1.30.0",
+      "numpy": "2.5.4",
+      "opencv-python": "5.0.0.93",
+      "pillow": "13.0.0",
+      "omegaconf": "2.4.0",
+      "python": "3.13.3"
+    },
+    "input": "PIL Image.convert('RGB') as a numpy array, scale 1x",
+    "platforms": [
+      {
+        "system": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+        "processor": "",
+        "logical_cpus": 4
+      }
+    ]
+  },
+  "sessions": [
+    {
+      "started_utc": "2026-10-18T16:18:31+00:00",
+      "engine_load_seconds": 1.924,
+      "warmup_seconds": 7.079,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1636761600,
+      "shard": 0
+    },
+    {
+      "started_utc": "2026-10-18T16:18:31+00:00",
+      "engine_load_seconds": 1.472,
+      "warmup_seconds": 4.747,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1693315072,
+      "shard": 1
+    },
+    {
+      "started_utc": "2026-10-18T16:18:31+00:00",
+      "engine_load_seconds": 1.991,
+      "warmup_seconds": 10.863,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1720807424,
+      "shard": 2
+    },
+    {
+      "started_utc": "2026-10-18T16:18:33+00:00",
+      "engine_load_seconds": 2.036,
+      "warmup_seconds": 6.076,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1744351232,
+      "shard": 3
+    },
+    {
+      "started_utc": "2026-10-18T16:18:33+00:00",
+      "engine_load_seconds": 1.647,
+      "warmup_seconds": 7.339,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1744699392,
+      "shard": 4
+    },
+    {
+      "started_utc": "2026-10-18T16:18:34+00:00",
+      "engine_load_seconds": 2.386,
+      "warmup_seconds": 51.345,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1738661888,
+      "shard": 5
+    },
+    {
+      "started_utc": "2026-10-18T16:18:35+00:00",
+      "engine_load_seconds": 1.832,
+      "warmup_seconds": 7.847,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1583497216,
+      "shard": 6
+    },
+    {
+      "started_utc": "2026-10-18T16:18:38+00:00",
+      "engine_load_seconds": 2.152,
+      "warmup_seconds": 62.603,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1806209024,
+      "shard": 7
+    },
+    {
+      "started_utc": "2026-10-18T16:18:37+00:00",
+      "engine_load_seconds": 2.05,
+      "warmup_seconds": 12.667,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1837252608,
+      "shard": 8
+    },
+    {
+      "started_utc": "2026-10-18T16:18:38+00:00",
+      "engine_load_seconds": 2.337,
+      "warmup_seconds": 8.552,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1656000512,
+      "shard": 9
+    },
+    {
+      "started_utc": "2026-10-18T16:18:38+00:00",
+      "engine_load_seconds": 1.953,
+      "warmup_seconds": 6.33,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1655173120,
+      "shard": 10
+    },
+    {
+      "started_utc": "2026-10-18T16:18:39+00:00",
+      "engine_load_seconds": 1.957,
+      "warmup_seconds": 6.196,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1753612288,
+      "shard": 11
+    },
+    {
+      "started_utc": "2026-10-18T16:18:39+00:00",
+      "engine_load_seconds": 1.521,
+      "warmup_seconds": 4.844,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1673846784,
+      "shard": 12
+    },
+    {
+      "started_utc": "2026-10-18T16:18:41+00:00",
+      "engine_load_seconds": 2.276,
+      "warmup_seconds": 7.949,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1812975616,
+      "shard": 13
+    },
+    {
+      "started_utc": "2026-10-18T16:18:42+00:00",
+      "engine_load_seconds": 3.935,
+      "warmup_seconds": 7.873,
+      "screens_read": 1,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1476046848,
+      "shard": 14
+    }
+  ],
+  "status": "complete",
+  "failed": {},
+  "pending": [],
+  "cache_sha256": "efd9856510836f80247d06897cb8a4642e8e2df3bc004a6a5e38a5b554675ffe",
+  "timing": {
+    "screens": 113,
+    "mean": 15.807203539823009,
+    "median": 8.237,
+    "p95": 65.58840000000001,
+    "max": 118.936,
+    "sessions": 15,
+    "scope": "seconds per screen include PNG decoding; the warm-up read and engine loading are excluded"
+  },
+  "merged_from": [
+    {
+      "run": "../shards/0",
+      "cache_sha256": "3c05805597472c21d01fa8b5acd2e4ded86ce48b28924e52e31f5b0553da5a9e"
+    },
+    {
+      "run": "../shards/1",
+      "cache_sha256": "bd497c91e3e19c1ea62682130fc24fa6b90f1c28fb073c712c6bb07f15ef39a7"
+    },
+    {
+      "run": "../shards/2",
+      "cache_sha256": "460bca6bab388fb37b70e8dbe4dd1bcd934823e1af8f450f5869fd0d508f0f18"
+    },
+    {
+      "run": "../shards/3",
+      "cache_sha256": "115a36ee5e1cfc70f72520b4db8e5bb5767da67cfa3f92a4182b25d1150634c6"
+    },
+    {
+      "run": "../shards/4",
+      "cache_sha256": "48144f319deb09785076c910fa1b9ae9d490137c68850838c9329771a3c68da4"
+    },
+    {
+      "run": "../shards/5",
+      "cache_sha256": "8057233a101ef06eced578cacd8bfe6357081d579a4ade7eccf882763c68b5c2"
+    },
+    {
+      "run": "../shards/6",
+      "cache_sha256": "02119593d76a2962fe0fbfe5d1bef8a3c32f29c0f6cae98edd063e3937990465"
+    },
+    {
+      "run": "../shards/7",
+      "cache_sha256": "655d590b46f9993fc476c73ccb1d5fd40811ff983e0ef21e827e9bf6baef34dd"
+    },
+    {
+      "run": "../shards/8",
+      "cache_sha256": "9e451430dce161216ee415c46aec85a92ce272fa04eb292f7a10c46b42d95630"
+    },
+    {
+      "run": "../shards/9",
+      "cache_sha256": "5b6dec6ba2565e5eb77c59593b79a4df0f46224a135680f087936760a3d33a4f"
+    },
+    {
+      "run": "../shards/10",
+      "cache_sha256": "857d456801979b642e5c9ceece43be4e9f450e5d5f09821d63f5b761055feaaa"
+    },
+    {
+      "run": "../shards/11",
+      "cache_sha256": "97f8bd0c60359da1f4eb85847c81724b9a6c7e003d59f92728305ae684c29f2d"
+    },
+    {
+      "run": "../shards/12",
+      "cache_sha256": "82bae77022c6f4178649d8a7495fd3b7528dcb0883dbcbe8c56c1bc96d86743a"
+    },
+    {
+      "run": "../shards/13",
+      "cache_sha256": "a5a0d648d6502b5962238400ed5263b11591026c0fe9b4e9b1b29d78d2bf4e4b"
+    },
+    {
+      "run": "../shards/14",
+      "cache_sha256": "795da7004363aa7dbb161057cd9b843f62fd2efef875ac429c721927bd6d7b6c"
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "updated_at_utc": "2026-10-18T15:59:54Z",
+  "head": "83a9c186de215e16a9faf4638c7e79bb79128046",
+  "scope": "Phase 1 of docs/next-ver-plan.md: stage A comparison A0-A4 on train/val OCR-only metrics and cost; stop/go outcome",
+  "current_report": "runs/2026-10-18-phase1-ocr/report.md",
+  "previous_state": "runs/2026-10-18-phase1-ocr/analysis-state-before.json",
+  "previous_report": "runs/2026-10-18-phase0-ocr-runner/report.md",
+  "covered_uncommitted_files": [
+    ".codebase-xray/runs/2026-10-18-phase1-ocr/report.md",
+    ".codebase-xray/runs/2026-10-18-phase1-ocr/timing_per_box.py",
+    ".codebase-xray/runs/2026-10-18-phase1-ocr/timing-per-box.txt",
+    ".codebase-xray/analysis-state.json"
+  ],
+  "unrelated_uncommitted_files": [
+    "uv.lock"
+  ],
+  "document_sha256": {
+    "docs/next-ver-plan.md": "d0423bcdfe125fe8a89872d4f6862a5dfc99ee2968f77f02f6abd055fac719c7"
+  },
+  "documentation_status": "plan unchanged in this record; Phase 1 stop/go open: A0/A4/A5 fail val G1, A1-A3 never scored (A1 stopped by hand on cost, A3/A2 cost samples cut by the memory stop); controlled validation run of A1 and A2 pending the user's go; resilience_and_coverage_blocking",
+  "runtime_resilience_status": "not_verified",
+  "full_suite": {
+    "command": ".venv\\Scripts\\python.exe -m pytest tests",
+    "python_version": "3.11.15",
+    "exit_code": 0,
+    "summary": "479 passed, 3 warnings in 41.02s",
+    "executed_in": "runs/2026-10-18-phase0-ocr-runner (previous result on the same code; not re-run for the Phase 1 record because no source or test changed and commit memory was critically low)",
+    "log": "runs/2026-10-18-phase0-ocr-runner/pytest-full.txt"
+  },
+  "fast_lane": {
+    "command": ".venv\\Scripts\\python.exe tools\\check.py",
+    "python_version": "3.11.15",
+    "exit_code": 0,
+    "summary": "421 passed, 18 deselected in 43.28s",
+    "executed_in": "runs/2026-10-18-venv-dependencies (previous result, not re-executed)",
+    "log": "runs/2026-10-18-venv-dependencies/pytest-fast.txt"
+  },
+  "environment_notes": [
+    ".venv runs Python 3.11.15 (app and tests); .venv-ocr runs Python 3.13.14 from requirements-ocr.txt (rapidocr 3.9.2, onnxruntime 1.30.0; gitignored)",
+    "The session exports HTTPS_PROXY=http://127.0.0.1:18789, which the Modal client cannot traverse; Modal commands need HTTPS_PROXY/HTTP_PROXY unset",
+    "uv.lock is untracked and was left untouched; pyproject.toml declares no dependencies, so a bare uv sync empties .venv"
+  ],
+  "history_note": "Earlier scoped records stay as history; the reconciliation figures are in runs/2026-10-18-phase0-reconciliation. Gates G1-G8 remain open; a green suite is not evidence for them.",
+  "phase0": {
+    "a0_reproduced": "113/113 screens identical to cache e261c05b (rapidocr 3.9.2, onnxruntime 1.30.0, Python 3.13.14 in .venv-ocr)",
+    "bundle_rebuild": "labels, texts, alignment, coverage identical; examples.json x coordinates differ (1565 <=1e-6, 2 by 3px); fingerprint beca470c vs 469c26d1; open (R21)",
+    "b0_current_bundle_val": {
+      "strict": "124/146",
+      "fidi_non_null": "19/25",
+      "soggetti_non_null": "15/15",
+      "per_practice": {
+        "51659595": "52/72",
+        "52126316": "72/74"
+      },
+      "hallucinated": 4
+    },
+    "b0_current_bundle_test_regression_only": {
+      "strict": "144/192",
+      "fidi_non_null": "25/60",
+      "soggetti_non_null": "19/21"
+    },
+    "gates_on_val": {
+      "G4_min_129": "not met",
+      "G4_target_135": "not met",
+      "G5_fidi_23": "not met",
+      "G5_soggetti_14": "met",
+      "G1_131": "not met (124/133)"
+    },
+    "pending_steps": [
+      "G8: collect and review new practices per plan section 5.4 (outside the repository; needs the screenshot provider)",
+      "R21 rebuild reproducibility cause",
+      "More than 8 LiLT epochs: not run (bound in src/training/modal_train.py; paid run needs explicit approval)",
+      "A2 3-screen cost sample: not run (memory); restart only when the user asks"
+    ],
+    "field_evaluation": "evaluate_field_values() added (R24); role path unchanged on real B0 predictions (R25); field path matches role path record by record, negative control fails (R26)",
+    "runner": "src/training/ocr_runner.py (R27); A0 through the runner reproduces the bundle cache, 12/12 checks (R28); G8 plan 9/9 (R29); lotto partly exposed to page-classifier fixtures (R30)"
+  },
+  "plan_figure_checks": {
+    "script": "runs/2026-10-18-phase0-baseline/check_plan_reconciled.py",
+    "summary": "28/28 passed; negative control 26/28",
+    "log": "runs/2026-10-18-phase0-baseline/checks-plan.txt"
+  },
+  "phase1": {
+    "A0": "complete; val OCR 124/133 (G1 needs 131); G3 ok; 6.14 s mean, 11.19 s max per screen",
+    "A1": "stopped by hand after 18 screens; 154.2 s/screen mean vs A0 7.03 s on the same screens; 0.86-1.30 s per text box, stable (timing-per-box.txt); uncontrolled machine; quality not scored",
+    "A2": "not run (first chain stopped by hand, second by the memory stop before A2); cost and quality unmeasured",
+    "A3": "2-screen cost sample cut by the memory stop: 81.7 and 83.6 s vs A0 5.10 and 5.14 s, 1.07-1.16 s per box; quality not scored",
+    "A4": "complete; val OCR 120/133, train+val rapporto 18/29 (A0 28/29); faster (5.46 s mean)",
+    "outcome": "A0 and A4 fail val G1 (complete runs, recounted 12/12); A5 cannot change val G1; A1-A3 unscored, so stop/go stays open; 83a9c18 overstated this as 'no configuration qualifies' and is corrected"
+  }
+}

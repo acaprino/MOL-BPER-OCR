@@ -1,0 +1,16 @@
+{
+  "src/training/ocr_runner.py": "da556251769bf271409747a82d635dfc09029d8c0e097484eea4bdd531017a2c",
+  "src/training/modal_ocr.py": "01c4fe212a41d207151b6e5bb554aefb9d8ef8790c22755724062bc9ec54d9b3",
+  "tests/test_training_ocr_runner.py": "41d1d04993cc0fc7e3b66dc39abdc238f9c8a522bea70ccb51d662d975a5eb5a",
+  "src/training/alignment.py": "0eb63de735305dec3a1308fc5865d12957188a974a015165532dd493e018f3a9",
+  "requirements-ocr.txt": "a28afa09f17c00177bc042bbaa001e874638351fc5911e9ceecfb28d9393cf4e",
+  "src/training/README.md": "e1764dd2ef8e042ae848e24604cb9530fbd8780d352a696360d1ae2625640702",
+  "CLAUDE.md": "fe5295fc245a9c9d8b44e247555e689db114ebb5de06a2980befb7e911f23955",
+  ".gitignore": "a16af65d4b21d8cca3c0aeca68e6237e9a2969377aaaba2e5088e94a9f7d7675",
+  "docs/next-ver-plan.md": "d0423bcdfe125fe8a89872d4f6862a5dfc99ee2968f77f02f6abd055fac719c7",
+  "data/training/ocr-cache/rapid_v6_small_1x.json": "e261c05beed40fadc9ee0616a5920dcb58517d266f36d664d3cd62ac3dc22342",
+  "A0-modal cache.json": "c96cb5dcd9062779420a4b517b14426acb997081198637d4e98743603787efd5",
+  "A1 cache.json": "c023164f4cf854f0496807513dc5e19cf596b0db9159029e0e64722c45571f23",
+  "A2 cache.json": "efd9856510836f80247d06897cb8a4642e8e2df3bc004a6a5e38a5b554675ffe",
+  "A3 cache.json": "1791f15471a2abe7d0afe71352c1a50b7a7835ad4ea9ad1c73c9d3ffaa905413"
+}

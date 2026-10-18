@@ -1,0 +1,22 @@
+........................................................................ [ 14%]
+........................................................................ [ 29%]
+........................................................................ [ 43%]
+........................................................................ [ 58%]
+........................................................................ [ 72%]
+........................................................................ [ 87%]
+..............................................................           [100%]
+============================== warnings summary ===============================
+tests/test_page_classifier.py::test_recognizes_each_page_from_a_full_monitor_frame[screen 1]
+  C:\Users\alfio/.cache\torch\hub\facebookresearch_dinov2_7764ea0f912e53c92e82eb78a2a1631e92725fc8\dinov2\layers\swiglu_ffn.py:51: UserWarning: xFormers is not available (SwiGLU)
+    warnings.warn("xFormers is not available (SwiGLU)")
+
+tests/test_page_classifier.py::test_recognizes_each_page_from_a_full_monitor_frame[screen 1]
+  C:\Users\alfio/.cache\torch\hub\facebookresearch_dinov2_7764ea0f912e53c92e82eb78a2a1631e92725fc8\dinov2\layers\attention.py:33: UserWarning: xFormers is not available (Attention)
+    warnings.warn("xFormers is not available (Attention)")
+
+tests/test_page_classifier.py::test_recognizes_each_page_from_a_full_monitor_frame[screen 1]
+  C:\Users\alfio/.cache\torch\hub\facebookresearch_dinov2_7764ea0f912e53c92e82eb78a2a1631e92725fc8\dinov2\layers\block.py:40: UserWarning: xFormers is not available (Block)
+    warnings.warn("xFormers is not available (Block)")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+494 passed, 3 warnings in 39.35s

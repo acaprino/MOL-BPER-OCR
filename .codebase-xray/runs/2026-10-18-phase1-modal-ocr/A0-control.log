@@ -1,0 +1,31 @@
+Note that running a local entrypoint in detached mode only keeps the last triggered Modal function alive after the parent process has been killed or disconnected.
+✓ Initialized. View run at 
+https://modal.com/apps/alfio-caprino/main/ap-NN4aWWnWcti1FhoOqA6jIU
+✓ Created objects.
+├── ✓ Uploaded PythonPackage:training
+├── ✓ Uploaded PythonPackage:training
+├── ✓ Uploaded 
+│   D:\Projects\poc-data-extraction\.venv-ocr\Lib\site-packages\rapidocr\models
+├── ✓ Created Function read_shard.
+└── ✓ Created Function cost_panel.
+spawned 1 shards and the cost panel; calls in D:\Projects\poc-data-extraction\.codebase-xray\runs\2026-10-18-phase1-modal-ocr\A0-control\calls.json
+10/113 51531667__Elenco_dx 1.45s
+20/113 51531667__Note 2.33s
+30/113 52060489__Elenco 1.59s
+40/113 52062600__Elenco_tooltip1 1.86s
+50/113 52062600__Scheda_Privati_4 1.70s
+60/113 52067184__Soggetti 1.65s
+70/113 52080223__Elenco 1.61s
+80/113 52102599__Elenco_tooltip1 1.30s
+90/113 52126316__Elenco_tooltip1 1.50s
+100/113 52130861__Elenco_tooltip2 1.30s
+110/113 52135039__GestioneFidi_Tooltip1 1.99s
+113/113 52135039__Soggetti 1.54s
+A0 shard 0 113 screens, mean 1.9s on unknown
+A0 merged: mean 1.86s, max 2.77s
+{
+  "failures": {}
+}
+✓ App completed. View run at 
+https://modal.com/apps/alfio-caprino/main/ap-NN4aWWnWcti1FhoOqA6jIU
+exit 0

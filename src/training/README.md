@@ -66,6 +66,24 @@ letture 6→8 per pratica, solo per addestramento e validazione: il test storico
 partecipa alla scelta del motore. Il dataset derivato serve alle misure e non
 sostituisce il bundle sigillato.
 
+Le configurazioni lente si possono leggere su Modal, in contenitori solo CPU con 4
+core e gli stessi pin e file modello di `.venv-ocr`:
+
+```powershell
+cd src
+env -u HTTPS_PROXY -u HTTP_PROXY ../.venv/Scripts/python.exe -m modal run --detach -m training.modal_ocr --out-dir PERCORSO-ASSOLUTO-NUOVO --configs A1,A2,A3
+```
+
+Ogni gruppo di schermate (`--shard-size`, 8 per default; intere per le configurazioni
+in `--whole`) è una normale prova di `run_ocr()`. In locale `merge_runs()` le unisce in
+`<config>/run` solo se sono tutte complete, con la stessa configurazione e gli stessi
+modelli, e coprono ogni schermata una sola volta. `report` legge poi `<config>/run`
+come una prova locale. Il pannello dei costi (`--panel`, vuoto per saltarlo) legge le
+stesse schermate con tutte le configurazioni in un solo contenitore, così i tempi si
+confrontano sulla stessa macchina. Su Modal vanno le schermate revisionate; workbook ed
+etichette restano in locale. Se il processo locale si ferma, l'app staccata continua:
+`--collect` con la stessa cartella scarica quello che è finito.
+
 ## Addestramento e modello locale
 
 L'addestramento parte dal modello pubblico `nielsr/lilt-xlm-roberta-base`, con una

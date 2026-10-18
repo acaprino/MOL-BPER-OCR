@@ -1,0 +1,532 @@
+{
+ "A0-local": {
+  "params": {
+   "Det.ocr_version": "PP-OCRv6",
+   "Det.model_type": "small",
+   "Rec.ocr_version": "PP-OCRv6",
+   "Rec.model_type": "small"
+  },
+  "models": {
+   "Det": "PP-OCRv6_det_small.onnx 090f04abcd9d",
+   "Cls": "ch_ppocr_mobile_v2.0_cls_mobile.onnx e47acedf6632",
+   "Rec": "PP-OCRv6_rec_small.onnx 6f327246b503"
+  },
+  "train": {
+   "ocr_non_null": "562/613",
+   "subject_ndg": "16/21",
+   "rapporto": "23/24",
+   "six_as_eight": 10
+  },
+  "val": {
+   "ocr_non_null": "124/133",
+   "subject_ndg": "5/5",
+   "rapporto": "5/5",
+   "six_as_eight": 1
+  },
+  "train_val": {
+   "ocr_non_null": "686/746",
+   "subject_ndg": "21/26",
+   "rapporto": "28/29",
+   "six_as_eight": 11
+  },
+  "six_as_eight_per_practice": {
+   "52062600": 3,
+   "52068422": 2,
+   "52080223": 2,
+   "52126316": 1,
+   "52135039": 3
+  },
+  "timing": {
+   "screens": 113,
+   "mean": 6.14,
+   "median": 5.88,
+   "p95": 8.76,
+   "max": 11.19,
+   "sessions": 1
+  },
+  "peak_memory_mb": 585,
+  "gate_val": {
+   "G1": "124/133 (needs 131)",
+   "G1_pass": false,
+   "G3_pass": true
+  },
+  "vs_A0-local_gained": [],
+  "vs_A0-local_lost": []
+ },
+ "A0-modal": {
+  "params": {
+   "Det.ocr_version": "PP-OCRv6",
+   "Det.model_type": "small",
+   "Rec.ocr_version": "PP-OCRv6",
+   "Rec.model_type": "small"
+  },
+  "models": {
+   "Det": "PP-OCRv6_det_small.onnx 090f04abcd9d",
+   "Cls": "ch_ppocr_mobile_v2.0_cls_mobile.onnx e47acedf6632",
+   "Rec": "PP-OCRv6_rec_small.onnx 6f327246b503"
+  },
+  "train": {
+   "ocr_non_null": "562/613",
+   "subject_ndg": "16/21",
+   "rapporto": "23/24",
+   "six_as_eight": 10
+  },
+  "val": {
+   "ocr_non_null": "124/133",
+   "subject_ndg": "5/5",
+   "rapporto": "5/5",
+   "six_as_eight": 1
+  },
+  "train_val": {
+   "ocr_non_null": "686/746",
+   "subject_ndg": "21/26",
+   "rapporto": "28/29",
+   "six_as_eight": 11
+  },
+  "six_as_eight_per_practice": {
+   "52062600": 3,
+   "52068422": 2,
+   "52080223": 2,
+   "52126316": 1,
+   "52135039": 3
+  },
+  "timing": {
+   "screens": 113,
+   "mean": 1.86,
+   "median": 1.83,
+   "p95": 2.57,
+   "max": 2.77,
+   "sessions": 1
+  },
+  "peak_memory_mb": 1346,
+  "gate_val": {
+   "G1": "124/133 (needs 131)",
+   "G1_pass": false,
+   "G3_pass": true
+  },
+  "vs_A0-local_gained": [],
+  "vs_A0-local_lost": []
+ },
+ "A1-modal": {
+  "params": {
+   "Det.ocr_version": "PP-OCRv6",
+   "Det.model_type": "small",
+   "Rec.ocr_version": "PP-OCRv6",
+   "Rec.model_type": "medium"
+  },
+  "models": {
+   "Det": "PP-OCRv6_det_small.onnx 090f04abcd9d",
+   "Cls": "ch_ppocr_mobile_v2.0_cls_mobile.onnx e47acedf6632",
+   "Rec": "PP-OCRv6_rec_medium.onnx eef444829dbb"
+  },
+  "train": {
+   "ocr_non_null": "575/613",
+   "subject_ndg": "21/21",
+   "rapporto": "24/24",
+   "six_as_eight": 0
+  },
+  "val": {
+   "ocr_non_null": "126/133",
+   "subject_ndg": "5/5",
+   "rapporto": "5/5",
+   "six_as_eight": 0
+  },
+  "train_val": {
+   "ocr_non_null": "701/746",
+   "subject_ndg": "26/26",
+   "rapporto": "29/29",
+   "six_as_eight": 0
+  },
+  "six_as_eight_per_practice": {},
+  "timing": {
+   "screens": 113,
+   "mean": 12.02,
+   "median": 7.17,
+   "p95": 47.34,
+   "max": 55.51,
+   "sessions": 15
+  },
+  "peak_memory_mb": 1563,
+  "gate_val": {
+   "G1": "126/133 (needs 131)",
+   "G1_pass": false,
+   "G3_pass": true
+  },
+  "vs_A0-local_gained": [
+   "51185037__GestioneFidi_Tooltip1 denominazione: '-LUCIAC NICOLAS,LUCIAC MIHAIL' -> 'LUCIAC NICOLAS,LUCIAC MIHAIL'",
+   "51185037__GestioneFidi_Tooltip3 denominazione: '-LUCIAC NICOLAS,LUCIAC MIHAIL' -> 'LUCIAC NICOLAS,LUCIAC MIHAIL'",
+   "51659595__GestioneFidi_Tooltip2 tipo_op: 'Nuova Fnanza' -> 'Nuova Finanza'",
+   "51659595__Soggetti denominazione: '-LANDOGNA CORRADO' -> 'LANDOGNA CORRADO'",
+   "51659595__Soggetti filiale_relazione: '21 - STELFRANCO' -> '21 - CASTELFRANCO'",
+   "52062600__GestioneFidi filiale_relazione: '14 - SSUOLO MAR' -> '14 - SASSUOLO MAR'",
+   "52062600__GestioneFidi_tooltip1 denominazione: '-KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI' -> 'KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI'",
+   "52062600__GestioneFidi_tooltip2 rapporto: '034 0014 0017 05865788' -> '034 0014 0017 05665788'",
+   "52062600__Scheda_Privati_3 note_scheda_privati: \"Il cliente è assunto presso AL POSA dal luglio 2026 con contratto di lavoro a tempo indeterminato; in precedenza risultava impiegato presso la medesima azienda con contratto a tempo determinato da aprile 2025. Svolge la mansione di posatore/piastrellista. Il reddito netto indicato in scheda è stato desunto da CAREN, sulla base della CU 2026 relativa al periodo d'imposta 2025, riferita ai mesi da aprile a dicembre 2025, dalla quale risulta un reddito complessivo pari a € 14.098.\" -> \"Il cliente è assunto presso AL POSA S.r.l.s. dal luglio 2026 con contratto di lavoro a tempo indeterminato; in precedenza risultava impiegato presso la medesima azienda con contratto a tempo determinato da aprile 2025. Svolge la mansione di posatore/piastrellista. Il reddito netto indicato in scheda è stato desunto da CAREN, sulla base della CU 2026 relativa al periodo d'imposta 2025, riferita ai mesi da aprile a dicembre 2025, dalla quale risulta un reddito complessivo pari a € 14.098.\"",
+   "52062600__Soggetti ndg_1: '38237200' -> '36237200'",
+   "52062600__Soggetti ndg_4: '38215691' -> '36215691'",
+   "52068422__GestioneFidi scadenza: '381 mesi' -> '361 mesi'",
+   "52068422__GestioneFidi_Tooltip2 scadenza: '381 mesi' -> '361 mesi'",
+   "52068422__Note1 denominazione: '-HETTIARACHCHIGE MENISHA DULASHANI SI' -> 'HETTIARACHCHIGE MENISHA DULASHANI SI'",
+   "52080223__Elenco_tooltip1 denominazione: 'LAMOR...' -> 'LA MOR...'",
+   "52080223__Soggetti ndg_1: '32403281' -> '32403261'",
+   "52080223__Soggetti ndg_3: '7728737' -> '7726737'",
+   "52102599__GestioneFidi_tooltip3 descrizione: '' -> 'M.FOND.PRIVATI'",
+   "52102599__GestioneFidi_tooltip3 scadenza: '' -> '15/11/2055'",
+   "52130861__GestioneFidi denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__GestioneFidi_Tooltip1 denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__GestioneFidi_Tooltip3 denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__Note denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__Soggetti denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52135039__GestioneFidi scadenza: '381 mesi' -> '361 mesi'",
+   "52135039__GestioneFidi_Tooltip1 scadenza: '381 mesi' -> '361 mesi'",
+   "52135039__Soggetti ndg_2: '38306834' -> '36306834'"
+  ],
+  "vs_A0-local_lost": [
+   "51185037__GestioneFidi tipo: 'BPI Mutui / Med. Creditizi' -> 'BPI Muui / Med. Creditizi'",
+   "51185037__GestioneFidi_Tooltip3 tipo: 'BPI Mutui / Med. Creditizi' -> ''",
+   "51659595__Soggetti denominazione_2: 'LANDOGNA ANTONINO' -> 'LANDOGNAANTONINO'",
+   "52062600__Elenco denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52062600__Elenco_tooltip1 denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52062600__Elenco_tooltip2 denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52062600__GestioneFidi_tooltip2 tipo: 'BPI Mutui' -> ''",
+   "52080223__Soggetti denominazione_1: 'LA MORGIA ANDREA,LA MORGIA MATTEO' -> 'LA MORGIAANDREA,LA MORGIA MATTEO'",
+   "52102599__Elenco_tooltip2 denominazione: 'CIMINNISI PAMELA' -> 'CIMINNISIPAMELA'",
+   "52102599__GestioneFidi tipo: 'BPI Mutui' -> ''",
+   "52102599__Soggetti tipo: 'BPI Mutui' -> ''",
+   "52135039__GestioneFidi_Tooltip2 tipo_op: 'Nuova Finanza' -> 'Nuova Fénanza'"
+  ]
+ },
+ "A2-modal": {
+  "params": {
+   "Det.ocr_version": "PP-OCRv6",
+   "Det.model_type": "medium",
+   "Rec.ocr_version": "PP-OCRv6",
+   "Rec.model_type": "medium"
+  },
+  "models": {
+   "Det": "PP-OCRv6_det_medium.onnx 92078b735500",
+   "Cls": "ch_ppocr_mobile_v2.0_cls_mobile.onnx e47acedf6632",
+   "Rec": "PP-OCRv6_rec_medium.onnx eef444829dbb"
+  },
+  "train": {
+   "ocr_non_null": "582/613",
+   "subject_ndg": "21/21",
+   "rapporto": "24/24",
+   "six_as_eight": 0
+  },
+  "val": {
+   "ocr_non_null": "124/133",
+   "subject_ndg": "5/5",
+   "rapporto": "5/5",
+   "six_as_eight": 0
+  },
+  "train_val": {
+   "ocr_non_null": "706/746",
+   "subject_ndg": "26/26",
+   "rapporto": "29/29",
+   "six_as_eight": 0
+  },
+  "six_as_eight_per_practice": {},
+  "timing": {
+   "screens": 113,
+   "mean": 15.81,
+   "median": 8.24,
+   "p95": 65.59,
+   "max": 118.94,
+   "sessions": 15
+  },
+  "peak_memory_mb": 1752,
+  "gate_val": {
+   "G1": "124/133 (needs 131)",
+   "G1_pass": false,
+   "G3_pass": true
+  },
+  "vs_A0-local_gained": [
+   "51185037__GestioneFidi_Tooltip1 denominazione: '-LUCIAC NICOLAS,LUCIAC MIHAIL' -> 'LUCIAC NICOLAS,LUCIAC MIHAIL'",
+   "51185037__GestioneFidi_Tooltip3 denominazione: '-LUCIAC NICOLAS,LUCIAC MIHAIL' -> 'LUCIAC NICOLAS,LUCIAC MIHAIL'",
+   "51659595__GestioneFidi_Tooltip1 scadenza: '' -> '301 mesi'",
+   "51659595__GestioneFidi_Tooltip2 scadenza: '' -> '301 mesi'",
+   "51659595__GestioneFidi_Tooltip2 tipo_op: 'Nuova Fnanza' -> 'Nuova Finanza'",
+   "51659595__Soggetti filiale_relazione: '21 - STELFRANCO' -> '21 - CASTELFRANCO'",
+   "52062600__GestioneFidi filiale_relazione: '14 - SSUOLO MAR' -> '14 - SASSUOLO MAR'",
+   "52062600__GestioneFidi_tooltip1 denominazione: '-KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI' -> 'KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI'",
+   "52062600__GestioneFidi_tooltip2 rapporto: '034 0014 0017 05865788' -> '034 0014 0017 05665788'",
+   "52062600__Soggetti ndg_1: '38237200' -> '36237200'",
+   "52062600__Soggetti ndg_4: '38215691' -> '36215691'",
+   "52067184__GestioneFidi scadenza: '' -> '360 mesi'",
+   "52067184__GestioneFidi_Tooltip3 scadenza: '' -> '360 mesi'",
+   "52068422__GestioneFidi scadenza: '381 mesi' -> '361 mesi'",
+   "52068422__GestioneFidi_Tooltip2 scadenza: '381 mesi' -> '361 mesi'",
+   "52068422__Note1 denominazione: '-HETTIARACHCHIGE MENISHA DULASHANI SI' -> 'HETTIARACHCHIGE MENISHA DULASHANI SI'",
+   "52068422__Soggetti denominazione: '' -> 'HETTIARACHCHIGE MENISHA DULASHANI SI'",
+   "52068422__Soggetti ndg: '' -> '30473741'",
+   "52080223__Elenco_tooltip1 denominazione: 'LAMOR...' -> 'LA MOR...'",
+   "52080223__Soggetti ndg_1: '32403281' -> '32403261'",
+   "52080223__Soggetti ndg_3: '7728737' -> '7726737'",
+   "52102599__Elenco_tooltip1 evidenze: '' -> 'BC'",
+   "52102599__GestioneFidi_tooltip3 descrizione: '' -> 'M.FOND.PRIVATI'",
+   "52102599__GestioneFidi_tooltip3 scadenza: '' -> '15/11/2055'",
+   "52126316__GestioneFidi_Tooltip1 importo_euro: '180,000' -> '160.000'",
+   "52130861__GestioneFidi denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__GestioneFidi_Tooltip1 denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__GestioneFidi_Tooltip3 denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__Note denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__Soggetti denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52135039__GestioneFidi scadenza: '381 mesi' -> '361 mesi'",
+   "52135039__GestioneFidi_Tooltip1 scadenza: '381 mesi' -> '361 mesi'",
+   "52135039__Soggetti ndg_2: '38306834' -> '36306834'"
+  ],
+  "vs_A0-local_lost": [
+   "51659595__Soggetti denominazione_2: 'LANDOGNA ANTONINO' -> 'LANDOGNAANTONINO'",
+   "52062600__Elenco denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52062600__Elenco_tooltip1 denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52062600__Elenco_tooltip2 denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52067184__GestioneFidi_Tooltip1 denominazione: 'ANDREACCHIO GAETANO' -> '-ANDREACCHIO GAETANO'",
+   "52067184__Note denominazione: 'ANDREACCHIO GAETANO' -> '-ANDREACCHIO GAETANO'",
+   "52080223__Soggetti denominazione_1: 'LA MORGIA ANDREA,LA MORGIA MATTEO' -> 'LA MORGIAANDREA,LA MORGIA MATTEO'",
+   "52102599__Elenco denominazione: 'CIMINNISI PAMELA' -> 'CIMINNISIPAMELA'",
+   "52126316__Elenco denominazione: 'SANTINI EMANUELE' -> 'SANTINIEMANUELE'",
+   "52126316__Elenco_tooltip2 denominazione: 'SANTINI EMANUELE' -> 'SANTINIEMANUELE'",
+   "52126316__GestioneFidi importo_euro: '160.000' -> '160,000'",
+   "52126316__GestioneFidi_Tooltip2 importo_euro: '160.000' -> '160,000'",
+   "52130861__Elenco_dx denominazione: 'DE MARCHI ALESSANDRO' -> 'DE MARCHIALESSANDRO'"
+  ]
+ },
+ "A3-modal": {
+  "params": {
+   "Det.ocr_version": "PP-OCRv6",
+   "Det.model_type": "tiny",
+   "Rec.ocr_version": "PP-OCRv6",
+   "Rec.model_type": "medium"
+  },
+  "models": {
+   "Det": "PP-OCRv6_det_tiny.onnx f42c0fbd294d",
+   "Cls": "ch_ppocr_mobile_v2.0_cls_mobile.onnx e47acedf6632",
+   "Rec": "PP-OCRv6_rec_medium.onnx eef444829dbb"
+  },
+  "train": {
+   "ocr_non_null": "569/613",
+   "subject_ndg": "21/21",
+   "rapporto": "23/24",
+   "six_as_eight": 0
+  },
+  "val": {
+   "ocr_non_null": "121/133",
+   "subject_ndg": "5/5",
+   "rapporto": "5/5",
+   "six_as_eight": 0
+  },
+  "train_val": {
+   "ocr_non_null": "690/746",
+   "subject_ndg": "26/26",
+   "rapporto": "28/29",
+   "six_as_eight": 0
+  },
+  "six_as_eight_per_practice": {},
+  "timing": {
+   "screens": 113,
+   "mean": 18.28,
+   "median": 7.29,
+   "p95": 60.8,
+   "max": 82.11,
+   "sessions": 15
+  },
+  "peak_memory_mb": 1573,
+  "gate_val": {
+   "G1": "121/133 (needs 131)",
+   "G1_pass": false,
+   "G3_pass": true
+  },
+  "vs_A0-local_gained": [
+   "51185037__GestioneFidi_Tooltip3 denominazione: '-LUCIAC NICOLAS,LUCIAC MIHAIL' -> 'LUCIAC NICOLAS,LUCIAC MIHAIL'",
+   "51659595__GestioneFidi_Tooltip1 scadenza: '' -> '301 mesi'",
+   "51659595__GestioneFidi_Tooltip2 scadenza: '' -> '301 mesi'",
+   "51659595__GestioneFidi_Tooltip2 tipo_op: 'Nuova Fnanza' -> 'Nuova Finanza'",
+   "51659595__Soggetti denominazione: '-LANDOGNA CORRADO' -> 'LANDOGNA CORRADO'",
+   "51659595__Soggetti filiale_relazione: '21 - STELFRANCO' -> '21 - CASTELFRANCO'",
+   "52062600__GestioneFidi filiale_relazione: '14 - SSUOLO MAR' -> '14 - SASSUOLO MAR'",
+   "52062600__GestioneFidi_tooltip1 denominazione: '-KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI' -> 'KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI'",
+   "52062600__GestioneFidi_tooltip2 rapporto: '034 0014 0017 05865788' -> '034 0014 0017 05665788'",
+   "52062600__Soggetti ndg_1: '38237200' -> '36237200'",
+   "52062600__Soggetti ndg_4: '38215691' -> '36215691'",
+   "52067184__GestioneFidi scadenza: '' -> '360 mesi'",
+   "52067184__GestioneFidi_Tooltip1 scadenza: '' -> '360 mesi'",
+   "52067184__GestioneFidi_Tooltip2 scadenza: '' -> '360 mesi'",
+   "52067184__GestioneFidi_Tooltip3 scadenza: '' -> '360 mesi'",
+   "52067184__Note note_della_richiesta: 'Mutuo veicolatoci da Credipass srl rif Perego Trattasi di mutuo di euro 140ke con rata mese di euro 628, rapporto r 31% Libero senza impegni famigliari Con garanzia consap 80%' -> 'Mutuo veicolatoci da Credipass srl rif Perego Trattasi di mutuo di euro 140ke con rata mese di euro 628, rapporto rr 31% Assunto dal 2023 a tempo indeterminato in un azienda di costruzioni di Caravaggio Bg Libero senza impegni famigliari Con garanzia consap 80%'",
+   "52068422__GestioneFidi scadenza: '381 mesi' -> '361 mesi'",
+   "52068422__GestioneFidi_Tooltip2 scadenza: '381 mesi' -> '361 mesi'",
+   "52068422__Note1 denominazione: '-HETTIARACHCHIGE MENISHA DULASHANI SI' -> 'HETTIARACHCHIGE MENISHA DULASHANI SI'",
+   "52080223__Elenco_tooltip1 denominazione: 'LAMOR...' -> 'LA MOR...'",
+   "52080223__Soggetti ndg_1: '32403281' -> '32403261'",
+   "52080223__Soggetti ndg_3: '7728737' -> '7726737'",
+   "52102599__Elenco_tooltip1 evidenze: '' -> 'BC'",
+   "52102599__GestioneFidi_tooltip3 descrizione: '' -> 'M.FOND.PRIVATI'",
+   "52102599__GestioneFidi_tooltip3 scadenza: '' -> '15/11/2055'",
+   "52126316__GestioneFidi_Tooltip1 importo_euro: '180,000' -> '160.000'",
+   "52130861__GestioneFidi denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__GestioneFidi_Tooltip1 denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__GestioneFidi_Tooltip3 denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__Note denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__Soggetti denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52135039__GestioneFidi scadenza: '381 mesi' -> '361 mesi'",
+   "52135039__GestioneFidi_Tooltip1 scadenza: '381 mesi' -> '361 mesi'",
+   "52135039__Soggetti ndg_2: '38306834' -> '36306834'"
+  ],
+  "vs_A0-local_lost": [
+   "51185037__GestioneFidi tipo: 'BPI Mutui / Med. Creditizi' -> ''",
+   "51185037__GestioneFidi_Tooltip1 ndg: '32015734' -> ''",
+   "51659595__GestioneFidi_Tooltip1 tipo: 'BPI Mutui' -> ''",
+   "51659595__GestioneFidi_Tooltip2 tipo: 'BPI Mutui' -> ''",
+   "51659595__Note tipo: 'BPI Mutui' -> ''",
+   "51659595__Soggetti denominazione_2: 'LANDOGNA ANTONINO' -> 'LANDOGNAANTONINO'",
+   "51659595__Soggetti tipo: 'BPI Mutui' -> ''",
+   "52062600__Elenco denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52062600__Elenco_tooltip1 denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52062600__Elenco_tooltip2 denominazione: 'KOLA AL...' -> 'KOLA AL..'",
+   "52062600__GestioneFidi rapporto: '034 0014 0017 05665788' -> '03400140017 05665788'",
+   "52062600__Scheda_Privati_1 tipo_contratto: 'TEMPO INDETERMINATO' -> 'TEMPOINDETERMINATO'",
+   "52062600__Scheda_Privati_2 note_scheda_privati: 'Nuovo cliente della scrivente Filiale. Richiesta di mutuo cointestato con la moglie, Enkeleda, e il figlio, per un importo di € 264.000, con durata 30 anni.' -> 'Nuovo cliente della scrivente Filiale.'",
+   "52067184__GestioneFidi_Tooltip3 denominazione: 'ANDREACCHIO GAETANO' -> '-ANDREACCHIO GAETANO'",
+   "52067184__GestioneFidi_Tooltip3 tooltip_descrizione_consap_dr_bis: '457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS' -> '457-IMP. FID. FDO 1 CASA DR SOSTEGNI BIS'",
+   "52068422__GestioneFidi_Tooltip3 denominazione: 'HETTIARACHCHIGE MENISHA DULASHANI SI' -> ''",
+   "52068422__GestioneFidi_Tooltip3 ndg: '30473741' -> ''",
+   "52068422__GestioneFidi_tooltip1 tipo: 'BPI Mutui' -> ''",
+   "52080223__Soggetti denominazione_1: 'LA MORGIA ANDREA,LA MORGIA MATTEO' -> 'LA MORGIAANDREA,LA MORGIA MATTEO'",
+   "52102599__Elenco evidenze: 'BC' -> ''",
+   "52102599__Elenco_tooltip2 evidenze: 'BC' -> ''",
+   "52102599__Soggetti tipo: 'BPI Mutui' -> ''",
+   "52126316__Elenco_tooltip1 denominazione: 'SANTINI EMANUELE' -> 'SANTINIEMANUELE'",
+   "52126316__GestioneFidi_Tooltip2 tipo: 'BPI Mutui / Med. Creditizi' -> ''",
+   "52126316__Note tipo: 'BPI Mutui / Med. Creditizi' -> ''",
+   "52126316__Soggetti tipo: 'BPI Mutui / Med. Creditizi' -> ''",
+   "52130861__Elenco_dx denominazione: 'DE MARCHI ALESSANDRO' -> 'DE MARCHIALESSANDRO'",
+   "52130861__Elenco_tooltip2 evidenze: 'B V' -> ''",
+   "52135039__GestioneFidi_Tooltip1 tipo: 'BPI Mutui' -> ''",
+   "52135039__Soggetti tipo: 'BPI Mutui' -> ''"
+  ]
+ },
+ "A4-local": {
+  "params": {
+   "Det.ocr_version": "PP-OCRv6",
+   "Det.model_type": "small",
+   "Rec.ocr_version": "PP-OCRv5",
+   "Rec.lang_type": "latin",
+   "Rec.model_type": "mobile"
+  },
+  "models": {
+   "Det": "PP-OCRv6_det_small.onnx 090f04abcd9d",
+   "Cls": "ch_ppocr_mobile_v2.0_cls_mobile.onnx e47acedf6632",
+   "Rec": "latin_PP-OCRv5_rec_mobile.onnx b20bd37c168a"
+  },
+  "train": {
+   "ocr_non_null": "553/613",
+   "subject_ndg": "17/21",
+   "rapporto": "15/24",
+   "six_as_eight": 15
+  },
+  "val": {
+   "ocr_non_null": "120/133",
+   "subject_ndg": "4/5",
+   "rapporto": "3/5",
+   "six_as_eight": 4
+  },
+  "train_val": {
+   "ocr_non_null": "673/746",
+   "subject_ndg": "21/26",
+   "rapporto": "18/29",
+   "six_as_eight": 19
+  },
+  "six_as_eight_per_practice": {
+   "51185037": 1,
+   "52062600": 6,
+   "52068422": 3,
+   "52080223": 3,
+   "52126316": 4,
+   "52130861": 2
+  },
+  "timing": {
+   "screens": 113,
+   "mean": 5.46,
+   "median": 5.4,
+   "p95": 7.55,
+   "max": 9.23,
+   "sessions": 1
+  },
+  "peak_memory_mb": 498,
+  "gate_val": {
+   "G1": "120/133 (needs 131)",
+   "G1_pass": false,
+   "G3_pass": false
+  },
+  "vs_A0-local_gained": [
+   "51185037__GestioneFidi_Tooltip1 denominazione: '-LUCIAC NICOLAS,LUCIAC MIHAIL' -> 'LUCIAC NICOLAS,LUCIAC MIHAIL'",
+   "51185037__GestioneFidi_Tooltip3 denominazione: '-LUCIAC NICOLAS,LUCIAC MIHAIL' -> 'LUCIAC NICOLAS,LUCIAC MIHAIL'",
+   "51659595__Soggetti denominazione: '-LANDOGNA CORRADO' -> 'LANDOGNA CORRADO'",
+   "51659595__Soggetti filiale_relazione: '21 - STELFRANCO' -> '21 - CASTELFRANCO'",
+   "52062600__GestioneFidi filiale_relazione: '14 - SSUOLO MAR' -> '14 - SASSUOLO MAR'",
+   "52062600__GestioneFidi_tooltip1 denominazione: '-KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI' -> 'KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI'",
+   "52062600__GestioneFidi_tooltip2 rapporto: '034 0014 0017 05865788' -> '034 0014 0017 05665788'",
+   "52062600__Scheda_Privati_1 ndg: 'NDG:036214640' -> '036214640'",
+   "52062600__Scheda_Privati_1 ultima_validazione_scheda: '02/10/2026 10:54 (4 glorni fa)' -> '02/10/2026 10:54 (4 giorni fa)'",
+   "52062600__Scheda_Privati_3 note_scheda_privati: \"Il cliente è assunto presso AL POSA dal luglio 2026 con contratto di lavoro a tempo indeterminato; in precedenza risultava impiegato presso la medesima azienda con contratto a tempo determinato da aprile 2025. Svolge la mansione di posatore/piastrellista. Il reddito netto indicato in scheda è stato desunto da CAREN, sulla base della CU 2026 relativa al periodo d'imposta 2025, riferita ai mesi da aprile a dicembre 2025, dalla quale risulta un reddito complessivo pari a € 14.098.\" -> \"Il cliente è assunto presso AL POSA S.r.l.s. dal luglio 2026 con contratto di lavoro a tempo indeterminato; in precedenza risultava impiegato presso la medesima azienda con contratto a tempo determinato da aprile 2025. Svolge la mansione di posatore/piastrellista. Il reddito netto indicato in scheda è stato desunto da CAREN, sulla base della CU 2026 relativa al periodo d'imposta 2025, riferita ai mesi da aprile a dicembre 2025, dalla quale risulta un reddito complessivo pari a € 14.098.\"",
+   "52062600__Soggetti ndg_1: '38237200' -> '36237200'",
+   "52068422__GestioneFidi scadenza: '381 mesi' -> '361 mesi'",
+   "52068422__Note1 denominazione: '-HETTIARACHCHIGE MENISHA DULASHANI SI' -> 'HETTIARACHCHIGE MENISHA DULASHANI SI'",
+   "52080223__Elenco_tooltip1 denominazione: 'LAMOR...' -> 'LA MOR...'",
+   "52080223__Soggetti ndg_1: '32403281' -> '32403261'",
+   "52080223__Soggetti ndg_3: '7728737' -> '7726737'",
+   "52102599__GestioneFidi_tooltip3 descrizione: '' -> 'M.FOND.PRIVATI'",
+   "52102599__GestioneFidi_tooltip3 scadenza: '' -> '15/11/2055'",
+   "52130861__GestioneFidi denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__GestioneFidi_Tooltip1 denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__GestioneFidi_Tooltip3 denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__Note denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52130861__Soggetti denominazione: 'DE MARCHIALESSANDRO' -> 'DE MARCHI ALESSANDRO'",
+   "52135039__GestioneFidi scadenza: '381 mesi' -> '361 mesi'",
+   "52135039__GestioneFidi_Tooltip1 scadenza: '381 mesi' -> '361 mesi'",
+   "52135039__Soggetti ndg_2: '38306834' -> '36306834'"
+  ],
+  "vs_A0-local_lost": [
+   "51185037__GestioneFidi rapporto: '034 0145 0017 05508922' -> '034 0145 0017 05508822'",
+   "51185037__GestioneFidi tipo: 'BPI Mutui / Med. Creditizi' -> 'BPI Mutui/ Med. Creditizi-'",
+   "51185037__GestioneFidi_Tooltip2 rapporto: '034 0145 0017 05508922' -> '034 0145 0017 05508822'",
+   "51185037__GestioneFidi_Tooltip3 rapporto: '034 0145 0017 05508922' -> '034 0145 0017 05508822'",
+   "51185037__GestioneFidi_Tooltip3 tipo_op: 'Nuova Finanza' -> ''",
+   "51185037__Soggetti ndg_4: '31950226' -> '31950228'",
+   "51185037__Soggetti tipo: 'BPI Mutui / Med. Creditizi' -> 'BPI Mutui/ Med. Creditizi'",
+   "51659595__Elenco_dx denominazione: 'LANDOGNA CORRADO' -> 'LANDOGNA CORRADO3MB'",
+   "51659595__Soggetti denominazione_2: 'LANDOGNA ANTONINO' -> 'LANDOGNAANTONINO'",
+   "51659595__Soggetti ndg_4: '32292028' -> '32282028'",
+   "52062600__GestioneFidi scadenza: '361 mesi' -> '381 mesi'",
+   "52062600__GestioneFidi tipo: 'BPI Mutui' -> ''",
+   "52062600__GestioneFidi_tooltip1 importo_euro: '264.000' -> '284.000'",
+   "52062600__GestioneFidi_tooltip2 scadenza: '361 mesi' -> '381 mesi'",
+   "52062600__Scheda_Privati_1 datore_di_lavoro_anagrafica: 'AL - POSA SRLS' -> 'AL - POSASRLS'",
+   "52062600__Soggetti ndg_2: '36214602' -> '38214802'",
+   "52062600__Soggetti ndg_3: '36214640' -> '36214840'",
+   "52067184__Note tipo: 'BPI Mutui / Med. Creditizi' -> 'BPI Mutui/ Med. Creditizi'",
+   "52068422__GestioneFidi tipo_op: 'Nuova Finanza' -> ''",
+   "52068422__GestioneFidi_Tooltip2 tipo_op: 'Nuova Finanza' -> ''",
+   "52068422__GestioneFidi_Tooltip3 scadenza: '361 mesi' -> '381 mesi'",
+   "52068422__GestioneFidi_Tooltip3 tipo_op: 'Nuova Finanza' -> ''",
+   "52068422__GestioneFidi_tooltip1 scadenza: '361 mesi' -> '381 mesi'",
+   "52068422__GestioneFidi_tooltip1 tipo_op: 'Nuova Finanza' -> ''",
+   "52080223__GestioneFidi rapporto: '034 0037 0017 05669132' -> '034 0037 0017 05869132'",
+   "52080223__GestioneFidi_Tooltip1 rapporto: '034 0037 0017 05669132' -> '034 0037 0017 05689132'",
+   "52080223__GestioneFidi_Tooltip2 rapporto: '034 0037 0017 05669132' -> '034 0037 0017 05889132'",
+   "52080223__Soggetti denominazione_1: 'LA MORGIA ANDREA,LA MORGIA MATTEO' -> 'LA MORGIAANDREA,LA MORGIA MATTEO'",
+   "52126316__GestioneFidi rapporto: '034 0800 0017 05678022' -> '034 0800 0017 05878022'",
+   "52126316__GestioneFidi_Tooltip2 rapporto: '034 0800 0017 05678022' -> '034 0800 0017 05878022'",
+   "52126316__GestioneFidi_Tooltip2 scadenza: '25/09/2026' -> '25/09/2028'",
+   "52130861__Elenco_dx evidenze: 'B V' -> ''",
+   "52130861__GestioneFidi_Tooltip1 scadenza: '15/10/2036' -> '15/10/2038'",
+   "52130861__GestioneFidi_Tooltip3 scadenza: '15/10/2036' -> '15/10/2038'",
+   "52135039__GestioneFidi rapporto: '034 2134 0017 05679841' -> '034 2134 0017 05678841'",
+   "52135039__GestioneFidi_Tooltip1 rapporto: '034 2134 0017 05679841' -> '034 2134 0017 05678841'",
+   "52135039__GestioneFidi_Tooltip2 rapporto: '034 2134 0017 05679841' -> '034 2134 0017 05678841'",
+   "52135039__GestioneFidi_Tooltip2 tipo_op: 'Nuova Finanza' -> ''",
+   "52135039__Soggetti ruolo_2: 'Nuovo Garante/nuovo Datore Di Pegno' -> 'Nuovo Garantelnuovo Datore Di Pegno'"
+  ]
+ }
+}

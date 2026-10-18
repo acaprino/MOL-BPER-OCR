@@ -214,6 +214,76 @@ def run_ocr(config: str, profile: str, screens: list[Screen], out_dir: Path,
     return manifest
 
 
+def _complete_run(run_dir: Path, action: str) -> tuple[dict[str, Any], Path]:
+    """The manifest of a complete run whose cache still has the digest the run recorded."""
+    manifest_path, cache = run_dir / "manifest.json", run_dir / "cache.json"
+    manifest = _read_json(manifest_path) if manifest_path.exists() else {}
+    if (manifest.get("status") != "complete" or not cache.exists()
+            or _sha256(cache) != manifest.get("cache_sha256")):
+        raise ValueError(f"{run_dir} is not a complete OCR run; resume it before {action}")
+    return manifest, cache
+
+
+def merge_runs(shard_dirs: list[Path], screens: list[Screen], out_dir: Path) -> dict[str, Any]:
+    """Join complete runs that read disjoint parts of the screen set into one complete run.
+
+    The shards must share configuration, profile and engine build; only the host may
+    differ, and each host is recorded. The output directory must be new.
+    """
+    if not shard_dirs:
+        raise ValueError("No shard to merge")
+    shards = [(shard, *_complete_run(shard, "merging")) for shard in shard_dirs]
+    reviewed = {s.id: s.sha256 for s in screens}
+
+    def setup(manifest: dict[str, Any]) -> dict[str, Any]:
+        return {key: manifest["identity"][key] for key in ("config", "params", "profile", "threads")}
+
+    def build(manifest: dict[str, Any]) -> dict[str, Any]:
+        return {key: value for key, value in manifest["provenance"].items() if key != "platform"}
+
+    first = shards[0][1]
+    reads: dict[str, int] = {}
+    for shard, manifest, _ in shards:
+        if setup(manifest) != setup(first):
+            raise ValueError(f"{shard} was read with another configuration or profile")
+        if build(manifest) != build(first):
+            raise ValueError(f"{shard} was produced by another engine build: models or versions differ")
+        for screen_id, digest in manifest["identity"]["screens"].items():
+            if reviewed.get(screen_id) != digest:
+                raise ValueError(f"{shard} holds a screen outside the set or that differs from the reviewed image: {screen_id}")
+            reads[screen_id] = reads.get(screen_id, 0) + 1
+    twice = [s.id for s in screens if reads.get(s.id, 0) > 1]
+    if twice:
+        raise ValueError(f"The shards read more than once: {', '.join(twice)}")
+    unread = [s.id for s in screens if s.id not in reads]
+    if unread:
+        raise ValueError(f"The shards leave unread: {', '.join(unread)}")
+
+    entries = {screen_id: entry for _, _, cache in shards for screen_id, entry in _read_json(cache).items()}
+    merged = {s.id: entries[s.id] for s in screens}
+    out_dir.mkdir(parents=True, exist_ok=False)
+    _write_json(out_dir / "cache.json", merged)
+    platforms: list[Any] = []
+    for _, manifest, _ in shards:
+        platform = manifest["provenance"].get("platform")
+        if platform is not None and platform not in platforms:
+            platforms.append(platform)
+    manifest = {
+        "schema_version": 1, "identity": {**setup(first), "screens": reviewed},
+        "provenance": {**build(first), "platforms": platforms},
+        "sessions": [{**session, "shard": number} for number, (_, shard_manifest, _) in enumerate(shards)
+                     for session in shard_manifest["sessions"]],
+        "status": "complete", "failed": {}, "pending": [],
+        "cache_sha256": _sha256(out_dir / "cache.json"),
+        "timing": _timing([entry["seconds"] for entry in merged.values()],
+                          sessions=sum(shard_manifest["timing"]["sessions"] for _, shard_manifest, _ in shards)),
+        "merged_from": [{"run": Path(os.path.relpath(shard, out_dir)).as_posix(),
+                         "cache_sha256": shard_manifest["cache_sha256"]} for shard, shard_manifest, _ in shards],
+    }
+    _write_json(out_dir / "manifest.json", manifest, indent=2)
+    return manifest
+
+
 def _rapidocr_engine(params: dict[str, str], threads: dict[str, int]) -> tuple[Reader, dict[str, Any]]:
     """RapidOCR with explicit models and thread limits, plus what it actually loaded."""
     import os as os_info
@@ -335,11 +405,7 @@ def ocr_selection_metrics(examples: list[dict[str, Any]]) -> dict[str, Any]:
 
 def report(run_dir: Path, workbook: Path, screenshots: Path) -> dict[str, Any]:
     """Build the derived dataset of a complete run, then write its OCR selection metrics."""
-    manifest_path, cache = run_dir / "manifest.json", run_dir / "cache.json"
-    manifest = _read_json(manifest_path) if manifest_path.exists() else {}
-    if (manifest.get("status") != "complete" or not cache.exists()
-            or _sha256(cache) != manifest.get("cache_sha256")):
-        raise ValueError(f"{run_dir} is not a complete OCR run; resume it before reporting")
+    manifest, cache = _complete_run(run_dir, "reporting")
     from training.dataset import build_dataset
 
     build_dataset(workbook, screenshots, cache, run_dir / "dataset")

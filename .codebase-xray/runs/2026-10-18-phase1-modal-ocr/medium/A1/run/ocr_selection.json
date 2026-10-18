@@ -1,0 +1,235 @@
+{
+  "config": "A1",
+  "profile": "pc4",
+  "cache_sha256": "c023164f4cf854f0496807513dc5e19cf596b0db9159029e0e64722c45571f23",
+  "timing": {
+    "screens": 113,
+    "mean": 12.01549557522124,
+    "median": 7.175,
+    "p95": 47.3442,
+    "max": 55.511,
+    "sessions": 15,
+    "scope": "seconds per screen include PNG decoding; the warm-up read and engine loading are excluded"
+  },
+  "peak_memory_bytes": 1639358464,
+  "population": "train and validation; the historical test is not reported",
+  "by_split": {
+    "train": {
+      "ocr_non_null": {
+        "available": 575,
+        "total": 613
+      },
+      "subject_ndg": {
+        "available": 21,
+        "total": 21
+      },
+      "rapporto": {
+        "available": 24,
+        "total": 24
+      },
+      "six_as_eight": 0
+    },
+    "val": {
+      "ocr_non_null": {
+        "available": 126,
+        "total": 133
+      },
+      "subject_ndg": {
+        "available": 5,
+        "total": 5
+      },
+      "rapporto": {
+        "available": 5,
+        "total": 5
+      },
+      "six_as_eight": 0
+    },
+    "train_val": {
+      "ocr_non_null": {
+        "available": 701,
+        "total": 746
+      },
+      "subject_ndg": {
+        "available": 26,
+        "total": 26
+      },
+      "rapporto": {
+        "available": 29,
+        "total": 29
+      },
+      "six_as_eight": 0
+    }
+  },
+  "per_practice": {
+    "51185037": {
+      "split": "train",
+      "ocr_non_null": {
+        "available": 67,
+        "total": 72
+      },
+      "subject_ndg": {
+        "available": 4,
+        "total": 4
+      },
+      "rapporto": {
+        "available": 4,
+        "total": 4
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "51659595": {
+      "split": "val",
+      "ocr_non_null": {
+        "available": 63,
+        "total": 68
+      },
+      "subject_ndg": {
+        "available": 4,
+        "total": 4
+      },
+      "rapporto": {
+        "available": 2,
+        "total": 2
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "52062600": {
+      "split": "train",
+      "ocr_non_null": {
+        "available": 100,
+        "total": 110
+      },
+      "subject_ndg": {
+        "available": 4,
+        "total": 4
+      },
+      "rapporto": {
+        "available": 3,
+        "total": 3
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "52067184": {
+      "split": "train",
+      "ocr_non_null": {
+        "available": 61,
+        "total": 66
+      },
+      "subject_ndg": {
+        "available": 2,
+        "total": 2
+      },
+      "rapporto": {
+        "available": 0,
+        "total": 0
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "52068422": {
+      "split": "train",
+      "ocr_non_null": {
+        "available": 67,
+        "total": 71
+      },
+      "subject_ndg": {
+        "available": 2,
+        "total": 2
+      },
+      "rapporto": {
+        "available": 4,
+        "total": 4
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "52080223": {
+      "split": "train",
+      "ocr_non_null": {
+        "available": 71,
+        "total": 74
+      },
+      "subject_ndg": {
+        "available": 4,
+        "total": 4
+      },
+      "rapporto": {
+        "available": 3,
+        "total": 3
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "52102599": {
+      "split": "train",
+      "ocr_non_null": {
+        "available": 76,
+        "total": 82
+      },
+      "subject_ndg": {
+        "available": 1,
+        "total": 1
+      },
+      "rapporto": {
+        "available": 4,
+        "total": 4
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "52126316": {
+      "split": "val",
+      "ocr_non_null": {
+        "available": 63,
+        "total": 65
+      },
+      "subject_ndg": {
+        "available": 1,
+        "total": 1
+      },
+      "rapporto": {
+        "available": 3,
+        "total": 3
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "52130861": {
+      "split": "train",
+      "ocr_non_null": {
+        "available": 78,
+        "total": 79
+      },
+      "subject_ndg": {
+        "available": 1,
+        "total": 1
+      },
+      "rapporto": {
+        "available": 3,
+        "total": 3
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    },
+    "52135039": {
+      "split": "train",
+      "ocr_non_null": {
+        "available": 55,
+        "total": 59
+      },
+      "subject_ndg": {
+        "available": 3,
+        "total": 3
+      },
+      "rapporto": {
+        "available": 3,
+        "total": 3
+      },
+      "six_as_eight": 0,
+      "six_as_eight_values": 0
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "cpu_model": "unknown",
+  "logical_cpus": 4,
+  "affinity_cpus": 4,
+  "cgroup_cpu_max": null
+}
