@@ -303,8 +303,8 @@ def train_model(
     from transformers import AutoTokenizer, LiltForTokenClassification
 
     validate_splits(examples)
-    if not (1 <= epochs <= 8 and 0 <= variants <= 2 and 1 <= batch_size <= 4
-            and 1 <= accumulation_steps <= 8 and 1 <= patience <= 2):
+    if not (1 <= epochs <= 16 and 0 <= variants <= 2 and 1 <= batch_size <= 4
+            and 1 <= accumulation_steps <= 8 and 1 <= patience <= 4):
         raise ValueError("Training parameters exceed the bounded experiment limits")
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)

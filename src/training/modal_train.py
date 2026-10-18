@@ -74,7 +74,8 @@ def _write_json(path: Path, value: Any) -> None:
 
 
 @app.local_entrypoint()
-def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: int = 7) -> None:
+def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: int = 7,
+         patience: int = 2) -> None:
     """Train once and download the ordinary CPU-loadable model and its report."""
     dataset = Path(data_dir)
     output = Path(out_dir)
@@ -87,9 +88,9 @@ def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: 
     if output.exists():
         raise FileExistsError("Output directory must be new; previous experiments are immutable")
     settings = {"epochs": epochs, "variants": variants, "seed": seed,
-                "batch_size": 2, "accumulation_steps": 4, "patience": 2}
-    if not 1 <= epochs <= 8 or not 0 <= variants <= 2:
-        raise ValueError("The bounded experiment allows at most 8 epochs and 2 train variants")
+                "batch_size": 2, "accumulation_steps": 4, "patience": patience}
+    if not 1 <= epochs <= 16 or not 0 <= variants <= 2 or not 1 <= patience <= 4:
+        raise ValueError("The bounded experiment allows at most 16 epochs, 2 train variants and patience 4")
     output.mkdir(parents=True, exist_ok=False)
     result = run_training.remote(examples, roles, manifest, settings)
     _write_json(output / "result.json", result)

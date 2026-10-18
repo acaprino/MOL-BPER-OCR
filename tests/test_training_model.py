@@ -155,8 +155,7 @@ def test_reviewed_dataset_rejects_modified_labels() -> None:
         validate_reviewed_dataset(examples, roles, manifest)
 
 
-@pytest.fixture(scope="module")
-def tiny_training_run(tmp_path_factory: pytest.TempPathFactory) -> tuple[dict[str, Any], Path]:
+def _tiny_base(tmp_path: Path) -> tuple[Path, list[dict[str, Any]]]:
     torch = pytest.importorskip("torch")
     pytest.importorskip("tokenizers")
     from tokenizers import Tokenizer
@@ -166,7 +165,6 @@ def tiny_training_run(tmp_path_factory: pytest.TempPathFactory) -> tuple[dict[st
     from transformers import LiltConfig, LiltForTokenClassification, PreTrainedTokenizerFast
 
     torch.set_num_threads(1)
-    tmp_path = tmp_path_factory.mktemp("tiny-lilt")
     base = tmp_path / "base"
     config = LiltConfig(vocab_size=8, hidden_size=48, num_hidden_layers=1,
                         num_attention_heads=4, intermediate_size=64, channel_shrink_ratio=4,
@@ -181,10 +179,38 @@ def tiny_training_run(tmp_path_factory: pytest.TempPathFactory) -> tuple[dict[st
     tokenizer.save_pretrained(base)
     examples = [{**example(["a", "b"]), "id": split, "practice": split, "split": split}
                 for split in ("train", "val", "test")]
+    return base, examples
+
+
+@pytest.fixture(scope="module")
+def tiny_training_run(tmp_path_factory: pytest.TempPathFactory) -> tuple[dict[str, Any], Path]:
+    tmp_path = tmp_path_factory.mktemp("tiny-lilt")
+    base, examples = _tiny_base(tmp_path)
     output = tmp_path / "trained"
     result = train_model(examples, ["O", "ndg"], output, {}, base_path=str(base),
                          epochs=1, variants=0, device="cpu")
     return result, output
+
+
+def test_a_bounded_run_may_last_sixteen_epochs(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    result = train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base),
+                         epochs=16, variants=0, device="cpu")
+    assert 1 <= result["best_epoch"] <= 16
+
+
+def test_a_bounded_run_may_wait_four_epochs_without_improvement(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    result = train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base),
+                         epochs=6, variants=0, device="cpu", patience=4)
+    assert len(result["train_log"]) >= min(6, result["best_epoch"] + 4)
+
+
+def test_a_run_past_sixteen_epochs_is_refused(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    with pytest.raises(ValueError, match="bounded experiment"):
+        train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base),
+                    epochs=17, variants=0, device="cpu")
 
 
 def test_a_cpu_training_run_saves_the_selected_checkpoint(tiny_training_run: tuple[dict[str, Any], Path]) -> None:

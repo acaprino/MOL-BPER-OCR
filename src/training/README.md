@@ -100,7 +100,9 @@ modal run -m training.modal_train --data-dir D:/Projects/poc-data-extraction/dat
 ```
 
 La cartella di uscita deve essere nuova. L'esecuzione è limitata a un container L4,
-30 minuti, massimo 8 epoche e nessun tentativo automatico. Il servizio riceve le
+30 minuti, massimo 16 epoche (8 per default) e nessun tentativo automatico. Senza
+miglioramento in validazione si ferma dopo `--patience` epoche (2 per default, al
+massimo 4). Il servizio riceve le
 parole OCR, le coordinate, le etichette e i manifest; gli screenshot e l'Excel
 rimangono locali. I risultati remoti hanno un nome derivato dall'esperimento e non
 sovrascrivono i modelli precedenti.
