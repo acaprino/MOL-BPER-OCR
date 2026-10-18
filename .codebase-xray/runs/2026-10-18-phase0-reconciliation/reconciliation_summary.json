@@ -1,0 +1,90 @@
+{
+ "validation": {
+  "record_keys_equal": true,
+  "records": 146,
+  "changed_attributes": {
+   "content_available": 3
+  },
+  "saved": {
+   "accuracy": 0.7876712328767124,
+   "counts": {
+    "correct": 102,
+    "correct_null": 13,
+    "wrong": 19,
+    "missing": 12
+   },
+   "content_availability": {
+    "total": 146,
+    "available": 134,
+    "unavailable": 12,
+    "rate": 0.9178082191780822,
+    "non_null_total": 133,
+    "non_null_available": 121,
+    "non_null_rate": 0.9097744360902256
+   }
+  },
+  "current_examples": {
+   "accuracy": 0.7876712328767124,
+   "counts": {
+    "correct": 102,
+    "correct_null": 13,
+    "wrong": 19,
+    "missing": 12
+   },
+   "content_availability": {
+    "total": 146,
+    "available": 137,
+    "unavailable": 9,
+    "rate": 0.9383561643835616,
+    "non_null_total": 133,
+    "non_null_available": 124,
+    "non_null_rate": 0.9323308270676691
+   }
+  }
+ },
+ "test": {
+  "record_keys_equal": true,
+  "records": 192,
+  "changed_attributes": {
+   "content_available": 8
+  },
+  "saved": {
+   "accuracy": 0.6614583333333334,
+   "counts": {
+    "correct": 119,
+    "correct_null": 8,
+    "hallucinated": 1,
+    "wrong": 38,
+    "missing": 26
+   },
+   "content_availability": {
+    "total": 192,
+    "available": 179,
+    "unavailable": 13,
+    "rate": 0.9322916666666666,
+    "non_null_total": 183,
+    "non_null_available": 170,
+    "non_null_rate": 0.9289617486338798
+   }
+  },
+  "current_examples": {
+   "accuracy": 0.6614583333333334,
+   "counts": {
+    "correct": 119,
+    "correct_null": 8,
+    "hallucinated": 1,
+    "wrong": 38,
+    "missing": 26
+   },
+   "content_availability": {
+    "total": 192,
+    "available": 187,
+    "unavailable": 5,
+    "rate": 0.9739583333333334,
+    "non_null_total": 183,
+    "non_null_available": 178,
+    "non_null_rate": 0.9726775956284153
+   }
+  }
+ }
+}

@@ -12,8 +12,14 @@ Dalla radice del repository, nell'ambiente con le dipendenze di `requirements.tx
 
 ```powershell
 $env:PYTHONPATH = 'src'
-python -m training.dataset --workbook data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx --screenshots data/pratiche --ocr .tritech/codebase-xray/baselines/2026-10-07-riscontro-12-pratiche/prove/ocr-locale-rapidocr/rapid_v6_small_1x.json --output data/training/ground-truth-v3.1
+python -m training.dataset --workbook data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx --screenshots data/pratiche --ocr data/training/ocr-cache/rapid_v6_small_1x.json --output data/training/ground-truth-v3.1
 ```
+
+La cache OCR è quella da cui è costruito il bundle (SHA-256 `e261c05b…`); il
+`manifest.json` del bundle conserva il percorso in cui si trovava prima del
+riordino del repository. Una ricostruzione riproduce etichette, testi, allineamenti
+e copertura, ma non l'impronta di `examples.json` byte per byte: alcune coordinate
+orizzontali delle parole differiscono per arrotondamenti numerici.
 
 `examples.json` contiene parole, riquadri, etichette e valori attesi; `roles.json`
 stabilisce l'ordine delle classi. `ground_truth.csv` conserva tutti i valori

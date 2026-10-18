@@ -1,0 +1,4322 @@
+{
+ "metric_version": "strict-v2-punctuation-spacing",
+ "overall": {
+  "total": 146,
+  "correct": 115,
+  "accuracy": 0.7876712328767124,
+  "counts": {
+   "correct": 102,
+   "correct_null": 13,
+   "wrong": 19,
+   "missing": 12
+  },
+  "content_availability": {
+   "total": 146,
+   "available": 137,
+   "unavailable": 9,
+   "rate": 0.9383561643835616,
+   "non_null_total": 133,
+   "non_null_available": 124,
+   "non_null_rate": 0.9323308270676691
+  }
+ },
+ "by_field": {
+  "creazione": {
+   "total": 7,
+   "correct": 7,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 7
+   },
+   "content_availability": {
+    "total": 7,
+    "available": 7,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 7,
+    "non_null_available": 7,
+    "non_null_rate": 1.0
+   }
+  },
+  "denominazione": {
+   "total": 16,
+   "correct": 13,
+   "accuracy": 0.8125,
+   "counts": {
+    "correct": 13,
+    "wrong": 3
+   },
+   "content_availability": {
+    "total": 16,
+    "available": 15,
+    "unavailable": 1,
+    "rate": 0.9375,
+    "non_null_total": 16,
+    "non_null_available": 15,
+    "non_null_rate": 0.9375
+   }
+  },
+  "denominazione_1": {
+   "total": 2,
+   "correct": 0,
+   "accuracy": 0.0,
+   "counts": {
+    "wrong": 2
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 2,
+    "non_null_available": 2,
+    "non_null_rate": 1.0
+   }
+  },
+  "denominazione_2": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "denominazione_3": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "denominazione_4": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "descrizione": {
+   "total": 5,
+   "correct": 5,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 5
+   },
+   "content_availability": {
+    "total": 5,
+    "available": 5,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 5,
+    "non_null_available": 5,
+    "non_null_rate": 1.0
+   }
+  },
+  "evidenze": {
+   "total": 7,
+   "correct": 3,
+   "accuracy": 0.42857142857142855,
+   "counts": {
+    "correct": 3,
+    "wrong": 2,
+    "missing": 2
+   },
+   "content_availability": {
+    "total": 7,
+    "available": 7,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 7,
+    "non_null_available": 7,
+    "non_null_rate": 1.0
+   }
+  },
+  "fase": {
+   "total": 7,
+   "correct": 7,
+   "accuracy": 1.0,
+   "counts": {
+    "correct_null": 4,
+    "correct": 3
+   },
+   "content_availability": {
+    "total": 7,
+    "available": 7,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 3,
+    "non_null_available": 3,
+    "non_null_rate": 1.0
+   }
+  },
+  "filiale_relazione": {
+   "total": 9,
+   "correct": 8,
+   "accuracy": 0.8888888888888888,
+   "counts": {
+    "correct": 8,
+    "wrong": 1
+   },
+   "content_availability": {
+    "total": 9,
+    "available": 8,
+    "unavailable": 1,
+    "rate": 0.8888888888888888,
+    "non_null_total": 9,
+    "non_null_available": 8,
+    "non_null_rate": 0.8888888888888888
+   }
+  },
+  "importo_euro": {
+   "total": 5,
+   "correct": 1,
+   "accuracy": 0.2,
+   "counts": {
+    "missing": 4,
+    "correct": 1
+   },
+   "content_availability": {
+    "total": 5,
+    "available": 4,
+    "unavailable": 1,
+    "rate": 0.8,
+    "non_null_total": 5,
+    "non_null_available": 4,
+    "non_null_rate": 0.8
+   }
+  },
+  "n_fido": {
+   "total": 5,
+   "correct": 4,
+   "accuracy": 0.8,
+   "counts": {
+    "correct": 4,
+    "missing": 1
+   },
+   "content_availability": {
+    "total": 5,
+    "available": 5,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 5,
+    "non_null_available": 5,
+    "non_null_rate": 1.0
+   }
+  },
+  "ndg": {
+   "total": 16,
+   "correct": 15,
+   "accuracy": 0.9375,
+   "counts": {
+    "correct": 15,
+    "wrong": 1
+   },
+   "content_availability": {
+    "total": 16,
+    "available": 16,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 16,
+    "non_null_available": 16,
+    "non_null_rate": 1.0
+   }
+  },
+  "ndg_1": {
+   "total": 2,
+   "correct": 0,
+   "accuracy": 0.0,
+   "counts": {
+    "missing": 2
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 2,
+    "non_null_available": 2,
+    "non_null_rate": 1.0
+   }
+  },
+  "ndg_2": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "ndg_3": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "ndg_4": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "note_della_richiesta": {
+   "total": 2,
+   "correct": 0,
+   "accuracy": 0.0,
+   "counts": {
+    "wrong": 2
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 0,
+    "unavailable": 2,
+    "rate": 0.0,
+    "non_null_total": 2,
+    "non_null_available": 0,
+    "non_null_rate": 0.0
+   }
+  },
+  "rapporto": {
+   "total": 5,
+   "correct": 4,
+   "accuracy": 0.8,
+   "counts": {
+    "correct": 4,
+    "wrong": 1
+   },
+   "content_availability": {
+    "total": 5,
+    "available": 5,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 5,
+    "non_null_available": 5,
+    "non_null_rate": 1.0
+   }
+  },
+  "ruolo_1": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 2
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 2,
+    "non_null_available": 2,
+    "non_null_rate": 1.0
+   }
+  },
+  "ruolo_2": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "ruolo_3": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "ruolo_4": {
+   "total": 2,
+   "correct": 1,
+   "accuracy": 0.5,
+   "counts": {
+    "missing": 1,
+    "correct_null": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  },
+  "scadenza": {
+   "total": 5,
+   "correct": 3,
+   "accuracy": 0.6,
+   "counts": {
+    "wrong": 2,
+    "correct": 3
+   },
+   "content_availability": {
+    "total": 5,
+    "available": 3,
+    "unavailable": 2,
+    "rate": 0.6,
+    "non_null_total": 5,
+    "non_null_available": 3,
+    "non_null_rate": 0.6
+   }
+  },
+  "stato": {
+   "total": 7,
+   "correct": 7,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 7
+   },
+   "content_availability": {
+    "total": 7,
+    "available": 7,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 7,
+    "non_null_available": 7,
+    "non_null_rate": 1.0
+   }
+  },
+  "tipo": {
+   "total": 16,
+   "correct": 15,
+   "accuracy": 0.9375,
+   "counts": {
+    "correct": 15,
+    "missing": 1
+   },
+   "content_availability": {
+    "total": 16,
+    "available": 15,
+    "unavailable": 1,
+    "rate": 0.9375,
+    "non_null_total": 16,
+    "non_null_available": 15,
+    "non_null_rate": 0.9375
+   }
+  },
+  "tipo_op": {
+   "total": 5,
+   "correct": 1,
+   "accuracy": 0.2,
+   "counts": {
+    "correct": 1,
+    "wrong": 4
+   },
+   "content_availability": {
+    "total": 5,
+    "available": 4,
+    "unavailable": 1,
+    "rate": 0.8,
+    "non_null_total": 5,
+    "non_null_available": 4,
+    "non_null_rate": 0.8
+   }
+  },
+  "tooltip_descrizione_bmb": {
+   "total": 2,
+   "correct": 1,
+   "accuracy": 0.5,
+   "counts": {
+    "correct": 1,
+    "wrong": 1
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 2,
+    "non_null_available": 2,
+    "non_null_rate": 1.0
+   }
+  },
+  "tooltip_descrizione_ipoteca": {
+   "total": 2,
+   "correct": 2,
+   "accuracy": 1.0,
+   "counts": {
+    "correct": 2
+   },
+   "content_availability": {
+    "total": 2,
+    "available": 2,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 2,
+    "non_null_available": 2,
+    "non_null_rate": 1.0
+   }
+  },
+  "tooltip_evidenze_b": {
+   "total": 1,
+   "correct": 0,
+   "accuracy": 0.0,
+   "counts": {
+    "missing": 1
+   },
+   "content_availability": {
+    "total": 1,
+    "available": 1,
+    "unavailable": 0,
+    "rate": 1.0,
+    "non_null_total": 1,
+    "non_null_available": 1,
+    "non_null_rate": 1.0
+   }
+  }
+ },
+ "by_split": {
+  "test": {
+   "total": 0,
+   "correct": 0,
+   "accuracy": null,
+   "counts": {},
+   "by_field": {
+    "creazione": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione_1": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione_2": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione_3": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione_4": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "descrizione": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "evidenze": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "fase": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "filiale_relazione": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "importo_euro": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "n_fido": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg_1": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg_2": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg_3": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg_4": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "note_della_richiesta": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "rapporto": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ruolo_1": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ruolo_2": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ruolo_3": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ruolo_4": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "scadenza": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "stato": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tipo": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tipo_op": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tooltip_descrizione_bmb": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tooltip_descrizione_ipoteca": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tooltip_evidenze_b": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    }
+   },
+   "content_availability": {
+    "total": 0,
+    "available": 0,
+    "unavailable": 0,
+    "rate": null,
+    "non_null_total": 0,
+    "non_null_available": 0,
+    "non_null_rate": null
+   },
+   "word_metrics": {
+    "micro": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "support": 0,
+     "precision": null,
+     "recall": null,
+     "f1": null
+    },
+    "by_role": {
+     "creazione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "denominazione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "descrizione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "evidenze": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "fase": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "filiale_relazione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "importo_euro": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "n_fido": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "ndg": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "note_della_richiesta": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "rapporto": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "scadenza": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "sogg_denominazione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "sogg_ndg": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "sogg_ruolo": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "stato": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tipo": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tipo_op": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tooltip_descrizione_bmb": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tooltip_descrizione_ipoteca": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tooltip_evidenze_b": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     }
+    },
+    "ignored_words": 0
+   }
+  },
+  "train": {
+   "total": 0,
+   "correct": 0,
+   "accuracy": null,
+   "counts": {},
+   "by_field": {
+    "creazione": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione_1": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione_2": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione_3": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "denominazione_4": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "descrizione": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "evidenze": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "fase": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "filiale_relazione": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "importo_euro": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "n_fido": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg_1": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg_2": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg_3": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ndg_4": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "note_della_richiesta": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "rapporto": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ruolo_1": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ruolo_2": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ruolo_3": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "ruolo_4": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "scadenza": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "stato": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tipo": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tipo_op": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tooltip_descrizione_bmb": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tooltip_descrizione_ipoteca": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    },
+    "tooltip_evidenze_b": {
+     "total": 0,
+     "correct": 0,
+     "accuracy": null,
+     "counts": {},
+     "content_availability": {
+      "total": 0,
+      "available": 0,
+      "unavailable": 0,
+      "rate": null,
+      "non_null_total": 0,
+      "non_null_available": 0,
+      "non_null_rate": null
+     }
+    }
+   },
+   "content_availability": {
+    "total": 0,
+    "available": 0,
+    "unavailable": 0,
+    "rate": null,
+    "non_null_total": 0,
+    "non_null_available": 0,
+    "non_null_rate": null
+   },
+   "word_metrics": {
+    "micro": {
+     "tp": 0,
+     "fp": 0,
+     "fn": 0,
+     "support": 0,
+     "precision": null,
+     "recall": null,
+     "f1": null
+    },
+    "by_role": {
+     "creazione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "denominazione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "descrizione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "evidenze": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "fase": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "filiale_relazione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "importo_euro": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "n_fido": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "ndg": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "note_della_richiesta": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "rapporto": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "scadenza": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "sogg_denominazione": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "sogg_ndg": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "sogg_ruolo": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "stato": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tipo": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tipo_op": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tooltip_descrizione_bmb": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tooltip_descrizione_ipoteca": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     },
+     "tooltip_evidenze_b": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 0,
+      "support": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null
+     }
+    },
+    "ignored_words": 0
+   }
+  },
+  "val": {
+   "total": 146,
+   "correct": 115,
+   "accuracy": 0.7876712328767124,
+   "counts": {
+    "correct": 102,
+    "correct_null": 13,
+    "wrong": 19,
+    "missing": 12
+   },
+   "by_field": {
+    "creazione": {
+     "total": 7,
+     "correct": 7,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 7
+     },
+     "content_availability": {
+      "total": 7,
+      "available": 7,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 7,
+      "non_null_available": 7,
+      "non_null_rate": 1.0
+     }
+    },
+    "denominazione": {
+     "total": 16,
+     "correct": 13,
+     "accuracy": 0.8125,
+     "counts": {
+      "correct": 13,
+      "wrong": 3
+     },
+     "content_availability": {
+      "total": 16,
+      "available": 15,
+      "unavailable": 1,
+      "rate": 0.9375,
+      "non_null_total": 16,
+      "non_null_available": 15,
+      "non_null_rate": 0.9375
+     }
+    },
+    "denominazione_1": {
+     "total": 2,
+     "correct": 0,
+     "accuracy": 0.0,
+     "counts": {
+      "wrong": 2
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 2,
+      "non_null_available": 2,
+      "non_null_rate": 1.0
+     }
+    },
+    "denominazione_2": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "denominazione_3": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "denominazione_4": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "descrizione": {
+     "total": 5,
+     "correct": 5,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 5
+     },
+     "content_availability": {
+      "total": 5,
+      "available": 5,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 5,
+      "non_null_available": 5,
+      "non_null_rate": 1.0
+     }
+    },
+    "evidenze": {
+     "total": 7,
+     "correct": 3,
+     "accuracy": 0.42857142857142855,
+     "counts": {
+      "correct": 3,
+      "wrong": 2,
+      "missing": 2
+     },
+     "content_availability": {
+      "total": 7,
+      "available": 7,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 7,
+      "non_null_available": 7,
+      "non_null_rate": 1.0
+     }
+    },
+    "fase": {
+     "total": 7,
+     "correct": 7,
+     "accuracy": 1.0,
+     "counts": {
+      "correct_null": 4,
+      "correct": 3
+     },
+     "content_availability": {
+      "total": 7,
+      "available": 7,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 3,
+      "non_null_available": 3,
+      "non_null_rate": 1.0
+     }
+    },
+    "filiale_relazione": {
+     "total": 9,
+     "correct": 8,
+     "accuracy": 0.8888888888888888,
+     "counts": {
+      "correct": 8,
+      "wrong": 1
+     },
+     "content_availability": {
+      "total": 9,
+      "available": 8,
+      "unavailable": 1,
+      "rate": 0.8888888888888888,
+      "non_null_total": 9,
+      "non_null_available": 8,
+      "non_null_rate": 0.8888888888888888
+     }
+    },
+    "importo_euro": {
+     "total": 5,
+     "correct": 1,
+     "accuracy": 0.2,
+     "counts": {
+      "missing": 4,
+      "correct": 1
+     },
+     "content_availability": {
+      "total": 5,
+      "available": 4,
+      "unavailable": 1,
+      "rate": 0.8,
+      "non_null_total": 5,
+      "non_null_available": 4,
+      "non_null_rate": 0.8
+     }
+    },
+    "n_fido": {
+     "total": 5,
+     "correct": 4,
+     "accuracy": 0.8,
+     "counts": {
+      "correct": 4,
+      "missing": 1
+     },
+     "content_availability": {
+      "total": 5,
+      "available": 5,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 5,
+      "non_null_available": 5,
+      "non_null_rate": 1.0
+     }
+    },
+    "ndg": {
+     "total": 16,
+     "correct": 15,
+     "accuracy": 0.9375,
+     "counts": {
+      "correct": 15,
+      "wrong": 1
+     },
+     "content_availability": {
+      "total": 16,
+      "available": 16,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 16,
+      "non_null_available": 16,
+      "non_null_rate": 1.0
+     }
+    },
+    "ndg_1": {
+     "total": 2,
+     "correct": 0,
+     "accuracy": 0.0,
+     "counts": {
+      "missing": 2
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 2,
+      "non_null_available": 2,
+      "non_null_rate": 1.0
+     }
+    },
+    "ndg_2": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "ndg_3": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "ndg_4": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "note_della_richiesta": {
+     "total": 2,
+     "correct": 0,
+     "accuracy": 0.0,
+     "counts": {
+      "wrong": 2
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 0,
+      "unavailable": 2,
+      "rate": 0.0,
+      "non_null_total": 2,
+      "non_null_available": 0,
+      "non_null_rate": 0.0
+     }
+    },
+    "rapporto": {
+     "total": 5,
+     "correct": 4,
+     "accuracy": 0.8,
+     "counts": {
+      "correct": 4,
+      "wrong": 1
+     },
+     "content_availability": {
+      "total": 5,
+      "available": 5,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 5,
+      "non_null_available": 5,
+      "non_null_rate": 1.0
+     }
+    },
+    "ruolo_1": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 2
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 2,
+      "non_null_available": 2,
+      "non_null_rate": 1.0
+     }
+    },
+    "ruolo_2": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "ruolo_3": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "ruolo_4": {
+     "total": 2,
+     "correct": 1,
+     "accuracy": 0.5,
+     "counts": {
+      "missing": 1,
+      "correct_null": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    },
+    "scadenza": {
+     "total": 5,
+     "correct": 3,
+     "accuracy": 0.6,
+     "counts": {
+      "wrong": 2,
+      "correct": 3
+     },
+     "content_availability": {
+      "total": 5,
+      "available": 3,
+      "unavailable": 2,
+      "rate": 0.6,
+      "non_null_total": 5,
+      "non_null_available": 3,
+      "non_null_rate": 0.6
+     }
+    },
+    "stato": {
+     "total": 7,
+     "correct": 7,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 7
+     },
+     "content_availability": {
+      "total": 7,
+      "available": 7,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 7,
+      "non_null_available": 7,
+      "non_null_rate": 1.0
+     }
+    },
+    "tipo": {
+     "total": 16,
+     "correct": 15,
+     "accuracy": 0.9375,
+     "counts": {
+      "correct": 15,
+      "missing": 1
+     },
+     "content_availability": {
+      "total": 16,
+      "available": 15,
+      "unavailable": 1,
+      "rate": 0.9375,
+      "non_null_total": 16,
+      "non_null_available": 15,
+      "non_null_rate": 0.9375
+     }
+    },
+    "tipo_op": {
+     "total": 5,
+     "correct": 1,
+     "accuracy": 0.2,
+     "counts": {
+      "correct": 1,
+      "wrong": 4
+     },
+     "content_availability": {
+      "total": 5,
+      "available": 4,
+      "unavailable": 1,
+      "rate": 0.8,
+      "non_null_total": 5,
+      "non_null_available": 4,
+      "non_null_rate": 0.8
+     }
+    },
+    "tooltip_descrizione_bmb": {
+     "total": 2,
+     "correct": 1,
+     "accuracy": 0.5,
+     "counts": {
+      "correct": 1,
+      "wrong": 1
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 2,
+      "non_null_available": 2,
+      "non_null_rate": 1.0
+     }
+    },
+    "tooltip_descrizione_ipoteca": {
+     "total": 2,
+     "correct": 2,
+     "accuracy": 1.0,
+     "counts": {
+      "correct": 2
+     },
+     "content_availability": {
+      "total": 2,
+      "available": 2,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 2,
+      "non_null_available": 2,
+      "non_null_rate": 1.0
+     }
+    },
+    "tooltip_evidenze_b": {
+     "total": 1,
+     "correct": 0,
+     "accuracy": 0.0,
+     "counts": {
+      "missing": 1
+     },
+     "content_availability": {
+      "total": 1,
+      "available": 1,
+      "unavailable": 0,
+      "rate": 1.0,
+      "non_null_total": 1,
+      "non_null_available": 1,
+      "non_null_rate": 1.0
+     }
+    }
+   },
+   "content_availability": {
+    "total": 146,
+    "available": 137,
+    "unavailable": 9,
+    "rate": 0.9383561643835616,
+    "non_null_total": 133,
+    "non_null_available": 124,
+    "non_null_rate": 0.9323308270676691
+   },
+   "word_metrics": {
+    "micro": {
+     "tp": 574,
+     "fp": 12,
+     "fn": 13,
+     "support": 587,
+     "precision": 0.9795221843003413,
+     "recall": 0.9778534923339012,
+     "f1": 0.9786871270247229
+    },
+    "by_role": {
+     "creazione": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "support": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "denominazione": {
+      "tp": 28,
+      "fp": 1,
+      "fn": 2,
+      "support": 30,
+      "precision": 0.9655172413793104,
+      "recall": 0.9333333333333333,
+      "f1": 0.9491525423728814
+     },
+     "descrizione": {
+      "tp": 5,
+      "fp": 0,
+      "fn": 0,
+      "support": 5,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "evidenze": {
+      "tp": 5,
+      "fp": 2,
+      "fn": 2,
+      "support": 7,
+      "precision": 0.7142857142857143,
+      "recall": 0.7142857142857143,
+      "f1": 0.7142857142857143
+     },
+     "fase": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 0,
+      "support": 3,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "filiale_relazione": {
+      "tp": 24,
+      "fp": 0,
+      "fn": 0,
+      "support": 24,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "importo_euro": {
+      "tp": 1,
+      "fp": 0,
+      "fn": 3,
+      "support": 4,
+      "precision": 1.0,
+      "recall": 0.25,
+      "f1": 0.4
+     },
+     "n_fido": {
+      "tp": 4,
+      "fp": 0,
+      "fn": 1,
+      "support": 5,
+      "precision": 1.0,
+      "recall": 0.8,
+      "f1": 0.8888888888888888
+     },
+     "ndg": {
+      "tp": 16,
+      "fp": 0,
+      "fn": 0,
+      "support": 16,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "note_della_richiesta": {
+      "tp": 360,
+      "fp": 0,
+      "fn": 0,
+      "support": 360,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "rapporto": {
+      "tp": 20,
+      "fp": 1,
+      "fn": 0,
+      "support": 20,
+      "precision": 0.9523809523809523,
+      "recall": 1.0,
+      "f1": 0.975609756097561
+     },
+     "scadenza": {
+      "tp": 3,
+      "fp": 1,
+      "fn": 0,
+      "support": 3,
+      "precision": 0.75,
+      "recall": 1.0,
+      "f1": 0.8571428571428571
+     },
+     "sogg_denominazione": {
+      "tp": 12,
+      "fp": 2,
+      "fn": 0,
+      "support": 12,
+      "precision": 0.8571428571428571,
+      "recall": 1.0,
+      "f1": 0.9230769230769231
+     },
+     "sogg_ndg": {
+      "tp": 3,
+      "fp": 0,
+      "fn": 2,
+      "support": 5,
+      "precision": 1.0,
+      "recall": 0.6,
+      "f1": 0.75
+     },
+     "sogg_ruolo": {
+      "tp": 12,
+      "fp": 0,
+      "fn": 1,
+      "support": 13,
+      "precision": 1.0,
+      "recall": 0.9230769230769231,
+      "f1": 0.96
+     },
+     "stato": {
+      "tp": 7,
+      "fp": 0,
+      "fn": 0,
+      "support": 7,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "tipo": {
+      "tp": 39,
+      "fp": 0,
+      "fn": 0,
+      "support": 39,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "tipo_op": {
+      "tp": 9,
+      "fp": 2,
+      "fn": 0,
+      "support": 9,
+      "precision": 0.8181818181818182,
+      "recall": 1.0,
+      "f1": 0.9
+     },
+     "tooltip_descrizione_bmb": {
+      "tp": 8,
+      "fp": 3,
+      "fn": 0,
+      "support": 8,
+      "precision": 0.7272727272727273,
+      "recall": 1.0,
+      "f1": 0.8421052631578947
+     },
+     "tooltip_descrizione_ipoteca": {
+      "tp": 8,
+      "fp": 0,
+      "fn": 0,
+      "support": 8,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+     },
+     "tooltip_evidenze_b": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 2,
+      "support": 2,
+      "precision": null,
+      "recall": 0.0,
+      "f1": 0.0
+     }
+    },
+    "ignored_words": 127
+   }
+  }
+ },
+ "word_metrics": {
+  "micro": {
+   "tp": 574,
+   "fp": 12,
+   "fn": 13,
+   "support": 587,
+   "precision": 0.9795221843003413,
+   "recall": 0.9778534923339012,
+   "f1": 0.9786871270247229
+  },
+  "by_role": {
+   "creazione": {
+    "tp": 7,
+    "fp": 0,
+    "fn": 0,
+    "support": 7,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "denominazione": {
+    "tp": 28,
+    "fp": 1,
+    "fn": 2,
+    "support": 30,
+    "precision": 0.9655172413793104,
+    "recall": 0.9333333333333333,
+    "f1": 0.9491525423728814
+   },
+   "descrizione": {
+    "tp": 5,
+    "fp": 0,
+    "fn": 0,
+    "support": 5,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "evidenze": {
+    "tp": 5,
+    "fp": 2,
+    "fn": 2,
+    "support": 7,
+    "precision": 0.7142857142857143,
+    "recall": 0.7142857142857143,
+    "f1": 0.7142857142857143
+   },
+   "fase": {
+    "tp": 3,
+    "fp": 0,
+    "fn": 0,
+    "support": 3,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "filiale_relazione": {
+    "tp": 24,
+    "fp": 0,
+    "fn": 0,
+    "support": 24,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "importo_euro": {
+    "tp": 1,
+    "fp": 0,
+    "fn": 3,
+    "support": 4,
+    "precision": 1.0,
+    "recall": 0.25,
+    "f1": 0.4
+   },
+   "n_fido": {
+    "tp": 4,
+    "fp": 0,
+    "fn": 1,
+    "support": 5,
+    "precision": 1.0,
+    "recall": 0.8,
+    "f1": 0.8888888888888888
+   },
+   "ndg": {
+    "tp": 16,
+    "fp": 0,
+    "fn": 0,
+    "support": 16,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "note_della_richiesta": {
+    "tp": 360,
+    "fp": 0,
+    "fn": 0,
+    "support": 360,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "rapporto": {
+    "tp": 20,
+    "fp": 1,
+    "fn": 0,
+    "support": 20,
+    "precision": 0.9523809523809523,
+    "recall": 1.0,
+    "f1": 0.975609756097561
+   },
+   "scadenza": {
+    "tp": 3,
+    "fp": 1,
+    "fn": 0,
+    "support": 3,
+    "precision": 0.75,
+    "recall": 1.0,
+    "f1": 0.8571428571428571
+   },
+   "sogg_denominazione": {
+    "tp": 12,
+    "fp": 2,
+    "fn": 0,
+    "support": 12,
+    "precision": 0.8571428571428571,
+    "recall": 1.0,
+    "f1": 0.9230769230769231
+   },
+   "sogg_ndg": {
+    "tp": 3,
+    "fp": 0,
+    "fn": 2,
+    "support": 5,
+    "precision": 1.0,
+    "recall": 0.6,
+    "f1": 0.75
+   },
+   "sogg_ruolo": {
+    "tp": 12,
+    "fp": 0,
+    "fn": 1,
+    "support": 13,
+    "precision": 1.0,
+    "recall": 0.9230769230769231,
+    "f1": 0.96
+   },
+   "stato": {
+    "tp": 7,
+    "fp": 0,
+    "fn": 0,
+    "support": 7,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "tipo": {
+    "tp": 39,
+    "fp": 0,
+    "fn": 0,
+    "support": 39,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "tipo_op": {
+    "tp": 9,
+    "fp": 2,
+    "fn": 0,
+    "support": 9,
+    "precision": 0.8181818181818182,
+    "recall": 1.0,
+    "f1": 0.9
+   },
+   "tooltip_descrizione_bmb": {
+    "tp": 8,
+    "fp": 3,
+    "fn": 0,
+    "support": 8,
+    "precision": 0.7272727272727273,
+    "recall": 1.0,
+    "f1": 0.8421052631578947
+   },
+   "tooltip_descrizione_ipoteca": {
+    "tp": 8,
+    "fp": 0,
+    "fn": 0,
+    "support": 8,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "tooltip_evidenze_b": {
+    "tp": 0,
+    "fp": 0,
+    "fn": 2,
+    "support": 2,
+    "precision": null,
+    "recall": 0.0,
+    "f1": 0.0
+   }
+  },
+  "ignored_words": 127
+ },
+ "records": [
+  {
+   "id": "51659595__Elenco",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg",
+   "expected": "32221698",
+   "predicted": "32221698",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "LANDOGNA CORRADO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BMB",
+   "predicted": "BMB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco",
+   "practice": "51659595",
+   "split": "val",
+   "field": "stato",
+   "expected": "APP",
+   "predicted": "APP",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco",
+   "practice": "51659595",
+   "split": "val",
+   "field": "fase",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco",
+   "practice": "51659595",
+   "split": "val",
+   "field": "creazione",
+   "expected": "13/02/2026",
+   "predicted": "13/02/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco",
+   "practice": "51659595",
+   "split": "val",
+   "field": "evidenze",
+   "expected": "B",
+   "predicted": "B",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_dx",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg",
+   "expected": "32221698",
+   "predicted": "32221698 135.800",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_dx",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "LANDOGNA CORRADO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_dx",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BMB",
+   "predicted": null,
+   "status": "missing",
+   "content_available": false
+  },
+  {
+   "id": "51659595__Elenco_dx",
+   "practice": "51659595",
+   "split": "val",
+   "field": "stato",
+   "expected": "APP",
+   "predicted": "APP",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_dx",
+   "practice": "51659595",
+   "split": "val",
+   "field": "fase",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_dx",
+   "practice": "51659595",
+   "split": "val",
+   "field": "creazione",
+   "expected": "13/02/2026",
+   "predicted": "13/02/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_dx",
+   "practice": "51659595",
+   "split": "val",
+   "field": "evidenze",
+   "expected": "B",
+   "predicted": "B",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg",
+   "expected": "32221698",
+   "predicted": "32221698",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "LANDOGNA CORRADO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BMB",
+   "predicted": "BMB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "stato",
+   "expected": "APP",
+   "predicted": "APP",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "fase",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "creazione",
+   "expected": "13/02/2026",
+   "predicted": "13/02/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "evidenze",
+   "expected": "B",
+   "predicted": "B P",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tooltip_descrizione_bmb",
+   "expected": "BPI Mutui Origination Bstore",
+   "predicted": "BPI Mutui Origination Bstore",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg",
+   "expected": "32221698",
+   "predicted": "32221698",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "LANDOGNA CORRADO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BMB",
+   "predicted": "BMB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "stato",
+   "expected": "APP",
+   "predicted": "APP",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "fase",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "creazione",
+   "expected": "13/02/2026",
+   "predicted": "13/02/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "evidenze",
+   "expected": "B",
+   "predicted": "B BSTORE",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Elenco_tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tooltip_evidenze_b",
+   "expected": "Origination BSTORE",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg",
+   "expected": "32221698",
+   "predicted": "32221698",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "LANDOGNA",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui",
+   "predicted": "BPI Mutui",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "21 - CASTELFRANCO",
+   "predicted": "21 - CASTELFRANCO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "n_fido",
+   "expected": "F1",
+   "predicted": "F1",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "rapporto",
+   "expected": "034 0021 0017 05585799",
+   "predicted": "034 0021 0017 05585799",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "descrizione",
+   "expected": "M.FOND.PRIVATI",
+   "predicted": "M.FOND.PRIVATI",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "scadenza",
+   "expected": "301 mesi",
+   "predicted": "30 ms5 135.800",
+   "status": "wrong",
+   "content_available": false
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "importo_euro",
+   "expected": "135.800",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip1",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo_op",
+   "expected": "Nuova Finanza",
+   "predicted": "Nuova Finanza",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg",
+   "expected": "32221698",
+   "predicted": "32221698",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "LANDOGNA CORRADO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui",
+   "predicted": "BPI Mutui",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "21 - CASTELFRANCO",
+   "predicted": "21 - CASTELFRANCO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "n_fido",
+   "expected": "F1",
+   "predicted": "F1",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "rapporto",
+   "expected": "034 0021 0017 05585799",
+   "predicted": "034 0021 0017 05585799",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "descrizione",
+   "expected": "M.FOND.PRIVATI",
+   "predicted": "M.FOND.PRIVATI",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "scadenza",
+   "expected": "301 mesi",
+   "predicted": "30 ms5",
+   "status": "wrong",
+   "content_available": false
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "importo_euro",
+   "expected": "135.800",
+   "predicted": "135.800",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo_op",
+   "expected": "Nuova Finanza",
+   "predicted": "Nuova Fnanza",
+   "status": "wrong",
+   "content_available": false
+  },
+  {
+   "id": "51659595__GestioneFidi_Tooltip2",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tooltip_descrizione_ipoteca",
+   "expected": "55-IPOTECA DI PRIMO GRADO",
+   "predicted": "55-IPOTECA DI PRIMO GRADO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Note",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg",
+   "expected": "32221698",
+   "predicted": "32221698",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Note",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "LANDOGNA",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Note",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui",
+   "predicted": "BPI Mutui",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Note",
+   "practice": "51659595",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "21 - CASTELFRANCO",
+   "predicted": "21 - CASTELFRANCO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Note",
+   "practice": "51659595",
+   "split": "val",
+   "field": "note_della_richiesta",
+   "expected": "Landogna Corrado, nuovo cliente BPER, intende acquistare immobile in Modena. Prezzo di acquisto: 165.000 euro ; in richiesta mutuo promo assicurato gennaio 2026 di euro 135.800 da restituire in 25 anni a TF. Effettuato check up assicurativo e questionario Arca meet you. Infermiere a tempo indeterminato (presso Ausl di Modena da 01/2021 a 01/2026 e ora presso Azienda Ospedaliero-Universitaria di Modena da 02/2026) percepisce redditi netti annui desunti da CAREN CUD 2025 di circa 24.726 euro. Attualmente vive con la ex compagna in affitto pagando un canone mensile di circa euro 484 totali (circa 242 euro a testa). In richiesta mutuo per acquisto immobile in cui andare a vivere da solo. Inserite garanzie dei due genitori (fideiussione solidale limitata in atto) in quanto mutuo non fondiario e il cliente riferisce di aver vinto un concorso e quindi di aver cambiato lavoro (a tempo indeterminato e senza prova) da Azienda AUSL di Modena a Azienda Ospedaliero - Universitaria di Modena. Sopra si è inserito reddito desunto da CAREN CUD 2025; la decorrenza del nuovo contratto è a partire dal 04/02/2026. Unico impegno a sistema: PP con rata mensile di euro 266 e con scadenza 2030. - Numero Finanziamento FICS: 017/5585799 - Numero proposta DESK: 2790868 - Importo perizia: 176.000,00 € - Valore immobile presunto: 165.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 135.800,00 € IMPORTO PER PRIMA CASA : 135.800,00 € IMPORTO RICHIESTO : 135.800,00 € - Codice immobile: 4805275; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garanti ANTONINO LANDOGNA (32462622), GIOVANNA ADERNO' (32462667)",
+   "predicted": "Landogna Corrado, nuovo cliente BPER, intende acquistare immobile in Modena. Prezzo di acquisto: 165.000 euro ; in richiesta mutuo promo assicurato gennaio 2026 di euro 135.800 da restituire in 25 anni a TF. Erte g sn mse de o eou. Infermiere a tempo indeterminato (presso Ausl di Modena da 01/2021 a 01/2026 e ora presso Azienda Ospedaliero-Universitaria di Modena da 02/2026) percepisce redditi netti añnui desunti da CAREN CUD 2025 di circa 24.726 euro. Attualménte vive con la ex compagna in affitto pagando un canone mensile di circa euro 484 totali (circa 242 euro a testa). In richiesta mutuo per acquisto immobile in cui andare a vivere da solo. Inserite garanzie dei due gènitori (fideiussione soíidale limitata in atto) in quanto mutuo non fondiarío e il cliente riferisce di aver vinto un concorso e quindi di aver cambiato lavoro (a tempo indeterminato e senza prova) da Ázienda AUSL di Modena a Azienda Ospedaliero - Universitaria di Modena. Sopra si è inserito reddito desunto da CAREN CUD 2025; la decorrenza del nuovo contratto è a partire dal 04/02/2026. Unico impegno a sistema: PP con rata mensile di euro 266 e con scadenza 2030. - Numero Finanziamento FICS: 017/5585799 - Numero proposta DESK: 2790868 - Importo perizia: 176.000,00 € - Valore immobile presunto: 165.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio impórti mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 135.800,00 € IMPORTO PER PRIMA CASA : 135.800,00 € IMPORTO RICHIESTO : 135.800,00 € - Codice immobile: 4805275; - Sono presenti le garanzie fideiussorie seguenti: - ĠaranZia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garanti ANTONINO LANDOGNA (32462622), GIOVANNA ADERNO' (32462667)",
+   "status": "wrong",
+   "content_available": false
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg",
+   "expected": "32221698",
+   "predicted": "32221698",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "TABACCHI",
+   "status": "wrong",
+   "content_available": false
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui",
+   "predicted": "BPI Mutui",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "21 - CASTELFRANCO",
+   "predicted": "21 - CA STELFRANCO",
+   "status": "wrong",
+   "content_available": false
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg_1",
+   "expected": "32221698",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione_1",
+   "expected": "LANDOGNA CORRADO",
+   "predicted": "32221698 LANDOGNA CORRADO",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ruolo_1",
+   "expected": "Richiedente",
+   "predicted": "Richiedente",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg_2",
+   "expected": "32462622",
+   "predicted": "32462622",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione_2",
+   "expected": "LANDOGNA ANTONINO",
+   "predicted": "LANDOGNA ANTONINO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ruolo_2",
+   "expected": "Nuovo Garante/nuovo Datore Di Pegno",
+   "predicted": "Nuovo Garante/nuovo Datore Di Pegno",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg_3",
+   "expected": "32462667",
+   "predicted": "32462667",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione_3",
+   "expected": "ADERNO' GIOVANNA",
+   "predicted": "ADERNO' GIOVANNA",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ruolo_3",
+   "expected": "Nuovo Garante/nuovo Datore Di Pegno",
+   "predicted": "Nuovo Garante/nuovo Datore Di Pegno",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ndg_4",
+   "expected": "32292028",
+   "predicted": "32292028",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "denominazione_4",
+   "expected": "CRISTIANO MARIA SIMONA,LANDOGNA CORR",
+   "predicted": "CRISTIANO MARIA SIMONA,LANDOGNA CORR",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "51659595__Soggetti",
+   "practice": "51659595",
+   "split": "val",
+   "field": "ruolo_4",
+   "expected": "Cointestazione",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg",
+   "expected": "36210255",
+   "predicted": "36210255",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "SANTINI EMANUELE",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BMB",
+   "predicted": "BMB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco",
+   "practice": "52126316",
+   "split": "val",
+   "field": "stato",
+   "expected": "ABB",
+   "predicted": "ABB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco",
+   "practice": "52126316",
+   "split": "val",
+   "field": "fase",
+   "expected": "IST",
+   "predicted": "IST",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco",
+   "practice": "52126316",
+   "split": "val",
+   "field": "creazione",
+   "expected": "25/09/2026",
+   "predicted": "25/09/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco",
+   "practice": "52126316",
+   "split": "val",
+   "field": "evidenze",
+   "expected": "BM",
+   "predicted": "BM",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg",
+   "expected": "36210255",
+   "predicted": "36210255",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "SANTINI EMANUELE",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BMB",
+   "predicted": "BMB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "stato",
+   "expected": "ABB",
+   "predicted": "ABB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "fase",
+   "expected": "IST",
+   "predicted": "IST",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "creazione",
+   "expected": "25/09/2026",
+   "predicted": "25/09/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "evidenze",
+   "expected": "BM",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tooltip_descrizione_bmb",
+   "expected": "BPI Mutui Origination Bstore",
+   "predicted": "BM BPI Mutui Origination Bstore",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg",
+   "expected": "36210255",
+   "predicted": "36210255",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "SANTINI EMANUELE",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BMB",
+   "predicted": "BMB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "stato",
+   "expected": "ABB",
+   "predicted": "ABB",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "fase",
+   "expected": "IST",
+   "predicted": "IST",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "creazione",
+   "expected": "25/09/2026",
+   "predicted": "25/09/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Elenco_tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "evidenze",
+   "expected": "BM",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg",
+   "expected": "36210255",
+   "predicted": "36210255",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "SANTINI EMANUELE",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui / Med. Creditizi",
+   "predicted": "BPI Mutui / Med. Creditizi",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "800 - RAVENNA",
+   "predicted": "800 - RAVENNA",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "n_fido",
+   "expected": "F1",
+   "predicted": "F1",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "rapporto",
+   "expected": "034 0800 0017 05678022",
+   "predicted": "034 0800 0017 05678022",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "descrizione",
+   "expected": "M.FOND.PRIVATI",
+   "predicted": "M.FOND.PRIVATI",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "scadenza",
+   "expected": "25/09/2026",
+   "predicted": "25/09/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "importo_euro",
+   "expected": "160.000",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo_op",
+   "expected": "In Lavoraz.",
+   "predicted": "160.000 In Lavoraz.",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg",
+   "expected": "36210255",
+   "predicted": "36210255",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "SANTINI EMANUELE",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui / Med. Creditizi",
+   "predicted": "BPI Mutui / Med. Creditizi",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "800 - RAVENNA",
+   "predicted": "800 - RAVENNA",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "n_fido",
+   "expected": "F1",
+   "predicted": "F1",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "rapporto",
+   "expected": "034 0800 0017 05678022",
+   "predicted": "034 0800 0017 05678022",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "descrizione",
+   "expected": "M.FOND.PRIVATI",
+   "predicted": "M.FOND.PRIVATI",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "scadenza",
+   "expected": "25/09/2026",
+   "predicted": "25/09/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "importo_euro",
+   "expected": "160.000",
+   "predicted": null,
+   "status": "missing",
+   "content_available": false
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip1",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo_op",
+   "expected": "In Lavoraz.",
+   "predicted": "180,000 In Lavoraz.",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg",
+   "expected": "36210255",
+   "predicted": "36210255",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "SANTINI EMANUELE",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui / Med. Creditizi",
+   "predicted": "BPI Mutui / Med. Creditizi",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "800 - RAVENNA",
+   "predicted": "800 - RAVENNA",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "n_fido",
+   "expected": "F1",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "rapporto",
+   "expected": "034 0800 0017 05678022",
+   "predicted": "034 0800 0017 F1 05678022",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "descrizione",
+   "expected": "M.FOND.PRIVATI",
+   "predicted": "M.FOND.PRIVATI",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "scadenza",
+   "expected": "25/09/2026",
+   "predicted": "25/09/2026",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "importo_euro",
+   "expected": "160.000",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo_op",
+   "expected": "In Lavoraz.",
+   "predicted": "160.000 In Lavoraz.",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "52126316__GestioneFidi_Tooltip2",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tooltip_descrizione_ipoteca",
+   "expected": "55-IPOTECA DI PRIMO GRADO",
+   "predicted": "55-IPOTECA DI PRIMO GRADO",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Note",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg",
+   "expected": "36210255",
+   "predicted": "36210255",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Note",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "SANTINI EMANUELE",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Note",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui / Med. Creditizi",
+   "predicted": "BPI Mutui / Med. Creditizi",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Note",
+   "practice": "52126316",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "800 - RAVENNA",
+   "predicted": "800 - RAVENNA",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Note",
+   "practice": "52126316",
+   "split": "val",
+   "field": "note_della_richiesta",
+   "expected": "- Numero Finanziamento FICS: 017/5678022 - Numero proposta DESK: N.D. - Importo perizia: N.D. - Valore immobile presunto: 270000 - Immobile da ipotecare è ad uso abitativo: SI - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 160.000,00 € IMPORTO PER PRIMA CASA : 160.000,00 € IMPORTO RICHIESTO : 160.000,00 € - Codice immobile: 5150258; CLIENTE NUOVO PRESENTATO DA PIU’ MUTUI CASA (CODICE 7320774) IN RICHIESTA MUTUO DI EURO 160.000 DA RESTITUIRE IN 30 ANNI – CONDIZIONI COME DA PROMO GREEN – CLASSE ENERGETICA C. L’IMMOBILE OGGETO D’IPOTECA E’ SITUATO A RAVENNA IN VIA J. LANDONI ED E’ COMPOSTO DA 5.5 VANI (110 MQ) PIU’ RELATIVO C6 DI 15MQ. L’IMMOBILE AVRA’ UN VALORE DI COMPRAVENDITA DI EURO 270.000 (LTV 60%) – LA DIFFERENZA DEL SALDO PREZZO DERIVA DA PROPRI RISPARMI (COME INDICATO DAL MEDIATORE). IL SIG. SANTINI LAVORA A TEMPO INDETERMINATO DAL 30/10/2017 PER OBI ITALIA SRL CON LA MANSIONE DI CAPOSETTORE PRESSO LA SEDE DI RAVENNA. DA CAREN SU CUD 2026 RISULTA UN REDDITO ANNUO NETTO PARI A EURO 33.000 – MENSILIZZATO EUR 2750. DICHIARA DI NON AVERE NESSUN DEBITO IN CORSO E NESSUNA PERSONA A CARICO. RATA DI EUR 692 SOSTENIBILE (SOSTITUISCE L’AFFITTO CHE STA PAGANDO DI EURO 850)",
+   "predicted": "- Numero Finanziamento FICS: 017/5678022 - Numero proposta DESK: N.D. - Importo perízia: N.D. - Valore immobile presunto: 270000 - Immobile da ipotecare è ad uso abitativo: SI - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 160.000,00 € IMPORTO PER PRIMA CASA: 160.000,00 € IMPORTO RICHIESTO : 160.000,00 € - Codice immobile: 5150258; CLIENTE NUOVO PRESENTATO DA PIU' MUTUI CASA (CODICE 7320774) IN RICHIESTA MUTUO DI EURO 160.000 DA RESTITUIRE IN 30 ANNI – CÓNDIZIONI COME DA PROMO GREEN – CLASSE ENERGETICA C. LIO O O O ) 15MQ. L’IMMOBILE AVRA’ UN VALORE DI COMPRAVENDITA DI EURO 270.000 (LTV 60%) – LA DIFFERENZA DEL SALDO PREZZO DERIVA DA PROPRI RISPARMI (COME INDICATO DAL MEDIATORE). IL SIG. SANTINI LAVORA A TEMPO INDETERMÍNATO DAL 30/10/2017 PER OBI ITALIA SRL CON LA MANSIONE DI CAPOSETTORE PRESSO LA SEDE DI RAVENNA. DA CAREN SU CUD 2026 RISULTA UN REDDITO ANNUO NETTO PARI A EURO 33.000 – MENSILIZZATO EUR 2750. DICHIARA DI NON AVERE NESSUN DEBITO IN CORSO E NESSUNA PERSONA A CARICO. RATA DI EUR 692 SOSTENIBILE (SOSTITUISCE L'AFFITTO CHE STA PAGANDO DI EURO 850)",
+   "status": "wrong",
+   "content_available": false
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg",
+   "expected": "36210255",
+   "predicted": "36210255",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "SANTINI EMANUELE",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "tipo",
+   "expected": "BPI Mutui / Med. Creditizi",
+   "predicted": "BPI Mutui / Med. Creditizi",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "filiale_relazione",
+   "expected": "800 - RAVENNA",
+   "predicted": "800 - RAVENNA",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg_1",
+   "expected": "36210255",
+   "predicted": null,
+   "status": "missing",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione_1",
+   "expected": "SANTINI EMANUELE",
+   "predicted": "36210255 SANTINI EMANUELE",
+   "status": "wrong",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ruolo_1",
+   "expected": "Richiedente",
+   "predicted": "Richiedente",
+   "status": "correct",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg_2",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione_2",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ruolo_2",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg_3",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione_3",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ruolo_3",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ndg_4",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "denominazione_4",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  },
+  {
+   "id": "52126316__Soggetti",
+   "practice": "52126316",
+   "split": "val",
+   "field": "ruolo_4",
+   "expected": null,
+   "predicted": null,
+   "status": "correct_null",
+   "content_available": true
+  }
+ ],
+ "missing_predictions": []
+}

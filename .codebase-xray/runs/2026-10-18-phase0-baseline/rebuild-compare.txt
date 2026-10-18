@@ -1,0 +1,14 @@
+examples.json: DIFF rebuilt=405901184a3ace91 bundle=69c1b345101f20e4
+roles.json: SAME rebuilt=c9ca268aa13ddcde bundle=c9ca268aa13ddcde
+coverage.json: SAME rebuilt=af98a159c60c3fe0 bundle=af98a159c60c3fe0
+ground_truth.csv: SAME rebuilt=b4c3e5d9a08fd4ba bundle=b4c3e5d9a08fd4ba
+alignment_report.csv: SAME rebuilt=a92cc3f583933025 bundle=a92cc3f583933025
+manifest keys that differ: ['dataset_content_sha256', 'ocr']
+dataset_content_sha256: beca470cff36ab19 vs 469c26d1dd6e5464
+same ids: True
+example keys that differ: {'words': 54}
+labels identical: True
+word count, text, y0, y1 identical: True
+  51185037__GestioneFidi word 275 '(€)/%' x1: rebuilt 1050.0 bundle 1053.0 fitted=True label=O
+  52135039__GestioneFidi_Tooltip1 word 271 '(€)/%' x1: rebuilt 1050.0 bundle 1053.0 fitted=True label=O
+x coordinates differing by <=1e-6: 1565; by more: 2

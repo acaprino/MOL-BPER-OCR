@@ -19,6 +19,8 @@ Tutte le sottocartelle di `data/` sono visibili nel progetto; `.gitignore` esclu
   - `dati.csv`: fotogramma dei valori estratti sul corpus delle 12 pratiche (formato lungo, con colonna `Nota`).
 - **`data/training/`** — Dataset sigillato e modelli addestrati dal pacchetto `src/training/`:
   - `ground-truth-v3.1/`: bundle supervisionato generato da `python -m training.dataset` (`examples.json`, `roles.json`, `coverage.json`, `manifest.json`, `ground_truth.csv`, `alignment_report.csv`).
-  - `runs/lilt-v3.1-20261016/`: artefatti del run GPU Modal e pesi scaricati per inferenza CPU (`cpu_model/`).
+  - `ocr-cache/rapid_v6_small_1x.json`: cache OCR delle 113 schermate (RapidOCR 3.9.2, PP-OCRv6 small, scala 1x) da cui è costruito `ground-truth-v3.1/`, SHA-256 `e261c05b…` come in `manifest.json`. Il manifest conserva il percorso originale, rimosso dal riordino del repository; il file è stato ripristinato qui dalla storia git senza modifiche.
+  - `runs/lilt-v3.1-20261016/`: artefatti del run GPU Modal e pesi scaricati per inferenza CPU (`cpu_model/`). Addestrato su una versione precedente del bundle, con allineamento e codice di `src/training/` anteriori.
+  - `runs/lilt-v3.1-20261018-current-bundle/`: stesso protocollo, addestrato sul bundle `ground-truth-v3.1/` corrente (`dataset_content_sha256` `469c26d1…`) con la selezione dell'epoca sull'accuratezza dei campi interi in validazione. Stessa struttura del run precedente; i pesi `model.safetensors` non sono versionati.
 - **`data/reference/`** — Directory predefinita del motore VLM (`INPUT_DIR=data/reference`), con i 9 screenshot tracciati `screen 1.png` .. `screen 9.png` e il relativo `dati.csv`.
 - **`data/spike-ocr/`** — Script e dati storici del primo spike esplorativo RapidOCR + LiLT (superati da `src/training/`).

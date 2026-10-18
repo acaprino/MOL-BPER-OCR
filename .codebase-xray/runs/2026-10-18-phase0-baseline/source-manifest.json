@@ -1,0 +1,39 @@
+{
+  "changed_or_added": {
+    "docs/next-ver-plan.md": "ec8941a7bb7014ed9c39352a563c1951c54948e5cf82aa4089707792c96b4859",
+    "data/README.md": "ccf3fc706dca9b1bcbefb6ac34b351561bc887a5c7bd892c2b9cafd78820f53f",
+    "src/training/README.md": "26a77b989907b1bc1838c4212538e538d585dd19dd5b367d5405c6b7073588cb",
+    ".gitignore": "b905cb803187a32b0f59ee52c57ddebcf04985bef930f32133689702c8e99bd8",
+    "data/training/ocr-cache/rapid_v6_small_1x.json": "e261c05beed40fadc9ee0616a5920dcb58517d266f36d664d3cd62ac3dc22342",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/result.json": "f54c54e447c0ab54a902404d3b2154d77d6b255042acbe5c4dbc81ca746b1f1c",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/metrics.json": "9c3062ea95b2a130c639f1364987451223b5076cabd8290848e987fa4a013d38",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/download_manifest.json": "68be554e2293bfe1abe8e9aa1a92e0d0b7356ff1c3b9606d0bbd5f9eede8c6f0",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/validation_predictions.json": "fe9d86ee373e033e50837d7503d23f36743a486bb343be2f155d21350278fb01",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/test_predictions.json": "aa4ea2c80a196e0fd82d4fb3ca9b72e1cf216e4f637f54a0a308f82dd89d3bd1",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/validation_field_metrics.json": "ee978886e9dc9dcdd9299902d47bd43d77ba95f784b9aedf2e4606b90a42000d",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/test_field_metrics.json": "affab14dfb1bfb4bd5cdc1d58b7c885bd53445545beca84721c244cf3e2e780d",
+    "data/training/runs/lilt-v3.1-20261018-current-bundle/cpu_model/model.safetensors (gitignored)": "368497773b07631b (prefix, from download_manifest.json)"
+  },
+  "unchanged_inputs": {
+    "data/training/ground-truth-v3.1/examples.json": "69c1b345101f20e456b6c814ab6e8def742f730d6158336d11539c7b26be0a5a",
+    "data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx": "ba537efff9c6762f55cc078754e453eaf51fb1ba18a4dfeead841c9858e0a3ff",
+    "src/training/alignment.py": "0eb63de735305dec3a1308fc5865d12957188a974a015165532dd493e018f3a9",
+    "src/training/dataset.py": "ac6667e017374bd74e413ddb118b861894e4cd92796432d4b253aa4e1a70606a",
+    "src/training/evaluation.py": "b65eec62a5d517fa6886aa85af592fafee53018ae3a10543ef5dae262975e89a",
+    "src/training/modal_train.py": "2a5dac9d59bcd640647863e1bc633407f6d041e66add91e1b406667e0ff41615",
+    "src/training/model.py": "6b0a92bb6d813099083cb68eff2eca09a8bb1bc4babc85e1febeac9803fb9316",
+    "src/training/schema.py": "be7a2146f2724dc82598ae51a7dddd1983ae0bd9964568024d36edfb3a449a2f"
+  },
+  "run_outputs": {
+    "check_plan_reconciled.py": "cf0bedeff6837701a12bd368c44dee75359ea75b7594636c4f08a955f7a06919",
+    "compare_rebuild.py": "27aeb33326332ad7abb358581b9244f6bddb691e9dc46b02e05ac261c7f874c7",
+    "compare_a0.py": "50f05b5e26e916e12e8295eb87f7c04adf3d65890ecfd9c502149895a3c72db0",
+    "compare_lilt_runs.py": "473f4537e48cfd33b3e23fe0f1811dd8c68485abdfe55aed91cc1ec271b9fac1",
+    "ocr_local_rapid.py (from d939ea5, unchanged)": "c545459b756b3c22c15987e078eb08bee743a0d84eb651f44a48a665cde9bb8b",
+    "a0_rerun_rapid_v6_small_1x.json": "79bb3acf1d6f9e2f4d9716509cf733ca0f4827ccd5066aec262e59b885b81865",
+    "rebuild-manifest.json": "14c65353501feb26c9df0bfc4a4083f63a78e33a8c3444f31fdbaf2b320dc660",
+    "lilt-compare.json": "04fe565288fe2d3afc2568092025d634dec69047dc423bde1e975cfc1f905f00",
+    "pytest-full.txt": "3209692a14412ff8f6bb7ffd6cbc957973a32f875414b92b8f2b2e8987c91494",
+    "checks-plan.txt": "58c5e8332e2f07a4fa397ac4f6498ed071c4567203c24ed1d5d55335338e973d"
+  }
+}

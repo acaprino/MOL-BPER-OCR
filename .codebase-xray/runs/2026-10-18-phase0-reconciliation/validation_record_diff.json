@@ -1,0 +1,23 @@
+[
+ {
+  "id": "51659595__GestioneFidi_Tooltip1",
+  "field": "rapporto",
+  "attr": "content_available",
+  "saved": false,
+  "current": true
+ },
+ {
+  "id": "51659595__GestioneFidi_Tooltip1",
+  "field": "tipo_op",
+  "attr": "content_available",
+  "saved": false,
+  "current": true
+ },
+ {
+  "id": "51659595__Soggetti",
+  "field": "denominazione_4",
+  "attr": "content_available",
+  "saved": false,
+  "current": true
+ }
+]
