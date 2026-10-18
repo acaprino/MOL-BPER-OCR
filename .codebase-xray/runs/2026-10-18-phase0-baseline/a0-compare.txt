@@ -1,4 +1,0 @@
-screens: 113 113 same ids: True
-screens with identical token texts and order: 113/113; fully identical items: 113
-on identical-text screens: max box delta 0.0000px, max score delta 0.000000
-seconds per screen (first excluded): rerun mean 6.79 max 13.35; historic mean 7.69 max 12.19

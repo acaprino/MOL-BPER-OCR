@@ -1,3 +1,0 @@
-screens 113, other 113
-same texts in order: 113/113; same scores and boxes within 1e-4: 111/113
-PASS the other cache has the same texts as the reference on every screen

@@ -1,3 +1,0 @@
-validation: role report equals pre-change report without new keys: True; complete=True; field path records equal: False; by_field equal: False; strict 123/146; field word_metrics=None
-test: role report equals pre-change report without new keys: True; complete=True; field path records equal: False; by_field equal: False; strict 143/192; field word_metrics=None
-FAIL

@@ -125,4 +125,5 @@ priva dell'esito di qualche schermata; la F1 delle parole non si applica.
 
 Questo percorso è un esperimento offline. L'adozione nel flusso di cattura
 dell'edge-agent richiede una modifica successiva e una verifica su acquisizioni reali.
-I risultati delle esecuzioni sono conservati nella X-ray, separati da questa guida.
+I risultati delle esecuzioni sono conservati accanto ai run in `data/training/`,
+separati da questa guida.

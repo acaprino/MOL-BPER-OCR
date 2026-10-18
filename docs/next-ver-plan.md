@@ -52,7 +52,7 @@ selezione dell'epoca sull'accuratezza dei campi interi in validazione: è il B0 
 gate G4/G5. Le due versioni differiscono sia nell'allineamento di addestramento
 sia nel criterio di selezione, quindi il guadagno non è attribuibile al solo
 allineamento. I report storici restano immutati; riconciliazione, provenienza,
-impronte e nuove esecuzioni appartengono alla X-ray. Anche un confronto
+impronte e nuove esecuzioni si conservano accanto ai run in `data/training/`. Anche un confronto
 cloud richiede identica popolazione e identici comparatori; i numeri cloud non
 verificati su questa popolazione non partecipano ai gate.
 
@@ -403,7 +403,7 @@ non può essere dichiarata.
 ### Fase 0 — Prerequisiti e Baseline Coerente
 
 1. Recuperare gli strumenti storici necessari senza sovrascrivere le prove originali. Preparare un ambiente Python 3.12/3.13 con versioni riproducibili, dipendenze OCR/CPU, test e misurazione risorse. Congelare modelli e licenze; nessun download implicito nel runtime distribuito.
-2. Riconciliare il run LiLT storico con dataset, allineamenti e impronte. Ricostruire A0 e la valutazione delle predizioni compatibili in una nuova directory; registrare le differenze nella X-ray. Non confrontare candidati con baseline composte da snapshot diversi.
+2. Riconciliare il run LiLT storico con dataset, allineamenti e impronte. Ricostruire A0 e la valutazione delle predizioni compatibili in una nuova directory; registrare le differenze accanto ai run. Non confrontare candidati con baseline composte da snapshot diversi.
 3. Preparare il runner per cache complete e report separati per split, gli ingressi comuni di valutazione e i metadati delle correzioni. Scrivere prima i test comportamentali dei nuovi contratti e verificarne il fallimento atteso prima dell'implementazione.
 4. Preparare il piano delle nuove pratiche di G8 e congelare soglie, popolazioni e politiche di selezione (§5.4). Le API e i controlli v3.1 restano operativi per il corpus storico.
 
@@ -440,7 +440,7 @@ ambito dei campi qualificati.
 
 ## 7. Artefatti Attesi
 
-1. Runner riproducibile A0–A5 / B0–B3, configurazioni, manifest e impronte; risultati di ogni prova in una nuova directory della X-ray, con possibilità di riconoscere output parziali e riprendere un run senza considerarli completi.
+1. Runner riproducibile A0–A5 / B0–B3, configurazioni, manifest e impronte; risultati di ogni prova in una nuova directory sotto `data/training/`, con possibilità di riconoscere output parziali e riprendere un run senza considerarli completi.
 2. Report separati per train, validazione, regressione storica e conferma indipendente: disponibilità OCR, conteggi `correct`, `correct_null`, `wrong`, `missing`, `hallucinated`, accuratezza globale e non-null, per campo, gruppo e pratica. Per ogni campo dei 45 indicare anche supporto nullo o insufficiente.
 3. Report G6/G7 su entrambi i profili, dimensioni degli artefatti per PyInstaller, guasti iniettati, capacità della coda, astensioni, recuperi e limiti effettivamente verificati. Conservare risultati precedenti distinti dalle nuove esecuzioni.
-4. ADR di adozione soltanto dopo il superamento dei gate applicabili, con provenienza e licenze della combinazione distribuita, qualificazione dei campi e gestione dei casi d'identità incerta. Le cronache delle esecuzioni restano nella X-ray.
+4. ADR di adozione soltanto dopo il superamento dei gate applicabili, con provenienza e licenze della combinazione distribuita, qualificazione dei campi e gestione dei casi d'identità incerta. Le cronache delle esecuzioni restano accanto ai run in `data/training/`.

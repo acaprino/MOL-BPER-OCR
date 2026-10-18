@@ -275,7 +275,7 @@ poc-data-src/extraction/
     dati.csv               # Ground truth - NON incluso nel repo, da procurarsi a parte
     screen *.png           # Screenshot di test (9 immagini, tracciate)
   docs/                    # Documentazione narrativa in italiano (INDEX.md) e ADR (docs/adr/)
-  .tritech/codebase-xray/  # Analisi tecnica, baseline storiche e verifiche riproducibili
+  .tritech/codebase-map/   # Mappa del codice generata dal plugin codebase-map
   .env.example             # Template variabili d'ambiente
 ```
 

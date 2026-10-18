@@ -233,7 +233,7 @@ Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR`, poi:
 - scrive `data/reference/poc_debug_improved.csv`: separatore punto e virgola, `utf-8-sig` (amichevole per Excel, `src/extraction/evaluation.py:15`);
 - stampa chiamate/token/USD per schermata via `print_cost_summary()`.
 
-La prima baseline con un provider reale (2026-09-29, `gemini-3.8-flash`, tre run: 93,5-94,8%, circa $0,04 a schermata) è in `.codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`, con il ground truth che l'ha prodotta e la soglia di accettazione proposta. Per sapere se una modifica ha aiutato, rilancia sullo stesso `dati.csv` e confronta con quei numeri; se cambi il ground truth, salva prima il JSON precedente e il riepilogo stampato.
+La prima baseline con un provider reale (2026-09-29, `gemini-3.8-flash`, tre run: 93,5-94,8%, circa $0,04 a schermata) è nella storia git (`git show d939ea5:.tritech/codebase-xray/baselines/2026-09-29-gemini-3.8-flash/README.md`), con il ground truth che l'ha prodotta e la soglia di accettazione proposta. Per sapere se una modifica ha aiutato, rilancia sullo stesso `dati.csv` e confronta con quei numeri; se cambi il ground truth, salva prima il JSON precedente e il riepilogo stampato.
 
 ### Estrarre qualche immagine senza ground truth (Tkinter)
 
