@@ -2,24 +2,24 @@
  "metric_version": "strict-v3-fidi-first-row",
  "overall": {
   "total": 144,
-  "correct": 103,
-  "accuracy": 0.7152777777777778,
+  "correct": 104,
+  "accuracy": 0.7222222222222222,
   "counts": {
-   "correct": 68,
+   "correct": 69,
    "correct_null": 35,
    "missing": 25,
-   "wrong": 15,
+   "wrong": 14,
    "hallucinated": 1
   },
   "abstained": 0,
   "content_availability": {
    "total": 144,
-   "available": 133,
-   "unavailable": 11,
-   "rate": 0.9236111111111112,
+   "available": 136,
+   "unavailable": 8,
+   "rate": 0.9444444444444444,
    "non_null_total": 108,
-   "non_null_available": 97,
-   "non_null_rate": 0.8981481481481481
+   "non_null_available": 100,
+   "non_null_rate": 0.9259259259259259
   }
  },
  "by_field": {
@@ -139,22 +139,22 @@
   },
   "descrizione": {
    "total": 5,
-   "correct": 1,
-   "accuracy": 0.2,
+   "correct": 2,
+   "accuracy": 0.4,
    "counts": {
-    "correct": 1,
+    "correct": 2,
     "missing": 2,
-    "wrong": 2
+    "wrong": 1
    },
    "abstained": 0,
    "content_availability": {
     "total": 5,
-    "available": 3,
-    "unavailable": 2,
-    "rate": 0.6,
+    "available": 5,
+    "unavailable": 0,
+    "rate": 1.0,
     "non_null_total": 5,
-    "non_null_available": 3,
-    "non_null_rate": 0.6
+    "non_null_available": 5,
+    "non_null_rate": 1.0
    }
   },
   "evidenze": {
@@ -451,12 +451,12 @@
    "abstained": 0,
    "content_availability": {
     "total": 6,
-    "available": 5,
-    "unavailable": 1,
-    "rate": 0.8333333333333334,
+    "available": 6,
+    "unavailable": 0,
+    "rate": 1.0,
     "non_null_total": 6,
-    "non_null_available": 5,
-    "non_null_rate": 0.8333333333333334
+    "non_null_available": 6,
+    "non_null_rate": 1.0
    }
   },
   "stato": {
@@ -2603,13 +2603,13 @@
   },
   "val_ext": {
    "total": 144,
-   "correct": 103,
-   "accuracy": 0.7152777777777778,
+   "correct": 104,
+   "accuracy": 0.7222222222222222,
    "counts": {
-    "correct": 68,
+    "correct": 69,
     "correct_null": 35,
     "missing": 25,
-    "wrong": 15,
+    "wrong": 14,
     "hallucinated": 1
    },
    "abstained": 0,
@@ -2730,22 +2730,22 @@
     },
     "descrizione": {
      "total": 5,
-     "correct": 1,
-     "accuracy": 0.2,
+     "correct": 2,
+     "accuracy": 0.4,
      "counts": {
-      "correct": 1,
+      "correct": 2,
       "missing": 2,
-      "wrong": 2
+      "wrong": 1
      },
      "abstained": 0,
      "content_availability": {
       "total": 5,
-      "available": 3,
-      "unavailable": 2,
-      "rate": 0.6,
+      "available": 5,
+      "unavailable": 0,
+      "rate": 1.0,
       "non_null_total": 5,
-      "non_null_available": 3,
-      "non_null_rate": 0.6
+      "non_null_available": 5,
+      "non_null_rate": 1.0
      }
     },
     "evidenze": {
@@ -3042,12 +3042,12 @@
      "abstained": 0,
      "content_availability": {
       "total": 6,
-      "available": 5,
-      "unavailable": 1,
-      "rate": 0.8333333333333334,
+      "available": 6,
+      "unavailable": 0,
+      "rate": 1.0,
       "non_null_total": 6,
-      "non_null_available": 5,
-      "non_null_rate": 0.8333333333333334
+      "non_null_available": 6,
+      "non_null_rate": 1.0
      }
     },
     "stato": {
@@ -3165,22 +3165,22 @@
    },
    "content_availability": {
     "total": 144,
-    "available": 133,
-    "unavailable": 11,
-    "rate": 0.9236111111111112,
+    "available": 136,
+    "unavailable": 8,
+    "rate": 0.9444444444444444,
     "non_null_total": 108,
-    "non_null_available": 97,
-    "non_null_rate": 0.8981481481481481
+    "non_null_available": 100,
+    "non_null_rate": 0.9259259259259259
    },
    "word_metrics": {
     "micro": {
-     "tp": 131,
+     "tp": 134,
      "fp": 69,
-     "fn": 45,
-     "support": 176,
-     "precision": 0.655,
-     "recall": 0.7443181818181818,
-     "f1": 0.6968085106382979
+     "fn": 48,
+     "support": 182,
+     "precision": 0.6600985221674877,
+     "recall": 0.7362637362637363,
+     "f1": 0.6961038961038961
     },
     "by_role": {
      "creazione": {
@@ -3202,13 +3202,13 @@
       "f1": 0.7843137254901961
      },
      "descrizione": {
-      "tp": 1,
+      "tp": 4,
       "fp": 0,
-      "fn": 2,
-      "support": 3,
+      "fn": 4,
+      "support": 8,
       "precision": 1.0,
-      "recall": 0.3333333333333333,
-      "f1": 0.5
+      "recall": 0.5,
+      "f1": 0.6666666666666666
      },
      "evidenze": {
       "tp": 6,
@@ -3294,11 +3294,11 @@
      "scadenza": {
       "tp": 7,
       "fp": 0,
-      "fn": 1,
-      "support": 8,
+      "fn": 2,
+      "support": 9,
       "precision": 1.0,
-      "recall": 0.875,
-      "f1": 0.9333333333333333
+      "recall": 0.7777777777777778,
+      "f1": 0.875
      },
      "sogg_denominazione": {
       "tp": 12,
@@ -3382,19 +3382,19 @@
       "f1": 0.6666666666666666
      }
     },
-    "ignored_words": 37
+    "ignored_words": 27
    }
   }
  },
  "word_metrics": {
   "micro": {
-   "tp": 131,
+   "tp": 134,
    "fp": 69,
-   "fn": 45,
-   "support": 176,
-   "precision": 0.655,
-   "recall": 0.7443181818181818,
-   "f1": 0.6968085106382979
+   "fn": 48,
+   "support": 182,
+   "precision": 0.6600985221674877,
+   "recall": 0.7362637362637363,
+   "f1": 0.6961038961038961
   },
   "by_role": {
    "creazione": {
@@ -3416,13 +3416,13 @@
     "f1": 0.7843137254901961
    },
    "descrizione": {
-    "tp": 1,
+    "tp": 4,
     "fp": 0,
-    "fn": 2,
-    "support": 3,
+    "fn": 4,
+    "support": 8,
     "precision": 1.0,
-    "recall": 0.3333333333333333,
-    "f1": 0.5
+    "recall": 0.5,
+    "f1": 0.6666666666666666
    },
    "evidenze": {
     "tp": 6,
@@ -3508,11 +3508,11 @@
    "scadenza": {
     "tp": 7,
     "fp": 0,
-    "fn": 1,
-    "support": 8,
+    "fn": 2,
+    "support": 9,
     "precision": 1.0,
-    "recall": 0.875,
-    "f1": 0.9333333333333333
+    "recall": 0.7777777777777778,
+    "f1": 0.875
    },
    "sogg_denominazione": {
     "tp": 12,
@@ -3596,7 +3596,7 @@
     "f1": 0.6666666666666666
    }
   },
-  "ignored_words": 37
+  "ignored_words": 27
  },
  "records": [
   {
@@ -4737,10 +4737,10 @@
    "practice": "52013664",
    "split": "val_ext",
    "field": "descrizione",
-   "expected": "M.F.PF FONDO",
+   "expected": "M.F. PF FONDO",
    "predicted": "M.F.",
    "status": "wrong",
-   "content_available": false,
+   "content_available": true,
    "abstained": false
   },
   {
@@ -4748,10 +4748,10 @@
    "practice": "52013664",
    "split": "val_ext",
    "field": "scadenza",
-   "expected": "15/08/1956",
+   "expected": "15/08/2056",
    "predicted": null,
    "status": "missing",
-   "content_available": false,
+   "content_available": true,
    "abstained": false
   },
   {
@@ -4858,10 +4858,10 @@
    "practice": "52032077",
    "split": "val_ext",
    "field": "descrizione",
-   "expected": "M.CONSAP >80%",
+   "expected": "M.CONSAP >=80%",
    "predicted": "M.CONSAP >=80%",
-   "status": "wrong",
-   "content_available": false,
+   "status": "correct",
+   "content_available": true,
    "abstained": false
   },
   {

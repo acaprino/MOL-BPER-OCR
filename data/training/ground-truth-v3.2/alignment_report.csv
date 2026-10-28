@@ -357,8 +357,8 @@
 52013664__GestioneFidi_Tooltip1;52013664;val_ext;filiale_relazione;3352 - LANDRIANO;3352 - LANDRIANO;True;supervised;aligned
 52013664__GestioneFidi_Tooltip1;52013664;val_ext;n_fido;F1;F1;True;supervised;aligned
 52013664__GestioneFidi_Tooltip1;52013664;val_ext;rapporto;034 3352 0017 05659938;034 3352 0017 05659938;True;supervised;aligned
-52013664__GestioneFidi_Tooltip1;52013664;val_ext;descrizione;M.F.PF FONDO;M.F. PF FONDO;False;ignored_ocr_mismatch;aligned
-52013664__GestioneFidi_Tooltip1;52013664;val_ext;scadenza;15/08/1956;;False;ignored_alignment;unresolved
+52013664__GestioneFidi_Tooltip1;52013664;val_ext;descrizione;M.F. PF FONDO;M.F. PF FONDO;True;supervised;aligned
+52013664__GestioneFidi_Tooltip1;52013664;val_ext;scadenza;15/08/2056;15/08/2056;True;supervised;aligned
 52013664__GestioneFidi_Tooltip1;52013664;val_ext;importo_euro;129.000;129.000;True;supervised;aligned
 52013664__GestioneFidi_Tooltip1;52013664;val_ext;tipo_op;In Lavoraz.;In Lavoraz.;True;supervised;aligned
 52013664__GestioneFidi_Tooltip1;52013664;val_ext;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;55-IPOTECA DI PRIMO GRADO;True;supervised;aligned
@@ -368,7 +368,7 @@
 52032077__GestioneFidi;52032077;val_ext;filiale_relazione;908 - SIRACUSA;908 - SIRACUSA;True;supervised;aligned
 52032077__GestioneFidi;52032077;val_ext;n_fido;F1;F1;True;supervised;aligned
 52032077__GestioneFidi;52032077;val_ext;rapporto;034 0908 0017 05662866;034 0908 0017 05662866;True;supervised;aligned
-52032077__GestioneFidi;52032077;val_ext;descrizione;M.CONSAP >80%;M.CONSAP >=80%;False;ignored_ocr_mismatch;aligned
+52032077__GestioneFidi;52032077;val_ext;descrizione;M.CONSAP >=80%;M.CONSAP >=80%;True;supervised;aligned
 52032077__GestioneFidi;52032077;val_ext;scadenza;15/08/2056;15/08/2056;True;supervised;aligned
 52032077__GestioneFidi;52032077;val_ext;importo_euro;80.000;80.000;True;supervised;aligned
 52032077__GestioneFidi;52032077;val_ext;tipo_op;In Lavoraz.;In Lavoraz;False;partial_supervision;aligned

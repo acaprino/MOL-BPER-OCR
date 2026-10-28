@@ -4,7 +4,7 @@
  "interpretazione": "Fabbisogno sui 15 campi scoperti: 1 pratica per campo in validazione estesa, 2 in conferma. Riduzione = numero di campi scoperti non vuoti della pratica il cui fabbisogno nel gruppo è ancora positivo. A parità (anche zero) i casi di parità si alternano conferma, validazione estesa, ... Nessuna pratica è esclusa: le identità in comune con v3.1 sono registrate in isolamento_v3_1 (decisione del 2026-10-28). Identità NDG: ndg e ndg_1..4 trascritti, normalizzati con normalize_ndg(), come audit_splits().",
  "workbook": "Revisione_10_pratiche_agosto_v1.0.xlsx",
  "workbook_sha256": "6f4e8a9e0d73202d6cfa9ab1c38f332700917ac655a88cd7b7a5ac7842e8790e",
- "correzioni_sha256": "a21b64e6ead6097a347bc52efd89575273ac2465427e3461405b30273242475a",
+ "correzioni_sha256": "33599c44315dfd5854be12b620844b821579dcc253a4eeaf2041167a84651649",
  "gruppi": {
   "validazione_estesa": [
    "51788077",

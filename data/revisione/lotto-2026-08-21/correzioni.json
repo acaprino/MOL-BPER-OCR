@@ -2,7 +2,7 @@
  "workbook": "Revisione_10_pratiche_agosto_v1.0.xlsx",
  "workbook_sha256": "6f4e8a9e0d73202d6cfa9ab1c38f332700917ac655a88cd7b7a5ac7842e8790e",
  "data": "2026-10-27",
- "motivo": "Nelle schermate GestioneFidi_Tooltip l'intestazione della pagina (NDG, Denominazione, Tipo, Filiale relazione) è fuori dall'immagine: nel modello questi campi non avevano riquadro rosso e la scheda diceva 'Campo fuori schermo o coperto nell'originale: verificare e scegliere NON VISIBILE'. La revisione ha letto invece la tabella Fidi: la colonna NDG della tabella per il campo NDG e un valore della riga Fidi (di solito Tipo Op.) per il campo Tipo, che nella pagina è il tipo pratica dell'intestazione. Le note della stessa revisione confermano l'intestazione fuori schermo ('Filiale relazione: Campo fuori schermo', 'Denominazione presente solo in tabella Garanzie'). Le righe hanno quindi esito NON VISIBILE.",
+ "motivo": "Nelle schermate GestioneFidi_Tooltip l'intestazione della pagina (NDG, Denominazione, Tipo, Filiale relazione) è fuori dall'immagine: nel modello questi campi non avevano riquadro rosso e la scheda diceva 'Campo fuori schermo o coperto nell'originale: verificare e scegliere NON VISIBILE'. La revisione ha letto invece la tabella Fidi: la colonna NDG della tabella per il campo NDG e un valore della riga Fidi (di solito Tipo Op.) per il campo Tipo, che nella pagina è il tipo pratica dell'intestazione. Le note della stessa revisione confermano l'intestazione fuori schermo ('Filiale relazione: Campo fuori schermo', 'Denominazione presente solo in tabella Garanzie'). Le righe hanno quindi esito NON VISIBILE. Tre correzioni successive (righe 258, 259, 291, con il proprio campo 'motivo') sono valori trascritti diversi dallo schermo, verificati a mano il 2026-10-28.",
  "verifica": "Confronto meccanico di tutte le 320 righe con la geometria del modello (outputs/01a164f0-97a1-7433-b313-b15481e862d4/audit/field_cards.json): tutte le righe senza riquadro per intestazione fuori schermo con esito diverso da NON VISIBILE sono qui; nessun'altra classe di disaccordo, salvo una riga 'tagliata, illeggibile' indicata NON VISIBILE (equivalente ai fini della valutazione).",
  "normalizzazioni": "Spazi finali in 5 trascrizioni (righe Excel 62, 137, 144, 151, 215): rimossi in lettura, come fa read_reviewed_truth().",
  "correzioni": [
@@ -199,6 +199,40 @@
    }
   },
   {
+   "riga_excel": 258,
+   "n": 257,
+   "schermata": "52013664__GestioneFidi_Tooltip1",
+   "campo": "Descrizione",
+   "field_key": "descrizione",
+   "revisione": {
+    "esito": "TRASCRITTO",
+    "trascrizione": "M.F.PF FONDO",
+    "note": null
+   },
+   "corretto": {
+    "esito": "TRASCRITTO",
+    "trascrizione": "M.F. PF FONDO"
+   },
+   "motivo": "Trascrizione verificata a mano dall'utente il 2026-10-28 sullo schermo originale (pagina di verifica con ritaglio e ingrandimento della cella): il valore sullo schermo differisce da quello trascritto."
+  },
+  {
+   "riga_excel": 259,
+   "n": 258,
+   "schermata": "52013664__GestioneFidi_Tooltip1",
+   "campo": "Scadenza",
+   "field_key": "scadenza",
+   "revisione": {
+    "esito": "TRASCRITTO",
+    "trascrizione": "15/08/1956",
+    "note": null
+   },
+   "corretto": {
+    "esito": "TRASCRITTO",
+    "trascrizione": "15/08/2056"
+   },
+   "motivo": "Trascrizione verificata a mano dall'utente il 2026-10-28 sullo schermo originale (pagina di verifica con ritaglio e ingrandimento della cella): il valore sullo schermo differisce da quello trascritto."
+  },
+  {
    "riga_excel": 263,
    "n": 262,
    "schermata": "52022324__GestioneFidi_Tooltip1",
@@ -261,6 +295,23 @@
     "esito": "NON VISIBILE",
     "trascrizione": null
    }
+  },
+  {
+   "riga_excel": 291,
+   "n": 290,
+   "schermata": "52032077__GestioneFidi",
+   "campo": "Descrizione",
+   "field_key": "descrizione",
+   "revisione": {
+    "esito": "TRASCRITTO",
+    "trascrizione": "M.CONSAP >80%",
+    "note": null
+   },
+   "corretto": {
+    "esito": "TRASCRITTO",
+    "trascrizione": "M.CONSAP >=80%"
+   },
+   "motivo": "Trascrizione verificata a mano dall'utente il 2026-10-28 sullo schermo originale (pagina di verifica con ritaglio e ingrandimento della cella): il valore sullo schermo differisce da quello trascritto."
   },
   {
    "riga_excel": 295,

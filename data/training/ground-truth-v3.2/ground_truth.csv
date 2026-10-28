@@ -1290,8 +1290,8 @@ Rapporto R/R 19%";TRASCRITTO;TRASCRITTO;51800301;lotto-2026-08-21;conferma;198;
 52013664__GestioneFidi_Tooltip1;Filiale relazione;3352 - LANDRIANO;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;255;
 52013664__GestioneFidi_Tooltip1;n° FIDO;F1;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;256;
 52013664__GestioneFidi_Tooltip1;Rapporto;034 3352 0017 05659938;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;257;
-52013664__GestioneFidi_Tooltip1;Descrizione;M.F.PF FONDO;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;258;
-52013664__GestioneFidi_Tooltip1;Scadenza;15/08/1956;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;259;
+52013664__GestioneFidi_Tooltip1;Descrizione;M.F. PF FONDO;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;258;"{""esito"": ""TRASCRITTO"", ""trascrizione"": ""M.F.PF FONDO"", ""note"": null}"
+52013664__GestioneFidi_Tooltip1;Scadenza;15/08/2056;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;259;"{""esito"": ""TRASCRITTO"", ""trascrizione"": ""15/08/1956"", ""note"": null}"
 52013664__GestioneFidi_Tooltip1;Importo (€);129.000;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;260;
 52013664__GestioneFidi_Tooltip1;Tipo Op.;In Lavoraz.;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;261;
 52013664__GestioneFidi_Tooltip1;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;55-IPOTECA DI PRIMO GRADO;TRASCRITTO;TRASCRITTO;52013664;lotto-2026-08-21;val_ext;262;
@@ -1323,7 +1323,7 @@ Rapporto R/R 19%";TRASCRITTO;TRASCRITTO;51800301;lotto-2026-08-21;conferma;198;
 52032077__GestioneFidi;Filiale relazione;908 - SIRACUSA;TRASCRITTO;TRASCRITTO;52032077;lotto-2026-08-21;val_ext;288;
 52032077__GestioneFidi;n° FIDO;F1;TRASCRITTO;TRASCRITTO;52032077;lotto-2026-08-21;val_ext;289;
 52032077__GestioneFidi;Rapporto;034 0908 0017 05662866;TRASCRITTO;TRASCRITTO;52032077;lotto-2026-08-21;val_ext;290;
-52032077__GestioneFidi;Descrizione;M.CONSAP >80%;TRASCRITTO;TRASCRITTO;52032077;lotto-2026-08-21;val_ext;291;
+52032077__GestioneFidi;Descrizione;M.CONSAP >=80%;TRASCRITTO;TRASCRITTO;52032077;lotto-2026-08-21;val_ext;291;"{""esito"": ""TRASCRITTO"", ""trascrizione"": ""M.CONSAP >80%"", ""note"": null}"
 52032077__GestioneFidi;Scadenza;15/08/2056;TRASCRITTO;TRASCRITTO;52032077;lotto-2026-08-21;val_ext;292;
 52032077__GestioneFidi;Importo (€);80.000;TRASCRITTO;TRASCRITTO;52032077;lotto-2026-08-21;val_ext;293;
 52032077__GestioneFidi;Tipo Op.;In Lavoraz.;TRASCRITTO;TRASCRITTO;52032077;lotto-2026-08-21;val_ext;294;
