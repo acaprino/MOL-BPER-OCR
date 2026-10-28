@@ -107,8 +107,8 @@ with source attribution (`test_pipeline_postprocessing.py`), shared NDG identity
 Retry subject-row admission, source-page/export-group metadata and GUI environment startup have
 dedicated regressions in `test_pipeline_retry_subjects.py`, `test_page_metadata.py` and
 `test_gui_config.py`. The offline LiLT training and evaluation package (`src/training/`) is covered by
-`test_training_alignment.py`, `test_training_dataset.py`, `test_training_model.py` and
-`test_training_evaluation.py`.
+`test_training_alignment.py`, `test_training_dataset.py`, `test_training_model.py`,
+`test_training_evaluation.py` and `test_training_truth_export.py`.
 
 `test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s, and it rebuilds the prototype
 cache the first time after any geometry change); it skips via
@@ -461,9 +461,13 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
 - `alignment.py` -- aligns reviewed field values to RapidOCR word boxes (`align_screen()`), orders
   multi-line table cells by local visual lines (`_order_cell_indices()`), and scopes unresolved
   field uncertainty boxes to their candidate region.
-- `dataset.py` -- reads the approved v3.1 Excel workbook (`read_reviewed_truth()`), applies BIO/role
-  supervision (`apply_supervision()`), enforces cross-split practice/NDG/image isolation
-  (`audit_splits()`), and seals the bundle (`build_dataset()`, `seal_dataset()`).
+- `dataset.py` -- reads the approved v3.1 Excel workbook (`read_reviewed_truth()`) and the lots reviewed
+  by transcription with their recorded corrections (`read_transcribed_truth()`, one `Lot` per batch with
+  its G8 assignment), applies BIO/role supervision (`apply_supervision()`), audits cross-split
+  practice/NDG/image isolation (`audit_splits()`: refused inside v3.1 and between `val_ext` and the
+  sealed `conferma`, recorded between v3.1 and the G8 groups), derives the dataset version from the lot
+  composition (`DATASET_VERSIONS`) and seals the bundle with its three truth tables
+  (`build_dataset()`, `seal_dataset()`). `truth_export.py` writes those tables as one workbook.
 - `model.py` -- normalizes word boxes to `0..1000`, builds 512-subword chunks without splitting the
   `FIDI` table block from its header (`encode_chunks()`), augments training copies (`_augment()`),
   trains `LiltForTokenClassification` selecting checkpoints on validation whole-field accuracy
@@ -497,7 +501,7 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
 | `data/reference/screen *.png` | Test banking screenshots (9 BPER images, tracked in git) |
 | `data/pratiche/` | Unified per-practice screenshot dataset (23 practices, 156 in-scope + 22 off-topic PNGs, `manifest.json`) |
 | `data/revisione/` | Reviewed ground-truth workbook (`revisione/Revisione_ground_truth_v3_1.xlsx`), crops, and 12-practice `dati.csv` |
-| `data/training/` | Sealed `ground-truth-v3.1/` dataset bundle and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
+| `data/training/` | Sealed `ground-truth-v3.1/` bundle, the unified `ground-truth-v3.2/` truth (three CSV tables plus `ground_truth.xlsx`, examples for the v3.1 splits and the G8 `val_ext` group, none for the sealed `conferma` group) and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
 | `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `src/prompt_store.py` |
 | `src/edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
 

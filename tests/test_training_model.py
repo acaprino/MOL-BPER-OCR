@@ -293,3 +293,42 @@ def test_score_predictions_reports_whole_field_and_non_note_metrics() -> None:
     assert scored["credit_field_accuracy"] == 0.0
     assert scored["non_note_f1"] == 0.0
 
+
+
+def _v3_1_examples() -> list[dict[str, Any]]:
+    examples = []
+    for index in range(113):
+        practice = index % 12
+        examples.append({**example(["a"]), "id": str(index), "practice": str(practice),
+                         "split": "train" if practice < 8 else "val" if practice < 10 else "test",
+                         "values": {f"field-{field}": "value" for field in range(9 if index < 104 else 8)}})
+    return examples
+
+
+def _manifest(examples: list[dict[str, Any]], roles: list[str], version: str, counts: dict[str, int]) -> dict[str, Any]:
+    return {**counts, "roles": roles, "dataset_version": version, "leakage_audit": {"status": "passed"},
+            "dataset_content_sha256": dataset_fingerprint(examples, roles)}
+
+
+def test_reviewed_dataset_accepts_v3_2_with_the_extended_validation_split() -> None:
+    examples = _v3_1_examples()
+    for index in range(15):
+        examples.append({**example(["a"]), "id": f"ext-{index}", "practice": f"ext-{index % 5}", "split": "val_ext",
+                         "values": {f"field-{field}": "value" for field in range(10 if index < 9 else 9)}})
+    roles = ["O", "ndg"]
+    manifest = _manifest(examples, roles, "ground-truth-v3.2", {"reviewed_rows": 1152, "screens": 128, "practices": 17})
+    validate_reviewed_dataset(examples, roles, manifest)
+
+
+def test_reviewed_dataset_refuses_an_unknown_version() -> None:
+    examples, roles = _v3_1_examples(), ["O", "ndg"]
+    manifest = _manifest(examples, roles, "ground-truth-v3.3", {"reviewed_rows": 1008, "screens": 113, "practices": 12})
+    with pytest.raises(ValueError, match="version"):
+        validate_reviewed_dataset(examples, roles, manifest)
+
+
+def test_reviewed_dataset_refuses_v3_1_content_relabelled_as_v3_2() -> None:
+    examples, roles = _v3_1_examples(), ["O", "ndg"]
+    manifest = _manifest(examples, roles, "ground-truth-v3.2", {"reviewed_rows": 1008, "screens": 113, "practices": 12})
+    with pytest.raises(ValueError, match="count"):
+        validate_reviewed_dataset(examples, roles, manifest)

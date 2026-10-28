@@ -17,29 +17,44 @@ BASE_MODEL = "nielsr/lilt-xlm-roberta-base"
 IGNORE_LABEL = "IGNORE"
 
 
+# The reviewed datasets this code may train on. A manifest names its version and these pin what it
+# must contain: a renamed directory, or v3.1 content relabelled as v3.2, is refused.
+DATASET_CONTRACTS: dict[str, dict[str, dict[str, int]]] = {
+    "ground-truth-v3.1": {"counts": {"reviewed_rows": 1008, "screens": 113, "practices": 12},
+                          "splits": {"train": 8, "val": 2, "test": 2}},
+    "ground-truth-v3.2": {"counts": {"reviewed_rows": 1152, "screens": 128, "practices": 17},
+                          "splits": {"train": 8, "val": 2, "test": 2, "val_ext": 5}},
+}
+# "val_ext" is the G8 extended validation: scored, never trained on, absent from the v3.1 bundle.
+KNOWN_SPLITS = ("train", "val", "test", "val_ext")
+
+
 def dataset_fingerprint(examples: list[dict[str, Any]], roles: list[str]) -> str:
     payload = json.dumps({"examples": examples, "roles": roles}, ensure_ascii=False, sort_keys=True)
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
 def validate_reviewed_dataset(examples: list[dict[str, Any]], roles: list[str], manifest: dict[str, Any]) -> None:
-    """Fail closed on an incomplete, modified, or unreviewed v3.1 corpus."""
+    """Fail closed on an incomplete, modified, or unreviewed corpus of a known version."""
     validate_splits(examples)
-    if manifest.get("dataset_version") != "ground-truth-v3.1" or manifest.get("leakage_audit", {}).get("status") != "passed":
-        raise ValueError("A reviewed v3.1 dataset with a passed leakage audit is required")
-    expected_counts = {"reviewed_rows": 1008, "screens": 113, "practices": 12}
+    version = manifest.get("dataset_version")
+    contract = DATASET_CONTRACTS.get(version)
+    if contract is None or manifest.get("leakage_audit", {}).get("status") != "passed":
+        raise ValueError(f"A reviewed dataset of a known version ({', '.join(DATASET_CONTRACTS)}) "
+                         "with a passed leakage audit is required")
+    expected_counts = contract["counts"]
     actual_counts = {"reviewed_rows": sum(len(example["values"]) for example in examples),
                      "screens": len(examples), "practices": len({example["practice"] for example in examples})}
     if actual_counts != expected_counts or any(manifest.get(key) != value for key, value in expected_counts.items()):
-        raise ValueError("Reviewed dataset counts must be 1008 fields, 113 screens, and 12 practices")
+        raise ValueError(f"Reviewed dataset counts for {version} must be {expected_counts}, not {actual_counts}")
     if manifest.get("roles") != roles or len(roles) != len(set(roles)) or "O" not in roles or IGNORE_LABEL in roles:
         raise ValueError("Role order must exactly match the unique manifest vocabulary")
     if manifest.get("dataset_content_sha256") != dataset_fingerprint(examples, roles):
         raise ValueError("Dataset content fingerprint does not match its reviewed manifest hash")
     practice_splits = {split: {example["practice"] for example in examples if example["split"] == split}
-                       for split in ("train", "val", "test")}
-    if {key: len(value) for key, value in practice_splits.items()} != {"train": 8, "val": 2, "test": 2}:
-        raise ValueError("The reviewed practice split must be 8 train, 2 val, and 2 test")
+                       for split in contract["splits"]}
+    if {key: len(value) for key, value in practice_splits.items()} != contract["splits"]:
+        raise ValueError(f"The reviewed practice split for {version} must be {contract['splits']}")
     if "practice_splits" in manifest and any(set(manifest["practice_splits"].get(split, [])) != practices
                                              for split, practices in practice_splits.items()):
         raise ValueError("Example practice splits differ from the manifest")
@@ -199,7 +214,7 @@ def validate_splits(examples: list[dict[str, Any]]) -> None:
     identifiers = set()
     for example in examples:
         split, practice, identifier = example["split"], example["practice"], example["id"]
-        if split not in {"train", "val", "test"}:
+        if split not in KNOWN_SPLITS:
             raise ValueError(f"Unknown split: {split}")
         if identifier in identifiers:
             raise ValueError(f"Duplicate example identifier: {identifier}")
@@ -207,7 +222,7 @@ def validate_splits(examples: list[dict[str, Any]]) -> None:
         if practice in practices and practices[practice] != split:
             raise ValueError("A practice appears in more than one split")
         practices[practice] = split
-    if {example["split"] for example in examples} != {"train", "val", "test"}:
+    if not {"train", "val", "test"} <= {example["split"] for example in examples}:
         raise ValueError("Training requires nonempty train, val, and test splits")
 
 

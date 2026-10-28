@@ -27,6 +27,41 @@ revisionati, comprese le assenze. `alignment_report.csv` descrive quali osservaz
 si possono usare come supervisione; `coverage.json` distingue i campi presenti nei
 tre insiemi. Il manifest registra sorgenti, impronte dei dati e controlli.
 
+### Più lotti: `ground-truth-v3.2`
+
+La versione 3.2 unisce il riscontro v3.1 e il lotto 2026-08-21, revisionato per
+trascrizione (`Trascrizione` + `Esito`) e assegnato ai gruppi G8 da
+`data/revisione/lotto-2026-08-21/assegnazione_g8.py`. Ogni lotto si passa con
+`--lot WORKBOOK ASSEGNAZIONE CORREZIONI OCR` (`-` dove un file manca):
+
+```powershell
+cd src
+../.venv/Scripts/python.exe -m training.dataset --workbook ../data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx --screenshots ../data/pratiche --ocr ../data/training/ocr-runs/A1/cache.json --output ../data/training/ground-truth-v3.2 --lot ../data/revisione/lotto-2026-08-21/Revisione_10_pratiche_agosto_v1.0.xlsx ../data/revisione/lotto-2026-08-21/g8_assegnazione.json ../data/revisione/lotto-2026-08-21/correzioni.json ../data/training/validazione-estesa/ocr-A1/cache.json
+../.venv/Scripts/python.exe -m training.truth_export --bundle ../data/training/ground-truth-v3.2 --out ../data/training/ground-truth-v3.2/ground_truth.xlsx
+```
+
+La verità è un database di tre tabelle, derivate e mai modificate a mano:
+`practices.csv` (pratica, lotto, gruppo), `screens.csv` (schermata, percorso,
+impronte SHA-256 del file e dei pixel, dimensioni, se ha un esempio) e
+`ground_truth.csv` (schermata, campo, valore, esito, stato di revisione, lotto,
+gruppo, riga Excel di origine, correzione applicata con il valore originale). Gli
+esiti sono quelli della trascrizione: `TRASCRITTO`, `VUOTO`, `NON VISIBILE`,
+`PARZIALE`, `NON LEGGIBILE`; per il workbook v3.1, che non li distingue, una cella
+vuota vale `VUOTO`. `truth_export` scrive le tre tabelle in un solo workbook
+(fogli Info, Pratiche, Schermate, Valori), con ogni testo salvato come testo.
+
+Gli esempi esistono solo dove l'OCR è ammesso: gli split v3.1 e la validazione
+estesa G8 (`val_ext`, 5 pratiche). `PARZIALE` e `NON LEGGIBILE` restano nella
+verità ma non diventano un bersaglio. Il gruppo di conferma (`conferma`, 5
+pratiche) è sigillato: nel bundle ha valori e impronte, nessun esempio, e una sua
+schermata in una cache OCR fa fallire la costruzione. Le identità in comune con
+v3.1 (una pratica condivide l'NDG del Fondo di garanzia per la prima casa) sono
+registrate in `leakage_audit.recorded_overlaps` e non escludono nessuna pratica;
+fra validazione estesa e conferma non ne è ammessa nessuna (`truth_isolation`).
+La versione la decide la composizione dei lotti (`DATASET_VERSIONS`) e la
+convalida di `validate_reviewed_dataset()` confronta conteggi e split con il
+contratto della versione dichiarata: una cartella rinominata non è una versione.
+
 Le 12 pratiche sono separate in 8 per addestramento, 2 per scelta del modello e 2
 per prova finale. Anche gli NDG dei soggetti e le immagini identiche devono restare
 nello stesso insieme. I campi privi di esempi positivi nelle pratiche di prova sono

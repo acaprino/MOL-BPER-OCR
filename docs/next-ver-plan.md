@@ -351,9 +351,16 @@ la promozione: la presenza di thread daemon non dimostra il recupero da un blocc
   i 13 campi Scheda Privati hanno esempi positivi solo lì.
 - `tooltip_descrizione_m_consap` e `tooltip_descrizione_consap_dr_bis` hanno esempi
   positivi solo nel train, nei tooltip `GestioneFidi` di `52067184` e `52068422`.
-- Le 10 pratiche del lotto 2026-08-21 (34 schermate) non hanno verità revisionata.
-  Contengono `Elenco`, `GestioneFidi` con tooltip, `Note` e `Soggetti`, nessuna Scheda
-  Privati; solo la revisione può dire se mostrano i tooltip CONSAP. Non sono mai
+- Le 10 pratiche del lotto 2026-08-21 (34 schermate) hanno la revisione ricevuta il
+  2026-10-27 e sono assegnate con le regole sotto
+  (`data/revisione/lotto-2026-08-21/g8_assegnazione.json`): conferma `51772928`,
+  `51792073`, `51800301`, `51997531`, `52022324`; validazione estesa `51788077`,
+  `51798191`, `51859514`, `52013664`, `52032077`. In `52032077` il soggetto NDG
+  `11153238` (Fondo di garanzia per la prima casa) compare anche in `52067184` e
+  `52068422` del train: registrato, senza esclusione (regola 3). Nessuna Scheda
+  Privati; M-CONSAP in `51772928` (conferma) e `52032077` (validazione estesa), CONSAP
+  DR BIS in `51772928` e `52022324` (conferma). Restano scoperti i 13 campi Scheda
+  Privati, M-CONSAP in una seconda conferma, CONSAP DR BIS in validazione estesa. Non sono mai
   entrate nell'estrazione dei campi, ma almeno `51788077`, `51800301` e `52032077`
   sono fixture del riconoscimento pagine (`tests/fixtures/frames/no-tooltip/`,
   commit `7b70bf7`): valgono per le metriche di campo, non come prova cieca del
@@ -380,10 +387,11 @@ campi già coperti, divise tra validazione estesa e conferma.
    in validazione estesa, due pratiche per campo in conferma); a parità, o se non ne
    riduce nessuno, i due gruppi si alternano iniziando dalla conferma. Pratiche,
    regola ed esito vanno in un manifest con le impronte di immagini e workbook.
-3. Nessuna pratica, NDG dei soggetti o immagine (byte e pixel decodificati) è in
-   comune con le 12 pratiche v3.1 o tra validazione estesa e conferma: gli stessi
-   controlli di `audit_splits()`. Una pratica che viola l'isolamento resta fuori da
-   entrambi i gruppi.
+3. Pratica, NDG dei soggetti e immagine (byte e pixel decodificati) si confrontano
+   con le 12 pratiche v3.1 e tra validazione estesa e conferma: gli stessi controlli
+   di `audit_splits()`. Nessuna pratica è esclusa (decisione del 2026-10-28): le
+   identità in comune con v3.1 si registrano nel manifest. Fra validazione estesa e
+   conferma non deve esserci nessuna identità in comune.
 4. La conferma resta sigillata fino al congelamento: le sue schermate e la sua
    verità servono soltanto all'assegnazione e alla verifica finale, senza OCR,
    metriche o ispezioni per lo sviluppo.
@@ -392,8 +400,8 @@ campi già coperti, divise tra validazione estesa e conferma.
 
 **Richiesta a chi fornisce le schermate:** pratiche dell'ambiente di prova "Nuova PEF
 3.0" non presenti in `data/pratiche/`, con le pagine Scheda Privati compilate e con
-i tooltip M-CONSAP e CONSAP DR BIS, oltre alla revisione delle 10 pratiche del lotto
-2026-08-21. Finché non arrivano, G8 resta non soddisfatto e l'adozione sui 45 campi
+i tooltip M-CONSAP e CONSAP DR BIS (la revisione delle 10 pratiche del lotto
+2026-08-21 è arrivata il 2026-10-27). Finché non arrivano, G8 resta non soddisfatto e l'adozione sui 45 campi
 non può essere dichiarata.
 
 ---
@@ -425,7 +433,7 @@ contratti verificati. Questo piano non rappresenta codice già implementato.
 ### Fase 3 — B2 o LiLT Successivo, Solo se Necessari
 
 1. Se train/val mostrano limiti delle regole o dell'ibrido, addestrare B2 sulle feature ammesse e confrontarlo sulla validazione, senza consultare il test per scegliere feature o soglie.
-2. Riaddestrare LiLT soltanto se train/val dimostrano un contributo utile ai campi variabili e un problema di distribuzione dei nuovi box. Prima di creare `ground-truth-v3.2`, aggiornare esplicitamente il builder e il contratto di `validate_reviewed_dataset()`: oggi scrivono/accettano soltanto v3.1. Preservare controlli di revisione, split, classi, impronte e rifiuto delle versioni sconosciute, con regressioni per v3.1 e v3.2. Una directory rinominata non è una nuova versione del dataset.
+2. Riaddestrare LiLT soltanto se train/val dimostrano un contributo utile ai campi variabili e un problema di distribuzione dei nuovi box. Prima di creare `ground-truth-v3.2`, aggiornare esplicitamente il builder e il contratto di `validate_reviewed_dataset()`: oggi scrivono/accettano soltanto v3.1. Preservare controlli di revisione, split, classi, impronte e rifiuto delle versioni sconosciute, con regressioni per v3.1 e v3.2. Una directory rinominata non è una nuova versione del dataset. *Fatto il 2026-10-28:* il builder legge più lotti (`--lot`), il contratto è la tabella `DATASET_CONTRACTS` per versione, `data/training/ground-truth-v3.2/` contiene la verità unificata con esempi per gli split v3.1 e `val_ext` (nessun esempio per la conferma).
 3. Un eventuale training Modal è un esperimento separato dall'esecuzione operativa offline, con perimetro e dati trasferiti dichiarati secondo ADR 0022. Selezionare l'epoca sulla validazione; l'automatismo di valutazione del test nel training va adeguato prima di confrontare nuovi candidati, per rispettare il congelamento previsto qui.
 
 ### Verifica Finale del Candidato Congelato
