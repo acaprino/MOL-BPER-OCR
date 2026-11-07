@@ -23,7 +23,7 @@ from typing import Any
 
 import modal
 
-from training.ocr_runner import CONFIGS, PROFILES, Screen, load_screens, merge_runs, run_ocr
+from training.ocr_runner import CONFIGS, PROFILES, Screen, load_assigned_screens, load_screens, merge_runs, run_ocr
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -126,12 +126,16 @@ def _jobs(screens: list[Screen], configs: list[str], shard_size: int, whole: set
 @app.local_entrypoint()
 def main(out_dir: str, configs: str = "A0,A1,A2,A3,A4", profile: str = "pc4", shard_size: int = 8,
          whole: str = "A0,A4", panel: str = "51185037__Elenco,51185037__GestioneFidi,51185037__Note",
-         collect: bool = False) -> None:
-    """Spawn every shard and the cost panel, then download each result and merge each configuration."""
+         collect: bool = False, assignment: str = "", practices: str = "") -> None:
+    """Spawn every shard and the cost panel, then download each result and merge each configuration.
+
+    With ``--assignment`` and ``--practices`` the screens are those of a lot's extended-validation practices.
+    """
     output = Path(out_dir)
     if not output.is_absolute():
         raise ValueError("out-dir must be an absolute path")
-    screens = load_screens(ROOT / "data/training/ground-truth-v3.1/examples.json", ROOT / "data")
+    screens = (load_assigned_screens(Path(assignment), ROOT / "data", practices.split(",")) if assignment
+               else load_screens(ROOT / "data/training/ground-truth-v3.1/examples.json", ROOT / "data"))
     by_id = {s.id: s for s in screens}
     calls_path = output / "calls.json"
     if not collect:

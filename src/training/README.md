@@ -62,6 +62,33 @@ La versione la decide la composizione dei lotti (`DATASET_VERSIONS`) e la
 convalida di `validate_reviewed_dataset()` confronta conteggi e split con il
 contratto della versione dichiarata: una cartella rinominata non è una versione.
 
+### Un foglio per pratica: `ground-truth-v3.3`
+
+Il lotto 2026-11-05 è consegnato con un foglio per pratica e un valore per pagina, senza
+esiti: `training.practice_sheets` lo legge, trasforma date e importi in testo come sullo
+schermo, tratta `vuoto` come assenza e tiene nella verità, senza chiave di campo, i valori
+fuori vocabolario. `correzioni.json` dice cosa mostra ogni schermata delle pratiche di
+validazione estesa (`non_visibili`, `parziali`, `tooltip`) e corregge i valori controllati
+contro lo schermo; una pratica sigillata non ha voce e tiene i valori sulla prima schermata
+di ogni pagina. Il lettore è scelto dalla forma del workbook, la versione dalla composizione
+dei lotti.
+
+Tutti i passaggi girano su Modal, perché questo PC resta spesso senza memoria. Da `src/`,
+con il proxy tolto (`env -u HTTPS_PROXY -u HTTP_PROXY`), dopo aver copiato i PNG in
+`data/pratiche/<pratica>/` con i nomi di `screen_name()`:
+
+```powershell
+../.venv/Scripts/python.exe -m modal run -m training.modal_lot --lot lotto-2026-11-05 --workbook ABS --zips ABS,ABS --truth-dir ABS/ground-truth-v3.2 --previous ABS/lotto-2026-08-21/g8_assegnazione.json --out ABS/g8_assegnazione.json
+../.venv/Scripts/python.exe -m modal run --detach -m training.modal_ocr --out-dir ABS-NUOVO --configs A1 --panel "" --assignment ABS/g8_assegnazione.json --practices P1,P2
+../.venv/Scripts/python.exe -m modal run -m training.modal_bundle --workbook ABS --ocr ABS --lots "WORKBOOK,ASSEGNAZIONE,CORREZIONI,OCR;..." --out ABS-NUOVO --model model_v3_1_33da126207bf6876
+```
+
+`modal_lot` applica le regole del piano §5.4 e scrive il manifest; `modal_ocr` rifiuta una
+pratica fuori dalla validazione estesa; `modal_bundle` costruisce il bundle e misura il
+modello sul volume, sulla sola validazione estesa. L'NDG del Fondo di garanzia non è
+un'identità in nessun controllo (`INSTITUTIONAL_NDGS`, ADR 0024). Per i test,
+dalla radice del repository: `modal run tools/modal_tests.py --args "tests -q -m 'not slow'"`.
+
 Le 12 pratiche sono separate in 8 per addestramento, 2 per scelta del modello e 2
 per prova finale. Anche gli NDG dei soggetti e le immagini identiche devono restare
 nello stesso insieme. I campi privi di esempi positivi nelle pratiche di prova sono

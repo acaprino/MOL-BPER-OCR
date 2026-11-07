@@ -10,7 +10,7 @@ from openpyxl import load_workbook
 from training.truth_export import export_workbook
 
 
-def _bundle(tmp_path: Path, value: str = "123") -> Path:
+def _bundle(tmp_path: Path, value: str = "123", row: str = "2") -> Path:
     (tmp_path / "manifest.json").write_text(json.dumps({"dataset_version": "ground-truth-v3.2",
                                                          "truth_counts": {"rows": 1, "screens": 1, "practices": 1},
                                                          "sources": [{"lotto": "riscontro-2026-10-07",
@@ -24,8 +24,20 @@ def _bundle(tmp_path: Path, value: str = "123") -> Path:
     (tmp_path / "ground_truth.csv").write_text("Fotogramma;Denominazione da attribuire;Valore rilevato;Esito;"
                                                "Stato revisione;Pratica;Lotto;Gruppo;Riga Excel;Correzione\n"
                                                f"1__Elenco;NDG;{value};TRASCRITTO;Confermato;1;riscontro-2026-10-07;"
-                                               "train;2;\n", encoding="utf-8-sig")
+                                               f"train;{row};\n", encoding="utf-8-sig")
     return tmp_path
+
+
+def test_row_number_of_a_review_sheet_is_a_number(tmp_path: Path) -> None:
+    out = tmp_path / "truth.xlsx"
+    export_workbook(_bundle(tmp_path), out)
+    assert load_workbook(out)["Valori"]["I2"].value == 2
+
+
+def test_cell_reference_of_a_practice_sheet_stays_text(tmp_path: Path) -> None:
+    out = tmp_path / "truth.xlsx"
+    export_workbook(_bundle(tmp_path, row="52125946!3"), out)
+    assert load_workbook(out)["Valori"]["I2"].value == "52125946!3"
 
 
 def test_exports_one_sheet_per_truth_table(tmp_path: Path) -> None:

@@ -93,6 +93,18 @@ def load_screens(examples_path: Path, screenshots_dir: Path) -> list[Screen]:
     return [Screen(e["id"], resolve_screenshot_path(screenshots_dir, e["id"]), e["image_sha256"]) for e in examples]
 
 
+def load_assigned_screens(assignment_path: Path, screenshots_dir: Path, practices: list[str]) -> list[Screen]:
+    """The screens of practices in the G8 extended validation; anything else stays unread (plan §5.4, rule 4)."""
+    from training.dataset import resolve_screenshot_path
+
+    assignment = _read_json(assignment_path)
+    refused = sorted(set(practices) - set(assignment["gruppi"]["validazione_estesa"]))
+    if refused:
+        raise ValueError(f"Pratiche fuori dalla validazione estesa, da non leggere: {refused}.")
+    return [Screen(screen, resolve_screenshot_path(screenshots_dir, screen), digests["image_sha256"])
+            for screen, digests in assignment["schermate"].items() if screen.split("__", 1)[0] in practices]
+
+
 # ============================================================
 # Measurements
 # ============================================================

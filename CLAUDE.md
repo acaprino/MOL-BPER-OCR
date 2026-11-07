@@ -108,7 +108,12 @@ Retry subject-row admission, source-page/export-group metadata and GUI environme
 dedicated regressions in `test_pipeline_retry_subjects.py`, `test_page_metadata.py` and
 `test_gui_config.py`. The offline LiLT training and evaluation package (`src/training/`) is covered by
 `test_training_alignment.py`, `test_training_dataset.py`, `test_training_model.py`,
-`test_training_evaluation.py` and `test_training_truth_export.py`.
+`test_training_evaluation.py`, `test_training_truth_export.py`, `test_training_practice_sheets.py`
+and `test_training_g8_assignment.py`.
+
+This PC is often short of memory: the fast lane also runs on a Modal container with
+`modal run tools/modal_tests.py --args "tests -q -m 'not slow'"` (no torch and no Tk display there, so
+those cases skip). Lot processing, OCR and inference run on Modal too (`src/training/modal_*.py`).
 
 `test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s, and it rebuilds the prototype
 cache the first time after any geometry change); it skips via
@@ -468,6 +473,14 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   sealed `conferma`, recorded between v3.1 and the G8 groups), derives the dataset version from the lot
   composition (`DATASET_VERSIONS`) and seals the bundle with its three truth tables
   (`build_dataset()`, `seal_dataset()`). `truth_export.py` writes those tables as one workbook.
+- `practice_sheets.py` -- reads a lot delivered as one sheet per practice (`read_practice_sheets()`): one
+  value per page, typed cells, the literal `vuoto`. Its `correzioni.json` says what each screen of an
+  extended-validation practice shows and corrects values checked against the screen. Values outside the
+  45 fields (guarantee table, proposing agent) stay in the truth with no field key.
+- `g8_assignment.py` -- the G8 assignment of `docs/next-ver-plan.md` §5.4 (`assign_lot()`).
+  `INSTITUTIONAL_NDGS` lists the NDGs of institutions, today the Fondo di garanzia per la prima casa
+  (`11153238`): it is a guarantor in a large share of the practices, so it is not an identity in any check,
+  here or in `audit_splits()` (ADR 0024). A new institution goes in that list, without moving a practice.
 - `model.py` -- normalizes word boxes to `0..1000`, builds 512-subword chunks without splitting the
   `FIDI` table block from its header (`encode_chunks()`), augments training copies (`_augment()`),
   trains `LiltForTokenClassification` selecting checkpoints on validation whole-field accuracy
@@ -490,18 +503,21 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
 - `modal_ocr.py` -- reads stage A configurations on Modal CPU containers (4 cores, the
   `requirements-ocr.txt` pins and the local model files) as ordinary `run_ocr()` shards, merges
   them locally with `merge_runs()`, and runs an optional same-host cost panel. Sends the
-  reviewed screenshots to Modal.
+  reviewed screenshots to Modal. `--assignment` and `--practices` read a lot's extended-validation
+  practices and refuse any other.
+- `modal_lot.py`, `modal_bundle.py` -- the rest of a lot on Modal: the assignment manifest, then the bundle
+  and the score of a run on the `bper-lilt-spike` volume over the extended validation.
 
 ### Data files
 
 | File | Purpose |
 |---|---|
-| `data/README.md` | Overview of the datasets, 23-practice screenshot collection, and training directories under `data/` |
+| `data/README.md` | Overview of the datasets, 33-practice screenshot collection, and training directories under `data/` |
 | `data/reference/dati.csv` | Ground-truth dataset for the 9 reference screens (tracked in git; required by the CLI) |
 | `data/reference/screen *.png` | Test banking screenshots (9 BPER images, tracked in git) |
-| `data/pratiche/` | Unified per-practice screenshot dataset (23 practices, 156 in-scope + 22 off-topic PNGs, `manifest.json`) |
+| `data/pratiche/` | Unified per-practice screenshot dataset (33 practices, 240 in-scope + 22 off-topic PNGs, `manifest.json`) |
 | `data/revisione/` | Reviewed ground-truth workbook (`revisione/Revisione_ground_truth_v3_1.xlsx`), crops, and 12-practice `dati.csv` |
-| `data/training/` | Sealed `ground-truth-v3.1/` bundle, the unified `ground-truth-v3.2/` truth (three CSV tables plus `ground_truth.xlsx`, examples for the v3.1 splits and the G8 `val_ext` group, none for the sealed `conferma` group) and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
+| `data/training/` | Sealed `ground-truth-v3.1/` bundle, the unified `ground-truth-v3.2/` and `ground-truth-v3.3/` truths (three CSV tables plus `ground_truth.xlsx`, examples for the v3.1 splits and the G8 `val_ext` group, none for the sealed `conferma` group) and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
 | `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `src/prompt_store.py` |
 | `src/edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
 

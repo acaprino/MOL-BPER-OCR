@@ -320,9 +320,19 @@ def test_reviewed_dataset_accepts_v3_2_with_the_extended_validation_split() -> N
     validate_reviewed_dataset(examples, roles, manifest)
 
 
+def test_reviewed_dataset_accepts_v3_3_with_nine_extended_validation_practices() -> None:
+    examples = _v3_1_examples()
+    for index in range(49):
+        examples.append({**example(["a"]), "id": f"ext-{index}", "practice": f"ext-{index % 9}", "split": "val_ext",
+                         "values": {f"field-{field}": "value" for field in range(8 if index < 17 else 7)}})
+    roles = ["O", "ndg"]
+    manifest = _manifest(examples, roles, "ground-truth-v3.3", {"reviewed_rows": 1368, "screens": 162, "practices": 21})
+    validate_reviewed_dataset(examples, roles, manifest)
+
+
 def test_reviewed_dataset_refuses_an_unknown_version() -> None:
     examples, roles = _v3_1_examples(), ["O", "ndg"]
-    manifest = _manifest(examples, roles, "ground-truth-v3.3", {"reviewed_rows": 1008, "screens": 113, "practices": 12})
+    manifest = _manifest(examples, roles, "ground-truth-v3.9", {"reviewed_rows": 1008, "screens": 113, "practices": 12})
     with pytest.raises(ValueError, match="version"):
         validate_reviewed_dataset(examples, roles, manifest)
 

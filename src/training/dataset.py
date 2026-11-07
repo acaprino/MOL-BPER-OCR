@@ -14,6 +14,8 @@ from typing import Any, Mapping, NamedTuple, Sequence
 from openpyxl import load_workbook
 from PIL import Image
 
+from training.g8_assignment import INSTITUTIONAL_NDGS
+from training.practice_sheets import read_practice_sheets
 from training.schema import REPOSITORY, field_role, role_vocabulary, vocabulary
 
 DEFAULT_PRACTICES = {
@@ -28,7 +30,8 @@ SEALED_SPLIT = "conferma"
 GROUP_SPLITS = {"validazione_estesa": EXTENDED_SPLIT, "conferma": SEALED_SPLIT}
 V3_1_LOT = "riscontro-2026-10-07"
 # Which lots compose each dataset version. The manifest names the version; a directory name never does.
-DATASET_VERSIONS = {"ground-truth-v3.1": (), "ground-truth-v3.2": ("lotto-2026-08-21",)}
+DATASET_VERSIONS = {"ground-truth-v3.1": (), "ground-truth-v3.2": ("lotto-2026-08-21",),
+                    "ground-truth-v3.3": ("lotto-2026-08-21", "lotto-2026-11-05")}
 GROUND_TRUTH_COLUMNS = ["Fotogramma", "Denominazione da attribuire", "Valore rilevato", "Esito", "Stato revisione",
                         "Pratica", "Lotto", "Gruppo", "Riga Excel", "Correzione"]
 
@@ -198,6 +201,7 @@ def audit_splits(examples: list[dict[str, Any]]) -> dict[str, Any]:
 
     Between the v3.1 splits and the G8 extended validation an identity in common is recorded,
     not refused (docs/next-ver-plan.md §5.4, rule 3): no reviewed practice is excluded.
+    An institution's NDG is not an identity: it relates no practice to another (ADR 0024).
     """
     from extraction.normalization import normalize_ndg
 
@@ -212,6 +216,7 @@ def audit_splits(examples: list[dict[str, Any]]) -> dict[str, Any]:
         identifiers = {normalize_ndg(value) for key, value in example["values"].items()
                        if key == "ndg" or key.startswith("ndg_")}
         identifiers.discard(None)
+        identifiers -= INSTITUTIONAL_NDGS
         items = [("pratica", example["practice"]), ("immagine", example.get("image_sha256")),
                  ("pixel", example.get("pixel_sha256")), *[("NDG", value) for value in identifiers]]
         for kind, identity in items:
@@ -264,6 +269,17 @@ def _source(path: Path) -> dict[str, str]:
     return {"path": str(path.resolve()), "sha256": _sha256(path)}
 
 
+def _read_lot_truth(workbook_path: Path, corrections: Path | None) -> list[dict[str, Any]]:
+    """Read a lot in the shape it was delivered: rows of a review sheet, or one sheet per practice."""
+    workbook = load_workbook(workbook_path, read_only=True)
+    try:
+        has_review_sheet = "Revisione" in workbook.sheetnames
+    finally:
+        workbook.close()
+    reader = read_transcribed_truth if has_review_sheet else read_practice_sheets
+    return reader(workbook_path, corrections)
+
+
 def _collect_truth(workbook_path: Path, lots: Sequence[Lot]) -> tuple[list[dict[str, Any]], dict[str, str],
                                                                       dict[str, dict[str, str]], list[dict[str, Any]]]:
     """Read every reviewed lot: records with their lot, the split of each practice, the digests the sealed
@@ -279,7 +295,7 @@ def _collect_truth(workbook_path: Path, lots: Sequence[Lot]) -> tuple[list[dict[
         name = assignment["lotto"]
         groups = {practice: GROUP_SPLITS[group] for group, practices in assignment["gruppi"].items()
                   for practice in practices}
-        lot_records = read_transcribed_truth(lot.workbook, lot.corrections)
+        lot_records = _read_lot_truth(lot.workbook, lot.corrections)
         unassigned = {record["practice"] for record in lot_records} - set(groups)
         if unassigned:
             raise ValueError(f"Pratiche del lotto {name} senza gruppo G8: {sorted(unassigned)}.")
@@ -326,7 +342,7 @@ def build_dataset(workbook_path: Path, screenshots_dir: Path, ocr_path: Path,
         raise ValueError(f"Schermate sigillate con una lettura OCR: {sealed_read}.")
     by_screen: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for record in records:
-        if splits[record["practice"]] != SEALED_SPLIT and record["outcome"] in SCORED_OUTCOMES:
+        if splits[record["practice"]] != SEALED_SPLIT and record["field"] and record["outcome"] in SCORED_OUTCOMES:
             by_screen[record["screen"]].append(record)
     if set(by_screen) != set(raw_ocr):
         raise ValueError("Le schermate del cache OCR non coincidono con il ground truth revisionato.")
@@ -375,7 +391,9 @@ def build_dataset(workbook_path: Path, screenshots_dir: Path, ocr_path: Path,
     # The truth tables: every screen of every lot, hashed from the file; the sealed ones keep the digests
     # they were assigned with, so no pixel of theirs is decoded here.
     by_id = {example["id"]: example for example in examples}
-    lot_of = {record["screen"]: record["lot"] for record in records}
+    lot_of_practice = {record["practice"]: record["lot"] for record in records}
+    lot_of = {screen: lot_of_practice[screen.split("__", 1)[0]] for screen in sealed_digests}
+    lot_of.update({record["screen"]: record["lot"] for record in records})
     screen_rows: list[dict[str, Any]] = []
     for screen in sorted(lot_of):
         practice = screen.split("__", 1)[0]
@@ -399,9 +417,8 @@ def build_dataset(workbook_path: Path, screenshots_dir: Path, ocr_path: Path,
         {"id": row["Schermata"], "practice": row["Pratica"], "split": row["Gruppo"],
          "image_sha256": row["SHA256 immagine"], "pixel_sha256": row["SHA256 pixel"],
          "values": {record["field"]: record["value"] for record in records
-                    if record["screen"] == row["Schermata"] and record["outcome"] == "TRASCRITTO"}}
+                    if record["screen"] == row["Schermata"] and record["field"] and record["outcome"] == "TRASCRITTO"}}
         for row in screen_rows])
-    lot_of_practice = {record["practice"]: record["lot"] for record in records}
     practice_rows = [{"Pratica": practice, "Lotto": lot_of_practice[practice], "Gruppo": split,
                       "Schermate": sum(row["Pratica"] == practice for row in screen_rows),
                       "Righe": sum(record["practice"] == practice for record in records)}
@@ -428,7 +445,7 @@ def build_dataset(workbook_path: Path, screenshots_dir: Path, ocr_path: Path,
                 "roles": roles, "workbook": sources[0]["workbook"],
                 "ocr": {"path": str(ocr_path.resolve()), "sha256": _sha256(ocr_path), "scale": "1x", "words_rewritten": False},
                 "sources": sources, "practice_splits": practice_splits, "leakage_audit": leakage,
-                "truth_isolation": truth_isolation,
+                "truth_isolation": truth_isolation, "institutional_ndgs": sorted(INSTITUTIONAL_NDGS),
                 "supervision_counts": dict(counts), "training_role_words": dict(training_roles),
                 "fields_without_heldout_positive_examples": [key for key, value in coverage.items()
                                                              if not value["test"]["nonempty"]],

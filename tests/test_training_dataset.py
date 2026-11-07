@@ -236,11 +236,17 @@ def test_refuses_correction_that_does_not_match_the_reviewed_row(tmp_path: Path)
 
 
 def test_records_subject_overlap_between_training_and_extended_validation() -> None:
-    examples = [{"id": "1__A", "practice": "1", "split": "train", "values": {"ndg_2": "11153238"}, "image_sha256": "a"},
-                {"id": "2__B", "practice": "2", "split": "val_ext", "values": {"ndg_2": "11153238"}, "image_sha256": "b"}]
+    examples = [{"id": "1__A", "practice": "1", "split": "train", "values": {"ndg_2": "36303133"}, "image_sha256": "a"},
+                {"id": "2__B", "practice": "2", "split": "val_ext", "values": {"ndg_2": "36303133"}, "image_sha256": "b"}]
     audit = audit_splits(examples)
     assert audit["status"] == "passed"
-    assert audit["recorded_overlaps"] == [{"tipo": "NDG", "valore": "11153238", "split": ["train", "val_ext"]}]
+    assert audit["recorded_overlaps"] == [{"tipo": "NDG", "valore": "36303133", "split": ["train", "val_ext"]}]
+
+
+def test_guarantee_fund_in_both_groups_is_not_an_overlap() -> None:
+    examples = [{"id": "1__A", "practice": "1", "split": "val_ext", "values": {"ndg_2": "11153238"}, "image_sha256": "a"},
+                {"id": "2__B", "practice": "2", "split": "conferma", "values": {"ndg_2": "11153238"}, "image_sha256": "b"}]
+    assert audit_splits(examples)["recorded_overlaps"] == []
 
 
 # ============================================================
@@ -368,3 +374,107 @@ def test_rejects_subject_shared_by_extended_validation_and_sealed_group() -> Non
                 {"id": "2__B", "practice": "2", "split": "conferma", "values": {"ndg_1": "123"}, "image_sha256": "b"}]
     with pytest.raises(ValueError, match="NDG"):
         audit_splits(examples)
+
+
+# ============================================================
+# A lot delivered as one sheet per practice
+# ============================================================
+
+SHEET_SCREENS = ("Elenco", "Soggetti", "GestioneFidi", "GestioneFidi2", "GestioneFidi3", "GestioneFidi4", "Note")
+SHEET_VIEWS = {"GestioneFidi2": {"tooltip": "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%"},
+               "GestioneFidi3": {"tooltip": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."},
+               "GestioneFidi4": {"tooltip": "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS"}}
+
+
+def _sheet_corpus(tmp_path: Path, same_subject: bool = False, guarantor: bool = False):
+    """The earlier corpus plus a lot of sheets: one practice whose screens were checked, one sealed practice."""
+    import hashlib
+    import json
+
+    from practice_sheet_fixture import SHEET, write_sheets
+
+    from training.dataset import Lot
+
+    workbook, shots, ocr, august = _corpus(tmp_path)
+    lot_dir = tmp_path / "lotto-sheets"
+    lot_dir.mkdir()
+    subjects = {"70000001": 70000011, "70000002": 70000011 if same_subject else 70000012}
+    fund = [("NDG 2", 11153238), ("DENOMINAZIONE 2", "FONDO DI GARANZIA PER LA PRIMA CASA"),
+            ("RUOLO 2", "Nuovo Garante/nuovo Datore di Pegno")] if guarantor else []
+    sheets = {practice: [row for label, value in SHEET
+                         for row in [(label, ndg if value == 60000001 else value), *(fund if label == "RUOLO 1" else [])]]
+              for practice, ndg in subjects.items()}
+    lot_workbook = write_sheets(lot_dir / "lotto.xlsx", sheets)
+    digests = {}
+    for shade, (practice, name) in enumerate(((p, n) for p in subjects for n in SHEET_SCREENS), 100):
+        _png(shots / practice / f"{name}.png", shade)
+        digests[f"{practice}__{name}"] = _digests(shots / practice / f"{name}.png")
+    assignment = lot_dir / "g8_assegnazione.json"
+    assignment.write_text(json.dumps({"lotto": "lotto-2026-11-05",
+                                      "gruppi": {"validazione_estesa": ["70000001"], "conferma": ["70000002"]},
+                                      "schermate": digests}), encoding="utf-8")
+    review = lot_dir / "correzioni.json"
+    review.write_text(json.dumps({"workbook_sha256": hashlib.sha256(lot_workbook.read_bytes()).hexdigest(),
+                                  "schermate": {"70000001": {name: SHEET_VIEWS.get(name, {}) for name in SHEET_SCREENS}},
+                                  "correzioni": []}), encoding="utf-8")
+    lot_ocr = lot_dir / "ocr.json"
+    lot_ocr.write_text(json.dumps({f"70000001__{name}": {"items": [["7", 0.99, BOX]]} for name in SHEET_SCREENS}),
+                       encoding="utf-8")
+    return workbook, shots, ocr, [august, Lot(lot_workbook, assignment, review, lot_ocr)]
+
+
+def _build_sheet_bundle(tmp_path: Path) -> dict:
+    from training.dataset import build_dataset
+
+    workbook, shots, ocr, lots = _sheet_corpus(tmp_path)
+    return build_dataset(workbook, shots, ocr, tmp_path / "out", lots=lots)
+
+
+def test_lot_of_sheets_makes_a_v3_3_bundle(tmp_path: Path) -> None:
+    assert _build_sheet_bundle(tmp_path)["dataset_version"] == "ground-truth-v3.3"
+
+
+def test_value_outside_the_vocabulary_is_in_the_truth(tmp_path: Path) -> None:
+    _build_sheet_bundle(tmp_path)
+    rows = {(r["Fotogramma"], r["Denominazione da attribuire"]): r for r in _csv_rows(tmp_path / "out" / "ground_truth.csv")}
+    assert rows[("70000001__Note", "Agente proponente")]["Valore rilevato"] == "Anna Verdi"
+
+
+def test_value_outside_the_vocabulary_is_not_a_target(tmp_path: Path) -> None:
+    import json
+
+    _build_sheet_bundle(tmp_path)
+    example = next(e for e in json.loads((tmp_path / "out" / "examples.json").read_text(encoding="utf-8"))
+                   if e["id"] == "70000001__Note")
+    assert set(example["values"]) == {"note_della_richiesta", "filiale_relazione"}
+
+
+def test_cell_of_the_sheet_is_kept_in_the_truth(tmp_path: Path) -> None:
+    _build_sheet_bundle(tmp_path)
+    rows = {(r["Fotogramma"], r["Denominazione da attribuire"]): r for r in _csv_rows(tmp_path / "out" / "ground_truth.csv")}
+    assert rows[("70000001__Elenco", "NDG")]["Riga Excel"] == "70000001!3"
+
+
+def test_sealed_screen_without_values_is_listed_without_example(tmp_path: Path) -> None:
+    _build_sheet_bundle(tmp_path)
+    screens = {r["Schermata"]: r for r in _csv_rows(tmp_path / "out" / "screens.csv")}
+    assert screens["70000002__GestioneFidi2"]["Esempio"] == "no"
+
+
+def test_client_in_both_groups_is_refused(tmp_path: Path) -> None:
+    from training.dataset import build_dataset
+
+    workbook, shots, ocr, lots = _sheet_corpus(tmp_path, same_subject=True)
+    with pytest.raises(ValueError, match="NDG"):
+        build_dataset(workbook, shots, ocr, tmp_path / "out", lots=lots)
+
+
+def test_guarantee_fund_in_both_groups_is_accepted(tmp_path: Path) -> None:
+    from training.dataset import build_dataset
+
+    workbook, shots, ocr, lots = _sheet_corpus(tmp_path, guarantor=True)
+    assert build_dataset(workbook, shots, ocr, tmp_path / "out", lots=lots)["truth_isolation"]["recorded_overlaps"] == []
+
+
+def test_manifest_names_the_ndgs_that_are_not_identities(tmp_path: Path) -> None:
+    assert _build_sheet_bundle(tmp_path)["institutional_ndgs"] == ["11153238"]

@@ -24,6 +24,8 @@ DATASET_CONTRACTS: dict[str, dict[str, dict[str, int]]] = {
                           "splits": {"train": 8, "val": 2, "test": 2}},
     "ground-truth-v3.2": {"counts": {"reviewed_rows": 1152, "screens": 128, "practices": 17},
                           "splits": {"train": 8, "val": 2, "test": 2, "val_ext": 5}},
+    "ground-truth-v3.3": {"counts": {"reviewed_rows": 1368, "screens": 162, "practices": 21},
+                          "splits": {"train": 8, "val": 2, "test": 2, "val_ext": 9}},
 }
 # "val_ext" is the G8 extended validation: scored, never trained on, absent from the v3.1 bundle.
 KNOWN_SPLITS = ("train", "val", "test", "val_ext")

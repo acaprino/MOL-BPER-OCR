@@ -45,7 +45,7 @@ def export_workbook(bundle_dir: Path, out_path: Path) -> dict[str, int]:
         columns = list(rows[0]) if rows else []
         sheet.append(columns)
         for row in rows:
-            sheet.append([int(row[column]) if column in INTEGER_COLUMNS and row[column] else row[column]
+            sheet.append([int(row[column]) if column in INTEGER_COLUMNS and row[column].isdigit() else row[column]
                           for column in columns])
             for cell in sheet[sheet.max_row]:
                 if isinstance(cell.value, str):

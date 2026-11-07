@@ -8,7 +8,7 @@ from typing import Any, Callable
 
 import pytest
 
-from training.ocr_runner import Screen, merge_runs, ocr_selection_metrics, report, run_ocr
+from training.ocr_runner import Screen, load_assigned_screens, merge_runs, ocr_selection_metrics, report, run_ocr
 
 PROVENANCE = {"models": {"Det": {"file": "det.onnx", "sha256": "d1"}}, "versions": {"rapidocr": "test"}}
 
@@ -352,3 +352,32 @@ def test_six_read_as_eight_is_counted_per_practice() -> None:
 def test_other_digit_confusions_are_not_counted_as_six_read_as_eight() -> None:
     corpus = [_example("t1", "train", {"ndg_1": "36237200"}, {"ndg_1": "36237201"})]
     assert ocr_selection_metrics(corpus)["per_practice"]["t1"]["six_as_eight"] == 0
+
+
+# ============================================================
+# Screens of a lot: only what the G8 assignment allows to read
+# ============================================================
+
+
+def _assignment(tmp_path: Path) -> Path:
+    path = tmp_path / "g8_assegnazione.json"
+    path.write_text(json.dumps({
+        "gruppi": {"validazione_estesa": ["60000001"], "conferma": ["60000002"]},
+        "schermate": {"60000001__Elenco": {"image_sha256": "aaa"}, "60000001__Note": {"image_sha256": "bbb"},
+                      "60000002__Elenco": {"image_sha256": "ccc"}}}), encoding="utf-8")
+    return path
+
+
+def test_assigned_screens_are_those_of_the_chosen_practice(tmp_path: Path) -> None:
+    screens = load_assigned_screens(_assignment(tmp_path), tmp_path, ["60000001"])
+    assert [(screen.id, screen.sha256) for screen in screens] == [("60000001__Elenco", "aaa"), ("60000001__Note", "bbb")]
+
+
+def test_reading_a_practice_of_the_confirmation_group_is_refused(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="60000002"):
+        load_assigned_screens(_assignment(tmp_path), tmp_path, ["60000002"])
+
+
+def test_reading_a_practice_outside_the_assignment_is_refused(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="60000003"):
+        load_assigned_screens(_assignment(tmp_path), tmp_path, ["60000003"])

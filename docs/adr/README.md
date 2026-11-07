@@ -65,6 +65,7 @@ tarati, e nessun test lo verificava.
 | [0021](0021-dotenv-prima-del-motore-nella-gui-tkinter.md) | Caricare dotenv prima del motore nella GUI Tkinter | Accettato |
 | [0022](0022-addestramento-lilt-da-revisione-umana.md) | Addestrare LiLT da valori revisionati e pratiche separate | Accettato |
 | [0023](0023-campi-fidi-dalla-prima-riga-della-tabella.md) | Ricostruire i campi Fidi dalla prima riga della tabella | Accettato |
+| [0024](0024-ndg-del-fondo-di-garanzia-non-e-identita.md) | L'NDG del Fondo di garanzia non è un'identità | Accettato |
 
 ## Da scrivere
 
