@@ -1,0 +1,516 @@
+{
+  "schema_version": 1,
+  "identity": {
+    "config": "A1",
+    "params": {
+      "Det.ocr_version": "PP-OCRv6",
+      "Det.model_type": "small",
+      "Rec.ocr_version": "PP-OCRv6",
+      "Rec.model_type": "medium"
+    },
+    "profile": "pc4",
+    "threads": {
+      "intra_op": 4,
+      "inter_op": 1
+    },
+    "screens": {
+      "51849993__Elenco": "bbee8b5437c7781d4d2b9361a2f52e35e1995611ff350790812fa1386c1e1e99",
+      "51849993__Elenco2": "c54df1712081ded41ac2f13ae5f60b5ed46b9459b32f118b13785dc0294f6aa2",
+      "51849993__GestioneFidi": "202e9c7bad30ad5cfda6650f55f63f3f2225ab6221e7c6bd9edfb4046d7a67d9",
+      "51849993__GestioneFidi2": "db3ff6f5e6f7a8af2de19ebe0c13036c0296eeae73ad306fbf9cb0f4742386f9",
+      "51849993__GestioneFidi3": "63b7113c2b0e8dbdb143a02f37004ae29ac63229fe7ddc438ab290f76954574d",
+      "51849993__GestioneFidi4": "1bba0bb875f85f0434db3a005d30de900f45c9ea1d6dc09dc16c6fb251d16f52",
+      "51849993__Note": "ac109e4c7c1e2201a6ded11dbbf44f3b8c860fe1d961f840b468b3a3b64215a0",
+      "51849993__Note2": "440999bb5aef7beeb3460940a77a7d968f99dfc9b1ced2be6cd9696443613665",
+      "51849993__Soggetti": "5ff3ac33e19f9e57002c2cdaf3ec08e996526653eaaec66f6ab38316124ea825",
+      "52080736__Elenco": "b54bbc9cb5cc2f176bec2408b3333d4e13e55dded968197bdd45f5b70cb50cc5",
+      "52080736__Elenco2": "caac51a8752108cfc5be8d4073a9e01b4bff483e2d3c1ffdfa59dc58c01151d9",
+      "52080736__GestioneFidi": "79e2fba7924bca071a3e3c1aae8efac9b5e6af9ac74abb1ac6c8bffd8af2a5a3",
+      "52080736__GestioneFidi2": "2a8c36dde62549913ef9815e7b02d411a2a753faa6a75cef2fbda93f41be8295",
+      "52080736__GestioneFidi3": "9e2609ce6b34169d02fb37cbc25cb5fce2524f1113f11404b5fad4134b218db8",
+      "52080736__GestioneFidi4": "bfdfff373518192700674665e4403504e62818ad61f704d4a99b36920d14da03",
+      "52080736__Note": "c188ce01524e975079af2fda3001690b6f408955892e67db2c96182f9fb76a01",
+      "52080736__Note2": "4b48063802ed59378409d412ced3f48fad04918c34290bbc855ffaa5898935aa",
+      "52080736__Soggetti": "333d3121aee0336aa666911dd4b9020b295923bcdd0afb73367f977bef7179a5",
+      "52125946__Elenco": "63868b7bc18de56961adf57e818fe44529d2cbcd8b15904f2f9648f6db4d95f8",
+      "52125946__Elenco2": "ea568bda8469d02f3dfd63fd3441707cf6ca10e55ac76e0d31131b7f561e1a6a",
+      "52125946__GestioneFidi": "6a25ce9aa91f0c3dea536d701f540e6bc1d337848f47cb15ce52877ee3c79e8a",
+      "52125946__GestioneFidi2": "6955adf9c66622ed57275a785c89a67253e42996aed681d3f2beca6d6633107d",
+      "52125946__GestioneFidi3": "91c3a896423de31c5852fb8c733dcdf568776a0f31b9b93e28defb508b1074a1",
+      "52125946__GestioneFidi4": "919d9368b6dbd08311d811898183ae5bb2c0205aa00f96513f537582f8de0e08",
+      "52125946__Note": "5b83ffbeb9c1ccd4fb2629b4ce132b7eda734282692926f2804b2006f8d17e8b",
+      "52125946__Soggetti": "ada026167687fea23bafb51dd6ab7707423eec9b4428aa60b2fd3c04e631c6d7",
+      "52137073__Elenco": "d52a4c3b03be551a61b749946de7b84bf4d6e999a7c4210d0835c3fb1950cf08",
+      "52137073__Elenco2": "2745c0afc07fe478a00d9bbeb690cb7c0b928257741234c8c03fff55ed759e38",
+      "52137073__GestioneFidi": "34859c7c06969f9a0b5082d257b40e22ed1ffb5e3bbde6e02a6df8a8a2c718ad",
+      "52137073__GestioneFidi2": "677dbba980e4bd67016a1844ca0d7341295be8cabdbc18cec9e9e6ca824f87f2",
+      "52137073__GestioneFidi3": "56b626e6ee3f4b37ee3aa27bf0938fd55abaf007d9c3307f38200b75c4d3e764",
+      "52137073__GestioneFidi4": "d1227f25e34c2a1cb8f12ffc2f5ea70f36c6e195649805bee610f056a29f8111",
+      "52137073__Note": "c589177971f74bdf1cfc6fa6945f571adc3bd629e740a9312110dd5c48b9e92e",
+      "52137073__Soggetti": "045c27517fbbc233432fe6ea6329c13953f10397cb33f104e3e3859f12804042"
+    }
+  },
+  "provenance": {
+    "models": {
+      "Det": {
+        "file": "PP-OCRv6_det_small.onnx",
+        "sha256": "090f04abcd9d9a7498bc4ebf677e4cb9bdce1fe4197ddb7e529f1ef44e1ff94f",
+        "source": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv6/det/PP-OCRv6_det_small.onnx"
+      },
+      "Cls": {
+        "file": "ch_ppocr_mobile_v2.0_cls_mobile.onnx",
+        "sha256": "e47acedf663230f8863ff1ab0e64dd2d82b838fceb5957146dab185a89d6215c",
+        "source": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv4/cls/ch_ppocr_mobile_v2.0_cls_mobile.onnx"
+      },
+      "Rec": {
+        "file": "PP-OCRv6_rec_medium.onnx",
+        "sha256": "eef444829dbbe18d7fea59a3f6eb75647518d2b3a9568d27c92e42940204894b",
+        "source": "https://www.modelscope.cn/models/RapidAI/RapidOCR/resolve/v3.9.2/onnx/PP-OCRv6/rec/PP-OCRv6_rec_medium.onnx"
+      }
+    },
+    "effective_config": {
+      "Global": {
+        "text_score": 0.5,
+        "use_det": true,
+        "use_cls": true,
+        "use_rec": true,
+        "use_preprocess_img": true,
+        "min_side_len": 30,
+        "max_side_len": 2000,
+        "use_vertical_padding": true,
+        "min_height": 30,
+        "width_height_ratio": 8,
+        "return_word_box": false,
+        "return_single_char_box": false,
+        "font_path": null,
+        "log_level": "warning",
+        "model_root_dir": "/usr/local/lib/python3.13/site-packages/rapidocr/models"
+      },
+      "EngineConfig": {
+        "onnxruntime": {
+          "intra_op_num_threads": 4,
+          "inter_op_num_threads": 1,
+          "enable_cpu_mem_arena": false,
+          "cpu_ep_cfg": {
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "cudnn_conv_algo_search": "EXHAUSTIVE",
+            "do_copy_in_default_stream": true
+          },
+          "use_dml": false,
+          "dml_ep_cfg": null,
+          "use_cann": false,
+          "cann_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "npu_mem_limit": 21474836480,
+            "op_select_impl_mode": "high_performance",
+            "optypelist_for_implmode": "Gelu",
+            "enable_cann_graph": true
+          },
+          "use_coreml": false,
+          "coreml_ep_cfg": {
+            "ModelFormat": "MLProgram",
+            "MLComputeUnits": "ALL",
+            "RequireStaticInputShapes": 0,
+            "EnableOnSubgraphs": 0,
+            "SpecializationStrategy": "FastPrediction",
+            "ProfileComputePlan": 0,
+            "AllowLowPrecisionAccumulationOnGPU": 0,
+            "ModelCacheDirectory": "/tmp/RapidOCR"
+          }
+        },
+        "openvino": {
+          "inference_num_threads": -1,
+          "performance_hint": null,
+          "performance_num_requests": -1,
+          "enable_cpu_pinning": null,
+          "num_streams": -1,
+          "enable_hyper_threading": null,
+          "scheduling_core_type": null
+        },
+        "paddle": {
+          "cpu_math_library_num_threads": -1,
+          "use_npu": false,
+          "npu_ep_cfg": {
+            "device_id": 0,
+            "envs": {
+              "FLAGS_npu_jit_compile": 0,
+              "FLAGS_use_stride_kernel": 0,
+              "FLAGS_allocator_strategy": "auto_growth",
+              "CUSTOM_DEVICE_BLACK_LIST": "pad3d,pad3d_grad,set_value,set_value_with_tensor",
+              "FLAGS_npu_scale_aclnn": "True",
+              "FLAGS_npu_split_aclnn": "True"
+            }
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "gpu_mem": 500
+          }
+        },
+        "torch": {
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0
+          },
+          "use_npu": false,
+          "npu_ep_cfg": {
+            "device_id": 0
+          },
+          "use_mps": false
+        },
+        "tensorrt": {
+          "device_id": 0,
+          "use_fp16": true,
+          "use_int8": false,
+          "workspace_size": 1073741824,
+          "cache_dir": null,
+          "force_rebuild": false,
+          "det_profile": {
+            "min_shape": [
+              1,
+              3,
+              32,
+              32
+            ],
+            "opt_shape": [
+              1,
+              3,
+              736,
+              736
+            ],
+            "max_shape": [
+              1,
+              3,
+              2048,
+              2048
+            ]
+          },
+          "rec_profile": {
+            "min_shape": [
+              1,
+              3,
+              48,
+              32
+            ],
+            "opt_shape": [
+              6,
+              3,
+              48,
+              320
+            ],
+            "max_shape": [
+              6,
+              3,
+              48,
+              2048
+            ]
+          },
+          "cls_profile": {
+            "min_shape": [
+              1,
+              3,
+              48,
+              32
+            ],
+            "opt_shape": [
+              6,
+              3,
+              48,
+              192
+            ],
+            "max_shape": [
+              6,
+              3,
+              48,
+              192
+            ]
+          }
+        },
+        "mnn": {}
+      },
+      "Det": {
+        "engine_type": "onnxruntime",
+        "lang_type": "ch",
+        "model_type": "small",
+        "ocr_version": "PP-OCRv6",
+        "task_type": "det",
+        "model_path": null,
+        "model_dir": null,
+        "limit_side_len": 736,
+        "limit_type": "min",
+        "std": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "mean": [
+          0.5,
+          0.5,
+          0.5
+        ],
+        "thresh": 0.3,
+        "box_thresh": 0.5,
+        "max_candidates": 1000,
+        "unclip_ratio": 1.6,
+        "use_dilation": true,
+        "score_mode": "fast",
+        "engine_cfg": {
+          "intra_op_num_threads": 4,
+          "inter_op_num_threads": 1,
+          "enable_cpu_mem_arena": false,
+          "cpu_ep_cfg": {
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "cudnn_conv_algo_search": "EXHAUSTIVE",
+            "do_copy_in_default_stream": true
+          },
+          "use_dml": false,
+          "dml_ep_cfg": null,
+          "use_cann": false,
+          "cann_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "npu_mem_limit": 21474836480,
+            "op_select_impl_mode": "high_performance",
+            "optypelist_for_implmode": "Gelu",
+            "enable_cann_graph": true
+          },
+          "use_coreml": false,
+          "coreml_ep_cfg": {
+            "ModelFormat": "MLProgram",
+            "MLComputeUnits": "ALL",
+            "RequireStaticInputShapes": 0,
+            "EnableOnSubgraphs": 0,
+            "SpecializationStrategy": "FastPrediction",
+            "ProfileComputePlan": 0,
+            "AllowLowPrecisionAccumulationOnGPU": 0,
+            "ModelCacheDirectory": "/tmp/RapidOCR"
+          }
+        },
+        "model_root_dir": "/usr/local/lib/python3.13/site-packages/rapidocr/models"
+      },
+      "Cls": {
+        "engine_type": "onnxruntime",
+        "lang_type": "ch",
+        "model_type": "mobile",
+        "ocr_version": "PP-OCRv4",
+        "task_type": "cls",
+        "model_path": null,
+        "model_dir": null,
+        "cls_image_shape": [
+          3,
+          48,
+          192
+        ],
+        "cls_batch_num": 6,
+        "cls_thresh": 0.9,
+        "label_list": [
+          "0",
+          "180"
+        ],
+        "engine_cfg": {
+          "intra_op_num_threads": 4,
+          "inter_op_num_threads": 1,
+          "enable_cpu_mem_arena": false,
+          "cpu_ep_cfg": {
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "cudnn_conv_algo_search": "EXHAUSTIVE",
+            "do_copy_in_default_stream": true
+          },
+          "use_dml": false,
+          "dml_ep_cfg": null,
+          "use_cann": false,
+          "cann_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "npu_mem_limit": 21474836480,
+            "op_select_impl_mode": "high_performance",
+            "optypelist_for_implmode": "Gelu",
+            "enable_cann_graph": true
+          },
+          "use_coreml": false,
+          "coreml_ep_cfg": {
+            "ModelFormat": "MLProgram",
+            "MLComputeUnits": "ALL",
+            "RequireStaticInputShapes": 0,
+            "EnableOnSubgraphs": 0,
+            "SpecializationStrategy": "FastPrediction",
+            "ProfileComputePlan": 0,
+            "AllowLowPrecisionAccumulationOnGPU": 0,
+            "ModelCacheDirectory": "/tmp/RapidOCR"
+          }
+        },
+        "model_root_dir": "/usr/local/lib/python3.13/site-packages/rapidocr/models"
+      },
+      "Rec": {
+        "engine_type": "onnxruntime",
+        "lang_type": "ch",
+        "model_type": "medium",
+        "ocr_version": "PP-OCRv6",
+        "task_type": "rec",
+        "model_path": null,
+        "model_dir": null,
+        "rec_keys_path": null,
+        "rec_img_shape": [
+          3,
+          48,
+          320
+        ],
+        "rec_batch_num": 6,
+        "engine_cfg": {
+          "intra_op_num_threads": 4,
+          "inter_op_num_threads": 1,
+          "enable_cpu_mem_arena": false,
+          "cpu_ep_cfg": {
+            "arena_extend_strategy": "kSameAsRequested"
+          },
+          "use_cuda": false,
+          "cuda_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "cudnn_conv_algo_search": "EXHAUSTIVE",
+            "do_copy_in_default_stream": true
+          },
+          "use_dml": false,
+          "dml_ep_cfg": null,
+          "use_cann": false,
+          "cann_ep_cfg": {
+            "device_id": 0,
+            "arena_extend_strategy": "kNextPowerOfTwo",
+            "npu_mem_limit": 21474836480,
+            "op_select_impl_mode": "high_performance",
+            "optypelist_for_implmode": "Gelu",
+            "enable_cann_graph": true
+          },
+          "use_coreml": false,
+          "coreml_ep_cfg": {
+            "ModelFormat": "MLProgram",
+            "MLComputeUnits": "ALL",
+            "RequireStaticInputShapes": 0,
+            "EnableOnSubgraphs": 0,
+            "SpecializationStrategy": "FastPrediction",
+            "ProfileComputePlan": 0,
+            "AllowLowPrecisionAccumulationOnGPU": 0,
+            "ModelCacheDirectory": "/tmp/RapidOCR"
+          }
+        },
+        "font_path": null,
+        "model_root_dir": "/usr/local/lib/python3.13/site-packages/rapidocr/models"
+      }
+    },
+    "versions": {
+      "rapidocr": "3.9.2",
+      "onnxruntime": "1.30.0",
+      "numpy": "2.5.4",
+      "opencv-python": "5.0.0.93",
+      "pillow": "13.0.0",
+      "omegaconf": "2.4.0",
+      "python": "3.13.3"
+    },
+    "input": "PIL Image.convert('RGB') as a numpy array, scale 1x",
+    "platforms": [
+      {
+        "system": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+        "processor": "",
+        "logical_cpus": 4
+      }
+    ]
+  },
+  "sessions": [
+    {
+      "started_utc": "2026-11-07T15:22:00+00:00",
+      "engine_load_seconds": 1.492,
+      "warmup_seconds": 5.864,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1724411904,
+      "shard": 0
+    },
+    {
+      "started_utc": "2026-11-07T15:22:00+00:00",
+      "engine_load_seconds": 1.527,
+      "warmup_seconds": 7.124,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1303748608,
+      "shard": 1
+    },
+    {
+      "started_utc": "2026-11-07T15:22:01+00:00",
+      "engine_load_seconds": 1.25,
+      "warmup_seconds": 59.216,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1332985856,
+      "shard": 2
+    },
+    {
+      "started_utc": "2026-11-07T15:22:03+00:00",
+      "engine_load_seconds": 1.574,
+      "warmup_seconds": 7.943,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1306902528,
+      "shard": 3
+    },
+    {
+      "started_utc": "2026-11-07T15:22:02+00:00",
+      "engine_load_seconds": 1.586,
+      "warmup_seconds": 7.778,
+      "screens_read": 2,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1164496896,
+      "shard": 4
+    }
+  ],
+  "status": "complete",
+  "failed": {},
+  "pending": [],
+  "cache_sha256": "50ee726be7e2ccd2bbab3a96280b38bbb70298d2c3fb7c11dc1f701a37a8dc6d",
+  "timing": {
+    "screens": 34,
+    "mean": 16.047529411764707,
+    "median": 8.131,
+    "p95": 50.05145,
+    "max": 57.228,
+    "sessions": 5,
+    "scope": "seconds per screen include PNG decoding; the warm-up read and engine loading are excluded"
+  },
+  "merged_from": [
+    {
+      "run": "../shards/0",
+      "cache_sha256": "f6a4cf4d7d8b6383aac5b35a1e8a5563d1a33fe7dfa8f7b50b2fbe8d40dfec22"
+    },
+    {
+      "run": "../shards/1",
+      "cache_sha256": "fd8d0e1ab17fddc8d6cd9989e24174c316ef69f7dc7ff6922a909e1cf1a10b1c"
+    },
+    {
+      "run": "../shards/2",
+      "cache_sha256": "d11b189aebb73ae50d0fa838178d5d03c428142d6cf05a58a80a6539121a8466"
+    },
+    {
+      "run": "../shards/3",
+      "cache_sha256": "1e5af4141473c1a68c14b297649cddff00fad1380bbcf2863caa3a51147ec1f9"
+    },
+    {
+      "run": "../shards/4",
+      "cache_sha256": "5c99513006203fcba7c5082db16172366e5196d5f8a56575f197b89ab1c28dd6"
+    }
+  ]
+}

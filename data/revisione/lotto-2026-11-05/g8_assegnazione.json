@@ -1,0 +1,828 @@
+{
+ "lotto": "lotto-2026-11-05",
+ "regola": "docs/next-ver-plan.md §5.4, regole 2 e 3",
+ "interpretazione": "Fabbisogno iniziale: il residuo del lotto precedente. Riduzione = numero di campi scoperti non vuoti della pratica il cui fabbisogno nel gruppo è ancora positivo. A parità (anche zero) i casi di parità si alternano conferma, validazione estesa, ... Una pratica con un'identità già presente in un gruppo segue quel gruppo. Gli NDG in ndg_istituzionali sono di enti, non di clienti, e non legano due pratiche (ADR 0024). Nessuna pratica è esclusa: le identità in comune con v3.1 sono registrate.",
+ "workbook": "10 prt novembre 2026.xlsx",
+ "workbook_sha256": "e63a42445582e8b1fd2f59d5c8ce5b91f0bcb8387728fd566cd54bb4d05d386d",
+ "consegne_sha256": {
+  "BloccoI.zip": "6781b2a914600f1dd60abcd564b6a6d8c7ef6461e1458de3e26cf8a2e564a7a3",
+  "BloccoII.zip": "6ff3258b7bed59466a42e3f65c5e0be9b2f0d6f365f518392e5dbd1c821eede7"
+ },
+ "fabbisogno_iniziale": {
+  "validazione_estesa": {
+   "dal": 1,
+   "datore_di_lavoro_anagrafica": 1,
+   "di_cui_percepiscono_reddito": 1,
+   "importo_totale_annuo_nucleo": 1,
+   "note_scheda_privati": 1,
+   "nr_altri_componenti_nucleo": 1,
+   "numero_mensilita": 1,
+   "professione_principale": 1,
+   "rating_ufficiale": 1,
+   "retribuzione_annua_netta": 1,
+   "score_cgs": 1,
+   "tipo_contratto": 1,
+   "ultima_validazione_scheda": 1,
+   "tooltip_descrizione_consap_dr_bis": 1
+  },
+  "conferma": {
+   "dal": 2,
+   "datore_di_lavoro_anagrafica": 2,
+   "di_cui_percepiscono_reddito": 2,
+   "importo_totale_annuo_nucleo": 2,
+   "note_scheda_privati": 2,
+   "nr_altri_componenti_nucleo": 2,
+   "numero_mensilita": 2,
+   "professione_principale": 2,
+   "rating_ufficiale": 2,
+   "retribuzione_annua_netta": 2,
+   "score_cgs": 2,
+   "tipo_contratto": 2,
+   "ultima_validazione_scheda": 2,
+   "tooltip_descrizione_m_consap": 1
+  }
+ },
+ "gruppi": {
+  "validazione_estesa": [
+   "51849993",
+   "52080736",
+   "52125946",
+   "52137073"
+  ],
+  "conferma": [
+   "51027430",
+   "51886329",
+   "52102964",
+   "52136040",
+   "52186431",
+   "52196577"
+  ]
+ },
+ "decisioni": [
+  {
+   "pratica": "51027430",
+   "gruppo": "conferma",
+   "campi_scoperti": [],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 0
+   },
+   "motivo": "nessuna riduzione, alternanza a partire dalla conferma"
+  },
+  {
+   "pratica": "51849993",
+   "gruppo": "validazione_estesa",
+   "campi_scoperti": [],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 0
+   },
+   "motivo": "nessuna riduzione, alternanza a partire dalla conferma"
+  },
+  {
+   "pratica": "51886329",
+   "gruppo": "conferma",
+   "campi_scoperti": [],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 0
+   },
+   "motivo": "nessuna riduzione, alternanza a partire dalla conferma"
+  },
+  {
+   "pratica": "52080736",
+   "gruppo": "validazione_estesa",
+   "campi_scoperti": [],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 0
+   },
+   "motivo": "nessuna riduzione, alternanza a partire dalla conferma"
+  },
+  {
+   "pratica": "52102964",
+   "gruppo": "conferma",
+   "campi_scoperti": [],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 0
+   },
+   "motivo": "nessuna riduzione, alternanza a partire dalla conferma"
+  },
+  {
+   "pratica": "52125946",
+   "gruppo": "validazione_estesa",
+   "campi_scoperti": [
+    "tooltip_descrizione_consap_dr_bis",
+    "tooltip_descrizione_m_consap"
+   ],
+   "riduzione": {
+    "validazione_estesa": 1,
+    "conferma": 1
+   },
+   "motivo": "parità, alternanza a partire dalla conferma"
+  },
+  {
+   "pratica": "52136040",
+   "gruppo": "conferma",
+   "campi_scoperti": [],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 0
+   },
+   "motivo": "nessuna riduzione, alternanza a partire dalla conferma"
+  },
+  {
+   "pratica": "52137073",
+   "gruppo": "validazione_estesa",
+   "campi_scoperti": [],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 0
+   },
+   "motivo": "nessuna riduzione, alternanza a partire dalla conferma"
+  },
+  {
+   "pratica": "52186431",
+   "gruppo": "conferma",
+   "campi_scoperti": [
+    "tooltip_descrizione_consap_dr_bis",
+    "tooltip_descrizione_m_consap"
+   ],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 1
+   },
+   "motivo": "riduce di più il fabbisogno scoperto"
+  },
+  {
+   "pratica": "52196577",
+   "gruppo": "conferma",
+   "campi_scoperti": [
+    "tooltip_descrizione_m_consap"
+   ],
+   "riduzione": {
+    "validazione_estesa": 0,
+    "conferma": 0
+   },
+   "motivo": "nessuna riduzione, alternanza a partire dalla conferma"
+  }
+ ],
+ "fabbisogno_residuo": {
+  "validazione_estesa": {
+   "dal": 1,
+   "datore_di_lavoro_anagrafica": 1,
+   "di_cui_percepiscono_reddito": 1,
+   "importo_totale_annuo_nucleo": 1,
+   "note_scheda_privati": 1,
+   "nr_altri_componenti_nucleo": 1,
+   "numero_mensilita": 1,
+   "professione_principale": 1,
+   "rating_ufficiale": 1,
+   "retribuzione_annua_netta": 1,
+   "score_cgs": 1,
+   "tipo_contratto": 1,
+   "ultima_validazione_scheda": 1
+  },
+  "conferma": {
+   "dal": 2,
+   "datore_di_lavoro_anagrafica": 2,
+   "di_cui_percepiscono_reddito": 2,
+   "importo_totale_annuo_nucleo": 2,
+   "note_scheda_privati": 2,
+   "nr_altri_componenti_nucleo": 2,
+   "numero_mensilita": 2,
+   "professione_principale": 2,
+   "rating_ufficiale": 2,
+   "retribuzione_annua_netta": 2,
+   "score_cgs": 2,
+   "tipo_contratto": 2,
+   "ultima_validazione_scheda": 2
+  }
+ },
+ "isolamento_v3_1": {
+  "controlli": [
+   "pratica",
+   "NDG",
+   "immagine",
+   "pixel"
+  ],
+  "esito": "registrato, non esclude",
+  "identita_in_comune": {}
+ },
+ "ndg_istituzionali": {
+  "11153238": [
+   "52125946",
+   "52136040",
+   "52137073",
+   "52186431",
+   "52196577"
+  ]
+ },
+ "ndg": {
+  "52102964": [
+   "23165377",
+   "36149183",
+   "651928"
+  ],
+  "52080736": [
+   "19388815",
+   "25033872",
+   "36065544",
+   "36269316"
+  ],
+  "51849993": [
+   "23239780",
+   "3324948",
+   "36016577",
+   "36020851"
+  ],
+  "52186431": [
+   "11153238",
+   "36070525",
+   "36070526",
+   "36070527"
+  ],
+  "51886329": [
+   "11875132",
+   "23304942",
+   "31864033",
+   "36095334"
+  ],
+  "52136040": [
+   "11153238",
+   "36304622"
+  ],
+  "51027430": [
+   "17957152",
+   "19589204",
+   "30372351"
+  ],
+  "52137073": [
+   "11153238",
+   "26975548",
+   "27237305",
+   "36314361"
+  ],
+  "52196577": [
+   "11153238",
+   "30959851",
+   "36277688",
+   "7674605"
+  ],
+  "52125946": [
+   "11153238",
+   "36303133"
+  ]
+ },
+ "righe": {
+  "51027430": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 24
+  },
+  "51849993": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 17
+  },
+  "51886329": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 9
+  },
+  "52080736": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 17
+  },
+  "52102964": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 9
+  },
+  "52125946": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 15
+  },
+  "52136040": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 17
+  },
+  "52137073": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 17
+  },
+  "52186431": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 15
+  },
+  "52196577": {
+   "nel_vocabolario": 30,
+   "fuori_vocabolario": 16
+  }
+ },
+ "schermate": {
+  "51027430__Elenco": {
+   "path": "data/pratiche/51027430/Elenco.png",
+   "image_sha256": "e0bdcd3091fcf6c721809d370e4491ae4144e579b4b0fa99467ccf319f888490",
+   "pixel_sha256": "b57d3838f8bb09df201bb4fe9189a1977924d93a37a57cf13109e7f8d4db817b",
+   "consegna": "BloccoI.zip:51027430/elenco1.png"
+  },
+  "51027430__Elenco2": {
+   "path": "data/pratiche/51027430/Elenco2.png",
+   "image_sha256": "d425e2fe9304eced4eba99c1682f5632419e4f51e48d2ae828e186600402b9e2",
+   "pixel_sha256": "15c7599659506ed01b6bf744a689a4df6f4adca1869594b17fff2e7eaa1de9c2",
+   "consegna": "BloccoI.zip:51027430/elenco2.png"
+  },
+  "51027430__GestioneFidi": {
+   "path": "data/pratiche/51027430/GestioneFidi.png",
+   "image_sha256": "2cdb4690fdca42035e495b1e24d4c70608aa06e0844fcdc0c0e2289529aa202b",
+   "pixel_sha256": "8fdc8d8155e1dcb9677d0fc3f425a3d28ea095acea4fe9f530dca9996aa25d8a",
+   "consegna": "BloccoI.zip:51027430/gestionefidi1.png"
+  },
+  "51027430__GestioneFidi2": {
+   "path": "data/pratiche/51027430/GestioneFidi2.png",
+   "image_sha256": "7aac3a44486813122d2d8a6da6af2419e9d56dad85bbf09e028c54ed187dbbb5",
+   "pixel_sha256": "5ce18384ac63f13b168a8b92f86ff60e0db58930218b73006266caac91e8d13d",
+   "consegna": "BloccoI.zip:51027430/gestionefidi2.png"
+  },
+  "51027430__GestioneFidi3": {
+   "path": "data/pratiche/51027430/GestioneFidi3.png",
+   "image_sha256": "591ec4b75e431ba2fdee0f9dd02746ae1808c6e3d6276dfcf39467dbc3fa5dfa",
+   "pixel_sha256": "39d5c7ba8ccbf2537daed6c24c8b8de38b628f5db336e0840f6f1819d033b53d",
+   "consegna": "BloccoI.zip:51027430/gestionefidi3.png"
+  },
+  "51027430__GestioneFidi4": {
+   "path": "data/pratiche/51027430/GestioneFidi4.png",
+   "image_sha256": "d6467306c93b123e8c71eb5ff4733adc56866d06e20280839d166ceec2b18aa6",
+   "pixel_sha256": "399bdb72c84cfc5c11c936fcc816351bd646ae105f510aadd9954776795aa441",
+   "consegna": "BloccoI.zip:51027430/gestionefidi4.png"
+  },
+  "51027430__Note": {
+   "path": "data/pratiche/51027430/Note.png",
+   "image_sha256": "44f81c306ddde447805336c364a3fa0c32e6c117c0d7604295ab09eb786fc21d",
+   "pixel_sha256": "49733049c21becf55985fd48c2d4c29e27b17d4d3bca55a5701f8db66ab176d5",
+   "consegna": "BloccoI.zip:51027430/note1.png"
+  },
+  "51027430__Note2": {
+   "path": "data/pratiche/51027430/Note2.png",
+   "image_sha256": "fb1d30fe4323107aa5ddf9121ebe6a3c34af38476432ce26562b808d235e3c39",
+   "pixel_sha256": "49f5a6d05974a628833563be4ee7ce13a50ec266d7ae8d93e82affafc71d9202",
+   "consegna": "BloccoI.zip:51027430/note2.png"
+  },
+  "51027430__Soggetti": {
+   "path": "data/pratiche/51027430/Soggetti.png",
+   "image_sha256": "34a4c3a5f42563a4079cfe9fbb215d7a160f4f0b6c64f91ecb10a627613b6964",
+   "pixel_sha256": "b1dc207c72c1ae8595b5237141b39ac8027991d718b7f2fba92c3100b4495185",
+   "consegna": "BloccoI.zip:51027430/soggetti.png"
+  },
+  "51849993__Elenco": {
+   "path": "data/pratiche/51849993/Elenco.png",
+   "image_sha256": "bbee8b5437c7781d4d2b9361a2f52e35e1995611ff350790812fa1386c1e1e99",
+   "pixel_sha256": "4345f75c8274649201968c3a72f40964d4081937042145f3e071580c4f160886",
+   "consegna": "BloccoI.zip:51849993/elenco1.png"
+  },
+  "51849993__Elenco2": {
+   "path": "data/pratiche/51849993/Elenco2.png",
+   "image_sha256": "c54df1712081ded41ac2f13ae5f60b5ed46b9459b32f118b13785dc0294f6aa2",
+   "pixel_sha256": "fc4222fe8d81715826c0db994810873a6aea91ef09958598158e4b1d1c502f76",
+   "consegna": "BloccoI.zip:51849993/elenco2.png"
+  },
+  "51849993__GestioneFidi": {
+   "path": "data/pratiche/51849993/GestioneFidi.png",
+   "image_sha256": "202e9c7bad30ad5cfda6650f55f63f3f2225ab6221e7c6bd9edfb4046d7a67d9",
+   "pixel_sha256": "f8071e1e0ff9cee894fa5c36a45830644db07e0af5627548b8fe14b1f040dadd",
+   "consegna": "BloccoI.zip:51849993/gestionefidi1.png"
+  },
+  "51849993__GestioneFidi2": {
+   "path": "data/pratiche/51849993/GestioneFidi2.png",
+   "image_sha256": "db3ff6f5e6f7a8af2de19ebe0c13036c0296eeae73ad306fbf9cb0f4742386f9",
+   "pixel_sha256": "f471e031fb7ad612db4beb54c4cdfd1b924478d9aacc49c57b019d240269cdf1",
+   "consegna": "BloccoI.zip:51849993/gestionefidi2.png"
+  },
+  "51849993__GestioneFidi3": {
+   "path": "data/pratiche/51849993/GestioneFidi3.png",
+   "image_sha256": "63b7113c2b0e8dbdb143a02f37004ae29ac63229fe7ddc438ab290f76954574d",
+   "pixel_sha256": "434bcc68417a2fb83767045edbe398e7bc391fadc51098838817ac873999a0c9",
+   "consegna": "BloccoI.zip:51849993/gestionefidi3.png"
+  },
+  "51849993__GestioneFidi4": {
+   "path": "data/pratiche/51849993/GestioneFidi4.png",
+   "image_sha256": "1bba0bb875f85f0434db3a005d30de900f45c9ea1d6dc09dc16c6fb251d16f52",
+   "pixel_sha256": "33cea2353915e4fd00bdc8406e211711ac1808ef5d67bfcf99334fc8d6c9a6f3",
+   "consegna": "BloccoI.zip:51849993/gestionefidi4.png"
+  },
+  "51849993__Note": {
+   "path": "data/pratiche/51849993/Note.png",
+   "image_sha256": "ac109e4c7c1e2201a6ded11dbbf44f3b8c860fe1d961f840b468b3a3b64215a0",
+   "pixel_sha256": "75813dc57286aaf2c21bc613a3b160487defbd0f6c671ba97338d2e119f6063b",
+   "consegna": "BloccoI.zip:51849993/note1.png"
+  },
+  "51849993__Note2": {
+   "path": "data/pratiche/51849993/Note2.png",
+   "image_sha256": "440999bb5aef7beeb3460940a77a7d968f99dfc9b1ced2be6cd9696443613665",
+   "pixel_sha256": "ce6e4ae7bd26f1160d3cbb7f2935e3c63a30a91fc030de3d318b435466d598b4",
+   "consegna": "BloccoI.zip:51849993/note2.png"
+  },
+  "51849993__Soggetti": {
+   "path": "data/pratiche/51849993/Soggetti.png",
+   "image_sha256": "5ff3ac33e19f9e57002c2cdaf3ec08e996526653eaaec66f6ab38316124ea825",
+   "pixel_sha256": "ad037a47cd94a77732594c91dc6c6b1aef2603610968a39ecc32bdd6c84f657e",
+   "consegna": "BloccoI.zip:51849993/soggetti.png"
+  },
+  "51886329__Elenco": {
+   "path": "data/pratiche/51886329/Elenco.png",
+   "image_sha256": "61b973b2027a37141c73d96b0f57dcdb9bd87958e7d851a6a3beb61d4af502fb",
+   "pixel_sha256": "358276dd69a24a6a0d9c1685e6c1a5e4678055667fd882ae54538e6c34e978ee",
+   "consegna": "BloccoI.zip:51886329/elenco1.png"
+  },
+  "51886329__Elenco2": {
+   "path": "data/pratiche/51886329/Elenco2.png",
+   "image_sha256": "b3d7aa7766d5b3dae420e1917e407de168b4eeede9cf78dbb492ae7e9472d3fb",
+   "pixel_sha256": "d307c98fb4f2697f5712a11dd184a6046234b3dd6216ef4fef4ea67b48edaf10",
+   "consegna": "BloccoI.zip:51886329/elenco2.png"
+  },
+  "51886329__GestioneFidi": {
+   "path": "data/pratiche/51886329/GestioneFidi.png",
+   "image_sha256": "d75b241d94f9c19525045bddeb20411c10eab4d249a02367172f3d16999f194b",
+   "pixel_sha256": "e878304fcdb19224806bc358dac97dda6b3fcc41ba027cf2c9c52c2e97c22744",
+   "consegna": "BloccoI.zip:51886329/gestionefidi1.png"
+  },
+  "51886329__GestioneFidi2": {
+   "path": "data/pratiche/51886329/GestioneFidi2.png",
+   "image_sha256": "62bb712a966bf68ceb1967a672d3e4c1606a20428dbff600a1c351a1f4ba42f3",
+   "pixel_sha256": "2c03b54e4aaa00092171e2f4a4da0b28fe9a87f5d9dba1bf14c4ec3097ae75d7",
+   "consegna": "BloccoI.zip:51886329/gestionefidi2.png"
+  },
+  "51886329__GestioneFidi3": {
+   "path": "data/pratiche/51886329/GestioneFidi3.png",
+   "image_sha256": "5a540eb51b0847fc05fb2f0cc9d6d9b0072a5a5085c64e54288ac5c324218bdf",
+   "pixel_sha256": "8ef77d73e93c3a52bfb1fc805ae6e9f3f20177bab1ad1b53588bfd9c3ca0926f",
+   "consegna": "BloccoI.zip:51886329/gestionefidi3.png"
+  },
+  "51886329__Note": {
+   "path": "data/pratiche/51886329/Note.png",
+   "image_sha256": "08acd8faf68e0a16ff134c3c31e4877a7a5becaba96786d0c987d75626e8eb9f",
+   "pixel_sha256": "d8f8b05a6d132a63d9b87a8733bd36a89ffb0fda50c0aa6d99beba0169593742",
+   "consegna": "BloccoI.zip:51886329/note1.png"
+  },
+  "51886329__Note2": {
+   "path": "data/pratiche/51886329/Note2.png",
+   "image_sha256": "171db3e5e5447b6989f1c4a9c3fa5e550de51e80772e025978d01b6cab0ea2f2",
+   "pixel_sha256": "202e02d8fdd0b69b76441fc3664350290a083f31c7be70c314db5192b11537d8",
+   "consegna": "BloccoI.zip:51886329/note2.png"
+  },
+  "51886329__Soggetti": {
+   "path": "data/pratiche/51886329/Soggetti.png",
+   "image_sha256": "fbf93c5cc5d45642bb5882f84a0134ba933e5506859a698cc6e62186d031b3a4",
+   "pixel_sha256": "2e952d595f00cdd8c4b163fb8b2b4aed922ba0be11a2eb871a8e954fce69dd31",
+   "consegna": "BloccoI.zip:51886329/soggetti.png"
+  },
+  "52080736__Elenco": {
+   "path": "data/pratiche/52080736/Elenco.png",
+   "image_sha256": "b54bbc9cb5cc2f176bec2408b3333d4e13e55dded968197bdd45f5b70cb50cc5",
+   "pixel_sha256": "8d25e8b6a31b6c3696c9200ce665dffd95fdff1672e9540ccebf47951a04a55a",
+   "consegna": "BloccoI.zip:52080736/elenco1.png"
+  },
+  "52080736__Elenco2": {
+   "path": "data/pratiche/52080736/Elenco2.png",
+   "image_sha256": "caac51a8752108cfc5be8d4073a9e01b4bff483e2d3c1ffdfa59dc58c01151d9",
+   "pixel_sha256": "ac2bb57d280cf1ef9b7a006c0de07c7c804eec0cc78773eec5b408c332fe2a48",
+   "consegna": "BloccoI.zip:52080736/elenco2.png"
+  },
+  "52080736__GestioneFidi": {
+   "path": "data/pratiche/52080736/GestioneFidi.png",
+   "image_sha256": "79e2fba7924bca071a3e3c1aae8efac9b5e6af9ac74abb1ac6c8bffd8af2a5a3",
+   "pixel_sha256": "aab2d8315cd0256acf917d76bac73b4530a865da885e754a5932c85c89f58d13",
+   "consegna": "BloccoI.zip:52080736/gestionefidi1.png"
+  },
+  "52080736__GestioneFidi2": {
+   "path": "data/pratiche/52080736/GestioneFidi2.png",
+   "image_sha256": "2a8c36dde62549913ef9815e7b02d411a2a753faa6a75cef2fbda93f41be8295",
+   "pixel_sha256": "992fd3afe6559dc11ebc8c4bd42cab7e012b5408362cbed79d76fd8bdbec6d3e",
+   "consegna": "BloccoI.zip:52080736/gestionefidi2.png"
+  },
+  "52080736__GestioneFidi3": {
+   "path": "data/pratiche/52080736/GestioneFidi3.png",
+   "image_sha256": "9e2609ce6b34169d02fb37cbc25cb5fce2524f1113f11404b5fad4134b218db8",
+   "pixel_sha256": "d0f681f74996d083bd22c1f7e8f5f47a60cdc7accfbdbe7b649d5dde30681ec9",
+   "consegna": "BloccoI.zip:52080736/gestionefidi3.png"
+  },
+  "52080736__GestioneFidi4": {
+   "path": "data/pratiche/52080736/GestioneFidi4.png",
+   "image_sha256": "bfdfff373518192700674665e4403504e62818ad61f704d4a99b36920d14da03",
+   "pixel_sha256": "3140757eaf721a78d53f0f45416bee5cef03af04d16a52ae455541e47c297bd9",
+   "consegna": "BloccoI.zip:52080736/gestionefidi4.png"
+  },
+  "52080736__Note": {
+   "path": "data/pratiche/52080736/Note.png",
+   "image_sha256": "c188ce01524e975079af2fda3001690b6f408955892e67db2c96182f9fb76a01",
+   "pixel_sha256": "0f10cd18d6af8b8ac882f4145b825f65dda6bfaa29768050073a4c6bd4426296",
+   "consegna": "BloccoI.zip:52080736/note1.png"
+  },
+  "52080736__Note2": {
+   "path": "data/pratiche/52080736/Note2.png",
+   "image_sha256": "4b48063802ed59378409d412ced3f48fad04918c34290bbc855ffaa5898935aa",
+   "pixel_sha256": "59a092a21aa02befd88d7e043afd239f3b0bf377fe0611a59e873b8cb41f56b3",
+   "consegna": "BloccoI.zip:52080736/note2.png"
+  },
+  "52080736__Soggetti": {
+   "path": "data/pratiche/52080736/Soggetti.png",
+   "image_sha256": "333d3121aee0336aa666911dd4b9020b295923bcdd0afb73367f977bef7179a5",
+   "pixel_sha256": "93a4e307e3b176190907b2ea531dd2d25dedaf84e16ef89f5e694e3c444268d7",
+   "consegna": "BloccoI.zip:52080736/soggetti.png"
+  },
+  "52102964__Elenco": {
+   "path": "data/pratiche/52102964/Elenco.png",
+   "image_sha256": "e9dc95e010b61521361e0969797471009212e2e401d833653f46c34440c086ef",
+   "pixel_sha256": "243377117323e667ea210e31a612aa4f4e363c7d8cd06b77d2dbe565b775a7e2",
+   "consegna": "BloccoI.zip:52102964/elenco1.png"
+  },
+  "52102964__Elenco2": {
+   "path": "data/pratiche/52102964/Elenco2.png",
+   "image_sha256": "0e10357ff33b9241d63d486b8ceb45ed816167300df977a4676d23242501fe9a",
+   "pixel_sha256": "33d6e7f5b50d9d5de2261731120546eaeafdb9d7252731b7fec9befc4aea9519",
+   "consegna": "BloccoI.zip:52102964/elenco2.png"
+  },
+  "52102964__GestioneFidi": {
+   "path": "data/pratiche/52102964/GestioneFidi.png",
+   "image_sha256": "afc92195d64c58b659d7e038a6f21892c3204ccd0a2a3387a30c64fff9efd7d8",
+   "pixel_sha256": "42ff1f0b58826b8075153b88919195880f911cd759e4b0bde3581175f8b3b0c7",
+   "consegna": "BloccoI.zip:52102964/gestionefidi1.png"
+  },
+  "52102964__GestioneFidi2": {
+   "path": "data/pratiche/52102964/GestioneFidi2.png",
+   "image_sha256": "6f3e6ecebd755e3fe60f9037f95d2303198ae40abddafef9aa85dad709d43ced",
+   "pixel_sha256": "a083158ccd41acd3de74ead5f46bfe92d79e9552e03c6d9e9399ba07ed79ba31",
+   "consegna": "BloccoI.zip:52102964/gestionefidi2.png"
+  },
+  "52102964__GestioneFidi3": {
+   "path": "data/pratiche/52102964/GestioneFidi3.png",
+   "image_sha256": "ecaffce3c472c2184d3281b2bfc74aa2648746202941b9d56474cc4954d541a9",
+   "pixel_sha256": "e5a7ba820b96fd33458b3fa5c0a926cacf02371e105b726cb0e2f31e89fc55a1",
+   "consegna": "BloccoI.zip:52102964/gestionefidi3.png"
+  },
+  "52102964__Note": {
+   "path": "data/pratiche/52102964/Note.png",
+   "image_sha256": "6a9d02aa5a000a73957e030ace40627b838a19b40f311aae421388f5a28f4327",
+   "pixel_sha256": "0867396bf157d8f1f998cb4f96f1068e1d52851e61932b7e0e2be37ae5c8d7fe",
+   "consegna": "BloccoI.zip:52102964/note.png"
+  },
+  "52102964__Soggetti": {
+   "path": "data/pratiche/52102964/Soggetti.png",
+   "image_sha256": "4656a1a7fa4c2254384440fd9adae0222d73c6d22273b1bfd5775ecfe7f430c6",
+   "pixel_sha256": "d9876b04e49fc4f339ae36af701dcef6285f53a162a3d38dde8df7fcc5c95647",
+   "consegna": "BloccoI.zip:52102964/soggetti.png"
+  },
+  "52125946__Elenco": {
+   "path": "data/pratiche/52125946/Elenco.png",
+   "image_sha256": "63868b7bc18de56961adf57e818fe44529d2cbcd8b15904f2f9648f6db4d95f8",
+   "pixel_sha256": "08642056aee4ed4cebdef2af0cc4a61fcce5da05b8391a5e1742637f86ba0acf",
+   "consegna": "BloccoII.zip:52125946/elenco1.png"
+  },
+  "52125946__Elenco2": {
+   "path": "data/pratiche/52125946/Elenco2.png",
+   "image_sha256": "ea568bda8469d02f3dfd63fd3441707cf6ca10e55ac76e0d31131b7f561e1a6a",
+   "pixel_sha256": "c7ff2e68916aa45bebc4af794281717eec5471704bd89413abd9bd58284fef12",
+   "consegna": "BloccoII.zip:52125946/elenco2.png"
+  },
+  "52125946__GestioneFidi": {
+   "path": "data/pratiche/52125946/GestioneFidi.png",
+   "image_sha256": "6a25ce9aa91f0c3dea536d701f540e6bc1d337848f47cb15ce52877ee3c79e8a",
+   "pixel_sha256": "e16d850616b6729705a4b040829e75f861da8536cd2494ed08f685ac5ae62090",
+   "consegna": "BloccoII.zip:52125946/gestionefidi1.png"
+  },
+  "52125946__GestioneFidi2": {
+   "path": "data/pratiche/52125946/GestioneFidi2.png",
+   "image_sha256": "6955adf9c66622ed57275a785c89a67253e42996aed681d3f2beca6d6633107d",
+   "pixel_sha256": "1739460fd8544d82f380a708cd97e38a6c05863a621bf22a0ea8489b48021ce9",
+   "consegna": "BloccoII.zip:52125946/gestionefidi2.png"
+  },
+  "52125946__GestioneFidi3": {
+   "path": "data/pratiche/52125946/GestioneFidi3.png",
+   "image_sha256": "91c3a896423de31c5852fb8c733dcdf568776a0f31b9b93e28defb508b1074a1",
+   "pixel_sha256": "83a260308e2ef2ba0b18fa9bae7eb03ea059d859307345deb8d47dd82b06406b",
+   "consegna": "BloccoII.zip:52125946/gestionefidi3.png"
+  },
+  "52125946__GestioneFidi4": {
+   "path": "data/pratiche/52125946/GestioneFidi4.png",
+   "image_sha256": "919d9368b6dbd08311d811898183ae5bb2c0205aa00f96513f537582f8de0e08",
+   "pixel_sha256": "80d654e8dc5361a6c5199bac1a6f97506656ea66c6599d2ab76d03c8fdccd1c3",
+   "consegna": "BloccoII.zip:52125946/gestionefidi4.png"
+  },
+  "52125946__Note": {
+   "path": "data/pratiche/52125946/Note.png",
+   "image_sha256": "5b83ffbeb9c1ccd4fb2629b4ce132b7eda734282692926f2804b2006f8d17e8b",
+   "pixel_sha256": "481f408a3b6dba2515f0eab60bbbfa062de6ad4745696607e9dcb1e56f35f27a",
+   "consegna": "BloccoII.zip:52125946/note.png"
+  },
+  "52125946__Soggetti": {
+   "path": "data/pratiche/52125946/Soggetti.png",
+   "image_sha256": "ada026167687fea23bafb51dd6ab7707423eec9b4428aa60b2fd3c04e631c6d7",
+   "pixel_sha256": "c9c47667e8a33d5bd60251896b51e0a6159daa8c6a83064a3269cb82c6a5a2aa",
+   "consegna": "BloccoII.zip:52125946/soggetti.png"
+  },
+  "52136040__Elenco": {
+   "path": "data/pratiche/52136040/Elenco.png",
+   "image_sha256": "3d0bfdad52fc31259690650002933312aae52e453544b2696e076d60057f53ba",
+   "pixel_sha256": "88b40345e881ceb339c010dc0346c8ea43952ebc55d148c2d9b764b5e7f6fed5",
+   "consegna": "BloccoII.zip:52136040/elenco1.png"
+  },
+  "52136040__Elenco2": {
+   "path": "data/pratiche/52136040/Elenco2.png",
+   "image_sha256": "6a791955338b4b2bda54aa2ff8c35c655cce06937e8562d6b0ed9fd20d1fea8e",
+   "pixel_sha256": "0abcefff66f1d3855c25e7967bd1e17bc5197e4f43dccc91db3f169ba5b8a2bd",
+   "consegna": "BloccoII.zip:52136040/elenco2.png"
+  },
+  "52136040__GestioneFidi": {
+   "path": "data/pratiche/52136040/GestioneFidi.png",
+   "image_sha256": "215aa625c5bca897b97b0917c08d98740242283c214719ec4d6852487138ba9b",
+   "pixel_sha256": "c11d0c55686332ac7b51c9c87db815753fc9f55ec3ee4a619cdc4bd371eaf196",
+   "consegna": "BloccoII.zip:52136040/gestionefidi1.png"
+  },
+  "52136040__GestioneFidi2": {
+   "path": "data/pratiche/52136040/GestioneFidi2.png",
+   "image_sha256": "8788ba135a9c3707e18edfa46235584d39aa98d5efab652bd9a1e949208d2ce9",
+   "pixel_sha256": "43672ad95d2f184e77dde4d1340558d8dd1d632ec4fc1d7dc21b4bff5b6c0673",
+   "consegna": "BloccoII.zip:52136040/gestionefidi2.png"
+  },
+  "52136040__GestioneFidi3": {
+   "path": "data/pratiche/52136040/GestioneFidi3.png",
+   "image_sha256": "36bcfaa7c7685b4995338fe85908cb781b8e5ba297b505aba81d0fd1923df39d",
+   "pixel_sha256": "66d898e0eec9b9ad773a4fa2923855ca8438c08b2ea22c167509484cf2660481",
+   "consegna": "BloccoII.zip:52136040/gestionefidi3.png"
+  },
+  "52136040__GestioneFidi4": {
+   "path": "data/pratiche/52136040/GestioneFidi4.png",
+   "image_sha256": "46fe584c0ff7006f4d1ea4068a6e7765b5d7d044d725c1a1f5e0c60493b4a5b9",
+   "pixel_sha256": "da77d9578a9885ab84a21d978864c69ab534caa6e7f75ac9ba26d5ec2a8046c6",
+   "consegna": "BloccoII.zip:52136040/gestionefidi4.png"
+  },
+  "52136040__Note": {
+   "path": "data/pratiche/52136040/Note.png",
+   "image_sha256": "af0e05dbb196dd9689212054be8dfd21e10a00d103000c460a5a995f1965762e",
+   "pixel_sha256": "440035f42ce8b5d2940d65a534ec7a05742613e195664d67e892cec799cd54a3",
+   "consegna": "BloccoII.zip:52136040/note1.png"
+  },
+  "52136040__Note2": {
+   "path": "data/pratiche/52136040/Note2.png",
+   "image_sha256": "ad97fb6fe3a168edf835e10c783226d2c5a6ceb0d16d512ac5155a38112a64e9",
+   "pixel_sha256": "4d75521a94df450fe4cc7a556283b0deed95baad4749b880d33307eccc0d9063",
+   "consegna": "BloccoII.zip:52136040/note2.png"
+  },
+  "52136040__Soggetti": {
+   "path": "data/pratiche/52136040/Soggetti.png",
+   "image_sha256": "46e4c5c8b620eb6623e5f1798f5b715407a9728e48c43809f38c9bdf6ddacc82",
+   "pixel_sha256": "6445a752dfa774309bdd5dc6c142869298a5bb937af692669f88e2c6c71a5760",
+   "consegna": "BloccoII.zip:52136040/soggetti.png"
+  },
+  "52137073__Elenco": {
+   "path": "data/pratiche/52137073/Elenco.png",
+   "image_sha256": "d52a4c3b03be551a61b749946de7b84bf4d6e999a7c4210d0835c3fb1950cf08",
+   "pixel_sha256": "ccf61bce62f242ccbc2caf945b03be123da8f23238aeef62b5abb7165dd6e3be",
+   "consegna": "BloccoII.zip:52137073/ELENCO1.png"
+  },
+  "52137073__Elenco2": {
+   "path": "data/pratiche/52137073/Elenco2.png",
+   "image_sha256": "2745c0afc07fe478a00d9bbeb690cb7c0b928257741234c8c03fff55ed759e38",
+   "pixel_sha256": "c6ccb53bd39cf222e5ea7c0d50ba02450ba77a7f7e5b7f4904f6e85d8179623f",
+   "consegna": "BloccoII.zip:52137073/elenco2.png"
+  },
+  "52137073__GestioneFidi": {
+   "path": "data/pratiche/52137073/GestioneFidi.png",
+   "image_sha256": "34859c7c06969f9a0b5082d257b40e22ed1ffb5e3bbde6e02a6df8a8a2c718ad",
+   "pixel_sha256": "126d4231cbae17f41653c9595e795ea4dfc53e0f72447d66238a2b19863f5c6f",
+   "consegna": "BloccoII.zip:52137073/gestionefidi1.png"
+  },
+  "52137073__GestioneFidi2": {
+   "path": "data/pratiche/52137073/GestioneFidi2.png",
+   "image_sha256": "677dbba980e4bd67016a1844ca0d7341295be8cabdbc18cec9e9e6ca824f87f2",
+   "pixel_sha256": "658355606f104b45d940bd08c7f63f443f364d87c65d6d5e030b0b142ff19475",
+   "consegna": "BloccoII.zip:52137073/gestionefidi2.png"
+  },
+  "52137073__GestioneFidi3": {
+   "path": "data/pratiche/52137073/GestioneFidi3.png",
+   "image_sha256": "56b626e6ee3f4b37ee3aa27bf0938fd55abaf007d9c3307f38200b75c4d3e764",
+   "pixel_sha256": "8909d79c7970488ec583d159aa5774e3288e53225f49ec4cc158e2ea780eedb5",
+   "consegna": "BloccoII.zip:52137073/gestionefidi3.png"
+  },
+  "52137073__GestioneFidi4": {
+   "path": "data/pratiche/52137073/GestioneFidi4.png",
+   "image_sha256": "d1227f25e34c2a1cb8f12ffc2f5ea70f36c6e195649805bee610f056a29f8111",
+   "pixel_sha256": "ac590648530440ecf081fcac4776866112dd93c93fc37e95ac76abf71275b84b",
+   "consegna": "BloccoII.zip:52137073/gestionefidi4.png"
+  },
+  "52137073__Note": {
+   "path": "data/pratiche/52137073/Note.png",
+   "image_sha256": "c589177971f74bdf1cfc6fa6945f571adc3bd629e740a9312110dd5c48b9e92e",
+   "pixel_sha256": "f7f220566850abb272b7136868998d26a3634e2a94f80e7094207e69d3bc525a",
+   "consegna": "BloccoII.zip:52137073/note.png"
+  },
+  "52137073__Soggetti": {
+   "path": "data/pratiche/52137073/Soggetti.png",
+   "image_sha256": "045c27517fbbc233432fe6ea6329c13953f10397cb33f104e3e3859f12804042",
+   "pixel_sha256": "833507abe6c411e537a11e6f99381670ca4aabef94a15bd29f942990daead305",
+   "consegna": "BloccoII.zip:52137073/soggetti.png"
+  },
+  "52186431__Elenco": {
+   "path": "data/pratiche/52186431/Elenco.png",
+   "image_sha256": "bda78975815254fd18402a2ed63be40a9f6929ec91b5418ee21052585d5d47de",
+   "pixel_sha256": "dc42636e8c1391b9065eb3e53c253b52598acc1bc8e1cf1287323b81aa261d8b",
+   "consegna": "BloccoII.zip:52186431/elenco1.png"
+  },
+  "52186431__Elenco2": {
+   "path": "data/pratiche/52186431/Elenco2.png",
+   "image_sha256": "2c7cb09cc097e5766b4c5371c2e8c0e096f150210405c7a62107a900ff8ca4a2",
+   "pixel_sha256": "83fef37e4a248c6ea1edd251b7909f9fe1aa22670a24ac836be9d63244c7ae86",
+   "consegna": "BloccoII.zip:52186431/elenco2.png"
+  },
+  "52186431__GestioneFidi": {
+   "path": "data/pratiche/52186431/GestioneFidi.png",
+   "image_sha256": "f6c0a551fe13c5fadbe1aaded84d28f4a7b7a6b39109248c7b44f2674d80747b",
+   "pixel_sha256": "b371032ca616fa0a1fb21f99143167fd5200a40ec68062d22ae6d032e0e12bb3",
+   "consegna": "BloccoII.zip:52186431/gestionefidi1.png"
+  },
+  "52186431__GestioneFidi2": {
+   "path": "data/pratiche/52186431/GestioneFidi2.png",
+   "image_sha256": "7029356a50774ff1112de32bf4009eabb104e872fc1d47ba300179495d40aea9",
+   "pixel_sha256": "5b2bee3e3b5be2ceca5e600127ed4e7dc6e29e5371cf303bead4c7615b7ae3d8",
+   "consegna": "BloccoII.zip:52186431/gestionefidi2.png"
+  },
+  "52186431__GestioneFidi3": {
+   "path": "data/pratiche/52186431/GestioneFidi3.png",
+   "image_sha256": "28b8a5da002eac61648af16ad335cfc2fbd8cfc6405ce3c14df211d98f84175e",
+   "pixel_sha256": "1e2cc16bcebf70406c78644a6670f273dfcadc9c1b9984dcbd3cc1f380acfdc5",
+   "consegna": "BloccoII.zip:52186431/gestionefidi3.png"
+  },
+  "52186431__GestioneFidi4": {
+   "path": "data/pratiche/52186431/GestioneFidi4.png",
+   "image_sha256": "fc83a80ed0dcdd390dd82913f99847a17afdf9209adf3368a758a2cbf3939990",
+   "pixel_sha256": "bde26a4506e6e4fd81d56b72c7facbad9d233e1852d9004aaa09e7b1b09b865f",
+   "consegna": "BloccoII.zip:52186431/gestionefidi4.png"
+  },
+  "52186431__Note": {
+   "path": "data/pratiche/52186431/Note.png",
+   "image_sha256": "f12997994bfd2f654444e254ea7fec9b96cc4b4affc437b1c0f30db91f6eee3e",
+   "pixel_sha256": "3ae5d22e04e0133b8d97277d04a19f2ea10cf917acfb3eb8695281d811c5e053",
+   "consegna": "BloccoII.zip:52186431/note.png"
+  },
+  "52186431__Soggetti": {
+   "path": "data/pratiche/52186431/Soggetti.png",
+   "image_sha256": "25b6bcb129c58a66758ae8dc5ebae0a663db45cad4356912bcd785faf63e752e",
+   "pixel_sha256": "99515c1a2eef17d3fdb26740310fb14ae478d98b0597ec7d36a5f2271e4ad610",
+   "consegna": "BloccoII.zip:52186431/soggetti.png"
+  },
+  "52196577__Elenco": {
+   "path": "data/pratiche/52196577/Elenco.png",
+   "image_sha256": "828d56c307c97c3bd42e64951da7961da81fde3d051585519393d34fb8598e98",
+   "pixel_sha256": "00d70d77cc056216fa2227a2905ea73160ae4a34371840b3580ba5c9d57b3c4d",
+   "consegna": "BloccoII.zip:52196577/elenco1.png"
+  },
+  "52196577__Elenco2": {
+   "path": "data/pratiche/52196577/Elenco2.png",
+   "image_sha256": "5374a93ae247f615e82e6a17c3d18872f2f86f14fc8bdf676047d2598b327218",
+   "pixel_sha256": "c2422bb963ee0def96a30ddfcb2a500fc94828b5021b9826caee7bce875f0a53",
+   "consegna": "BloccoII.zip:52196577/elenco2.png"
+  },
+  "52196577__GestioneFidi": {
+   "path": "data/pratiche/52196577/GestioneFidi.png",
+   "image_sha256": "db5c77b05aac44f8a29b64384bb914f5abdcafbd9dee47c5da5511c3e2d424f0",
+   "pixel_sha256": "5b61cfdd4ecb22d92a2f3f34a533b73d3540c38726a85c0ab7fea16628baf671",
+   "consegna": "BloccoII.zip:52196577/gestionefidi1.png"
+  },
+  "52196577__GestioneFidi2": {
+   "path": "data/pratiche/52196577/GestioneFidi2.png",
+   "image_sha256": "5b164ae6a0a7b173b3660ba05422a1db930a15b2e49aaaee74191dab0d35b60e",
+   "pixel_sha256": "38963f003915d9ca1b18deea0ccc78a321bb6b4ff4f2852ce13c3fe0fee2c902",
+   "consegna": "BloccoII.zip:52196577/gestionefidi2.png"
+  },
+  "52196577__GestioneFidi3": {
+   "path": "data/pratiche/52196577/GestioneFidi3.png",
+   "image_sha256": "94acc4a780d0ec7a4c92afe9f671ef307e8eef22c5f8fe8ab24df0ef513c64b0",
+   "pixel_sha256": "ea74b1cb8efd1d61ae3b3c64df8dad986688267f96c848c20606d0a191fcd2a9",
+   "consegna": "BloccoII.zip:52196577/gestionefidi3.png"
+  },
+  "52196577__GestioneFidi4": {
+   "path": "data/pratiche/52196577/GestioneFidi4.png",
+   "image_sha256": "b6c4d6021495f440e4fb35b4cafbeee0ece87bfe6ddf871cc3908efe32de15c8",
+   "pixel_sha256": "38c477256408b2d5dcbbe98228f8acd4b34e238a8bad0b9c37ebf714d3265814",
+   "consegna": "BloccoII.zip:52196577/gestionefidi4.png"
+  },
+  "52196577__Note": {
+   "path": "data/pratiche/52196577/Note.png",
+   "image_sha256": "6e4df51b05d4eaf93144689cc62e83015d73bffc59d36f7de80f190eea3629c0",
+   "pixel_sha256": "a6198c1b96c9cbd46b262aea72b2707004a7aa17afbc88ff02df18a1c0f02529",
+   "consegna": "BloccoII.zip:52196577/note1.png"
+  },
+  "52196577__Note2": {
+   "path": "data/pratiche/52196577/Note2.png",
+   "image_sha256": "b76aee96e38dc51ac9d39921a37b4573b3dc996704afcdc946be40c475f02a7c",
+   "pixel_sha256": "0be28dcafeb1d922b6fd188293140247886aec1525bc020cfae1e430d232499d",
+   "consegna": "BloccoII.zip:52196577/note2.png"
+  },
+  "52196577__Soggetti": {
+   "path": "data/pratiche/52196577/Soggetti.png",
+   "image_sha256": "c5bb6a8561116341c93c7f814bbc8d9cbc008711d4f6272fe9be9e336fc29fda",
+   "pixel_sha256": "6e172a90b09c9366733a29d54bdc839efb0fa03da6f357dbc6caa7e64ca9557d",
+   "consegna": "BloccoII.zip:52196577/soggetti.png"
+  }
+ },
+ "sigillo": "Le pratiche in conferma restano sigillate fino al congelamento del candidato: niente OCR, metriche o ispezioni per lo sviluppo sulle loro schermate o sulla loro verità.",
+ "nota": "Il 2026-11-07, prima di calcolare l'assegnazione, sono stati letti i valori di tutti i fogli del workbook per scrivere il lettore, e aperte le 8 schermate di 52125946. Le schermate di 51849993, 52080736 e 52137073 sono state aperte dopo una prima esecuzione della stessa regola, che le assegnava alla validazione estesa. Le schermate delle pratiche in conferma non sono state aperte. Nessun modello e nessuna regola di estrazione sono stati regolati su questi valori."
+}

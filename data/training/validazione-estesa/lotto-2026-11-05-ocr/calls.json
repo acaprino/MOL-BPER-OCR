@@ -1,0 +1,82 @@
+{
+  "profile": "pc4",
+  "resources": {
+    "cpu": 4.0,
+    "memory_mib": 4096,
+    "timeout_seconds": 7200,
+    "retries": 1,
+    "max_containers": 50
+  },
+  "jobs": [
+    {
+      "config": "A1",
+      "shard": 0,
+      "ids": [
+        "51849993__Elenco",
+        "51849993__Elenco2",
+        "51849993__GestioneFidi",
+        "51849993__GestioneFidi2",
+        "51849993__GestioneFidi3",
+        "51849993__GestioneFidi4",
+        "51849993__Note",
+        "51849993__Note2"
+      ],
+      "call": "fc-01M6V9M6VVEVDV7YVC7WXMZBS6"
+    },
+    {
+      "config": "A1",
+      "shard": 1,
+      "ids": [
+        "51849993__Soggetti",
+        "52080736__Elenco",
+        "52080736__Elenco2",
+        "52080736__GestioneFidi",
+        "52080736__GestioneFidi2",
+        "52080736__GestioneFidi3",
+        "52080736__GestioneFidi4",
+        "52080736__Note"
+      ],
+      "call": "fc-01M6V9M7PZF4DENJC279E0WK21"
+    },
+    {
+      "config": "A1",
+      "shard": 2,
+      "ids": [
+        "52080736__Note2",
+        "52080736__Soggetti",
+        "52125946__Elenco",
+        "52125946__Elenco2",
+        "52125946__GestioneFidi",
+        "52125946__GestioneFidi2",
+        "52125946__GestioneFidi3",
+        "52125946__GestioneFidi4"
+      ],
+      "call": "fc-01M6V9M9B8JNBZTW4Z9TB9GT3W"
+    },
+    {
+      "config": "A1",
+      "shard": 3,
+      "ids": [
+        "52125946__Note",
+        "52125946__Soggetti",
+        "52137073__Elenco",
+        "52137073__Elenco2",
+        "52137073__GestioneFidi",
+        "52137073__GestioneFidi2",
+        "52137073__GestioneFidi3",
+        "52137073__GestioneFidi4"
+      ],
+      "call": "fc-01M6V9MA85ECSSX65Z4B0WKJAQ"
+    },
+    {
+      "config": "A1",
+      "shard": 4,
+      "ids": [
+        "52137073__Note",
+        "52137073__Soggetti"
+      ],
+      "call": "fc-01M6V9MASAS438QXQ30HE8RJPS"
+    }
+  ],
+  "panel": null
+}

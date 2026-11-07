@@ -1,0 +1,79 @@
+{
+ "workbook": "10 prt novembre 2026.xlsx",
+ "workbook_sha256": "e63a42445582e8b1fd2f59d5c8ce5b91f0bcb8387728fd566cd54bb4d05d386d",
+ "nota": "Controlli contro le schermate. 'schermate' dice cosa mostra ogni schermata delle pratiche di validazione estesa, viste una per una il 2026-11-07; le pratiche sigillate non hanno voce. 'correzioni' riguarda solo i campi del vocabolario: i valori fuori vocabolario (tabella Garanzie, Agente proponente) restano come consegnati, senza controllo.",
+ "schermate": {
+  "51849993": {
+   "Elenco": {},
+   "Elenco2": {"non_visibili": ["Tipo"]},
+   "Soggetti": {},
+   "GestioneFidi": {},
+   "GestioneFidi2": {"tooltip": "Fido: tooltip Descrizione"},
+   "GestioneFidi3": {"tooltip": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."},
+   "GestioneFidi4": {"tooltip": "Garanzia 2: tooltip Descrizione"},
+   "Note": {"parziali": ["Note della richiesta"]},
+   "Note2": {"non_visibili": ["Filiale relazione"]}
+  },
+  "52080736": {
+   "Elenco": {},
+   "Elenco2": {"non_visibili": ["Tipo", "Stato", "Fase", "Creazione"]},
+   "Soggetti": {},
+   "GestioneFidi": {},
+   "GestioneFidi2": {"tooltip": "Fido: tooltip Descrizione"},
+   "GestioneFidi3": {"tooltip": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."},
+   "GestioneFidi4": {"tooltip": "Garanzia 2: tooltip Descrizione"},
+   "Note": {"parziali": ["Note della richiesta"]},
+   "Note2": {"non_visibili": ["Filiale relazione"]}
+  },
+  "52125946": {
+   "Elenco": {},
+   "Elenco2": {"non_visibili": ["Tipo"]},
+   "Soggetti": {},
+   "GestioneFidi": {},
+   "GestioneFidi2": {"tooltip": "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%"},
+   "GestioneFidi3": {"tooltip": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."},
+   "GestioneFidi4": {"tooltip": "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS"},
+   "Note": {}
+  },
+  "52137073": {
+   "Elenco": {},
+   "Elenco2": {"non_visibili": ["Tipo"]},
+   "Soggetti": {},
+   "GestioneFidi": {},
+   "GestioneFidi2": {"tooltip": "Fido: tooltip Descrizione"},
+   "GestioneFidi3": {"tooltip": "Garanzia 1: tooltip Descrizione"},
+   "GestioneFidi4": {"tooltip": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."},
+   "Note": {}
+  }
+ },
+ "correzioni": [
+  {"riga_excel": "51849993!98", "campo": "Scadenza",
+   "revisione": {"esito": "TRASCRITTO", "trascrizione": "261 mesi"},
+   "corretto": {"esito": "TRASCRITTO", "trascrizione": "361 mesi"},
+   "motivo": "Lo schermo mostra 361 mesi; la nota della pratica dice Durata 360 mesi."},
+  {"riga_excel": "52080736!93", "campo": "Scadenza",
+   "revisione": {"esito": "TRASCRITTO", "trascrizione": "261 mesi"},
+   "corretto": {"esito": "TRASCRITTO", "trascrizione": "361 mesi"},
+   "motivo": "Lo schermo mostra 361 mesi."},
+  {"riga_excel": "52080736!51", "campo": "NDG 2",
+   "revisione": {"esito": "TRASCRITTO", "trascrizione": "19388815"},
+   "corretto": {"esito": "TRASCRITTO", "trascrizione": "19368615"},
+   "motivo": "Lo schermo mostra 19368615; lo stesso numero è nella tabella Garanzie e nella nota."},
+  {"riga_excel": "52080736!55", "campo": "DENOMINAZIONE 3",
+   "revisione": {"esito": "TRASCRITTO", "trascrizione": "LONGHI NICCOLO,SPANIO DANIELA"},
+   "corretto": {"esito": "TRASCRITTO", "trascrizione": "LONGHI NICCOLO"},
+   "motivo": "Nella terza riga di Elenco Soggetti lo schermo mostra LONGHI NICCOLO."},
+  {"riga_excel": "52137073!126", "campo": "Descrizione",
+   "revisione": {"esito": "TRASCRITTO", "trascrizione": "M.F.PF FONDO"},
+   "corretto": {"esito": "TRASCRITTO", "trascrizione": "M.F. PF FONDO"},
+   "motivo": "Lo schermo mostra M.F. PF FONDO, con lo spazio, come nelle pratiche precedenti."},
+  {"riga_excel": "52136040!128", "campo": "Scadenza",
+   "revisione": {"esito": "TRASCRITTO", "trascrizione": "261 mesi"},
+   "corretto": {"esito": "TRASCRITTO", "trascrizione": "361 mesi"},
+   "motivo": "Pratica sigillata: il responsabile del progetto ha controllato a mano lo schermo il 2026-11-07, il valore del foglio è sbagliato. 361 mesi segue 51849993 e 52080736, dove lo stesso 261 era un errore."},
+  {"riga_excel": "52186431!98", "campo": "Scadenza",
+   "revisione": {"esito": "TRASCRITTO", "trascrizione": "261 mesi"},
+   "corretto": {"esito": "TRASCRITTO", "trascrizione": "361 mesi"},
+   "motivo": "Pratica sigillata: il responsabile del progetto ha controllato a mano lo schermo il 2026-11-07, il valore del foglio è sbagliato. 361 mesi segue 51849993 e 52080736, dove lo stesso 261 era un errore."}
+ ]
+}

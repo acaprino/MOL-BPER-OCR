@@ -229,7 +229,7 @@ di test non partecipano alla selezione.
 
 Le nuove pratiche di G8 sono assegnate a validazione estesa o conferma prima
 delle prove, con separazione di pratica, NDG dei soggetti e immagini anche rispetto
-al corpus originario. La conferma resta sigillata fino al congelamento di codice,
+al corpus originario; l'NDG del Fondo di garanzia non conta (ADR 0024). La conferma resta sigillata fino al congelamento di codice,
 pesi, configurazione, popolazioni e comparatori di un unico candidato. Se fallisce,
 non si rilancia una sequenza di candidati sullo stesso insieme dichiarandola cieca:
 ogni successiva conferma indipendente richiede un insieme non usato nelle scelte.
@@ -357,7 +357,8 @@ la promozione: la presenza di thread daemon non dimostra il recupero da un blocc
   `51792073`, `51800301`, `51997531`, `52022324`; validazione estesa `51788077`,
   `51798191`, `51859514`, `52013664`, `52032077`. In `52032077` il soggetto NDG
   `11153238` (Fondo di garanzia per la prima casa) compare anche in `52067184` e
-  `52068422` del train: registrato, senza esclusione (regola 3). Nessuna Scheda
+  `52068422` del train: registrato, senza esclusione (dal 2026-11-07 non è più
+  un'identità, ADR 0024). Nessuna Scheda
   Privati; M-CONSAP in `51772928` (conferma) e `52032077` (validazione estesa), CONSAP
   DR BIS in `51772928` e `52022324` (conferma). Restano scoperti i 13 campi Scheda
   Privati, M-CONSAP in una seconda conferma, CONSAP DR BIS in validazione estesa. Non sono mai
@@ -365,6 +366,16 @@ la promozione: la presenza di thread daemon non dimostra il recupero da un blocc
   sono fixture del riconoscimento pagine (`tests/fixtures/frames/no-tooltip/`,
   commit `7b70bf7`): valgono per le metriche di campo, non come prova cieca del
   classificatore di pagina.
+- Le 10 pratiche del lotto 2026-11-05 (84 schermate, consegnate con un foglio per
+  pratica) sono assegnate con le stesse regole
+  (`data/revisione/lotto-2026-11-05/g8_assegnazione.json`): conferma `51027430`,
+  `51886329`, `52102964`, `52136040`, `52186431`, `52196577`; validazione estesa
+  `51849993`, `52080736`, `52125946`, `52137073`. Nessuna Scheda Privati. M-CONSAP in
+  `52125946` (validazione estesa), `52186431` e `52196577` (conferma); CONSAP DR BIS in
+  `52125946` (validazione estesa) e `52186431` (conferma). Dopo questo lotto i due
+  tooltip sono coperti: restano scoperti i 13 campi Scheda Privati. I valori del
+  workbook sono stati letti prima dell'assegnazione (nota nel manifest); le schermate
+  in conferma no.
 - `LUNARDI_26871394` (9 schermate, verità in `data/reference/dati.csv`) è il corpus
   di riferimento su cui il motore VLM è stato sviluppato e misurato: è esposta e non
   vale come conferma.
@@ -391,7 +402,10 @@ campi già coperti, divise tra validazione estesa e conferma.
    con le 12 pratiche v3.1 e tra validazione estesa e conferma: gli stessi controlli
    di `audit_splits()`. Nessuna pratica è esclusa (decisione del 2026-10-28): le
    identità in comune con v3.1 si registrano nel manifest. Fra validazione estesa e
-   conferma non deve esserci nessuna identità in comune.
+   conferma non deve esserci nessuna identità in comune: una pratica con l'identità
+   di un cliente già in un gruppo segue quel gruppo. L'NDG del Fondo di garanzia per
+   la prima casa (`11153238`) non è un'identità: è il garante dei mutui, non un
+   cliente, e sta in molte pratiche senza legarle (decisione del 2026-11-07, ADR 0024).
 4. La conferma resta sigillata fino al congelamento: le sue schermate e la sua
    verità servono soltanto all'assegnazione e alla verifica finale, senza OCR,
    metriche o ispezioni per lo sviluppo.
@@ -399,10 +413,9 @@ campi già coperti, divise tra validazione estesa e conferma.
    denominatori al momento dell'assegnazione.
 
 **Richiesta a chi fornisce le schermate:** pratiche dell'ambiente di prova "Nuova PEF
-3.0" non presenti in `data/pratiche/`, con le pagine Scheda Privati compilate e con
-i tooltip M-CONSAP e CONSAP DR BIS (la revisione delle 10 pratiche del lotto
-2026-08-21 è arrivata il 2026-10-27). Finché non arrivano, G8 resta non soddisfatto e l'adozione sui 45 campi
-non può essere dichiarata.
+3.0" non presenti in `data/pratiche/`, con le pagine Scheda Privati compilate (i
+tooltip M-CONSAP e CONSAP DR BIS sono coperti dal lotto 2026-11-05). Finché non
+arrivano, G8 resta non soddisfatto e l'adozione sui 45 campi non può essere dichiarata.
 
 ---
 
