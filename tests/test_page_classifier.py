@@ -9,12 +9,19 @@ from PIL import Image, ImageDraw
 
 from frame_normalize import normalize_frame
 from image_ops import preprocess_for_ocr
-from tools.reference_screens import reference_screens
 
 TEMPLATES = Path(__file__).resolve().parent.parent / "src" / "edge-agent" / "assets" / "templates" / "bper"
 SCREENS = [f"screen {n}" for n in range(1, 10)]
-# The screenshots the page prototypes were built from, kept only in the practice archive.
-REFERENCES = reference_screens()
+
+
+def _reference(screen: str) -> Path:
+    """A screenshot the page prototypes were built from, kept only in the practice archive.
+
+    Read lazily: the Modal fast lane uploads neither tools/ nor data/, and only the slow cases need it.
+    """
+    from tools.reference_screens import reference_screens
+
+    return reference_screens()[screen]
 
 MONITOR = {"left": 0, "top": 0, "width": 1920, "height": 1080}
 DESKTOP = (32, 34, 38)
@@ -70,7 +77,7 @@ def classifier():
 @pytest.mark.slow
 @pytest.mark.parametrize("screen", SCREENS)
 def test_recognizes_each_page_from_a_full_monitor_frame(classifier, screen):
-    label, score = classifier.classify(_as_worker_sees_it(_live_frame(REFERENCES[screen])))
+    label, score = classifier.classify(_as_worker_sees_it(_live_frame(_reference(screen))))
 
     assert label == screen, f"got {label!r} at score {score:.3f}"
 
@@ -84,7 +91,7 @@ def test_recognition_survives_a_differently_sized_window(classifier, scale):
         screen
         for screen in SCREENS
         if classifier.classify(
-            _as_worker_sees_it(_live_frame(REFERENCES[screen], scale=scale))
+            _as_worker_sees_it(_live_frame(_reference(screen), scale=scale))
         )[0]
         != screen
     ]
@@ -274,7 +281,7 @@ def test_reject_classes_do_not_cost_page_recognition(classifier):
     misread = [
         screen
         for screen in SCREENS
-        if classifier.classify(Image.open(REFERENCES[screen]))[0] != screen
+        if classifier.classify(Image.open(_reference(screen)))[0] != screen
     ]
 
     assert misread == []
