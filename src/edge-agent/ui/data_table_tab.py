@@ -38,6 +38,7 @@ from local_extraction_client import clean_correction
 from practice_consolidation import PracticeRecord, consolidate, is_correctable
 
 from . import icons
+from .frozen_table import FrozenColumnsTable
 from .widgets import default_export_name
 
 # ============================================================
@@ -141,7 +142,8 @@ class DataTableTab(QWidget):
         toolbar.addWidget(self.export_button)
         layout.addLayout(toolbar)
 
-        self.table = QTableWidget(self)
+        # NDG e denominazione restano in vista scorrendo le altre 43 colonne.
+        self.table = FrozenColumnsTable(frozen_count=2, parent=self)
         # Doppio click, F2 o digitazione correggono una cella; NDG, fascia e righe
         # senza NDG non sono modificabili (flag per cella, vedi _set_cell).
         self.table.setEditTriggers(
@@ -157,11 +159,15 @@ class DataTableTab(QWidget):
         self.table.horizontalHeader().setStretchLastSection(False)
         self.table.horizontalHeader().setToolTip("Doppio click su un'intestazione per rinominare la colonna")
         self.table.verticalHeader().setVisible(False)
-        self.table.horizontalHeader().sectionDoubleClicked.connect(self._on_header_double_clicked)
         self.table.itemChanged.connect(self._on_item_changed)
-        self.table.itemDelegate().closeEditor.connect(self._on_editor_closed)
-        self.table.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+        # Le due viste (scorrevole e fissa) si comportano allo stesso modo.
+        frozen = self.table.frozen_view
+        for view in (self.table, frozen):
+            view.horizontalHeader().sectionDoubleClicked.connect(self._on_header_double_clicked)
+            view.itemDelegate().closeEditor.connect(self._on_editor_closed)
+            view.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.table.customContextMenuRequested.connect(self._on_context_menu)
+        frozen.customContextMenuRequested.connect(self._on_frozen_context_menu)
 
         # Stato vuoto: dice cosa fare invece di mostrare una griglia senza righe.
         self.empty_state = QWidget(self)
@@ -257,12 +263,13 @@ class DataTableTab(QWidget):
         self.table.clearContents()
         self.table.setRowCount(0)
         self.table.setColumnCount(0)
+        self.table.sync_frozen_columns()
         self.stack.setCurrentWidget(self.empty_state)
 
     def _load_table(self, job_id: str) -> None:
         # Un risultato nuovo non deve strappare di mano l'editor aperto: si
         # ricarica appena l'operatore ha finito (vedi _on_editor_closed).
-        if self.table.state() == QAbstractItemView.State.EditingState:
+        if self.table.is_editing():
             self._reload_pending = True
             return
         self._reload_pending = False
@@ -287,6 +294,7 @@ class DataTableTab(QWidget):
                 row = _FIRST_DATA_ROW + row_offset
                 for col_idx, column in enumerate(self._columns):
                     self._set_cell(row, col_idx, record, column)
+            self.table.sync_frozen_columns()
         finally:
             self._loading = False
 
@@ -387,13 +395,20 @@ class DataTableTab(QWidget):
         self._reload_current()
 
     def _on_context_menu(self, pos: QtCore.QPoint) -> None:
-        item = self.table.itemAt(pos)
+        self._show_cell_menu(self.table.itemAt(pos), self.table.viewport().mapToGlobal(pos))
+
+    def _on_frozen_context_menu(self, pos: QtCore.QPoint) -> None:
+        index = self.table.frozen_view.indexAt(pos)
+        item = self.table.item(index.row(), index.column()) if index.isValid() else None
+        self._show_cell_menu(item, self.table.frozen_view.viewport().mapToGlobal(pos))
+
+    def _show_cell_menu(self, item: Optional[QTableWidgetItem], global_pos: QtCore.QPoint) -> None:
         if item is None:
             return
         menu = QMenu(self)
         restore = menu.addAction("Ripristina originale")
         restore.setEnabled(bool(item.data(CORRECTED_ROLE)))
-        if menu.exec(self.table.viewport().mapToGlobal(pos)) is restore:
+        if menu.exec(global_pos) is restore:
             self._restore_original(item.row(), item.column())
 
     # ------------------------------------------------------------------ Export

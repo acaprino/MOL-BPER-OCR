@@ -220,3 +220,28 @@ def test_result_arriving_while_an_editor_is_open_keeps_the_editor(tab: DataTable
     qapp.processEvents()
     assert client.get_corrections(job) == {"111": {"tipo": "Mutuo"}}
     assert tab.table.item(row, col).text() == "Mutuo"
+
+
+def test_editing_a_frozen_column_stores_a_correction_and_defers_reloads(tab: DataTableTab, client, qapp) -> None:
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    tab.show()
+    qapp.processEvents()
+    row, col = _locate(tab, "111", "denominazione")
+    tab.table.frozen_view.edit(tab.table.model().index(row, col))
+    editor = tab.table.frozen_view.viewport().findChild(QtWidgets.QLineEdit)
+    assert editor is not None and tab.table.is_editing()
+    editor.setText("Alfa Costruzioni 2")
+
+    client.ingest_frame(job, Image.new("RGB", (10, 10)), page_type="p4")  # a result arrives meanwhile
+    deadline = time.time() + 5
+    while len(client.get_results(job)) < 2 and time.time() < deadline:
+        qapp.processEvents()
+        time.sleep(0.01)
+    qapp.processEvents()
+    assert tab.table.is_editing() and editor.text() == "Alfa Costruzioni 2"
+
+    QTest.keyClick(editor, QtCore.Qt.Key.Key_Return)
+    qapp.processEvents()
+    assert client.get_corrections(job) == {"111": {"denominazione": "Alfa Costruzioni 2"}}
+    assert tab.table.item(row, col).text() == "Alfa Costruzioni 2"

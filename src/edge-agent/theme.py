@@ -175,6 +175,7 @@ QTableView {
     selection-background-color: $selection_bg; selection-color: $text;
 }
 QTableView:focus { border: 2px solid $focus; }
+QTableView#frozenColumns { border: none; border-right: 2px solid $input_border; }
 QHeaderView::section {
     background: $surface_alt; color: $text; padding: 6px 8px; font-weight: 600;
     border: none; border-right: 1px solid $border; border-bottom: 1px solid $border;
