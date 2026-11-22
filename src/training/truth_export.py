@@ -60,6 +60,9 @@ def export_practice_workbook(bundle_dir: Path, out_path: Path) -> dict[str, int]
     for row in practices:
         _append_text(index, [_cell(column, row[column]) for column in columns])
     index.freeze_panes = "A2"
+    index.auto_filter.ref = index.dimensions  # filter on Ruolo shows training, control and test apart
+    for letter, width in zip("ABCDEF", (20, 22, 14, 16, 12, 10)):
+        index.column_dimensions[letter].width = width
     for practice, rows in values.items():
         sheet = workbook.create_sheet(practice)
         _append_text(sheet, list(PRACTICE_COLUMNS))

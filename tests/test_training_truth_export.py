@@ -87,6 +87,12 @@ def test_index_lists_each_practice_with_its_role_and_counts(tmp_path: Path) -> N
                     ("2", "lotto-2026-11-05", "conferma", "test", 1, 2)]
 
 
+def test_index_can_be_filtered_by_role(tmp_path: Path) -> None:
+    out = tmp_path / "pratiche.xlsx"
+    export_practice_workbook(_two_practices(tmp_path), out)
+    assert load_workbook(out)["Indice"].auto_filter.ref == "A1:F3"
+
+
 def test_practice_sheet_holds_only_the_values_of_its_practice(tmp_path: Path) -> None:
     out = tmp_path / "pratiche.xlsx"
     export_practice_workbook(_two_practices(tmp_path), out)

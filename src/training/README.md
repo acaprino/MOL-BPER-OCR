@@ -89,7 +89,11 @@ con il proxy tolto (`env -u HTTPS_PROXY -u HTTP_PROXY`), dopo aver copiato i PNG
 ../.venv/Scripts/python.exe -m modal run -m training.modal_lot --lot lotto-2026-11-05 --workbook ABS --zips ABS,ABS --truth-dir ABS/ground-truth-v3.2 --previous ABS/lotto-2026-08-21/g8_assegnazione.json --out ABS/g8_assegnazione.json
 ../.venv/Scripts/python.exe -m modal run --detach -m training.modal_ocr --out-dir ABS-NUOVO --configs A1 --panel "" --assignment ABS/g8_assegnazione.json --practices P1,P2
 ../.venv/Scripts/python.exe -m modal run -m training.modal_bundle --workbook ABS --ocr ABS --lots "WORKBOOK,ASSEGNAZIONE,CORREZIONI,OCR;..." --out ABS-NUOVO --model model_v3_1_33da126207bf6876
+../.venv/Scripts/python.exe -m training.truth_export --bundle ABS-NUOVO --out ../data/pratiche/pratiche.xlsx --per-practice
 ```
+
+L'ultimo comando rigenera l'archivio delle pratiche, `data/pratiche/pratiche.xlsx`, dalla nuova verità: un foglio
+`Indice` con lotto, gruppo e ruolo e un foglio per pratica con i valori corretti.
 
 `modal_lot` applica le regole del piano §5.4 e scrive il manifest; `modal_ocr` rifiuta una
 pratica fuori dalla validazione estesa; `modal_bundle` costruisce il bundle e misura il
