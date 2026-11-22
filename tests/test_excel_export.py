@@ -161,3 +161,14 @@ def test_workbook_keeps_the_four_legacy_band_ranges(tmp_path: Path) -> None:
     assert [ws[address].value for address in ("A1", "J1", "V1", "AF1")] == [
         "Risultato ricerca", "Elenco Soggetti", "Gestione Fidi e Garanzie", "Note da Richiesta"
     ]
+
+
+def test_export_results_applies_corrections(tmp_path: Path) -> None:
+    path = tmp_path / "corrected.xlsx"
+    export_results(
+        [_frame("12345", tipo=("BPI Mutui", 0.9))],
+        str(path),
+        corrections={"12345": {"tipo": "Mutuo"}},
+    )
+    column = [c.schema_key for c in build_columns()].index("tipo") + 1
+    assert load_workbook(path).active.cell(row=3, column=column).value == "Mutuo"

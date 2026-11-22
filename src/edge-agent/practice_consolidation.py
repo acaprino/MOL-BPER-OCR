@@ -45,7 +45,7 @@ class PracticeRecord:
 Corrections = Mapping[str, Mapping[str, Optional[str]]]
 
 # NDG is the practice identity (the grouping key), so it is never corrected.
-_CORRECTABLE_KEYS = frozenset(FIELD_KEYS) - {"ndg"}
+CORRECTABLE_KEYS = frozenset(FIELD_KEYS) - {"ndg"}
 
 
 def is_correctable(record: PracticeRecord, schema_key: str) -> bool:
@@ -55,7 +55,7 @@ def is_correctable(record: PracticeRecord, schema_key: str) -> bool:
     absorbed into the first identified practice, so a correction made before would
     be orphaned.
     """
-    return record.ndg is not None and schema_key in _CORRECTABLE_KEYS
+    return record.ndg is not None and schema_key in CORRECTABLE_KEYS
 
 
 # ============================================================
@@ -101,7 +101,7 @@ class _Group:
             # so a later frame cannot undo it. Copy: never alias the accumulator.
             fields = dict(self.fields)
             for key, value in corrections.items():
-                if key not in _CORRECTABLE_KEYS:
+                if key not in CORRECTABLE_KEYS:
                     continue
                 fields[key] = {
                     **fields[key],

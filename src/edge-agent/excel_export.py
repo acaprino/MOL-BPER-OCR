@@ -27,7 +27,7 @@ from extraction.field_definitions import (
 )
 from extraction.page_definitions import CANONICAL_PAGE_NAMES, PAGE_SHEET_ORDER
 
-from practice_consolidation import PracticeRecord, consolidate
+from practice_consolidation import Corrections, PracticeRecord, consolidate
 
 # ============================================================
 # Layout constants
@@ -222,12 +222,14 @@ def export_results(
     results: Sequence[Dict[str, Any]],
     path: str,
     labels: Optional[Mapping[str, str]] = None,
+    corrections: Optional[Corrections] = None,
 ) -> int:
     """Consolidate raw pipeline results and write the workbook.
 
     Single entry point shared by the Cattura and Dati Estratti tabs so the two
-    buttons cannot drift apart. Returns the number of practices written.
+    buttons cannot drift apart. `corrections` are the operator's edits, applied
+    over the merged values. Returns the number of practices written.
     """
-    records = consolidate(results)
+    records = consolidate(results, corrections)
     write_workbook(records, build_columns(labels), path)
     return len(records)

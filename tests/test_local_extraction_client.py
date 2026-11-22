@@ -1,6 +1,7 @@
 """Async behavior tests for LocalExtractionClient with an injected fake pipeline."""
 
 import os
+import re
 import threading
 import time
 from typing import Any
@@ -14,6 +15,8 @@ from PIL import Image
 from PyQt6.QtCore import QCoreApplication
 
 import local_extraction_client as lec
+from excel_export import build_columns
+from openpyxl import load_workbook
 from practice_consolidation import consolidate
 
 
@@ -238,3 +241,159 @@ def test_log_write_error_does_not_block_ordered_results(monkeypatch: pytest.Monk
         assert len(completions) == 2
     finally:
         client.shutdown()
+
+
+# ============================================================
+# Operator corrections, shared labels, export and unexported tracking
+# ============================================================
+
+
+class ScriptedPipeline:
+    """Replies per page type with scripted fields (the extraction boundary)."""
+
+    def __init__(self, replies: dict[str, dict[str, Any]]) -> None:
+        self.replies = replies
+
+    def extract_from_image(self, img: Image.Image, screen_id: str) -> dict[str, Any]:
+        return {"screen_id": screen_id, "fields": self.replies[screen_id], "_status": "OK"}
+
+
+def _ingest(client: lec.LocalExtractionClient, job: str, page: str, app: QCoreApplication) -> None:
+    """Queue one frame and wait until its result is published."""
+    before = len(client.get_results(job))
+    client.ingest_frame(job, Image.new("RGB", (10, 10)), page_type=page)
+    _wait_for(lambda: len(client.get_results(job)) > before, app)
+
+
+def _client_with_practice(app: QCoreApplication, **extra: dict[str, Any]) -> tuple[lec.LocalExtractionClient, str]:
+    replies = {"p1": {"ndg": _field("123"), "tipo": _field("BPI Mutui")}, **extra}
+    client = lec.LocalExtractionClient(pipeline=ScriptedPipeline(replies))
+    job = client.start_job()
+    _ingest(client, job, "p1", app)
+    return client, job
+
+
+def _cell(path: str, schema_key: str, row: int = 3) -> Any:
+    column = [c.schema_key for c in build_columns()].index(schema_key) + 1
+    return load_workbook(path).active.cell(row=row, column=column)
+
+
+def test_set_correction_cleans_the_text() -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    client.set_correction(job, "123", "tipo", "  Mu\x00tuo\x07 ")
+    assert client.get_corrections(job) == {"123": {"tipo": "Mutuo"}}
+    client.set_correction(job, "123", "tipo", "")
+    assert client.get_corrections(job) == {"123": {"tipo": None}}
+    client.set_correction(job, "123", "tipo", "x" * 40000)
+    assert len(client.get_corrections(job)["123"]["tipo"]) == 32767
+    client.shutdown()
+
+
+def test_set_correction_normalizes_the_ndg() -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    client.set_correction(job, "012.123", "tipo", "Mutuo")
+    assert client.get_corrections(job) == {"12123": {"tipo": "Mutuo"}}
+    client.shutdown()
+
+
+@pytest.mark.parametrize("ndg, key", [("123", "ndg"), ("123", "boh"), ("n/d", "tipo")])
+def test_set_correction_refuses_ndg_unknown_fields_and_unreadable_ndg(ndg: str, key: str) -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    with pytest.raises(ValueError):
+        client.set_correction(job, ndg, key, "x")
+    client.shutdown()
+
+
+def test_corrections_are_per_session_and_returned_as_copies() -> None:
+    app = _app()
+    client, job1 = _client_with_practice(app)
+    job2 = client.start_job()
+    _ingest(client, job2, "p1", app)
+    client.set_correction(job1, "123", "tipo", "Mutuo")
+    assert client.get_corrections(job2) == {}
+    client.get_corrections(job1)["123"]["tipo"] = "tampered"
+    assert client.get_corrections(job1) == {"123": {"tipo": "Mutuo"}}
+    client.clear_correction(job1, "123", "tipo")
+    assert client.get_corrections(job1) == {}
+    client.shutdown()
+
+
+def test_export_workbook_writes_corrections_and_shared_labels(tmp_path) -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    client.set_correction(job, "123", "tipo", "Mutuo")
+    client.set_column_label("tipo", "Tipo pratica")
+    path = str(tmp_path / "out.xlsx")
+    assert client.export_workbook(job, path) == 1
+    assert _cell(path, "tipo").value == "Mutuo"
+    assert _cell(path, "tipo", row=2).value == "Tipo pratica"
+    assert client.get_column_labels() == {"tipo": "Tipo pratica"}
+    client.shutdown()
+
+
+@pytest.mark.parametrize("typed", ["=1+1", "+5", "-300,50", "@x"])
+def test_formula_like_corrections_are_exported_as_inert_text(tmp_path, typed: str) -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    client.set_correction(job, "123", "tipo", typed)
+    path = str(tmp_path / "out.xlsx")
+    client.export_workbook(job, path)
+    cell = _cell(path, "tipo")
+    assert (cell.data_type, cell.value) == ("s", typed)
+    client.shutdown()
+
+
+def test_correction_with_control_characters_exports_without_error(tmp_path) -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    client.set_correction(job, "123", "tipo", "\x00a\x1fb")
+    path = str(tmp_path / "out.xlsx")
+    client.export_workbook(job, path)
+    assert _cell(path, "tipo").value == "ab"
+    client.shutdown()
+
+
+def test_job_is_unexported_until_exported_and_again_after_a_change(tmp_path) -> None:
+    app = _app()
+    client, job = _client_with_practice(app, p2={"ndg": _field("123"), "stato": _field("Aperta")})
+    assert client.unexported_jobs() == [job]
+    client.export_workbook(job, str(tmp_path / "a.xlsx"))
+    assert client.unexported_jobs() == []
+    _ingest(client, job, "p2", app)
+    assert client.unexported_jobs() == [job]
+    client.export_workbook(job, str(tmp_path / "b.xlsx"))
+    client.set_correction(job, "123", "tipo", "Mutuo")
+    assert client.unexported_jobs() == [job]
+    client.shutdown()
+
+
+def test_reverting_a_correction_restores_the_exported_state(tmp_path) -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    client.export_workbook(job, str(tmp_path / "a.xlsx"))
+    client.set_correction(job, "123", "tipo", "Mutuo")
+    assert client.unexported_jobs() == [job]
+    client.clear_correction(job, "123", "tipo")
+    assert client.unexported_jobs() == []
+    client.shutdown()
+
+
+def test_error_only_job_is_never_unexported() -> None:
+    app = _app()
+    client = lec.LocalExtractionClient(pipeline=BrokenPipeline())
+    job = client.start_job()
+    _ingest(client, job, "p1", app)
+    assert client.get_results(job)[0]["_status"] == "ERROR"
+    assert client.unexported_jobs() == []
+    client.shutdown()
+
+
+def test_session_labels_number_sessions_in_start_order() -> None:
+    client = lec.LocalExtractionClient(pipeline=FakePipeline())
+    first, second = client.start_job(), client.start_job()
+    assert re.fullmatch(r"Sessione 1 · \d\d:\d\d", client.session_label(first))
+    assert client.session_label(second).startswith("Sessione 2 · ")
+    client.shutdown()

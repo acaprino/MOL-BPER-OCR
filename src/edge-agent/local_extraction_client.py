@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import os
 import sys
 import threading
 import uuid
-from typing import Any, Dict, List, Optional
+from datetime import datetime
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 from PIL import Image
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 
 from PyQt6 import QtCore
 
@@ -28,9 +32,16 @@ except Exception:
 from extraction.llm_factory import create_chat_model
 from extraction.pipeline import ExtractionPipeline
 from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR, PARALLEL_WORKERS
+from extraction.fields import FIELD_KEYS
+from extraction.normalization import is_nullish, normalize_ndg
 from prompt_store import catalog_source
 
+from excel_export import export_results
 from extraction_pool import DaemonThreadPool
+from practice_consolidation import CORRECTABLE_KEYS, PracticeRecord, consolidate
+
+# Excel refuses cells longer than this, so a pasted text is cut here.
+MAX_CORRECTION_LENGTH = 32767
 
 
 # ============================================================
@@ -71,6 +82,34 @@ def _log_extraction(job_id: str, result: Dict[str, Any]) -> None:
             f"[EXTRACT]   {key}={value!r} conf={float(confidence):.2f} "
             f"src={sources.get(key, '?')}"
         )
+
+
+# ============================================================
+# Operator corrections
+# ============================================================
+
+
+def _clean_correction(value: Optional[str]) -> Optional[str]:
+    """Text the operator typed, made safe for the workbook; empty means cleared."""
+    if value is None:
+        return None
+    text = ILLEGAL_CHARACTERS_RE.sub("", str(value)).strip()[:MAX_CORRECTION_LENGTH]
+    return text or None
+
+
+def _fingerprint(records: Sequence[PracticeRecord]) -> Optional[str]:
+    """Hash of the exportable content, or None when there is nothing to export.
+
+    An error-only session consolidates to one empty record: it has no content, so
+    closing the app must not ask the operator to export it.
+    """
+    rows = [
+        (record.ndg, [(key, record.fields[key]["value"]) for key in FIELD_KEYS])
+        for record in records
+    ]
+    if not any(not is_nullish(value) for _, fields in rows for _, value in fields):
+        return None
+    return hashlib.sha1(json.dumps(rows, default=str, ensure_ascii=False).encode()).hexdigest()
 
 
 class LocalExtractionClient(QtCore.QObject):
@@ -118,11 +157,26 @@ class LocalExtractionClient(QtCore.QObject):
         self._next_capture_sequence: Dict[str, int] = {}
         self._lock = threading.Lock()
 
+        # Operator state, in memory only like the results (no customer data on disk):
+        # {job: {normalized NDG: {schema_key: value}}}, renamed column labels shared by
+        # every export, the start (ordinal, time) of each session and the fingerprint
+        # of what each session last exported.
+        self._corrections: Dict[str, Dict[str, Dict[str, Optional[str]]]] = {}
+        self._column_labels: Dict[str, str] = {}
+        self._started: Dict[str, Tuple[int, datetime]] = {}
+        self._exported: Dict[str, Optional[str]] = {}
+
     # ------------------------------------------------------------------ APIClient-compatible interface
+
+    def _register_job_locked(self, job_id: str) -> None:
+        self._started.setdefault(job_id, (len(self._started) + 1, datetime.now()))
 
     def start_job(self) -> str:
         """Generate a new local job ID."""
-        return str(uuid.uuid4())
+        job_id = str(uuid.uuid4())
+        with self._lock:
+            self._register_job_locked(job_id)
+        return job_id
 
     def ingest_frame(
         self,
@@ -142,6 +196,7 @@ class LocalExtractionClient(QtCore.QObject):
         # Reserve only accepted slots. A fast completion waits for this lock,
         # so it cannot publish before the sequence has been committed.
         with self._lock:
+            self._register_job_locked(job_id)
             sequence = self._next_capture_sequence.get(job_id, 0)
             accepted = self._pool.submit(
                 self._process_frame, job_id, img, page_no, page_type,
@@ -227,3 +282,86 @@ class LocalExtractionClient(QtCore.QObject):
     def get_all_job_ids(self) -> List[str]:
         with self._lock:
             return list(self._results.keys())
+
+    # ------------------------------------------------------------------ Sessions, corrections, export
+
+    def session_label(self, job_id: str) -> str:
+        """Readable name of a session, e.g. "Sessione 2 · 10:42"."""
+        with self._lock:
+            started = self._started.get(job_id)
+        if started is None:
+            return f"Sessione {job_id[:8]}"
+        ordinal, at = started
+        return f"Sessione {ordinal} · {at:%H:%M}"
+
+    def set_correction(self, job_id: str, ndg: str, schema_key: str, value: Optional[str]) -> None:
+        """Record the operator's value for one field of one practice (None = cleared)."""
+        key = normalize_ndg(ndg)
+        if key is None:
+            raise ValueError(f"NDG non leggibile: {ndg!r}")
+        if schema_key not in CORRECTABLE_KEYS:
+            raise ValueError(f"Il campo {schema_key!r} non è correggibile")
+        cleaned = _clean_correction(value)
+        with self._lock:
+            self._corrections.setdefault(job_id, {}).setdefault(key, {})[schema_key] = cleaned
+
+    def clear_correction(self, job_id: str, ndg: str, schema_key: str) -> None:
+        """Drop one correction, restoring the extracted value."""
+        key = normalize_ndg(ndg)
+        with self._lock:
+            by_ndg = self._corrections.get(job_id, {})
+            fields = by_ndg.get(key or "", {})
+            fields.pop(schema_key, None)
+            if not fields:
+                by_ndg.pop(key or "", None)
+            if not by_ndg:
+                self._corrections.pop(job_id, None)
+
+    def get_corrections(self, job_id: str) -> Dict[str, Dict[str, Optional[str]]]:
+        with self._lock:
+            return self._corrections_locked(job_id)
+
+    def _corrections_locked(self, job_id: str) -> Dict[str, Dict[str, Optional[str]]]:
+        return {ndg: dict(fields) for ndg, fields in self._corrections.get(job_id, {}).items()}
+
+    def get_column_labels(self) -> Dict[str, str]:
+        with self._lock:
+            return dict(self._column_labels)
+
+    def set_column_label(self, schema_key: str, label: str) -> None:
+        """Rename a column for every export (an empty label restores the canonical name)."""
+        with self._lock:
+            if label.strip():
+                self._column_labels[schema_key] = label.strip()
+            else:
+                self._column_labels.pop(schema_key, None)
+
+    def export_workbook(self, job_id: str, path: str) -> int:
+        """The only export path: corrections and shared labels included.
+
+        Exports from one snapshot and remembers *its* fingerprint, so a result that
+        lands mid-export keeps the session marked as not exported.
+        """
+        with self._lock:
+            results = list(self._results.get(job_id, []))
+            corrections = self._corrections_locked(job_id)
+            labels = dict(self._column_labels)
+        written = export_results(results, path, labels=labels, corrections=corrections)
+        fingerprint = _fingerprint(consolidate(results, corrections))
+        with self._lock:
+            self._exported[job_id] = fingerprint
+        return written
+
+    def unexported_jobs(self) -> List[str]:
+        """Sessions whose exportable content differs from their last export."""
+        with self._lock:
+            snapshot = [
+                (job_id, list(results), self._corrections_locked(job_id), self._exported.get(job_id))
+                for job_id, results in self._results.items()
+            ]
+        pending = []
+        for job_id, results, corrections, exported in snapshot:
+            fingerprint = _fingerprint(consolidate(results, corrections))
+            if fingerprint is not None and fingerprint != exported:
+                pending.append(job_id)
+        return pending
