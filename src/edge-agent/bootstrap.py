@@ -4,7 +4,7 @@ Pre-flight di avvio per utenti non tecnici.
 Eseguito da edge_agent.main() prima di creare la MainWindow:
 verifica i file essenziali, la chiave API (dialog al primo avvio),
 i pesi DINOv2 (download con progresso e checksum al primo avvio) e il
-warm-up del classificatore (saltato quando pesi e cache sono già validi).
+warm-up del classificatore (saltato quando pesi e prototipi sono già pronti).
 Ogni problema è spiegato con un dialog in italiano.
 """
 
@@ -80,7 +80,7 @@ def _hub_repo_present() -> bool:
 
 
 def _recognition_ready() -> bool:
-    """True se pesi, repo hub e cache prototipi sono già pronti: warm-up inutile."""
+    """True se pesi, repo hub e prototipi distribuiti sono già pronti: warm-up inutile."""
     return (
         _weights_present()
         and _hub_repo_present()
@@ -138,14 +138,8 @@ def _ensure_files(parent: Optional[QtWidgets.QWidget]) -> bool:
     tdir = app_paths.templates_dir()
 
     def _assets_ok() -> bool:
-        return (
-            (tdir / "prompts.json").exists()
-            and tdir.exists()
-            and any(
-                p.suffix.lower() in {".png", ".jpg", ".jpeg"}
-                for p in tdir.iterdir() if p.is_file()
-            )
-        )
+        # L'app riconosce le pagine dai prototipi distribuiti, non da immagini (ADR 0030).
+        return (tdir / "prompts.json").exists() and (tdir / "bper_page_prototypes.json").exists()
 
     # Seed dal bundle: rende avviabile anche un bundle prodotto dal solo spec
     # (senza le copie top-level di build_exe.bat) e ripara cancellazioni accidentali.
@@ -364,7 +358,7 @@ def _ensure_weights(parent: Optional[QtWidgets.QWidget]) -> bool:
 def _warmup_classifier(parent: Optional[QtWidgets.QWidget]) -> bool:
     """
     Prepara il riconoscimento: scarica l'eventuale codice repo di torch.hub
-    mancante, carica il modello e costruisce la cache dei prototipi.
+    mancante, carica il modello e i prototipi distribuiti con l'app.
 
     Ritorna False solo se l'utente sceglie Esci; Annulla e "Continua senza"
     lasciano proseguire l'avvio (il router degrada come da comportamento esistente).
@@ -413,8 +407,8 @@ def _warmup_classifier(parent: Optional[QtWidgets.QWidget]) -> bool:
         dlg.close()
 
         if cancelled.get("v"):
-            # Il thread di warm-up finisce in background; la cache che produce
-            # verrà comunque riusata dal worker di cattura.
+            # Il thread di warm-up finisce in background; il worker di cattura
+            # caricherà comunque modello e prototipi per conto suo.
             return True
 
         worker.wait(5000)

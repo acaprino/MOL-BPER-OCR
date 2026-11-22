@@ -69,7 +69,7 @@ poc-data-src/extraction/
       local_extraction_client.py # Accodamento e pubblicazione ordinata
       extraction_pool.py        # Thread daemon per l'estrazione
       llm_router.py             # Interfaccia PageRouter, strategie LLM e ML
-      page_classifier.py        # DINOv2 e cache dei prototipi
+      page_classifier.py        # DINOv2 e prototipi delle pagine
       page_registry.py          # Nomi, ordine, template e risoluzione pagine
       stability.py             # Conferme e permanenza della pagina candidata
       frame_normalize.py        # Dal monitor alla finestra applicativa
@@ -78,7 +78,7 @@ poc-data-src/extraction/
       excel_export.py           # Workbook con 45 colonne canoniche
       ui/                       # Cattura, Dati Estratti, Debug LLM opzionale
       workers/capture/          # Loop QThread, worker BPER e generico
-      assets/templates/bper/    # Catalogo pagine, immagini e cache prototipi
+      assets/templates/bper/    # Catalogo pagine e prototipi distribuiti (nessuna immagine)
   tests/                        # Test di comportamento
   tools/                        # Script di verifica (check.py) e calibrazione prototipi
   data/

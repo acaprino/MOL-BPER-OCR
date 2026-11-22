@@ -49,7 +49,7 @@ Raggruppate per scopo. Tutto vive nell'unico **`requirements.txt`** alla radice;
 
 ## Infrastruttura
 
-Non c’è database né broker esterno. Esistono code locali in memoria (`extraction_pool.py` e i comandi del worker) e una cache dei prototipi DINOv2. `LocalExtractionClient` conserva i risultati sotto lock e pubblica il prefisso completato in ordine di acquisizione. CLI e Tkinter esportano JSON/CSV; la UI dell’edge-agent consolida le schermate per pratica ed esporta Excel. La memoria della sessione non è un archivio persistente.
+Non c’è database né broker esterno. Esistono code locali in memoria (`extraction_pool.py` e i comandi del worker) e i prototipi DINOv2 delle pagine, distribuiti con l'app (ADR 0030). `LocalExtractionClient` conserva i risultati sotto lock e pubblica il prefisso completato in ordine di acquisizione. CLI e Tkinter esportano JSON/CSV; la UI dell’edge-agent consolida le schermate per pratica ed esporta Excel. La memoria della sessione non è un archivio persistente.
 
 Servizi esterni vivi (tutti HTTPS in uscita):
 - **API OpenAI**: provider di estrazione via LangChain (`gpt-4o` come default del codice) e provider possibile per il router tramite SDK OpenAI.

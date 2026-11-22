@@ -346,11 +346,11 @@ Tre strutture più piccole sostengono la cattura dal vivo (vedi [Architettura](0
   resolver considera vuoti i valori `REDACTED*` e cerca le credenziali nell'ambiente
   se l'INI è vuoto. `save()` può persistere la credenziale nell'INI: non va usato
   per salvare una chiave reale in un file distribuito.
-- **Prototipi DINOv2**: embedding a 384 dimensioni normalizzati, conservati nella
-  cache `bper_page_prototypes.json`. Il router ML usa coseno centrato e soglia 0.35.
-  La chiave di cache combina hash del dataset e `embedding_geometry()` (modello,
-  ROI, resize, regola di punteggio e classi di scarto); se cambia, i prototipi si
-  ricostruiscono. Vedi [ADR 0002](adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md)
+- **Prototipi DINOv2**: embedding a 384 dimensioni normalizzati, distribuiti con l'app
+  in `bper_page_prototypes.json` e mai ricalcolati all'avvio (ADR 0030). Il router ML
+  usa coseno centrato e soglia 0.35. Il file registra `embedding_geometry()` (modello,
+  ROI, resize, regola di punteggio e classi di scarto); se non coincide con quella del
+  codice l'app rifiuta i prototipi, che si rigenerano con `tools/build_prototypes.py`. Vedi [ADR 0002](adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md)
   e [ADR 0003](adr/0003-chiave-cache-prototipi-con-geometria.md).
 
 <!-- Source: src/edge-agent/llm_router.py:28; src/edge-agent/llm_router.py:43; src/edge-agent/llm_router.py:250; src/edge-agent/config.py:239; src/edge-agent/config.py:292; src/edge-agent/config.py:339; src/edge-agent/page_classifier.py:51; src/edge-agent/page_classifier.py:140; src/edge-agent/page_classifier.py:415; src/edge-agent/page_classifier.py:629 -->

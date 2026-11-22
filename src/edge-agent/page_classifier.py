@@ -53,9 +53,6 @@ DEFAULT_SIMILARITY_THRESHOLD = 0.35
 # Lato del quadrato dato in pasto a DINOv2. Multiplo di 14 (patch size).
 EMBED_SIDE = 224
 
-# Sottocartelle del dataset che NON sono pagine (escluse dai prototipi)
-_EXCLUDED_SUBDIRS = {"transitions"}
-
 # Prefisso delle classi di SCARTO: prototipi che rappresentano cio' che NON e' una
 # pagina del processo. Sono normali cartelle di prototipi, quindi la costruzione non
 # cambia; cio' che cambia e' come classify() riporta una loro vittoria.
@@ -97,7 +94,8 @@ def _scan_dataset_images(templates_dir: Path) -> Dict[str, List[Path]]:
     Scansiona templates_dir e costruisce {page_type: [path_img, ...]}.
 
     Unisce immagini in root (page_type = stem del file) e sottocartelle
-    (page_type = nome cartella), escludendo le sottocartelle non-pagina.
+    (page_type = nome cartella). Serve solo a costruire i prototipi fuori
+    dall'app (tools/build_prototypes.py, test): l'app non legge immagini.
     """
     page_images: Dict[str, List[Path]] = {}
 
@@ -113,10 +111,7 @@ def _scan_dataset_images(templates_dir: Path) -> Dict[str, List[Path]]:
             page_images[page_type] = []
         page_images[page_type].append(img_path)
 
-    subdirs = [
-        d for d in templates_dir.iterdir()
-        if d.is_dir() and d.name.lower() not in _EXCLUDED_SUBDIRS
-    ]
+    subdirs = [d for d in templates_dir.iterdir() if d.is_dir()]
     for subdir in sorted(subdirs):
         imgs = sorted(
             p
@@ -163,23 +158,22 @@ def embedding_geometry(crop_roi: Optional[Tuple[float, float, float, float]] = N
     )
 
 
+def _prototypes_ready(data: Dict, crop_roi: Optional[Tuple[float, float, float, float]] = None) -> bool:
+    """I prototipi ci sono e sono stati immersi come lo sono le query di oggi."""
+    protos = data.get("prototypes") or {}
+    n_reject = sum(1 for k in protos if k.startswith(REJECT_PREFIX))
+    return bool(protos) and data.get("geometry") == embedding_geometry(crop_roi, reject_classes=n_reject)
+
+
 def cache_is_valid(templates_dir: Path, cache_path: Optional[Path] = None) -> bool:
     """
-    True se la cache prototipi esiste ed è coerente col dataset corrente.
+    True se i prototipi distribuiti con l'app esistono e valgono per l'embedding corrente.
 
-    Non importa torch: usabile dal pre-flight per decidere se saltare il warm-up.
+    Non legge immagini e non importa torch: usabile dal pre-flight.
     """
-    templates_dir = Path(templates_dir)
-    cache = Path(cache_path) if cache_path else templates_dir / "bper_page_prototypes.json"
-    if not cache.exists():
-        return False
+    cache = Path(cache_path) if cache_path else Path(templates_dir) / "bper_page_prototypes.json"
     try:
-        data = json.loads(cache.read_text(encoding="utf-8"))
-        page_images = _scan_dataset_images(templates_dir)
-        n_reject = sum(1 for k in page_images if k.startswith(REJECT_PREFIX))
-        if data.get("geometry") != embedding_geometry(reject_classes=n_reject):
-            return False
-        return data.get("dataset_hash") == BPERPagePrototypeClassifier._compute_dataset_hash(page_images)
+        return _prototypes_ready(json.loads(cache.read_text(encoding="utf-8")))
     except Exception:
         return False
 
@@ -239,6 +233,7 @@ class BPERPagePrototypeClassifier:
             crop_roi: Optional[Tuple[float, float, float, float]] = None,
             similarity_threshold: float = 0.75,
             device: str = "cpu",
+            build_from: Optional[Dict[str, List[Path]]] = None,
     ) -> None:
         """
         Args:
@@ -246,7 +241,7 @@ class BPERPagePrototypeClassifier:
                 Directory che contiene il dataset delle pagine.
 
             cache_path:
-                File JSON per cache dei prototipi.
+                File JSON dei prototipi distribuiti con l'app.
                 Se None, usa templates_dir / "bper_page_prototypes.json".
 
             crop_roi:
@@ -258,6 +253,12 @@ class BPERPagePrototypeClassifier:
 
             device:
                 "cpu" o "cuda". In scenari edge è tipicamente "cpu".
+
+            build_from:
+                Solo fuori dall'app (tools/build_prototypes.py, test): costruisce i
+                prototipi da queste immagini e li scrive in cache_path. Senza, il
+                classificatore carica i prototipi distribuiti con l'app e non legge
+                immagini (ADR 0030).
         """
         self.templates_dir = Path(templates_dir)
         if cache_path is None:
@@ -299,12 +300,19 @@ class BPERPagePrototypeClassifier:
             return
 
         if not self.templates_dir.exists():
-            # In modalità abilitata ha senso fallire subito se il dataset manca
+            # In modalità abilitata ha senso fallire subito se gli asset mancano
             raise FileNotFoundError(f"templates_dir non trovato: {self.templates_dir}")
 
-        # Inizializza modello / trasformazioni / prototipi
+        # I prototipi distribuiti si controllano prima di caricare il modello:
+        # un file mancante o vecchio ferma l'avvio senza scaricare DINOv2.
+        shipped = None if build_from is not None else self._read_shipped_prototypes()
+
         self._init_feature_extractor_and_transform()
-        self._load_or_build_prototypes()
+        if build_from is not None:
+            self._build_prototypes(build_from)
+            self._save_prototypes_to_cache(self._compute_dataset_hash(build_from))
+        else:
+            self._load_prototypes_from_cache(shipped)
 
     # -------------------------------------------------------------------------
     # Inizializzazione torch/torchvision
@@ -390,10 +398,6 @@ class BPERPagePrototypeClassifier:
             ]
         )
 
-    def _list_dataset_images(self) -> Dict[str, List[Path]]:
-        """Scansiona templates_dir; vedi _scan_dataset_images (funzione condivisa)."""
-        return _scan_dataset_images(self.templates_dir)
-
     @staticmethod
     def _compute_dataset_hash(page_images: Dict[str, List[Path]]) -> str:
         """
@@ -412,38 +416,20 @@ class BPERPagePrototypeClassifier:
                 h.update(content_digest.encode("utf-8"))
         return h.hexdigest()
 
-    def _load_or_build_prototypes(self) -> None:
-        """
-        Tenta di caricare la cache dei prototipi, altrimenti li costruisce da zero.
-        """
-        if self._disabled:
-            # In modalità DISABLED non costruiamo nulla.
-            return
-
-        torch = self._torch
-        assert torch is not None
-
-        page_images = self._list_dataset_images()
-        current_hash = self._compute_dataset_hash(page_images)
-        n_reject = sum(1 for k in page_images if k.startswith(REJECT_PREFIX))
-        current_geometry = embedding_geometry(self.crop_roi, reject_classes=n_reject)
-
-        if self.cache_path.exists():
-            try:
-                with self.cache_path.open("r", encoding="utf-8") as f:
-                    data = json.load(f)
-                if (
-                    data.get("dataset_hash") == current_hash
-                    and data.get("geometry") == current_geometry
-                ):
-                    self._load_prototypes_from_cache(data)
-                    return
-            except Exception:
-                # Cache non valida, si ricostruisce
-                pass
-
-        self._build_prototypes(page_images)
-        self._save_prototypes_to_cache(current_hash)
+    def _read_shipped_prototypes(self) -> Dict:
+        """I prototipi distribuiti con l'app; l'app non li ricalcola mai (ADR 0030)."""
+        if not self.cache_path.exists():
+            raise FileNotFoundError(
+                f"Prototipi delle pagine assenti: {self.cache_path}. "
+                "Si generano con tools/build_prototypes.py e si distribuiscono con l'app."
+            )
+        data = json.loads(self.cache_path.read_text(encoding="utf-8"))
+        if not _prototypes_ready(data, self.crop_roi):
+            raise RuntimeError(
+                f"I prototipi in {self.cache_path} sono stati calcolati con un altro embedding "
+                "(modello, ROI, resize o classi di scarto): rigenerali con tools/build_prototypes.py."
+            )
+        return data
 
     def _build_prototypes(self, page_images: Dict[str, List[Path]]) -> None:
         """

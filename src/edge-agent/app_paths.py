@@ -48,7 +48,7 @@ def env_file() -> Path:
 
 
 def templates_dir() -> Path:
-    """Cartella asset/prototipi BPER (scrivibile: ospita la cache dei prototipi)."""
+    """Cartella asset BPER: catalogo delle pagine e prototipi distribuiti con l'app."""
     return app_dir() / "assets" / "templates" / "bper"
 
 

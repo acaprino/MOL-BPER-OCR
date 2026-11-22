@@ -209,6 +209,6 @@ Copertura per pagina dopo i due giri (scatti diretti + registrazioni):
 
 La pagina 7 resta la piu' scarsa (un solo esemplare mirato). I manifesti curati
 (`tooltips/manifest.json`, `no-tooltip/manifest.json`,
-`reference-screens.json`, che verbalizza anche i nove riferimenti, oggi i template `screen N.png` dell'edge-agent)
+`reference-screens.json`, che verbalizza anche i nove riferimenti, oggi le schermate di `data/pratiche/51350695`)
 vengono fusi nel registro a ogni rebuild da `tools/build_frame_registry.py`,
 cosi' rieseguire gli strumenti non li perde.

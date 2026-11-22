@@ -1,6 +1,7 @@
-"""Page classifier: recognition from a live-shaped frame, and cache validity."""
+"""Page classifier: recognition from a live-shaped frame, and the prototypes the app ships."""
 
 import json
+import shutil
 from pathlib import Path
 
 import pytest
@@ -8,9 +9,12 @@ from PIL import Image, ImageDraw
 
 from frame_normalize import normalize_frame
 from image_ops import preprocess_for_ocr
+from tools.reference_screens import reference_screens
 
 TEMPLATES = Path(__file__).resolve().parent.parent / "src" / "edge-agent" / "assets" / "templates" / "bper"
 SCREENS = [f"screen {n}" for n in range(1, 10)]
+# The screenshots the page prototypes were built from, kept only in the practice archive.
+REFERENCES = reference_screens()
 
 MONITOR = {"left": 0, "top": 0, "width": 1920, "height": 1080}
 DESKTOP = (32, 34, 38)
@@ -66,7 +70,7 @@ def classifier():
 @pytest.mark.slow
 @pytest.mark.parametrize("screen", SCREENS)
 def test_recognizes_each_page_from_a_full_monitor_frame(classifier, screen):
-    label, score = classifier.classify(_as_worker_sees_it(_live_frame(TEMPLATES / f"{screen}.png")))
+    label, score = classifier.classify(_as_worker_sees_it(_live_frame(REFERENCES[screen])))
 
     assert label == screen, f"got {label!r} at score {score:.3f}"
 
@@ -80,7 +84,7 @@ def test_recognition_survives_a_differently_sized_window(classifier, scale):
         screen
         for screen in SCREENS
         if classifier.classify(
-            _as_worker_sees_it(_live_frame(TEMPLATES / f"{screen}.png", scale=scale))
+            _as_worker_sees_it(_live_frame(REFERENCES[screen], scale=scale))
         )[0]
         != screen
     ]
@@ -97,36 +101,44 @@ def test_rejects_a_frame_that_is_not_a_bper_page(classifier):
     assert label is None
 
 
-def test_cache_is_stale_when_the_embedding_geometry_changed(tmp_path):
-    """The prototype cache must key on geometry, not only on the image files.
+def test_the_app_ships_prototypes_not_screenshots():
+    """The app knows its pages a priori: it carries their prototypes, not the images to compute them from."""
+    images = [p.name for p in TEMPLATES.rglob("*") if p.suffix.lower() in {".png", ".jpg", ".jpeg", ".bmp"}]
 
-    Prototypes and queries have to be embedded the same way. A cache keyed only
-    on file contents keeps serving vectors built with a previous ROI or resize
-    while queries use the new one, and every score becomes meaningless.
-    """
-    from page_classifier import BPERPagePrototypeClassifier, cache_is_valid, embedding_geometry
+    assert images == []
 
-    templates = tmp_path / "bper"
-    templates.mkdir()
-    Image.new("RGB", (64, 48), "white").save(templates / "page a.png")
-    Image.new("RGB", (64, 48), "black").save(templates / "page b.png")
 
-    cache = templates / "bper_page_prototypes.json"
-    dataset_hash = BPERPagePrototypeClassifier._compute_dataset_hash(
-        {"page a": [templates / "page a.png"], "page b": [templates / "page b.png"]}
-    )
-    cache.write_text(
-        json.dumps(
-            {
-                "dataset_hash": dataset_hash,
-                "geometry": embedding_geometry() + " stale",
-                "prototypes": {},
-            }
-        ),
+def test_shipped_prototypes_are_ready_without_any_image(tmp_path):
+    from page_classifier import cache_is_valid
+
+    shutil.copyfile(TEMPLATES / "bper_page_prototypes.json", tmp_path / "bper_page_prototypes.json")
+
+    assert cache_is_valid(tmp_path) is True
+
+
+def _stale_prototypes(tmp_path):
+    from page_classifier import embedding_geometry
+
+    (tmp_path / "bper_page_prototypes.json").write_text(
+        json.dumps({"geometry": embedding_geometry() + " stale", "prototypes": {"screen 1": {"embedding": [1.0], "count": 1}}}),
         encoding="utf-8",
     )
+    return tmp_path
 
-    assert cache_is_valid(templates, cache) is False
+
+def test_prototypes_of_another_embedding_geometry_are_not_ready(tmp_path):
+    """Prototypes and queries have to be embedded the same way, or every score is meaningless."""
+    from page_classifier import cache_is_valid
+
+    assert cache_is_valid(_stale_prototypes(tmp_path)) is False
+
+
+def test_classifier_refuses_prototypes_of_another_embedding_geometry(tmp_path):
+    pytest.importorskip("torch", reason="DINOv2 page classifier needs torch")
+    from page_classifier import BPERPagePrototypeClassifier
+
+    with pytest.raises(RuntimeError, match="build_prototypes"):
+        BPERPagePrototypeClassifier(templates_dir=_stale_prototypes(tmp_path), device="cpu")
 
 
 # ------------------------------------------------- reject classes and margin
@@ -179,8 +191,10 @@ def rejecting_classifier(tmp_path_factory):
                "pagina b": [_page_like(2), _page_like(2)]},
         rejects={f"{REJECT_PREFIX}-fuori-processo": [_not_a_page(), _not_a_page()]},
     )
-    return BPERPagePrototypeClassifier(templates_dir=root, crop_roi=None,
-                                       similarity_threshold=0.0, device="cpu")
+    from page_classifier import _scan_dataset_images
+
+    return BPERPagePrototypeClassifier(templates_dir=root, crop_roi=None, similarity_threshold=0.0,
+                                       device="cpu", build_from=_scan_dataset_images(root))
 
 
 @pytest.mark.slow
@@ -254,13 +268,13 @@ def test_reject_classes_do_not_cost_page_recognition(classifier):
 
     Measured while wiring this: reject classes alone leave reference recognition at
     9/9, while adding real crops to the *page* classes dropped it to 1/9. That is
-    why the shipped templates carry reject folders and keep the nine references as
+    why the shipped prototypes carry reject classes and keep the nine references as
     the page prototypes. This test is the guard on the half that works.
     """
     misread = [
         screen
         for screen in SCREENS
-        if classifier.classify(Image.open(TEMPLATES / f"{screen}.png"))[0] != screen
+        if classifier.classify(Image.open(REFERENCES[screen]))[0] != screen
     ]
 
     assert misread == []

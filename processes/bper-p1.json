@@ -284,8 +284,8 @@
     "bidirectional": true,
     "rationale": "L'operatore si muove liberamente: puo' tornare a una pagina gia' vista, riaprirla per un tooltip diverso, saltare a un altro passo e rientrare. Un modello a lista ordinata descrive il percorso suggerito, non quello percorso, e trattare l'ordine come vincolo produce due difetti: la guida chiede una pagina che l'operatore ha gia' davanti, e una pagina acquisita per errore non e' piu' recuperabile.",
     "observed_from": [
-      "src/edge-agent/assets/templates/bper/screen 5.png: navigatore di fase e barra schede applicative",
-      "src/edge-agent/assets/templates/bper/screen 9.png: schede di contenuto dentro un passo"
+      "data/pratiche/51350695/GestioneFidi.png: navigatore di fase e barra schede applicative",
+      "data/pratiche/51350695/Note.png: schede di contenuto dentro un passo"
     ],
     "levels": [
       {

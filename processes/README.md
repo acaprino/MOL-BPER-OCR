@@ -8,6 +8,10 @@ accodano in sequenza: `bper-p1` è il primo, e altri potranno seguirlo.
 |---|---|---|---|
 | `bper-p1.json` | `bper-p1` | BPER Gestione Pratiche (PEF) | 9 |
 
+`bper-p1/transizioni/` conserva le schermate di navigazione fra le pagine (Scheda Privati, Scheda Immobile,
+Gestione GEP, FICS) che documentano il processo; il codice non le legge. Fino al 2026-11-22 stavano fra gli
+asset dell'edge-agent.
+
 ## Perché esiste
 
 Fino al 2026-08-18 il processo non era scritto da nessuna parte. Le sole descrizioni erano

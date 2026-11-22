@@ -25,7 +25,9 @@ from torchvision import transforms as T
 from page_classifier import DINOV2_HUB_REPO, DINOV2_MODEL_NAME
 
 NORM=T.Normalize(mean=[0.485,0.456,0.406],std=[0.229,0.224,0.225])
-FD=Path('tests/fixtures/frames'); TPL=Path('src/edge-agent/assets/templates/bper')
+FD=Path('tests/fixtures/frames')
+sys.path.insert(0, str(Path('.').resolve()))
+from tools.reference_screens import reference_screens  # noqa: E402
 reg=json.loads((FD/'registry.json').read_text(encoding='utf-8'))
 new=json.loads((FD/'relocalized.json').read_text(encoding='utf-8'))
 model=torch.hub.load(DINOV2_HUB_REPO,DINOV2_MODEL_NAME); model.eval()
@@ -58,7 +60,7 @@ for c,rows in train.items():
     v=[x for x in (emb_of(r) for r in rows) if x is not None]
     if len(v)>=3: pages[c]=torch.stack(v)
 for n in range(1,10):
-    p=TPL/f'screen {n}.png'
+    p=reference_screens()[f'screen {n}']
     if p.exists():
         e=embed(Image.open(p)).unsqueeze(0); k=str(n)
         pages[k]=torch.cat([pages[k],e]) if k in pages else e

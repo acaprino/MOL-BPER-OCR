@@ -2,7 +2,7 @@
  "curated": true,
  "frames": [
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 1.png",
+   "frame": "../../data/pratiche/51350695/Elenco.png",
    "cluster": "1",
    "process": "bper-p1",
    "step": 1,
@@ -17,7 +17,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 2.png",
+   "frame": "../../data/pratiche/51350695/Elenco_dx.png",
    "cluster": "2",
    "process": "bper-p1",
    "step": 2,
@@ -32,7 +32,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 3.png",
+   "frame": "../../data/pratiche/51350695/Elenco_tooltip1.png",
    "cluster": "3",
    "process": "bper-p1",
    "step": 3,
@@ -47,7 +47,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 4.png",
+   "frame": "../../data/pratiche/51350695/Soggetti.png",
    "cluster": "4",
    "process": "bper-p1",
    "step": 4,
@@ -62,7 +62,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 5.png",
+   "frame": "../../data/pratiche/51350695/GestioneFidi.png",
    "cluster": "5",
    "process": "bper-p1",
    "step": 5,
@@ -77,7 +77,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 6.png",
+   "frame": "../../data/pratiche/51350695/GestioneFidi_Tooltip1.png",
    "cluster": "6",
    "process": "bper-p1",
    "step": 6,
@@ -92,7 +92,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 7.png",
+   "frame": "../../data/pratiche/51350695/GestioneFidi_Tooltip2.png",
    "cluster": "7",
    "process": "bper-p1",
    "step": 7,
@@ -107,7 +107,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 8.png",
+   "frame": "../../data/pratiche/51350695/GestioneFidi_Tooltip3.png",
    "cluster": "8",
    "process": "bper-p1",
    "step": 8,
@@ -122,7 +122,7 @@
    "localization_score": null
   },
   {
-   "frame": "../../src/edge-agent/assets/templates/bper/screen 9.png",
+   "frame": "../../data/pratiche/51350695/Note.png",
    "cluster": "9",
    "process": "bper-p1",
    "step": 9,

@@ -116,12 +116,12 @@ This PC is often short of memory: the fast lane also runs on a Modal container w
 `modal run tools/modal_tests.py --args "tests -q -m 'not slow'"` (no torch and no Tk display there, so
 those cases skip). Lot processing, OCR and inference run on Modal too (`src/training/modal_*.py`).
 
-`test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s, and it rebuilds the prototype
-cache the first time after any geometry change); it skips via
-`pytest.importorskip` where torch is absent. It rebuilds the app-window-inside-a-monitor framing from
-the reference templates rather than feeding the classifier its own prototypes back, so it fails if
-the ROI, the resize or the scoring rule regress. Do not "simplify" it into classifying the templates
-directly: that variant passes even with the geometry that recognized 1 page out of 9 in the field.
+`test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s) against the prototypes the app
+ships; it skips via `pytest.importorskip` where torch is absent. It rebuilds the
+app-window-inside-a-monitor framing from the nine reference screenshots (`data/pratiche/51350695`,
+via `tools/reference_screens.py`) rather than feeding the classifier its own prototypes back, so it
+fails if the ROI, the resize or the scoring rule regress. Do not "simplify" it into classifying the
+screenshots directly: that variant passes even with the geometry that recognized 1 page out of 9 in the field.
 
 `pyproject.toml` only registers pytest's `slow` marker. `python tools/check.py` runs the fast
 lane (`python -m pytest tests -m "not slow"`) and accepts additional pytest arguments. It excludes
@@ -339,7 +339,7 @@ downstream effects.
 
 ## BPER Domain
 
-The extractor targets **9 BPER banking screens** (the reference practice `data/pratiche/51350695`; the edge-agent keeps the same nine screenshots as page templates `src/edge-agent/assets/templates/bper/screen 1.png` ... `screen 9.png`), each a
+The extractor targets **9 BPER banking screens** (the screenshots of the reference practice `data/pratiche/51350695`; the page catalog names them `screen 1` ... `screen 9`, and `tools/reference_screens.py` maps each label to its page), each a
 different page of the BPER credit-management application.
 
 **Extracted fields** -- 45 entries in `FIELD_KEYS` (`src/extraction/fields.py`):
@@ -430,7 +430,10 @@ Flat package, no sub-packages, one module per concern. Grouped by role:
 
 Flat modules plus two sub-packages: `ui/` (one module per PyQt6 tab, plus `main_window.py` and the
 `overlay.py` capture border) and `workers/capture/` (`BaseCaptureWorker` with one subclass per
-capture mode). `assets/templates/bper/` holds the page catalog and the DINOv2 prototype cache.
+capture mode). `assets/templates/bper/` holds the page catalog (`prompts.json`) and the page prototypes
+(`bper_page_prototypes.json`), no screenshot: the app loads the prototypes and never computes them
+(ADR 0030). `tools/build_prototypes.py` builds them offline; a rebuild changes recognition and must
+pass the slow tests of `test_page_classifier.py`.
 
 The capture chain, in order: `bper_capture_worker.py` grabs → `frame_normalize.py` reframes →
 `image_ops.py` preprocesses → `llm_router.py` / `page_classifier.py` identify the page →
@@ -449,8 +452,9 @@ Called out individually, because the filename alone does not tell you:
   `prompts/` from the bundle only when missing or empty. Must run *before* `ui.main_window` is
   imported (Constraint 3).
 - `frame_normalize.py` -- reframes a full-monitor grab onto the app window (Constraint 13).
-- `page_classifier.py` -- `embedding_geometry()` is part of the prototype cache key, so changing
-  ROI, resize, model or scoring rule rebuilds the prototypes instead of silently mismatching them.
+- `page_classifier.py` -- the shipped prototypes record their `embedding_geometry()`; the app refuses
+  prototypes of another geometry (changed ROI, resize, model or scoring rule) instead of silently
+  mismatching them, and `tools/build_prototypes.py` must rebuild them.
 - `config.py` -- `AgentConfig` reads `config.ini`, **not** env vars; `resolve_llm_settings()` is the
   provider-aware key/endpoint/model resolver.
 - `local_extraction_client.py` -- `ingest_frame()` enqueues and returns immediately; extraction runs

@@ -35,7 +35,9 @@ sys.path.insert(0, "src/edge-agent")
 from PIL import Image
 
 REPO = Path(".")
-TPL = REPO / "src/edge-agent/assets/templates/bper"
+sys.path.insert(0, str(REPO.resolve()))
+from tools.build_prototypes import cut_crops  # noqa: E402
+from tools.reference_screens import reference_screens  # noqa: E402
 TOOLTIPS = REPO / "tests/fixtures/frames/tooltips"
 BASE = REPO / "tests/fixtures/frames/no-tooltip"
 
@@ -82,19 +84,18 @@ FUORI_PROCESSO = [  # BPER, tab 'Note a Istruttoria': tenute fuori dallo scarto 
 work = Path(tempfile.mkdtemp()) / "bper"
 work.mkdir(parents=True)
 # Niente 'screen N.png' in root: i riferimenti non fanno da prototipo.
-for d in TPL.glob("SCARTO-*"):
-    shutil.copytree(d, work / d.name)
+cut_crops(work)  # the reject classes, cut from the registry as the shipped build does
 for cls, files in PROTO.items():
     (work / cls).mkdir()
     for src_dir, f in files:
         shutil.copy(src_dir / f, work / cls / f)
 
 from page_classifier import (BPERPagePrototypeClassifier, DEFAULT_CROP_ROI,
-                             DEFAULT_SIMILARITY_THRESHOLD)
+                             DEFAULT_SIMILARITY_THRESHOLD, _scan_dataset_images)
 
 clf = BPERPagePrototypeClassifier(templates_dir=work, crop_roi=DEFAULT_CROP_ROI,
                                   similarity_threshold=DEFAULT_SIMILARITY_THRESHOLD,
-                                  device="cpu")
+                                  device="cpu", build_from=_scan_dataset_images(work))
 info = clf.info()
 print(f"prototipi: {info['num_prototypes']} classi, tutte da scatti diretti\n")
 
@@ -128,7 +129,7 @@ print(f"  {ok_neg}/{len(FUORI_PROCESSO)} sotto soglia o scartate\n")
 print("--- i 9 riferimenti (informativo: altra popolazione, percorso file) ---")
 ok = 0
 for n in range(1, 10):
-    r = clf.classify_detailed(Image.open(REPO / f"src/edge-agent/assets/templates/bper/screen {n}.png"))
+    r = clf.classify_detailed(Image.open(reference_screens()[f"screen {n}"]))
     good = r.label == f"screen {n}"
     ok += good
     flag = "OK " if good else ".. "

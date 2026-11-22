@@ -1,7 +1,7 @@
 """Riporta un frame catturato a schermo intero sull'area della finestra applicativa.
 
 Il classificatore pagina confronta il frame con prototipi costruiti da screenshot
-di *finestra* (assets/templates/bper/screen N.png). La cattura invece prende il
+di *finestra* (le 9 schermate di data/pratiche/51350695). La cattura invece prende il
 monitor intero, e le ROI del classificatore sono relative: sullo schermo pieno
 la stessa ROI cade su contenuto diverso e la similarita' coseno crolla su un
 prototipo arbitrario. Normalizzare l'inquadratura prima del routing e' quello

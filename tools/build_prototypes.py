@@ -1,7 +1,13 @@
-"""Materialize prototype folders from the labelled frame registry.
+"""Build the page prototypes the edge-agent ships: one vector per page and per reject type.
 
-The classifier builds a prototype per subdirectory of its templates directory.
-This writes those subdirectories: one per process page, plus one per reject type.
+The app never computes them (ADR 0030): it loads bper_page_prototypes.json from its
+templates folder. This tool writes that file. The nine page prototypes come from the
+screenshots of the reference practice in data/pratiche (tools/reference_screens.py); the
+reject prototypes from crops of the labelled frame registry, cut in a temporary folder.
+
+A rebuild is a behaviour change. The shipped file was built on 2026-08-18; the registry grew
+on 2026-08-21, so today the same sampling picks other reject crops (16 of 75 identical).
+Rebuild only to change the prototypes, then run the slow tests of test_page_classifier.py.
 
 Crops are written *as the classifier expects to receive an image*, which is a
 window screenshot with its browser chrome, not the application area alone. The
@@ -14,7 +20,7 @@ will remove.
 
 Two further choices worth stating, both measured in docs/adr/0008:
 
-The nine reference screenshots go in alongside the real crops. They were once
+The nine reference screenshots go in alongside the real crops (with --pages). They were once
 excluded as "a different distribution", which was wrong on the merits: the
 recordings are Teams screen-shares with participant tiles and a shrunken window,
 which is the lecture case, while an operator working full-screen produces exactly
@@ -35,12 +41,16 @@ from __future__ import annotations
 import argparse
 import json
 import random
-import shutil
+import sys
+import tempfile
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from PIL import Image
+
+sys.path[:0] = [str(Path(__file__).resolve().parents[1]), "src/edge-agent"]
+from tools.reference_screens import reference_screens  # noqa: E402
 
 FRAMES = Path("tests/fixtures/frames")
 REJECT_PREFIX = "SCARTO"
@@ -81,6 +91,55 @@ def widen_for_roi(rect: Optional[Tuple[int, int, int, int]],
     return (x1, y1 - needed, x2, y2)
 
 
+def cut_crops(crops: Path, per_class: int = 25, seed: int = 0, pages: bool = False) -> Dict[str, int]:
+    """Write the crops of the labelled frames under crops/<class>/NNN.png; return the count per class."""
+    rng = random.Random(seed)
+    registry = json.loads((FRAMES / "registry.json").read_text(encoding="utf-8"))
+    relocalized_path = FRAMES / "relocalized.json"
+    relocalized = json.loads(relocalized_path.read_text(encoding="utf-8")) \
+        if relocalized_path.exists() else {}
+
+    by_cluster: Dict[str, List[dict]] = defaultdict(list)
+    for entry in registry["frames"]:
+        cluster = entry.get("cluster")
+        if cluster and (FRAMES / entry["frame"]).exists():
+            by_cluster[cluster].append(entry)
+
+    plan: Dict[str, List[tuple]] = defaultdict(list)
+
+    # process pages: real crops, capped and sampled deterministically
+    for cluster, folder in (PAGE_SLUGS.items() if pages else ()):
+        rows = by_cluster.get(cluster, [])
+        if len(rows) > per_class:
+            rows = rng.sample(rows, per_class)
+        for row in rows:
+            rect = relocalized.get(row["frame"], {}).get("rect") or row.get("app_rect")
+            plan[folder].append((FRAMES / row["frame"], rect))
+
+    # The nine reference screenshots join their page's class once, read from the archive
+    # by main(): copying them into the crop folders as well would count each one twice.
+
+    # rejects, one folder per type
+    for folder, clusters in REJECT_GROUPS.items():
+        rows = [r for c in clusters for r in by_cluster.get(c, [])]
+        if len(rows) > per_class:
+            rows = rng.sample(rows, per_class)
+        for row in rows:
+            rect = relocalized.get(row["frame"], {}).get("rect") or row.get("app_rect")
+            plan[folder].append((FRAMES / row["frame"], rect))
+
+    for folder in sorted(plan):
+        target = crops / folder
+        target.mkdir(parents=True)
+        for i, (src, rect) in enumerate(plan[folder]):
+            img = Image.open(src).convert("RGB")
+            widened = widen_for_roi(rect, img.size) if rect else None
+            if widened:
+                img = img.crop(widened)
+            img.save(target / f"{i:03d}.png")  # without headroom above, the whole frame
+    return {folder: len(sources) for folder, sources in plan.items()}
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", default="src/edge-agent/assets/templates/bper")
@@ -96,70 +155,31 @@ def main() -> None:
                          "classes alone leave it at 9/9. See docs/adr/0008.")
     args = ap.parse_args()
 
-    rng = random.Random(args.seed)
-    registry = json.loads((FRAMES / "registry.json").read_text(encoding="utf-8"))
-    relocalized_path = FRAMES / "relocalized.json"
-    relocalized = json.loads(relocalized_path.read_text(encoding="utf-8")) \
-        if relocalized_path.exists() else {}
-
-    by_cluster: Dict[str, List[dict]] = defaultdict(list)
-    for entry in registry["frames"]:
-        cluster = entry.get("cluster")
-        if cluster and (FRAMES / entry["frame"]).exists():
-            by_cluster[cluster].append(entry)
-
-    plan: Dict[str, List[tuple]] = defaultdict(list)
-
-    # process pages: real crops, capped and sampled deterministically
-    for cluster, folder in (PAGE_SLUGS.items() if args.pages else ()):
-        rows = by_cluster.get(cluster, [])
-        if len(rows) > args.per_class:
-            rows = rng.sample(rows, args.per_class)
-        for row in rows:
-            rect = relocalized.get(row["frame"], {}).get("rect") or row.get("app_rect")
-            plan[folder].append((FRAMES / row["frame"], rect))
-
-    # The nine reference screenshots are NOT copied here. They already sit in the
-    # templates root as "screen N.png", and _scan_dataset_images() merges a root file
-    # with the same-named subdirectory under one key: copying them in would count each
-    # reference twice and weight it against the real crops. Leaving them in the root is
-    # what makes them part of the prototype without duplication.
-
-    # rejects, one folder per type
-    for folder, clusters in REJECT_GROUPS.items():
-        rows = [r for c in clusters for r in by_cluster.get(c, [])]
-        if len(rows) > args.per_class:
-            rows = rng.sample(rows, args.per_class)
-        for row in rows:
-            rect = relocalized.get(row["frame"], {}).get("rect") or row.get("app_rect")
-            plan[folder].append((FRAMES / row["frame"], rect))
-
     out = Path(args.out)
-    print(f"destinazione: {out}\n")
-    for folder in sorted(plan):
-        sources = plan[folder]
-        kind = "scarto " if folder.startswith(REJECT_PREFIX) else "pagina "
-        print(f"  {kind}{folder:34} {len(sources):3} immagini")
+    print(f"destinazione: {out / 'bper_page_prototypes.json'}\n")
+    with tempfile.TemporaryDirectory() as work:
+        crops = Path(work)
+        counts = cut_crops(crops, args.per_class, args.seed, args.pages)
+        for folder in sorted(counts):
+            kind = "scarto " if folder.startswith(REJECT_PREFIX) else "pagina "
+            print(f"  {kind}{folder:34} {counts[folder]:3} immagini")
+        thin = [f for f, n in counts.items() if not f.startswith(REJECT_PREFIX) and n < 3]
+        if thin:
+            print(f"\nclassi con meno di 3 immagini (prototipo fragile): {sorted(thin)}")
         if args.dry_run:
-            continue
-        target = out / folder
-        if target.exists():
-            shutil.rmtree(target)
-        target.mkdir(parents=True)
-        for i, (src, rect) in enumerate(sources):
-            img = Image.open(src).convert("RGB")
-            widened = widen_for_roi(rect, img.size) if rect else None
-            if widened:
-                img = img.crop(widened)
-            elif rect:
-                pass  # not enough headroom above: keep the whole frame
-            img.save(target / f"{i:03d}.png")
+            print("\n--dry-run: nulla e' stato scritto")
+            return
 
-    thin = [f for f, s in plan.items() if not f.startswith(REJECT_PREFIX) and len(s) < 3]
-    if thin:
-        print(f"\nclassi con meno di 3 immagini (prototipo fragile): {sorted(thin)}")
-    if args.dry_run:
-        print("\n--dry-run: nulla e' stato scritto")
+        from page_classifier import (BPERPagePrototypeClassifier, DEFAULT_CROP_ROI,
+                                     DEFAULT_SIMILARITY_THRESHOLD, _scan_dataset_images)
+
+        page_images = _scan_dataset_images(crops) if counts else {}
+        for label, screenshot in reference_screens().items():
+            page_images.setdefault(label, []).append(screenshot)
+        BPERPagePrototypeClassifier(templates_dir=out, crop_roi=DEFAULT_CROP_ROI,
+                                    similarity_threshold=DEFAULT_SIMILARITY_THRESHOLD,
+                                    device="cpu", build_from=page_images)
+    print(f"\nscritti {len(page_images)} prototipi")
 
 
 if __name__ == "__main__":

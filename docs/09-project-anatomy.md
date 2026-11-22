@@ -85,9 +85,7 @@ poc-data-src/extraction/
         default_capture_worker.py # Flusso generico: POST di frame grezzi a un'API remota (nessun backend nel repo)
       assets/templates/bper/
         prompts.json           # 10 definizioni di pagina BPER -- fonte di verità per routing LLM + combo UI
-        bper_page_prototypes.json # Embedding prototipo DINOv2 in cache per il router ML
-        screen 1..9.png        # Screenshot template (sorgenti dei prototipi)
-        transitions/           # Screenshot di riferimento di pagine BPER intermedie (non letti dal codice)
+        bper_page_prototypes.json # Prototipi DINOv2 delle pagine, distribuiti con l'app (ADR 0030)
 
   data/                        # Dataset, screenshot e artefatti locali (ignorati da git salvo i 9 PNG di reference/)
     README.md                  # Panoramica delle sottocartelle dati e dei dataset locali
@@ -122,7 +120,7 @@ poc-data-src/extraction/
 
 - **`src/edge-agent/assets/templates/bper/prompts.json`** -- catalogo delle pagine, distinto dai prompt di estrazione. `PageRegistry.load()` valida nomi, ordine e template, condividendo identità e ordinamento tra worker e combo UI. Il router LLM legge anche indizi e campi attesi. Se il registro non si carica, worker e UI gestiscono l’errore e usano un registro vuoto; il catalogo LLM `prompts/*.json` resta invece fail-fast. Non sono più lette sequenze da XLSX o CSV.
 
-- **`src/edge-agent/assets/templates/bper/bper_page_prototypes.json`** (non tracciato, rigenerato) -- embedding prototipo DINOv2 in cache per il router ML. La cache è valida solo se coincidono **sia** l'hash del dataset (nome page_type + nome file + digest del contenuto) **sia** `embedding_geometry()`, che descrive modello, ROI, resize e regola di punteggio. Cambiando una qualsiasi delle due, i prototipi si ricostruiscono al primo avvio. Senza la seconda condizione la cache servirebbe in silenzio vettori costruiti con una geometria diversa da quella delle query ([ADR 0003](adr/0003-chiave-cache-prototipi-con-geometria.md)).
+- **`src/edge-agent/assets/templates/bper/bper_page_prototypes.json`** (tracciato, distribuito con l'app) -- i prototipi DINOv2 delle 9 pagine e delle 3 classi di scarto, costruiti fuori dall'app da `tools/build_prototypes.py` (ADR 0030). L'app li carica e non legge immagini; li rifiuta se la loro `embedding_geometry()`, che descrive modello, ROI, resize e regola di punteggio, non coincide con quella del codice. Senza la seconda condizione la cache servirebbe in silenzio vettori costruiti con una geometria diversa da quella delle query ([ADR 0003](adr/0003-chiave-cache-prototipi-con-geometria.md)).
 
 ### Build / tooling
 
