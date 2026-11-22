@@ -122,3 +122,15 @@ def test_nav_rail_switches_the_visible_page(window: MainWindow) -> None:
     assert window.stack.currentWidget() is window.data_tab
     window.nav.set_current(0)
     assert window.stack.currentWidget() is window.capture_tab
+
+
+def test_window_effects_are_applied_once_when_the_window_is_first_shown(window: MainWindow, monkeypatch) -> None:
+    from ui import win_effects
+
+    applied: list = []
+    monkeypatch.setattr(win_effects, "apply_window_effects", lambda win, dark: applied.append((win, dark)) or True)
+    window.show()
+    window.hide()
+    window.show()
+    assert len(applied) == 1 and applied[0][0] is window
+    window.hide()

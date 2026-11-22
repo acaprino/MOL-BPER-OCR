@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import List, Optional, Sequence
 
 from PyQt6 import QtWidgets
+import theme
 from config import AgentConfig
 from extraction.normalization import is_nullish
 from local_extraction_client import LocalExtractionClient
@@ -14,6 +15,7 @@ from .capture_tab import CaptureTab
 from .data_table_tab import DataTableTab
 from .debug_tab import DebugTab
 from .shell import NavRail, StatusHeader
+from . import win_effects
 
 # ============================================================
 # Closing with unexported data
@@ -71,6 +73,12 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(1180, 760)
         self._init_ui()
 
+        # Barra del titolo (ed eventuale Mica) coerenti col tema, anche se Windows cambia.
+        self._effects_applied = False
+        QtWidgets.QApplication.instance().styleHints().colorSchemeChanged.connect(
+            lambda _scheme: self._apply_window_effects()
+        )
+
     # ------------------------------------------------------------------ UI setup
 
     def _init_ui(self) -> None:
@@ -126,6 +134,15 @@ class MainWindow(QtWidgets.QMainWindow):
         self.capture_tab.counters_changed.connect(self._on_counters)
 
     # ------------------------------------------------------------------ Eventi
+
+    def showEvent(self, event) -> None:  # type: ignore[override]
+        super().showEvent(event)
+        if not self._effects_applied:
+            self._effects_applied = True
+            self._apply_window_effects()
+
+    def _apply_window_effects(self) -> None:
+        win_effects.apply_window_effects(self, dark=theme.current_tokens().name == "dark")
 
     def _on_page_selected(self, index: int) -> None:
         self.stack.setCurrentIndex(index)
