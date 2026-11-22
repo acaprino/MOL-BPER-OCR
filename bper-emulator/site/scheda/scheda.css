@@ -1,0 +1,143 @@
+/* Geometry measured on the 1903 px wide viewport of the reference screenshots (page zoom of the
+   original unknown, so sizes are plain pixels). The original font looks like Lato; Segoe UI stands in. */
+:root {
+  --sp-teal: #0b6368;
+  --sp-dark: #08494d;
+  --sp-text: #4a4a4a;
+  --sp-value: #616161;
+  --sp-line: #d1d1d1;
+  --sp-lock: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 20'%3E%3Cpath d='M4.6 9V6.3a4.4 4.4 0 0 1 8.8 0V9' fill='none' stroke='%23cfcfcf' stroke-width='3'/%3E%3Crect x='1' y='8' width='16' height='12' rx='1.5' fill='%23cfcfcf'/%3E%3Cpath d='M9 11.3a1.6 1.6 0 0 1 .9 2.9V17H8.1v-2.8A1.6 1.6 0 0 1 9 11.3z' fill='white'/%3E%3C/svg%3E");
+  --sp-lock-light: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 20'%3E%3Cpath d='M4.6 9V6.3a4.4 4.4 0 0 1 8.8 0V9' fill='none' stroke='%23dcdcdc' stroke-width='3'/%3E%3Crect x='1' y='8' width='16' height='12' rx='1.5' fill='%23dcdcdc'/%3E%3Cpath d='M9 11.3a1.6 1.6 0 0 1 .9 2.9V17H8.1v-2.8A1.6 1.6 0 0 1 9 11.3z' fill='white'/%3E%3C/svg%3E");
+}
+html { background: #faf9f8; }
+body { margin: 0; color: var(--sp-text); font: 13.4px/16px "Segoe UI", sans-serif; }
+[hidden] { display: none !important; }
+*, *::before, *::after { box-sizing: border-box; }
+button { margin: 0; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+h1, h2, h3, p { margin: 0; font: inherit; }
+
+/* Sidebar: fixed while the page scrolls. */
+.sp-sidebar { position: fixed; inset: 0 auto 0 0; width: 207px; background: var(--sp-teal); color: white; }
+.sp-brand { position: relative; height: 135px; background: var(--sp-dark); }
+.sp-logo { position: absolute; left: 11px; top: 7px; font: bold 26px/30px Arial, sans-serif; letter-spacing: -.3px; }
+.sp-logo::before, .sp-logo::after { content: ""; position: absolute; }
+.sp-logo::before { left: 74px; top: 11px; width: 7px; height: 6px; background: white; box-shadow: 0 12px white; }
+.sp-logo::after { left: 83px; top: 6px; width: 20px; height: 3px; background: #1cb880; box-shadow: 0 7px #1cb880, 0 14px #1cb880; }
+.sp-app { position: absolute; left: 12px; top: 36px; color: #1cb880; font: 600 12.5px/16px "Segoe UI", sans-serif; letter-spacing: .2px; }
+.sp-operator { position: absolute; left: 115px; top: 73px; display: grid; gap: 4px; }
+.sp-operator span { color: #ddf5ee; font-size: 11px; line-height: 13px; }
+.sp-operator strong { font: bold 12.2px/16px "Segoe UI", sans-serif; }
+.sp-menu { display: grid; padding-top: 25px; }
+.sp-menu-item { position: relative; padding: 0 0 30px 37px; font-size: 12.4px; line-height: 16px; }
+.sp-menu-item::before { content: ""; position: absolute; left: 11px; top: 3px; width: 18px; height: 18px; background: center / contain no-repeat; }
+.sp-info::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Ccircle cx='8' cy='8' r='6.4' fill='none' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M8 7v4.4M8 4.6v.1' stroke='white' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); }
+.sp-edit::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M9 2.5H1.7v13.8h13.8V9' fill='none' stroke='white' stroke-width='1.4'/%3E%3Cpath d='M14.4 1.2l2.4 2.4-7.6 7.6-3.2.8.8-3.2z' fill='none' stroke='white' stroke-width='1.3' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.sp-edit { padding-left: 40px; padding-bottom: 25px; }
+.sp-anchor { padding: 0 0 18px 38px; color: #92e8cc; font-size: 11px; line-height: 13px; }
+.sp-news { position: absolute; inset: 746px 0 0; padding: 18px 10px 0; background: var(--sp-dark); }
+.sp-news h2 { width: 150px; font: bold 12.5px/19px "Segoe UI", sans-serif; }
+.sp-news h2::after { content: ""; position: absolute; left: 184px; top: 22px; border: 5.5px solid transparent; border-bottom: 0; border-top: 6px solid white; }
+.sp-news p { margin-top: 9px; white-space: nowrap; font-size: 12.6px; line-height: 18.7px; }
+.sp-dot { position: absolute; left: 10px; top: 168px; width: 11px; height: 11px; border-radius: 50%; background: #8eebca; }
+
+/* Main column: it scrolls under the fixed sidebar, top bar included. */
+.sp-main { position: fixed; inset: 0 0 0 207px; overflow-y: scroll; padding-bottom: 14px; }
+/* A classic 17 px scrollbar, as on the original Windows desktop, whatever the local theme. */
+.sp-main::-webkit-scrollbar { width: 17px; background: #f1f1f1; }
+.sp-main::-webkit-scrollbar-thumb { border: 2px solid #f1f1f1; background: #c1c1c1; }
+.sp-main::-webkit-scrollbar-button:single-button { height: 17px; background: center / 7px 4px no-repeat; }
+.sp-main::-webkit-scrollbar-button:vertical:decrement { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M3.5 0L7 4H0z' fill='%23a3a3a3'/%3E%3C/svg%3E"); }
+.sp-main::-webkit-scrollbar-button:vertical:increment { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 4'%3E%3Cpath d='M0 0h7L3.5 4z' fill='%23a3a3a3'/%3E%3C/svg%3E"); }
+.sp-topbar { position: relative; height: 65px; background: #f9f9f9; }
+.sp-customer { position: absolute; left: 15px; top: 10px; }
+.sp-customer h1 { color: var(--sp-teal); font: bold 20.4px/22px "Segoe UI", sans-serif; }
+.sp-customer > span { display: block; color: #9b9b9b; font: bold 12px/14px "Segoe UI", sans-serif; }
+.sp-mode { position: absolute; left: 727px; top: 22px; font: bold 12.4px/16px "Segoe UI", sans-serif; }
+.sp-print { position: absolute; left: 1485px; top: 15px; width: 31px; height: 31px; border-radius: 50%; background: #1c9cb8 center / 15px 15px no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath d='M3.5 1h8v3.5h-8z M1 5.5h13v6h-2.5v-2h-8v2H1z M4.5 10.5h6V14h-6z' fill='white'/%3E%3C/svg%3E"); }
+.sp-modify { position: absolute; left: 1531px; top: 15px; width: 151px; height: 31px; border-radius: 16px; background: #1cb880; color: white; text-align: center; font: bold 12.4px/30px "Segoe UI", sans-serif; }
+
+.sp-card { margin: 0 14px; padding: 0 19px 39px; background: white; }
+.sp-card-head { position: relative; height: 68px; padding-top: 15px; }
+.sp-card-head h2 { font: bold 18px/24px "Segoe UI", sans-serif; }
+.sp-history { position: absolute; right: 0; top: 18px; width: 151px; height: 32px; border-radius: 16px; background: #1c9cb8; color: white; text-align: center; font: bold 12.5px/32px "Segoe UI", sans-serif; }
+
+.sp-audit { display: grid; grid-template-columns: 374px 517px 374px 1fr; grid-template-rows: 47px 54px; height: 117px; padding: 15px 0 0 14px; border: 1px solid #e9efec; }
+.sp-audit h3 { position: relative; padding-left: 28px; font: bold 17.2px/24px "Segoe UI", sans-serif; }
+.sp-audit h3::before { content: ""; position: absolute; left: 3px; top: 6px; width: 18px; height: 18px; background: center / contain no-repeat; }
+.sp-audit .sp-saved::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M1.5 1.5h12l3 3v12h-15z' fill='none' stroke='%236d6c6c' stroke-width='1.5'/%3E%3Cpath d='M4.5 1.5h7v5h-7zM4 10.5h10v6H4z' fill='none' stroke='%236d6c6c' stroke-width='1.3'/%3E%3C/svg%3E"); }
+.sp-audit .sp-validated::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M9 16.5H1.5v-15h13V9' fill='none' stroke='%236d6c6c' stroke-width='1.5'/%3E%3Cpath d='M4.5 5.5h7M4.5 9h7M4.5 12.5h3.5M10.5 14l2 2 4-4.5' fill='none' stroke='%236d6c6c' stroke-width='1.4'/%3E%3C/svg%3E"); }
+.sp-audit-who { display: grid; align-content: start; gap: 13px; padding-top: 3px; font-size: 13.4px; line-height: 16px; }
+.sp-audit-when { padding-top: 7px; font: bold 13.6px/18px "Segoe UI", sans-serif; }
+.sp-audit > :nth-child(2), .sp-audit > :nth-child(5) { grid-row: 1 / span 2; }
+.sp-audit > :nth-child(3), .sp-audit > :nth-child(6) { grid-row: 2; }
+.sp-audit > :nth-child(1), .sp-audit > :nth-child(3) { grid-column: 1; }
+.sp-audit > :nth-child(4), .sp-audit > :nth-child(6) { grid-column: 3; }
+.sp-audit > :nth-child(2) { grid-column: 2; }
+.sp-audit > :nth-child(5) { grid-column: 4; }
+
+.sp-section { height: 55px; padding-top: 34px; border-bottom: 1px solid var(--sp-teal); font: bold 14.3px/16px "Segoe UI", sans-serif; }
+#entrate > .sp-section { height: 60px; padding-top: 39px; }
+#altre-entrate > .sp-section { height: 51px; padding-top: 30px; }
+.sp-hint { display: inline-block; width: 14px; height: 14px; margin: 0 0 -2px 3px; background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Ccircle cx='7' cy='7' r='6.2' fill='none' stroke='%23b8b8b8'/%3E%3Cpath d='M7 6v4.2M7 3.8v.1' stroke='%23b8b8b8' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E"); }
+#uscite { padding-bottom: 24px; }
+
+.sp-box { position: relative; border: 1px solid var(--sp-line); }
+.sp-box > h3 { color: #979797; font: bold 14.3px/16px "Segoe UI", sans-serif; }
+.sp-job { margin-top: 19px; height: 638px; padding: 16px 14px 0; }
+.sp-grid { display: grid; grid-template-columns: 790px 791px; column-gap: 19px; grid-auto-rows: 64px; }
+.sp-job > .sp-grid { margin-top: 21px; }
+.sp-employer { height: 286px; margin-top: 7px; padding: 16px 14px 0; }
+.sp-employer > .sp-grid { margin-top: 40px; grid-template-columns: 775px 776px; grid-template-rows: 63px 64px 64px; }
+.sp-census { position: absolute; right: 15px; top: 32px; color: #9b9b9b; font: bold 12.5px/16px "Segoe UI", sans-serif; }
+.sp-family { margin-top: 15px; grid-template-columns: 805px 805px; grid-template-rows: 67px 60px 72px; }
+
+/* A field: label, read-only value on a rule, padlock. Offsets are the measured cap tops of the label
+   (--l) and of the value (--v) and the rule (--u), from the top of the row; they differ row by row. */
+.sp-field { --l: 7px; --v: 30px; --u: 50px; position: relative; display: block; }
+.sp-field > span { position: absolute; left: 0; top: calc(var(--l) - 4px); white-space: nowrap; font-size: 13.4px; line-height: 16px; }
+.sp-field input {
+  position: absolute; left: 0; top: calc(var(--v) - 4px); width: 100%; height: calc(var(--u) - var(--v) + 5px);
+  padding: 0 30px calc(var(--u) - var(--v) - 12px) 5px; border: 0; border-bottom: 1px solid var(--sp-line);
+  background: transparent; color: var(--sp-value); font: 600 13.4px/16px "Segoe UI", sans-serif; outline: none;
+}
+.sp-field::after { content: ""; position: absolute; right: 3px; top: calc(var(--u) - 24px); width: 18px; height: 20px; background: var(--sp-lock) center / contain no-repeat; }
+.sp-choice input { color: #909090; font-weight: normal; border-bottom-color: #dedede; }
+.sp-choice::after { right: 7px; top: calc(var(--u) - 28px); background-image: var(--sp-lock-light); }
+.sp-plain input { color: #808080; font-weight: normal; border: 0; }
+.sp-plain::after { content: none; }
+.sp-job > .sp-grid > :nth-child(-n+2) { --v: 31px; --u: 50px; }
+.sp-job > .sp-grid > :nth-child(n+3):nth-child(-n+4) { --l: 9px; --v: 31px; --u: 49px; }
+.sp-job > .sp-grid > :nth-child(5) { --v: 31px; --u: 51px; }
+.sp-employer .sp-field:nth-child(-n+2) { --v: 29px; --u: 47px; }
+.sp-employer .sp-field:nth-child(n+3):nth-child(-n+4) { --v: 30px; --u: 48px; }
+.sp-employer .sp-field:nth-child(5) { --v: 34px; --u: 51px; }
+.sp-employer .sp-field:nth-child(6) { --v: 31px; --u: 51px; }
+.sp-inline { display: grid; grid-template-columns: 790px 791px; column-gap: 19px; height: 46px; margin-top: 15px; }
+.sp-inline .sp-field { --v: 12px; --u: 29px; }
+.sp-inline .sp-field:last-child { --l: 11px; }
+.sp-inline input { left: auto; right: 0; width: 156px; padding-left: 6px; }
+.sp-inline .sp-field:last-child input { width: 76px; padding-right: 22px; }
+.sp-family .sp-field:nth-child(-n+2) { --v: 30px; --u: 51px; }
+.sp-family .sp-field:nth-child(2) { --v: 33px; }
+.sp-family .sp-field:nth-child(n+3):nth-child(-n+4) { --v: 30px; --u: 51px; }
+.sp-family .sp-field:nth-child(5) { --v: 30px; --u: 47px; }
+.sp-family .sp-field:nth-child(odd):not(:first-child) { margin-right: -4px; }
+.sp-family .sp-field:nth-child(4) { margin-left: -3px; }
+
+.sp-notes { margin-top: 15px; }
+.sp-notes > span { position: static; display: block; padding-top: 3px; }
+/* The padlock sits under the note's own scrollbar, which hides most of it. */
+.sp-notes::after { top: auto; bottom: 40px; right: 4px; background-image: var(--sp-lock-light); }
+.sp-notes textarea {
+  position: relative; z-index: 1; display: block; width: 100%; height: 95px; margin-top: 5px; padding: 3px 0 0 5px; border: 0;
+  border-bottom: 1px solid var(--sp-line); resize: vertical; overflow-y: scroll; background: transparent; color: var(--sp-text);
+  font: 13.9px/21px "Segoe UI", sans-serif; outline: none;
+}
+.sp-notes textarea::-webkit-scrollbar { width: 15px; background: #fcfcfc; }
+.sp-notes textarea::-webkit-scrollbar-thumb { border: solid #fcfcfc; border-width: 0 4px; border-radius: 8px; background: #8b8b8b; }
+.sp-notes textarea::-webkit-resizer { background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath d='M.5 15V.5H15' fill='none' stroke='%23d9d9d9'/%3E%3Cpath d='M13 9l-4 4M13 12l-1 1' stroke='%23666' stroke-dasharray='1 1'/%3E%3C/svg%3E"); }
+.sp-notes textarea::-webkit-scrollbar-button:single-button { height: 12px; background: center / 8px 6px no-repeat; }
+.sp-notes textarea::-webkit-scrollbar-button:vertical:decrement { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6'%3E%3Cpath d='M4 0l4 6H0z' fill='%238b8b8b'/%3E%3C/svg%3E"); }
+.sp-notes textarea::-webkit-scrollbar-button:vertical:increment { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6'%3E%3Cpath d='M0 0h8L4 6z' fill='%238b8b8b'/%3E%3C/svg%3E"); }
+
+#sp-error { margin: 40px 0 0 240px; font-size: 16px; }

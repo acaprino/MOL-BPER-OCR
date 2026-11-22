@@ -11,7 +11,7 @@ desktop GUI, and a PyQt6 edge-agent that captures the screen live.
 - **LLM access:** LangChain. `create_chat_model()` in `src/extraction/llm_factory.py` is the single
   factory that selects the provider from the `LLM_PROVIDER` env var (OpenAI GPT-4o or Google Gemini).
 - **Core libs:** LangChain (`langchain-openai` / `langchain-google-genai`), Pillow, Pandas
-- **UI:** Tkinter (stdlib) for `gui_app.py`; PyQt6 + qt-material for the edge-agent
+- **UI:** Tkinter (stdlib) for `gui_app.py`; PyQt6 with its own theme (`src/edge-agent/theme.py`) for the edge-agent
 - **Entry points:** `main.py` (CLI batch; `--gui` launches the edge-agent), `gui_app.py`
   (Tkinter GUI), `src/edge-agent/edge_agent.py` (PyQt6 edge-agent)
 
@@ -126,6 +126,13 @@ via `tools/reference_screens.py`) rather than feeding the classifier its own pro
 fails if the ROI, the resize or the scoring rule regress. Do not "simplify" it into classifying the
 screenshots directly: that variant passes even with the geometry that recognized 1 page out of 9 in the field.
 
+The edge-agent UI has offscreen Qt tests (one shared `QApplication`, created in `tests/conftest.py`):
+`test_theme.py` (WCAG contrast of both palettes), `test_icons.py`, `test_main_window.py` (navigation,
+status header, the warning on close with unexported data), `test_capture_tab.py`,
+`test_data_table_tab.py` (search, operator corrections), `test_frozen_table.py` and
+`test_ui_screenshots.py`. `python tools/ui_screenshots.py [--scale 1.5]` renders both tabs, light and
+dark, to `outputs/ui-review/` for visual review.
+
 `pyproject.toml` only registers pytest's `slow` marker. `python tools/check.py` runs the fast
 lane (`python -m pytest tests -m "not slow"`) and accepts additional pytest arguments. It excludes
 the 18 DINOv2 model cases while keeping the two pure cache checks; `python -m pytest tests`
@@ -219,6 +226,9 @@ downstream effects.
    `ui.main_window` (which transitively imports `extraction`) only *after*
    `bootstrap.run_preflight()` has created/loaded the local `.env` -- do not hoist that import
    to module scope.
+   The theme follows the same rule: `src/edge-agent/theme.py` is top-level, never in `ui/` (whose
+   `__init__` imports `main_window`), does not import `extraction`, and is applied before the
+   preflight so the first-run dialog is styled too.
 4. **Thread safety** -- LangChain ChatModel instances are treated as thread-safe and shared across
    all workers. Created once in `BatchRunner.__init__()` before the thread pool. See
    `src/extraction/cli.py`.
@@ -309,6 +319,12 @@ downstream effects.
       carries 1-6 useful fields. `consolidate()` groups frames by normalized NDG (a frame whose NDG
       was not read attaches to the most recent practice; frames before the first readable NDG wait
       in a buffer) and merges fields with `pick_best()` -- do not write a second merge semantics.
+    - **Operator corrections are an overlay, in memory only.** `consolidate(results, corrections)`
+      applies `{normalized NDG: {field: value}}` after the frame merge (the operator wins and a later
+      frame cannot undo it; `pick_best()` stays the only frame-merge rule). `LocalExtractionClient`
+      owns them, the shared column labels and `export_workbook()`, the single export path of both
+      tabs. The NDG and records without one are not correctable. Nothing is written to disk
+      (customer data); closing with unexported sessions asks first (ADR 0033).
     - **`normalize_ndg()` is not `norm_number_str()`.** The latter is a *quantity* normalizer: it
       turns `12.345` into `12.35` (splitting one practice across two rows) and `12345/A` into
       `12345.00` (merging two distinct practices). An NDG is an identifier.
@@ -559,7 +575,6 @@ openpyxl>=3.1.2         # Excel export (src/edge-agent/excel_export.py)
 **Edge-agent (PyQt6 live capture):**
 ```
 PyQt6>=6.4.0            # Desktop UI framework
-qt-material>=2.14       # PyQt6 Material theme (src/edge-agent/edge_agent.py)
 mss>=9.0.0             # Fast screenshot capture
 pyscreenshot>=3.1      # Screenshot fallback (Linux-only env marker)
 imagehash>=4.3.0       # pHash for frame dedup

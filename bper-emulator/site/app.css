@@ -1,0 +1,105 @@
+:root {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #fefcfa;
+  color: #243d3e;
+}
+body { margin: 0; }
+[hidden] { display: none !important; }
+body > main { min-height: 100vh; }
+body.console > main { display: grid; grid-template-columns: minmax(0, 1fr) 252px; }
+#stage { position: relative; width: 100%; aspect-ratio: 842 / 617; align-self: start; overflow: hidden; }
+#frame {
+  position: absolute; inset: 0 auto auto 0; width: 842px; height: 617px;
+  transform: scale(var(--zoom, 1));
+  transform-origin: top left; overflow: hidden; background: #fdfcfb;
+}
+#application {
+  box-sizing: border-box; width: 100%; height: 100%; overflow: hidden;
+  background: rgb(253, 252, 251); color: #333; font-family: Arial, sans-serif;
+}
+.pef-header {
+  box-sizing: border-box; display: flex; align-items: center; height: 57px;
+  padding: 0 29px 0 40px; background: #f6f8fa; color: #004653;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+.pef-brand {
+  position: relative; top: 1px; padding-right: 8px; color: #00323f;
+  font: bold 22px/1 Arial, sans-serif; letter-spacing: -1px;
+}
+.pef-brand::after {
+  content: ""; position: absolute; right: 0; top: 3px; width: 6px; height: 6px;
+  background: currentColor; border-radius: 50%; box-shadow: 0 9px currentColor;
+}
+.pef-section {
+  position: relative; top: -2px; margin-left: 66px; padding: 2px 0 1px; border-bottom: 1px solid #3d967c;
+  color: #3e5e63; font-size: 12.5px;
+}
+.pef-user { position: relative; top: -1px; margin-left: auto; display: grid; gap: 2px; text-align: right; color: #342f2c; font-size: 14px; }
+.pef-user small { color: #205d6a; font-size: 11px; font-weight: 700; letter-spacing: -.3px; }
+.pef-menu-dots {
+  width: 4px; height: 4px; margin: 0 0 2px 22px; border-radius: 50%; background: #13818a;
+  box-shadow: 0 -6px #13818a, 0 6px #13818a;
+}
+.pef-nav {
+  box-sizing: border-box; height: 47px; display: flex; align-items: end; gap: 4px;
+  padding: 0 26px;
+  /* The header casts a thin shadow onto the tab strip. */
+  background: linear-gradient(#eae9e5 1px, #e1ded7 1px 2px, #e3dfd7 2px, #e9e5dd 18px, #ebe7df 28px);
+  font: 12px "Segoe UI", sans-serif;
+}
+.pef-nav > button, .pef-home, .pef-search {
+  box-sizing: border-box; display: inline-flex; align-items: center; gap: 12px;
+  background: #f4f3ef; color: #4b4c44; height: 28px; border: 0; padding: 0 12px 2px 10px;
+  font: inherit; text-align: left;
+}
+.pef-nav > button { cursor: pointer; }
+.pef-nav > button:focus-visible { outline: 2px solid #0a828b; outline-offset: -2px; }
+.pef-nav svg { flex: none; margin-top: 2px; width: 12px; height: 12px; fill: none; stroke: #74726d; stroke-width: 1.1; }
+.pef-nav .pef-grid { width: 13px; height: 11px; fill: #7c9092; stroke: #e2eaea; }
+.pef-nav .pef-gear { stroke: #84acb5; fill: #d3f1f5; }
+.pef-gear .pef-teeth { stroke-width: 2; stroke-dasharray: 2 1.93; }
+/* Close crosses are thin 9px lines in the tab's text colour. */
+.pef-nav i { position: relative; flex: none; width: 9px; height: 9px; margin: 2px 0 0 auto; }
+.pef-nav i::before, .pef-nav i::after {
+  content: ""; position: absolute; left: -1.5px; top: 4px; width: 12px; height: 1px;
+  background: currentColor; transform: rotate(45deg);
+}
+.pef-nav i::after { transform: rotate(-45deg); }
+.pef-nav > button[aria-current="page"] { background: #fdfcfb; color: #4f8b95; }
+.pef-nav #list-tab { width: 178px; padding-left: 9px; gap: 11px; border-left: 20px solid #78999a; }
+.pef-nav #list-tab[aria-current="page"] { border-color: #004552; }
+.pef-nav #practice-tab { width: 221px; margin-left: 12px; }
+.pef-home { width: 31px; margin-right: 1px; padding-left: 9px; }
+.pef-search { width: 156px; margin-right: 12px; }
+.pef-arrow {
+  align-self: end; width: 0; height: 0; margin: 0 8px 12px 2px;
+  border: solid transparent; border-width: 3px 5px 3px 0; border-right-color: #b9b5a7;
+}
+.pef-arrow.right {
+  margin: 0 2px 12px auto; border-width: 3.5px 0 3.5px 4px; border-color: transparent #b8b7a7;
+}
+#list-view, #detail-view { position: relative; left: -3px; width: 848px; height: 515px; }
+#original { display: block; position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+#frame.reference #application { opacity: 0; }
+#controls {
+  box-sizing: border-box; background: #fcfdfc; border-left: 1px solid #d6dfdc;
+  padding: 30px 20px; display: flex; flex-direction: column; align-items: stretch;
+}
+#controls h1 { font-size: 21px; font-weight: 620; line-height: 1.2; margin: 0 0 13px; }
+#controls label { margin: 19px 0 6px; font-size: 13px; font-weight: 600; }
+#controls select, #controls button {
+  box-sizing: border-box; border: 1px solid #b5c6c4; border-radius: 5px;
+  padding: 8px; min-height: 37px; background: white; color: inherit; font: 13px "Segoe UI", sans-serif;
+}
+#controls button { cursor: pointer; }
+#controls button:disabled { opacity: .43; cursor: default; }
+.step-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 9px; }
+#controls #open-capture { margin-top: 25px; background: #005a64; color: white; border-color: #005a64; font-weight: 600; }
+#controls p { margin: 10px 0; font-size: 12px; color: #506664; line-height: 1.55; }
+#truth-download { margin-top: 12px; font-size: 13px; color: #005a64; }
+kbd { font: inherit; font-weight: 600; }
+#error-message { position: fixed; inset: auto 12px 12px; margin: 0; padding: 12px; background: white; color: #851d13; }
+@media (max-width: 850px) {
+  body.console > main { display: block; }
+  #controls { border-left: 0; border-top: 1px solid #d6dfdc; padding: 18px 20px; }
+}

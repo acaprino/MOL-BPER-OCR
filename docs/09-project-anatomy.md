@@ -60,7 +60,7 @@ poc-data-src/extraction/
       evaluation.py            # Loader ground truth, eval_outputs(), report di debug, riepilogo costi
       cli.py                   # main() CLI + BatchRunner + run_extraction_batch() (condiviso con la GUI Tkinter)
     edge-agent/                # App PyQt6 di cattura live (import a nome piatto; richiede src/edge-agent/ in sys.path)
-      edge_agent.py            # Entry point Qt: carica .env, tema qt-material, AgentConfig, MainWindow
+      edge_agent.py            # Entry point Qt: carica .env, applica il tema (theme.py), AgentConfig, MainWindow
       config.py                # AgentConfig: parsa config.ini con default per singola chiave
       config.ini               # INI committato -- l'intera configurazione dell'edge-agent (vedi sotto)
       local_extraction_client.py # Accoda frame e pubblica risultati in ordine di acquisizione
@@ -73,10 +73,15 @@ poc-data-src/extraction/
       page_classifier.py       # BPERPagePrototypeClassifier -- prototype matching DINOv2 ViT-S/14
       image_ops.py             # preprocess_for_ocr() (scala/unsharp/autocontrast), encoder png8/webp
       frame_normalize.py       # normalize_frame(): dal monitor intero alla finestra applicativa
+      theme.py                 # Token di colore, stylesheet, chiaro/scuro come Windows (top-level: non importa ui né extraction)
       ui/
-        main_window.py         # Tab: Cattura, Dati Estratti (+ Debug LLM con --debug)
-        capture_tab.py         # Start/stop, modalità, FPS, scatto manuale accodato, log e contatori
-        data_table_tab.py      # Vista a foglio di calcolo: righe = pratiche, colonne = campi canonici
+        main_window.py         # Navigazione laterale, barra di stato (Avvia/Ferma), pagine Cattura e Dati (+ Debug LLM con --debug), avviso alla chiusura
+        shell.py               # NavRail e StatusHeader
+        widgets.py             # Card, CollapsiblePanel, nome file di export
+        icons.py               # Icone SVG (Lucide) colorate al momento del disegno
+        capture_tab.py         # Impostazioni, scatto manuale accodato, export, registro richiudibile
+        data_table_tab.py      # Vista a foglio: righe = pratiche, colonne = campi canonici, ricerca, correzione dei valori
+        frozen_table.py        # Tabella con le prime colonne fisse (NDG e denominazione)
         debug_tab.py           # Visualizzatore prompt/risposta del router LLM
         overlay.py             # Bordo rosso sul monitor catturato
       workers/capture/

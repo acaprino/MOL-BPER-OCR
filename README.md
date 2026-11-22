@@ -44,7 +44,7 @@ Il package `extraction` contiene tutta la logica di business, separata dall'inte
 
 ### Interfacce Utente
 - **Edge Agent (`python src/edge-agent/edge_agent.py`, oppure `python main.py --gui`, oppure `run_edge_agent.bat` su Windows)**: Interfaccia per la cattura real-time e l'estrazione locale. Basata su **PyQt6**.
-- **Batch CLI (`python main.py`)**: Processamento batch di una cartella di screenshot, per default la pratica di riferimento `data/pratiche/51350695`. I valori attesi vengono da un `dati.csv` nella cartella o dal foglio della pratica in `data/pratiche/pratiche.xlsx` (ADR 0029).
+- **Batch CLI (`python main.py`)**: Processamento batch di una cartella di screenshot, per default la pratica di riferimento `data/dataset/pratiche/51350695`. I valori attesi vengono da un `dati.csv` nella cartella o dalle righe della pratica in `data/dataset/valori.csv` (ADR 0032).
 - **Desktop UI (`python gui_app.py`)**: Applicazione nativa **Tkinter** per processing di file selezionati manualmente (il CSV ground truth qui è opzionale).
 
 ---
@@ -70,7 +70,7 @@ Su Windows il modo più rapido è il launcher, che crea/ripara la `.venv`, insta
 run_edge_agent.bat
 ```
 
-> **Nota sui valori attesi:** `data/` è versionata nel repository, con la sola esclusione dei pesi binari `*.safetensors` > 1 GB. Se `INPUT_DIR` non contiene un `dati.csv` e non è una cartella di `data/pratiche`, `python main.py` solleva `FileNotFoundError` (`src/extraction/cli.py::main`); GUI Tkinter ed Edge Agent funzionano anche senza ground truth.
+> **Nota sui valori attesi:** `data/` è versionata nel repository. Se `INPUT_DIR` non contiene un `dati.csv` e non è una cartella di `data/dataset/pratiche`, `python main.py` solleva `FileNotFoundError` (`src/extraction/cli.py::main`); GUI Tkinter ed Edge Agent funzionano anche senza ground truth.
 
 ### 2. Avvio interfacce
 
@@ -83,10 +83,38 @@ run_edge_agent.bat                     # Windows: bootstrap venv + avvio
 ```
 
 #### Batch CLI
-Per estrarre e valutare la pratica di riferimento `data/pratiche/51350695` (un'altra pratica con `INPUT_DIR=data/pratiche/<numero>`; i risultati vanno in `outputs/<numero>/`). Non lanciarla sulle 11 pratiche di conferma (ruolo `test`, gruppo `conferma` nel foglio `Indice` di `pratiche.xlsx`): sono sigillate e non si misurano durante lo sviluppo.
+Per estrarre e valutare la pratica di riferimento `data/dataset/pratiche/51350695` (un'altra pratica con `INPUT_DIR=data/dataset/pratiche/<numero>`; i risultati vanno in `outputs/<numero>/`). Non lanciarla sulle 11 pratiche di conferma (ruolo `test`, gruppo `conferma` nel foglio `Indice` di `pratiche.xlsx`): sono sigillate e non si misurano durante lo sviluppo.
 ```bash
 python main.py
 ```
+
+#### Simulatore web locale di Nuova PEF
+
+Il simulatore riproduce il contenuto web di Nuova PEF. Al primo avvio crea il database SQLite `.tritech/local/bper-synthetic.sqlite3`, con 64 pratiche sintetiche, 12 filiali, 123 anagrafiche, 72 fidi e 80 garanzie. Le otto tipologie di richiesta includono surroghe con centesimi, mutui con garanzia pubblica, acquisti con due linee di credito e prestiti per lavori senza garanzie. Le relazioni SQL legano ciascuna garanzia al fido e ciascun soggetto alla pratica. Importi, scadenze e note possono così essere confrontati fra le schermate.
+
+```bash
+python bper-emulator/serve_bper_simulator.py
+```
+
+Apri [il simulatore locale](http://127.0.0.1:8765/) e cerca per NDG, denominazione o numero pratica. Un clic sulla riga apre i soggetti della pratica selezionata. **Avvia Step Succ.** apre fidi e garanzie. I tooltip mostrano la descrizione della riga puntata. **Ricerca Pratica** torna al catalogo. Nella scheda esterna **PEF 2.0 – Pratica**, soggetti, fidi e note appartengono alla sezione **Dettaglio Pratica**. La voce adiacente **Cruscotto Pratiche** riproduce l’etichetta visibile nelle registrazioni.
+
+Premi **F2** per selezionare una pratica e una schermata, aprire la finestra di cattura nativa da 842 × 617 pixel o scaricare il suo **dati.csv**. I tasti **1–9** richiamano i fotogrammi. Ogni pratica offre solo i tooltip per cui esiste un valore. Per una prova ripetibile puoi aprire direttamente [una surroga](http://127.0.0.1:8765/?practice=sim-002#5), [una pratica CONSAP](http://127.0.0.1:8765/?practice=sim-005#7) o [due linee di credito](http://127.0.0.1:8765/?practice=sim-006#5). Tieni la pagina in primo piano sul monitor acquisito.
+
+Il server rilegge l’archivio alle richieste successive. Ricarica la pagina dopo aver modificato il database. Puoi scegliere un altro archivio con `--db PERCORSO`. Per una copia offline, esporta l’HTML e aprilo con doppio clic. I valori attesi e le pratiche sono incorporati alla data di esportazione.
+
+```bash
+python bper-emulator/serve_bper_simulator.py --export Simulatore-BPER.html
+```
+
+Per generare PNG dal sito servono Node.js, Playwright e Chrome. Il comando scrive in una directory nuova e crea una sottocartella per pratica, con `screen N.png` e il suo `dati.csv` nel formato dell’estrattore. Usa `--all` per l’intero catalogo. Questo esempio esegue anche il batch sulla sola surroga in PowerShell, con il provider configurato come per la normale CLI.
+
+```powershell
+node bper-emulator/capture_bper_dataset.cjs --html Simulatore-BPER.html --out catture --practice sim-002,sim-005
+$env:INPUT_DIR = (Resolve-Path catture/sim-002).Path
+python main.py
+```
+
+Il CSV valuta i campi osservabili per schermata. Per i fidi scalari usa la prima riga anche in presenza di una seconda linea. La Scheda Privati è assente dai nove stati documentati. L’opzione esplicita `--include-reference` aggiunge la pratica originale e i suoi ritagli alla versione servita o esportata, e richiede Pillow.
 
 #### Desktop App (Tkinter)
 Per l'applicazione desktop nativa:
@@ -152,7 +180,7 @@ Tutte le variabili sono configurabili via environment (lette a import time da `s
 | `LLM_MODEL` | `gpt-4o` | Modello per estrazione principale |
 | `LLM_MODEL_ANCHOR` | come `LLM_MODEL` | Modello per il pass anchor |
 | `LLM_THINKING_LEVEL` | *(nessuno)* | Profondità di ragionamento `low`/`medium`/`high`, inviata come `thinking_level` alla famiglia Gemini 3; se assente vale il default del modello (`high` per Gemini 3). Le altre famiglie la ignorano con un avviso; un valore diverso blocca l'avvio |
-| `INPUT_DIR` | `data/pratiche/51350695` | Cartella degli screenshot; valori attesi da `dati.csv` o da `pratiche.xlsx` |
+| `INPUT_DIR` | `data/dataset/pratiche/51350695` | Cartella degli screenshot; valori attesi da `dati.csv` o da `valori.csv` |
 | `OUTPUT_DIR` | `outputs/<cartella di INPUT_DIR>` | Risultati della CLI e `debug_crops/` |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `PARALLEL_ENABLED` | `1` | Elaborazione parallela (`0` per disattivarla) |
@@ -272,8 +300,7 @@ poc-data-src/extraction/
       modal_train.py       # Esecuzione GPU limitata su Modal e download del modello CPU
       README.md            # Guida operativa per la rigenerazione del dataset e l'addestramento
   tests/                   # Suite pytest (motore, edge-agent, classificatore DINOv2 e training LiLT)
-  data/pratiche/           # Archivio delle pratiche: schermate per pratica e pratiche.xlsx con i valori corretti
-  data/revisione/          # Data entry umana come consegnata, una cartella per lotto
+  data/dataset/                    # Archivio pulito: pratiche/<id>/<pagina>-<NN>.png, valori.csv, schermate.csv, pratiche.csv
   docs/                    # Documentazione narrativa in italiano (INDEX.md) e ADR (docs/adr/)
   .tritech/codebase-map/   # Mappa del codice generata dal plugin codebase-map
   .env.example             # Template variabili d'ambiente
@@ -281,7 +308,7 @@ poc-data-src/extraction/
 
 ## Ground truth CSV
 
-Per le pratiche dell'archivio la CLI legge i valori da `data/pratiche/pratiche.xlsx`. Per un'altra cartella serve un `dati.csv` in `INPUT_DIR`, in questo formato (long format, 3 colonne):
+Per le pratiche dell'archivio la CLI legge i valori da `data/dataset/valori.csv`. Per un'altra cartella serve un `dati.csv` in `INPUT_DIR`, in questo formato (long format, 3 colonne):
 
 ```
 Fotogramma,Denominazione da attribuire,Valore rilevato

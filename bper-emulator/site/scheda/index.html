@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BPER Scheda Privati</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/schede/SchedaPrivati/scheda.css">
+  <script defer src="/schede/SchedaPrivati/scheda.js"></script>
+</head>
+<body>
+  <aside class="sp-sidebar" aria-label="Menu Scheda privati">
+    <div class="sp-brand">
+      <strong class="sp-logo" aria-label="BPER">BPER</strong>
+      <span class="sp-app">Scheda privati</span>
+      <div class="sp-operator"><span data-bind="operator.code"></span><strong data-bind="operator.name"></strong></div>
+    </div>
+    <nav class="sp-menu" aria-label="Sezioni">
+      <button type="button" class="sp-menu-item sp-info">Consulta documentazione</button>
+      <button type="button" class="sp-menu-item sp-edit" data-target="sp-top">Scheda privati</button>
+      <button type="button" class="sp-anchor" data-target="entrate">Entrate continuative</button>
+      <button type="button" class="sp-anchor" data-target="altre-entrate">Altre entrate continuative</button>
+      <button type="button" class="sp-anchor" data-target="uscite">Uscite continuative</button>
+      <button type="button" class="sp-anchor" data-target="situazione">Situazione familiare e abitativa</button>
+      <button type="button" class="sp-anchor" data-target="note">Note conclusive</button>
+    </nav>
+    <section class="sp-news" aria-label="Novità">
+      <h2>NUOVA VOCE USCITE CONTINUATIVE</h2>
+      <p>In data 06 Maggio 2020 è stata<br>introdotta la nuova voce<br>"Conguaglio imposte" tra le voci…<br>selezionabili del menù a tendina</p>
+      <i class="sp-dot" aria-hidden="true"></i>
+    </section>
+  </aside>
+
+  <main class="sp-main" id="sp-top">
+    <header class="sp-topbar">
+      <div class="sp-customer"><h1 data-bind="name"></h1><span>NDG: <span data-bind="ndg"></span></span></div>
+      <strong class="sp-mode">Visualizzazione in lettura</strong>
+      <button type="button" class="sp-print" aria-label="Stampa"></button>
+      <button type="button" class="sp-modify">Modifica</button>
+    </header>
+
+    <div class="sp-card">
+      <div class="sp-card-head">
+        <h2>SCHEDA PUNTUALE</h2>
+        <button type="button" class="sp-history">Visualizza storico</button>
+      </div>
+      <div class="sp-audit">
+        <h3 class="sp-saved">Ultima modifica</h3>
+        <div class="sp-audit-who"><span data-bind="lastChange.user"></span><span data-bind="lastChange.branch"></span><span data-bind="lastChange.bank"></span></div>
+        <strong class="sp-audit-when" data-bind="lastChange.when"></strong>
+        <h3 class="sp-validated">Ultima validazione</h3>
+        <div class="sp-audit-who"><span data-bind="lastValidation.user"></span><span data-bind="lastValidation.branch"></span><span data-bind="lastValidation.bank"></span></div>
+        <strong class="sp-audit-when" data-bind="fields.ultima_validazione_scheda"></strong>
+      </div>
+
+      <section id="entrate">
+        <h2 class="sp-section">ENTRATE CONTINUATIVE</h2>
+        <div class="sp-box sp-job">
+          <h3>REDDITI DA LAVORO / PENSIONE</h3>
+          <div class="sp-grid">
+            <label class="sp-field sp-plain"><span>PROFESSIONE PRINCIPALE</span><input data-bind="fields.professione_principale" readonly></label>
+            <label class="sp-field"><span>DAL</span><input data-bind="fields.dal" readonly></label>
+            <label class="sp-field"><span>NUMERO MENSILITÀ</span><input data-bind="fields.numero_mensilita" readonly></label>
+            <label class="sp-field"><span>RETRIBUZIONE ANNUA NETTA</span><input data-bind="fields.retribuzione_annua_netta" readonly></label>
+            <label class="sp-field sp-choice"><span>TIPO CONTRATTO</span><input data-bind="fields.tipo_contratto" readonly></label>
+          </div>
+          <div class="sp-box sp-employer">
+            <h3>DATORE DI LAVORO</h3>
+            <strong class="sp-census" data-show="!details.employerRegistered">NON CENSITO</strong>
+            <div class="sp-grid">
+              <label class="sp-field"><span>NDG</span><input data-bind="details.employerNdg" readonly></label>
+              <label class="sp-field"><span>ANAGRAFICA</span><input data-bind="fields.datore_di_lavoro_anagrafica" readonly></label>
+              <label class="sp-field"><span>DAL</span><input data-bind="details.employerFrom" readonly></label>
+              <label class="sp-field"><span>AL</span><input data-bind="details.employerTo" readonly></label>
+              <label class="sp-field sp-rating"><span>RATING UFFICIALE</span><input data-bind="fields.rating_ufficiale" readonly></label>
+              <label class="sp-field sp-choice"><span>CRIBIS CLASS - EX SCORE CGS</span><input data-bind="fields.score_cgs" readonly></label>
+            </div>
+          </div>
+          <div class="sp-inline">
+            <label class="sp-field"><span>REDDITI CANALIZZATI PRESSO LA BANCA O IL GRUPPO</span><input data-bind="details.incomeChanneled" readonly></label>
+            <label class="sp-field"><span>TITOLARE DI CARTE DI CREDITO A SALDO</span><input data-bind="details.creditCardBalance" readonly></label>
+          </div>
+        </div>
+      </section>
+
+      <section id="altre-entrate"><h2 class="sp-section">ALTRE ENTRATE CONTINUATIVE</h2></section>
+      <section id="uscite"><h2 class="sp-section">USCITE CONTINUATIVE <i class="sp-hint" aria-label="Informazioni"></i></h2></section>
+
+      <section id="situazione">
+        <h2 class="sp-section">SITUAZIONE FAMILIARE</h2>
+        <div class="sp-grid sp-family">
+          <label class="sp-field sp-choice"><span>SITUAZIONE ABITATIVA</span><input data-bind="details.housing" readonly></label>
+          <label class="sp-field"><span>DAL</span><input data-bind="details.housingFrom" readonly></label>
+          <label class="sp-field sp-choice"><span>NR. ALTRI COMPONENTI NUCLEO FAMILIARE</span><input data-bind="fields.nr_altri_componenti_nucleo" readonly></label>
+          <label class="sp-field sp-choice"><span>DI CUI PERCEPISCONO REDDITO</span><input data-bind="fields.di_cui_percepiscono_reddito" readonly></label>
+          <label class="sp-field"><span>IMPORTO TOTALE ANNUO ALTRI COMPONENTI NUCLEO FAMILIARE</span><input data-bind="fields.importo_totale_annuo_nucleo" readonly></label>
+        </div>
+      </section>
+
+      <section id="note">
+        <h2 class="sp-section">NOTE CONCLUSIVE</h2>
+        <label class="sp-field sp-notes"><span>NOTE</span><textarea data-bind="fields.note_scheda_privati" readonly></textarea></label>
+      </section>
+    </div>
+  </main>
+  <p id="sp-error" role="alert" hidden>Scheda non disponibile.</p>
+</body>
+</html>

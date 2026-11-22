@@ -460,7 +460,7 @@ Non può accadere da questo progetto -- non apre **nessuna** porta. Le voci `htt
 
 ### Dipendenze mancanti / versioni discordanti
 
-`requirements.txt` usa vincoli laschi e non c'è lockfile; `pyproject.toml` contiene soltanto la configurazione dei marker pytest, non dipendenze o metadati di build. Se un import fallisce, reinstalla nella venv. Occhio agli import pigri: `langchain-google-genai` si carica solo con `LLM_PROVIDER=gemini` (`src/extraction/llm_factory.py:57`), quindi un pacchetto Gemini mancante emerge solo quando cambi provider; `qt-material` è opzionale e la sua assenza fa solo perdere il tema (`src/edge-agent/edge_agent.py:37-44`).
+`requirements.txt` usa vincoli laschi e non c'è lockfile; `pyproject.toml` contiene soltanto la configurazione dei marker pytest, non dipendenze o metadati di build. Se un import fallisce, reinstalla nella venv. Occhio agli import pigri: `langchain-google-genai` si carica solo con `LLM_PROVIDER=gemini` (`src/extraction/llm_factory.py:57`), quindi un pacchetto Gemini mancante emerge solo quando cambi provider.
 
 ## Riferimento rapido
 

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "privacy": "aggregate-only; no queries, paths, source or stable identifiers",
+  "counters": {
+    "eligibleTurns": 0,
+    "indexReadyTurns": 0,
+    "turnsWithIndex": 1,
+    "turnsWithFallback": 3,
+    "fallbackTurnsWithoutIndex": 2,
+    "indexCalls": 1,
+    "emptyResults": 0,
+    "resultErrors": 0,
+    "returnedTokenEstimate": 61,
+    "fallbackCalls": 36,
+    "fallbackTokenEstimate": 149048
+  }
+}

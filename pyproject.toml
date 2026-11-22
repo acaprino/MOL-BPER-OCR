@@ -1,5 +1,5 @@
 [tool.pytest.ini_options]
-pythonpath = ["src", "src/edge-agent"]
+pythonpath = ["src", "src/edge-agent", "bper-emulator"]
 markers = [
     "slow: runs DINOv2 model inference on CPU",
 ]

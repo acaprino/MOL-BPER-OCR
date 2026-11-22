@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>BPER · Nuova PEF</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/app.css">
+  <link rel="stylesheet" href="/list.css">
+  <link rel="stylesheet" href="/detail.css">
+  <script defer src="/list.js"></script>
+  <script defer src="/detail.js"></script>
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <main>
+    <section id="stage" aria-label="Finestra Nuova PEF">
+      <div id="frame">
+        <div id="application">
+          <header class="pef-header" aria-label="Gestione Pratiche BPER">
+            <strong class="pef-brand">BPER</strong>
+            <span class="pef-section">Gestione Pratiche</span>
+            <div class="pef-user">
+              <span id="operator-name"></span>
+              <small id="operator-codes"></small>
+            </div>
+            <span class="pef-menu-dots" aria-hidden="true"></span>
+          </header>
+          <nav class="pef-nav" aria-label="Schede applicazione">
+            <span class="pef-arrow" aria-hidden="true"></span>
+            <span class="pef-home" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M.8 6.3 6 1.2l5.2 5.1M2.2 5v6.3h7.6V5M4.6 11.3V8h2.8v3.3"/></svg></span>
+            <button id="search-tab" class="pef-search" aria-label="Ricerca Pratica"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="5" cy="5" r="4.2"/><path d="m8 8 3.6 3.6"/></svg> Ricerca Pratica <i aria-hidden="true"></i></button>
+            <button id="list-tab" aria-label="Elenco Pratiche"><svg class="pef-grid" viewBox="0 0 13 11" aria-hidden="true"><rect width="13" height="11"/><path d="M0 3.5h13M0 7.5h13M4.5 3v8M8.5 3v8"/></svg> Elenco Pratiche <i aria-hidden="true"></i></button>
+            <button id="practice-tab" hidden><svg class="pef-gear" viewBox="0 0 12 12" aria-hidden="true"><circle class="pef-teeth" cx="6" cy="6" r="5"/><circle cx="6" cy="6" r="3.6"/><circle cx="6" cy="6" r="1.5"/></svg> <span id="practice-caption"></span> <i aria-hidden="true"></i></button>
+            <span class="pef-arrow right" aria-hidden="true"></span>
+          </nav>
+          <section id="list-view" aria-label="Elenco Pratiche"></section>
+          <section id="detail-view" aria-label="Dettaglio Pratica" hidden></section>
+        </div>
+        <img id="original" alt="" draggable="false" hidden>
+      </div>
+    </section>
+    <aside id="controls" aria-labelledby="console-title" hidden>
+      <h1 id="console-title">Simulatore Nuova PEF</h1>
+      <label for="practice">Pratica</label>
+      <select id="practice">
+        <option value="">Tutte le pratiche</option>
+      </select>
+      <label for="mode" hidden>Visualizzazione</label>
+      <select id="mode" hidden>
+        <option value="interactive">Replica interattiva</option>
+        <option value="reference">Riferimento visivo del sito</option>
+      </select>
+      <label for="screen">Schermata</label>
+      <select id="screen">
+        <option value="1">1 · Elenco pratiche</option>
+        <option value="2">2 · Colonne estese</option>
+        <option value="3">3 · Tooltip evidenze</option>
+        <option value="4">4 · Elenco soggetti</option>
+        <option value="5">5 · Fidi e garanzie</option>
+        <option value="6">6 · Descrizione fido</option>
+        <option value="7">7 · Prima garanzia</option>
+        <option value="8">8 · Seconda garanzia</option>
+        <option value="9">9 · Note da richiesta</option>
+      </select>
+      <div class="step-controls">
+        <button id="previous-screen" type="button">← Indietro</button>
+        <button id="next-screen" type="button">Avanti →</button>
+      </div>
+      <button type="button" id="open-capture">Apri finestra di cattura</button>
+      <a id="truth-download" download="dati.csv" hidden>Scarica dati.csv</a>
+      <p>Per l’edge-agent apri la finestra di cattura. Usa i tasti da <kbd>1</kbd> a <kbd>9</kbd> per richiamare una schermata.</p>
+    </aside>
+  </main>
+  <p id="error-message" role="alert" hidden></p>
+</body>
+</html>
