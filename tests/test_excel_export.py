@@ -172,3 +172,17 @@ def test_export_results_applies_corrections(tmp_path: Path) -> None:
     )
     column = [c.schema_key for c in build_columns()].index("tipo") + 1
     assert load_workbook(path).active.cell(row=3, column=column).value == "Mutuo"
+
+
+def test_export_results_writes_labels_as_inert_text(tmp_path: Path) -> None:
+    path = tmp_path / "labels.xlsx"
+    export_results([_frame("12345")], str(path), labels={"ndg": "=1+1"})
+    cell = load_workbook(path).active.cell(row=2, column=1)
+    assert (cell.data_type, cell.value) == ("s", "=1+1")
+
+
+def test_export_drops_characters_excel_refuses_from_extracted_values(tmp_path: Path) -> None:
+    path = tmp_path / "illegal.xlsx"
+    export_results([_frame("12345", tipo=("A\x07B", 0.9))], str(path))
+    column = [c.schema_key for c in build_columns()].index("tipo") + 1
+    assert load_workbook(path).active.cell(row=3, column=column).value == "AB"

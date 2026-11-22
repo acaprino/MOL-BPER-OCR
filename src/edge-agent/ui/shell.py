@@ -39,7 +39,7 @@ class NavRail(QtWidgets.QFrame):
         index = len(self._buttons)
         button = QtWidgets.QToolButton(self)
         button.setText(label)
-        button.setIcon(icons.icon(icon_name, theme.current_tokens().text, 20))
+        icons.bind_icon(button, icon_name, "text", 20)
         button.setIconSize(QtCore.QSize(20, 20))
         button.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         button.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
@@ -83,7 +83,9 @@ class StatusHeader(QtWidgets.QFrame):
         self.toggle_button = QtWidgets.QPushButton(self)
         self.toggle_button.setProperty("primary", True)
         self.toggle_button.setAccessibleName("Avvia o ferma la cattura")
-        self.toggle_button.setShortcut(QtGui.QKeySequence("F9"))
+        # Not setShortcut() on the button: QAbstractButton.setText() replaces it, and the
+        # text changes with the state (Avvia/Ferma). A window-level shortcut survives.
+        QtGui.QShortcut(QtGui.QKeySequence("F9"), self, activated=self.toggle_button.click)
         self.toggle_button.clicked.connect(self.toggle_requested)
 
         layout.addWidget(self.state_label)
@@ -91,10 +93,16 @@ class StatusHeader(QtWidgets.QFrame):
         layout.addStretch(1)
         layout.addWidget(self.toggle_button)
 
+        self._running = False
+        theme.notifier().changed.connect(self._retint)
         self.set_running(False)
         self.set_counters(0, 0, 0)
 
+    def _retint(self) -> None:
+        self.set_running(self._running)
+
     def set_running(self, running: bool) -> None:
+        self._running = running
         # State is spelled out in words, never carried by the glyph alone.
         self.state_label.setText("● Cattura in corso" if running else "○ Cattura ferma")
         self.toggle_button.setText("Ferma" if running else "Avvia")

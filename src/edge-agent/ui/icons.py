@@ -13,6 +13,7 @@ from PyQt6 import QtCore, QtGui
 from PyQt6.QtSvg import QSvgRenderer
 
 import app_paths
+import theme
 
 # The names Lucide gives the files; `assets/icons/LICENSE-lucide.txt` is the licence.
 ICON_NAMES: Final[Tuple[str, ...]] = (
@@ -57,3 +58,23 @@ def icon(name: str, color: str, size: int = 20) -> QtGui.QIcon:
     painter.end()
     pixmap.setDevicePixelRatio(ratio)
     return QtGui.QIcon(pixmap)
+
+
+class _IconBinder(QtCore.QObject):
+    """Keeps an icon in the colour of a theme token, also after the theme changes."""
+
+    def __init__(self, target: QtCore.QObject, name: str, token: str, size: int) -> None:
+        super().__init__(target)  # child of the target: it goes away with it
+        self._target = target
+        self._name, self._token, self._size = name, token, size
+        theme.notifier().changed.connect(self.refresh)
+        self.refresh()
+
+    def refresh(self) -> None:
+        colour = getattr(theme.current_tokens(), self._token)
+        self._target.setIcon(icon(self._name, colour, self._size))  # type: ignore[attr-defined]
+
+
+def bind_icon(target: QtCore.QObject, name: str, token: str = "text", size: int = 20) -> None:
+    """Give a button or an action the icon `name` in the colour of `token`, kept in step with the theme."""
+    _IconBinder(target, name, token, size)

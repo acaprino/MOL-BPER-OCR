@@ -33,12 +33,12 @@ from extraction.llm_factory import create_chat_model
 from extraction.pipeline import ExtractionPipeline
 from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR, PARALLEL_WORKERS
 from extraction.fields import FIELD_KEYS
-from extraction.normalization import is_nullish, normalize_ndg
+from extraction.normalization import normalize_ndg
 from prompt_store import catalog_source
 
 from excel_export import export_results
 from extraction_pool import DaemonThreadPool
-from practice_consolidation import CORRECTABLE_KEYS, PracticeRecord, consolidate
+from practice_consolidation import CORRECTABLE_KEYS, PracticeRecord, consolidate, has_content
 
 # Excel refuses cells longer than this, so a pasted text is cut here.
 MAX_CORRECTION_LENGTH = 32767
@@ -107,7 +107,7 @@ def _fingerprint(records: Sequence[PracticeRecord]) -> Optional[str]:
         (record.ndg, [(key, record.fields[key]["value"]) for key in FIELD_KEYS])
         for record in records
     ]
-    if not any(not is_nullish(value) for _, fields in rows for _, value in fields):
+    if not any(has_content(record) for record in records):
         return None
     return hashlib.sha1(json.dumps(rows, default=str, ensure_ascii=False).encode()).hexdigest()
 
@@ -266,6 +266,19 @@ class LocalExtractionClient(QtCore.QObject):
         """Number of queued frames not yet being processed."""
         return self._pool.pending()
 
+    def frames_in_progress(self) -> int:
+        """Frames accepted whose result is not exportable yet.
+
+        Unlike pending_extractions() this includes the frames a worker already picked
+        up, and the finished ones still waiting for an earlier frame to be published:
+        closing the window now would lose all of them.
+        """
+        with self._lock:
+            return sum(
+                accepted - len(self._results.get(job_id, []))
+                for job_id, accepted in self._next_capture_sequence.items()
+            )
+
     def shutdown(self) -> None:
         """Stop the pool: queued frames are discarded; running tasks cannot
         block process exit (daemon threads)."""
@@ -330,9 +343,12 @@ class LocalExtractionClient(QtCore.QObject):
 
     def set_column_label(self, schema_key: str, label: str) -> None:
         """Rename a column for every export (an empty label restores the canonical name)."""
+        if schema_key not in FIELD_KEYS:
+            raise ValueError(f"Colonna sconosciuta: {schema_key!r}")
+        cleaned = clean_correction(label)
         with self._lock:
-            if label.strip():
-                self._column_labels[schema_key] = label.strip()
+            if cleaned:
+                self._column_labels[schema_key] = cleaned
             else:
                 self._column_labels.pop(schema_key, None)
 

@@ -87,6 +87,8 @@ class DataTableTab(QWidget):
         self._reload_pending = False  # un risultato è arrivato mentre si scriveva in una cella
 
         self._init_ui()
+        # Le celle corrette hanno colori del tema: si ridisegnano se il tema cambia.
+        theme.notifier().changed.connect(self._reload_current)
 
         try:
             self._client.result_ready.connect(self._on_result_ready)
@@ -99,8 +101,6 @@ class DataTableTab(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(20, 16, 20, 16)
         layout.setSpacing(12)
-        tokens = theme.current_tokens()
-
         toolbar = QHBoxLayout()
         toolbar.setSpacing(10)
 
@@ -115,21 +115,22 @@ class DataTableTab(QWidget):
         self.search_box.setClearButtonEnabled(True)
         self.search_box.setMinimumWidth(300)
         self.search_box.setToolTip("Filtra le pratiche (Ctrl+F)")
-        self.search_box.addAction(
-            icons.icon("search", tokens.text_muted, 16), QLineEdit.ActionPosition.LeadingPosition
+        search_action = self.search_box.addAction(
+            icons.icon("search", theme.current_tokens().text_muted, 16), QLineEdit.ActionPosition.LeadingPosition
         )
+        icons.bind_icon(search_action, "search", "text_muted", 16)
         self.search_box.textChanged.connect(self._apply_filter)
         QtGui.QShortcut(QtGui.QKeySequence("Ctrl+F"), self, activated=self._focus_search)
 
         refresh_btn = QPushButton(self)
-        refresh_btn.setIcon(icons.icon("refresh-cw", tokens.text, 18))
+        icons.bind_icon(refresh_btn, "refresh-cw", "text", 18)
         refresh_btn.setToolTip("Ricarica l'elenco delle sessioni e la tabella")
         refresh_btn.setAccessibleName("Ricarica")
         refresh_btn.clicked.connect(self._refresh)
 
         self.export_button = QPushButton("Esporta Excel", self)
         self.export_button.setProperty("primary", True)
-        self.export_button.setIcon(icons.icon("download", tokens.on_primary, 18))
+        icons.bind_icon(self.export_button, "download", "on_primary", 18)
         self.export_button.setShortcut(QtGui.QKeySequence("Ctrl+E"))
         self.export_button.setToolTip("Esporta in Excel le pratiche della sessione (Ctrl+E)")
         self.export_button.clicked.connect(self._on_export_excel)

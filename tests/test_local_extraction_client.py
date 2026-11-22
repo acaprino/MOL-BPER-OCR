@@ -397,3 +397,70 @@ def test_session_labels_number_sessions_in_start_order() -> None:
     assert re.fullmatch(r"Sessione 1 · \d\d:\d\d", client.session_label(first))
     assert client.session_label(second).startswith("Sessione 2 · ")
     client.shutdown()
+
+
+# ============================================================
+# Final-review fixes: frames in progress, labels
+# ============================================================
+
+
+class BlockingPipeline:
+    """Answers at once, except the page 'slow', which waits until released."""
+
+    def __init__(self) -> None:
+        self.started = threading.Event()
+        self.release = threading.Event()
+
+    def extract_from_image(self, img: Image.Image, screen_id: str) -> dict[str, Any]:
+        if screen_id == "slow":
+            self.started.set()
+            self.release.wait(timeout=5.0)
+        return {"screen_id": screen_id, "fields": {"ndg": _field("123"), "tipo": _field("BPI Mutui")}, "_status": "OK"}
+
+
+def test_frames_in_progress_counts_frames_a_worker_already_picked_up() -> None:
+    app = _app()
+    pipeline = BlockingPipeline()
+    client = lec.LocalExtractionClient(pipeline=pipeline)
+    job = client.start_job()
+    assert client.frames_in_progress() == 0
+    client.ingest_frame(job, Image.new("RGB", (10, 10)), page_type="slow")
+    assert pipeline.started.wait(5.0)
+    assert client.pending_extractions() == 0  # the queue is empty: the frame is inside the pipeline
+    assert client.frames_in_progress() == 1
+    pipeline.release.set()
+    _wait_for(lambda: client.get_results(job), app)
+    assert client.frames_in_progress() == 0
+    client.shutdown()
+
+
+def test_set_column_label_is_cleaned_and_validated() -> None:
+    client = lec.LocalExtractionClient(pipeline=FakePipeline())
+    client.set_column_label("tipo", "  Tip\x07o ")
+    assert client.get_column_labels() == {"tipo": "Tipo"}
+    client.set_column_label("tipo", "")
+    assert client.get_column_labels() == {}
+    with pytest.raises(ValueError):
+        client.set_column_label("boh", "x")
+    client.shutdown()
+
+
+def test_a_formula_like_label_is_exported_as_inert_text(tmp_path) -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    client.set_column_label("tipo", "=1+1")
+    path = str(tmp_path / "out.xlsx")
+    client.export_workbook(job, path)
+    cell = _cell(path, "tipo", row=2)
+    assert (cell.data_type, cell.value) == ("s", "=1+1")
+    client.shutdown()
+
+
+def test_a_label_with_control_characters_does_not_break_the_export(tmp_path) -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    client.set_column_label("tipo", "\x07Tipo")
+    path = str(tmp_path / "out.xlsx")
+    client.export_workbook(job, path)
+    assert _cell(path, "tipo", row=2).value == "Tipo"
+    client.shutdown()

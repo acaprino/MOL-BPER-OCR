@@ -32,8 +32,9 @@ Correggere nella tabella non basta, per due motivi che stanno nel codice:
   resterebbe orfana.
 - **Solo in memoria, nessun salvataggio su disco**: sarebbero dati personali di clienti della banca.
   Alla chiusura con sessioni non esportate (impronta diversa da quella dell'ultimo export) un
-  dialogo avvisa, prima di fermare la cattura; non esporta da solo, perché ogni Avvia crea una
-  sessione e un export ne scrive una sola.
+  dialogo avvisa, prima di fermare la cattura, e avvisa anche se ci sono frame ancora in
+  elaborazione (`frames_in_progress()`, che include quelli già presi da un worker: `shutdown()` li
+  scarta); non esporta da solo, perché ogni Avvia crea una sessione e un export ne scrive una sola.
 - **Tema proprio** in `src/edge-agent/theme.py`: token di colore, stylesheet, chiaro di default che
   segue Windows, scuro disponibile. Sostituisce `qt-material`. Il modulo è top-level e non importa
   `extraction`, perché si applica prima del preflight e `ui/__init__.py` importa `main_window`

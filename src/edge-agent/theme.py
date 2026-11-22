@@ -13,7 +13,7 @@ from pathlib import Path
 from string import Template
 from typing import Optional
 
-from PyQt6 import QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt
 
 import app_paths
@@ -145,7 +145,8 @@ QPushButton:focus { border: 2px solid $focus; padding: 5px 13px; }
 QPushButton:disabled { color: $text_muted; background: $background; border-color: $border; }
 QPushButton[primary="true"] { background: $primary; color: $on_primary; border: 1px solid $primary; }
 QPushButton[primary="true"]:hover { background: $primary_hover; }
-QPushButton[primary="true"]:focus { border: 2px solid $focus; }
+/* the ring is the text colour: it stands out from the page around the button */
+QPushButton[primary="true"]:focus { border: 2px solid $text; }
 QPushButton[primary="true"]:disabled { background: $surface_alt; color: $text_muted; border-color: $border; }
 
 QLineEdit, QSpinBox, QComboBox, QTextEdit, QPlainTextEdit {
@@ -202,11 +203,14 @@ def _tinted_icon_path(name: str, color: str) -> str:
     source = app_paths.bundled_assets_dir() / "icons" / f"{name}.svg"
     if not source.is_file():
         return ""
-    folder = Path(tempfile.gettempdir()) / "edge-agent-theme"
-    folder.mkdir(parents=True, exist_ok=True)
-    target = folder / f"{name}-{color.lstrip('#')}.svg"
-    if not target.is_file():
-        target.write_text(source.read_text(encoding="utf-8").replace("currentColor", color), encoding="utf-8")
+    try:
+        folder = Path(tempfile.gettempdir()) / "edge-agent-theme"
+        folder.mkdir(parents=True, exist_ok=True)
+        target = folder / f"{name}-{color.lstrip('#')}.svg"
+        if not target.is_file():
+            target.write_text(source.read_text(encoding="utf-8").replace("currentColor", color), encoding="utf-8")
+    except OSError:
+        return ""  # a locked-down temp folder must not stop the app: the arrow is just absent
     return target.as_posix()
 
 
@@ -223,6 +227,19 @@ def build_stylesheet(tokens: Tokens) -> str:
 _current: Tokens = LIGHT
 _pinned: Optional[Qt.ColorScheme] = None
 _following: bool = False
+
+
+class _Notifier(QtCore.QObject):
+    """Tells the widgets that tint their own icons or cells that the tokens changed."""
+
+    changed = QtCore.pyqtSignal()
+
+
+_notifier = _Notifier()
+
+
+def notifier() -> _Notifier:
+    return _notifier
 
 
 def current_tokens() -> Tokens:
@@ -260,6 +277,7 @@ def _apply(app: QtWidgets.QApplication) -> Tokens:
     app.setFont(QtGui.QFont("Segoe UI", 10))
     app.setPalette(_palette(_current))
     app.setStyleSheet(build_stylesheet(_current))
+    _notifier.changed.emit()
     return _current
 
 

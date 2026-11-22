@@ -60,6 +60,7 @@ class CollapsiblePanel(QtWidgets.QFrame):
         layout.addWidget(content, stretch=1)
 
         self.toggle_button.toggled.connect(self.set_expanded)
+        theme.notifier().changed.connect(self._refresh_icon)
         self.set_expanded(False)
 
     def is_expanded(self) -> bool:
@@ -70,14 +71,16 @@ class CollapsiblePanel(QtWidgets.QFrame):
             self.toggle_button.setChecked(expanded)  # re-enters here through toggled
             return
         self._content.setVisible(expanded)
-        self.toggle_button.setIcon(
-            icons.icon("chevron-down" if expanded else "chevron-right", theme.current_tokens().text, 16)
-        )
+        self._refresh_icon()
         # Closed, the panel hugs its header; open, it takes the room that is left.
         self.setSizePolicy(
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Expanding if expanded else QtWidgets.QSizePolicy.Policy.Maximum,
         )
+
+    def _refresh_icon(self) -> None:
+        name = "chevron-down" if self.is_expanded() else "chevron-right"
+        self.toggle_button.setIcon(icons.icon(name, theme.current_tokens().text, 16))
 
     def set_summary(self, text: str) -> None:
         self.summary_label.setText(text)

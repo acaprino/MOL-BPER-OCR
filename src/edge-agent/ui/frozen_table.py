@@ -108,3 +108,30 @@ class FrozenColumnsTable(QTableWidget):
         # A frozen cell is always visible: do not scroll sideways for it.
         if index.column() >= self.frozen_count:
             super().scrollTo(index, hint)
+
+    def edit(self, index, trigger=None, event=None):  # type: ignore[override]
+        """Open the editor in the view that is on top for that cell.
+
+        A frozen cell is covered by the frozen view: an editor opened here (F2, a
+        keystroke) would sit under it, invisible, and still take what the operator
+        types. The key that started a typed edit is not forwarded.
+        """
+        if index.isValid() and index.column() < self.frozen_count and self._wants_edit(index, trigger, event):
+            self.frozen_view.edit(index)
+            return self.frozen_view.state() == QAbstractItemView.State.EditingState
+        if trigger is None:
+            return super().edit(index)
+        return super().edit(index, trigger, event)
+
+    def _wants_edit(self, index, trigger, event) -> bool:
+        """Would this view start an editor for that trigger? (Qt also calls edit() just to ask.)"""
+        triggers = QAbstractItemView.EditTrigger
+        if not index.flags() & QtCore.Qt.ItemFlag.ItemIsEditable:
+            return False
+        if trigger is None or trigger == triggers.AllEditTriggers:
+            return True
+        if trigger == triggers.EditKeyPressed:
+            return bool(self.editTriggers() & triggers.EditKeyPressed)
+        if trigger == triggers.AnyKeyPressed:
+            return bool(self.editTriggers() & triggers.AnyKeyPressed) and event is not None and bool(event.text().strip())
+        return False

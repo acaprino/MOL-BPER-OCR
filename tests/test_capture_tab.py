@@ -52,7 +52,7 @@ def test_error_lines_are_counted_in_the_panel_summary(tab: CaptureTab) -> None:
 
 def test_a_worker_error_shows_a_plain_message_and_keeps_the_technical_line_in_the_log(tab: CaptureTab) -> None:
     tab._on_worker_error(RuntimeError("mss failed"))
-    assert "Cattura interrotta da un errore" in tab.log_panel.summary_label.text()
+    assert "Errore durante la cattura" in tab.log_panel.summary_label.text()
     assert "RuntimeError: mss failed" in tab.log_text.toPlainText()
     assert tab.log_error_count() == 1
 

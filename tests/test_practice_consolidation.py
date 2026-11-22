@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, Optional
 
-from practice_consolidation import PracticeRecord, consolidate, is_correctable, normalize_ndg
+from practice_consolidation import PracticeRecord, consolidate, has_content, is_correctable, normalize_ndg
 
 
 def _frame(
@@ -184,3 +184,9 @@ def test_is_correctable_excludes_ndg_and_records_without_ndg() -> None:
     anonymous = consolidate([_frame(None, tipo=("A", 0.9))])[0]
     assert is_correctable(with_ndg, "tipo") and not is_correctable(with_ndg, "ndg")
     assert not is_correctable(anonymous, "tipo")
+
+
+def test_has_content_is_false_for_an_error_only_record_and_true_with_a_value() -> None:
+    error_only = consolidate([{"fields": {}, "_status": "ERROR"}])[0]
+    assert not has_content(error_only)
+    assert has_content(consolidate([_frame("12345")])[0])

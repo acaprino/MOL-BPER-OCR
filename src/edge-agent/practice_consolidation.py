@@ -58,6 +58,15 @@ def is_correctable(record: PracticeRecord, schema_key: str) -> bool:
     return record.ndg is not None and schema_key in CORRECTABLE_KEYS
 
 
+def has_content(record: PracticeRecord) -> bool:
+    """Whether any field of the practice holds a value.
+
+    A session of errors only consolidates to one empty record: it is not a practice
+    to count, show a total for, or warn about.
+    """
+    return any(not is_nullish(field["value"]) for field in record.fields.values())
+
+
 # ============================================================
 # NDG identity
 # ============================================================

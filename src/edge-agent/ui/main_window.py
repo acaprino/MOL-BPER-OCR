@@ -7,9 +7,8 @@ from typing import List, Optional, Sequence
 from PyQt6 import QtWidgets
 import theme
 from config import AgentConfig
-from extraction.normalization import is_nullish
 from local_extraction_client import LocalExtractionClient
-from practice_consolidation import consolidate
+from practice_consolidation import consolidate, has_content
 
 from .capture_tab import CaptureTab
 from .data_table_tab import DataTableTab
@@ -24,14 +23,15 @@ from . import win_effects
 
 def leave_message(labels: Sequence[str], pending: int) -> str:
     """Text of the dialog shown when closing with sessions not exported yet."""
-    lines = ["Ci sono dati non ancora esportati:"]
-    lines += [f"• {label}" for label in labels]
-    lines.append("")
+    parts = []
+    if labels:
+        parts.append("Ci sono dati non ancora esportati:\n" + "\n".join(f"• {label}" for label in labels))
     if pending > 0:
-        lines.append(f"{pending} frame ancora in elaborazione: il loro risultato non sarà incluso.")
-        lines.append("")
-    lines.append("Se esci ora andranno persi.")
-    return "\n".join(lines)
+        note = "il loro risultato non sarà incluso" if labels else "se esci ora andranno persi"
+        parts.append(f"{pending} frame ancora in elaborazione: {note}.")
+    if labels:
+        parts.append("Se esci ora andranno persi.")
+    return "\n\n".join(parts)
 
 
 # ============================================================
@@ -164,10 +164,7 @@ class MainWindow(QtWidgets.QMainWindow):
         practices = 0
         if job_id:
             records = consolidate(self.extraction_client.get_results(job_id))
-            practices = sum(
-                1 for record in records
-                if any(not is_nullish(field["value"]) for field in record.fields.values())
-            )
+            practices = sum(1 for record in records if has_content(record))
         self.header.set_counters(queued, done, practices)
 
     # ------------------------------------------------------------------ Chiusura finestra
@@ -188,9 +185,11 @@ class MainWindow(QtWidgets.QMainWindow):
     def closeEvent(self, event) -> None:  # type: ignore[override]
         # Prima di fermare la cattura: chi torna indietro non deve perdere nulla.
         unexported = self.extraction_client.unexported_jobs()
-        if unexported:
+        # Frames still being extracted count even when nothing is "modified" yet:
+        # shutdown() discards them, so their result would be lost without a word.
+        pending = self.extraction_client.frames_in_progress()
+        if unexported or pending > 0:
             labels = [self.extraction_client.session_label(job_id) for job_id in unexported]
-            pending = self.extraction_client.pending_extractions()
             if not self._ask_leave_unexported(labels, pending):
                 event.ignore()
                 return

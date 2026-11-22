@@ -62,3 +62,38 @@ def test_apply_theme_can_pin_a_scheme(qapp) -> None:
     assert theme.apply_theme(qapp, Qt.ColorScheme.Dark) is theme.DARK
     assert theme.current_tokens() is theme.DARK
     assert theme.apply_theme(qapp, Qt.ColorScheme.Light) is theme.LIGHT
+
+
+# ============================================================
+# Final-review fixes
+# ============================================================
+
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QPushButton
+
+
+@pytest.mark.parametrize("scheme", [Qt.ColorScheme.Light, Qt.ColorScheme.Dark], ids=["light", "dark"])
+@pytest.mark.parametrize("primary", [False, True], ids=["secondary", "primary"])
+def test_keyboard_focus_is_visible_on_every_button(qapp, scheme, primary: bool) -> None:
+    theme.apply_theme(qapp, scheme)
+    button = QPushButton("Avvia")
+    button.setProperty("primary", primary)
+    button.show()
+    button.activateWindow()
+    assert QTest.qWaitForWindowActive(button, 2000), "the window never became active"
+    button.clearFocus()  # a lone button takes focus when its window activates
+    qapp.processEvents()
+    before = button.grab().toImage()
+    button.setFocus(Qt.FocusReason.TabFocusReason)
+    qapp.processEvents()
+    after = button.grab().toImage()
+    button.hide()
+    theme.apply_theme(qapp)
+    assert before != after
+
+
+def test_the_stylesheet_builds_when_the_temp_folder_is_not_writable(monkeypatch, tmp_path) -> None:
+    blocker = tmp_path / "not-a-folder"
+    blocker.write_text("x")
+    monkeypatch.setattr(theme.tempfile, "gettempdir", lambda: str(blocker))
+    assert "QPushButton" in theme.build_stylesheet(theme.LIGHT)

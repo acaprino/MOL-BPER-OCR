@@ -16,6 +16,7 @@ from PyQt6 import QtCore, QtWidgets
 from PyQt6.QtTest import QTest
 
 import local_extraction_client as lec
+import theme
 from ui.data_table_tab import CORRECTED_ROLE, DataTableTab
 
 PRACTICES = {
@@ -245,3 +246,20 @@ def test_editing_a_frozen_column_stores_a_correction_and_defers_reloads(tab: Dat
     qapp.processEvents()
     assert client.get_corrections(job) == {"111": {"denominazione": "Alfa Costruzioni 2"}}
     assert tab.table.item(row, col).text() == "Alfa Costruzioni 2"
+
+
+def test_corrected_cells_follow_a_theme_change(tab: DataTableTab, client, qapp) -> None:
+    from PyQt6.QtCore import Qt
+
+    theme.apply_theme(qapp, Qt.ColorScheme.Light)
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    _edit(tab, qapp, "111", "tipo", "Mutuo")
+    row, col = _locate(tab, "111", "tipo")
+    assert tab.table.item(row, col).background().color().name() == theme.LIGHT.corrected_bg.lower()
+    theme.apply_theme(qapp, Qt.ColorScheme.Dark)
+    qapp.processEvents()
+    try:
+        assert tab.table.item(row, col).background().color().name() == theme.DARK.corrected_bg.lower()
+    finally:
+        theme.apply_theme(qapp)

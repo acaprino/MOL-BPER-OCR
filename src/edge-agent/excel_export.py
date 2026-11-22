@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from openpyxl import Workbook
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.worksheet import Worksheet
@@ -133,10 +134,12 @@ def _set_text(ws: Worksheet, row: int, col: int, value: Any) -> Any:
     the leading apostrophe the CSV convention would leave visible.
     """
     cell = ws.cell(row=row, column=col)
-    if value is None or str(value).strip() == "":
+    # Characters Excel refuses would make openpyxl raise and lose the whole export.
+    text = "" if value is None else ILLEGAL_CHARACTERS_RE.sub("", str(value))
+    if text.strip() == "":
         cell.value = None
     else:
-        cell.value = str(value)
+        cell.value = text
         cell.data_type = "s"
     return cell
 
@@ -164,8 +167,7 @@ def _write_page_bands(ws: Worksheet, columns: Sequence[ColumnSpec]) -> None:
 def _write_labels(ws: Worksheet, columns: Sequence[ColumnSpec]) -> None:
     fill = PatternFill("solid", start_color=LABEL_FILL)
     for index, column in enumerate(columns, start=1):
-        cell = ws.cell(row=2, column=index)
-        cell.value = column.label
+        cell = _set_text(ws, 2, index, column.label)
         cell.font = Font(bold=True)
         cell.fill = fill
         cell.border = _BORDER

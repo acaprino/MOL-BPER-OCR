@@ -22,7 +22,6 @@ from PyQt6.QtWidgets import (
     QAbstractSpinBox,
 )
 from config import AgentConfig
-import theme
 from workers.capture import (
     BaseCaptureWorker,
     DefaultCaptureWorker,
@@ -90,7 +89,6 @@ class CaptureTab(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(20, 16, 20, 16)
         layout.setSpacing(14)
-        tokens = theme.current_tokens()
 
         # --- Card impostazioni (si blocca mentre si cattura) ---
         self.settings_card = Card("Impostazioni", self)
@@ -143,12 +141,12 @@ class CaptureTab(QWidget):
         self.force_page_combo.setMinimumWidth(220)
         self.force_page_combo.setToolTip("Pagina da acquisire subito")
         self.force_capture_button = QPushButton("Acquisisci ora", self)
-        self.force_capture_button.setIcon(icons.icon("camera", tokens.text, 18))
+        icons.bind_icon(self.force_capture_button, "camera", "text", 18)
         self.force_capture_button.setToolTip("Acquisisci subito la pagina scelta (solo in modalità BPER)")
         self.force_capture_button.setEnabled(False)
 
         self.export_button = QPushButton("Esporta Excel", self)
-        self.export_button.setIcon(icons.icon("download", tokens.text, 18))
+        icons.bind_icon(self.export_button, "download", "text", 18)
         self.export_button.setShortcut(QtGui.QKeySequence("Ctrl+E"))
         self.export_button.setToolTip("Esporta in Excel le pratiche della sessione (Ctrl+E)")
 
@@ -357,7 +355,8 @@ class CaptureTab(QWidget):
         # Riga tecnica nel registro; chi lo tiene chiuso legge una frase chiara.
         self._log(
             f"[WORKER ERROR] {type(exc).__name__}: {exc}",
-            summary="Cattura interrotta da un errore. Apri il registro per i dettagli.",
+            # La cattura continua: il worker segnala l'errore a ogni giro e riprova.
+            summary="Errore durante la cattura. Apri il registro per i dettagli.",
         )
 
     # ------------------------------------------------------------------ Azioni backend
