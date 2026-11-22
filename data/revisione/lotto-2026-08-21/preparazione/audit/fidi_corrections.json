@@ -1,0 +1,4096 @@
+{
+  "coordinate_system": "original pixels, right/bottom exclusive",
+  "method": "All 16 contact pages visually reviewed; corrections isolate rendered glyphs by colour within manually localized value regions. No OCR, transcription, cloud service or resampling. Two-pixel margin surrounds value glyphs.",
+  "source_manifest_sha256": "5260aa415f4e9324a0c706b104051e4ea441d6ee7e306469f7078efffab05c3d",
+  "counts": {
+    "screens": 16,
+    "visible_corrections": 126,
+    "nonvisible_kept_null": 44
+  },
+  "corrections": [
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "n_fido",
+      "target_bbox": [
+        427,
+        423,
+        443,
+        437
+      ],
+      "context_bbox": [
+        412,
+        356,
+        495,
+        456
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        415,
+        410,
+        485,
+        453
+      ],
+      "ink_bbox": [
+        429,
+        425,
+        441,
+        435
+      ],
+      "excel_row": 27
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "rapporto",
+      "target_bbox": [
+        505,
+        413,
+        591,
+        446
+      ],
+      "context_bbox": [
+        475,
+        356,
+        616,
+        456
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        485,
+        410,
+        606,
+        453
+      ],
+      "ink_bbox": [
+        507,
+        415,
+        589,
+        444
+      ],
+      "excel_row": 28
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "descrizione",
+      "target_bbox": [
+        623,
+        413,
+        692,
+        446
+      ],
+      "context_bbox": [
+        596,
+        356,
+        704,
+        456
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        606,
+        410,
+        694,
+        453
+      ],
+      "ink_bbox": [
+        625,
+        415,
+        690,
+        444
+      ],
+      "excel_row": 29
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "scadenza",
+      "target_bbox": [
+        708,
+        423,
+        774,
+        437
+      ],
+      "context_bbox": [
+        684,
+        356,
+        795,
+        453
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        694,
+        410,
+        785,
+        439
+      ],
+      "ink_bbox": [
+        710,
+        425,
+        772,
+        435
+      ],
+      "excel_row": 30
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        818,
+        423,
+        866,
+        437
+      ],
+      "context_bbox": [
+        775,
+        356,
+        881,
+        453
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        785,
+        410,
+        871,
+        439
+      ],
+      "ink_bbox": [
+        820,
+        425,
+        864,
+        435
+      ],
+      "excel_row": 31
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        876,
+        423,
+        940,
+        437
+      ],
+      "context_bbox": [
+        861,
+        356,
+        959,
+        453
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        871,
+        410,
+        949,
+        439
+      ],
+      "ink_bbox": [
+        878,
+        425,
+        938,
+        435
+      ],
+      "excel_row": 32
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "tooltip_descrizione_m_consap",
+      "target_bbox": [
+        695,
+        447,
+        1007,
+        462
+      ],
+      "context_bbox": [
+        415,
+        356,
+        1415,
+        474
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        686,
+        439,
+        1017,
+        471
+      ],
+      "ink_bbox": [
+        697,
+        449,
+        1005,
+        460
+      ],
+      "excel_row": 33
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "n_fido",
+      "target_bbox": [
+        426,
+        368,
+        442,
+        382
+      ],
+      "context_bbox": [
+        411,
+        301,
+        492,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        414,
+        355,
+        482,
+        398
+      ],
+      "ink_bbox": [
+        428,
+        370,
+        440,
+        380
+      ],
+      "excel_row": 38
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "rapporto",
+      "target_bbox": [
+        504,
+        358,
+        590,
+        391
+      ],
+      "context_bbox": [
+        472,
+        301,
+        615,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        482,
+        355,
+        605,
+        398
+      ],
+      "ink_bbox": [
+        506,
+        360,
+        588,
+        389
+      ],
+      "excel_row": 39
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "descrizione",
+      "target_bbox": [
+        622,
+        358,
+        691,
+        391
+      ],
+      "context_bbox": [
+        595,
+        301,
+        703,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        605,
+        355,
+        693,
+        398
+      ],
+      "ink_bbox": [
+        624,
+        360,
+        689,
+        389
+      ],
+      "excel_row": 40
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "scadenza",
+      "target_bbox": [
+        707,
+        368,
+        773,
+        382
+      ],
+      "context_bbox": [
+        683,
+        301,
+        793,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        693,
+        355,
+        783,
+        398
+      ],
+      "ink_bbox": [
+        709,
+        370,
+        771,
+        380
+      ],
+      "excel_row": 41
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        817,
+        368,
+        865,
+        382
+      ],
+      "context_bbox": [
+        773,
+        301,
+        879,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        783,
+        355,
+        869,
+        398
+      ],
+      "ink_bbox": [
+        819,
+        370,
+        863,
+        380
+      ],
+      "excel_row": 42
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        875,
+        368,
+        939,
+        382
+      ],
+      "context_bbox": [
+        859,
+        301,
+        958,
+        406
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        869,
+        355,
+        948,
+        398
+      ],
+      "ink_bbox": [
+        877,
+        370,
+        937,
+        380
+      ],
+      "excel_row": 43
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "tooltip_descrizione_consap_dr_bis",
+      "target_bbox": [
+        563,
+        557,
+        864,
+        572
+      ],
+      "context_bbox": [
+        414,
+        444,
+        1414,
+        604
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        555,
+        549,
+        875,
+        582
+      ],
+      "ink_bbox": [
+        565,
+        559,
+        862,
+        570
+      ],
+      "excel_row": 44
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "n_fido",
+      "target_bbox": [
+        420,
+        368,
+        436,
+        382
+      ],
+      "context_bbox": [
+        405,
+        301,
+        486,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        408,
+        355,
+        476,
+        398
+      ],
+      "ink_bbox": [
+        422,
+        370,
+        434,
+        380
+      ],
+      "excel_row": 49
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "rapporto",
+      "target_bbox": [
+        498,
+        358,
+        584,
+        391
+      ],
+      "context_bbox": [
+        466,
+        301,
+        609,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        476,
+        355,
+        599,
+        398
+      ],
+      "ink_bbox": [
+        500,
+        360,
+        582,
+        389
+      ],
+      "excel_row": 50
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "descrizione",
+      "target_bbox": [
+        616,
+        358,
+        685,
+        391
+      ],
+      "context_bbox": [
+        589,
+        301,
+        697,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        599,
+        355,
+        687,
+        398
+      ],
+      "ink_bbox": [
+        618,
+        360,
+        683,
+        389
+      ],
+      "excel_row": 51
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "scadenza",
+      "target_bbox": [
+        701,
+        368,
+        767,
+        382
+      ],
+      "context_bbox": [
+        677,
+        301,
+        787,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        687,
+        355,
+        777,
+        398
+      ],
+      "ink_bbox": [
+        703,
+        370,
+        765,
+        380
+      ],
+      "excel_row": 52
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        811,
+        368,
+        859,
+        382
+      ],
+      "context_bbox": [
+        767,
+        301,
+        873,
+        401
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        777,
+        355,
+        863,
+        398
+      ],
+      "ink_bbox": [
+        813,
+        370,
+        857,
+        380
+      ],
+      "excel_row": 53
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        869,
+        368,
+        933,
+        382
+      ],
+      "context_bbox": [
+        853,
+        301,
+        952,
+        406
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        863,
+        355,
+        942,
+        398
+      ],
+      "ink_bbox": [
+        871,
+        370,
+        931,
+        380
+      ],
+      "excel_row": 54
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "tooltip_descrizione_ipoteca",
+      "target_bbox": [
+        569,
+        601,
+        774,
+        616
+      ],
+      "context_bbox": [
+        408,
+        444,
+        1408,
+        629
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        560,
+        593,
+        785,
+        626
+      ],
+      "ink_bbox": [
+        571,
+        603,
+        772,
+        614
+      ],
+      "excel_row": 55
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "ndg",
+      "target_bbox": [
+        369,
+        333,
+        408,
+        343
+      ],
+      "context_bbox": [
+        330,
+        313,
+        425,
+        412
+      ],
+      "reason": "Include soltanto le cifre del campo, escludendo il trattino separatore della testata.",
+      "previous_target_bbox": [
+        370,
+        331,
+        413,
+        343
+      ],
+      "ink_bbox": [
+        371,
+        335,
+        406,
+        341
+      ],
+      "excel_row": 63
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "denominazione",
+      "target_bbox": [
+        413,
+        333,
+        510,
+        343
+      ],
+      "context_bbox": [
+        399,
+        313,
+        522,
+        412
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        415,
+        331,
+        510,
+        343
+      ],
+      "ink_bbox": [
+        415,
+        335,
+        508,
+        341
+      ],
+      "excel_row": 64
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "tipo",
+      "target_bbox": [
+        853,
+        314,
+        893,
+        325
+      ],
+      "context_bbox": [
+        756,
+        308,
+        909,
+        412
+      ],
+      "reason": "Include soltanto il testo rosso del valore, escludendo il trattino separatore successivo.",
+      "previous_target_bbox": [
+        852,
+        313,
+        897,
+        326
+      ],
+      "ink_bbox": [
+        855,
+        316,
+        891,
+        323
+      ],
+      "excel_row": 65
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "filiale_relazione",
+      "target_bbox": [
+        874,
+        362,
+        959,
+        372
+      ],
+      "context_bbox": [
+        761,
+        313,
+        977,
+        412
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        876,
+        360,
+        970,
+        374
+      ],
+      "ink_bbox": [
+        876,
+        364,
+        957,
+        370
+      ],
+      "excel_row": 66
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "n_fido",
+      "target_bbox": [
+        338,
+        536,
+        349,
+        546
+      ],
+      "context_bbox": [
+        327,
+        494,
+        385,
+        559
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        330,
+        527,
+        375,
+        556
+      ],
+      "ink_bbox": [
+        340,
+        538,
+        347,
+        544
+      ],
+      "excel_row": 67
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "rapporto",
+      "target_bbox": [
+        384,
+        530,
+        441,
+        552
+      ],
+      "context_bbox": [
+        365,
+        494,
+        460,
+        559
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        375,
+        527,
+        450,
+        556
+      ],
+      "ink_bbox": [
+        386,
+        532,
+        439,
+        550
+      ],
+      "excel_row": 68
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "descrizione",
+      "target_bbox": [
+        455,
+        536,
+        521,
+        546
+      ],
+      "context_bbox": [
+        440,
+        494,
+        527,
+        559
+      ],
+      "reason": "Include anche la coda del testo che oltrepassa il precedente bordo della cella, senza includere il campo successivo.",
+      "previous_target_bbox": [
+        450,
+        527,
+        515,
+        556
+      ],
+      "ink_bbox": [
+        457,
+        538,
+        519,
+        544
+      ],
+      "excel_row": 69
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "scadenza",
+      "target_bbox": [
+        530,
+        536,
+        565,
+        546
+      ],
+      "context_bbox": [
+        505,
+        494,
+        574,
+        559
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        515,
+        527,
+        564,
+        556
+      ],
+      "ink_bbox": [
+        532,
+        538,
+        563,
+        544
+      ],
+      "excel_row": 70
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        598,
+        536,
+        626,
+        546
+      ],
+      "context_bbox": [
+        554,
+        494,
+        635,
+        559
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        564,
+        527,
+        625,
+        556
+      ],
+      "ink_bbox": [
+        600,
+        538,
+        624,
+        544
+      ],
+      "excel_row": 71
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        636,
+        530,
+        667,
+        552
+      ],
+      "context_bbox": [
+        615,
+        494,
+        687,
+        564
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        625,
+        527,
+        677,
+        556
+      ],
+      "ink_bbox": [
+        638,
+        532,
+        665,
+        550
+      ],
+      "excel_row": 72
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "n_fido",
+      "target_bbox": [
+        430,
+        282,
+        446,
+        296
+      ],
+      "context_bbox": [
+        414,
+        229,
+        488,
+        316
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        417,
+        269,
+        478,
+        313
+      ],
+      "ink_bbox": [
+        432,
+        284,
+        444,
+        294
+      ],
+      "excel_row": 77
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "rapporto",
+      "target_bbox": [
+        504,
+        273,
+        591,
+        305
+      ],
+      "context_bbox": [
+        468,
+        229,
+        615,
+        316
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        478,
+        269,
+        605,
+        313
+      ],
+      "ink_bbox": [
+        506,
+        275,
+        589,
+        303
+      ],
+      "excel_row": 78
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "descrizione",
+      "target_bbox": [
+        615,
+        282,
+        716,
+        296
+      ],
+      "context_bbox": [
+        595,
+        229,
+        730,
+        316
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        605,
+        269,
+        720,
+        313
+      ],
+      "ink_bbox": [
+        617,
+        284,
+        714,
+        294
+      ],
+      "excel_row": 79
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "scadenza",
+      "target_bbox": [
+        732,
+        282,
+        785,
+        296
+      ],
+      "context_bbox": [
+        710,
+        229,
+        809,
+        316
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        720,
+        269,
+        799,
+        313
+      ],
+      "ink_bbox": [
+        734,
+        284,
+        783,
+        294
+      ],
+      "excel_row": 80
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        839,
+        282,
+        880,
+        296
+      ],
+      "context_bbox": [
+        789,
+        229,
+        894,
+        316
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        799,
+        269,
+        884,
+        313
+      ],
+      "ink_bbox": [
+        841,
+        284,
+        878,
+        294
+      ],
+      "excel_row": 81
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        897,
+        273,
+        944,
+        305
+      ],
+      "context_bbox": [
+        874,
+        229,
+        969,
+        316
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        884,
+        269,
+        959,
+        313
+      ],
+      "ink_bbox": [
+        899,
+        275,
+        942,
+        303
+      ],
+      "excel_row": 82
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "n_fido",
+      "target_bbox": [
+        427,
+        276,
+        443,
+        290
+      ],
+      "context_bbox": [
+        411,
+        223,
+        485,
+        310
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        414,
+        263,
+        475,
+        307
+      ],
+      "ink_bbox": [
+        429,
+        278,
+        441,
+        288
+      ],
+      "excel_row": 87
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "rapporto",
+      "target_bbox": [
+        501,
+        267,
+        588,
+        299
+      ],
+      "context_bbox": [
+        465,
+        223,
+        612,
+        310
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        475,
+        263,
+        602,
+        307
+      ],
+      "ink_bbox": [
+        503,
+        269,
+        586,
+        297
+      ],
+      "excel_row": 88
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "descrizione",
+      "target_bbox": [
+        612,
+        276,
+        713,
+        290
+      ],
+      "context_bbox": [
+        592,
+        223,
+        727,
+        310
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        602,
+        263,
+        717,
+        307
+      ],
+      "ink_bbox": [
+        614,
+        278,
+        711,
+        288
+      ],
+      "excel_row": 89
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "scadenza",
+      "target_bbox": [
+        729,
+        276,
+        782,
+        290
+      ],
+      "context_bbox": [
+        707,
+        223,
+        806,
+        310
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        717,
+        263,
+        796,
+        307
+      ],
+      "ink_bbox": [
+        731,
+        278,
+        780,
+        288
+      ],
+      "excel_row": 90
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        836,
+        276,
+        877,
+        290
+      ],
+      "context_bbox": [
+        786,
+        223,
+        891,
+        310
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        796,
+        263,
+        881,
+        307
+      ],
+      "ink_bbox": [
+        838,
+        278,
+        875,
+        288
+      ],
+      "excel_row": 91
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        894,
+        267,
+        941,
+        299
+      ],
+      "context_bbox": [
+        871,
+        223,
+        966,
+        310
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        881,
+        263,
+        956,
+        307
+      ],
+      "ink_bbox": [
+        896,
+        269,
+        939,
+        297
+      ],
+      "excel_row": 92
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "tooltip_descrizione_ipoteca",
+      "target_bbox": [
+        551,
+        466,
+        756,
+        481
+      ],
+      "context_bbox": [
+        414,
+        353,
+        1414,
+        494
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        542,
+        458,
+        766,
+        491
+      ],
+      "ink_bbox": [
+        553,
+        468,
+        754,
+        479
+      ],
+      "excel_row": 93
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "ndg",
+      "target_bbox": [
+        390,
+        373,
+        434,
+        384
+      ],
+      "context_bbox": [
+        350,
+        339,
+        446,
+        476
+      ],
+      "reason": "Include soltanto le cifre del campo, escludendo il trattino separatore della testata.",
+      "previous_target_bbox": [
+        390,
+        371,
+        434,
+        385
+      ],
+      "ink_bbox": [
+        392,
+        375,
+        432,
+        382
+      ],
+      "excel_row": 153
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "denominazione",
+      "target_bbox": [
+        439,
+        373,
+        614,
+        385
+      ],
+      "context_bbox": [
+        425,
+        339,
+        628,
+        476
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        441,
+        371,
+        616,
+        385
+      ],
+      "ink_bbox": [
+        441,
+        375,
+        612,
+        383
+      ],
+      "excel_row": 154
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "tipo",
+      "target_bbox": [
+        935,
+        340,
+        977,
+        351
+      ],
+      "context_bbox": [
+        837,
+        334,
+        992,
+        476
+      ],
+      "reason": "Testo del valore completo; escluso il trattino separatore, incluse le sue frange subpixel.",
+      "previous_target_bbox": [
+        933,
+        339,
+        980,
+        352
+      ],
+      "ink_bbox": [
+        937,
+        342,
+        978,
+        349
+      ],
+      "excel_row": 155
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "filiale_relazione",
+      "target_bbox": [
+        958,
+        406,
+        1048,
+        417
+      ],
+      "context_bbox": [
+        844,
+        339,
+        1074,
+        476
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        959,
+        405,
+        1071,
+        419
+      ],
+      "ink_bbox": [
+        960,
+        408,
+        1046,
+        415
+      ],
+      "excel_row": 156
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "n_fido",
+      "target_bbox": [
+        355,
+        615,
+        367,
+        626
+      ],
+      "context_bbox": [
+        347,
+        568,
+        395,
+        640
+      ],
+      "reason": "Corretti i confini di colonna sulla geometria originale di questa schermata; intestazione e testo completi del campo, senza la colonna adiacente.",
+      "previous_target_bbox": [
+        347,
+        606,
+        396,
+        637
+      ],
+      "ink_bbox": [
+        357,
+        617,
+        365,
+        624
+      ],
+      "excel_row": 157
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "rapporto",
+      "target_bbox": [
+        410,
+        608,
+        473,
+        632
+      ],
+      "context_bbox": [
+        402,
+        568,
+        480,
+        640
+      ],
+      "reason": "Corretti i confini di colonna sulla geometria originale di questa schermata; intestazione e testo completi del campo, senza la colonna adiacente.",
+      "previous_target_bbox": [
+        396,
+        606,
+        464,
+        637
+      ],
+      "ink_bbox": [
+        412,
+        610,
+        471,
+        630
+      ],
+      "excel_row": 158
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "descrizione",
+      "target_bbox": [
+        498,
+        608,
+        543,
+        632
+      ],
+      "context_bbox": [
+        486,
+        568,
+        551,
+        640
+      ],
+      "reason": "Corretti i confini di colonna sulla geometria originale di questa schermata; intestazione e testo completi del campo, senza la colonna adiacente.",
+      "previous_target_bbox": [
+        464,
+        606,
+        525,
+        637
+      ],
+      "ink_bbox": [
+        500,
+        610,
+        541,
+        630
+      ],
+      "excel_row": 159
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "scadenza",
+      "target_bbox": [
+        557,
+        615,
+        605,
+        626
+      ],
+      "context_bbox": [
+        551,
+        568,
+        611,
+        640
+      ],
+      "reason": "Corretti i confini di colonna sulla geometria originale di questa schermata; intestazione e testo completi del campo, senza la colonna adiacente.",
+      "previous_target_bbox": [
+        525,
+        606,
+        582,
+        637
+      ],
+      "ink_bbox": [
+        559,
+        617,
+        603,
+        624
+      ],
+      "excel_row": 160
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        635,
+        615,
+        671,
+        626
+      ],
+      "context_bbox": [
+        621,
+        568,
+        678,
+        640
+      ],
+      "reason": "Corretti i confini di colonna sulla geometria originale di questa schermata; intestazione e testo completi del campo, senza la colonna adiacente.",
+      "previous_target_bbox": [
+        582,
+        606,
+        639,
+        637
+      ],
+      "ink_bbox": [
+        637,
+        617,
+        669,
+        624
+      ],
+      "excel_row": 161
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        677,
+        615,
+        724,
+        626
+      ],
+      "context_bbox": [
+        671,
+        568,
+        734,
+        640
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        639,
+        606,
+        731,
+        637
+      ],
+      "ink_bbox": [
+        679,
+        617,
+        722,
+        624
+      ],
+      "excel_row": 162
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "n_fido",
+      "target_bbox": [
+        424,
+        500,
+        440,
+        514
+      ],
+      "context_bbox": [
+        409,
+        435,
+        486,
+        534
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        412,
+        488,
+        476,
+        531
+      ],
+      "ink_bbox": [
+        426,
+        502,
+        438,
+        512
+      ],
+      "excel_row": 167
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "rapporto",
+      "target_bbox": [
+        502,
+        491,
+        588,
+        524
+      ],
+      "context_bbox": [
+        466,
+        435,
+        612,
+        534
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        476,
+        488,
+        602,
+        531
+      ],
+      "ink_bbox": [
+        504,
+        493,
+        586,
+        522
+      ],
+      "excel_row": 168
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "descrizione",
+      "target_bbox": [
+        624,
+        491,
+        686,
+        524
+      ],
+      "context_bbox": [
+        592,
+        435,
+        703,
+        534
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        602,
+        488,
+        693,
+        531
+      ],
+      "ink_bbox": [
+        626,
+        493,
+        684,
+        522
+      ],
+      "excel_row": 169
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "scadenza",
+      "target_bbox": [
+        706,
+        500,
+        771,
+        514
+      ],
+      "context_bbox": [
+        683,
+        435,
+        797,
+        534
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        693,
+        488,
+        787,
+        531
+      ],
+      "ink_bbox": [
+        708,
+        502,
+        769,
+        512
+      ],
+      "excel_row": 170
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        814,
+        499,
+        863,
+        515
+      ],
+      "context_bbox": [
+        777,
+        435,
+        877,
+        534
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        787,
+        488,
+        867,
+        531
+      ],
+      "ink_bbox": [
+        816,
+        501,
+        861,
+        513
+      ],
+      "excel_row": 171
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        872,
+        500,
+        937,
+        515
+      ],
+      "context_bbox": [
+        857,
+        435,
+        955,
+        534
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        867,
+        488,
+        945,
+        531
+      ],
+      "ink_bbox": [
+        874,
+        502,
+        935,
+        513
+      ],
+      "excel_row": 172
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "n_fido",
+      "target_bbox": [
+        422,
+        501,
+        438,
+        515
+      ],
+      "context_bbox": [
+        407,
+        436,
+        484,
+        535
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        410,
+        489,
+        474,
+        532
+      ],
+      "ink_bbox": [
+        424,
+        503,
+        436,
+        513
+      ],
+      "excel_row": 177
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "rapporto",
+      "target_bbox": [
+        500,
+        492,
+        586,
+        525
+      ],
+      "context_bbox": [
+        464,
+        436,
+        610,
+        535
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        474,
+        489,
+        600,
+        532
+      ],
+      "ink_bbox": [
+        502,
+        494,
+        584,
+        523
+      ],
+      "excel_row": 178
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "descrizione",
+      "target_bbox": [
+        622,
+        492,
+        684,
+        525
+      ],
+      "context_bbox": [
+        590,
+        436,
+        701,
+        540
+      ],
+      "reason": "Due riquadri, uno per riga di testo del valore; escluso il testo del popover nell angolo inferiore destro.",
+      "previous_target_bbox": [
+        600,
+        489,
+        691,
+        532
+      ],
+      "ink_bbox": [
+        624,
+        494,
+        691,
+        532
+      ],
+      "excel_row": 179,
+      "target_bboxes": [
+        [
+          622,
+          492,
+          684,
+          506
+        ],
+        [
+          633,
+          511,
+          672,
+          525
+        ]
+      ]
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "scadenza",
+      "target_bbox": [
+        704,
+        501,
+        769,
+        514
+      ],
+      "context_bbox": [
+        681,
+        436,
+        795,
+        532
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        691,
+        489,
+        785,
+        512
+      ],
+      "ink_bbox": [
+        706,
+        503,
+        767,
+        512
+      ],
+      "excel_row": 180
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        814,
+        500,
+        861,
+        514
+      ],
+      "context_bbox": [
+        775,
+        436,
+        875,
+        532
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        785,
+        489,
+        865,
+        512
+      ],
+      "ink_bbox": [
+        816,
+        502,
+        859,
+        512
+      ],
+      "excel_row": 181
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        870,
+        501,
+        932,
+        514
+      ],
+      "context_bbox": [
+        855,
+        436,
+        953,
+        532
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        865,
+        489,
+        943,
+        512
+      ],
+      "ink_bbox": [
+        872,
+        503,
+        930,
+        512
+      ],
+      "excel_row": 182
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "n_fido",
+      "target_bbox": [
+        428,
+        440,
+        444,
+        454
+      ],
+      "context_bbox": [
+        413,
+        375,
+        490,
+        474
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        416,
+        428,
+        480,
+        471
+      ],
+      "ink_bbox": [
+        430,
+        442,
+        442,
+        452
+      ],
+      "excel_row": 187
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "rapporto",
+      "target_bbox": [
+        506,
+        431,
+        592,
+        464
+      ],
+      "context_bbox": [
+        470,
+        375,
+        616,
+        474
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        480,
+        428,
+        606,
+        471
+      ],
+      "ink_bbox": [
+        508,
+        433,
+        590,
+        462
+      ],
+      "excel_row": 188
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "descrizione",
+      "target_bbox": [
+        628,
+        431,
+        690,
+        464
+      ],
+      "context_bbox": [
+        596,
+        375,
+        707,
+        474
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        606,
+        428,
+        697,
+        471
+      ],
+      "ink_bbox": [
+        630,
+        433,
+        688,
+        462
+      ],
+      "excel_row": 189
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "scadenza",
+      "target_bbox": [
+        710,
+        440,
+        775,
+        454
+      ],
+      "context_bbox": [
+        687,
+        375,
+        801,
+        474
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        697,
+        428,
+        791,
+        471
+      ],
+      "ink_bbox": [
+        712,
+        442,
+        773,
+        452
+      ],
+      "excel_row": 190
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        818,
+        439,
+        867,
+        455
+      ],
+      "context_bbox": [
+        781,
+        375,
+        881,
+        474
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        791,
+        428,
+        871,
+        471
+      ],
+      "ink_bbox": [
+        820,
+        441,
+        865,
+        453
+      ],
+      "excel_row": 191
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        876,
+        440,
+        941,
+        455
+      ],
+      "context_bbox": [
+        861,
+        375,
+        960,
+        479
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        871,
+        428,
+        950,
+        471
+      ],
+      "ink_bbox": [
+        878,
+        442,
+        939,
+        453
+      ],
+      "excel_row": 192
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "tooltip_descrizione_ipoteca",
+      "target_bbox": [
+        607,
+        632,
+        812,
+        647
+      ],
+      "context_bbox": [
+        416,
+        518,
+        1416,
+        659
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        598,
+        624,
+        823,
+        656
+      ],
+      "ink_bbox": [
+        609,
+        634,
+        810,
+        645
+      ],
+      "excel_row": 193
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "ndg",
+      "target_bbox": [
+        372,
+        255,
+        419,
+        266
+      ],
+      "context_bbox": [
+        334,
+        232,
+        434,
+        367
+      ],
+      "reason": "Include soltanto le cifre del campo, escludendo il trattino separatore della testata.",
+      "previous_target_bbox": [
+        374,
+        254,
+        422,
+        269
+      ],
+      "ink_bbox": [
+        374,
+        257,
+        417,
+        264
+      ],
+      "excel_row": 241
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "denominazione",
+      "target_bbox": [
+        425,
+        255,
+        650,
+        268
+      ],
+      "context_bbox": [
+        410,
+        232,
+        666,
+        367
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        426,
+        254,
+        654,
+        269
+      ],
+      "ink_bbox": [
+        427,
+        257,
+        648,
+        266
+      ],
+      "excel_row": 242
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "tipo",
+      "target_bbox": [
+        977,
+        233,
+        1026,
+        244
+      ],
+      "context_bbox": [
+        881,
+        227,
+        1042,
+        367
+      ],
+      "reason": "Testo del valore completo; escluso il trattino separatore, incluse le sue frange subpixel.",
+      "previous_target_bbox": [
+        977,
+        232,
+        1030,
+        245
+      ],
+      "ink_bbox": [
+        979,
+        235,
+        1029,
+        242
+      ],
+      "excel_row": 243
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "filiale_relazione",
+      "target_bbox": [
+        1003,
+        291,
+        1098,
+        302
+      ],
+      "context_bbox": [
+        890,
+        232,
+        1125,
+        367
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        1005,
+        291,
+        1113,
+        304
+      ],
+      "ink_bbox": [
+        1005,
+        293,
+        1096,
+        300
+      ],
+      "excel_row": 244
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "n_fido",
+      "target_bbox": [
+        332,
+        523,
+        346,
+        534
+      ],
+      "context_bbox": [
+        320,
+        469,
+        377,
+        549
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        323,
+        511,
+        367,
+        546
+      ],
+      "ink_bbox": [
+        334,
+        525,
+        344,
+        532
+      ],
+      "excel_row": 245
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "rapporto",
+      "target_bbox": [
+        393,
+        515,
+        464,
+        541
+      ],
+      "context_bbox": [
+        357,
+        469,
+        474,
+        549
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        367,
+        511,
+        464,
+        546
+      ],
+      "ink_bbox": [
+        395,
+        517,
+        462,
+        539
+      ],
+      "excel_row": 246
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "descrizione",
+      "target_bbox": [
+        488,
+        515,
+        544,
+        541
+      ],
+      "context_bbox": [
+        454,
+        469,
+        563,
+        549
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        464,
+        511,
+        553,
+        546
+      ],
+      "ink_bbox": [
+        490,
+        517,
+        542,
+        539
+      ],
+      "excel_row": 247
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "scadenza",
+      "target_bbox": [
+        557,
+        523,
+        610,
+        534
+      ],
+      "context_bbox": [
+        543,
+        469,
+        627,
+        549
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        553,
+        511,
+        617,
+        546
+      ],
+      "ink_bbox": [
+        559,
+        525,
+        608,
+        532
+      ],
+      "excel_row": 248
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        645,
+        523,
+        684,
+        534
+      ],
+      "context_bbox": [
+        607,
+        469,
+        695,
+        549
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        617,
+        511,
+        685,
+        546
+      ],
+      "ink_bbox": [
+        647,
+        525,
+        682,
+        532
+      ],
+      "excel_row": 249
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        691,
+        523,
+        742,
+        534
+      ],
+      "context_bbox": [
+        675,
+        469,
+        760,
+        554
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        685,
+        511,
+        750,
+        546
+      ],
+      "ink_bbox": [
+        693,
+        525,
+        740,
+        532
+      ],
+      "excel_row": 250
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field_key": "tooltip_descrizione_ipoteca",
+      "target_bbox": [
+        465,
+        707,
+        630,
+        720
+      ],
+      "context_bbox": [
+        323,
+        583,
+        1122,
+        729
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        458,
+        701,
+        637,
+        726
+      ],
+      "ink_bbox": [
+        467,
+        709,
+        628,
+        718
+      ],
+      "excel_row": 251
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "ndg",
+      "target_bbox": [
+        399,
+        258,
+        446,
+        269
+      ],
+      "context_bbox": [
+        361,
+        234,
+        461,
+        355
+      ],
+      "reason": "Include soltanto le cifre del campo, escludendo il trattino separatore della testata.",
+      "previous_target_bbox": [
+        401,
+        256,
+        449,
+        272
+      ],
+      "ink_bbox": [
+        401,
+        260,
+        444,
+        267
+      ],
+      "excel_row": 252
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "denominazione",
+      "target_bbox": [
+        453,
+        258,
+        583,
+        269
+      ],
+      "context_bbox": [
+        437,
+        234,
+        595,
+        355
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        453,
+        256,
+        583,
+        272
+      ],
+      "ink_bbox": [
+        455,
+        260,
+        581,
+        267
+      ],
+      "excel_row": 253
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "tipo",
+      "target_bbox": [
+        1004,
+        236,
+        1053,
+        247
+      ],
+      "context_bbox": [
+        908,
+        230,
+        1069,
+        355
+      ],
+      "reason": "Testo del valore completo; escluso il trattino separatore, incluse le sue frange subpixel.",
+      "previous_target_bbox": [
+        1004,
+        234,
+        1057,
+        248
+      ],
+      "ink_bbox": [
+        1006,
+        238,
+        1056,
+        245
+      ],
+      "excel_row": 254
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "filiale_relazione",
+      "target_bbox": [
+        1030,
+        294,
+        1123,
+        305
+      ],
+      "context_bbox": [
+        917,
+        234,
+        1143,
+        355
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        1032,
+        294,
+        1131,
+        308
+      ],
+      "ink_bbox": [
+        1032,
+        296,
+        1121,
+        303
+      ],
+      "excel_row": 255
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "n_fido",
+      "target_bbox": [
+        359,
+        511,
+        373,
+        522
+      ],
+      "context_bbox": [
+        347,
+        457,
+        404,
+        537
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        350,
+        499,
+        394,
+        534
+      ],
+      "ink_bbox": [
+        361,
+        513,
+        371,
+        520
+      ],
+      "excel_row": 256
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "rapporto",
+      "target_bbox": [
+        420,
+        503,
+        491,
+        529
+      ],
+      "context_bbox": [
+        384,
+        457,
+        501,
+        537
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        394,
+        499,
+        491,
+        534
+      ],
+      "ink_bbox": [
+        422,
+        505,
+        489,
+        527
+      ],
+      "excel_row": 257
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "descrizione",
+      "target_bbox": [
+        524,
+        503,
+        563,
+        529
+      ],
+      "context_bbox": [
+        481,
+        457,
+        590,
+        537
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        491,
+        499,
+        580,
+        534
+      ],
+      "ink_bbox": [
+        526,
+        505,
+        561,
+        527
+      ],
+      "excel_row": 258
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "scadenza",
+      "target_bbox": [
+        584,
+        511,
+        637,
+        522
+      ],
+      "context_bbox": [
+        570,
+        457,
+        654,
+        537
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        580,
+        499,
+        644,
+        534
+      ],
+      "ink_bbox": [
+        586,
+        513,
+        635,
+        520
+      ],
+      "excel_row": 259
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        672,
+        511,
+        711,
+        522
+      ],
+      "context_bbox": [
+        634,
+        457,
+        722,
+        537
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        644,
+        499,
+        712,
+        534
+      ],
+      "ink_bbox": [
+        674,
+        513,
+        709,
+        520
+      ],
+      "excel_row": 260
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        718,
+        511,
+        769,
+        522
+      ],
+      "context_bbox": [
+        702,
+        457,
+        787,
+        542
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        712,
+        499,
+        777,
+        534
+      ],
+      "ink_bbox": [
+        720,
+        513,
+        767,
+        520
+      ],
+      "excel_row": 261
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field_key": "tooltip_descrizione_ipoteca",
+      "target_bbox": [
+        498,
+        697,
+        663,
+        710
+      ],
+      "context_bbox": [
+        350,
+        571,
+        1149,
+        719
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        491,
+        691,
+        671,
+        716
+      ],
+      "ink_bbox": [
+        500,
+        699,
+        661,
+        708
+      ],
+      "excel_row": 262
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "n_fido",
+      "target_bbox": [
+        336,
+        403,
+        350,
+        414
+      ],
+      "context_bbox": [
+        324,
+        349,
+        383,
+        429
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        327,
+        391,
+        373,
+        426
+      ],
+      "ink_bbox": [
+        338,
+        405,
+        348,
+        412
+      ],
+      "excel_row": 267
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "rapporto",
+      "target_bbox": [
+        397,
+        395,
+        468,
+        421
+      ],
+      "context_bbox": [
+        363,
+        349,
+        484,
+        429
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        373,
+        391,
+        474,
+        426
+      ],
+      "ink_bbox": [
+        399,
+        397,
+        466,
+        419
+      ],
+      "excel_row": 268
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "descrizione",
+      "target_bbox": [
+        492,
+        395,
+        548,
+        421
+      ],
+      "context_bbox": [
+        464,
+        349,
+        557,
+        429
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        474,
+        391,
+        547,
+        426
+      ],
+      "ink_bbox": [
+        494,
+        397,
+        546,
+        419
+      ],
+      "excel_row": 269
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "scadenza",
+      "target_bbox": [
+        561,
+        403,
+        614,
+        414
+      ],
+      "context_bbox": [
+        537,
+        349,
+        635,
+        429
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        547,
+        391,
+        625,
+        426
+      ],
+      "ink_bbox": [
+        563,
+        405,
+        612,
+        412
+      ],
+      "excel_row": 270
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        648,
+        403,
+        688,
+        414
+      ],
+      "context_bbox": [
+        615,
+        349,
+        698,
+        429
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        625,
+        391,
+        688,
+        426
+      ],
+      "ink_bbox": [
+        650,
+        405,
+        686,
+        412
+      ],
+      "excel_row": 271
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        695,
+        403,
+        746,
+        414
+      ],
+      "context_bbox": [
+        678,
+        349,
+        764,
+        434
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        688,
+        391,
+        754,
+        426
+      ],
+      "ink_bbox": [
+        697,
+        405,
+        744,
+        412
+      ],
+      "excel_row": 272
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "tooltip_descrizione_consap_dr_bis",
+      "target_bbox": [
+        449,
+        564,
+        691,
+        577
+      ],
+      "context_bbox": [
+        327,
+        464,
+        1125,
+        592
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        443,
+        558,
+        699,
+        583
+      ],
+      "ink_bbox": [
+        451,
+        566,
+        689,
+        575
+      ],
+      "excel_row": 273
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "n_fido",
+      "target_bbox": [
+        332,
+        408,
+        346,
+        419
+      ],
+      "context_bbox": [
+        320,
+        354,
+        379,
+        434
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        323,
+        396,
+        369,
+        431
+      ],
+      "ink_bbox": [
+        334,
+        410,
+        344,
+        417
+      ],
+      "excel_row": 278
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "rapporto",
+      "target_bbox": [
+        393,
+        400,
+        464,
+        426
+      ],
+      "context_bbox": [
+        359,
+        354,
+        480,
+        434
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        369,
+        396,
+        470,
+        431
+      ],
+      "ink_bbox": [
+        395,
+        402,
+        462,
+        424
+      ],
+      "excel_row": 279
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "descrizione",
+      "target_bbox": [
+        488,
+        400,
+        544,
+        426
+      ],
+      "context_bbox": [
+        460,
+        354,
+        553,
+        434
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        470,
+        396,
+        543,
+        431
+      ],
+      "ink_bbox": [
+        490,
+        402,
+        542,
+        424
+      ],
+      "excel_row": 280
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "scadenza",
+      "target_bbox": [
+        557,
+        408,
+        610,
+        419
+      ],
+      "context_bbox": [
+        533,
+        354,
+        631,
+        434
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        543,
+        396,
+        621,
+        431
+      ],
+      "ink_bbox": [
+        559,
+        410,
+        608,
+        417
+      ],
+      "excel_row": 281
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        644,
+        408,
+        684,
+        419
+      ],
+      "context_bbox": [
+        611,
+        354,
+        694,
+        434
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        621,
+        396,
+        684,
+        431
+      ],
+      "ink_bbox": [
+        646,
+        410,
+        682,
+        417
+      ],
+      "excel_row": 282
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        691,
+        408,
+        742,
+        419
+      ],
+      "context_bbox": [
+        674,
+        354,
+        760,
+        439
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        684,
+        396,
+        750,
+        431
+      ],
+      "ink_bbox": [
+        693,
+        410,
+        740,
+        417
+      ],
+      "excel_row": 283
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "tooltip_descrizione_ipoteca",
+      "target_bbox": [
+        438,
+        594,
+        603,
+        607
+      ],
+      "context_bbox": [
+        323,
+        469,
+        1121,
+        617
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        431,
+        588,
+        611,
+        614
+      ],
+      "ink_bbox": [
+        440,
+        596,
+        601,
+        605
+      ],
+      "excel_row": 284
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "ndg",
+      "target_bbox": [
+        362,
+        344,
+        401,
+        354
+      ],
+      "context_bbox": [
+        322,
+        312,
+        416,
+        423
+      ],
+      "reason": "Include soltanto le cifre del campo, escludendo il trattino separatore della testata.",
+      "previous_target_bbox": [
+        362,
+        342,
+        404,
+        357
+      ],
+      "ink_bbox": [
+        364,
+        346,
+        399,
+        352
+      ],
+      "excel_row": 285
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "denominazione",
+      "target_bbox": [
+        406,
+        344,
+        495,
+        354
+      ],
+      "context_bbox": [
+        392,
+        312,
+        515,
+        423
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        408,
+        342,
+        503,
+        357
+      ],
+      "ink_bbox": [
+        408,
+        346,
+        493,
+        352
+      ],
+      "excel_row": 286
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "tipo",
+      "target_bbox": [
+        846,
+        313,
+        886,
+        324
+      ],
+      "context_bbox": [
+        749,
+        307,
+        902,
+        423
+      ],
+      "reason": "Include soltanto il testo rosso del valore, escludendo il trattino separatore successivo.",
+      "previous_target_bbox": [
+        845,
+        312,
+        890,
+        326
+      ],
+      "ink_bbox": [
+        848,
+        315,
+        884,
+        322
+      ],
+      "excel_row": 287
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "filiale_relazione",
+      "target_bbox": [
+        867,
+        373,
+        931,
+        383
+      ],
+      "context_bbox": [
+        754,
+        312,
+        970,
+        423
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        869,
+        372,
+        967,
+        386
+      ],
+      "ink_bbox": [
+        869,
+        375,
+        929,
+        381
+      ],
+      "excel_row": 288
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "n_fido",
+      "target_bbox": [
+        331,
+        547,
+        342,
+        557
+      ],
+      "context_bbox": [
+        320,
+        506,
+        379,
+        571
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        323,
+        539,
+        369,
+        568
+      ],
+      "ink_bbox": [
+        333,
+        549,
+        340,
+        555
+      ],
+      "excel_row": 289
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "rapporto",
+      "target_bbox": [
+        379,
+        541,
+        436,
+        563
+      ],
+      "context_bbox": [
+        359,
+        506,
+        451,
+        571
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        369,
+        539,
+        441,
+        568
+      ],
+      "ink_bbox": [
+        381,
+        543,
+        434,
+        561
+      ],
+      "excel_row": 290
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "descrizione",
+      "target_bbox": [
+        455,
+        541,
+        501,
+        563
+      ],
+      "context_bbox": [
+        431,
+        506,
+        519,
+        571
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        441,
+        539,
+        509,
+        568
+      ],
+      "ink_bbox": [
+        457,
+        543,
+        499,
+        561
+      ],
+      "excel_row": 291
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "scadenza",
+      "target_bbox": [
+        510,
+        547,
+        553,
+        557
+      ],
+      "context_bbox": [
+        499,
+        506,
+        571,
+        571
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        509,
+        539,
+        561,
+        568
+      ],
+      "ink_bbox": [
+        512,
+        549,
+        551,
+        555
+      ],
+      "excel_row": 292
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        584,
+        547,
+        612,
+        557
+      ],
+      "context_bbox": [
+        551,
+        506,
+        624,
+        571
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        561,
+        539,
+        614,
+        568
+      ],
+      "ink_bbox": [
+        586,
+        549,
+        610,
+        555
+      ],
+      "excel_row": 293
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        617,
+        547,
+        659,
+        557
+      ],
+      "context_bbox": [
+        604,
+        506,
+        675,
+        575
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        614,
+        539,
+        665,
+        568
+      ],
+      "ink_bbox": [
+        619,
+        549,
+        657,
+        555
+      ],
+      "excel_row": 294
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "n_fido",
+      "target_bbox": [
+        424,
+        421,
+        440,
+        435
+      ],
+      "context_bbox": [
+        409,
+        355,
+        486,
+        454
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        412,
+        408,
+        476,
+        451
+      ],
+      "ink_bbox": [
+        426,
+        423,
+        438,
+        433
+      ],
+      "excel_row": 299
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "rapporto",
+      "target_bbox": [
+        502,
+        411,
+        588,
+        444
+      ],
+      "context_bbox": [
+        466,
+        355,
+        610,
+        454
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        476,
+        408,
+        600,
+        451
+      ],
+      "ink_bbox": [
+        504,
+        413,
+        586,
+        442
+      ],
+      "excel_row": 300
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "descrizione",
+      "target_bbox": [
+        620,
+        411,
+        689,
+        444
+      ],
+      "context_bbox": [
+        590,
+        355,
+        696,
+        459
+      ],
+      "reason": "Tre riquadri sulle porzioni visibili delle due righe del valore: nessun testo del popover incluso e nessuna ricostruzione della parte coperta.",
+      "previous_target_bbox": [
+        600,
+        408,
+        686,
+        451
+      ],
+      "ink_bbox": [
+        622,
+        413,
+        686,
+        451
+      ],
+      "excel_row": 301,
+      "target_bboxes": [
+        [
+          620,
+          411,
+          689,
+          425
+        ],
+        [
+          633,
+          430,
+          661,
+          444
+        ],
+        [
+          661,
+          430,
+          676,
+          439
+        ]
+      ],
+      "visibility": "visible_partial",
+      "note": "Il bordo del popover copre parte del testo gia nella sorgente. Annotare solo il contenuto effettivamente visibile; non completare parti nascoste."
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "scadenza",
+      "target_bbox": [
+        706,
+        421,
+        771,
+        435
+      ],
+      "context_bbox": [
+        676,
+        355,
+        787,
+        451
+      ],
+      "reason": "Solo testo della cella Scadenza, esclusa la coda della Descrizione adiacente.",
+      "previous_target_bbox": [
+        686,
+        408,
+        777,
+        439
+      ],
+      "ink_bbox": [
+        686,
+        414,
+        769,
+        433
+      ],
+      "excel_row": 302
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "importo_euro",
+      "target_bbox": [
+        822,
+        421,
+        863,
+        435
+      ],
+      "context_bbox": [
+        767,
+        355,
+        875,
+        451
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        777,
+        408,
+        865,
+        439
+      ],
+      "ink_bbox": [
+        824,
+        423,
+        861,
+        433
+      ],
+      "excel_row": 303
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "tipo_op",
+      "target_bbox": [
+        873,
+        421,
+        937,
+        435
+      ],
+      "context_bbox": [
+        855,
+        355,
+        956,
+        451
+      ],
+      "reason": "Solo testo completo del valore: escluse la linea verticale della tabella e le lettere appartenenti alla cella adiacente.",
+      "previous_target_bbox": [
+        865,
+        408,
+        946,
+        439
+      ],
+      "ink_bbox": [
+        875,
+        423,
+        935,
+        433
+      ],
+      "excel_row": 304
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "tooltip_descrizione_m_consap",
+      "target_bbox": [
+        670,
+        447,
+        982,
+        462
+      ],
+      "context_bbox": [
+        412,
+        355,
+        1411,
+        474
+      ],
+      "reason": "Rettangolo ristretto al testo completo del valore, senza includere l intera cella.",
+      "previous_target_bbox": [
+        661,
+        439,
+        992,
+        471
+      ],
+      "ink_bbox": [
+        672,
+        449,
+        980,
+        460
+      ],
+      "excel_row": 305
+    }
+  ],
+  "nonvisible": [
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "clipped_unreadable"
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "clipped_unreadable"
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "ndg",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "denominazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "tipo",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field_key": "filiale_relazione",
+      "target_bbox": null,
+      "visibility": "not_visible"
+    }
+  ],
+  "context_policy": "Use context_bbox exactly as supplied for all 126 records. Do not narrow it from target_bbox width: field headings must remain fully visible.",
+  "multi_target_policy": "When target_bboxes exists, draw only those boxes. target_bbox is their union for context selection, not an additional rectangle."
+}

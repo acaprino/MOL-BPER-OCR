@@ -1,0 +1,381 @@
+{
+  "review_kind": "independent visual review of all 13 list-page montages",
+  "field_cards_sha256_reviewed": "3c0b72a77ac9083251d4e823c4fd0e8adadaa17a1c5d781ceaa4df440242d9e8",
+  "result": "PASS",
+  "screens_reviewed": 13,
+  "cards_reviewed": 92,
+  "issues": [],
+  "screen_checks": [
+    {
+      "screen": "51772928__Elenco",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51772928__Elenco_dx",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51772928__Elenco_tooltip1",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51788077__Elenco",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51792073__Elenco",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51792073__Elenco_dx",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51792073__Elenco_tooltip1",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51798191__Elenco",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51798191__Elenco_dx",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51798191__Elenco_tooltip1",
+      "montage_visually_reviewed": true,
+      "card_count": 8,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51859514__Elenco",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51859514__Elenco_dx",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    },
+    {
+      "screen": "51859514__Elenco_tooltip1",
+      "montage_visually_reviewed": true,
+      "card_count": 7,
+      "other_field_markers_correct": true,
+      "creation_header_distinct_from_assignment_date": true,
+      "truncated_names_preserved_without_completion": true,
+      "out_of_view_fields_not_marked_empty": true,
+      "evidenze_result": "PASS_text_only_separate_rectangles",
+      "result": "PASS",
+      "icons_badges_circled_symbols_excluded": true,
+      "all_value_glyphs_preserved": true
+    }
+  ],
+  "source_spot_checks": [
+    "51772928__Elenco_dx",
+    "51792073__Elenco_tooltip1",
+    "51859514__Elenco_tooltip1"
+  ],
+  "notes": [
+    "All 13 regenerated list-page montages were visually reviewed again. All 17 Evidenze rectangles frame textual value only; icons, badges and circled symbols stay outside.",
+    "The other 79 list-page fields remain correct, with readable column headings, whole visible values and correct creation-date attribution.",
+    "Partial, truncated and unavailable fields retain their appropriate visibility status; none is incorrectly declared blank.",
+    "Current field_cards.json hash is bound to this PASS; coordinate/image changes require another review. No values were transcribed and no source/card/workbook was modified by this review."
+  ],
+  "reviewed_utc": "2026-10-22T19:26:32.166967+00:00",
+  "resolved_issues": [
+    {
+      "screen": "51772928__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 8,
+      "coordinates": [
+        1702,
+        494,
+        1792,
+        518
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51772928__Elenco_dx",
+      "field_key": "evidenze",
+      "excel_row": 15,
+      "coordinates": [
+        1707,
+        489,
+        1797,
+        513
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "excel_row": 22,
+      "coordinates": [
+        1632,
+        570,
+        1743,
+        600
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51788077__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 62,
+      "coordinates": [
+        1490,
+        401,
+        1616,
+        420
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51792073__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 116,
+      "coordinates": [
+        1654,
+        457,
+        1796,
+        481
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51792073__Elenco_dx",
+      "field_key": "evidenze",
+      "excel_row": 123,
+      "coordinates": [
+        1658,
+        495,
+        1800,
+        519
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "excel_row": 130,
+      "coordinates": [
+        1638,
+        529,
+        1749,
+        558
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51798191__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 137,
+      "coordinates": [
+        1606,
+        494,
+        1800,
+        518
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51798191__Elenco_dx",
+      "field_key": "evidenze",
+      "excel_row": 144,
+      "coordinates": [
+        1608,
+        494,
+        1802,
+        518
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "excel_row": 151,
+      "coordinates": [
+        1569,
+        373,
+        1763,
+        397
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51859514__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 226,
+      "coordinates": [
+        1606,
+        489,
+        1800,
+        513
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51859514__Elenco_dx",
+      "field_key": "evidenze",
+      "excel_row": 233,
+      "coordinates": [
+        1607,
+        495,
+        1801,
+        519
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    },
+    {
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "excel_row": 240,
+      "coordinates": [
+        1503,
+        474,
+        1744,
+        503
+      ],
+      "severity": "must_fix",
+      "issue": "Current marker encloses non-value icons and the version badge.",
+      "correction_file": "list_corrections.json"
+    }
+  ],
+  "resolved_issue_count": 13,
+  "evidenze_text_rectangles_reviewed": 17,
+  "other_fields_reviewed": 79,
+  "target_pixel_regions_independently_equal_to_source": 81,
+  "regenerated_cards_match_all_13_corrections": true,
+  "all_13_regenerated_montages_visually_reviewed": true
+}

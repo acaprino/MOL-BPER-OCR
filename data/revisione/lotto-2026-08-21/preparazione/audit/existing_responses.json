@@ -1,0 +1,2242 @@
+[
+  {
+    "screen": "51772928__Elenco",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_dx",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_dx",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_dx",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_dx",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_dx",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_dx",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_dx",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_tooltip1",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_tooltip1",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_tooltip1",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__Elenco_tooltip1",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip1",
+    "display_name": "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip2",
+    "display_name": "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51772928__GestioneFidi_Tooltip3",
+    "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Elenco",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Elenco",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Elenco",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Elenco",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Elenco",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Elenco",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Elenco",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip1",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__GestioneFidi_Tooltip2",
+    "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "NDG 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "DENOMINAZIONE 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "RUOLO 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "NDG 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "DENOMINAZIONE 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "RUOLO 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "NDG 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "DENOMINAZIONE 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "RUOLO 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "NDG 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "DENOMINAZIONE 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51788077__Soggetti",
+    "display_name": "RUOLO 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_dx",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_dx",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_dx",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_dx",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_dx",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_dx",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_dx",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_tooltip1",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_tooltip1",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_tooltip1",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51792073__Elenco_tooltip1",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_dx",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_dx",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_dx",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_dx",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_dx",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_dx",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_dx",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_tooltip1",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_tooltip1",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_tooltip1",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_tooltip1",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51798191__Elenco_tooltip1",
+    "display_name": "tooltip su valore campo Evidenze: B",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip1",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip2",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__GestioneFidi_Tooltip3",
+    "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Note",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Note",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Note",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Note",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Note",
+    "display_name": "Note della richiesta",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Note_chiuso",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Note_chiuso",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Note_chiuso",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Note_chiuso",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Note_chiuso",
+    "display_name": "Note della richiesta",
+    "transcription": null,
+    "outcome": null,
+    "note": "Nota parzialmente visibile: trascrivere solo la porzione mostrata."
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "NDG 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "DENOMINAZIONE 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "RUOLO 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "NDG 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "DENOMINAZIONE 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "RUOLO 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "NDG 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "DENOMINAZIONE 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "RUOLO 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "NDG 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "DENOMINAZIONE 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51800301__Soggetti",
+    "display_name": "RUOLO 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_dx",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_dx",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_dx",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_dx",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_dx",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_dx",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_dx",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_tooltip1",
+    "display_name": "Stato",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_tooltip1",
+    "display_name": "Fase",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_tooltip1",
+    "display_name": "Creazione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51859514__Elenco_tooltip1",
+    "display_name": "Evidenze",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "51997531__GestioneFidi_Tooltip1",
+    "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52013664__GestioneFidi_Tooltip1",
+    "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip1",
+    "display_name": "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52022324__GestioneFidi_Tooltip2",
+    "display_name": "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "n° FIDO",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "Rapporto",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "Descrizione",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "Scadenza",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "Importo (€)",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "Tipo Op.",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__GestioneFidi_Tooltip1",
+    "display_name": "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "NDG",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "DENOMINAZIONE",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "Tipo",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "Filiale relazione",
+    "transcription": null,
+    "outcome": null,
+    "note": "Campo candidato di testata: verificare se leggibile nella singola immagine; NON VISIBILE e diverso da VUOTO."
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "NDG 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "DENOMINAZIONE 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "RUOLO 1",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "NDG 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "DENOMINAZIONE 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "RUOLO 2",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "NDG 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "DENOMINAZIONE 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "RUOLO 3",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "NDG 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "DENOMINAZIONE 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  },
+  {
+    "screen": "52032077__Soggetti",
+    "display_name": "RUOLO 4",
+    "transcription": null,
+    "outcome": null,
+    "note": null
+  }
+]

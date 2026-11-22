@@ -1,0 +1,2266 @@
+{
+  "output": "D:/Projects/poc-data-extraction/outputs/01a164f0-97a1-7433-b313-b15481e862d4/Revisione_10_pratiche_agosto_da_compilare.xlsx",
+  "practices": 10,
+  "screens": 34,
+  "annotation_rows": 320,
+  "screenshot_rows": {
+    "51772928__Elenco": 2,
+    "51772928__Elenco_dx": 28,
+    "51772928__Elenco_tooltip1": 54,
+    "51772928__GestioneFidi_Tooltip1": 79,
+    "51772928__GestioneFidi_Tooltip2": 103,
+    "51772928__GestioneFidi_Tooltip3": 126,
+    "51788077__Elenco": 149,
+    "51788077__GestioneFidi": 175,
+    "51788077__GestioneFidi_Tooltip1": 200,
+    "51788077__GestioneFidi_Tooltip2": 223,
+    "51788077__Soggetti": 246,
+    "51792073__Elenco": 271,
+    "51792073__Elenco_dx": 296,
+    "51792073__Elenco_tooltip1": 322,
+    "51798191__Elenco": 346,
+    "51798191__Elenco_dx": 372,
+    "51798191__Elenco_tooltip1": 398,
+    "51800301__GestioneFidi": 421,
+    "51800301__GestioneFidi_Tooltip1": 447,
+    "51800301__GestioneFidi_Tooltip2": 471,
+    "51800301__GestioneFidi_Tooltip3": 495,
+    "51800301__Note": 518,
+    "51800301__Note_chiuso": 544,
+    "51800301__Soggetti": 570,
+    "51859514__Elenco": 596,
+    "51859514__Elenco_dx": 622,
+    "51859514__Elenco_tooltip1": 648,
+    "51997531__GestioneFidi_Tooltip1": 671,
+    "52013664__GestioneFidi_Tooltip1": 694,
+    "52022324__GestioneFidi_Tooltip1": 728,
+    "52022324__GestioneFidi_Tooltip2": 752,
+    "52032077__GestioneFidi": 786,
+    "52032077__GestioneFidi_Tooltip1": 812,
+    "52032077__Soggetti": 835
+  },
+  "review_first_rows": {
+    "51772928__Elenco": 2,
+    "51772928__Elenco_dx": 9,
+    "51772928__Elenco_tooltip1": 16,
+    "51772928__GestioneFidi_Tooltip1": 23,
+    "51772928__GestioneFidi_Tooltip2": 34,
+    "51772928__GestioneFidi_Tooltip3": 45,
+    "51788077__Elenco": 56,
+    "51788077__GestioneFidi": 63,
+    "51788077__GestioneFidi_Tooltip1": 73,
+    "51788077__GestioneFidi_Tooltip2": 83,
+    "51788077__Soggetti": 94,
+    "51792073__Elenco": 110,
+    "51792073__Elenco_dx": 117,
+    "51792073__Elenco_tooltip1": 124,
+    "51798191__Elenco": 131,
+    "51798191__Elenco_dx": 138,
+    "51798191__Elenco_tooltip1": 145,
+    "51800301__GestioneFidi": 153,
+    "51800301__GestioneFidi_Tooltip1": 163,
+    "51800301__GestioneFidi_Tooltip2": 173,
+    "51800301__GestioneFidi_Tooltip3": 183,
+    "51800301__Note": 194,
+    "51800301__Note_chiuso": 199,
+    "51800301__Soggetti": 204,
+    "51859514__Elenco": 220,
+    "51859514__Elenco_dx": 227,
+    "51859514__Elenco_tooltip1": 234,
+    "51997531__GestioneFidi_Tooltip1": 241,
+    "52013664__GestioneFidi_Tooltip1": 252,
+    "52022324__GestioneFidi_Tooltip1": 263,
+    "52022324__GestioneFidi_Tooltip2": 274,
+    "52032077__GestioneFidi": 285,
+    "52032077__GestioneFidi_Tooltip1": 295,
+    "52032077__Soggetti": 306
+  },
+  "navigation_links": [
+    {
+      "sheet": "Istruzioni",
+      "address": "A38",
+      "location": "'Revisione'!A2",
+      "label": "Pratica 51772928 (6 schermate, 54 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A39",
+      "location": "'Revisione'!A56",
+      "label": "Pratica 51788077 (5 schermate, 54 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A40",
+      "location": "'Revisione'!A110",
+      "label": "Pratica 51792073 (3 schermate, 21 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A41",
+      "location": "'Revisione'!A131",
+      "label": "Pratica 51798191 (3 schermate, 22 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A42",
+      "location": "'Revisione'!A153",
+      "label": "Pratica 51800301 (7 schermate, 67 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A43",
+      "location": "'Revisione'!A220",
+      "label": "Pratica 51859514 (3 schermate, 21 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A44",
+      "location": "'Revisione'!A241",
+      "label": "Pratica 51997531 (1 schermate, 11 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A45",
+      "location": "'Revisione'!A252",
+      "label": "Pratica 52013664 (1 schermate, 11 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A46",
+      "location": "'Revisione'!A263",
+      "label": "Pratica 52022324 (2 schermate, 22 campi)"
+    },
+    {
+      "sheet": "Istruzioni",
+      "address": "A47",
+      "location": "'Revisione'!A285",
+      "label": "Pratica 52032077 (3 schermate, 37 campi)"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A3",
+      "location": "'Revisione'!A2",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A29",
+      "location": "'Revisione'!A9",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A55",
+      "location": "'Revisione'!A16",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A80",
+      "location": "'Revisione'!A23",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A104",
+      "location": "'Revisione'!A34",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A127",
+      "location": "'Revisione'!A45",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A150",
+      "location": "'Revisione'!A56",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A176",
+      "location": "'Revisione'!A63",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A201",
+      "location": "'Revisione'!A73",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A224",
+      "location": "'Revisione'!A83",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A247",
+      "location": "'Revisione'!A94",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A272",
+      "location": "'Revisione'!A110",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A297",
+      "location": "'Revisione'!A117",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A323",
+      "location": "'Revisione'!A124",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A347",
+      "location": "'Revisione'!A131",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A373",
+      "location": "'Revisione'!A138",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A399",
+      "location": "'Revisione'!A145",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A422",
+      "location": "'Revisione'!A153",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A448",
+      "location": "'Revisione'!A163",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A472",
+      "location": "'Revisione'!A173",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A496",
+      "location": "'Revisione'!A183",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A519",
+      "location": "'Revisione'!A194",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A545",
+      "location": "'Revisione'!A199",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A571",
+      "location": "'Revisione'!A204",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A597",
+      "location": "'Revisione'!A220",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A623",
+      "location": "'Revisione'!A227",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A649",
+      "location": "'Revisione'!A234",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A672",
+      "location": "'Revisione'!A241",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A695",
+      "location": "'Revisione'!A252",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A729",
+      "location": "'Revisione'!A263",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A753",
+      "location": "'Revisione'!A274",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A787",
+      "location": "'Revisione'!A285",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A813",
+      "location": "'Revisione'!A295",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Schermate",
+      "address": "A836",
+      "location": "'Revisione'!A306",
+      "label": "Torna ai campi da annotare"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C2",
+      "location": "'Schermate'!A2",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C3",
+      "location": "'Schermate'!A2",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C4",
+      "location": "'Schermate'!A2",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C5",
+      "location": "'Schermate'!A2",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C6",
+      "location": "'Schermate'!A2",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C7",
+      "location": "'Schermate'!A2",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C8",
+      "location": "'Schermate'!A2",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C9",
+      "location": "'Schermate'!A28",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C10",
+      "location": "'Schermate'!A28",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C11",
+      "location": "'Schermate'!A28",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C12",
+      "location": "'Schermate'!A28",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C13",
+      "location": "'Schermate'!A28",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C14",
+      "location": "'Schermate'!A28",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C15",
+      "location": "'Schermate'!A28",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C16",
+      "location": "'Schermate'!A54",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C17",
+      "location": "'Schermate'!A54",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C18",
+      "location": "'Schermate'!A54",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C19",
+      "location": "'Schermate'!A54",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C20",
+      "location": "'Schermate'!A54",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C21",
+      "location": "'Schermate'!A54",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C22",
+      "location": "'Schermate'!A54",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C23",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C24",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C25",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C26",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C27",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C28",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C29",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C30",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C31",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C32",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C33",
+      "location": "'Schermate'!A79",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C34",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C35",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C36",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C37",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C38",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C39",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C40",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C41",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C42",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C43",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C44",
+      "location": "'Schermate'!A103",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C45",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C46",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C47",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C48",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C49",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C50",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C51",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C52",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C53",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C54",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C55",
+      "location": "'Schermate'!A126",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C56",
+      "location": "'Schermate'!A149",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C57",
+      "location": "'Schermate'!A149",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C58",
+      "location": "'Schermate'!A149",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C59",
+      "location": "'Schermate'!A149",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C60",
+      "location": "'Schermate'!A149",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C61",
+      "location": "'Schermate'!A149",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C62",
+      "location": "'Schermate'!A149",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C63",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C64",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C65",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C66",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C67",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C68",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C69",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C70",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C71",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C72",
+      "location": "'Schermate'!A175",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C73",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C74",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C75",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C76",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C77",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C78",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C79",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C80",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C81",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C82",
+      "location": "'Schermate'!A200",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C83",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C84",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C85",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C86",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C87",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C88",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C89",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C90",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C91",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C92",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C93",
+      "location": "'Schermate'!A223",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C94",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C95",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C96",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C97",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C98",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C99",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C100",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C101",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C102",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C103",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C104",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C105",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C106",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C107",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C108",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C109",
+      "location": "'Schermate'!A246",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C110",
+      "location": "'Schermate'!A271",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C111",
+      "location": "'Schermate'!A271",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C112",
+      "location": "'Schermate'!A271",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C113",
+      "location": "'Schermate'!A271",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C114",
+      "location": "'Schermate'!A271",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C115",
+      "location": "'Schermate'!A271",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C116",
+      "location": "'Schermate'!A271",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C117",
+      "location": "'Schermate'!A296",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C118",
+      "location": "'Schermate'!A296",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C119",
+      "location": "'Schermate'!A296",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C120",
+      "location": "'Schermate'!A296",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C121",
+      "location": "'Schermate'!A296",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C122",
+      "location": "'Schermate'!A296",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C123",
+      "location": "'Schermate'!A296",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C124",
+      "location": "'Schermate'!A322",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C125",
+      "location": "'Schermate'!A322",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C126",
+      "location": "'Schermate'!A322",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C127",
+      "location": "'Schermate'!A322",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C128",
+      "location": "'Schermate'!A322",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C129",
+      "location": "'Schermate'!A322",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C130",
+      "location": "'Schermate'!A322",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C131",
+      "location": "'Schermate'!A346",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C132",
+      "location": "'Schermate'!A346",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C133",
+      "location": "'Schermate'!A346",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C134",
+      "location": "'Schermate'!A346",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C135",
+      "location": "'Schermate'!A346",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C136",
+      "location": "'Schermate'!A346",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C137",
+      "location": "'Schermate'!A346",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C138",
+      "location": "'Schermate'!A372",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C139",
+      "location": "'Schermate'!A372",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C140",
+      "location": "'Schermate'!A372",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C141",
+      "location": "'Schermate'!A372",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C142",
+      "location": "'Schermate'!A372",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C143",
+      "location": "'Schermate'!A372",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C144",
+      "location": "'Schermate'!A372",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C145",
+      "location": "'Schermate'!A398",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C146",
+      "location": "'Schermate'!A398",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C147",
+      "location": "'Schermate'!A398",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C148",
+      "location": "'Schermate'!A398",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C149",
+      "location": "'Schermate'!A398",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C150",
+      "location": "'Schermate'!A398",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C151",
+      "location": "'Schermate'!A398",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C152",
+      "location": "'Schermate'!A398",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C153",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C154",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C155",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C156",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C157",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C158",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C159",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C160",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C161",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C162",
+      "location": "'Schermate'!A421",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C163",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C164",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C165",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C166",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C167",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C168",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C169",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C170",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C171",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C172",
+      "location": "'Schermate'!A447",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C173",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C174",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C175",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C176",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C177",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C178",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C179",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C180",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C181",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C182",
+      "location": "'Schermate'!A471",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C183",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C184",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C185",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C186",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C187",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C188",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C189",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C190",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C191",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C192",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C193",
+      "location": "'Schermate'!A495",
+      "label": "GestioneFidi_Tooltip3.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C194",
+      "location": "'Schermate'!A518",
+      "label": "Note.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C195",
+      "location": "'Schermate'!A518",
+      "label": "Note.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C196",
+      "location": "'Schermate'!A518",
+      "label": "Note.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C197",
+      "location": "'Schermate'!A518",
+      "label": "Note.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C198",
+      "location": "'Schermate'!A518",
+      "label": "Note.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C199",
+      "location": "'Schermate'!A544",
+      "label": "Note_chiuso.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C200",
+      "location": "'Schermate'!A544",
+      "label": "Note_chiuso.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C201",
+      "location": "'Schermate'!A544",
+      "label": "Note_chiuso.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C202",
+      "location": "'Schermate'!A544",
+      "label": "Note_chiuso.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C203",
+      "location": "'Schermate'!A544",
+      "label": "Note_chiuso.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C204",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C205",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C206",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C207",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C208",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C209",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C210",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C211",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C212",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C213",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C214",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C215",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C216",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C217",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C218",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C219",
+      "location": "'Schermate'!A570",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C220",
+      "location": "'Schermate'!A596",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C221",
+      "location": "'Schermate'!A596",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C222",
+      "location": "'Schermate'!A596",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C223",
+      "location": "'Schermate'!A596",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C224",
+      "location": "'Schermate'!A596",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C225",
+      "location": "'Schermate'!A596",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C226",
+      "location": "'Schermate'!A596",
+      "label": "Elenco.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C227",
+      "location": "'Schermate'!A622",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C228",
+      "location": "'Schermate'!A622",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C229",
+      "location": "'Schermate'!A622",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C230",
+      "location": "'Schermate'!A622",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C231",
+      "location": "'Schermate'!A622",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C232",
+      "location": "'Schermate'!A622",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C233",
+      "location": "'Schermate'!A622",
+      "label": "Elenco_dx.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C234",
+      "location": "'Schermate'!A648",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C235",
+      "location": "'Schermate'!A648",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C236",
+      "location": "'Schermate'!A648",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C237",
+      "location": "'Schermate'!A648",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C238",
+      "location": "'Schermate'!A648",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C239",
+      "location": "'Schermate'!A648",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C240",
+      "location": "'Schermate'!A648",
+      "label": "Elenco_tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C241",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C242",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C243",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C244",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C245",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C246",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C247",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C248",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C249",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C250",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C251",
+      "location": "'Schermate'!A671",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C252",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C253",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C254",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C255",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C256",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C257",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C258",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C259",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C260",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C261",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C262",
+      "location": "'Schermate'!A694",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C263",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C264",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C265",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C266",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C267",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C268",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C269",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C270",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C271",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C272",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C273",
+      "location": "'Schermate'!A728",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C274",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C275",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C276",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C277",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C278",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C279",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C280",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C281",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C282",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C283",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C284",
+      "location": "'Schermate'!A752",
+      "label": "GestioneFidi_Tooltip2.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C285",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C286",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C287",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C288",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C289",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C290",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C291",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C292",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C293",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C294",
+      "location": "'Schermate'!A786",
+      "label": "GestioneFidi.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C295",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C296",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C297",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C298",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C299",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C300",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C301",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C302",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C303",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C304",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C305",
+      "location": "'Schermate'!A812",
+      "label": "GestioneFidi_Tooltip1.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C306",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C307",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C308",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C309",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C310",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C311",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C312",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C313",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C314",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C315",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C316",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C317",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C318",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C319",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C320",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    },
+    {
+      "sheet": "Revisione",
+      "address": "C321",
+      "location": "'Schermate'!A835",
+      "label": "Soggetti.png"
+    }
+  ],
+  "field_card_revision": true,
+  "embedded_field_images": 267
+}

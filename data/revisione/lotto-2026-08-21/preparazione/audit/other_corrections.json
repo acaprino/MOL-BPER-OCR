@@ -1,0 +1,6 @@
+{
+  "status": "no_corrections_required",
+  "criteria": "Targets must contain complete rendered field text, with adjacent separators and other field text outside. Source overflow must remain included.",
+  "additional_checks": "Individually inspected all 10 NDG/Tipo header cards at native resolution after the stricter criterion was requested. The NDG-to-denomination dash and the trailing Tipo separator lie outside their respective red boxes. Multiline and source overflow were already reviewed in the preceding independent pass.",
+  "corrections": []
+}

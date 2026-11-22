@@ -623,7 +623,7 @@
     },
     {
       "practice": "LUNARDI_26871394",
-      "batch": "reference-lunardi",
+      "batch": "riferimento-lunardi",
       "ground_truth_split": "train",
       "in_scope_count": 9,
       "offtopic_count": 0,

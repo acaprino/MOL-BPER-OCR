@@ -95,9 +95,9 @@ poc-data-src/extraction/
       screen 1..9.png          # I 9 screenshot di test (tracciati)
       dati.csv                 # CSV di ground truth -- ATTESO qui ma NON nel repository (vedi sotto)
       debug_crops/             # Crop intermedi, solo con DEBUG_SAVE_CROPS=1
-    pratiche/                  # Dataset unificato di screenshot per pratica (23 pratiche, 178 PNG, manifest.json)
-    revisione/                 # Workbook revisionato Revisione_ground_truth_v3_1.xlsx, ritagli e versioni superate
-    src/training/                  # Bundle sigillato ground-truth-v3.1/ e run dei modelli LiLT (runs/)
+    pratiche/                  # Archivio delle 33 pratiche: <id>/ con le schermate, pratiche.xlsx, manifest.json
+    revisione/                 # Fonti della data entry umana, una cartella per lotto (riscontro-2026-10-07/, lotto-*/, riferimento-lunardi/)
+    training/                  # Bundle ground-truth-v3.*, OCR e run dei modelli LiLT (runs/)
     spike-ocr/                 # Script e dati esplorativi dello spike OCR locale
 
   docs/                  # Questa documentazione narrativa in italiano (INDEX + doc 00-12)

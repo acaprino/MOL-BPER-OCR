@@ -1,0 +1,3148 @@
+{
+  "batch": "lotto-2026-08-21",
+  "method": "Manual visual audit of all 16 original GestioneFidi screenshots and all 16 current context crops. No OCR, transcription or external model calls.",
+  "coordinate_system": "All target_bbox and context_bbox values are integer XYXY coordinates in ORIGINAL images; right and bottom are exclusive. Data-cell rectangles contain values and their internal whitespace, not glyph-tight outlines.",
+  "counts": {
+    "screens": 16,
+    "fields": 240
+  },
+  "limitations": [
+    "Readability is limited by source resolution: the three full-window base captures and two full-header tooltip captures have small native text. Do not resample or invent missing detail.",
+    "Partial header lines at the upper edge of the two 52022324 tooltip screenshots are not complete values and have null boxes.",
+    "Six noncanonical open tooltips in the whole batch are classified separately in tooltip_inventory.json."
+  ],
+  "screens": [
+    {
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "screen_context_bbox": [
+        161,
+        234,
+        1446,
+        925
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            415,
+            410,
+            485,
+            453
+          ],
+          "context_bbox": [
+            415,
+            356,
+            1415,
+            453
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            485,
+            410,
+            606,
+            453
+          ],
+          "context_bbox": [
+            415,
+            356,
+            1415,
+            453
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            606,
+            410,
+            694,
+            453
+          ],
+          "context_bbox": [
+            415,
+            356,
+            1415,
+            453
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            694,
+            410,
+            785,
+            439
+          ],
+          "context_bbox": [
+            415,
+            356,
+            1415,
+            453
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            785,
+            410,
+            871,
+            439
+          ],
+          "context_bbox": [
+            415,
+            356,
+            1415,
+            453
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            871,
+            410,
+            949,
+            439
+          ],
+          "context_bbox": [
+            415,
+            356,
+            1415,
+            453
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": [
+            686,
+            439,
+            1017,
+            471
+          ],
+          "context_bbox": [
+            415,
+            356,
+            1415,
+            471
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "screen_context_bbox": [
+        163,
+        179,
+        1445,
+        860
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            414,
+            355,
+            482,
+            398
+          ],
+          "context_bbox": [
+            414,
+            301,
+            1414,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            482,
+            355,
+            605,
+            398
+          ],
+          "context_bbox": [
+            414,
+            301,
+            1414,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            605,
+            355,
+            693,
+            398
+          ],
+          "context_bbox": [
+            414,
+            301,
+            1414,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            693,
+            355,
+            783,
+            398
+          ],
+          "context_bbox": [
+            414,
+            301,
+            1414,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            783,
+            355,
+            869,
+            398
+          ],
+          "context_bbox": [
+            414,
+            301,
+            1414,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            869,
+            355,
+            948,
+            398
+          ],
+          "context_bbox": [
+            414,
+            301,
+            1414,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": [
+            555,
+            549,
+            875,
+            582
+          ],
+          "context_bbox": [
+            414,
+            444,
+            1414,
+            604
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "screen_context_bbox": [
+        157,
+        179,
+        1439,
+        870
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            408,
+            355,
+            476,
+            398
+          ],
+          "context_bbox": [
+            408,
+            301,
+            1408,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            476,
+            355,
+            599,
+            398
+          ],
+          "context_bbox": [
+            408,
+            301,
+            1408,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            599,
+            355,
+            687,
+            398
+          ],
+          "context_bbox": [
+            408,
+            301,
+            1408,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            687,
+            355,
+            777,
+            398
+          ],
+          "context_bbox": [
+            408,
+            301,
+            1408,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            777,
+            355,
+            863,
+            398
+          ],
+          "context_bbox": [
+            408,
+            301,
+            1408,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            863,
+            355,
+            942,
+            398
+          ],
+          "context_bbox": [
+            408,
+            301,
+            1408,
+            398
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": [
+            560,
+            593,
+            785,
+            626
+          ],
+          "context_bbox": [
+            408,
+            444,
+            1408,
+            626
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        }
+      ]
+    },
+    {
+      "screen": "51788077__GestioneFidi",
+      "screen_context_bbox": [
+        171,
+        232,
+        1000,
+        1016
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": [
+            370,
+            331,
+            413,
+            343
+          ],
+          "context_bbox": [
+            322,
+            313,
+            977,
+            412
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": [
+            415,
+            331,
+            510,
+            343
+          ],
+          "context_bbox": [
+            322,
+            313,
+            977,
+            412
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": [
+            852,
+            313,
+            897,
+            326
+          ],
+          "context_bbox": [
+            322,
+            313,
+            977,
+            412
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": [
+            876,
+            360,
+            970,
+            374
+          ],
+          "context_bbox": [
+            322,
+            313,
+            977,
+            412
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            330,
+            527,
+            375,
+            556
+          ],
+          "context_bbox": [
+            330,
+            494,
+            968,
+            556
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            375,
+            527,
+            450,
+            556
+          ],
+          "context_bbox": [
+            330,
+            494,
+            968,
+            556
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            450,
+            527,
+            515,
+            556
+          ],
+          "context_bbox": [
+            330,
+            494,
+            968,
+            556
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            515,
+            527,
+            564,
+            556
+          ],
+          "context_bbox": [
+            330,
+            494,
+            968,
+            556
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            564,
+            527,
+            625,
+            556
+          ],
+          "context_bbox": [
+            330,
+            494,
+            968,
+            556
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            625,
+            527,
+            677,
+            556
+          ],
+          "context_bbox": [
+            330,
+            494,
+            968,
+            556
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "screen_context_bbox": [
+        226,
+        184,
+        1449,
+        885
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            417,
+            269,
+            478,
+            313
+          ],
+          "context_bbox": [
+            417,
+            229,
+            1417,
+            313
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            478,
+            269,
+            605,
+            313
+          ],
+          "context_bbox": [
+            417,
+            229,
+            1417,
+            313
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            605,
+            269,
+            720,
+            313
+          ],
+          "context_bbox": [
+            417,
+            229,
+            1417,
+            313
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            720,
+            269,
+            799,
+            313
+          ],
+          "context_bbox": [
+            417,
+            229,
+            1417,
+            313
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            799,
+            269,
+            884,
+            313
+          ],
+          "context_bbox": [
+            417,
+            229,
+            1417,
+            313
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            884,
+            269,
+            959,
+            313
+          ],
+          "context_bbox": [
+            417,
+            229,
+            1417,
+            313
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "screen_context_bbox": [
+        223,
+        178,
+        1446,
+        878
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            414,
+            263,
+            475,
+            307
+          ],
+          "context_bbox": [
+            414,
+            223,
+            1414,
+            307
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            475,
+            263,
+            602,
+            307
+          ],
+          "context_bbox": [
+            414,
+            223,
+            1414,
+            307
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            602,
+            263,
+            717,
+            307
+          ],
+          "context_bbox": [
+            414,
+            223,
+            1414,
+            307
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            717,
+            263,
+            796,
+            307
+          ],
+          "context_bbox": [
+            414,
+            223,
+            1414,
+            307
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            796,
+            263,
+            881,
+            307
+          ],
+          "context_bbox": [
+            414,
+            223,
+            1414,
+            307
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            881,
+            263,
+            956,
+            307
+          ],
+          "context_bbox": [
+            414,
+            223,
+            1414,
+            307
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": [
+            542,
+            458,
+            766,
+            491
+          ],
+          "context_bbox": [
+            414,
+            353,
+            1414,
+            491
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        }
+      ]
+    },
+    {
+      "screen": "51800301__GestioneFidi",
+      "screen_context_bbox": [
+        169,
+        246,
+        1097,
+        1018
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": [
+            390,
+            371,
+            434,
+            385
+          ],
+          "context_bbox": [
+            337,
+            339,
+            1073,
+            476
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": [
+            441,
+            371,
+            616,
+            385
+          ],
+          "context_bbox": [
+            337,
+            339,
+            1073,
+            476
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": [
+            933,
+            339,
+            980,
+            352
+          ],
+          "context_bbox": [
+            337,
+            339,
+            1073,
+            476
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": [
+            959,
+            405,
+            1071,
+            419
+          ],
+          "context_bbox": [
+            337,
+            339,
+            1073,
+            476
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            347,
+            606,
+            396,
+            637
+          ],
+          "context_bbox": [
+            347,
+            568,
+            1064,
+            637
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            396,
+            606,
+            464,
+            637
+          ],
+          "context_bbox": [
+            347,
+            568,
+            1064,
+            637
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            464,
+            606,
+            525,
+            637
+          ],
+          "context_bbox": [
+            347,
+            568,
+            1064,
+            637
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            525,
+            606,
+            582,
+            637
+          ],
+          "context_bbox": [
+            347,
+            568,
+            1064,
+            637
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            582,
+            606,
+            639,
+            637
+          ],
+          "context_bbox": [
+            347,
+            568,
+            1064,
+            637
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            639,
+            606,
+            731,
+            637
+          ],
+          "context_bbox": [
+            347,
+            568,
+            1064,
+            637
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "screen_context_bbox": [
+        160,
+        240,
+        1443,
+        937
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            412,
+            488,
+            476,
+            531
+          ],
+          "context_bbox": [
+            412,
+            435,
+            1411,
+            531
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            476,
+            488,
+            602,
+            531
+          ],
+          "context_bbox": [
+            412,
+            435,
+            1411,
+            531
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            602,
+            488,
+            693,
+            531
+          ],
+          "context_bbox": [
+            412,
+            435,
+            1411,
+            531
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            693,
+            488,
+            787,
+            531
+          ],
+          "context_bbox": [
+            412,
+            435,
+            1411,
+            531
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            787,
+            488,
+            867,
+            531
+          ],
+          "context_bbox": [
+            412,
+            435,
+            1411,
+            531
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            867,
+            488,
+            945,
+            531
+          ],
+          "context_bbox": [
+            412,
+            435,
+            1411,
+            531
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "screen_context_bbox": [
+        158,
+        241,
+        1441,
+        948
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            410,
+            489,
+            474,
+            532
+          ],
+          "context_bbox": [
+            410,
+            436,
+            1409,
+            532
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            474,
+            489,
+            600,
+            532
+          ],
+          "context_bbox": [
+            410,
+            436,
+            1409,
+            532
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            600,
+            489,
+            691,
+            532
+          ],
+          "context_bbox": [
+            410,
+            436,
+            1409,
+            532
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            691,
+            489,
+            785,
+            512
+          ],
+          "context_bbox": [
+            410,
+            436,
+            1409,
+            532
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            785,
+            489,
+            865,
+            512
+          ],
+          "context_bbox": [
+            410,
+            436,
+            1409,
+            532
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            865,
+            489,
+            943,
+            512
+          ],
+          "context_bbox": [
+            410,
+            436,
+            1409,
+            532
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "screen_context_bbox": [
+        165,
+        180,
+        1447,
+        886
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            416,
+            428,
+            480,
+            471
+          ],
+          "context_bbox": [
+            416,
+            375,
+            1416,
+            471
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            480,
+            428,
+            606,
+            471
+          ],
+          "context_bbox": [
+            416,
+            375,
+            1416,
+            471
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            606,
+            428,
+            697,
+            471
+          ],
+          "context_bbox": [
+            416,
+            375,
+            1416,
+            471
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            697,
+            428,
+            791,
+            471
+          ],
+          "context_bbox": [
+            416,
+            375,
+            1416,
+            471
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            791,
+            428,
+            871,
+            471
+          ],
+          "context_bbox": [
+            416,
+            375,
+            1416,
+            471
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            871,
+            428,
+            950,
+            471
+          ],
+          "context_bbox": [
+            416,
+            375,
+            1416,
+            471
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": [
+            598,
+            624,
+            823,
+            656
+          ],
+          "context_bbox": [
+            416,
+            518,
+            1416,
+            656
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        }
+      ]
+    },
+    {
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "screen_context_bbox": [
+        127,
+        128,
+        1154,
+        831
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": [
+            374,
+            254,
+            422,
+            269
+          ],
+          "context_bbox": [
+            314,
+            232,
+            1131,
+            367
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": [
+            426,
+            254,
+            654,
+            269
+          ],
+          "context_bbox": [
+            314,
+            232,
+            1131,
+            367
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": [
+            977,
+            232,
+            1030,
+            245
+          ],
+          "context_bbox": [
+            314,
+            232,
+            1131,
+            367
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": [
+            1005,
+            291,
+            1113,
+            304
+          ],
+          "context_bbox": [
+            314,
+            232,
+            1131,
+            367
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            323,
+            511,
+            367,
+            546
+          ],
+          "context_bbox": [
+            323,
+            469,
+            1122,
+            546
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            367,
+            511,
+            464,
+            546
+          ],
+          "context_bbox": [
+            323,
+            469,
+            1122,
+            546
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            464,
+            511,
+            553,
+            546
+          ],
+          "context_bbox": [
+            323,
+            469,
+            1122,
+            546
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            553,
+            511,
+            617,
+            546
+          ],
+          "context_bbox": [
+            323,
+            469,
+            1122,
+            546
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            617,
+            511,
+            685,
+            546
+          ],
+          "context_bbox": [
+            323,
+            469,
+            1122,
+            546
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            685,
+            511,
+            750,
+            546
+          ],
+          "context_bbox": [
+            323,
+            469,
+            1122,
+            546
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": [
+            458,
+            701,
+            637,
+            726
+          ],
+          "context_bbox": [
+            323,
+            583,
+            1122,
+            726
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        }
+      ]
+    },
+    {
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "screen_context_bbox": [
+        154,
+        130,
+        1181,
+        919
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": [
+            401,
+            256,
+            449,
+            272
+          ],
+          "context_bbox": [
+            341,
+            234,
+            1158,
+            355
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": [
+            453,
+            256,
+            583,
+            272
+          ],
+          "context_bbox": [
+            341,
+            234,
+            1158,
+            355
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": [
+            1004,
+            234,
+            1057,
+            248
+          ],
+          "context_bbox": [
+            341,
+            234,
+            1158,
+            355
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": [
+            1032,
+            294,
+            1131,
+            308
+          ],
+          "context_bbox": [
+            341,
+            234,
+            1158,
+            355
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            350,
+            499,
+            394,
+            534
+          ],
+          "context_bbox": [
+            350,
+            457,
+            1149,
+            534
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            394,
+            499,
+            491,
+            534
+          ],
+          "context_bbox": [
+            350,
+            457,
+            1149,
+            534
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            491,
+            499,
+            580,
+            534
+          ],
+          "context_bbox": [
+            350,
+            457,
+            1149,
+            534
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            580,
+            499,
+            644,
+            534
+          ],
+          "context_bbox": [
+            350,
+            457,
+            1149,
+            534
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            644,
+            499,
+            712,
+            534
+          ],
+          "context_bbox": [
+            350,
+            457,
+            1149,
+            534
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            712,
+            499,
+            777,
+            534
+          ],
+          "context_bbox": [
+            350,
+            457,
+            1149,
+            534
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": [
+            491,
+            691,
+            671,
+            716
+          ],
+          "context_bbox": [
+            350,
+            571,
+            1149,
+            716
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        }
+      ]
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "screen_context_bbox": [
+        84,
+        142,
+        1155,
+        878
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "clipped_unreadable",
+          "reason": "Only an upper-edge fragment of this header line remains in the original; do not infer the value."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            327,
+            391,
+            373,
+            426
+          ],
+          "context_bbox": [
+            327,
+            349,
+            1125,
+            426
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            373,
+            391,
+            474,
+            426
+          ],
+          "context_bbox": [
+            327,
+            349,
+            1125,
+            426
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            474,
+            391,
+            547,
+            426
+          ],
+          "context_bbox": [
+            327,
+            349,
+            1125,
+            426
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            547,
+            391,
+            625,
+            426
+          ],
+          "context_bbox": [
+            327,
+            349,
+            1125,
+            426
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            625,
+            391,
+            688,
+            426
+          ],
+          "context_bbox": [
+            327,
+            349,
+            1125,
+            426
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            688,
+            391,
+            754,
+            426
+          ],
+          "context_bbox": [
+            327,
+            349,
+            1125,
+            426
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": [
+            443,
+            558,
+            699,
+            583
+          ],
+          "context_bbox": [
+            327,
+            464,
+            1125,
+            592
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "screen_context_bbox": [
+        161,
+        146,
+        1151,
+        898
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "clipped_unreadable",
+          "reason": "Only an upper-edge fragment of this header line remains in the original; do not infer the value."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            323,
+            396,
+            369,
+            431
+          ],
+          "context_bbox": [
+            323,
+            354,
+            1121,
+            431
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            369,
+            396,
+            470,
+            431
+          ],
+          "context_bbox": [
+            323,
+            354,
+            1121,
+            431
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            470,
+            396,
+            543,
+            431
+          ],
+          "context_bbox": [
+            323,
+            354,
+            1121,
+            431
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            543,
+            396,
+            621,
+            431
+          ],
+          "context_bbox": [
+            323,
+            354,
+            1121,
+            431
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            621,
+            396,
+            684,
+            431
+          ],
+          "context_bbox": [
+            323,
+            354,
+            1121,
+            431
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            684,
+            396,
+            750,
+            431
+          ],
+          "context_bbox": [
+            323,
+            354,
+            1121,
+            431
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": [
+            431,
+            588,
+            611,
+            614
+          ],
+          "context_bbox": [
+            323,
+            469,
+            1121,
+            614
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        }
+      ]
+    },
+    {
+      "screen": "52032077__GestioneFidi",
+      "screen_context_bbox": [
+        164,
+        231,
+        993,
+        1024
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": [
+            362,
+            342,
+            404,
+            357
+          ],
+          "context_bbox": [
+            315,
+            312,
+            970,
+            423
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": [
+            408,
+            342,
+            503,
+            357
+          ],
+          "context_bbox": [
+            315,
+            312,
+            970,
+            423
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": [
+            845,
+            312,
+            890,
+            326
+          ],
+          "context_bbox": [
+            315,
+            312,
+            970,
+            423
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": [
+            869,
+            372,
+            967,
+            386
+          ],
+          "context_bbox": [
+            315,
+            312,
+            970,
+            423
+          ],
+          "visibility": "visible",
+          "reason": "The header value is visible in the original."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            323,
+            539,
+            369,
+            568
+          ],
+          "context_bbox": [
+            323,
+            506,
+            961,
+            568
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            369,
+            539,
+            441,
+            568
+          ],
+          "context_bbox": [
+            323,
+            506,
+            961,
+            568
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            441,
+            539,
+            509,
+            568
+          ],
+          "context_bbox": [
+            323,
+            506,
+            961,
+            568
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            509,
+            539,
+            561,
+            568
+          ],
+          "context_bbox": [
+            323,
+            506,
+            961,
+            568
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            561,
+            539,
+            614,
+            568
+          ],
+          "context_bbox": [
+            323,
+            506,
+            961,
+            568
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            614,
+            539,
+            665,
+            568
+          ],
+          "context_bbox": [
+            323,
+            506,
+            961,
+            568
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    },
+    {
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "screen_context_bbox": [
+        164,
+        179,
+        1443,
+        853
+      ],
+      "current_crop_audit": "All requested visible header, Fidi and canonical tooltip regions are retained. No new field clipping caused by the current crop.",
+      "fields": [
+        {
+          "field_key": "ndg",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "denominazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "tipo",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "filiale_relazione",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "The header is outside the original viewport; do not reuse values from another screen."
+        },
+        {
+          "field_key": "n_fido",
+          "target_bbox": [
+            412,
+            408,
+            476,
+            451
+          ],
+          "context_bbox": [
+            412,
+            355,
+            1411,
+            451
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "rapporto",
+          "target_bbox": [
+            476,
+            408,
+            600,
+            451
+          ],
+          "context_bbox": [
+            412,
+            355,
+            1411,
+            451
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "descrizione",
+          "target_bbox": [
+            600,
+            408,
+            686,
+            451
+          ],
+          "context_bbox": [
+            412,
+            355,
+            1411,
+            451
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "scadenza",
+          "target_bbox": [
+            686,
+            408,
+            777,
+            439
+          ],
+          "context_bbox": [
+            412,
+            355,
+            1411,
+            451
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "importo_euro",
+          "target_bbox": [
+            777,
+            408,
+            865,
+            439
+          ],
+          "context_bbox": [
+            412,
+            355,
+            1411,
+            451
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tipo_op",
+          "target_bbox": [
+            865,
+            408,
+            946,
+            439
+          ],
+          "context_bbox": [
+            412,
+            355,
+            1411,
+            451
+          ],
+          "visibility": "visible",
+          "reason": "The only Fidi row is visible. The target follows its data cell; the context retains the Fidi column headings."
+        },
+        {
+          "field_key": "tooltip_descrizione_bmb",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_evidenze_b",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_m_consap",
+          "target_bbox": [
+            661,
+            439,
+            992,
+            471
+          ],
+          "context_bbox": [
+            412,
+            355,
+            1411,
+            473
+          ],
+          "visibility": "visible",
+          "reason": "The complete open tooltip border and text are visible in the original."
+        },
+        {
+          "field_key": "tooltip_descrizione_consap_dr_bis",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        },
+        {
+          "field_key": "tooltip_descrizione_ipoteca",
+          "target_bbox": null,
+          "context_bbox": null,
+          "visibility": "not_visible",
+          "reason": "No open tooltip for this canonical field is visible. Do not infer it from a short cell value or another screen."
+        }
+      ]
+    }
+  ]
+}

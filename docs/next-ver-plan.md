@@ -23,7 +23,7 @@ Secondo il contratto fissato in [`docs/adr/0022-addestramento-lilt-da-revisione-
 
 ### 1.1 Baseline Storica e Provenienza (`ground-truth-v3.1` e `lilt-v3.1-20261016`)
 
-Dall'analisi riga per riga di `data/training/ground-truth-v3.1/alignment_report.csv` (`1.008` righe su `113` schermate di `12` pratiche revisionate in `data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx`) e di `data/training/runs/lilt-v3.1-20261016/test_field_metrics.json` (`22` schermate di test, pratiche `51531667` e `52060489`, `192` valori valutati con metrica `strict-v2-punctuation-spacing`):
+Dall'analisi riga per riga di `data/training/ground-truth-v3.1/alignment_report.csv` (`1.008` righe su `113` schermate di `12` pratiche revisionate in `data/revisione/riscontro-2026-10-07/Revisione_ground_truth_v3_1.xlsx`) e di `data/training/runs/lilt-v3.1-20261016/test_field_metrics.json` (`22` schermate di test, pratiche `51531667` e `52060489`, `192` valori valutati con metrica `strict-v2-punctuation-spacing`):
 
 | Indicatore | Valore misurato | Dettaglio |
 |---|---:|---|

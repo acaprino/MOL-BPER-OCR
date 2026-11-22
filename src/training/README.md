@@ -12,7 +12,7 @@ Dalla radice del repository, nell'ambiente con le dipendenze di `requirements.tx
 
 ```powershell
 $env:PYTHONPATH = 'src'
-python -m training.dataset --workbook data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx --screenshots data/pratiche --ocr data/training/ocr-cache/rapid_v6_small_1x.json --output data/training/ground-truth-v3.1
+python -m training.dataset --workbook data/revisione/riscontro-2026-10-07/Revisione_ground_truth_v3_1.xlsx --screenshots data/pratiche --ocr data/training/ocr-cache/rapid_v6_small_1x.json --output data/training/ground-truth-v3.1
 ```
 
 La cache OCR è quella da cui è costruito il bundle (SHA-256 `e261c05b…`); il
@@ -36,7 +36,7 @@ trascrizione (`Trascrizione` + `Esito`) e assegnato ai gruppi G8 da
 
 ```powershell
 cd src
-../.venv/Scripts/python.exe -m training.dataset --workbook ../data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx --screenshots ../data/pratiche --ocr ../data/training/ocr-runs/A1/cache.json --output ../data/training/ground-truth-v3.2 --lot ../data/revisione/lotto-2026-08-21/Revisione_10_pratiche_agosto_v1.0.xlsx ../data/revisione/lotto-2026-08-21/g8_assegnazione.json ../data/revisione/lotto-2026-08-21/correzioni.json ../data/training/validazione-estesa/ocr-A1/cache.json
+../.venv/Scripts/python.exe -m training.dataset --workbook ../data/revisione/riscontro-2026-10-07/Revisione_ground_truth_v3_1.xlsx --screenshots ../data/pratiche --ocr ../data/training/ocr-runs/A1/cache.json --output ../data/training/ground-truth-v3.2 --lot ../data/revisione/lotto-2026-08-21/Revisione_10_pratiche_agosto_v1.0.xlsx ../data/revisione/lotto-2026-08-21/g8_assegnazione.json ../data/revisione/lotto-2026-08-21/correzioni.json ../data/training/validazione-estesa/ocr-A1/cache.json
 ../.venv/Scripts/python.exe -m training.truth_export --bundle ../data/training/ground-truth-v3.2 --out ../data/training/ground-truth-v3.2/ground_truth.xlsx
 ```
 
@@ -68,7 +68,7 @@ Addestramento 18 (train, `LUNARDI_26871394`, validazione estesa con `--also-trai
 test 13 (test storico e conferma sigillata): colonna `Ruolo` di `practices.csv`, ADR 0027. La
 costruzione della versione più recente rifiuta una cartella di `data/pratiche` senza ruolo. Il
 lotto `riferimento-lunardi` è un CSV (`read_reference_truth()`): si passa con `--lots` come gli
-altri, con `dati.csv`, `assegnazione.json`, `fotogrammi.json` e la sua cache OCR.
+altri, con `dati.csv`, `g8_assegnazione.json`, `fotogrammi.json` e la sua cache OCR.
 
 ### Un foglio per pratica: `ground-truth-v3.3`
 
@@ -123,7 +123,7 @@ uv venv .venv-ocr --python 3.13
 uv pip install --python .venv-ocr/Scripts/python.exe -r requirements-ocr.txt
 cd src
 ../.venv-ocr/Scripts/python.exe -m training.ocr_runner run --config A1 --profile pc4 --examples ../data/training/ground-truth-v3.1/examples.json --screenshots ../data --out CARTELLA-NUOVA
-../.venv/Scripts/python.exe -m training.ocr_runner report --run CARTELLA-NUOVA --workbook ../data/revisione/revisione/Revisione_ground_truth_v3_1.xlsx --screenshots ../data
+../.venv/Scripts/python.exe -m training.ocr_runner report --run CARTELLA-NUOVA --workbook ../data/revisione/riscontro-2026-10-07/Revisione_ground_truth_v3_1.xlsx --screenshots ../data
 ```
 
 Ogni schermata viene salvata appena letta: una prova interrotta riprende dalle

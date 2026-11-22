@@ -1,0 +1,3480 @@
+{
+  "workbook_sha256": "2ec0cbe4551441563c9e03a358be2d2ba040c27c1331e4cf5161647f0ac8885d",
+  "embedded_crops_verified": 267,
+  "crops_displayed_smaller_than_original": 0,
+  "original_value_rectangles_pixel_identical": 250,
+  "fields_without_invented_images": 53,
+  "rows": [
+    {
+      "excel_row": 2,
+      "screen": "51772928__Elenco",
+      "field": "ndg",
+      "original_bbox": [
+        203,
+        431,
+        296,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 3,
+      "screen": "51772928__Elenco",
+      "field": "denominazione",
+      "original_bbox": [
+        294,
+        431,
+        406,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 4,
+      "screen": "51772928__Elenco",
+      "field": "tipo",
+      "original_bbox": [
+        494,
+        431,
+        598,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 5,
+      "screen": "51772928__Elenco",
+      "field": "stato",
+      "original_bbox": [
+        719,
+        431,
+        831,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 6,
+      "screen": "51772928__Elenco",
+      "field": "fase",
+      "original_bbox": [
+        832,
+        431,
+        936,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 7,
+      "screen": "51772928__Elenco",
+      "field": "creazione",
+      "original_bbox": [
+        934,
+        431,
+        1063,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 8,
+      "screen": "51772928__Elenco",
+      "field": "evidenze",
+      "original_bbox": [
+        1687,
+        431,
+        1814,
+        524
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 9,
+      "screen": "51772928__Elenco_dx",
+      "field": "ndg",
+      "original_bbox": [
+        203,
+        426,
+        296,
+        515
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 10,
+      "screen": "51772928__Elenco_dx",
+      "field": "denominazione",
+      "original_bbox": [
+        289,
+        426,
+        391,
+        515
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 11,
+      "screen": "51772928__Elenco_dx",
+      "field": "tipo",
+      "original_bbox": [
+        380,
+        426,
+        453,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 12,
+      "screen": "51772928__Elenco_dx",
+      "field": "stato",
+      "original_bbox": [
+        584,
+        426,
+        691,
+        515
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 13,
+      "screen": "51772928__Elenco_dx",
+      "field": "fase",
+      "original_bbox": [
+        694,
+        426,
+        796,
+        515
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 14,
+      "screen": "51772928__Elenco_dx",
+      "field": "creazione",
+      "original_bbox": [
+        799,
+        426,
+        922,
+        516
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 15,
+      "screen": "51772928__Elenco_dx",
+      "field": "evidenze",
+      "original_bbox": [
+        1689,
+        426,
+        1819,
+        519
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 16,
+      "screen": "51772928__Elenco_tooltip1",
+      "field": "ndg",
+      "original_bbox": [
+        256,
+        493,
+        370,
+        600
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 17,
+      "screen": "51772928__Elenco_tooltip1",
+      "field": "denominazione",
+      "original_bbox": [
+        371,
+        493,
+        500,
+        600
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 18,
+      "screen": "51772928__Elenco_tooltip1",
+      "field": "tipo",
+      "original_bbox": [
+        623,
+        493,
+        740,
+        600
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 19,
+      "screen": "51772928__Elenco_tooltip1",
+      "field": "stato",
+      "original_bbox": [
+        904,
+        493,
+        1029,
+        600
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 20,
+      "screen": "51772928__Elenco_tooltip1",
+      "field": "fase",
+      "original_bbox": [
+        1041,
+        493,
+        1168,
+        600
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 21,
+      "screen": "51772928__Elenco_tooltip1",
+      "field": "creazione",
+      "original_bbox": [
+        1171,
+        493,
+        1327,
+        601
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 22,
+      "screen": "51772928__Elenco_tooltip1",
+      "field": "evidenze",
+      "original_bbox": [
+        1614,
+        493,
+        1764,
+        606
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 27,
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field": "n_fido",
+      "original_bbox": [
+        412,
+        356,
+        495,
+        456
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 28,
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field": "rapporto",
+      "original_bbox": [
+        475,
+        356,
+        616,
+        456
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 29,
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field": "descrizione",
+      "original_bbox": [
+        596,
+        356,
+        704,
+        456
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 30,
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field": "scadenza",
+      "original_bbox": [
+        684,
+        356,
+        795,
+        453
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 31,
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field": "importo_euro",
+      "original_bbox": [
+        775,
+        356,
+        881,
+        453
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 32,
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field": "tipo_op",
+      "original_bbox": [
+        861,
+        356,
+        959,
+        453
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 33,
+      "screen": "51772928__GestioneFidi_Tooltip1",
+      "field": "tooltip_descrizione_m_consap",
+      "original_bbox": [
+        415,
+        356,
+        1415,
+        474
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.1746
+    },
+    {
+      "excel_row": 38,
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field": "n_fido",
+      "original_bbox": [
+        411,
+        301,
+        492,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 39,
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field": "rapporto",
+      "original_bbox": [
+        472,
+        301,
+        615,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 40,
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field": "descrizione",
+      "original_bbox": [
+        595,
+        301,
+        703,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 41,
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field": "scadenza",
+      "original_bbox": [
+        683,
+        301,
+        793,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 42,
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field": "importo_euro",
+      "original_bbox": [
+        773,
+        301,
+        879,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 43,
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field": "tipo_op",
+      "original_bbox": [
+        859,
+        301,
+        958,
+        406
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 44,
+      "screen": "51772928__GestioneFidi_Tooltip2",
+      "field": "tooltip_descrizione_consap_dr_bis",
+      "original_bbox": [
+        414,
+        444,
+        1414,
+        604
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.1746
+    },
+    {
+      "excel_row": 49,
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field": "n_fido",
+      "original_bbox": [
+        405,
+        301,
+        486,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 50,
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field": "rapporto",
+      "original_bbox": [
+        466,
+        301,
+        609,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 51,
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field": "descrizione",
+      "original_bbox": [
+        589,
+        301,
+        697,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 52,
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field": "scadenza",
+      "original_bbox": [
+        677,
+        301,
+        787,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 53,
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field": "importo_euro",
+      "original_bbox": [
+        767,
+        301,
+        873,
+        401
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 54,
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field": "tipo_op",
+      "original_bbox": [
+        853,
+        301,
+        952,
+        406
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 55,
+      "screen": "51772928__GestioneFidi_Tooltip3",
+      "field": "tooltip_descrizione_ipoteca",
+      "original_bbox": [
+        408,
+        444,
+        1408,
+        629
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.1746
+    },
+    {
+      "excel_row": 56,
+      "screen": "51788077__Elenco",
+      "field": "ndg",
+      "original_bbox": [
+        169,
+        349,
+        251,
+        422
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 57,
+      "screen": "51788077__Elenco",
+      "field": "denominazione",
+      "original_bbox": [
+        234,
+        349,
+        405,
+        422
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 58,
+      "screen": "51788077__Elenco",
+      "field": "tipo",
+      "original_bbox": [
+        456,
+        349,
+        542,
+        422
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 59,
+      "screen": "51788077__Elenco",
+      "field": "stato",
+      "original_bbox": [
+        644,
+        349,
+        725,
+        422
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 60,
+      "screen": "51788077__Elenco",
+      "field": "fase",
+      "original_bbox": [
+        727,
+        349,
+        807,
+        436
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 61,
+      "screen": "51788077__Elenco",
+      "field": "creazione",
+      "original_bbox": [
+        806,
+        349,
+        910,
+        422
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 62,
+      "screen": "51788077__Elenco",
+      "field": "evidenze",
+      "original_bbox": [
+        1470,
+        349,
+        1622,
+        426
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 63,
+      "screen": "51788077__GestioneFidi",
+      "field": "ndg",
+      "original_bbox": [
+        330,
+        313,
+        425,
+        412
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 64,
+      "screen": "51788077__GestioneFidi",
+      "field": "denominazione",
+      "original_bbox": [
+        399,
+        313,
+        522,
+        412
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 65,
+      "screen": "51788077__GestioneFidi",
+      "field": "tipo",
+      "original_bbox": [
+        756,
+        308,
+        909,
+        412
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 66,
+      "screen": "51788077__GestioneFidi",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        761,
+        313,
+        977,
+        412
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 67,
+      "screen": "51788077__GestioneFidi",
+      "field": "n_fido",
+      "original_bbox": [
+        327,
+        494,
+        385,
+        559
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 68,
+      "screen": "51788077__GestioneFidi",
+      "field": "rapporto",
+      "original_bbox": [
+        365,
+        494,
+        460,
+        559
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 69,
+      "screen": "51788077__GestioneFidi",
+      "field": "descrizione",
+      "original_bbox": [
+        440,
+        494,
+        527,
+        559
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 70,
+      "screen": "51788077__GestioneFidi",
+      "field": "scadenza",
+      "original_bbox": [
+        505,
+        494,
+        574,
+        559
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 71,
+      "screen": "51788077__GestioneFidi",
+      "field": "importo_euro",
+      "original_bbox": [
+        554,
+        494,
+        635,
+        559
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 72,
+      "screen": "51788077__GestioneFidi",
+      "field": "tipo_op",
+      "original_bbox": [
+        615,
+        494,
+        687,
+        564
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 77,
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field": "n_fido",
+      "original_bbox": [
+        414,
+        229,
+        488,
+        316
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 78,
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field": "rapporto",
+      "original_bbox": [
+        468,
+        229,
+        615,
+        316
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 79,
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field": "descrizione",
+      "original_bbox": [
+        595,
+        229,
+        730,
+        316
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 80,
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field": "scadenza",
+      "original_bbox": [
+        710,
+        229,
+        809,
+        316
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 81,
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field": "importo_euro",
+      "original_bbox": [
+        789,
+        229,
+        894,
+        316
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 82,
+      "screen": "51788077__GestioneFidi_Tooltip1",
+      "field": "tipo_op",
+      "original_bbox": [
+        874,
+        229,
+        969,
+        316
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 87,
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field": "n_fido",
+      "original_bbox": [
+        411,
+        223,
+        485,
+        310
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 88,
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field": "rapporto",
+      "original_bbox": [
+        465,
+        223,
+        612,
+        310
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 89,
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field": "descrizione",
+      "original_bbox": [
+        592,
+        223,
+        727,
+        310
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 90,
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field": "scadenza",
+      "original_bbox": [
+        707,
+        223,
+        806,
+        310
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 91,
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field": "importo_euro",
+      "original_bbox": [
+        786,
+        223,
+        891,
+        310
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 92,
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field": "tipo_op",
+      "original_bbox": [
+        871,
+        223,
+        966,
+        310
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 93,
+      "screen": "51788077__GestioneFidi_Tooltip2",
+      "field": "tooltip_descrizione_ipoteca",
+      "original_bbox": [
+        414,
+        353,
+        1414,
+        494
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.1746
+    },
+    {
+      "excel_row": 94,
+      "screen": "51788077__Soggetti",
+      "field": "ndg",
+      "original_bbox": [
+        348,
+        337,
+        443,
+        448
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 95,
+      "screen": "51788077__Soggetti",
+      "field": "denominazione",
+      "original_bbox": [
+        421,
+        337,
+        559,
+        448
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 96,
+      "screen": "51788077__Soggetti",
+      "field": "tipo",
+      "original_bbox": [
+        838,
+        335,
+        987,
+        448
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 97,
+      "screen": "51788077__Soggetti",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        841,
+        337,
+        1064,
+        448
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 98,
+      "screen": "51788077__Soggetti",
+      "field": "ndg_1",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 99,
+      "screen": "51788077__Soggetti",
+      "field": "denominazione_1",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 100,
+      "screen": "51788077__Soggetti",
+      "field": "ruolo_1",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 101,
+      "screen": "51788077__Soggetti",
+      "field": "ndg_2",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 102,
+      "screen": "51788077__Soggetti",
+      "field": "denominazione_2",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 103,
+      "screen": "51788077__Soggetti",
+      "field": "ruolo_2",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 104,
+      "screen": "51788077__Soggetti",
+      "field": "ndg_3",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 105,
+      "screen": "51788077__Soggetti",
+      "field": "denominazione_3",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 106,
+      "screen": "51788077__Soggetti",
+      "field": "ruolo_3",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 107,
+      "screen": "51788077__Soggetti",
+      "field": "ndg_4",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 108,
+      "screen": "51788077__Soggetti",
+      "field": "denominazione_4",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 109,
+      "screen": "51788077__Soggetti",
+      "field": "ruolo_4",
+      "original_bbox": [
+        333,
+        471,
+        1074,
+        550
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 110,
+      "screen": "51792073__Elenco",
+      "field": "ndg",
+      "original_bbox": [
+        237,
+        394,
+        334,
+        483
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 111,
+      "screen": "51792073__Elenco",
+      "field": "denominazione",
+      "original_bbox": [
+        329,
+        394,
+        438,
+        483
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 112,
+      "screen": "51792073__Elenco",
+      "field": "tipo",
+      "original_bbox": [
+        531,
+        394,
+        634,
+        483
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 113,
+      "screen": "51792073__Elenco",
+      "field": "stato",
+      "original_bbox": [
+        754,
+        394,
+        861,
+        483
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 114,
+      "screen": "51792073__Elenco",
+      "field": "fase",
+      "original_bbox": [
+        864,
+        394,
+        972,
+        498
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 115,
+      "screen": "51792073__Elenco",
+      "field": "creazione",
+      "original_bbox": [
+        969,
+        394,
+        1096,
+        484
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 116,
+      "screen": "51792073__Elenco",
+      "field": "evidenze",
+      "original_bbox": [
+        1642,
+        394,
+        1802,
+        487
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 117,
+      "screen": "51792073__Elenco_dx",
+      "field": "ndg",
+      "original_bbox": [
+        206,
+        432,
+        303,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 118,
+      "screen": "51792073__Elenco_dx",
+      "field": "denominazione",
+      "original_bbox": [
+        292,
+        432,
+        400,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 120,
+      "screen": "51792073__Elenco_dx",
+      "field": "stato",
+      "original_bbox": [
+        534,
+        432,
+        642,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 121,
+      "screen": "51792073__Elenco_dx",
+      "field": "fase",
+      "original_bbox": [
+        645,
+        432,
+        747,
+        536
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 122,
+      "screen": "51792073__Elenco_dx",
+      "field": "creazione",
+      "original_bbox": [
+        749,
+        432,
+        870,
+        522
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 123,
+      "screen": "51792073__Elenco_dx",
+      "field": "evidenze",
+      "original_bbox": [
+        1645,
+        432,
+        1806,
+        525
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 124,
+      "screen": "51792073__Elenco_tooltip1",
+      "field": "ndg",
+      "original_bbox": [
+        256,
+        452,
+        370,
+        559
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 125,
+      "screen": "51792073__Elenco_tooltip1",
+      "field": "denominazione",
+      "original_bbox": [
+        362,
+        452,
+        488,
+        559
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 128,
+      "screen": "51792073__Elenco_tooltip1",
+      "field": "fase",
+      "original_bbox": [
+        549,
+        452,
+        671,
+        559
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 129,
+      "screen": "51792073__Elenco_tooltip1",
+      "field": "creazione",
+      "original_bbox": [
+        678,
+        452,
+        831,
+        560
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 130,
+      "screen": "51792073__Elenco_tooltip1",
+      "field": "evidenze",
+      "original_bbox": [
+        1626,
+        452,
+        1764,
+        564
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 131,
+      "screen": "51798191__Elenco",
+      "field": "ndg",
+      "original_bbox": [
+        211,
+        431,
+        310,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 132,
+      "screen": "51798191__Elenco",
+      "field": "denominazione",
+      "original_bbox": [
+        303,
+        431,
+        411,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 133,
+      "screen": "51798191__Elenco",
+      "field": "tipo",
+      "original_bbox": [
+        504,
+        431,
+        608,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 134,
+      "screen": "51798191__Elenco",
+      "field": "stato",
+      "original_bbox": [
+        729,
+        431,
+        836,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 135,
+      "screen": "51798191__Elenco",
+      "field": "fase",
+      "original_bbox": [
+        839,
+        431,
+        946,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 136,
+      "screen": "51798191__Elenco",
+      "field": "creazione",
+      "original_bbox": [
+        944,
+        431,
+        1066,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 137,
+      "screen": "51798191__Elenco",
+      "field": "evidenze",
+      "original_bbox": [
+        1594,
+        431,
+        1806,
+        524
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 138,
+      "screen": "51798191__Elenco_dx",
+      "field": "ndg",
+      "original_bbox": [
+        208,
+        431,
+        306,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 139,
+      "screen": "51798191__Elenco_dx",
+      "field": "denominazione",
+      "original_bbox": [
+        294,
+        431,
+        398,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 141,
+      "screen": "51798191__Elenco_dx",
+      "field": "stato",
+      "original_bbox": [
+        484,
+        431,
+        591,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 142,
+      "screen": "51798191__Elenco_dx",
+      "field": "fase",
+      "original_bbox": [
+        594,
+        431,
+        696,
+        520
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 143,
+      "screen": "51798191__Elenco_dx",
+      "field": "creazione",
+      "original_bbox": [
+        699,
+        431,
+        821,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 144,
+      "screen": "51798191__Elenco_dx",
+      "field": "evidenze",
+      "original_bbox": [
+        1594,
+        431,
+        1808,
+        524
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 145,
+      "screen": "51798191__Elenco_tooltip1",
+      "field": "ndg",
+      "original_bbox": [
+        174,
+        310,
+        274,
+        399
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 146,
+      "screen": "51798191__Elenco_tooltip1",
+      "field": "denominazione",
+      "original_bbox": [
+        267,
+        310,
+        374,
+        399
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 147,
+      "screen": "51798191__Elenco_tooltip1",
+      "field": "tipo",
+      "original_bbox": [
+        467,
+        310,
+        571,
+        399
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 148,
+      "screen": "51798191__Elenco_tooltip1",
+      "field": "stato",
+      "original_bbox": [
+        692,
+        310,
+        799,
+        399
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 149,
+      "screen": "51798191__Elenco_tooltip1",
+      "field": "fase",
+      "original_bbox": [
+        802,
+        310,
+        908,
+        399
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 150,
+      "screen": "51798191__Elenco_tooltip1",
+      "field": "creazione",
+      "original_bbox": [
+        907,
+        310,
+        1029,
+        400
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 151,
+      "screen": "51798191__Elenco_tooltip1",
+      "field": "evidenze",
+      "original_bbox": [
+        1554,
+        310,
+        1769,
+        403
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 152,
+      "screen": "51798191__Elenco_tooltip1",
+      "field": "tooltip_evidenze_b",
+      "original_bbox": [
+        1554,
+        310,
+        1768,
+        451
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 153,
+      "screen": "51800301__GestioneFidi",
+      "field": "ndg",
+      "original_bbox": [
+        350,
+        339,
+        446,
+        476
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 154,
+      "screen": "51800301__GestioneFidi",
+      "field": "denominazione",
+      "original_bbox": [
+        425,
+        339,
+        628,
+        476
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 155,
+      "screen": "51800301__GestioneFidi",
+      "field": "tipo",
+      "original_bbox": [
+        837,
+        334,
+        992,
+        476
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 156,
+      "screen": "51800301__GestioneFidi",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        844,
+        339,
+        1074,
+        476
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 157,
+      "screen": "51800301__GestioneFidi",
+      "field": "n_fido",
+      "original_bbox": [
+        347,
+        568,
+        395,
+        640
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 158,
+      "screen": "51800301__GestioneFidi",
+      "field": "rapporto",
+      "original_bbox": [
+        402,
+        568,
+        480,
+        640
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 159,
+      "screen": "51800301__GestioneFidi",
+      "field": "descrizione",
+      "original_bbox": [
+        486,
+        568,
+        551,
+        640
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 160,
+      "screen": "51800301__GestioneFidi",
+      "field": "scadenza",
+      "original_bbox": [
+        551,
+        568,
+        611,
+        640
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 161,
+      "screen": "51800301__GestioneFidi",
+      "field": "importo_euro",
+      "original_bbox": [
+        621,
+        568,
+        678,
+        640
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 162,
+      "screen": "51800301__GestioneFidi",
+      "field": "tipo_op",
+      "original_bbox": [
+        671,
+        568,
+        734,
+        640
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 167,
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field": "n_fido",
+      "original_bbox": [
+        409,
+        435,
+        486,
+        534
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 168,
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field": "rapporto",
+      "original_bbox": [
+        466,
+        435,
+        612,
+        534
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 169,
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field": "descrizione",
+      "original_bbox": [
+        592,
+        435,
+        703,
+        534
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 170,
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field": "scadenza",
+      "original_bbox": [
+        683,
+        435,
+        797,
+        534
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 171,
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field": "importo_euro",
+      "original_bbox": [
+        777,
+        435,
+        877,
+        534
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 172,
+      "screen": "51800301__GestioneFidi_Tooltip1",
+      "field": "tipo_op",
+      "original_bbox": [
+        857,
+        435,
+        955,
+        534
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 177,
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field": "n_fido",
+      "original_bbox": [
+        407,
+        436,
+        484,
+        535
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 178,
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field": "rapporto",
+      "original_bbox": [
+        464,
+        436,
+        610,
+        535
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 179,
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field": "descrizione",
+      "original_bbox": [
+        590,
+        436,
+        701,
+        540
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 180,
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field": "scadenza",
+      "original_bbox": [
+        681,
+        436,
+        795,
+        532
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 181,
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field": "importo_euro",
+      "original_bbox": [
+        775,
+        436,
+        875,
+        532
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 182,
+      "screen": "51800301__GestioneFidi_Tooltip2",
+      "field": "tipo_op",
+      "original_bbox": [
+        855,
+        436,
+        953,
+        532
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 187,
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field": "n_fido",
+      "original_bbox": [
+        413,
+        375,
+        490,
+        474
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 188,
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field": "rapporto",
+      "original_bbox": [
+        470,
+        375,
+        616,
+        474
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 189,
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field": "descrizione",
+      "original_bbox": [
+        596,
+        375,
+        707,
+        474
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 190,
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field": "scadenza",
+      "original_bbox": [
+        687,
+        375,
+        801,
+        474
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 191,
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field": "importo_euro",
+      "original_bbox": [
+        781,
+        375,
+        881,
+        474
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 192,
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field": "tipo_op",
+      "original_bbox": [
+        861,
+        375,
+        960,
+        479
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 193,
+      "screen": "51800301__GestioneFidi_Tooltip3",
+      "field": "tooltip_descrizione_ipoteca",
+      "original_bbox": [
+        416,
+        518,
+        1416,
+        659
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.1746
+    },
+    {
+      "excel_row": 194,
+      "screen": "51800301__Note",
+      "field": "ndg",
+      "original_bbox": [
+        347,
+        294,
+        443,
+        433
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 195,
+      "screen": "51800301__Note",
+      "field": "denominazione",
+      "original_bbox": [
+        420,
+        294,
+        623,
+        433
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 196,
+      "screen": "51800301__Note",
+      "field": "tipo",
+      "original_bbox": [
+        837,
+        293,
+        986,
+        433
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 197,
+      "screen": "51800301__Note",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        840,
+        294,
+        1057,
+        433
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 198,
+      "screen": "51800301__Note",
+      "field": "note_della_richiesta",
+      "original_bbox": [
+        334,
+        476,
+        1071,
+        950
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.09959
+    },
+    {
+      "excel_row": 199,
+      "screen": "51800301__Note_chiuso",
+      "field": "ndg",
+      "original_bbox": [
+        344,
+        331,
+        440,
+        470
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 200,
+      "screen": "51800301__Note_chiuso",
+      "field": "denominazione",
+      "original_bbox": [
+        417,
+        331,
+        620,
+        470
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 201,
+      "screen": "51800301__Note_chiuso",
+      "field": "tipo",
+      "original_bbox": [
+        834,
+        330,
+        983,
+        470
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 202,
+      "screen": "51800301__Note_chiuso",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        837,
+        331,
+        1054,
+        470
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 203,
+      "screen": "51800301__Note_chiuso",
+      "field": "note_della_richiesta",
+      "original_bbox": [
+        331,
+        513,
+        1068,
+        580
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58926
+    },
+    {
+      "excel_row": 204,
+      "screen": "51800301__Soggetti",
+      "field": "ndg",
+      "original_bbox": [
+        376,
+        362,
+        476,
+        514
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 205,
+      "screen": "51800301__Soggetti",
+      "field": "denominazione",
+      "original_bbox": [
+        454,
+        362,
+        676,
+        514
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 206,
+      "screen": "51800301__Soggetti",
+      "field": "tipo",
+      "original_bbox": [
+        926,
+        361,
+        1082,
+        514
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 207,
+      "screen": "51800301__Soggetti",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        932,
+        362,
+        1158,
+        514
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 208,
+      "screen": "51800301__Soggetti",
+      "field": "ndg_1",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 209,
+      "screen": "51800301__Soggetti",
+      "field": "denominazione_1",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 210,
+      "screen": "51800301__Soggetti",
+      "field": "ruolo_1",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 211,
+      "screen": "51800301__Soggetti",
+      "field": "ndg_2",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 212,
+      "screen": "51800301__Soggetti",
+      "field": "denominazione_2",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 213,
+      "screen": "51800301__Soggetti",
+      "field": "ruolo_2",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 214,
+      "screen": "51800301__Soggetti",
+      "field": "ndg_3",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 215,
+      "screen": "51800301__Soggetti",
+      "field": "denominazione_3",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 216,
+      "screen": "51800301__Soggetti",
+      "field": "ruolo_3",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 217,
+      "screen": "51800301__Soggetti",
+      "field": "ndg_4",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 218,
+      "screen": "51800301__Soggetti",
+      "field": "denominazione_4",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 219,
+      "screen": "51800301__Soggetti",
+      "field": "ruolo_4",
+      "original_bbox": [
+        355,
+        539,
+        1177,
+        701
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.42651
+    },
+    {
+      "excel_row": 220,
+      "screen": "51859514__Elenco",
+      "field": "ndg",
+      "original_bbox": [
+        241,
+        426,
+        341,
+        515
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 221,
+      "screen": "51859514__Elenco",
+      "field": "denominazione",
+      "original_bbox": [
+        334,
+        426,
+        506,
+        515
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 222,
+      "screen": "51859514__Elenco",
+      "field": "tipo",
+      "original_bbox": [
+        605,
+        426,
+        710,
+        515
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 223,
+      "screen": "51859514__Elenco",
+      "field": "stato",
+      "original_bbox": [
+        831,
+        426,
+        940,
+        515
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 224,
+      "screen": "51859514__Elenco",
+      "field": "fase",
+      "original_bbox": [
+        939,
+        426,
+        1046,
+        530
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 225,
+      "screen": "51859514__Elenco",
+      "field": "creazione",
+      "original_bbox": [
+        1045,
+        426,
+        1170,
+        516
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 226,
+      "screen": "51859514__Elenco",
+      "field": "evidenze",
+      "original_bbox": [
+        1594,
+        426,
+        1806,
+        519
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 227,
+      "screen": "51859514__Elenco_dx",
+      "field": "ndg",
+      "original_bbox": [
+        207,
+        432,
+        307,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 228,
+      "screen": "51859514__Elenco_dx",
+      "field": "denominazione",
+      "original_bbox": [
+        292,
+        432,
+        464,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 230,
+      "screen": "51859514__Elenco_dx",
+      "field": "stato",
+      "original_bbox": [
+        482,
+        432,
+        592,
+        521
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 231,
+      "screen": "51859514__Elenco_dx",
+      "field": "fase",
+      "original_bbox": [
+        594,
+        432,
+        700,
+        536
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 232,
+      "screen": "51859514__Elenco_dx",
+      "field": "creazione",
+      "original_bbox": [
+        698,
+        432,
+        822,
+        522
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 233,
+      "screen": "51859514__Elenco_dx",
+      "field": "evidenze",
+      "original_bbox": [
+        1594,
+        432,
+        1807,
+        525
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 234,
+      "screen": "51859514__Elenco_tooltip1",
+      "field": "ndg",
+      "original_bbox": [
+        251,
+        398,
+        372,
+        505
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 235,
+      "screen": "51859514__Elenco_tooltip1",
+      "field": "denominazione",
+      "original_bbox": [
+        358,
+        398,
+        567,
+        505
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 240,
+      "screen": "51859514__Elenco_tooltip1",
+      "field": "evidenze",
+      "original_bbox": [
+        1489,
+        398,
+        1750,
+        509
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 241,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "ndg",
+      "original_bbox": [
+        334,
+        232,
+        434,
+        367
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 242,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "denominazione",
+      "original_bbox": [
+        410,
+        232,
+        666,
+        367
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 243,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "tipo",
+      "original_bbox": [
+        881,
+        227,
+        1042,
+        367
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 244,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        890,
+        232,
+        1125,
+        367
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 245,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "n_fido",
+      "original_bbox": [
+        320,
+        469,
+        377,
+        549
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 246,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "rapporto",
+      "original_bbox": [
+        357,
+        469,
+        474,
+        549
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 247,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "descrizione",
+      "original_bbox": [
+        454,
+        469,
+        563,
+        549
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 248,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "scadenza",
+      "original_bbox": [
+        543,
+        469,
+        627,
+        549
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 249,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "importo_euro",
+      "original_bbox": [
+        607,
+        469,
+        695,
+        549
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 250,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "tipo_op",
+      "original_bbox": [
+        675,
+        469,
+        760,
+        554
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 251,
+      "screen": "51997531__GestioneFidi_Tooltip1",
+      "field": "tooltip_descrizione_ipoteca",
+      "original_bbox": [
+        323,
+        583,
+        1122,
+        729
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.46716
+    },
+    {
+      "excel_row": 252,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "ndg",
+      "original_bbox": [
+        361,
+        234,
+        461,
+        355
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 253,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "denominazione",
+      "original_bbox": [
+        437,
+        234,
+        595,
+        355
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 254,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "tipo",
+      "original_bbox": [
+        908,
+        230,
+        1069,
+        355
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 255,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        917,
+        234,
+        1143,
+        355
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 256,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "n_fido",
+      "original_bbox": [
+        347,
+        457,
+        404,
+        537
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 257,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "rapporto",
+      "original_bbox": [
+        384,
+        457,
+        501,
+        537
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 258,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "descrizione",
+      "original_bbox": [
+        481,
+        457,
+        590,
+        537
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 259,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "scadenza",
+      "original_bbox": [
+        570,
+        457,
+        654,
+        537
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 260,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "importo_euro",
+      "original_bbox": [
+        634,
+        457,
+        722,
+        537
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 261,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "tipo_op",
+      "original_bbox": [
+        702,
+        457,
+        787,
+        542
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 262,
+      "screen": "52013664__GestioneFidi_Tooltip1",
+      "field": "tooltip_descrizione_ipoteca",
+      "original_bbox": [
+        350,
+        571,
+        1149,
+        719
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.46716
+    },
+    {
+      "excel_row": 267,
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field": "n_fido",
+      "original_bbox": [
+        324,
+        349,
+        383,
+        429
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 268,
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field": "rapporto",
+      "original_bbox": [
+        363,
+        349,
+        484,
+        429
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 269,
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field": "descrizione",
+      "original_bbox": [
+        464,
+        349,
+        557,
+        429
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 270,
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field": "scadenza",
+      "original_bbox": [
+        537,
+        349,
+        635,
+        429
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 271,
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field": "importo_euro",
+      "original_bbox": [
+        615,
+        349,
+        698,
+        429
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 272,
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field": "tipo_op",
+      "original_bbox": [
+        678,
+        349,
+        764,
+        434
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 273,
+      "screen": "52022324__GestioneFidi_Tooltip1",
+      "field": "tooltip_descrizione_consap_dr_bis",
+      "original_bbox": [
+        327,
+        464,
+        1125,
+        592
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.46898
+    },
+    {
+      "excel_row": 278,
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field": "n_fido",
+      "original_bbox": [
+        320,
+        354,
+        379,
+        434
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 279,
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field": "rapporto",
+      "original_bbox": [
+        359,
+        354,
+        480,
+        434
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 280,
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field": "descrizione",
+      "original_bbox": [
+        460,
+        354,
+        553,
+        434
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 281,
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field": "scadenza",
+      "original_bbox": [
+        533,
+        354,
+        631,
+        434
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 282,
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field": "importo_euro",
+      "original_bbox": [
+        611,
+        354,
+        694,
+        434
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 283,
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field": "tipo_op",
+      "original_bbox": [
+        674,
+        354,
+        760,
+        439
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 284,
+      "screen": "52022324__GestioneFidi_Tooltip2",
+      "field": "tooltip_descrizione_ipoteca",
+      "original_bbox": [
+        323,
+        469,
+        1121,
+        617
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.46898
+    },
+    {
+      "excel_row": 285,
+      "screen": "52032077__GestioneFidi",
+      "field": "ndg",
+      "original_bbox": [
+        322,
+        312,
+        416,
+        423
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 286,
+      "screen": "52032077__GestioneFidi",
+      "field": "denominazione",
+      "original_bbox": [
+        392,
+        312,
+        515,
+        423
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 287,
+      "screen": "52032077__GestioneFidi",
+      "field": "tipo",
+      "original_bbox": [
+        749,
+        307,
+        902,
+        423
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 288,
+      "screen": "52032077__GestioneFidi",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        754,
+        312,
+        970,
+        423
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 289,
+      "screen": "52032077__GestioneFidi",
+      "field": "n_fido",
+      "original_bbox": [
+        320,
+        506,
+        379,
+        571
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 290,
+      "screen": "52032077__GestioneFidi",
+      "field": "rapporto",
+      "original_bbox": [
+        359,
+        506,
+        451,
+        571
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 291,
+      "screen": "52032077__GestioneFidi",
+      "field": "descrizione",
+      "original_bbox": [
+        431,
+        506,
+        519,
+        571
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 292,
+      "screen": "52032077__GestioneFidi",
+      "field": "scadenza",
+      "original_bbox": [
+        499,
+        506,
+        571,
+        571
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 293,
+      "screen": "52032077__GestioneFidi",
+      "field": "importo_euro",
+      "original_bbox": [
+        551,
+        506,
+        624,
+        571
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 294,
+      "screen": "52032077__GestioneFidi",
+      "field": "tipo_op",
+      "original_bbox": [
+        604,
+        506,
+        675,
+        575
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 299,
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field": "n_fido",
+      "original_bbox": [
+        409,
+        355,
+        486,
+        454
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 300,
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field": "rapporto",
+      "original_bbox": [
+        466,
+        355,
+        610,
+        454
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 301,
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field": "descrizione",
+      "original_bbox": [
+        590,
+        355,
+        696,
+        459
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 302,
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field": "scadenza",
+      "original_bbox": [
+        676,
+        355,
+        787,
+        451
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 303,
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field": "importo_euro",
+      "original_bbox": [
+        767,
+        355,
+        875,
+        451
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 304,
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field": "tipo_op",
+      "original_bbox": [
+        855,
+        355,
+        956,
+        451
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 305,
+      "screen": "52032077__GestioneFidi_Tooltip1",
+      "field": "tooltip_descrizione_m_consap",
+      "original_bbox": [
+        412,
+        355,
+        1411,
+        474
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.17577
+    },
+    {
+      "excel_row": 306,
+      "screen": "52032077__Soggetti",
+      "field": "ndg",
+      "original_bbox": [
+        345,
+        333,
+        440,
+        459
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 307,
+      "screen": "52032077__Soggetti",
+      "field": "denominazione",
+      "original_bbox": [
+        417,
+        333,
+        547,
+        459
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 308,
+      "screen": "52032077__Soggetti",
+      "field": "tipo",
+      "original_bbox": [
+        835,
+        332,
+        984,
+        459
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 309,
+      "screen": "52032077__Soggetti",
+      "field": "filiale_relazione",
+      "original_bbox": [
+        838,
+        333,
+        1038,
+        459
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 2.5
+    },
+    {
+      "excel_row": 310,
+      "screen": "52032077__Soggetti",
+      "field": "ndg_1",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 311,
+      "screen": "52032077__Soggetti",
+      "field": "denominazione_1",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 312,
+      "screen": "52032077__Soggetti",
+      "field": "ruolo_1",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 313,
+      "screen": "52032077__Soggetti",
+      "field": "ndg_2",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 314,
+      "screen": "52032077__Soggetti",
+      "field": "denominazione_2",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 315,
+      "screen": "52032077__Soggetti",
+      "field": "ruolo_2",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 316,
+      "screen": "52032077__Soggetti",
+      "field": "ndg_3",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 317,
+      "screen": "52032077__Soggetti",
+      "field": "denominazione_3",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 318,
+      "screen": "52032077__Soggetti",
+      "field": "ruolo_3",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 319,
+      "screen": "52032077__Soggetti",
+      "field": "ndg_4",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 320,
+      "screen": "52032077__Soggetti",
+      "field": "denominazione_4",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    },
+    {
+      "excel_row": 321,
+      "screen": "52032077__Soggetti",
+      "field": "ruolo_4",
+      "original_bbox": [
+        330,
+        481,
+        1071,
+        594
+      ],
+      "embedded_pixels_equal_expected": true,
+      "display_scale": 1.58077
+    }
+  ]
+}

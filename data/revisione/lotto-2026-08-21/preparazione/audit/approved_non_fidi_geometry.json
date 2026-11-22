@@ -1,0 +1,4928 @@
+[
+  {
+    "excel_row": 2,
+    "screen": "51772928__Elenco",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      209,
+      499,
+      287,
+      514
+    ],
+    "target_bboxes": [
+      [
+        209,
+        499,
+        287,
+        514
+      ]
+    ],
+    "context_bbox": [
+      203,
+      431,
+      296,
+      520
+    ],
+    "image_sha256": "b3a860496e6453e940bbd6cfda2ae6d7ec0a279e8a823dd753da127b0bab5852",
+    "image_width": 101,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 3,
+    "screen": "51772928__Elenco",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      306,
+      499,
+      390,
+      514
+    ],
+    "target_bboxes": [
+      [
+        306,
+        499,
+        390,
+        514
+      ]
+    ],
+    "context_bbox": [
+      294,
+      431,
+      406,
+      520
+    ],
+    "image_sha256": "2b8ae5895ef533dc351c287c17b4b3d04db3877bbd041586f01a1acae7d3c04c",
+    "image_width": 120,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        14,
+        70,
+        101,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 4,
+    "screen": "51772928__Elenco",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      507,
+      499,
+      545,
+      514
+    ],
+    "target_bboxes": [
+      [
+        507,
+        499,
+        545,
+        514
+      ]
+    ],
+    "context_bbox": [
+      494,
+      431,
+      598,
+      520
+    ],
+    "image_sha256": "55869deb0636dfc7fe88b984979f3d31672006e6b3cd8f5af2db7c3306f25a95",
+    "image_width": 112,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        15,
+        70,
+        56,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 5,
+    "screen": "51772928__Elenco",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      745,
+      499,
+      780,
+      514
+    ],
+    "target_bboxes": [
+      [
+        745,
+        499,
+        780,
+        514
+      ]
+    ],
+    "context_bbox": [
+      719,
+      431,
+      831,
+      520
+    ],
+    "image_sha256": "3541fe5af9ebfaea4de607fcb35ec980811ca2028c05c740b5f9d0add24c5ba4",
+    "image_width": 120,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        28,
+        70,
+        66,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 6,
+    "screen": "51772928__Elenco",
+    "field_key": "fase",
+    "visibility": "visible",
+    "target_bbox": [
+      872,
+      499,
+      897,
+      514
+    ],
+    "target_bboxes": [
+      [
+        872,
+        499,
+        897,
+        514
+      ]
+    ],
+    "context_bbox": [
+      832,
+      431,
+      936,
+      520
+    ],
+    "image_sha256": "e1eb0a1314fc85178a97cecd2bdb70e0b58d92ef7f73f7c26e121fff1b3f0a59",
+    "image_width": 112,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        42,
+        70,
+        70,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 7,
+    "screen": "51772928__Elenco",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      952,
+      499,
+      1042,
+      515
+    ],
+    "target_bboxes": [
+      [
+        952,
+        499,
+        1042,
+        515
+      ]
+    ],
+    "context_bbox": [
+      934,
+      431,
+      1063,
+      521
+    ],
+    "image_sha256": "569630a79bda475e26c43913624b71a361271c4b47bdcff20e156513af070b8f",
+    "image_width": 137,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        20,
+        70,
+        113,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 8,
+    "screen": "51772928__Elenco",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1726,
+      501,
+      1747,
+      515
+    ],
+    "target_bboxes": [
+      [
+        1726,
+        501,
+        1747,
+        515
+      ]
+    ],
+    "context_bbox": [
+      1687,
+      431,
+      1814,
+      524
+    ],
+    "image_sha256": "8c30ffddce4d33b400874f839b6d0d1e3dd40b5202527a5edf5dc425b8823549",
+    "image_width": 135,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        41,
+        72,
+        65,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 9,
+    "screen": "51772928__Elenco_dx",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      209,
+      494,
+      287,
+      509
+    ],
+    "target_bboxes": [
+      [
+        209,
+        494,
+        287,
+        509
+      ]
+    ],
+    "context_bbox": [
+      203,
+      426,
+      296,
+      515
+    ],
+    "image_sha256": "c92e63ee1d8b781d8524b7f03d642ff2ab6de8862234cc0acb0eb25294fde4f5",
+    "image_width": 101,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 10,
+    "screen": "51772928__Elenco_dx",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      298,
+      494,
+      382,
+      509
+    ],
+    "target_bboxes": [
+      [
+        298,
+        494,
+        382,
+        509
+      ]
+    ],
+    "context_bbox": [
+      289,
+      426,
+      391,
+      515
+    ],
+    "image_sha256": "1c8ff75afbeee7c22d62352b5ab0723f5beeac5f94d97b96bd9d7a3b18ce10ed",
+    "image_width": 110,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        11,
+        70,
+        98,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 11,
+    "screen": "51772928__Elenco_dx",
+    "field_key": "tipo",
+    "visibility": "partial",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      380,
+      426,
+      453,
+      521
+    ],
+    "image_sha256": "82f4f1adc695815231464734b9f1c3860206c100a3ad660da3003638c7eee2e1",
+    "image_width": 81,
+    "image_height": 103,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 12,
+    "screen": "51772928__Elenco_dx",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      607,
+      494,
+      642,
+      509
+    ],
+    "target_bboxes": [
+      [
+        607,
+        494,
+        642,
+        509
+      ]
+    ],
+    "context_bbox": [
+      584,
+      426,
+      691,
+      515
+    ],
+    "image_sha256": "4301a34098e247021b7020fa5075336df5b7e9d500ed1907cb6584288882b88e",
+    "image_width": 115,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        25,
+        70,
+        63,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 13,
+    "screen": "51772928__Elenco_dx",
+    "field_key": "fase",
+    "visibility": "visible",
+    "target_bbox": [
+      734,
+      494,
+      759,
+      509
+    ],
+    "target_bboxes": [
+      [
+        734,
+        494,
+        759,
+        509
+      ]
+    ],
+    "context_bbox": [
+      694,
+      426,
+      796,
+      515
+    ],
+    "image_sha256": "0dfd379f83e5782d2389c2fb08d5674b53b079a7ac5ac51a42ae4ad9360d17d8",
+    "image_width": 110,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        42,
+        70,
+        70,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 14,
+    "screen": "51772928__Elenco_dx",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      814,
+      494,
+      904,
+      510
+    ],
+    "target_bboxes": [
+      [
+        814,
+        494,
+        904,
+        510
+      ]
+    ],
+    "context_bbox": [
+      799,
+      426,
+      922,
+      516
+    ],
+    "image_sha256": "f03405725d2ca852a351928c9fc88943b78d79d7402e15458d1b74c7955b6e6f",
+    "image_width": 131,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        17,
+        70,
+        110,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 15,
+    "screen": "51772928__Elenco_dx",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1731,
+      496,
+      1752,
+      510
+    ],
+    "target_bboxes": [
+      [
+        1731,
+        496,
+        1752,
+        510
+      ]
+    ],
+    "context_bbox": [
+      1689,
+      426,
+      1819,
+      519
+    ],
+    "image_sha256": "87ac2ea15aab595ba69adba61cff280ba98764bacd145a948e2775db509b6b85",
+    "image_width": 138,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        44,
+        72,
+        68,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 16,
+    "screen": "51772928__Elenco_tooltip1",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      262,
+      576,
+      358,
+      594
+    ],
+    "target_bboxes": [
+      [
+        262,
+        576,
+        358,
+        594
+      ]
+    ],
+    "context_bbox": [
+      256,
+      493,
+      370,
+      600
+    ],
+    "image_sha256": "775b5776f7c4a55a5b1bc7f7f3a30a0fca4d8ca29dfa3225289db4aa7d611615",
+    "image_width": 122,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        8,
+        85,
+        107,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 17,
+    "screen": "51772928__Elenco_tooltip1",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      383,
+      576,
+      486,
+      594
+    ],
+    "target_bboxes": [
+      [
+        383,
+        576,
+        486,
+        594
+      ]
+    ],
+    "context_bbox": [
+      371,
+      493,
+      500,
+      600
+    ],
+    "image_sha256": "2947710fd86e29840673c99cf76d3dfe7cc7302d12b65f844cba6c217a872723",
+    "image_width": 137,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        14,
+        85,
+        120,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 18,
+    "screen": "51772928__Elenco_tooltip1",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      635,
+      576,
+      680,
+      594
+    ],
+    "target_bboxes": [
+      [
+        635,
+        576,
+        680,
+        594
+      ]
+    ],
+    "context_bbox": [
+      623,
+      493,
+      740,
+      600
+    ],
+    "image_sha256": "bc9e4fb75e44ac3cfb3c71cfd60e4eedce0da65d1996705ed8cdd528b29413ab",
+    "image_width": 125,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        14,
+        85,
+        62,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 19,
+    "screen": "51772928__Elenco_tooltip1",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      932,
+      576,
+      974,
+      594
+    ],
+    "target_bboxes": [
+      [
+        932,
+        576,
+        974,
+        594
+      ]
+    ],
+    "context_bbox": [
+      904,
+      493,
+      1029,
+      600
+    ],
+    "image_sha256": "23fa8c395c9dccd48fe8ff45a67f3104b7ea7c1b00ab2c1712f9759e281f9926",
+    "image_width": 133,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        30,
+        85,
+        75,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 20,
+    "screen": "51772928__Elenco_tooltip1",
+    "field_key": "fase",
+    "visibility": "visible",
+    "target_bbox": [
+      1091,
+      576,
+      1121,
+      594
+    ],
+    "target_bboxes": [
+      [
+        1091,
+        576,
+        1121,
+        594
+      ]
+    ],
+    "context_bbox": [
+      1041,
+      493,
+      1168,
+      600
+    ],
+    "image_sha256": "3faa91bb0f321583c98827b9bdfa6bdd78f2a48cbe02dbe4d39570886c458097",
+    "image_width": 135,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        52,
+        85,
+        85,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 21,
+    "screen": "51772928__Elenco_tooltip1",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      1191,
+      576,
+      1302,
+      595
+    ],
+    "target_bboxes": [
+      [
+        1191,
+        576,
+        1302,
+        595
+      ]
+    ],
+    "context_bbox": [
+      1171,
+      493,
+      1327,
+      601
+    ],
+    "image_sha256": "5af907762cede6179e1c2e30a5d8e0ea0a19ceb7f4680950c5fed569f368c862",
+    "image_width": 164,
+    "image_height": 116,
+    "marker_bboxes": [
+      [
+        22,
+        85,
+        136,
+        107
+      ]
+    ]
+  },
+  {
+    "excel_row": 22,
+    "screen": "51772928__Elenco_tooltip1",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1661,
+      579,
+      1687,
+      595
+    ],
+    "target_bboxes": [
+      [
+        1661,
+        579,
+        1687,
+        595
+      ]
+    ],
+    "context_bbox": [
+      1614,
+      493,
+      1764,
+      606
+    ],
+    "image_sha256": "9cab26b4caf2f71b603aa481a8a90ee87ba362cb35806ffaf2275c17e7919317",
+    "image_width": 158,
+    "image_height": 121,
+    "marker_bboxes": [
+      [
+        49,
+        88,
+        78,
+        107
+      ]
+    ]
+  },
+  {
+    "excel_row": 56,
+    "screen": "51788077__Elenco",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      186,
+      404,
+      245,
+      416
+    ],
+    "target_bboxes": [
+      [
+        186,
+        404,
+        245,
+        416
+      ]
+    ],
+    "context_bbox": [
+      169,
+      349,
+      251,
+      422
+    ],
+    "image_sha256": "98f10cb31fdc31787f3cb8dadd9514b4daebd49165531b87314b29860b6a7c45",
+    "image_width": 90,
+    "image_height": 81,
+    "marker_bboxes": [
+      [
+        19,
+        57,
+        81,
+        72
+      ]
+    ]
+  },
+  {
+    "excel_row": 57,
+    "screen": "51788077__Elenco",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      259,
+      404,
+      399,
+      416
+    ],
+    "target_bboxes": [
+      [
+        259,
+        404,
+        399,
+        416
+      ]
+    ],
+    "context_bbox": [
+      234,
+      349,
+      405,
+      422
+    ],
+    "image_sha256": "bc3b6fdfa246d27bedf8380672adb9bea743e3906433662d0774ab9fc3d62065",
+    "image_width": 179,
+    "image_height": 81,
+    "marker_bboxes": [
+      [
+        27,
+        57,
+        170,
+        72
+      ]
+    ]
+  },
+  {
+    "excel_row": 58,
+    "screen": "51788077__Elenco",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      486,
+      404,
+      515,
+      416
+    ],
+    "target_bboxes": [
+      [
+        486,
+        404,
+        515,
+        416
+      ]
+    ],
+    "context_bbox": [
+      456,
+      349,
+      542,
+      422
+    ],
+    "image_sha256": "a8f27f47501e00a94b157100413518b4be4f593923aa265d605c99e23ef83e6a",
+    "image_width": 94,
+    "image_height": 81,
+    "marker_bboxes": [
+      [
+        32,
+        57,
+        64,
+        72
+      ]
+    ]
+  },
+  {
+    "excel_row": 59,
+    "screen": "51788077__Elenco",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      675,
+      404,
+      702,
+      416
+    ],
+    "target_bboxes": [
+      [
+        675,
+        404,
+        702,
+        416
+      ]
+    ],
+    "context_bbox": [
+      644,
+      349,
+      725,
+      422
+    ],
+    "image_sha256": "3942858f6a460af2cfe6acdc6a2a9e4a3a07a6f36bb357d11673efa7b1fe78a6",
+    "image_width": 89,
+    "image_height": 81,
+    "marker_bboxes": [
+      [
+        33,
+        57,
+        63,
+        72
+      ]
+    ]
+  },
+  {
+    "excel_row": 60,
+    "screen": "51788077__Elenco",
+    "field_key": "fase",
+    "visibility": "visible_cell_without_rendered_text",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      727,
+      349,
+      807,
+      436
+    ],
+    "image_sha256": "73c3ceb04226efbe4f8a43f0094edf733196dcaffe4b628b378f14bf3899a272",
+    "image_width": 88,
+    "image_height": 95,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 61,
+    "screen": "51788077__Elenco",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      821,
+      403,
+      889,
+      416
+    ],
+    "target_bboxes": [
+      [
+        821,
+        403,
+        889,
+        416
+      ]
+    ],
+    "context_bbox": [
+      806,
+      349,
+      910,
+      422
+    ],
+    "image_sha256": "7bc69636cb57768b9db86863f73e526850cd146abffc7d551690bb254e8f383c",
+    "image_width": 112,
+    "image_height": 81,
+    "marker_bboxes": [
+      [
+        17,
+        56,
+        88,
+        72
+      ]
+    ]
+  },
+  {
+    "excel_row": 62,
+    "screen": "51788077__Elenco",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1511,
+      405,
+      1541,
+      417
+    ],
+    "target_bboxes": [
+      [
+        1511,
+        405,
+        1521,
+        417
+      ],
+      [
+        1530,
+        405,
+        1541,
+        417
+      ]
+    ],
+    "context_bbox": [
+      1470,
+      349,
+      1622,
+      426
+    ],
+    "image_sha256": "a7e93ed4e67ae9dd160430dc31a5ed6289efefd413bb4b3039bcd447d108d27f",
+    "image_width": 160,
+    "image_height": 85,
+    "marker_bboxes": [
+      [
+        43,
+        58,
+        56,
+        73
+      ],
+      [
+        62,
+        58,
+        76,
+        73
+      ]
+    ]
+  },
+  {
+    "excel_row": 94,
+    "screen": "51788077__Soggetti",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      388,
+      358,
+      431,
+      369
+    ],
+    "target_bboxes": [
+      [
+        388,
+        358,
+        431,
+        369
+      ]
+    ],
+    "context_bbox": [
+      348,
+      337,
+      443,
+      448
+    ],
+    "image_sha256": "64fac128cccd806ecfce522e97c3c919688c19414196b6303112a047f24db59b",
+    "image_width": 103,
+    "image_height": 119,
+    "marker_bboxes": [
+      [
+        42,
+        23,
+        88,
+        37
+      ]
+    ]
+  },
+  {
+    "excel_row": 95,
+    "screen": "51788077__Soggetti",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      437,
+      358,
+      547,
+      369
+    ],
+    "target_bboxes": [
+      [
+        437,
+        358,
+        547,
+        369
+      ]
+    ],
+    "context_bbox": [
+      421,
+      337,
+      559,
+      448
+    ],
+    "image_sha256": "636c84d23e7406976c19da4e598e70584033b6c46833e9e6b1a888598801c279",
+    "image_width": 146,
+    "image_height": 119,
+    "marker_bboxes": [
+      [
+        18,
+        23,
+        131,
+        37
+      ]
+    ]
+  },
+  {
+    "excel_row": 96,
+    "screen": "51788077__Soggetti",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      934,
+      338,
+      975,
+      349
+    ],
+    "target_bboxes": [
+      [
+        934,
+        338,
+        975,
+        349
+      ]
+    ],
+    "context_bbox": [
+      838,
+      335,
+      987,
+      448
+    ],
+    "image_sha256": "2403de3a0fff9b8487d25e0eea1b678dcdd8d65a3f2fbe4403909c8c44d07b04",
+    "image_width": 157,
+    "image_height": 121,
+    "marker_bboxes": [
+      [
+        98,
+        5,
+        142,
+        19
+      ]
+    ]
+  },
+  {
+    "excel_row": 97,
+    "screen": "51788077__Soggetti",
+    "field_key": "filiale_relazione",
+    "visibility": "visible",
+    "target_bbox": [
+      956,
+      390,
+      1052,
+      401
+    ],
+    "target_bboxes": [
+      [
+        956,
+        390,
+        1052,
+        401
+      ]
+    ],
+    "context_bbox": [
+      841,
+      337,
+      1064,
+      448
+    ],
+    "image_sha256": "89405d3c9728123e468a2b6ed2128c79e5efe77db12ad88377678b2d05715ed1",
+    "image_width": 231,
+    "image_height": 119,
+    "marker_bboxes": [
+      [
+        117,
+        55,
+        216,
+        69
+      ]
+    ]
+  },
+  {
+    "excel_row": 98,
+    "screen": "51788077__Soggetti",
+    "field_key": "ndg_1",
+    "visibility": "visible",
+    "target_bbox": [
+      368,
+      530,
+      411,
+      541
+    ],
+    "target_bboxes": [
+      [
+        368,
+        530,
+        411,
+        541
+      ]
+    ],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "1de1d251d539232c6c5406adf69e3ca24f842adacd90701b43d18bc52fd98009",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": [
+      [
+        37,
+        61,
+        83,
+        75
+      ]
+    ]
+  },
+  {
+    "excel_row": 99,
+    "screen": "51788077__Soggetti",
+    "field_key": "denominazione_1",
+    "visibility": "visible",
+    "target_bbox": [
+      414,
+      530,
+      522,
+      541
+    ],
+    "target_bboxes": [
+      [
+        414,
+        530,
+        522,
+        541
+      ]
+    ],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "d9b0867aefecf55ed7aba66a266a2dda066745902fb0c047bcd0110bb3210efc",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": [
+      [
+        83,
+        61,
+        194,
+        75
+      ]
+    ]
+  },
+  {
+    "excel_row": 100,
+    "screen": "51788077__Soggetti",
+    "field_key": "ruolo_1",
+    "visibility": "visible",
+    "target_bbox": [
+      593,
+      530,
+      643,
+      541
+    ],
+    "target_bboxes": [
+      [
+        593,
+        530,
+        643,
+        541
+      ]
+    ],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "cdecab93caecac7c641a25a04f634797dcc9a5ba984ebbc7be1abe72f30b5a89",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": [
+      [
+        262,
+        61,
+        315,
+        75
+      ]
+    ]
+  },
+  {
+    "excel_row": 101,
+    "screen": "51788077__Soggetti",
+    "field_key": "ndg_2",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 102,
+    "screen": "51788077__Soggetti",
+    "field_key": "denominazione_2",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 103,
+    "screen": "51788077__Soggetti",
+    "field_key": "ruolo_2",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 104,
+    "screen": "51788077__Soggetti",
+    "field_key": "ndg_3",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 105,
+    "screen": "51788077__Soggetti",
+    "field_key": "denominazione_3",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 106,
+    "screen": "51788077__Soggetti",
+    "field_key": "ruolo_3",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 107,
+    "screen": "51788077__Soggetti",
+    "field_key": "ndg_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 108,
+    "screen": "51788077__Soggetti",
+    "field_key": "denominazione_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 109,
+    "screen": "51788077__Soggetti",
+    "field_key": "ruolo_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      333,
+      471,
+      1074,
+      550
+    ],
+    "image_sha256": "59a904c5db04536c675b5bef075b2f8d8ddb4e0c2795ba7e70c93092fd79e382",
+    "image_width": 749,
+    "image_height": 87,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 110,
+    "screen": "51792073__Elenco",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      243,
+      462,
+      321,
+      477
+    ],
+    "target_bboxes": [
+      [
+        243,
+        462,
+        321,
+        477
+      ]
+    ],
+    "context_bbox": [
+      237,
+      394,
+      334,
+      483
+    ],
+    "image_sha256": "6fc83c230d05560b44710748da1d67c5962007a155abf02e110e9a09b32c5df0",
+    "image_width": 105,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 111,
+    "screen": "51792073__Elenco",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      340,
+      462,
+      416,
+      477
+    ],
+    "target_bboxes": [
+      [
+        340,
+        462,
+        416,
+        477
+      ]
+    ],
+    "context_bbox": [
+      329,
+      394,
+      438,
+      483
+    ],
+    "image_sha256": "e40a9a624480360e948476c6600128ed6970e7199fae7b7d24f1d1b39611a5e0",
+    "image_width": 117,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        13,
+        70,
+        92,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 112,
+    "screen": "51792073__Elenco",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      541,
+      462,
+      579,
+      477
+    ],
+    "target_bboxes": [
+      [
+        541,
+        462,
+        579,
+        477
+      ]
+    ],
+    "context_bbox": [
+      531,
+      394,
+      634,
+      483
+    ],
+    "image_sha256": "79740e43e01e60045baaabc66fd66ba12cecf10cf5cdf54dae01ae78aefaf9ce",
+    "image_width": 111,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        12,
+        70,
+        53,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 113,
+    "screen": "51792073__Elenco",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      793,
+      462,
+      827,
+      477
+    ],
+    "target_bboxes": [
+      [
+        793,
+        462,
+        827,
+        477
+      ]
+    ],
+    "context_bbox": [
+      754,
+      394,
+      861,
+      483
+    ],
+    "image_sha256": "61534cc8fe123f9198575e89293cad448ae4f9991e6d94c123a5c7c547cf4bf7",
+    "image_width": 115,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        41,
+        70,
+        78,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 114,
+    "screen": "51792073__Elenco",
+    "field_key": "fase",
+    "visibility": "visible_cell_without_rendered_text",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      864,
+      394,
+      972,
+      498
+    ],
+    "image_sha256": "edac4a6631ad8451f5f477843212d7cfd1c4de0d93dccd036a471ba5c4cf4627",
+    "image_width": 116,
+    "image_height": 112,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 115,
+    "screen": "51792073__Elenco",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      988,
+      462,
+      1076,
+      478
+    ],
+    "target_bboxes": [
+      [
+        988,
+        462,
+        1076,
+        478
+      ]
+    ],
+    "context_bbox": [
+      969,
+      394,
+      1096,
+      484
+    ],
+    "image_sha256": "2063512cf7aae42d4eb5f8fddf9db58d85f1a478f0ccd791ba20949163de3905",
+    "image_width": 135,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        21,
+        70,
+        112,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 116,
+    "screen": "51792073__Elenco",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1704,
+      464,
+      1725,
+      478
+    ],
+    "target_bboxes": [
+      [
+        1704,
+        464,
+        1725,
+        478
+      ]
+    ],
+    "context_bbox": [
+      1642,
+      394,
+      1802,
+      487
+    ],
+    "image_sha256": "f71e1c4e71513c239dde574afc5cb01e9f7560d8e5700ad93282e0b5bea8e788",
+    "image_width": 168,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        64,
+        72,
+        88,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 117,
+    "screen": "51792073__Elenco_dx",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      212,
+      500,
+      290,
+      515
+    ],
+    "target_bboxes": [
+      [
+        212,
+        500,
+        290,
+        515
+      ]
+    ],
+    "context_bbox": [
+      206,
+      432,
+      303,
+      521
+    ],
+    "image_sha256": "8de96204feae76062b3980ef9c44955886c64fd595b63bc0638b3f8a3026263b",
+    "image_width": 105,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 118,
+    "screen": "51792073__Elenco_dx",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      301,
+      500,
+      377,
+      515
+    ],
+    "target_bboxes": [
+      [
+        301,
+        500,
+        377,
+        515
+      ]
+    ],
+    "context_bbox": [
+      292,
+      432,
+      400,
+      521
+    ],
+    "image_sha256": "8a382527130785d0e389b73fbcaf18cf96755193fc4cb89160496eb5268daa1f",
+    "image_width": 116,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        11,
+        70,
+        90,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 119,
+    "screen": "51792073__Elenco_dx",
+    "field_key": "tipo",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 120,
+    "screen": "51792073__Elenco_dx",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      572,
+      500,
+      606,
+      515
+    ],
+    "target_bboxes": [
+      [
+        572,
+        500,
+        606,
+        515
+      ]
+    ],
+    "context_bbox": [
+      534,
+      432,
+      642,
+      521
+    ],
+    "image_sha256": "956e3f5f7ff81e5af18d42d214f5435e4e66ecdd5e3396ce9ef29973b0923c03",
+    "image_width": 116,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        40,
+        70,
+        77,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 121,
+    "screen": "51792073__Elenco_dx",
+    "field_key": "fase",
+    "visibility": "visible_cell_without_rendered_text",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      645,
+      432,
+      747,
+      536
+    ],
+    "image_sha256": "3e9b44a0d886d648748b0afb6f457cf217824eafe9dcdcd37b76e89bc6ba5ce2",
+    "image_width": 110,
+    "image_height": 112,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 122,
+    "screen": "51792073__Elenco_dx",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      767,
+      500,
+      855,
+      516
+    ],
+    "target_bboxes": [
+      [
+        767,
+        500,
+        855,
+        516
+      ]
+    ],
+    "context_bbox": [
+      749,
+      432,
+      870,
+      522
+    ],
+    "image_sha256": "c4cc0c5f63d46b77d23da0539709c1758996e5de335d984ca481ad92a8ff286b",
+    "image_width": 129,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        20,
+        70,
+        111,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 123,
+    "screen": "51792073__Elenco_dx",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1708,
+      502,
+      1729,
+      516
+    ],
+    "target_bboxes": [
+      [
+        1708,
+        502,
+        1729,
+        516
+      ]
+    ],
+    "context_bbox": [
+      1645,
+      432,
+      1806,
+      525
+    ],
+    "image_sha256": "2b98305d95372f12280c49ece0ac8f1b7b14aea6864fce560c72fdd76a387e1e",
+    "image_width": 169,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        65,
+        72,
+        89,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 124,
+    "screen": "51792073__Elenco_tooltip1",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      262,
+      535,
+      358,
+      553
+    ],
+    "target_bboxes": [
+      [
+        262,
+        535,
+        358,
+        553
+      ]
+    ],
+    "context_bbox": [
+      256,
+      452,
+      370,
+      559
+    ],
+    "image_sha256": "2f8a88c4d08c031329a9faa2cd22d48d2d075641b1c78d2ff353024c090763ad",
+    "image_width": 122,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        8,
+        85,
+        107,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 125,
+    "screen": "51792073__Elenco_tooltip1",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      373,
+      535,
+      466,
+      553
+    ],
+    "target_bboxes": [
+      [
+        373,
+        535,
+        466,
+        553
+      ]
+    ],
+    "context_bbox": [
+      362,
+      452,
+      488,
+      559
+    ],
+    "image_sha256": "2e3a050985f9b44ebe9391f147d8ec336affa3c09b05682e82dc2bb89209935e",
+    "image_width": 134,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        13,
+        85,
+        109,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 126,
+    "screen": "51792073__Elenco_tooltip1",
+    "field_key": "tipo",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 127,
+    "screen": "51792073__Elenco_tooltip1",
+    "field_key": "stato",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 128,
+    "screen": "51792073__Elenco_tooltip1",
+    "field_key": "fase",
+    "visibility": "visible",
+    "target_bbox": [
+      598,
+      535,
+      629,
+      553
+    ],
+    "target_bboxes": [
+      [
+        598,
+        535,
+        629,
+        553
+      ]
+    ],
+    "context_bbox": [
+      549,
+      452,
+      671,
+      559
+    ],
+    "image_sha256": "684c33f46b78b30026ab43172c6000cab5c16fdb0d0024aa5baeaf59a840efb9",
+    "image_width": 130,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        51,
+        85,
+        85,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 129,
+    "screen": "51792073__Elenco_tooltip1",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      701,
+      535,
+      810,
+      554
+    ],
+    "target_bboxes": [
+      [
+        701,
+        535,
+        810,
+        554
+      ]
+    ],
+    "context_bbox": [
+      678,
+      452,
+      831,
+      560
+    ],
+    "image_sha256": "56a07edfba69a576cfb13ce59a2c9ae504826922e2b9bcfb53d930ad49a3b57b",
+    "image_width": 161,
+    "image_height": 116,
+    "marker_bboxes": [
+      [
+        25,
+        85,
+        137,
+        107
+      ]
+    ]
+  },
+  {
+    "excel_row": 130,
+    "screen": "51792073__Elenco_tooltip1",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1667,
+      538,
+      1693,
+      554
+    ],
+    "target_bboxes": [
+      [
+        1667,
+        538,
+        1693,
+        554
+      ]
+    ],
+    "context_bbox": [
+      1626,
+      452,
+      1764,
+      564
+    ],
+    "image_sha256": "13ea69707aec84edc5fb8d89320a349d68ab4cc4233850c0d05fddf55ab0bd83",
+    "image_width": 146,
+    "image_height": 120,
+    "marker_bboxes": [
+      [
+        43,
+        88,
+        72,
+        107
+      ]
+    ]
+  },
+  {
+    "excel_row": 131,
+    "screen": "51798191__Elenco",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      217,
+      499,
+      295,
+      514
+    ],
+    "target_bboxes": [
+      [
+        217,
+        499,
+        295,
+        514
+      ]
+    ],
+    "context_bbox": [
+      211,
+      431,
+      310,
+      520
+    ],
+    "image_sha256": "d7a6c4647ee3422483dba09f647737fce2f262d760caccaf56cf626dc8c03ae7",
+    "image_width": 107,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 132,
+    "screen": "51798191__Elenco",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      314,
+      499,
+      391,
+      514
+    ],
+    "target_bboxes": [
+      [
+        314,
+        499,
+        391,
+        514
+      ]
+    ],
+    "context_bbox": [
+      303,
+      431,
+      411,
+      520
+    ],
+    "image_sha256": "c1a88ded4ea67178ed194217f9be19b7c0e30d06af7f15dbd6f9979d8918dd48",
+    "image_width": 116,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        13,
+        70,
+        93,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 133,
+    "screen": "51798191__Elenco",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      515,
+      499,
+      553,
+      514
+    ],
+    "target_bboxes": [
+      [
+        515,
+        499,
+        553,
+        514
+      ]
+    ],
+    "context_bbox": [
+      504,
+      431,
+      608,
+      520
+    ],
+    "image_sha256": "221807ec1ab8919ba6e6761de3a468f7dcf54349f51b5278dc0271aa0e8f0db7",
+    "image_width": 112,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        13,
+        70,
+        54,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 134,
+    "screen": "51798191__Elenco",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      753,
+      499,
+      788,
+      514
+    ],
+    "target_bboxes": [
+      [
+        753,
+        499,
+        788,
+        514
+      ]
+    ],
+    "context_bbox": [
+      729,
+      431,
+      836,
+      520
+    ],
+    "image_sha256": "6a0701c758e221e9f0f35045ccb21f8b1dd38595f3e0684dcc139afbff47a869",
+    "image_width": 115,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        26,
+        70,
+        64,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 135,
+    "screen": "51798191__Elenco",
+    "field_key": "fase",
+    "visibility": "visible",
+    "target_bbox": [
+      880,
+      499,
+      905,
+      514
+    ],
+    "target_bboxes": [
+      [
+        880,
+        499,
+        905,
+        514
+      ]
+    ],
+    "context_bbox": [
+      839,
+      431,
+      946,
+      520
+    ],
+    "image_sha256": "81a5c41d19b95aa5a25fdc12ae9a910c43f626f4ab5bab6747b11321982fd7e6",
+    "image_width": 115,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        43,
+        70,
+        71,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 136,
+    "screen": "51798191__Elenco",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      962,
+      499,
+      1050,
+      515
+    ],
+    "target_bboxes": [
+      [
+        962,
+        499,
+        1050,
+        515
+      ]
+    ],
+    "context_bbox": [
+      944,
+      431,
+      1066,
+      521
+    ],
+    "image_sha256": "e5b57daf87351f68f43859d02c3f1c36ced9fcdfe74d6dfb312cb8d8f63515ed",
+    "image_width": 130,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        20,
+        70,
+        111,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 137,
+    "screen": "51798191__Elenco",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1634,
+      501,
+      1699,
+      515
+    ],
+    "target_bboxes": [
+      [
+        1634,
+        501,
+        1646,
+        515
+      ],
+      [
+        1685,
+        501,
+        1699,
+        515
+      ]
+    ],
+    "context_bbox": [
+      1594,
+      431,
+      1806,
+      524
+    ],
+    "image_sha256": "12149a07903e25634d4fa91161d1f860579a66b9aa65d6c5d2f7df15590e353e",
+    "image_width": 220,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        42,
+        72,
+        57,
+        89
+      ],
+      [
+        93,
+        72,
+        110,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 138,
+    "screen": "51798191__Elenco_dx",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      214,
+      499,
+      292,
+      514
+    ],
+    "target_bboxes": [
+      [
+        214,
+        499,
+        292,
+        514
+      ]
+    ],
+    "context_bbox": [
+      208,
+      431,
+      306,
+      520
+    ],
+    "image_sha256": "4d3d7a8c2158f37827bb7e03ee1718b7c7d466e5b1627cee1e6198b63d78146d",
+    "image_width": 106,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 139,
+    "screen": "51798191__Elenco_dx",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      303,
+      499,
+      380,
+      514
+    ],
+    "target_bboxes": [
+      [
+        303,
+        499,
+        380,
+        514
+      ]
+    ],
+    "context_bbox": [
+      294,
+      431,
+      398,
+      520
+    ],
+    "image_sha256": "d984dbde4b3a3fdefc7056147ed4f155d820cc69d1713fcd7c91298b9c80347b",
+    "image_width": 112,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        11,
+        70,
+        91,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 140,
+    "screen": "51798191__Elenco_dx",
+    "field_key": "tipo",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 141,
+    "screen": "51798191__Elenco_dx",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      508,
+      499,
+      543,
+      514
+    ],
+    "target_bboxes": [
+      [
+        508,
+        499,
+        543,
+        514
+      ]
+    ],
+    "context_bbox": [
+      484,
+      431,
+      591,
+      520
+    ],
+    "image_sha256": "6a0701c758e221e9f0f35045ccb21f8b1dd38595f3e0684dcc139afbff47a869",
+    "image_width": 115,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        26,
+        70,
+        64,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 142,
+    "screen": "51798191__Elenco_dx",
+    "field_key": "fase",
+    "visibility": "visible",
+    "target_bbox": [
+      635,
+      499,
+      660,
+      514
+    ],
+    "target_bboxes": [
+      [
+        635,
+        499,
+        660,
+        514
+      ]
+    ],
+    "context_bbox": [
+      594,
+      431,
+      696,
+      520
+    ],
+    "image_sha256": "e31fed5d782f2a2718f7560f9519754f0993dff0ca32898db215f8888f39e707",
+    "image_width": 110,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        43,
+        70,
+        71,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 143,
+    "screen": "51798191__Elenco_dx",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      717,
+      499,
+      805,
+      515
+    ],
+    "target_bboxes": [
+      [
+        717,
+        499,
+        805,
+        515
+      ]
+    ],
+    "context_bbox": [
+      699,
+      431,
+      821,
+      521
+    ],
+    "image_sha256": "e5b57daf87351f68f43859d02c3f1c36ced9fcdfe74d6dfb312cb8d8f63515ed",
+    "image_width": 130,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        20,
+        70,
+        111,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 144,
+    "screen": "51798191__Elenco_dx",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1636,
+      501,
+      1701,
+      515
+    ],
+    "target_bboxes": [
+      [
+        1636,
+        501,
+        1648,
+        515
+      ],
+      [
+        1687,
+        501,
+        1701,
+        515
+      ]
+    ],
+    "context_bbox": [
+      1594,
+      431,
+      1808,
+      524
+    ],
+    "image_sha256": "c59693bf07286a650588ba09c42226bd74654e0a47bfbd18ab8fc222565c2c51",
+    "image_width": 222,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        44,
+        72,
+        59,
+        89
+      ],
+      [
+        95,
+        72,
+        112,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 145,
+    "screen": "51798191__Elenco_tooltip1",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      180,
+      378,
+      258,
+      393
+    ],
+    "target_bboxes": [
+      [
+        180,
+        378,
+        258,
+        393
+      ]
+    ],
+    "context_bbox": [
+      174,
+      310,
+      274,
+      399
+    ],
+    "image_sha256": "7ae48ee969d1b2545c2dac46c49f3cecd6bf7553f401e1f432e6da573ff832e6",
+    "image_width": 108,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 146,
+    "screen": "51798191__Elenco_tooltip1",
+    "field_key": "denominazione",
+    "visibility": "visible_truncated_text",
+    "target_bbox": [
+      277,
+      378,
+      354,
+      393
+    ],
+    "target_bboxes": [
+      [
+        277,
+        378,
+        354,
+        393
+      ]
+    ],
+    "context_bbox": [
+      267,
+      310,
+      374,
+      399
+    ],
+    "image_sha256": "329dd207173c0fa9c1dc168b567647bd56d553d020a8b66dd288634daf2173a1",
+    "image_width": 115,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        12,
+        70,
+        92,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 147,
+    "screen": "51798191__Elenco_tooltip1",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      478,
+      378,
+      516,
+      393
+    ],
+    "target_bboxes": [
+      [
+        478,
+        378,
+        516,
+        393
+      ]
+    ],
+    "context_bbox": [
+      467,
+      310,
+      571,
+      399
+    ],
+    "image_sha256": "221807ec1ab8919ba6e6761de3a468f7dcf54349f51b5278dc0271aa0e8f0db7",
+    "image_width": 112,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        13,
+        70,
+        54,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 148,
+    "screen": "51798191__Elenco_tooltip1",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      716,
+      378,
+      751,
+      393
+    ],
+    "target_bboxes": [
+      [
+        716,
+        378,
+        751,
+        393
+      ]
+    ],
+    "context_bbox": [
+      692,
+      310,
+      799,
+      399
+    ],
+    "image_sha256": "6a0701c758e221e9f0f35045ccb21f8b1dd38595f3e0684dcc139afbff47a869",
+    "image_width": 115,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        26,
+        70,
+        64,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 149,
+    "screen": "51798191__Elenco_tooltip1",
+    "field_key": "fase",
+    "visibility": "visible",
+    "target_bbox": [
+      843,
+      378,
+      868,
+      393
+    ],
+    "target_bboxes": [
+      [
+        843,
+        378,
+        868,
+        393
+      ]
+    ],
+    "context_bbox": [
+      802,
+      310,
+      908,
+      399
+    ],
+    "image_sha256": "bf012957d1840be628c5b3ce9fa28d92665f1d3e09240bb2576d38ca1b883b0c",
+    "image_width": 114,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        43,
+        70,
+        71,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 150,
+    "screen": "51798191__Elenco_tooltip1",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      925,
+      378,
+      1013,
+      394
+    ],
+    "target_bboxes": [
+      [
+        925,
+        378,
+        1013,
+        394
+      ]
+    ],
+    "context_bbox": [
+      907,
+      310,
+      1029,
+      400
+    ],
+    "image_sha256": "9f3e48d2c56e62f51c6bb7f96e38da21ea7fe2f0c5c7d3b5f247fa436f87e5ec",
+    "image_width": 130,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        20,
+        70,
+        111,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 151,
+    "screen": "51798191__Elenco_tooltip1",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1597,
+      380,
+      1661,
+      394
+    ],
+    "target_bboxes": [
+      [
+        1597,
+        380,
+        1609,
+        394
+      ],
+      [
+        1649,
+        380,
+        1661,
+        394
+      ]
+    ],
+    "context_bbox": [
+      1554,
+      310,
+      1769,
+      403
+    ],
+    "image_sha256": "0f3f7c7bf839eb6631f839842dda73e86bb914e275b16d877148345dd9473e94",
+    "image_width": 223,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        45,
+        72,
+        60,
+        89
+      ],
+      [
+        97,
+        72,
+        112,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 152,
+    "screen": "51798191__Elenco_tooltip1",
+    "field_key": "tooltip_evidenze_b",
+    "visibility": "visible",
+    "target_bbox": [
+      1629,
+      417,
+      1749,
+      433
+    ],
+    "target_bboxes": [
+      [
+        1629,
+        417,
+        1749,
+        433
+      ]
+    ],
+    "context_bbox": [
+      1554,
+      310,
+      1768,
+      451
+    ],
+    "image_sha256": "414a92bbb9c06c17f0e926421d9cc29bd4c0bd3bfc9508fd271616aa032757e2",
+    "image_width": 222,
+    "image_height": 149,
+    "marker_bboxes": [
+      [
+        77,
+        109,
+        200,
+        128
+      ]
+    ]
+  },
+  {
+    "excel_row": 194,
+    "screen": "51800301__Note",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      387,
+      329,
+      431,
+      340
+    ],
+    "target_bboxes": [
+      [
+        387,
+        329,
+        431,
+        340
+      ]
+    ],
+    "context_bbox": [
+      347,
+      294,
+      443,
+      433
+    ],
+    "image_sha256": "240bfe056a721b1ec750616a73ba84c49073a5500b780e92e2c786ee44f957ee",
+    "image_width": 104,
+    "image_height": 147,
+    "marker_bboxes": [
+      [
+        42,
+        37,
+        89,
+        51
+      ]
+    ]
+  },
+  {
+    "excel_row": 195,
+    "screen": "51800301__Note",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      436,
+      329,
+      611,
+      341
+    ],
+    "target_bboxes": [
+      [
+        436,
+        329,
+        611,
+        341
+      ]
+    ],
+    "context_bbox": [
+      420,
+      294,
+      623,
+      433
+    ],
+    "image_sha256": "9c8554a35eab23b5dd4cfb44579c38969639c7c0e2a6bc95e11dab0f6d71bba3",
+    "image_width": 211,
+    "image_height": 147,
+    "marker_bboxes": [
+      [
+        18,
+        37,
+        196,
+        52
+      ]
+    ]
+  },
+  {
+    "excel_row": 196,
+    "screen": "51800301__Note",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      933,
+      296,
+      974,
+      307
+    ],
+    "target_bboxes": [
+      [
+        933,
+        296,
+        974,
+        307
+      ]
+    ],
+    "context_bbox": [
+      837,
+      293,
+      986,
+      433
+    ],
+    "image_sha256": "846bc5f9b29d0372bb5d28e9d978853321367546a23b882ad5722eeb08e86d02",
+    "image_width": 157,
+    "image_height": 148,
+    "marker_bboxes": [
+      [
+        98,
+        5,
+        142,
+        19
+      ]
+    ]
+  },
+  {
+    "excel_row": 197,
+    "screen": "51800301__Note",
+    "field_key": "filiale_relazione",
+    "visibility": "visible",
+    "target_bbox": [
+      955,
+      362,
+      1045,
+      373
+    ],
+    "target_bboxes": [
+      [
+        955,
+        362,
+        1045,
+        373
+      ]
+    ],
+    "context_bbox": [
+      840,
+      294,
+      1057,
+      433
+    ],
+    "image_sha256": "45ba8dc2f0d117d30e2471aba73450943b69276e10e4966e132af2e76f4ddfe3",
+    "image_width": 225,
+    "image_height": 147,
+    "marker_bboxes": [
+      [
+        117,
+        70,
+        210,
+        84
+      ]
+    ]
+  },
+  {
+    "excel_row": 198,
+    "screen": "51800301__Note",
+    "field_key": "note_della_richiesta",
+    "visibility": "visible",
+    "target_bbox": [
+      337,
+      511,
+      1056,
+      927
+    ],
+    "target_bboxes": [
+      [
+        337,
+        511,
+        1056,
+        927
+      ]
+    ],
+    "context_bbox": [
+      334,
+      476,
+      1071,
+      950
+    ],
+    "image_sha256": "534abaee8caeb0de075b06a94d9df347caa10ae1568390e773c11b560b19202b",
+    "image_width": 745,
+    "image_height": 482,
+    "marker_bboxes": [
+      [
+        5,
+        37,
+        727,
+        456
+      ]
+    ]
+  },
+  {
+    "excel_row": 199,
+    "screen": "51800301__Note_chiuso",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      384,
+      366,
+      428,
+      377
+    ],
+    "target_bboxes": [
+      [
+        384,
+        366,
+        428,
+        377
+      ]
+    ],
+    "context_bbox": [
+      344,
+      331,
+      440,
+      470
+    ],
+    "image_sha256": "240bfe056a721b1ec750616a73ba84c49073a5500b780e92e2c786ee44f957ee",
+    "image_width": 104,
+    "image_height": 147,
+    "marker_bboxes": [
+      [
+        42,
+        37,
+        89,
+        51
+      ]
+    ]
+  },
+  {
+    "excel_row": 200,
+    "screen": "51800301__Note_chiuso",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      433,
+      366,
+      608,
+      378
+    ],
+    "target_bboxes": [
+      [
+        433,
+        366,
+        608,
+        378
+      ]
+    ],
+    "context_bbox": [
+      417,
+      331,
+      620,
+      470
+    ],
+    "image_sha256": "9c8554a35eab23b5dd4cfb44579c38969639c7c0e2a6bc95e11dab0f6d71bba3",
+    "image_width": 211,
+    "image_height": 147,
+    "marker_bboxes": [
+      [
+        18,
+        37,
+        196,
+        52
+      ]
+    ]
+  },
+  {
+    "excel_row": 201,
+    "screen": "51800301__Note_chiuso",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      930,
+      333,
+      971,
+      344
+    ],
+    "target_bboxes": [
+      [
+        930,
+        333,
+        971,
+        344
+      ]
+    ],
+    "context_bbox": [
+      834,
+      330,
+      983,
+      470
+    ],
+    "image_sha256": "846bc5f9b29d0372bb5d28e9d978853321367546a23b882ad5722eeb08e86d02",
+    "image_width": 157,
+    "image_height": 148,
+    "marker_bboxes": [
+      [
+        98,
+        5,
+        142,
+        19
+      ]
+    ]
+  },
+  {
+    "excel_row": 202,
+    "screen": "51800301__Note_chiuso",
+    "field_key": "filiale_relazione",
+    "visibility": "visible",
+    "target_bbox": [
+      952,
+      399,
+      1042,
+      410
+    ],
+    "target_bboxes": [
+      [
+        952,
+        399,
+        1042,
+        410
+      ]
+    ],
+    "context_bbox": [
+      837,
+      331,
+      1054,
+      470
+    ],
+    "image_sha256": "45ba8dc2f0d117d30e2471aba73450943b69276e10e4966e132af2e76f4ddfe3",
+    "image_width": 225,
+    "image_height": 147,
+    "marker_bboxes": [
+      [
+        117,
+        70,
+        210,
+        84
+      ]
+    ]
+  },
+  {
+    "excel_row": 203,
+    "screen": "51800301__Note_chiuso",
+    "field_key": "note_della_richiesta",
+    "visibility": "visible_partial",
+    "target_bbox": [
+      334,
+      548,
+      1048,
+      577
+    ],
+    "target_bboxes": [
+      [
+        334,
+        548,
+        1048,
+        577
+      ]
+    ],
+    "context_bbox": [
+      331,
+      513,
+      1068,
+      580
+    ],
+    "image_sha256": "576afa194801462f6d3df92350615578b69d040e48bf4ab3611b87db5f0e3314",
+    "image_width": 745,
+    "image_height": 75,
+    "marker_bboxes": [
+      [
+        5,
+        37,
+        722,
+        69
+      ]
+    ]
+  },
+  {
+    "excel_row": 204,
+    "screen": "51800301__Soggetti",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      416,
+      401,
+      464,
+      412
+    ],
+    "target_bboxes": [
+      [
+        416,
+        401,
+        464,
+        412
+      ]
+    ],
+    "context_bbox": [
+      376,
+      362,
+      476,
+      514
+    ],
+    "image_sha256": "e9b53def14f6632411db15517db0024b129d8efa966e50fc5ec3991f23ddb863",
+    "image_width": 108,
+    "image_height": 160,
+    "marker_bboxes": [
+      [
+        42,
+        41,
+        93,
+        55
+      ]
+    ]
+  },
+  {
+    "excel_row": 205,
+    "screen": "51800301__Soggetti",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      470,
+      401,
+      664,
+      414
+    ],
+    "target_bboxes": [
+      [
+        470,
+        401,
+        664,
+        414
+      ]
+    ],
+    "context_bbox": [
+      454,
+      362,
+      676,
+      514
+    ],
+    "image_sha256": "9c0c42822e2b25484563988d592d0d862f38dc72f69c21a3dfbd87ebfee57894",
+    "image_width": 230,
+    "image_height": 160,
+    "marker_bboxes": [
+      [
+        18,
+        41,
+        215,
+        57
+      ]
+    ]
+  },
+  {
+    "excel_row": 206,
+    "screen": "51800301__Soggetti",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      1022,
+      364,
+      1070,
+      375
+    ],
+    "target_bboxes": [
+      [
+        1022,
+        364,
+        1070,
+        375
+      ]
+    ],
+    "context_bbox": [
+      926,
+      361,
+      1082,
+      514
+    ],
+    "image_sha256": "bee87286149177fc4e116f06035c9868e3c543d003abcf05a9fdd1273e72f513",
+    "image_width": 164,
+    "image_height": 161,
+    "marker_bboxes": [
+      [
+        98,
+        5,
+        149,
+        19
+      ]
+    ]
+  },
+  {
+    "excel_row": 207,
+    "screen": "51800301__Soggetti",
+    "field_key": "filiale_relazione",
+    "visibility": "visible",
+    "target_bbox": [
+      1047,
+      437,
+      1146,
+      448
+    ],
+    "target_bboxes": [
+      [
+        1047,
+        437,
+        1146,
+        448
+      ]
+    ],
+    "context_bbox": [
+      932,
+      362,
+      1158,
+      514
+    ],
+    "image_sha256": "42ac69b3d141782acc3ecd34034db6b737fe8d61308f6cc2ec5ea70082fee0fe",
+    "image_width": 234,
+    "image_height": 160,
+    "marker_bboxes": [
+      [
+        117,
+        77,
+        219,
+        91
+      ]
+    ]
+  },
+  {
+    "excel_row": 208,
+    "screen": "51800301__Soggetti",
+    "field_key": "ndg_1",
+    "visibility": "visible",
+    "target_bbox": [
+      392,
+      607,
+      439,
+      618
+    ],
+    "target_bboxes": [
+      [
+        392,
+        607,
+        439,
+        618
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "5b216fc41940d70ba023437dd30ea5035b148da6c7391d2885e5fb9e3ddfe41a",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        39,
+        70,
+        89,
+        84
+      ]
+    ]
+  },
+  {
+    "excel_row": 209,
+    "screen": "51800301__Soggetti",
+    "field_key": "denominazione_1",
+    "visibility": "visible",
+    "target_bbox": [
+      443,
+      607,
+      634,
+      618
+    ],
+    "target_bboxes": [
+      [
+        443,
+        607,
+        634,
+        618
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "6bd3a2a19729ab5d1e3153f659932fb907d5f425084fb5690a059e0fc7c71eb8",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        90,
+        70,
+        284,
+        84
+      ]
+    ]
+  },
+  {
+    "excel_row": 210,
+    "screen": "51800301__Soggetti",
+    "field_key": "ruolo_1",
+    "visibility": "visible",
+    "target_bbox": [
+      645,
+      607,
+      700,
+      618
+    ],
+    "target_bboxes": [
+      [
+        645,
+        607,
+        700,
+        618
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "0fde13d317b719fc2c461bf4ccb7f48d779d5ce42871c6ddffe08134ad893789",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        292,
+        70,
+        350,
+        84
+      ]
+    ]
+  },
+  {
+    "excel_row": 211,
+    "screen": "51800301__Soggetti",
+    "field_key": "ndg_2",
+    "visibility": "visible",
+    "target_bbox": [
+      392,
+      637,
+      440,
+      648
+    ],
+    "target_bboxes": [
+      [
+        392,
+        637,
+        440,
+        648
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "226394118289e08f4c3ccb8f25dc1a805178543610641469ae7ab7b29a4ecbf2",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        39,
+        100,
+        90,
+        114
+      ]
+    ]
+  },
+  {
+    "excel_row": 212,
+    "screen": "51800301__Soggetti",
+    "field_key": "denominazione_2",
+    "visibility": "visible",
+    "target_bbox": [
+      442,
+      637,
+      522,
+      648
+    ],
+    "target_bboxes": [
+      [
+        442,
+        637,
+        522,
+        648
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "ca084982e83ab41b7a05e2cfa9c8052297e3ae652ace45f99a07a96f57f88a26",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        89,
+        100,
+        172,
+        114
+      ]
+    ]
+  },
+  {
+    "excel_row": 213,
+    "screen": "51800301__Soggetti",
+    "field_key": "ruolo_2",
+    "visibility": "visible",
+    "target_bbox": [
+      645,
+      629,
+      778,
+      657
+    ],
+    "target_bboxes": [
+      [
+        645,
+        629,
+        778,
+        657
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "803966e6a1c959d27ce9cf9660bce174a21b349c37c90a1111a5f2259ba99528",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        292,
+        92,
+        428,
+        123
+      ]
+    ]
+  },
+  {
+    "excel_row": 214,
+    "screen": "51800301__Soggetti",
+    "field_key": "ndg_3",
+    "visibility": "visible",
+    "target_bbox": [
+      392,
+      674,
+      439,
+      685
+    ],
+    "target_bboxes": [
+      [
+        392,
+        674,
+        439,
+        685
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "5d136db86de0ec8cf4bc2d2bf35a36eb85706645c007a2e0c1664fa5ea6a2ca9",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        39,
+        137,
+        89,
+        151
+      ]
+    ]
+  },
+  {
+    "excel_row": 215,
+    "screen": "51800301__Soggetti",
+    "field_key": "denominazione_3",
+    "visibility": "visible",
+    "target_bbox": [
+      443,
+      674,
+      554,
+      685
+    ],
+    "target_bboxes": [
+      [
+        443,
+        674,
+        554,
+        685
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "5cf6d96179c21441934467fed16859285aa5450077915e3cdc2a1ca9daa0d3ef",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        90,
+        137,
+        204,
+        151
+      ]
+    ]
+  },
+  {
+    "excel_row": 216,
+    "screen": "51800301__Soggetti",
+    "field_key": "ruolo_3",
+    "visibility": "visible",
+    "target_bbox": [
+      645,
+      666,
+      778,
+      694
+    ],
+    "target_bboxes": [
+      [
+        645,
+        666,
+        778,
+        694
+      ]
+    ],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "4be52909d25da711ec43de7cf3f5dc8fee8b256be665ed310a7a97606c43c12b",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": [
+      [
+        292,
+        129,
+        428,
+        160
+      ]
+    ]
+  },
+  {
+    "excel_row": 217,
+    "screen": "51800301__Soggetti",
+    "field_key": "ndg_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "9a902d13a4ff168216db391bd1e37bed1eb0f58ed3bb83875aa54fb7e6486215",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 218,
+    "screen": "51800301__Soggetti",
+    "field_key": "denominazione_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "9a902d13a4ff168216db391bd1e37bed1eb0f58ed3bb83875aa54fb7e6486215",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 219,
+    "screen": "51800301__Soggetti",
+    "field_key": "ruolo_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      355,
+      539,
+      1177,
+      701
+    ],
+    "image_sha256": "9a902d13a4ff168216db391bd1e37bed1eb0f58ed3bb83875aa54fb7e6486215",
+    "image_width": 830,
+    "image_height": 170,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 220,
+    "screen": "51859514__Elenco",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      247,
+      494,
+      325,
+      509
+    ],
+    "target_bboxes": [
+      [
+        247,
+        494,
+        325,
+        509
+      ]
+    ],
+    "context_bbox": [
+      241,
+      426,
+      341,
+      515
+    ],
+    "image_sha256": "82863c08b02fdc71bdf00d8136cab717016d570d977a2a36c1d79787ca83016f",
+    "image_width": 108,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 221,
+    "screen": "51859514__Elenco",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      344,
+      494,
+      500,
+      509
+    ],
+    "target_bboxes": [
+      [
+        344,
+        494,
+        500,
+        509
+      ]
+    ],
+    "context_bbox": [
+      334,
+      426,
+      506,
+      515
+    ],
+    "image_sha256": "eb1c8db04f7016ce28e427fa2092e110cd949468b50cc1624e40113a73d666ad",
+    "image_width": 180,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        12,
+        70,
+        171,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 222,
+    "screen": "51859514__Elenco",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      616,
+      494,
+      654,
+      509
+    ],
+    "target_bboxes": [
+      [
+        616,
+        494,
+        654,
+        509
+      ]
+    ],
+    "context_bbox": [
+      605,
+      426,
+      710,
+      515
+    ],
+    "image_sha256": "66f3b463628a63290c582b51cbe96694a25e11d97622b5aaef3cef25adb26340",
+    "image_width": 113,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        13,
+        70,
+        54,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 223,
+    "screen": "51859514__Elenco",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      868,
+      494,
+      902,
+      509
+    ],
+    "target_bboxes": [
+      [
+        868,
+        494,
+        902,
+        509
+      ]
+    ],
+    "context_bbox": [
+      831,
+      426,
+      940,
+      515
+    ],
+    "image_sha256": "5dd1c5cf77f0802cf3fc6dd730a0c8402013521893abf28965fd549473e771e0",
+    "image_width": 117,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        39,
+        70,
+        76,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 224,
+    "screen": "51859514__Elenco",
+    "field_key": "fase",
+    "visibility": "visible_cell_without_rendered_text",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      939,
+      426,
+      1046,
+      530
+    ],
+    "image_sha256": "a37eff2a19099f578a159ebaa20dd7e414933b6e2b4d338617aeecc1eaa0dccb",
+    "image_width": 115,
+    "image_height": 112,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 225,
+    "screen": "51859514__Elenco",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      1063,
+      494,
+      1151,
+      510
+    ],
+    "target_bboxes": [
+      [
+        1063,
+        494,
+        1151,
+        510
+      ]
+    ],
+    "context_bbox": [
+      1045,
+      426,
+      1170,
+      516
+    ],
+    "image_sha256": "c330995b6d681a2b4814447603498a86677577701ec57960e27f82b7b9d6c6e8",
+    "image_width": 133,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        20,
+        70,
+        111,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 226,
+    "screen": "51859514__Elenco",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1656,
+      496,
+      1676,
+      510
+    ],
+    "target_bboxes": [
+      [
+        1656,
+        496,
+        1676,
+        510
+      ]
+    ],
+    "context_bbox": [
+      1594,
+      426,
+      1806,
+      519
+    ],
+    "image_sha256": "703c9e2ddab3dc5b45418743831235b03a3403703766cf4dbafc9587ef4f39f1",
+    "image_width": 220,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        64,
+        72,
+        87,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 227,
+    "screen": "51859514__Elenco_dx",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      213,
+      500,
+      291,
+      515
+    ],
+    "target_bboxes": [
+      [
+        213,
+        500,
+        291,
+        515
+      ]
+    ],
+    "context_bbox": [
+      207,
+      432,
+      307,
+      521
+    ],
+    "image_sha256": "bb1cbc9880926d180b05943af788db0c6356cbba1a45dae257505d35209f532d",
+    "image_width": 108,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        8,
+        70,
+        89,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 228,
+    "screen": "51859514__Elenco_dx",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      302,
+      500,
+      458,
+      515
+    ],
+    "target_bboxes": [
+      [
+        302,
+        500,
+        458,
+        515
+      ]
+    ],
+    "context_bbox": [
+      292,
+      432,
+      464,
+      521
+    ],
+    "image_sha256": "ac948fe435ce3b67b24304ecefd311aef0f0e75b77bbbe674de141c402ac8f6b",
+    "image_width": 180,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        12,
+        70,
+        171,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 229,
+    "screen": "51859514__Elenco_dx",
+    "field_key": "tipo",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 230,
+    "screen": "51859514__Elenco_dx",
+    "field_key": "stato",
+    "visibility": "visible",
+    "target_bbox": [
+      521,
+      500,
+      555,
+      515
+    ],
+    "target_bboxes": [
+      [
+        521,
+        500,
+        555,
+        515
+      ]
+    ],
+    "context_bbox": [
+      482,
+      432,
+      592,
+      521
+    ],
+    "image_sha256": "acb4111cd43df2f9eff1ff52a5f7206ca2c9fb498939bddb1e885cd22427a82f",
+    "image_width": 118,
+    "image_height": 97,
+    "marker_bboxes": [
+      [
+        41,
+        70,
+        78,
+        88
+      ]
+    ]
+  },
+  {
+    "excel_row": 231,
+    "screen": "51859514__Elenco_dx",
+    "field_key": "fase",
+    "visibility": "visible_cell_without_rendered_text",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      594,
+      432,
+      700,
+      536
+    ],
+    "image_sha256": "d511e0a2643883b30ab46f6b7beb282b0cc9469fab71df27dea1f5804641e247",
+    "image_width": 114,
+    "image_height": 112,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 232,
+    "screen": "51859514__Elenco_dx",
+    "field_key": "creazione",
+    "visibility": "visible",
+    "target_bbox": [
+      716,
+      500,
+      804,
+      516
+    ],
+    "target_bboxes": [
+      [
+        716,
+        500,
+        804,
+        516
+      ]
+    ],
+    "context_bbox": [
+      698,
+      432,
+      822,
+      522
+    ],
+    "image_sha256": "5294e0269ad75765c1b80c5c92651a1ed50124655bde6d3bc06903484f60b459",
+    "image_width": 132,
+    "image_height": 98,
+    "marker_bboxes": [
+      [
+        20,
+        70,
+        111,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 233,
+    "screen": "51859514__Elenco_dx",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1657,
+      502,
+      1677,
+      516
+    ],
+    "target_bboxes": [
+      [
+        1657,
+        502,
+        1677,
+        516
+      ]
+    ],
+    "context_bbox": [
+      1594,
+      432,
+      1807,
+      525
+    ],
+    "image_sha256": "32072afc94d7d0a2e4d83fb8015f72245a5d00b3af542060a24ee0aa3be9c6dc",
+    "image_width": 221,
+    "image_height": 101,
+    "marker_bboxes": [
+      [
+        65,
+        72,
+        88,
+        89
+      ]
+    ]
+  },
+  {
+    "excel_row": 234,
+    "screen": "51859514__Elenco_tooltip1",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      257,
+      481,
+      352,
+      499
+    ],
+    "target_bboxes": [
+      [
+        257,
+        481,
+        352,
+        499
+      ]
+    ],
+    "context_bbox": [
+      251,
+      398,
+      372,
+      505
+    ],
+    "image_sha256": "29b304ff66fb425b62f21e5fe185fc6837deaa38c37e99b28331846730a5ea77",
+    "image_width": 129,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        8,
+        85,
+        106,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 235,
+    "screen": "51859514__Elenco_tooltip1",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      368,
+      481,
+      561,
+      499
+    ],
+    "target_bboxes": [
+      [
+        368,
+        481,
+        561,
+        499
+      ]
+    ],
+    "context_bbox": [
+      358,
+      398,
+      567,
+      505
+    ],
+    "image_sha256": "bb1a608fb67095f14bcd2b70e2958814a2285223af54ac7a9f72b94c9b3750f9",
+    "image_width": 217,
+    "image_height": 115,
+    "marker_bboxes": [
+      [
+        12,
+        85,
+        208,
+        106
+      ]
+    ]
+  },
+  {
+    "excel_row": 236,
+    "screen": "51859514__Elenco_tooltip1",
+    "field_key": "tipo",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 237,
+    "screen": "51859514__Elenco_tooltip1",
+    "field_key": "stato",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 238,
+    "screen": "51859514__Elenco_tooltip1",
+    "field_key": "fase",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 239,
+    "screen": "51859514__Elenco_tooltip1",
+    "field_key": "creazione",
+    "visibility": "not_visible",
+    "target_bbox": null,
+    "target_bboxes": null,
+    "context_bbox": null,
+    "image_sha256": null,
+    "image_width": null,
+    "image_height": null,
+    "marker_bboxes": null
+  },
+  {
+    "excel_row": 240,
+    "screen": "51859514__Elenco_tooltip1",
+    "field_key": "evidenze",
+    "visibility": "visible",
+    "target_bbox": [
+      1565,
+      482,
+      1590,
+      500
+    ],
+    "target_bboxes": [
+      [
+        1565,
+        482,
+        1590,
+        500
+      ]
+    ],
+    "context_bbox": [
+      1489,
+      398,
+      1750,
+      509
+    ],
+    "image_sha256": "9f22ee2f2f784e834fa273daf596310f90369765fb41b1ee1a51c90f8f490ed7",
+    "image_width": 269,
+    "image_height": 119,
+    "marker_bboxes": [
+      [
+        78,
+        86,
+        106,
+        107
+      ]
+    ]
+  },
+  {
+    "excel_row": 306,
+    "screen": "52032077__Soggetti",
+    "field_key": "ndg",
+    "visibility": "visible",
+    "target_bbox": [
+      385,
+      368,
+      428,
+      379
+    ],
+    "target_bboxes": [
+      [
+        385,
+        368,
+        428,
+        379
+      ]
+    ],
+    "context_bbox": [
+      345,
+      333,
+      440,
+      459
+    ],
+    "image_sha256": "53e587c880ee19740f51b1b582cec02a2d247f1d67d065733039c9379a2972a4",
+    "image_width": 103,
+    "image_height": 134,
+    "marker_bboxes": [
+      [
+        42,
+        37,
+        88,
+        51
+      ]
+    ]
+  },
+  {
+    "excel_row": 307,
+    "screen": "52032077__Soggetti",
+    "field_key": "denominazione",
+    "visibility": "visible",
+    "target_bbox": [
+      433,
+      368,
+      535,
+      379
+    ],
+    "target_bboxes": [
+      [
+        433,
+        368,
+        535,
+        379
+      ]
+    ],
+    "context_bbox": [
+      417,
+      333,
+      547,
+      459
+    ],
+    "image_sha256": "3d842774705718c39a2a9b94ac0552503a10ad90c159559f84f3ef808a48d180",
+    "image_width": 138,
+    "image_height": 134,
+    "marker_bboxes": [
+      [
+        18,
+        37,
+        123,
+        51
+      ]
+    ]
+  },
+  {
+    "excel_row": 308,
+    "screen": "52032077__Soggetti",
+    "field_key": "tipo",
+    "visibility": "visible",
+    "target_bbox": [
+      931,
+      335,
+      972,
+      346
+    ],
+    "target_bboxes": [
+      [
+        931,
+        335,
+        972,
+        346
+      ]
+    ],
+    "context_bbox": [
+      835,
+      332,
+      984,
+      459
+    ],
+    "image_sha256": "bfc53011f13dc42527b419294cec425b69be749b68752b300e8b2b2060c29eee",
+    "image_width": 157,
+    "image_height": 135,
+    "marker_bboxes": [
+      [
+        98,
+        5,
+        142,
+        19
+      ]
+    ]
+  },
+  {
+    "excel_row": 309,
+    "screen": "52032077__Soggetti",
+    "field_key": "filiale_relazione",
+    "visibility": "visible",
+    "target_bbox": [
+      953,
+      401,
+      1026,
+      412
+    ],
+    "target_bboxes": [
+      [
+        953,
+        401,
+        1026,
+        412
+      ]
+    ],
+    "context_bbox": [
+      838,
+      333,
+      1038,
+      459
+    ],
+    "image_sha256": "f4d3c7007e9c0a7ea655ef79a40a58c28fa99bab9d24081536f62ee70cc4ba0c",
+    "image_width": 208,
+    "image_height": 134,
+    "marker_bboxes": [
+      [
+        117,
+        70,
+        193,
+        84
+      ]
+    ]
+  },
+  {
+    "excel_row": 310,
+    "screen": "52032077__Soggetti",
+    "field_key": "ndg_1",
+    "visibility": "visible",
+    "target_bbox": [
+      357,
+      541,
+      399,
+      552
+    ],
+    "target_bboxes": [
+      [
+        357,
+        541,
+        399,
+        552
+      ]
+    ],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "f0e629d9f71df2b4aa9185513f68470e3848522971e66492781d8f2e5d738807",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": [
+      [
+        29,
+        62,
+        74,
+        76
+      ]
+    ]
+  },
+  {
+    "excel_row": 311,
+    "screen": "52032077__Soggetti",
+    "field_key": "denominazione_1",
+    "visibility": "visible",
+    "target_bbox": [
+      402,
+      541,
+      501,
+      552
+    ],
+    "target_bboxes": [
+      [
+        402,
+        541,
+        501,
+        552
+      ]
+    ],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "29255e988752f4c3355b25fd4d2e1dbca8f4802ed6bd35f03ac81323c9010def",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": [
+      [
+        74,
+        62,
+        176,
+        76
+      ]
+    ]
+  },
+  {
+    "excel_row": 312,
+    "screen": "52032077__Soggetti",
+    "field_key": "ruolo_1",
+    "visibility": "visible",
+    "target_bbox": [
+      551,
+      541,
+      601,
+      552
+    ],
+    "target_bboxes": [
+      [
+        551,
+        541,
+        601,
+        552
+      ]
+    ],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "ecd1fbf147e52d3a44010b4c146491e862e034c1abb00aef982745968940d5e3",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": [
+      [
+        223,
+        62,
+        276,
+        76
+      ]
+    ]
+  },
+  {
+    "excel_row": 313,
+    "screen": "52032077__Soggetti",
+    "field_key": "ndg_2",
+    "visibility": "visible",
+    "target_bbox": [
+      359,
+      567,
+      399,
+      578
+    ],
+    "target_bboxes": [
+      [
+        359,
+        567,
+        399,
+        578
+      ]
+    ],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "2d0d8d03095314fbd04c3f3e0b0fac350d4811ab1acd5ce9ea69baa311f9cdb6",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": [
+      [
+        31,
+        88,
+        74,
+        102
+      ]
+    ]
+  },
+  {
+    "excel_row": 314,
+    "screen": "52032077__Soggetti",
+    "field_key": "denominazione_2",
+    "visibility": "visible",
+    "target_bbox": [
+      402,
+      560,
+      532,
+      585
+    ],
+    "target_bboxes": [
+      [
+        402,
+        560,
+        532,
+        585
+      ]
+    ],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "a1fdd66d05c5fb87f7e85f144963227f198199d3ebd7326433fdab6805627910",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": [
+      [
+        74,
+        81,
+        207,
+        109
+      ]
+    ]
+  },
+  {
+    "excel_row": 315,
+    "screen": "52032077__Soggetti",
+    "field_key": "ruolo_2",
+    "visibility": "visible",
+    "target_bbox": [
+      551,
+      560,
+      642,
+      587
+    ],
+    "target_bboxes": [
+      [
+        551,
+        560,
+        642,
+        587
+      ]
+    ],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "8a8c85bf4fd9083b0a537956c16380d509a757ff00fd40c89741d6ee1fbff9da",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": [
+      [
+        223,
+        81,
+        317,
+        111
+      ]
+    ]
+  },
+  {
+    "excel_row": 316,
+    "screen": "52032077__Soggetti",
+    "field_key": "ndg_3",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "389cdc491674805330c57bcf11a4054473a7e10b50c3b54448fb329fdc02b09f",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 317,
+    "screen": "52032077__Soggetti",
+    "field_key": "denominazione_3",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "389cdc491674805330c57bcf11a4054473a7e10b50c3b54448fb329fdc02b09f",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 318,
+    "screen": "52032077__Soggetti",
+    "field_key": "ruolo_3",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "389cdc491674805330c57bcf11a4054473a7e10b50c3b54448fb329fdc02b09f",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 319,
+    "screen": "52032077__Soggetti",
+    "field_key": "ndg_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "389cdc491674805330c57bcf11a4054473a7e10b50c3b54448fb329fdc02b09f",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 320,
+    "screen": "52032077__Soggetti",
+    "field_key": "denominazione_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "389cdc491674805330c57bcf11a4054473a7e10b50c3b54448fb329fdc02b09f",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": []
+  },
+  {
+    "excel_row": 321,
+    "screen": "52032077__Soggetti",
+    "field_key": "ruolo_4",
+    "visibility": "not_present",
+    "target_bbox": null,
+    "target_bboxes": [],
+    "context_bbox": [
+      330,
+      481,
+      1071,
+      594
+    ],
+    "image_sha256": "389cdc491674805330c57bcf11a4054473a7e10b50c3b54448fb329fdc02b09f",
+    "image_width": 749,
+    "image_height": 121,
+    "marker_bboxes": []
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "batch": "lotto-2026-08-21",
+  "method": "Visual classification of original screenshots only. No field values transcribed, OCR or external provider called.",
+  "tooltip_screens": [
+    {"path": "51772928/Elenco_tooltip1.png", "field_key": null, "reason": "Evidenze BM is outside the canonical Evidenze B tooltip field."},
+    {"path": "51772928/GestioneFidi_Tooltip1.png", "field_key": "tooltip_descrizione_m_consap"},
+    {"path": "51772928/GestioneFidi_Tooltip2.png", "field_key": "tooltip_descrizione_consap_dr_bis"},
+    {"path": "51772928/GestioneFidi_Tooltip3.png", "field_key": "tooltip_descrizione_ipoteca"},
+    {"path": "51788077/GestioneFidi_Tooltip1.png", "field_key": null, "reason": "Fidi tooltip is for a different loan description, not BMB or M.CONSAP."},
+    {"path": "51788077/GestioneFidi_Tooltip2.png", "field_key": "tooltip_descrizione_ipoteca"},
+    {"path": "51792073/Elenco_tooltip1.png", "field_key": null, "reason": "Evidenze BM is outside the canonical Evidenze B tooltip field."},
+    {"path": "51798191/Elenco_tooltip1.png", "field_key": "tooltip_evidenze_b"},
+    {"path": "51800301/GestioneFidi_Tooltip1.png", "field_key": null, "reason": "Fidi tooltip is for a different loan description, not BMB or M.CONSAP."},
+    {"path": "51800301/GestioneFidi_Tooltip2.png", "field_key": null, "reason": "Fidi tooltip is for a different loan description, not BMB or M.CONSAP."},
+    {"path": "51800301/GestioneFidi_Tooltip3.png", "field_key": "tooltip_descrizione_ipoteca"},
+    {"path": "51859514/Elenco_tooltip1.png", "field_key": null, "reason": "Evidenze BC is outside the canonical Evidenze B tooltip field."},
+    {"path": "51997531/GestioneFidi_Tooltip1.png", "field_key": "tooltip_descrizione_ipoteca"},
+    {"path": "52013664/GestioneFidi_Tooltip1.png", "field_key": "tooltip_descrizione_ipoteca"},
+    {"path": "52022324/GestioneFidi_Tooltip1.png", "field_key": "tooltip_descrizione_consap_dr_bis"},
+    {"path": "52022324/GestioneFidi_Tooltip2.png", "field_key": "tooltip_descrizione_ipoteca"},
+    {"path": "52032077/GestioneFidi_Tooltip1.png", "field_key": "tooltip_descrizione_m_consap"}
+  ],
+  "note_screens": [
+    {"path": "51800301/Note_chiuso.png", "field_key": "note_della_richiesta", "visible": true, "visibility": "partial", "reason": "Two lines are visible in a short viewport with internal scrollbar. Annotate only what is visible; do not infer hidden lines."}
+  ],
+  "counts": {"tooltip_screens": 17, "canonical_tooltips": 11, "out_of_vocabulary_tooltips": 6}
+}

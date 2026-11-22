@@ -1,0 +1,49 @@
+{
+  "status": "pass",
+  "scope": "Independent visual review of all five Soggetti/Note contact sheets, original screenshots, and individual cards for the notes and multiline subject cells.",
+  "reviewed_screens": [
+    "51788077__Soggetti",
+    "51800301__Note",
+    "51800301__Note_chiuso",
+    "51800301__Soggetti",
+    "52032077__Soggetti"
+  ],
+  "reviewed_rows": 58,
+  "reviewed_target_rectangles": 40,
+  "absent_subject_fields_without_markers": 18,
+  "checks": [
+    {
+      "screen": "51788077__Soggetti",
+      "result": "pass",
+      "details": "Header rectangles select the intended values. The only rendered subject row has three correct rectangles. Rows 2-4 remain unmarked; the original table ends visibly after row 1."
+    },
+    {
+      "screen": "51800301__Note",
+      "result": "pass",
+      "details": "All four header rectangles select their intended values. The notes target [337,511,1056,927] contains every visible body line through the last line, without including the author/date header."
+    },
+    {
+      "screen": "51800301__Note_chiuso",
+      "result": "pass",
+      "details": "The notes target [334,548,1048,577] encloses only the two visible lines. The scrollbar stays in context, outside the target. The visible_partial classification is appropriate; hidden note lines are not reconstructed."
+    },
+    {
+      "screen": "51800301__Soggetti",
+      "result": "pass",
+      "details": "All header values and the three rendered subject rows are targeted correctly. Both multiline role rectangles include both complete rendered lines: ruolo_2 [645,629,778,657], ruolo_3 [645,666,778,694]. Row 4 has no marker, and the end of the table is visible."
+    },
+    {
+      "screen": "52032077__Soggetti",
+      "result": "pass",
+      "details": "All header values and two rendered subject rows are targeted correctly. The two-line denomination and role are complete: denominazione_2 [402,560,532,585], ruolo_2 [551,560,642,587]. Rows 3-4 remain unmarked; the end of the original table is visible."
+    }
+  ],
+  "issues": [],
+  "methods_excluded": [
+    "value transcription",
+    "OCR",
+    "external model calls",
+    "artifact modification"
+  ],
+  "coordinate_convention": "Referenced boxes are integer XYXY in the original screenshots, with right and bottom exclusive."
+}

@@ -1,0 +1,500 @@
+{
+  "coordinate_system": "original source pixels, [left, top, right-exclusive, bottom-exclusive]",
+  "field_cards_sha256_reviewed": "5260aa415f4e9324a0c706b104051e4ea441d6ee7e306469f7078efffab05c3d",
+  "correction_count": 13,
+  "no_values_transcribed": true,
+  "corrections": [
+    {
+      "screen": "51772928__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 8,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51772928\\Elenco.png",
+      "original_sha256": "81ad61e8c45b73f31ef468059fe4fd35282cca0ffe68d3c917dac56d1eda17c6",
+      "old_target_bbox": [
+        1702,
+        494,
+        1792,
+        518
+      ],
+      "target_bboxes": [
+        [
+          1726,
+          501,
+          1747,
+          515
+        ]
+      ],
+      "target_bbox": [
+        1726,
+        501,
+        1747,
+        515
+      ],
+      "context_bbox": [
+        1687,
+        431,
+        1814,
+        524
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51772928__Elenco_dx",
+      "field_key": "evidenze",
+      "excel_row": 15,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51772928\\Elenco_dx.png",
+      "original_sha256": "1ef2ed3de406ca8b3d0bf725d5dbc1158cd8d4e4fa2fb6f71aacc691139b5f93",
+      "old_target_bbox": [
+        1707,
+        489,
+        1797,
+        513
+      ],
+      "target_bboxes": [
+        [
+          1731,
+          496,
+          1752,
+          510
+        ]
+      ],
+      "target_bbox": [
+        1731,
+        496,
+        1752,
+        510
+      ],
+      "context_bbox": [
+        1689,
+        426,
+        1819,
+        519
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "excel_row": 22,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51772928\\Elenco_tooltip1.png",
+      "original_sha256": "7f0e7a532ec4fc6f086bd4d19052a88120ca78dfe10549d35db46bde390be781",
+      "old_target_bbox": [
+        1632,
+        570,
+        1743,
+        600
+      ],
+      "target_bboxes": [
+        [
+          1661,
+          579,
+          1687,
+          595
+        ]
+      ],
+      "target_bbox": [
+        1661,
+        579,
+        1687,
+        595
+      ],
+      "context_bbox": [
+        1614,
+        493,
+        1764,
+        606
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51788077__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 62,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51788077\\Elenco.png",
+      "original_sha256": "0f135999b798f92a8712466ce32d71fa7b5bebce802438eb4da43671b2d97a4d",
+      "old_target_bbox": [
+        1490,
+        401,
+        1616,
+        420
+      ],
+      "target_bboxes": [
+        [
+          1511,
+          405,
+          1521,
+          417
+        ],
+        [
+          1530,
+          405,
+          1541,
+          417
+        ]
+      ],
+      "target_bbox": [
+        1511,
+        405,
+        1541,
+        417
+      ],
+      "context_bbox": [
+        1470,
+        349,
+        1622,
+        426
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": true,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51792073__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 116,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51792073\\Elenco.png",
+      "original_sha256": "cbe359ab49445ffa9ee9655eb47fa5b9439668904b42693ad21f549a175d1cd5",
+      "old_target_bbox": [
+        1654,
+        457,
+        1796,
+        481
+      ],
+      "target_bboxes": [
+        [
+          1704,
+          464,
+          1725,
+          478
+        ]
+      ],
+      "target_bbox": [
+        1704,
+        464,
+        1725,
+        478
+      ],
+      "context_bbox": [
+        1642,
+        394,
+        1802,
+        487
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51792073__Elenco_dx",
+      "field_key": "evidenze",
+      "excel_row": 123,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51792073\\Elenco_dx.png",
+      "original_sha256": "edbfd391cdbde1cc0c41d926b0882ad467b250d26ab13b3bee18423708375088",
+      "old_target_bbox": [
+        1658,
+        495,
+        1800,
+        519
+      ],
+      "target_bboxes": [
+        [
+          1708,
+          502,
+          1729,
+          516
+        ]
+      ],
+      "target_bbox": [
+        1708,
+        502,
+        1729,
+        516
+      ],
+      "context_bbox": [
+        1645,
+        432,
+        1806,
+        525
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "excel_row": 130,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51792073\\Elenco_tooltip1.png",
+      "original_sha256": "8bcb3184b359cb6a8a7f70fbe8e57dac9c71b5fd9df89c7df89a399b762935d2",
+      "old_target_bbox": [
+        1638,
+        529,
+        1749,
+        558
+      ],
+      "target_bboxes": [
+        [
+          1667,
+          538,
+          1693,
+          554
+        ]
+      ],
+      "target_bbox": [
+        1667,
+        538,
+        1693,
+        554
+      ],
+      "context_bbox": [
+        1626,
+        452,
+        1764,
+        564
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51798191__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 137,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51798191\\Elenco.png",
+      "original_sha256": "b35eb73e923560be55463226f08f78e3b7268356525da98701d37ea09d6bc747",
+      "old_target_bbox": [
+        1606,
+        494,
+        1800,
+        518
+      ],
+      "target_bboxes": [
+        [
+          1634,
+          501,
+          1646,
+          515
+        ],
+        [
+          1685,
+          501,
+          1699,
+          515
+        ]
+      ],
+      "target_bbox": [
+        1634,
+        501,
+        1699,
+        515
+      ],
+      "context_bbox": [
+        1594,
+        431,
+        1806,
+        524
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": true,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51798191__Elenco_dx",
+      "field_key": "evidenze",
+      "excel_row": 144,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51798191\\Elenco_dx.png",
+      "original_sha256": "8beef0606a0cbdca5946f27b900d95ac9daa4a08ee5b2b935f631b31a8e1ca53",
+      "old_target_bbox": [
+        1608,
+        494,
+        1802,
+        518
+      ],
+      "target_bboxes": [
+        [
+          1636,
+          501,
+          1648,
+          515
+        ],
+        [
+          1687,
+          501,
+          1701,
+          515
+        ]
+      ],
+      "target_bbox": [
+        1636,
+        501,
+        1701,
+        515
+      ],
+      "context_bbox": [
+        1594,
+        431,
+        1808,
+        524
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": true,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "excel_row": 151,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51798191\\Elenco_tooltip1.png",
+      "original_sha256": "8101e1ba07a593c307db290821ed7110501e251f9e713ba82e6cc8d446b8c6fc",
+      "old_target_bbox": [
+        1569,
+        373,
+        1763,
+        397
+      ],
+      "target_bboxes": [
+        [
+          1597,
+          380,
+          1609,
+          394
+        ],
+        [
+          1649,
+          380,
+          1661,
+          394
+        ]
+      ],
+      "target_bbox": [
+        1597,
+        380,
+        1661,
+        394
+      ],
+      "context_bbox": [
+        1554,
+        310,
+        1769,
+        403
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": true,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51859514__Elenco",
+      "field_key": "evidenze",
+      "excel_row": 226,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51859514\\Elenco.png",
+      "original_sha256": "fbfa8af4657faa50444b2aea402058396f53e7349c50a5fba0664722adb0bb7a",
+      "old_target_bbox": [
+        1606,
+        489,
+        1800,
+        513
+      ],
+      "target_bboxes": [
+        [
+          1656,
+          496,
+          1676,
+          510
+        ]
+      ],
+      "target_bbox": [
+        1656,
+        496,
+        1676,
+        510
+      ],
+      "context_bbox": [
+        1594,
+        426,
+        1806,
+        519
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51859514__Elenco_dx",
+      "field_key": "evidenze",
+      "excel_row": 233,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51859514\\Elenco_dx.png",
+      "original_sha256": "9f18fac6039b68de3b5b6d8aaea4cd5a0b28a719bbd281b31f01c73def375818",
+      "old_target_bbox": [
+        1607,
+        495,
+        1801,
+        519
+      ],
+      "target_bboxes": [
+        [
+          1657,
+          502,
+          1677,
+          516
+        ]
+      ],
+      "target_bbox": [
+        1657,
+        502,
+        1677,
+        516
+      ],
+      "context_bbox": [
+        1594,
+        432,
+        1807,
+        525
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    },
+    {
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "excel_row": 240,
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51859514\\Elenco_tooltip1.png",
+      "original_sha256": "399718f0dcf628fadbe4b28550b177af03ee63abf9751b3b41f44e42f9d3cdae",
+      "old_target_bbox": [
+        1503,
+        474,
+        1744,
+        503
+      ],
+      "target_bboxes": [
+        [
+          1565,
+          482,
+          1590,
+          500
+        ]
+      ],
+      "target_bbox": [
+        1565,
+        482,
+        1590,
+        500
+      ],
+      "context_bbox": [
+        1489,
+        398,
+        1750,
+        509
+      ],
+      "draw_separate_rectangles": true,
+      "do_not_draw_union": false,
+      "reason": "Frame only the visible textual value. Exclude paperclip, other icons, circled symbols and version badge; disconnected text groups need separate rectangles."
+    }
+  ]
+}

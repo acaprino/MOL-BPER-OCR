@@ -7,7 +7,7 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-from training.truth_export import export_workbook
+from training.truth_export import export_practice_workbook, export_workbook
 
 
 def _bundle(tmp_path: Path, value: str = "123", row: str = "2") -> Path:
@@ -56,4 +56,48 @@ def test_a_value_that_looks_like_a_formula_stays_text(tmp_path: Path) -> None:
     out = tmp_path / "truth.xlsx"
     export_workbook(_bundle(tmp_path, value="=1+2"), out)
     cell = load_workbook(out)["Valori"]["C2"]
+    assert (cell.value, cell.data_type) == ("=1+2", "s")
+
+
+def _two_practices(tmp_path: Path, value: str = "123") -> Path:
+    (tmp_path / "practices.csv").write_text("Pratica;Lotto;Gruppo;Ruolo;Schermate;Righe\n"
+                                            "1;riscontro-2026-10-07;train;addestramento;1;1\n"
+                                            "2;lotto-2026-11-05;conferma;test;1;2\n", encoding="utf-8-sig")
+    (tmp_path / "ground_truth.csv").write_text("Fotogramma;Denominazione da attribuire;Valore rilevato;Esito;"
+                                               "Stato revisione;Pratica;Lotto;Gruppo;Riga Excel;Correzione\n"
+                                               "1__Elenco;NDG;111;TRASCRITTO;Confermato;1;riscontro-2026-10-07;train;2;\n"
+                                               f"2__Soggetti;NDG;{value};TRASCRITTO;;2;lotto-2026-11-05;conferma;2!3;\n"
+                                               "2__Note;Note della richiesta;;VUOTO;;2;lotto-2026-11-05;conferma;2!9;x\n",
+                                               encoding="utf-8-sig")
+    return tmp_path
+
+
+def test_practice_workbook_has_an_index_then_one_sheet_per_practice(tmp_path: Path) -> None:
+    out = tmp_path / "pratiche.xlsx"
+    export_practice_workbook(_two_practices(tmp_path), out)
+    assert load_workbook(out).sheetnames == ["Indice", "1", "2"]
+
+
+def test_index_lists_each_practice_with_its_role_and_counts(tmp_path: Path) -> None:
+    out = tmp_path / "pratiche.xlsx"
+    export_practice_workbook(_two_practices(tmp_path), out)
+    rows = list(load_workbook(out)["Indice"].iter_rows(values_only=True))
+    assert rows == [("Pratica", "Lotto", "Gruppo", "Ruolo", "Schermate", "Righe"),
+                    ("1", "riscontro-2026-10-07", "train", "addestramento", 1, 1),
+                    ("2", "lotto-2026-11-05", "conferma", "test", 1, 2)]
+
+
+def test_practice_sheet_holds_only_the_values_of_its_practice(tmp_path: Path) -> None:
+    out = tmp_path / "pratiche.xlsx"
+    export_practice_workbook(_two_practices(tmp_path), out)
+    rows = list(load_workbook(out)["2"].iter_rows(values_only=True))
+    assert rows == [("Schermata", "Campo", "Valore", "Esito", "Stato revisione", "Riga Excel", "Correzione"),
+                    ("Soggetti", "NDG", "123", "TRASCRITTO", None, "2!3", None),
+                    ("Note", "Note della richiesta", None, "VUOTO", None, "2!9", "x")]
+
+
+def test_a_value_that_looks_like_a_formula_stays_text_in_a_practice_sheet(tmp_path: Path) -> None:
+    out = tmp_path / "pratiche.xlsx"
+    export_practice_workbook(_two_practices(tmp_path, value="=1+2"), out)
+    cell = load_workbook(out)["2"]["C2"]
     assert (cell.value, cell.data_type) == ("=1+2", "s")

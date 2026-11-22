@@ -83,9 +83,9 @@ poc-data-src/extraction/
   tools/                        # Script di verifica (check.py) e calibrazione prototipi
   data/
     reference/                  # Screenshot di riferimento (9 PNG tracciati); dati.csv locale
-    pratiche/                   # Dataset unificato per pratica (23 pratiche, 178 PNG, locale)
-    revisione/                  # Workbook revisionato v3.1 e ritagli (locale)
-    src/training/                   # Bundle ground-truth-v3.1 e pesi dei run LiLT (locale)
+    pratiche/                   # Archivio delle 33 pratiche: schermate per pratica e pratiche.xlsx con i valori corretti
+    revisione/                  # Fonti della data entry umana, una cartella per lotto
+    training/                   # Bundle ground-truth, OCR e run LiLT
   docs/                         # Guida ufficiale e ADR
 ```
 

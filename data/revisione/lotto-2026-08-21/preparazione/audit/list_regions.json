@@ -1,0 +1,2746 @@
+{
+  "audit": "Elenco: 13 screenshot originali e relativi contesti",
+  "coordinate_system": "original image pixels, [left, top, right-exclusive, bottom-exclusive]",
+  "method": "Ispezione visiva di tutti i contesti originali; verifica byte dei pixel crop/originale; segmentazione del solo inchiostro nelle celle localizzate a vista, senza OCR, trascrizione o provider esterno.",
+  "counts": {
+    "screens": 13,
+    "regions": 92,
+    "blocking_source_visibility_issues": 10,
+    "by_visibility": {
+      "VISIBLE": 68,
+      "VISIBLE_TRUNCATED_TEXT": 9,
+      "PARTIAL": 1,
+      "VISIBLE_CELL_WITHOUT_RENDERED_TEXT": 5,
+      "NOT_VISIBLE": 9
+    }
+  },
+  "global_findings": [
+    "Tutti i 13 crop attuali preservano intestazioni, celle e popover presenti nella rispettiva porzione originale della tabella.",
+    "Il crop condiviso per pagina non e un riquadro campo-specifico: il rettangolo di valore deve seguire field_key, senza racchiudere tutta la riga per ogni campo.",
+    "I campi non visibili o parziali mantengono bbox=null; quelli visibili senza testo mantengono bbox=null e contesto intestazione/cella.",
+    "Le denominazioni con puntini sono gia troncate nella UI; non sono nomi completi recuperabili per ingrandimento.",
+    "Nel tooltip 51859514 la data residua appartiene a Data Ass./Del., non a Creazione: non attribuirla al campo creazione."
+  ],
+  "screens": [
+    {
+      "screen": "51772928__Elenco",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51772928\\Elenco.png",
+      "original_size": [
+        1894,
+        1024
+      ],
+      "existing_crop_bbox": [
+        0,
+        392,
+        1894,
+        630
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51772928__Elenco_dx",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51772928\\Elenco_dx.png",
+      "original_size": [
+        1897,
+        1015
+      ],
+      "existing_crop_bbox": [
+        0,
+        387,
+        1897,
+        625
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51772928__Elenco_tooltip1",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51772928\\Elenco_tooltip1.png",
+      "original_size": [
+        1881,
+        976
+      ],
+      "existing_crop_bbox": [
+        0,
+        476,
+        1881,
+        717
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": [
+        1415,
+        602,
+        1667,
+        652
+      ],
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51788077__Elenco",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51788077\\Elenco.png",
+      "original_size": [
+        1897,
+        1020
+      ],
+      "existing_crop_bbox": [
+        20,
+        340,
+        1889,
+        452
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51792073__Elenco",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51792073\\Elenco.png",
+      "original_size": [
+        1895,
+        984
+      ],
+      "existing_crop_bbox": [
+        0,
+        355,
+        1895,
+        593
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51792073__Elenco_dx",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51792073\\Elenco_dx.png",
+      "original_size": [
+        1899,
+        1028
+      ],
+      "existing_crop_bbox": [
+        0,
+        393,
+        1899,
+        631
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51792073__Elenco_tooltip1",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51792073\\Elenco_tooltip1.png",
+      "original_size": [
+        1888,
+        946
+      ],
+      "existing_crop_bbox": [
+        0,
+        435,
+        1888,
+        676
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": [
+        1405,
+        561,
+        1656,
+        611
+      ],
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51798191__Elenco",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51798191\\Elenco.png",
+      "original_size": [
+        1898,
+        1026
+      ],
+      "existing_crop_bbox": [
+        0,
+        392,
+        1898,
+        630
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51798191__Elenco_dx",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51798191\\Elenco_dx.png",
+      "original_size": [
+        1906,
+        1027
+      ],
+      "existing_crop_bbox": [
+        0,
+        392,
+        1906,
+        630
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51798191__Elenco_tooltip1",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51798191\\Elenco_tooltip1.png",
+      "original_size": [
+        1865,
+        875
+      ],
+      "existing_crop_bbox": [
+        0,
+        271,
+        1865,
+        509
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": [
+        1617,
+        405,
+        1762,
+        445
+      ],
+      "tooltip_in_scope": true,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze",
+        "tooltip_evidenze_b"
+      ]
+    },
+    {
+      "screen": "51859514__Elenco",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51859514\\Elenco.png",
+      "original_size": [
+        1894,
+        1011
+      ],
+      "existing_crop_bbox": [
+        0,
+        387,
+        1894,
+        625
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51859514__Elenco_dx",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51859514\\Elenco_dx.png",
+      "original_size": [
+        1901,
+        1031
+      ],
+      "existing_crop_bbox": [
+        0,
+        393,
+        1901,
+        631
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": null,
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    },
+    {
+      "screen": "51859514__Elenco_tooltip1",
+      "original_path": "D:\\Projects\\poc-data-extraction\\data\\pratiche\\51859514\\Elenco_tooltip1.png",
+      "original_size": [
+        1882,
+        872
+      ],
+      "existing_crop_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "existing_crop_complete_for_visible_table_content": true,
+      "existing_crop_pixel_equality_verified": true,
+      "existing_crop_defect": "Il contesto unico per schermata non identifica il singolo campo: sostituire il bordo generico con il bbox del valore assegnato al field_key.",
+      "tooltip_popover_bbox": [
+        1604,
+        507,
+        1877,
+        557
+      ],
+      "tooltip_in_scope": false,
+      "field_keys": [
+        "ndg",
+        "denominazione",
+        "tipo",
+        "stato",
+        "fase",
+        "creazione",
+        "evidenze"
+      ]
+    }
+  ],
+  "regions": [
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco",
+      "field_key": "ndg",
+      "bbox": [
+        209,
+        499,
+        287,
+        514
+      ],
+      "header_bbox": [
+        220,
+        437,
+        290,
+        472
+      ],
+      "context_bbox": [
+        203,
+        431,
+        296,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco",
+      "field_key": "denominazione",
+      "bbox": [
+        306,
+        499,
+        390,
+        514
+      ],
+      "header_bbox": [
+        300,
+        437,
+        400,
+        472
+      ],
+      "context_bbox": [
+        294,
+        431,
+        406,
+        520
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco",
+      "field_key": "tipo",
+      "bbox": [
+        507,
+        499,
+        545,
+        514
+      ],
+      "header_bbox": [
+        500,
+        437,
+        592,
+        472
+      ],
+      "context_bbox": [
+        494,
+        431,
+        598,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco",
+      "field_key": "stato",
+      "bbox": [
+        745,
+        499,
+        780,
+        514
+      ],
+      "header_bbox": [
+        725,
+        437,
+        825,
+        472
+      ],
+      "context_bbox": [
+        719,
+        431,
+        831,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco",
+      "field_key": "fase",
+      "bbox": [
+        872,
+        499,
+        897,
+        514
+      ],
+      "header_bbox": [
+        838,
+        437,
+        930,
+        472
+      ],
+      "context_bbox": [
+        832,
+        431,
+        936,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco",
+      "field_key": "creazione",
+      "bbox": [
+        952,
+        499,
+        1042,
+        515
+      ],
+      "header_bbox": [
+        940,
+        437,
+        1057,
+        472
+      ],
+      "context_bbox": [
+        934,
+        431,
+        1063,
+        521
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco",
+      "field_key": "evidenze",
+      "bbox": [
+        1702,
+        494,
+        1792,
+        518
+      ],
+      "header_bbox": [
+        1693,
+        437,
+        1808,
+        472
+      ],
+      "context_bbox": [
+        1687,
+        431,
+        1814,
+        524
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_dx",
+      "field_key": "ndg",
+      "bbox": [
+        209,
+        494,
+        287,
+        509
+      ],
+      "header_bbox": [
+        220,
+        432,
+        290,
+        467
+      ],
+      "context_bbox": [
+        203,
+        426,
+        296,
+        515
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_dx",
+      "field_key": "denominazione",
+      "bbox": [
+        298,
+        494,
+        382,
+        509
+      ],
+      "header_bbox": [
+        295,
+        432,
+        385,
+        467
+      ],
+      "context_bbox": [
+        289,
+        426,
+        391,
+        515
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_dx",
+      "field_key": "tipo",
+      "bbox": null,
+      "header_bbox": [
+        386,
+        432,
+        447,
+        467
+      ],
+      "context_bbox": [
+        380,
+        426,
+        453,
+        521
+      ],
+      "visibility": "PARTIAL",
+      "reason": "Il valore e la relativa intestazione sono tagliati dallo scorrimento orizzontale; non completare il testo da altre schermate.",
+      "visible_fragment_bbox": [
+        388,
+        483,
+        410,
+        515
+      ]
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_dx",
+      "field_key": "stato",
+      "bbox": [
+        607,
+        494,
+        642,
+        509
+      ],
+      "header_bbox": [
+        590,
+        432,
+        685,
+        467
+      ],
+      "context_bbox": [
+        584,
+        426,
+        691,
+        515
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_dx",
+      "field_key": "fase",
+      "bbox": [
+        734,
+        494,
+        759,
+        509
+      ],
+      "header_bbox": [
+        700,
+        432,
+        790,
+        467
+      ],
+      "context_bbox": [
+        694,
+        426,
+        796,
+        515
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_dx",
+      "field_key": "creazione",
+      "bbox": [
+        814,
+        494,
+        904,
+        510
+      ],
+      "header_bbox": [
+        805,
+        432,
+        916,
+        467
+      ],
+      "context_bbox": [
+        799,
+        426,
+        922,
+        516
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_dx",
+      "field_key": "evidenze",
+      "bbox": [
+        1707,
+        489,
+        1797,
+        513
+      ],
+      "header_bbox": [
+        1695,
+        432,
+        1813,
+        467
+      ],
+      "context_bbox": [
+        1689,
+        426,
+        1819,
+        519
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "ndg",
+      "bbox": [
+        262,
+        576,
+        358,
+        594
+      ],
+      "header_bbox": [
+        275,
+        499,
+        364,
+        542
+      ],
+      "context_bbox": [
+        256,
+        493,
+        370,
+        600
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "denominazione",
+      "bbox": [
+        383,
+        576,
+        486,
+        594
+      ],
+      "header_bbox": [
+        377,
+        499,
+        494,
+        542
+      ],
+      "context_bbox": [
+        371,
+        493,
+        500,
+        600
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "tipo",
+      "bbox": [
+        635,
+        576,
+        680,
+        594
+      ],
+      "header_bbox": [
+        629,
+        499,
+        734,
+        542
+      ],
+      "context_bbox": [
+        623,
+        493,
+        740,
+        600
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "stato",
+      "bbox": [
+        932,
+        576,
+        974,
+        594
+      ],
+      "header_bbox": [
+        910,
+        499,
+        1023,
+        542
+      ],
+      "context_bbox": [
+        904,
+        493,
+        1029,
+        600
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "fase",
+      "bbox": [
+        1091,
+        576,
+        1121,
+        594
+      ],
+      "header_bbox": [
+        1047,
+        499,
+        1162,
+        542
+      ],
+      "context_bbox": [
+        1041,
+        493,
+        1168,
+        600
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "creazione",
+      "bbox": [
+        1191,
+        576,
+        1302,
+        595
+      ],
+      "header_bbox": [
+        1177,
+        499,
+        1321,
+        542
+      ],
+      "context_bbox": [
+        1171,
+        493,
+        1327,
+        601
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51772928",
+      "screen": "51772928__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "bbox": [
+        1632,
+        570,
+        1743,
+        600
+      ],
+      "header_bbox": [
+        1620,
+        499,
+        1758,
+        542
+      ],
+      "context_bbox": [
+        1614,
+        493,
+        1764,
+        606
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51788077",
+      "screen": "51788077__Elenco",
+      "field_key": "ndg",
+      "bbox": [
+        186,
+        404,
+        245,
+        416
+      ],
+      "header_bbox": [
+        175,
+        355,
+        244,
+        388
+      ],
+      "context_bbox": [
+        169,
+        349,
+        251,
+        422
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51788077",
+      "screen": "51788077__Elenco",
+      "field_key": "denominazione",
+      "bbox": [
+        259,
+        404,
+        399,
+        416
+      ],
+      "header_bbox": [
+        240,
+        355,
+        319,
+        388
+      ],
+      "context_bbox": [
+        234,
+        349,
+        405,
+        422
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51788077",
+      "screen": "51788077__Elenco",
+      "field_key": "tipo",
+      "bbox": [
+        486,
+        404,
+        515,
+        416
+      ],
+      "header_bbox": [
+        462,
+        355,
+        536,
+        388
+      ],
+      "context_bbox": [
+        456,
+        349,
+        542,
+        422
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51788077",
+      "screen": "51788077__Elenco",
+      "field_key": "stato",
+      "bbox": [
+        675,
+        404,
+        702,
+        416
+      ],
+      "header_bbox": [
+        650,
+        355,
+        719,
+        388
+      ],
+      "context_bbox": [
+        644,
+        349,
+        725,
+        422
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51788077",
+      "screen": "51788077__Elenco",
+      "field_key": "fase",
+      "bbox": null,
+      "header_bbox": [
+        733,
+        355,
+        801,
+        388
+      ],
+      "context_bbox": [
+        727,
+        349,
+        807,
+        436
+      ],
+      "visibility": "VISIBLE_CELL_WITHOUT_RENDERED_TEXT",
+      "reason": "La colonna e la cella sono visibili, senza testo renderizzato; il revisore deve confermare il vuoto. Non esiste un riquadro di valore."
+    },
+    {
+      "practice": "51788077",
+      "screen": "51788077__Elenco",
+      "field_key": "creazione",
+      "bbox": [
+        821,
+        403,
+        889,
+        416
+      ],
+      "header_bbox": [
+        812,
+        355,
+        904,
+        388
+      ],
+      "context_bbox": [
+        806,
+        349,
+        910,
+        422
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51788077",
+      "screen": "51788077__Elenco",
+      "field_key": "evidenze",
+      "bbox": [
+        1490,
+        401,
+        1616,
+        420
+      ],
+      "header_bbox": [
+        1476,
+        355,
+        1575,
+        388
+      ],
+      "context_bbox": [
+        1470,
+        349,
+        1622,
+        426
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco",
+      "field_key": "ndg",
+      "bbox": [
+        243,
+        462,
+        321,
+        477
+      ],
+      "header_bbox": [
+        255,
+        400,
+        328,
+        435
+      ],
+      "context_bbox": [
+        237,
+        394,
+        334,
+        483
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco",
+      "field_key": "denominazione",
+      "bbox": [
+        340,
+        462,
+        416,
+        477
+      ],
+      "header_bbox": [
+        335,
+        400,
+        432,
+        435
+      ],
+      "context_bbox": [
+        329,
+        394,
+        438,
+        483
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco",
+      "field_key": "tipo",
+      "bbox": [
+        541,
+        462,
+        579,
+        477
+      ],
+      "header_bbox": [
+        537,
+        400,
+        628,
+        435
+      ],
+      "context_bbox": [
+        531,
+        394,
+        634,
+        483
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco",
+      "field_key": "stato",
+      "bbox": [
+        793,
+        462,
+        827,
+        477
+      ],
+      "header_bbox": [
+        760,
+        400,
+        855,
+        435
+      ],
+      "context_bbox": [
+        754,
+        394,
+        861,
+        483
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco",
+      "field_key": "fase",
+      "bbox": null,
+      "header_bbox": [
+        870,
+        400,
+        966,
+        435
+      ],
+      "context_bbox": [
+        864,
+        394,
+        972,
+        498
+      ],
+      "visibility": "VISIBLE_CELL_WITHOUT_RENDERED_TEXT",
+      "reason": "La colonna e la cella sono visibili, senza testo renderizzato; il revisore deve confermare il vuoto. Non esiste un riquadro di valore."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco",
+      "field_key": "creazione",
+      "bbox": [
+        988,
+        462,
+        1076,
+        478
+      ],
+      "header_bbox": [
+        975,
+        400,
+        1090,
+        435
+      ],
+      "context_bbox": [
+        969,
+        394,
+        1096,
+        484
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco",
+      "field_key": "evidenze",
+      "bbox": [
+        1654,
+        457,
+        1796,
+        481
+      ],
+      "header_bbox": [
+        1648,
+        400,
+        1762,
+        435
+      ],
+      "context_bbox": [
+        1642,
+        394,
+        1802,
+        487
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_dx",
+      "field_key": "ndg",
+      "bbox": [
+        212,
+        500,
+        290,
+        515
+      ],
+      "header_bbox": [
+        225,
+        438,
+        297,
+        473
+      ],
+      "context_bbox": [
+        206,
+        432,
+        303,
+        521
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_dx",
+      "field_key": "denominazione",
+      "bbox": [
+        301,
+        500,
+        377,
+        515
+      ],
+      "header_bbox": [
+        298,
+        438,
+        394,
+        473
+      ],
+      "context_bbox": [
+        292,
+        432,
+        400,
+        521
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_dx",
+      "field_key": "tipo",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        393,
+        1899,
+        631
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_dx",
+      "field_key": "stato",
+      "bbox": [
+        572,
+        500,
+        606,
+        515
+      ],
+      "header_bbox": [
+        540,
+        438,
+        636,
+        473
+      ],
+      "context_bbox": [
+        534,
+        432,
+        642,
+        521
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_dx",
+      "field_key": "fase",
+      "bbox": null,
+      "header_bbox": [
+        651,
+        438,
+        741,
+        473
+      ],
+      "context_bbox": [
+        645,
+        432,
+        747,
+        536
+      ],
+      "visibility": "VISIBLE_CELL_WITHOUT_RENDERED_TEXT",
+      "reason": "La colonna e la cella sono visibili, senza testo renderizzato; il revisore deve confermare il vuoto. Non esiste un riquadro di valore."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_dx",
+      "field_key": "creazione",
+      "bbox": [
+        767,
+        500,
+        855,
+        516
+      ],
+      "header_bbox": [
+        755,
+        438,
+        864,
+        473
+      ],
+      "context_bbox": [
+        749,
+        432,
+        870,
+        522
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_dx",
+      "field_key": "evidenze",
+      "bbox": [
+        1658,
+        495,
+        1800,
+        519
+      ],
+      "header_bbox": [
+        1651,
+        438,
+        1768,
+        473
+      ],
+      "context_bbox": [
+        1645,
+        432,
+        1806,
+        525
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "ndg",
+      "bbox": [
+        262,
+        535,
+        358,
+        553
+      ],
+      "header_bbox": [
+        275,
+        458,
+        364,
+        501
+      ],
+      "context_bbox": [
+        256,
+        452,
+        370,
+        559
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "denominazione",
+      "bbox": [
+        373,
+        535,
+        466,
+        553
+      ],
+      "header_bbox": [
+        368,
+        458,
+        482,
+        501
+      ],
+      "context_bbox": [
+        362,
+        452,
+        488,
+        559
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "tipo",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        435,
+        1888,
+        676
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "stato",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        435,
+        1888,
+        676
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "fase",
+      "bbox": [
+        598,
+        535,
+        629,
+        553
+      ],
+      "header_bbox": [
+        555,
+        458,
+        665,
+        501
+      ],
+      "context_bbox": [
+        549,
+        452,
+        671,
+        559
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "creazione",
+      "bbox": [
+        701,
+        535,
+        810,
+        554
+      ],
+      "header_bbox": [
+        684,
+        458,
+        825,
+        501
+      ],
+      "context_bbox": [
+        678,
+        452,
+        831,
+        560
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51792073",
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "bbox": [
+        1638,
+        529,
+        1749,
+        558
+      ],
+      "header_bbox": [
+        1632,
+        458,
+        1758,
+        501
+      ],
+      "context_bbox": [
+        1626,
+        452,
+        1764,
+        564
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco",
+      "field_key": "ndg",
+      "bbox": [
+        217,
+        499,
+        295,
+        514
+      ],
+      "header_bbox": [
+        228,
+        437,
+        304,
+        472
+      ],
+      "context_bbox": [
+        211,
+        431,
+        310,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco",
+      "field_key": "denominazione",
+      "bbox": [
+        314,
+        499,
+        391,
+        514
+      ],
+      "header_bbox": [
+        309,
+        437,
+        405,
+        472
+      ],
+      "context_bbox": [
+        303,
+        431,
+        411,
+        520
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco",
+      "field_key": "tipo",
+      "bbox": [
+        515,
+        499,
+        553,
+        514
+      ],
+      "header_bbox": [
+        510,
+        437,
+        602,
+        472
+      ],
+      "context_bbox": [
+        504,
+        431,
+        608,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco",
+      "field_key": "stato",
+      "bbox": [
+        753,
+        499,
+        788,
+        514
+      ],
+      "header_bbox": [
+        735,
+        437,
+        830,
+        472
+      ],
+      "context_bbox": [
+        729,
+        431,
+        836,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco",
+      "field_key": "fase",
+      "bbox": [
+        880,
+        499,
+        905,
+        514
+      ],
+      "header_bbox": [
+        845,
+        437,
+        940,
+        472
+      ],
+      "context_bbox": [
+        839,
+        431,
+        946,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco",
+      "field_key": "creazione",
+      "bbox": [
+        962,
+        499,
+        1050,
+        515
+      ],
+      "header_bbox": [
+        950,
+        437,
+        1060,
+        472
+      ],
+      "context_bbox": [
+        944,
+        431,
+        1066,
+        521
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco",
+      "field_key": "evidenze",
+      "bbox": [
+        1606,
+        494,
+        1800,
+        518
+      ],
+      "header_bbox": [
+        1600,
+        437,
+        1712,
+        472
+      ],
+      "context_bbox": [
+        1594,
+        431,
+        1806,
+        524
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_dx",
+      "field_key": "ndg",
+      "bbox": [
+        214,
+        499,
+        292,
+        514
+      ],
+      "header_bbox": [
+        227,
+        437,
+        300,
+        472
+      ],
+      "context_bbox": [
+        208,
+        431,
+        306,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_dx",
+      "field_key": "denominazione",
+      "bbox": [
+        303,
+        499,
+        380,
+        514
+      ],
+      "header_bbox": [
+        300,
+        437,
+        392,
+        472
+      ],
+      "context_bbox": [
+        294,
+        431,
+        398,
+        520
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_dx",
+      "field_key": "tipo",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        392,
+        1906,
+        630
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_dx",
+      "field_key": "stato",
+      "bbox": [
+        508,
+        499,
+        543,
+        514
+      ],
+      "header_bbox": [
+        490,
+        437,
+        585,
+        472
+      ],
+      "context_bbox": [
+        484,
+        431,
+        591,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_dx",
+      "field_key": "fase",
+      "bbox": [
+        635,
+        499,
+        660,
+        514
+      ],
+      "header_bbox": [
+        600,
+        437,
+        690,
+        472
+      ],
+      "context_bbox": [
+        594,
+        431,
+        696,
+        520
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_dx",
+      "field_key": "creazione",
+      "bbox": [
+        717,
+        499,
+        805,
+        515
+      ],
+      "header_bbox": [
+        705,
+        437,
+        815,
+        472
+      ],
+      "context_bbox": [
+        699,
+        431,
+        821,
+        521
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_dx",
+      "field_key": "evidenze",
+      "bbox": [
+        1608,
+        494,
+        1802,
+        518
+      ],
+      "header_bbox": [
+        1600,
+        437,
+        1713,
+        472
+      ],
+      "context_bbox": [
+        1594,
+        431,
+        1808,
+        524
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "ndg",
+      "bbox": [
+        180,
+        378,
+        258,
+        393
+      ],
+      "header_bbox": [
+        193,
+        316,
+        268,
+        351
+      ],
+      "context_bbox": [
+        174,
+        310,
+        274,
+        399
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "denominazione",
+      "bbox": [
+        277,
+        378,
+        354,
+        393
+      ],
+      "header_bbox": [
+        273,
+        316,
+        368,
+        351
+      ],
+      "context_bbox": [
+        267,
+        310,
+        374,
+        399
+      ],
+      "visibility": "VISIBLE_TRUNCATED_TEXT",
+      "reason": "La UI mostra testo troncato con puntini; annotare soltanto la rappresentazione visibile, senza espandere il nome. Il ritaglio non causa il troncamento."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "tipo",
+      "bbox": [
+        478,
+        378,
+        516,
+        393
+      ],
+      "header_bbox": [
+        473,
+        316,
+        565,
+        351
+      ],
+      "context_bbox": [
+        467,
+        310,
+        571,
+        399
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "stato",
+      "bbox": [
+        716,
+        378,
+        751,
+        393
+      ],
+      "header_bbox": [
+        698,
+        316,
+        793,
+        351
+      ],
+      "context_bbox": [
+        692,
+        310,
+        799,
+        399
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "fase",
+      "bbox": [
+        843,
+        378,
+        868,
+        393
+      ],
+      "header_bbox": [
+        808,
+        316,
+        902,
+        351
+      ],
+      "context_bbox": [
+        802,
+        310,
+        908,
+        399
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "creazione",
+      "bbox": [
+        925,
+        378,
+        1013,
+        394
+      ],
+      "header_bbox": [
+        913,
+        316,
+        1023,
+        351
+      ],
+      "context_bbox": [
+        907,
+        310,
+        1029,
+        400
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "bbox": [
+        1569,
+        373,
+        1763,
+        397
+      ],
+      "header_bbox": [
+        1560,
+        316,
+        1675,
+        351
+      ],
+      "context_bbox": [
+        1554,
+        310,
+        1769,
+        403
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51798191",
+      "screen": "51798191__Elenco_tooltip1",
+      "field_key": "tooltip_evidenze_b",
+      "bbox": [
+        1629,
+        417,
+        1749,
+        433
+      ],
+      "header_bbox": [
+        1560,
+        316,
+        1675,
+        351
+      ],
+      "context_bbox": [
+        1554,
+        310,
+        1768,
+        451
+      ],
+      "popover_bbox": [
+        1617,
+        405,
+        1762,
+        445
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Popover canonico su Evidenze B: testo e contenitore interamente visibili; include intestazione e cella sorgente nel contesto."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco",
+      "field_key": "ndg",
+      "bbox": [
+        247,
+        494,
+        325,
+        509
+      ],
+      "header_bbox": [
+        258,
+        432,
+        335,
+        467
+      ],
+      "context_bbox": [
+        241,
+        426,
+        341,
+        515
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco",
+      "field_key": "denominazione",
+      "bbox": [
+        344,
+        494,
+        500,
+        509
+      ],
+      "header_bbox": [
+        340,
+        432,
+        438,
+        467
+      ],
+      "context_bbox": [
+        334,
+        426,
+        506,
+        515
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco",
+      "field_key": "tipo",
+      "bbox": [
+        616,
+        494,
+        654,
+        509
+      ],
+      "header_bbox": [
+        611,
+        432,
+        704,
+        467
+      ],
+      "context_bbox": [
+        605,
+        426,
+        710,
+        515
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco",
+      "field_key": "stato",
+      "bbox": [
+        868,
+        494,
+        902,
+        509
+      ],
+      "header_bbox": [
+        837,
+        432,
+        934,
+        467
+      ],
+      "context_bbox": [
+        831,
+        426,
+        940,
+        515
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco",
+      "field_key": "fase",
+      "bbox": null,
+      "header_bbox": [
+        945,
+        432,
+        1040,
+        467
+      ],
+      "context_bbox": [
+        939,
+        426,
+        1046,
+        530
+      ],
+      "visibility": "VISIBLE_CELL_WITHOUT_RENDERED_TEXT",
+      "reason": "La colonna e la cella sono visibili, senza testo renderizzato; il revisore deve confermare il vuoto. Non esiste un riquadro di valore."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco",
+      "field_key": "creazione",
+      "bbox": [
+        1063,
+        494,
+        1151,
+        510
+      ],
+      "header_bbox": [
+        1051,
+        432,
+        1164,
+        467
+      ],
+      "context_bbox": [
+        1045,
+        426,
+        1170,
+        516
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco",
+      "field_key": "evidenze",
+      "bbox": [
+        1606,
+        489,
+        1800,
+        513
+      ],
+      "header_bbox": [
+        1600,
+        432,
+        1714,
+        467
+      ],
+      "context_bbox": [
+        1594,
+        426,
+        1806,
+        519
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_dx",
+      "field_key": "ndg",
+      "bbox": [
+        213,
+        500,
+        291,
+        515
+      ],
+      "header_bbox": [
+        224,
+        438,
+        301,
+        473
+      ],
+      "context_bbox": [
+        207,
+        432,
+        307,
+        521
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_dx",
+      "field_key": "denominazione",
+      "bbox": [
+        302,
+        500,
+        458,
+        515
+      ],
+      "header_bbox": [
+        298,
+        438,
+        395,
+        473
+      ],
+      "context_bbox": [
+        292,
+        432,
+        464,
+        521
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_dx",
+      "field_key": "tipo",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        393,
+        1901,
+        631
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_dx",
+      "field_key": "stato",
+      "bbox": [
+        521,
+        500,
+        555,
+        515
+      ],
+      "header_bbox": [
+        488,
+        438,
+        586,
+        473
+      ],
+      "context_bbox": [
+        482,
+        432,
+        592,
+        521
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_dx",
+      "field_key": "fase",
+      "bbox": null,
+      "header_bbox": [
+        600,
+        438,
+        694,
+        473
+      ],
+      "context_bbox": [
+        594,
+        432,
+        700,
+        536
+      ],
+      "visibility": "VISIBLE_CELL_WITHOUT_RENDERED_TEXT",
+      "reason": "La colonna e la cella sono visibili, senza testo renderizzato; il revisore deve confermare il vuoto. Non esiste un riquadro di valore."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_dx",
+      "field_key": "creazione",
+      "bbox": [
+        716,
+        500,
+        804,
+        516
+      ],
+      "header_bbox": [
+        704,
+        438,
+        816,
+        473
+      ],
+      "context_bbox": [
+        698,
+        432,
+        822,
+        522
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_dx",
+      "field_key": "evidenze",
+      "bbox": [
+        1607,
+        495,
+        1801,
+        519
+      ],
+      "header_bbox": [
+        1600,
+        438,
+        1714,
+        473
+      ],
+      "context_bbox": [
+        1594,
+        432,
+        1807,
+        525
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "ndg",
+      "bbox": [
+        257,
+        481,
+        352,
+        499
+      ],
+      "header_bbox": [
+        272,
+        404,
+        366,
+        447
+      ],
+      "context_bbox": [
+        251,
+        398,
+        372,
+        505
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "denominazione",
+      "bbox": [
+        368,
+        481,
+        561,
+        499
+      ],
+      "header_bbox": [
+        364,
+        404,
+        478,
+        447
+      ],
+      "context_bbox": [
+        358,
+        398,
+        567,
+        505
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Valore renderizzato interamente presente nel contesto attuale; riquadro calcolato sull inchiostro entro la cella localizzata a vista, con 2 pixel di margine."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "tipo",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "stato",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "fase",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "creazione",
+      "bbox": null,
+      "header_bbox": null,
+      "context_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "visibility": "NOT_VISIBLE",
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "practice": "51859514",
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "evidenze",
+      "bbox": [
+        1503,
+        474,
+        1744,
+        503
+      ],
+      "header_bbox": [
+        1495,
+        404,
+        1628,
+        447
+      ],
+      "context_bbox": [
+        1489,
+        398,
+        1750,
+        509
+      ],
+      "visibility": "VISIBLE",
+      "reason": "Il riquadro include tutti i simboli renderizzati nella cella Evidenze; le icone vicine non devono essere tagliate."
+    }
+  ],
+  "issues": [
+    {
+      "screen": "51772928__Elenco_dx",
+      "field_key": "tipo",
+      "severity": "blocking",
+      "kind": "source_value_clipped",
+      "bbox": [
+        388,
+        483,
+        410,
+        515
+      ],
+      "reason": "Il valore e la relativa intestazione sono tagliati dallo scorrimento orizzontale; non completare il testo da altre schermate."
+    },
+    {
+      "screen": "51792073__Elenco_dx",
+      "field_key": "tipo",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        393,
+        1899,
+        631
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "tipo",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        435,
+        1888,
+        676
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "screen": "51792073__Elenco_tooltip1",
+      "field_key": "stato",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        435,
+        1888,
+        676
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "screen": "51798191__Elenco_dx",
+      "field_key": "tipo",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        392,
+        1906,
+        630
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "screen": "51859514__Elenco_dx",
+      "field_key": "tipo",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        393,
+        1901,
+        631
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "tipo",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "stato",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "fase",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    },
+    {
+      "screen": "51859514__Elenco_tooltip1",
+      "field_key": "creazione",
+      "severity": "blocking",
+      "kind": "source_column_not_visible",
+      "bbox": null,
+      "context_bbox": [
+        0,
+        381,
+        1882,
+        622
+      ],
+      "reason": "Colonna spostata fuori dalla porzione visibile della tabella; non e una cella vuota. Nessun target di valore assegnato."
+    }
+  ]
+}
