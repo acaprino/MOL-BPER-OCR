@@ -12,14 +12,17 @@ pytest.importorskip("PyQt6.QtWidgets")
 os.environ.setdefault("LLM_API_KEY", "test-key")
 
 from PIL import Image
-from PyQt6 import QtWidgets
+from PyQt6 import QtCore, QtWidgets
+from PyQt6.QtTest import QTest
 
 import local_extraction_client as lec
-from ui.data_table_tab import DataTableTab
+from ui.data_table_tab import CORRECTED_ROLE, DataTableTab
 
 PRACTICES = {
     "p1": {"ndg": "111", "denominazione": "Alfa Costruzioni S.r.l.", "tipo": "BPI Mutui"},
     "p2": {"ndg": "222", "denominazione": "Beta Servizi S.p.A.", "tipo": "Fido a revoca"},
+    "p3": {"tipo": "Senza NDG"},                      # a session that never reads the NDG
+    "p4": {"ndg": "111", "tipo": "Altro tipo"},       # a later frame of the first practice
 }
 
 
@@ -99,3 +102,121 @@ def test_export_goes_through_the_clients_single_export_path(tab: DataTableTab, c
     assert client.unexported_jobs() == [job]
     tab._on_export_excel()
     assert target.is_file() and client.unexported_jobs() == []
+
+
+# ============================================================
+# Correcting values
+# ============================================================
+
+
+def _locate(tab: DataTableTab, ndg: str, key: str) -> tuple[int, int]:
+    """(row, column) of a practice's field in the table."""
+    row = 1 + [r.ndg for r in tab._records].index(ndg)
+    return row, [c.schema_key for c in tab._columns].index(key)
+
+
+def _edit(tab: DataTableTab, qapp, ndg: str, key: str, text: str) -> None:
+    """Type `text` in a cell the way a committed edit does, then let the reload run."""
+    row, col = _locate(tab, ndg, key)
+    tab.table.item(row, col).setText(text)
+    qapp.processEvents()
+
+
+def test_editing_a_cell_stores_a_correction_and_marks_it(tab: DataTableTab, client, qapp) -> None:
+    job = _publish(client, qapp, "p1", "p2")
+    tab.set_job_id(job)
+    _edit(tab, qapp, "111", "tipo", "Mutuo")
+    assert client.get_corrections(job) == {"111": {"tipo": "Mutuo"}}
+    item = tab.table.item(*_locate(tab, "111", "tipo"))
+    assert item.text() == "Mutuo" and item.data(CORRECTED_ROLE) is True
+    assert item.toolTip() == "Valore originale: BPI Mutui"
+    other = tab.table.item(*_locate(tab, "222", "tipo"))
+    assert other.data(CORRECTED_ROLE) is None
+
+
+def test_ndg_band_row_and_rows_without_ndg_are_not_editable(tab: DataTableTab, client, qapp) -> None:
+    tab.set_job_id(_publish(client, qapp, "p1"))
+    editable = QtCore.Qt.ItemFlag.ItemIsEditable
+    assert not tab.table.item(*_locate(tab, "111", "ndg")).flags() & editable
+    assert not tab.table.item(0, 0).flags() & editable
+    assert tab.table.item(*_locate(tab, "111", "tipo")).flags() & editable
+    tab.set_job_id(_publish(client, qapp, "p3"))
+    anonymous = tab.table.item(1, [c.schema_key for c in tab._columns].index("tipo"))
+    assert not anonymous.flags() & editable
+
+
+def test_typing_the_extracted_value_does_not_create_a_correction(tab: DataTableTab, client, qapp) -> None:
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    _edit(tab, qapp, "111", "tipo", "BPI Mutui")
+    assert client.get_corrections(job) == {}
+    assert tab.table.item(*_locate(tab, "111", "tipo")).data(CORRECTED_ROLE) is None
+
+
+def test_typing_the_original_back_removes_the_correction(tab: DataTableTab, client, qapp) -> None:
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    _edit(tab, qapp, "111", "tipo", "Mutuo")
+    _edit(tab, qapp, "111", "tipo", "BPI Mutui")
+    assert client.get_corrections(job) == {}
+
+
+def test_clearing_the_text_stores_an_empty_correction(tab: DataTableTab, client, qapp) -> None:
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    _edit(tab, qapp, "111", "tipo", "")
+    assert client.get_corrections(job) == {"111": {"tipo": None}}
+    item = tab.table.item(*_locate(tab, "111", "tipo"))
+    assert item.text() == "" and item.data(CORRECTED_ROLE) is True
+
+
+def test_correction_survives_a_new_result_for_the_same_practice(tab: DataTableTab, client, qapp) -> None:
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    _edit(tab, qapp, "111", "tipo", "Mutuo")
+    client.ingest_frame(job, Image.new("RGB", (10, 10)), page_type="p4")
+    deadline = time.time() + 5
+    while len(client.get_results(job)) < 2 and time.time() < deadline:
+        qapp.processEvents()
+        time.sleep(0.01)
+    qapp.processEvents()
+    item = tab.table.item(*_locate(tab, "111", "tipo"))
+    assert item.text() == "Mutuo" and item.data(CORRECTED_ROLE) is True
+
+
+def test_restore_original_removes_the_correction(tab: DataTableTab, client, qapp) -> None:
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    _edit(tab, qapp, "111", "tipo", "Mutuo")
+    row, col = _locate(tab, "111", "tipo")
+    tab._restore_original(row, col)
+    qapp.processEvents()
+    assert client.get_corrections(job) == {}
+    assert tab.table.item(row, col).text() == "BPI Mutui"
+
+
+def test_result_arriving_while_an_editor_is_open_keeps_the_editor(tab: DataTableTab, client, qapp) -> None:
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    tab.show()
+    qapp.processEvents()
+    row, col = _locate(tab, "111", "tipo")
+    tab.table.editItem(tab.table.item(row, col))
+    editor = tab.table.viewport().findChild(QtWidgets.QLineEdit)
+    assert editor is not None
+    editor.setText("Mutu")
+
+    client.ingest_frame(job, Image.new("RGB", (10, 10)), page_type="p4")
+    deadline = time.time() + 5
+    while len(client.get_results(job)) < 2 and time.time() < deadline:
+        qapp.processEvents()
+        time.sleep(0.01)
+    qapp.processEvents()
+    assert tab.table.state() == QtWidgets.QAbstractItemView.State.EditingState
+    assert editor.text() == "Mutu"
+
+    QTest.keyClicks(editor, "o")
+    QTest.keyClick(editor, QtCore.Qt.Key.Key_Return)
+    qapp.processEvents()
+    assert client.get_corrections(job) == {"111": {"tipo": "Mutuo"}}
+    assert tab.table.item(row, col).text() == "Mutuo"

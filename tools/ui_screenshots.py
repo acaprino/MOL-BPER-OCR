@@ -53,6 +53,7 @@ def _populate(client: Any, qapp: Any) -> str:
     while len(client.get_results(job)) < len(_PRACTICES) and time.time() < deadline:
         qapp.processEvents()
         time.sleep(0.01)
+    client.set_correction(job, _PRACTICES[1]["ndg"], "stato", "Perfezionata")  # one corrected cell on show
     return job
 
 

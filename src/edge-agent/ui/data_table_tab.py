@@ -22,6 +22,8 @@ from PyQt6.QtWidgets import (
     QMessageBox,
     QHeaderView,
     QStackedLayout,
+    QAbstractItemView,
+    QMenu,
 )
 
 import app_paths
@@ -32,7 +34,8 @@ if not app_paths.is_frozen() and str(_EXTRACTION_ROOT) not in sys.path:
     sys.path.insert(0, str(_EXTRACTION_ROOT))
 
 from excel_export import ColumnSpec, PAGE_BAND_COLORS, build_columns
-from practice_consolidation import PracticeRecord, consolidate
+from local_extraction_client import clean_correction
+from practice_consolidation import PracticeRecord, consolidate, is_correctable
 
 from . import icons
 from .widgets import default_export_name
@@ -40,6 +43,9 @@ from .widgets import default_export_name
 # ============================================================
 # Costanti
 # ============================================================
+
+# Segna (True) le celle il cui valore è stato corretto dall'operatore.
+CORRECTED_ROLE = QtCore.Qt.ItemDataRole.UserRole + 1
 
 # Riga 0 della tabella: fascia di raggruppamento per pagina canonica.
 # QTableWidget non ha intestazioni a due livelli native, quindi la fascia e'
@@ -76,6 +82,8 @@ class DataTableTab(QWidget):
         self._current_job_id: Optional[str] = None
         self._records: List[PracticeRecord] = []
         self._columns: List[ColumnSpec] = build_columns(self._client.get_column_labels())
+        self._loading = False         # il popolamento non deve contare come modifica
+        self._reload_pending = False  # un risultato è arrivato mentre si scriveva in una cella
 
         self._init_ui()
 
@@ -134,7 +142,13 @@ class DataTableTab(QWidget):
         layout.addLayout(toolbar)
 
         self.table = QTableWidget(self)
-        self.table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        # Doppio click, F2 o digitazione correggono una cella; NDG, fascia e righe
+        # senza NDG non sono modificabili (flag per cella, vedi _set_cell).
+        self.table.setEditTriggers(
+            QAbstractItemView.EditTrigger.DoubleClicked
+            | QAbstractItemView.EditTrigger.EditKeyPressed
+            | QAbstractItemView.EditTrigger.AnyKeyPressed
+        )
         self.table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.table.setAlternatingRowColors(True)
         self.table.horizontalHeader().setSectionResizeMode(
@@ -144,6 +158,10 @@ class DataTableTab(QWidget):
         self.table.horizontalHeader().setToolTip("Doppio click su un'intestazione per rinominare la colonna")
         self.table.verticalHeader().setVisible(False)
         self.table.horizontalHeader().sectionDoubleClicked.connect(self._on_header_double_clicked)
+        self.table.itemChanged.connect(self._on_item_changed)
+        self.table.itemDelegate().closeEditor.connect(self._on_editor_closed)
+        self.table.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
+        self.table.customContextMenuRequested.connect(self._on_context_menu)
 
         # Stato vuoto: dice cosa fare invece di mostrare una griglia senza righe.
         self.empty_state = QWidget(self)
@@ -242,26 +260,42 @@ class DataTableTab(QWidget):
         self.stack.setCurrentWidget(self.empty_state)
 
     def _load_table(self, job_id: str) -> None:
-        self._records = consolidate(self._client.get_results(job_id))
+        # Un risultato nuovo non deve strappare di mano l'editor aperto: si
+        # ricarica appena l'operatore ha finito (vedi _on_editor_closed).
+        if self.table.state() == QAbstractItemView.State.EditingState:
+            self._reload_pending = True
+            return
+        self._reload_pending = False
+
+        self._records = consolidate(
+            self._client.get_results(job_id), self._client.get_corrections(job_id)
+        )
         if not self._records:
             self._clear_table()
             return
 
-        self.table.clearSpans()
-        self.table.setColumnCount(len(self._columns))
-        self.table.setRowCount(_FIRST_DATA_ROW + len(self._records))
+        self._loading = True
+        try:
+            self.table.clearSpans()
+            self.table.setColumnCount(len(self._columns))
+            self.table.setRowCount(_FIRST_DATA_ROW + len(self._records))
 
-        self._refresh_headers()
-        self._paint_band_row()
+            self._refresh_headers()
+            self._paint_band_row()
 
-        for row_offset, record in enumerate(self._records):
-            row = _FIRST_DATA_ROW + row_offset
-            for col_idx, column in enumerate(self._columns):
-                value = (record.fields.get(column.schema_key) or {}).get("value")
-                self._set_cell(row, col_idx, "" if value is None else str(value))
+            for row_offset, record in enumerate(self._records):
+                row = _FIRST_DATA_ROW + row_offset
+                for col_idx, column in enumerate(self._columns):
+                    self._set_cell(row, col_idx, record, column)
+        finally:
+            self._loading = False
 
         self.stack.setCurrentWidget(self.table)
         self._apply_filter()
+
+    def _reload_current(self) -> None:
+        if self._current_job_id:
+            self._load_table(self._current_job_id)
 
     def _refresh_headers(self) -> None:
         self.table.setHorizontalHeaderLabels([c.label for c in self._columns])
@@ -298,10 +332,69 @@ class DataTableTab(QWidget):
                 self.table.setSpan(_BAND_ROW, start, 1, index - start)
             start = index
 
-    def _set_cell(self, row: int, col: int, text: str) -> None:
-        item = QTableWidgetItem(text)
-        item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
+    def _set_cell(self, row: int, col: int, record: PracticeRecord, column: ColumnSpec) -> None:
+        field = record.fields.get(column.schema_key) or {}
+        value = field.get("value")
+        item = QTableWidgetItem("" if value is None else str(value))
+        if is_correctable(record, column.schema_key):
+            item.setFlags(item.flags() | QtCore.Qt.ItemFlag.ItemIsEditable)
+        else:
+            item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
+        if field.get("corrected"):
+            # Segnata con sfondo, icona e tooltip: mai solo il colore.
+            tokens = theme.current_tokens()
+            original = field.get("original_value")
+            shown = "(vuoto)" if original is None or str(original).strip() == "" else str(original)
+            item.setData(CORRECTED_ROLE, True)
+            item.setBackground(QBrush(QColor(tokens.corrected_bg)))
+            item.setForeground(QBrush(QColor(tokens.text)))
+            item.setIcon(icons.icon("pencil", tokens.corrected_icon, 14))
+            item.setToolTip(f"Valore originale: {shown}")
         self.table.setItem(row, col, item)
+
+    # ------------------------------------------------------------------ Correzioni
+
+    def _on_item_changed(self, item: QTableWidgetItem) -> None:
+        if self._loading:
+            return
+        index = item.row() - _FIRST_DATA_ROW
+        job_id = self._current_job_id
+        if not job_id or not 0 <= index < len(self._records) or not 0 <= item.column() < len(self._columns):
+            return
+        record, column = self._records[index], self._columns[item.column()]
+        if is_correctable(record, column.schema_key):
+            field = record.fields[column.schema_key]
+            original = field["original_value"] if field.get("corrected") else field["value"]
+            typed = clean_correction(item.text())
+            if typed == clean_correction(None if original is None else str(original)):
+                # Riscrivere il valore estratto equivale a non correggere.
+                self._client.clear_correction(job_id, record.ndg, column.schema_key)
+            else:
+                self._client.set_correction(job_id, record.ndg, column.schema_key, typed)
+        # Anche per una cella non correggibile: si ridisegna dallo stato vero.
+        QtCore.QTimer.singleShot(0, self._reload_current)
+
+    def _on_editor_closed(self, *_args: object) -> None:
+        if self._reload_pending:
+            QtCore.QTimer.singleShot(0, self._reload_current)
+
+    def _restore_original(self, row: int, col: int) -> None:
+        index = row - _FIRST_DATA_ROW
+        job_id = self._current_job_id
+        if not job_id or not 0 <= index < len(self._records) or not 0 <= col < len(self._columns):
+            return
+        self._client.clear_correction(job_id, self._records[index].ndg, self._columns[col].schema_key)
+        self._reload_current()
+
+    def _on_context_menu(self, pos: QtCore.QPoint) -> None:
+        item = self.table.itemAt(pos)
+        if item is None:
+            return
+        menu = QMenu(self)
+        restore = menu.addAction("Ripristina originale")
+        restore.setEnabled(bool(item.data(CORRECTED_ROLE)))
+        if menu.exec(self.table.viewport().mapToGlobal(pos)) is restore:
+            self._restore_original(item.row(), item.column())
 
     # ------------------------------------------------------------------ Export
 

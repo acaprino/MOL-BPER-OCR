@@ -89,7 +89,7 @@ def _log_extraction(job_id: str, result: Dict[str, Any]) -> None:
 # ============================================================
 
 
-def _clean_correction(value: Optional[str]) -> Optional[str]:
+def clean_correction(value: Optional[str]) -> Optional[str]:
     """Text the operator typed, made safe for the workbook; empty means cleared."""
     if value is None:
         return None
@@ -301,7 +301,7 @@ class LocalExtractionClient(QtCore.QObject):
             raise ValueError(f"NDG non leggibile: {ndg!r}")
         if schema_key not in CORRECTABLE_KEYS:
             raise ValueError(f"Il campo {schema_key!r} non è correggibile")
-        cleaned = _clean_correction(value)
+        cleaned = clean_correction(value)
         with self._lock:
             self._corrections.setdefault(job_id, {}).setdefault(key, {})[schema_key] = cleaned
 
