@@ -315,9 +315,14 @@ def _rapidocr_engine(params: dict[str, str], threads: dict[str, int]) -> tuple[R
                               "EngineConfig.onnxruntime.inter_op_num_threads": threads["inter_op"]})
 
     models: dict[str, dict[str, str]] = {}
-    for section, module in (("Det", engine.text_det), ("Cls", engine.text_cls), ("Rec", engine.text_rec)):
+    for section, loader, attribute in (("Det", "_load_det_model", "text_det"), ("Cls", "_load_cls_model", "text_cls"),
+                                       ("Rec", "_load_rec_model", "text_rec")):
         if section == "Cls" and not engine.cfg.Global.use_cls:
             continue
+        # RapidOCR 3.10 builds each model on first use: ask for it, so the manifest records what will really run.
+        module = getattr(engine, loader)() if hasattr(engine, loader) else getattr(engine, attribute)
+        if module is None:
+            raise RuntimeError(f"RapidOCR did not load its {section} model: the provenance would be incomplete")
         cfg = engine.cfg[section]
         info = type(module.session).get_model_url(FileInfo(
             engine_type=cfg.engine_type, ocr_version=cfg.ocr_version, task_type=TaskType(section.lower()),

@@ -560,8 +560,8 @@ the archive; OCR, datasets and models are rebuilt, never kept as sources:
 
 All application dependencies live in a single root `requirements.txt`; there is **no**
 `src/edge-agent/requirements.txt`. Versions are loosely bounded, not strictly pinned. The one
-exception is the offline OCR benchmark: `requirements-ocr.txt` pins RapidOCR 3.9.2, onnxruntime
-1.30.0 and their dependencies exactly for `src/training/ocr_runner.py` in a separate `.venv-ocr`
+exception is the offline OCR benchmark: `requirements-ocr.txt` pins RapidOCR 3.10.0, onnxruntime
+1.32.0 and their dependencies exactly for `src/training/ocr_runner.py` in a separate `.venv-ocr`
 (gitignored); no application module imports RapidOCR.
 
 **Extraction pipeline:**

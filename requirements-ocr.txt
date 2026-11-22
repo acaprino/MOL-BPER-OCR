@@ -3,8 +3,8 @@
 # use RapidOCR yet. Exact pins, as resolved on Python 3.13.14 (Windows x64):
 #   uv venv .venv-ocr --python 3.13
 #   uv pip install --python .venv-ocr/Scripts/python.exe -r requirements-ocr.txt
-rapidocr==3.9.2
-onnxruntime==1.30.0
+rapidocr==3.10.0
+onnxruntime==1.32.0
 openpyxl==3.1.5
 certifi==2026.7.22
 charset-normalizer==3.5.2
