@@ -34,7 +34,7 @@ Reader = Callable[[Path], list[list[Any]]]
 EngineFactory = Callable[[dict[str, str], dict[str, int]], tuple[Reader, dict[str, Any]]]
 
 # Stage A configurations of the plan (section 3.1). A5 is a check on top of the chosen one.
-CONFIGS: dict[str, dict[str, str]] = {
+CONFIGS: dict[str, dict[str, Any]] = {
     "A0": {"Det.ocr_version": "PP-OCRv6", "Det.model_type": "small",
            "Rec.ocr_version": "PP-OCRv6", "Rec.model_type": "small"},
     "A1": {"Det.ocr_version": "PP-OCRv6", "Det.model_type": "small",
@@ -46,6 +46,21 @@ CONFIGS: dict[str, dict[str, str]] = {
     "A4": {"Det.ocr_version": "PP-OCRv6", "Det.model_type": "small",
            "Rec.ocr_version": "PP-OCRv5", "Rec.lang_type": "latin", "Rec.model_type": "mobile"},
 }
+# Tuning of the chosen models. What A1 still misses are tight boxes that cut a thin last letter ("301 mes"), small
+# faint text the detector skips, and punctuation of 7-pixel characters. "u" widens the boxes (Det.unclip_ratio),
+# "d" makes the detector more sensitive, "x2" enlarges the image before reading ("Input.scale", read by the engine
+# factory; the boxes go back to the original coordinates) and raises the size limit that would shrink it again.
+_WIDE = {"Det.unclip_ratio": 2.2}
+_SENSITIVE = {"Det.thresh": 0.2, "Det.box_thresh": 0.3}
+_ENLARGED = {"Input.scale": 2, "Global.max_side_len": 4500}
+CONFIGS.update({
+    "A1u": {**CONFIGS["A1"], **_WIDE},
+    "A1d": {**CONFIGS["A1"], **_SENSITIVE},
+    "A1ud": {**CONFIGS["A1"], **_WIDE, **_SENSITIVE},
+    "A1x2": {**CONFIGS["A1"], **_ENLARGED},
+    "A1x2ud": {**CONFIGS["A1"], **_WIDE, **_SENSITIVE, **_ENLARGED},
+    "A2x2ud": {**CONFIGS["A2"], **_WIDE, **_SENSITIVE, **_ENLARGED},
+})
 PROFILES: dict[str, dict[str, int]] = {
     "pc4": {"intra_op": 4, "inter_op": 1},
     "vdi2": {"intra_op": 2, "inter_op": 1},
@@ -84,14 +99,23 @@ def _read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_screens(archive_dir: Path, include_test: bool = False) -> list[Screen]:
-    """The screens an OCR cache of the archive must cover, each bound to the image digest the archive recorded."""
+def load_screens(archive_dir: Path, include_test: bool = False, practices: list[str] | None = None) -> list[Screen]:
+    """The screens an OCR cache of the archive must cover, each bound to the image digest the archive recorded.
+
+    ``practices`` narrows them to some practices; a test practice stays unread unless ``include_test`` says so."""
     from training.dataset import ocr_screens, read_archive, screen_id
 
     archive = read_archive(archive_dir)
     rows = {screen_id(name): row for name, row in archive.screens.items()}
     return [Screen(screen, archive.root / rows[screen]["File"], rows[screen]["SHA256"])
-            for screen in ocr_screens(archive, include_test)]
+            for screen in ocr_screens(archive, include_test) if practices is None or screen.split("__", 1)[0] in practices]
+
+
+def rescale_items(items: list[list[Any]], scale: float) -> list[list[Any]]:
+    """Readings of an image enlarged ``scale`` times, with their boxes back in the original image's coordinates."""
+    if scale == 1:
+        return items
+    return [[text, score, [[x / scale, y / scale] for x, y in box]] for text, score, box in items]
 
 
 # ============================================================
@@ -299,8 +323,11 @@ def _rapidocr_engine(params: dict[str, str], threads: dict[str, int]) -> tuple[R
     from rapidocr.inference_engine.base import FileInfo
     from rapidocr.utils.typings import LangDet, LangRec, ModelType, OCRVersion, TaskType
 
+    scale = float(params.get("Input.scale", 1))
     typed: dict[str, Any] = {}
     for key, value in params.items():
+        if key == "Input.scale":
+            continue                    # read here, not by RapidOCR
         section, name = key.split(".")
         if name == "ocr_version":
             typed[key] = OCRVersion(value)
@@ -343,17 +370,20 @@ def _rapidocr_engine(params: dict[str, str], threads: dict[str, int]) -> tuple[R
         "versions": {name: version(name) for name in packages} | {"python": sys.version.split()[0]},
         "platform": {"system": platform.platform(), "processor": platform.processor(),
                      "logical_cpus": os_info.cpu_count()},
-        "input": "PIL Image.convert('RGB') as a numpy array, scale 1x",
+        "input": f"PIL Image.convert('RGB') as a numpy array, scale {scale:g}x",
     }
 
     def read(image_path: Path) -> list[list[Any]]:
         with Image.open(image_path) as image:
-            pixels = np.array(image.convert("RGB"))
+            rgb = image.convert("RGB")
+            if scale != 1:
+                rgb = rgb.resize((round(rgb.width * scale), round(rgb.height * scale)), Image.Resampling.LANCZOS)
+            pixels = np.array(rgb)
         result = engine(pixels)
         if result.txts is None:
             return []
-        return [[text, float(score), [[float(v) for v in point] for point in box.tolist()]]
-                for text, score, box in zip(result.txts, result.scores, result.boxes)]
+        return rescale_items([[text, float(score), [[float(v) for v in point] for point in box.tolist()]]
+                              for text, score, box in zip(result.txts, result.scores, result.boxes)], scale)
 
     return read, provenance
 

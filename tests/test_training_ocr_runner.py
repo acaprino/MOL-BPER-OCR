@@ -395,3 +395,40 @@ def test_the_screens_to_read_are_those_of_the_training_and_control_practices(tmp
 
 def test_the_test_screens_are_read_only_when_asked_for(tmp_path: Path) -> None:
     assert [screen.id for screen in load_screens(_archive(tmp_path), include_test=True)][-1] == "333__elenco-01"
+
+
+# ============================================================
+# Tuning: reading at another scale, and only some practices
+# ============================================================
+
+
+def test_a_screen_can_be_limited_to_some_practices(tmp_path: Path) -> None:
+    screens = load_screens(_archive(tmp_path), practices=["222"])
+    assert [screen.id for screen in screens] == ["222__elenco-01"]
+
+
+def test_limiting_to_a_test_practice_still_leaves_it_unread(tmp_path: Path) -> None:
+    assert load_screens(_archive(tmp_path), practices=["333"]) == []
+
+
+def test_boxes_read_on_an_enlarged_image_go_back_to_the_original_coordinates() -> None:
+    from training.ocr_runner import rescale_items
+
+    items = [["a", 0.9, [[20.0, 40.0], [60.0, 40.0], [60.0, 80.0], [20.0, 80.0]]]]
+    assert rescale_items(items, 2.0) == [["a", 0.9, [[10.0, 20.0], [30.0, 20.0], [30.0, 40.0], [10.0, 40.0]]]]
+
+
+def test_a_scale_of_one_leaves_the_readings_as_they_are() -> None:
+    from training.ocr_runner import rescale_items
+
+    items = [["a", 0.9, [[1.0, 2.0], [3.0, 2.0], [3.0, 4.0], [1.0, 4.0]]]]
+    assert rescale_items(items, 1.0) == items
+
+
+def test_an_enlarged_configuration_also_raises_the_size_limit_that_would_shrink_the_image_back() -> None:
+    from training.ocr_runner import CONFIGS
+
+    scaled = {name: params for name, params in CONFIGS.items() if params.get("Input.scale", 1) != 1}
+    assert scaled, "no enlarged configuration is defined"
+    for name, params in scaled.items():
+        assert params["Global.max_side_len"] >= 2000 * params["Input.scale"], name

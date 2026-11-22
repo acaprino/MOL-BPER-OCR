@@ -126,7 +126,7 @@ def _jobs(screens: list[Screen], configs: list[str], shard_size: int, whole: set
 @app.local_entrypoint()
 def main(out_dir: str, configs: str = "A0,A1,A2,A3,A4", profile: str = "pc4", shard_size: int = 8,
          whole: str = "A0,A4", panel: str = "51185037__elenco-01,51185037__gestione-fidi-01,51185037__note-01",
-         collect: bool = False, include_test: bool = False) -> None:
+         collect: bool = False, include_test: bool = False, practices: str = "") -> None:
     """Spawn every shard and the cost panel, then download each result and merge each configuration.
 
     The screens are those of the archive's training and control practices; ``--include-test`` adds the test ones.
@@ -134,7 +134,7 @@ def main(out_dir: str, configs: str = "A0,A1,A2,A3,A4", profile: str = "pc4", sh
     output = Path(out_dir)
     if not output.is_absolute():
         raise ValueError("out-dir must be an absolute path")
-    screens = load_screens(ROOT / "data" / "dataset", include_test)
+    screens = load_screens(ROOT / "data" / "dataset", include_test, practices.split(",") if practices else None)
     by_id = {s.id: s for s in screens}
     calls_path = output / "calls.json"
     if not collect:
