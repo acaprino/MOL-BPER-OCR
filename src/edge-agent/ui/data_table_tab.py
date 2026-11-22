@@ -35,7 +35,7 @@ if not app_paths.is_frozen() and str(_EXTRACTION_ROOT) not in sys.path:
 
 from excel_export import ColumnSpec, PAGE_BAND_COLORS, build_columns
 from local_extraction_client import clean_correction
-from practice_consolidation import PracticeRecord, consolidate, is_correctable
+from practice_consolidation import PracticeRecord, consolidate, has_content, is_correctable
 
 from . import icons
 from .frozen_table import FrozenColumnsTable
@@ -45,7 +45,7 @@ from .widgets import default_export_name
 # Costanti
 # ============================================================
 
-# Segna (True) le celle il cui valore è stato corretto dall'operatore.
+# True on the cells whose value the operator corrected.
 CORRECTED_ROLE = QtCore.Qt.ItemDataRole.UserRole + 1
 
 # Riga 0 della tabella: fascia di raggruppamento per pagina canonica.
@@ -83,11 +83,11 @@ class DataTableTab(QWidget):
         self._current_job_id: Optional[str] = None
         self._records: List[PracticeRecord] = []
         self._columns: List[ColumnSpec] = build_columns(self._client.get_column_labels())
-        self._loading = False         # il popolamento non deve contare come modifica
-        self._reload_pending = False  # un risultato è arrivato mentre si scriveva in una cella
+        self._loading = False         # filling the table is not an edit
+        self._reload_pending = False  # a result arrived while a cell was being edited
 
         self._init_ui()
-        # Le celle corrette hanno colori del tema: si ridisegnano se il tema cambia.
+        # Corrected cells use theme colours: redraw them when the theme changes.
         theme.notifier().changed.connect(self._reload_current)
 
         try:
@@ -143,10 +143,10 @@ class DataTableTab(QWidget):
         toolbar.addWidget(self.export_button)
         layout.addLayout(toolbar)
 
-        # NDG e denominazione restano in vista scorrendo le altre 43 colonne.
+        # NDG and denominazione stay in view while the other 43 columns scroll.
         self.table = FrozenColumnsTable(frozen_count=2, parent=self)
-        # Doppio click, F2 o digitazione correggono una cella; NDG, fascia e righe
-        # senza NDG non sono modificabili (flag per cella, vedi _set_cell).
+        # Double click, F2 or typing corrects a cell; the NDG, the page band and rows
+        # without an NDG are not editable (per-cell flag, see _set_cell).
         self.table.setEditTriggers(
             QAbstractItemView.EditTrigger.DoubleClicked
             | QAbstractItemView.EditTrigger.EditKeyPressed
@@ -161,7 +161,7 @@ class DataTableTab(QWidget):
         self.table.horizontalHeader().setToolTip("Doppio click su un'intestazione per rinominare la colonna")
         self.table.verticalHeader().setVisible(False)
         self.table.itemChanged.connect(self._on_item_changed)
-        # Le due viste (scorrevole e fissa) si comportano allo stesso modo.
+        # The two views (scrolling and frozen) behave the same way.
         frozen = self.table.frozen_view
         for view in (self.table, frozen):
             view.horizontalHeader().sectionDoubleClicked.connect(self._on_header_double_clicked)
@@ -170,7 +170,7 @@ class DataTableTab(QWidget):
         self.table.customContextMenuRequested.connect(self._on_context_menu)
         frozen.customContextMenuRequested.connect(self._on_frozen_context_menu)
 
-        # Stato vuoto: dice cosa fare invece di mostrare una griglia senza righe.
+        # Empty state: says what to do instead of showing a grid with no rows.
         self.empty_state = QWidget(self)
         empty_layout = QVBoxLayout(self.empty_state)
         empty_layout.addStretch(1)
@@ -240,8 +240,9 @@ class DataTableTab(QWidget):
             "Nuovo nome per la colonna:",
             text=column.label,
         )
-        if not ok or not new_label.strip():
+        if not ok:
             return
+        # An empty name restores the canonical one.
         self._apply_column_label(column.schema_key, new_label)
 
     def _apply_column_label(self, schema_key: str, label: str) -> None:
@@ -254,7 +255,11 @@ class DataTableTab(QWidget):
     def _apply_filter(self, *_args: object) -> None:
         needle = self.search_box.text().strip().casefold()
         for offset, record in enumerate(self._records):
-            haystack = f"{record.ndg or ''} {record.denominazione or ''}".casefold()
+            # What the operator sees in the cells, plus the normalized NDG key.
+            shown = " ".join(
+                str((record.fields.get(key) or {}).get("value") or "") for key in ("ndg", "denominazione")
+            )
+            haystack = f"{shown} {record.ndg or ''}".casefold()
             self.table.setRowHidden(_FIRST_DATA_ROW + offset, bool(needle) and needle not in haystack)
 
     # ------------------------------------------------------------------ Table population
@@ -268,16 +273,19 @@ class DataTableTab(QWidget):
         self.stack.setCurrentWidget(self.empty_state)
 
     def _load_table(self, job_id: str) -> None:
-        # Un risultato nuovo non deve strappare di mano l'editor aperto: si
-        # ricarica appena l'operatore ha finito (vedi _on_editor_closed).
+        # A new result must not pull the open editor away: reload as soon as the
+        # operator is done (see _on_editor_closed).
         if self.table.is_editing():
             self._reload_pending = True
             return
         self._reload_pending = False
 
-        self._records = consolidate(
-            self._client.get_results(job_id), self._client.get_corrections(job_id)
-        )
+        # A session of errors only consolidates to one blank record: not a practice.
+        self._records = [
+            record
+            for record in consolidate(self._client.get_results(job_id), self._client.get_corrections(job_id))
+            if has_content(record)
+        ]
         if not self._records:
             self._clear_table()
             return
@@ -350,7 +358,7 @@ class DataTableTab(QWidget):
         else:
             item.setFlags(item.flags() & ~QtCore.Qt.ItemFlag.ItemIsEditable)
         if field.get("corrected"):
-            # Segnata con sfondo, icona e tooltip: mai solo il colore.
+            # Marked with background, icon and tooltip: never colour alone.
             tokens = theme.current_tokens()
             original = field.get("original_value")
             shown = "(vuoto)" if original is None or str(original).strip() == "" else str(original)
@@ -376,11 +384,11 @@ class DataTableTab(QWidget):
             original = field["original_value"] if field.get("corrected") else field["value"]
             typed = clean_correction(item.text())
             if typed == clean_correction(None if original is None else str(original)):
-                # Riscrivere il valore estratto equivale a non correggere.
+                # Typing the extracted value back is the same as not correcting.
                 self._client.clear_correction(job_id, record.ndg, column.schema_key)
             else:
                 self._client.set_correction(job_id, record.ndg, column.schema_key, typed)
-        # Anche per una cella non correggibile: si ridisegna dallo stato vero.
+        # Also for a cell that is not correctable: redraw from the real state.
         QtCore.QTimer.singleShot(0, self._reload_current)
 
     def _on_editor_closed(self, *_args: object) -> None:
@@ -406,11 +414,14 @@ class DataTableTab(QWidget):
     def _show_cell_menu(self, item: Optional[QTableWidgetItem], global_pos: QtCore.QPoint) -> None:
         if item is None:
             return
+        # exec() runs a nested event loop: a frame can land meanwhile and the reload deletes
+        # every item, so only plain values read now may be used afterwards.
+        row, col = item.row(), item.column()
         menu = QMenu(self)
         restore = menu.addAction("Ripristina originale")
         restore.setEnabled(bool(item.data(CORRECTED_ROLE)))
         if menu.exec(global_pos) is restore:
-            self._restore_original(item.row(), item.column())
+            self._restore_original(row, col)
 
     # ------------------------------------------------------------------ Export
 
@@ -431,7 +442,7 @@ class DataTableTab(QWidget):
             return
 
         try:
-            # Unico percorso di export: etichette rinominate incluse.
+            # The single export path: renamed labels included.
             written = self._client.export_workbook(job_id, path)
         except Exception as e:  # noqa: BLE001
             QMessageBox.critical(self, "Salvataggio non riuscito", f"Non riesco a salvare il file:\n{e}")

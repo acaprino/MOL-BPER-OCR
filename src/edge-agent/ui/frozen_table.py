@@ -8,7 +8,9 @@ rows) is repeated by hand.
 
 from __future__ import annotations
 
-from PyQt6 import QtCore, QtWidgets
+from typing import Optional
+
+from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QAbstractItemView, QTableView, QTableWidget
 
 
@@ -77,7 +79,7 @@ class FrozenColumnsTable(QTableWidget):
             self.viewport().height() + self.horizontalHeader().height(),
         )
 
-    def resizeEvent(self, event) -> None:  # type: ignore[override]
+    def resizeEvent(self, event: QtGui.QResizeEvent) -> None:  # type: ignore[override]
         super().resizeEvent(event)
         self._update_geometry()
 
@@ -94,22 +96,28 @@ class FrozenColumnsTable(QTableWidget):
 
     # ------------------------------------------------------------------ Keyboard navigation
 
-    def moveCursor(self, cursor_action, modifiers):  # type: ignore[override]
-        current = super().moveCursor(cursor_action, modifiers)
-        # Moving left must not park the cursor under the frozen columns.
-        if cursor_action == QAbstractItemView.CursorAction.MoveLeft and current.column() >= self.frozen_count:
-            left = self.visualRect(current).topLeft().x()
-            if left < self._frozen_width():
-                bar = self.horizontalScrollBar()
-                bar.setValue(bar.value() + left - self._frozen_width())
-        return current
-
-    def scrollTo(self, index, hint=QAbstractItemView.ScrollHint.EnsureVisible) -> None:  # type: ignore[override]
+    def scrollTo(  # type: ignore[override]
+        self,
+        index: QtCore.QModelIndex,
+        hint: QAbstractItemView.ScrollHint = QAbstractItemView.ScrollHint.EnsureVisible,
+    ) -> None:
         # A frozen cell is always visible: do not scroll sideways for it.
-        if index.column() >= self.frozen_count:
-            super().scrollTo(index, hint)
+        if index.column() < self.frozen_count:
+            return
+        super().scrollTo(index, hint)
+        # EnsureVisible counts the area under the frozen view as free room: for any move
+        # (left, right, tab) keep the cell clear of it, or its editor would open hidden.
+        left = self.visualRect(index).left()
+        if left < self._frozen_width():
+            bar = self.horizontalScrollBar()
+            bar.setValue(bar.value() + left - self._frozen_width())
 
-    def edit(self, index, trigger=None, event=None):  # type: ignore[override]
+    def edit(  # type: ignore[override]
+        self,
+        index: QtCore.QModelIndex,
+        trigger: Optional[QAbstractItemView.EditTrigger] = None,
+        event: Optional[QtCore.QEvent] = None,
+    ) -> bool:
         """Open the editor in the view that is on top for that cell.
 
         A frozen cell is covered by the frozen view: an editor opened here (F2, a
@@ -120,10 +128,16 @@ class FrozenColumnsTable(QTableWidget):
             self.frozen_view.edit(index)
             return self.frozen_view.state() == QAbstractItemView.State.EditingState
         if trigger is None:
-            return super().edit(index)
+            super().edit(index)
+            return self.state() == QAbstractItemView.State.EditingState
         return super().edit(index, trigger, event)
 
-    def _wants_edit(self, index, trigger, event) -> bool:
+    def _wants_edit(
+        self,
+        index: QtCore.QModelIndex,
+        trigger: Optional[QAbstractItemView.EditTrigger],
+        event: Optional[QtCore.QEvent],
+    ) -> bool:
         """Would this view start an editor for that trigger? (Qt also calls edit() just to ask.)"""
         triggers = QAbstractItemView.EditTrigger
         if not index.flags() & QtCore.Qt.ItemFlag.ItemIsEditable:
@@ -133,5 +147,6 @@ class FrozenColumnsTable(QTableWidget):
         if trigger == triggers.EditKeyPressed:
             return bool(self.editTriggers() & triggers.EditKeyPressed)
         if trigger == triggers.AnyKeyPressed:
-            return bool(self.editTriggers() & triggers.AnyKeyPressed) and event is not None and bool(event.text().strip())
+            key_text = event.text() if isinstance(event, QtGui.QKeyEvent) else ""
+            return bool(self.editTriggers() & triggers.AnyKeyPressed) and bool(key_text.strip())
         return False

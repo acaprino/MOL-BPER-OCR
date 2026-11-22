@@ -23,7 +23,7 @@ image = (
     modal.Image.debian_slim(python_version="3.12")
     .apt_install("libgl1", "libegl1", "libglib2.0-0", "libdbus-1-3", "libxkbcommon0", "libfontconfig1", "python3-tk")
     .pip_install("pytest>=8.0", "Pillow>=10.0.0", "numpy", "openpyxl>=3.1.2", "pandas", "python-dotenv",
-                 "langchain-core", "langchain-openai", "langchain-google-genai", "PyQt6>=6.4.0", "qt-material>=2.14",
+                 "langchain-core", "langchain-openai", "langchain-google-genai", "PyQt6>=6.5.0",
                  "mss>=9.0.0", "imagehash>=4.3.0", "requests>=2.31.0", "openai>=1.51.0")
     .pip_install("torch==2.12.0", "transformers==5.15.0", "tokenizers==0.22.2", "huggingface_hub")
     .env({"QT_QPA_PLATFORM": "offscreen"})

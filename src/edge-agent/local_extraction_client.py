@@ -172,11 +172,12 @@ class LocalExtractionClient(QtCore.QObject):
         self._started.setdefault(job_id, (len(self._started) + 1, datetime.now()))
 
     def start_job(self) -> str:
-        """Generate a new local job ID."""
-        job_id = str(uuid.uuid4())
-        with self._lock:
-            self._register_job_locked(job_id)
-        return job_id
+        """Generate a new local job ID.
+
+        The session number is assigned with its first frame, so a start/stop with no
+        frame in between does not leave a gap in "Sessione 1, 2, ...".
+        """
+        return str(uuid.uuid4())
 
     def ingest_frame(
         self,
@@ -291,6 +292,13 @@ class LocalExtractionClient(QtCore.QObject):
         """Return the completed prefix in capture order, including error slots."""
         with self._lock:
             return list(self._results.get(job_id, []))
+
+    def practice_count(self, job_id: str) -> int:
+        """Practices with at least one value, corrections included: what an export would write."""
+        with self._lock:
+            results = list(self._results.get(job_id, []))
+            corrections = self._corrections_locked(job_id)
+        return sum(1 for record in consolidate(results, corrections) if has_content(record))
 
     def get_all_job_ids(self) -> List[str]:
         with self._lock:

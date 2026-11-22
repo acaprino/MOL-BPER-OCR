@@ -17,6 +17,7 @@ from PyQt6.QtTest import QTest
 
 import local_extraction_client as lec
 import theme
+from excel_export import build_columns
 from ui.data_table_tab import CORRECTED_ROLE, DataTableTab
 
 PRACTICES = {
@@ -24,6 +25,7 @@ PRACTICES = {
     "p2": {"ndg": "222", "denominazione": "Beta Servizi S.p.A.", "tipo": "Fido a revoca"},
     "p3": {"tipo": "Senza NDG"},                      # a session that never reads the NDG
     "p4": {"ndg": "111", "tipo": "Altro tipo"},       # a later frame of the first practice
+    "p5": {"ndg": "012.345/A", "denominazione": "Delta Edilizia S.r.l."},  # NDG with separators
 }
 
 
@@ -263,3 +265,64 @@ def test_corrected_cells_follow_a_theme_change(tab: DataTableTab, client, qapp) 
         assert tab.table.item(row, col).background().color().name() == theme.DARK.corrected_bg.lower()
     finally:
         theme.apply_theme(qapp)
+
+
+# ============================================================
+# Second code review
+# ============================================================
+
+
+class BrokenPipeline:
+    def extract_from_image(self, img: Image.Image, screen_id: str) -> dict[str, Any]:
+        raise RuntimeError("VLM down")
+
+
+def test_search_finds_the_ndg_as_it_is_shown(tab: DataTableTab, client, qapp) -> None:
+    tab.set_job_id(_publish(client, qapp, "p5", "p2"))
+    for needle in ("012.345/A", "345/A", "12345a"):
+        tab.search_box.setText(needle)
+        assert not tab.table.isRowHidden(1), needle
+    tab.search_box.setText("zzz")
+    assert tab.table.isRowHidden(1)
+
+
+def test_the_context_menu_survives_a_reload_while_it_is_open(tab: DataTableTab, client, qapp, monkeypatch) -> None:
+    job = _publish(client, qapp, "p1")
+    tab.set_job_id(job)
+    _edit(tab, qapp, "111", "tipo", "Mutuo")
+    item = tab.table.item(*_locate(tab, "111", "tipo"))
+
+    def exec_while_a_frame_lands(menu, *args, **kwargs):
+        tab._load_table(job)  # a frame finished: every item is replaced and the old ones deleted
+        return menu.actions()[0]
+
+    monkeypatch.setattr(QtWidgets.QMenu, "exec", exec_while_a_frame_lands)
+    tab._show_cell_menu(item, QtCore.QPoint(0, 0))
+    qapp.processEvents()
+    assert client.get_corrections(job) == {}
+
+
+def test_a_session_of_errors_only_shows_the_empty_state(qapp) -> None:
+    client = lec.LocalExtractionClient(pipeline=BrokenPipeline())
+    tab = DataTableTab(extraction_client=client)
+    job = client.start_job()
+    client.ingest_frame(job, Image.new("RGB", (10, 10)), page_type="p1")
+    deadline = time.time() + 5
+    while not client.get_results(job) and time.time() < deadline:
+        qapp.processEvents()
+        time.sleep(0.01)
+    qapp.processEvents()
+    tab.set_job_id(job)
+    assert tab.stack.currentWidget() is tab.empty_state
+    client.shutdown()
+
+
+def test_clearing_a_column_name_restores_the_canonical_one(tab: DataTableTab, client, qapp, monkeypatch) -> None:
+    tab.set_job_id(_publish(client, qapp, "p1"))
+    tab._apply_column_label("tipo", "Tipo pratica")
+    col = [c.schema_key for c in tab._columns].index("tipo")
+    canonical = next(c.label for c in build_columns() if c.schema_key == "tipo")
+    monkeypatch.setattr(QtWidgets.QInputDialog, "getText", staticmethod(lambda *a, **k: ("", True)))
+    tab._on_header_double_clicked(col)
+    assert client.get_column_labels() == {}
+    assert tab.table.horizontalHeaderItem(col).text() == canonical

@@ -59,9 +59,12 @@ def test_apply_theme_follows_the_system_scheme(qapp) -> None:
 
 
 def test_apply_theme_can_pin_a_scheme(qapp) -> None:
-    assert theme.apply_theme(qapp, Qt.ColorScheme.Dark) is theme.DARK
-    assert theme.current_tokens() is theme.DARK
-    assert theme.apply_theme(qapp, Qt.ColorScheme.Light) is theme.LIGHT
+    try:
+        assert theme.apply_theme(qapp, Qt.ColorScheme.Dark) is theme.DARK
+        assert theme.current_tokens() is theme.DARK
+        assert theme.apply_theme(qapp, Qt.ColorScheme.Light) is theme.LIGHT
+    finally:
+        theme.apply_theme(qapp)  # a pinned scheme is global state: back to following the system
 
 
 # ============================================================

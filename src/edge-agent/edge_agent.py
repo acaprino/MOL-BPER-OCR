@@ -49,9 +49,13 @@ def main() -> int:
     app.setApplicationName("Edge Agent")
     app.setOrganizationName("Tri-tech solutions")
 
-    # Tema proprio (chiaro/scuro come Windows), applicato prima del preflight:
-    # lo stile vale anche per il dialogo del primo avvio. theme.py è top-level e
-    # non importa né `ui` né `extraction` (vincolo dell'ordine di import, sotto).
+    # An error in a slot would end the process and lose every unexported session.
+    import error_report
+    error_report.install_excepthook()
+
+    # Own theme (light/dark like Windows), applied before the preflight so the
+    # first-run dialog is styled too. theme.py is top-level and imports neither
+    # `ui` nor `extraction` (import-order constraint, below).
     import theme
     theme.apply_theme(app)
 

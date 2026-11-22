@@ -467,6 +467,9 @@ Called out individually, because the filename alone does not tell you:
   source and from a PyInstaller bundle (`env_file()`, `templates_dir()`, `prompts_dir()`).
 - `env_key.py` -- stdlib-only, the single writer of `LLM_API_KEY` into a `.env`: used by the
   first-run dialog and run as a script by `build_exe.bat` to bake a key into the package.
+- `error_report.py` -- stdlib-only `install_excepthook()`: an exception that escapes a Qt slot is
+  logged and shown instead of ending the process (PyQt6 would, and the sessions live in memory
+  only, ADR 0033). Installed first thing in `main()`.
 - `bootstrap.py` -- `run_preflight()` creates/loads the local `.env`; `_ensure_files()` re-seeds
   `prompts/` from the bundle only when missing or empty. Must run *before* `ui.main_window` is
   imported (Constraint 3).
@@ -574,7 +577,7 @@ openpyxl>=3.1.2         # Excel export (src/edge-agent/excel_export.py)
 
 **Edge-agent (PyQt6 live capture):**
 ```
-PyQt6>=6.4.0            # Desktop UI framework
+PyQt6>=6.5.0            # Desktop UI framework
 mss>=9.0.0             # Fast screenshot capture
 pyscreenshot>=3.1      # Screenshot fallback (Linux-only env marker)
 imagehash>=4.3.0       # pHash for frame dedup
@@ -596,3 +599,7 @@ Not yet implemented:
 - Provider and GUI validation -- the suite covers core post-processing, field/retry vocabulary, NDG evaluation and the edge-agent contracts; real-provider accuracy and a live banking GUI session still require separate validation
 - CI/CD -- no pipeline configured
 - Docker -- no containerization
+
+Never compile, build or lint on this machine (`cargo`, `tauri`, `tsc`, `vite build`, bundlers, `npm run build`, `npm run verify`,
+`npm install` of a git dependency that runs `prepare`): GitHub Actions does it. Only an explicit request of the owner, in that
+request, to build or test locally overrides this. See "Nothing is compiled on this machine" in AGENTS.md.

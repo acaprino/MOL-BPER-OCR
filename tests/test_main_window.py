@@ -287,9 +287,26 @@ def test_main_window_imports_the_way_the_app_does_not_the_way_the_tests_do(tmp_p
 
     edge_agent_dir = Path(__file__).resolve().parent.parent / "src" / "edge-agent"
     env = {k: v for k, v in os.environ.items() if k != "PYTHONPATH"}
-    env.update({"QT_QPA_PLATFORM": "offscreen", "LLM_API_KEY": "test-key"})
+    # OPENBLAS_NUM_THREADS: numpy allocates a buffer per thread, and a busy PC ran out of memory.
+    env.update({"QT_QPA_PLATFORM": "offscreen", "LLM_API_KEY": "test-key", "OPENBLAS_NUM_THREADS": "1"})
     result = subprocess.run(
         [sys.executable, "-c", f"import sys; sys.path.insert(0, {str(edge_agent_dir)!r}); import ui.main_window"],
         cwd=tmp_path, env=env, capture_output=True, text=True, timeout=120,
     )
     assert result.returncode == 0, result.stderr[-600:]
+
+
+def test_a_destroyed_window_stops_reacting_to_scheme_changes(qapp, tmp_path, monkeypatch) -> None:
+    from PyQt6 import sip
+
+    from ui import win_effects
+
+    client = lec.LocalExtractionClient(pipeline=ScriptedPipeline())
+    win = MainWindow(AgentConfig(config_path=tmp_path / "config.ini"), extraction_client=client)
+    calls: list = []
+    monkeypatch.setattr(win_effects, "apply_window_effects", lambda w, dark: calls.append(w) or True)
+    sip.delete(win)
+    qapp.processEvents()
+    qapp.styleHints().colorSchemeChanged.emit(QtCore.Qt.ColorScheme.Dark)
+    assert calls == []
+    client.shutdown()

@@ -102,35 +102,37 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     app = QApplication.instance() or QApplication([])
     config = AgentConfig(config_path=Path(tempfile.gettempdir()) / "ui-screenshots-missing.ini")
 
-    for scheme, name in ((Qt.ColorScheme.Light, "light"), (Qt.ColorScheme.Dark, "dark")):
-        theme.apply_theme(app, scheme)
+    try:
+        for scheme, name in ((Qt.ColorScheme.Light, "light"), (Qt.ColorScheme.Dark, "dark")):
+            theme.apply_theme(app, scheme)
 
-        client = lec.LocalExtractionClient(pipeline=_SamplePipeline())
-        window = MainWindow(config, extraction_client=client)
-        window.resize(1280, 800)
-        job = _populate(client, app)
-        window.capture_tab.job_id = job
-        for line in ("Avvio cattura in modalità BPER.", "Elaborazione terminata: «p1» (stato: OK)",
-                     "[ERROR] Esempio di riga di errore nel registro."):
-            window.capture_tab._log(line)
-        window.nav.set_current(0)
-        _grab(window, app, out / f"{name}-capture.png")
-        window.nav.set_current(1)
-        window.data_tab.set_job_id(job)
-        app.processEvents()
-        _grab(window, app, out / f"{name}-data.png")
-        window.hide()  # not close(): it would ask about the unexported sample data
-        client.shutdown()
+            client = lec.LocalExtractionClient(pipeline=_SamplePipeline())
+            window = MainWindow(config, extraction_client=client)
+            window.resize(1280, 800)
+            job = _populate(client, app)
+            window.capture_tab.job_id = job
+            for line in ("Avvio cattura in modalità BPER.", "Elaborazione terminata: «p1» (stato: OK)",
+                         "[ERROR] Esempio di riga di errore nel registro."):
+                window.capture_tab._log(line)
+            window.nav.set_current(0)
+            _grab(window, app, out / f"{name}-capture.png")
+            window.nav.set_current(1)
+            window.data_tab.set_job_id(job)
+            app.processEvents()
+            _grab(window, app, out / f"{name}-data.png")
+            window.hide()  # not close(): it would ask about the unexported sample data
+            client.shutdown()
 
-        empty_client = lec.LocalExtractionClient(pipeline=_SamplePipeline())
-        empty = MainWindow(config, extraction_client=empty_client)
-        empty.resize(1280, 800)
-        empty.nav.set_current(1)
-        _grab(empty, app, out / f"{name}-data-empty.png")
-        empty.hide()
-        empty_client.shutdown()
+            empty_client = lec.LocalExtractionClient(pipeline=_SamplePipeline())
+            empty = MainWindow(config, extraction_client=empty_client)
+            empty.resize(1280, 800)
+            empty.nav.set_current(1)
+            _grab(empty, app, out / f"{name}-data-empty.png")
+            empty.hide()
+            empty_client.shutdown()
 
-    theme.apply_theme(app)  # back to following the system, for whoever runs next
+    finally:
+        theme.apply_theme(app)  # back to following the system, whatever happened
     print(f"Screenshots in {out}")
     return 0
 

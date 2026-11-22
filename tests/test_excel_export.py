@@ -186,3 +186,7 @@ def test_export_drops_characters_excel_refuses_from_extracted_values(tmp_path: P
     export_results([_frame("12345", tipo=("A\x07B", 0.9))], str(path))
     column = [c.schema_key for c in build_columns()].index("tipo") + 1
     assert load_workbook(path).active.cell(row=3, column=column).value == "AB"
+
+
+def test_export_results_skips_a_session_with_nothing_but_errors(tmp_path: Path) -> None:
+    assert export_results([{"fields": {}, "_status": "ERROR"}], str(tmp_path / "e.xlsx")) == 0

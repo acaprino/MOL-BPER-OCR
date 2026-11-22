@@ -80,3 +80,32 @@ def test_keyboard_edit_of_a_frozen_cell_opens_the_editor_in_the_frozen_view(tabl
     QTest.keyClick(table, QtCore.Qt.Key.Key_F2)
     assert table.frozen_view.state() == QtWidgets.QAbstractItemView.State.EditingState
     assert table.frozen_view.viewport().findChild(QtWidgets.QLineEdit) is not None
+
+
+def test_arrow_keys_never_park_the_current_cell_under_the_frozen_columns(table: FrozenColumnsTable, qapp) -> None:
+    table.horizontalScrollBar().setValue(table.horizontalScrollBar().maximum())
+    qapp.processEvents()
+    table.setCurrentCell(2, 1)
+    table.setFocus()
+    qapp.processEvents()
+    QTest.keyClick(table, QtCore.Qt.Key.Key_Right)
+    qapp.processEvents()
+    index = table.currentIndex()
+    assert index.column() == 2
+    assert table.visualRect(index).left() >= table._frozen_width()
+
+
+def test_moving_left_never_parks_the_current_cell_under_the_frozen_columns(table: FrozenColumnsTable, qapp) -> None:
+    frozen = table._frozen_width()
+    # scroll so that column 3 starts 30 px behind the frozen view
+    unscrolled_left = sum(table.columnWidth(col) for col in range(3))
+    table.horizontalScrollBar().setValue(unscrolled_left - frozen + 30)
+    qapp.processEvents()
+    table.setCurrentCell(2, 4)
+    table.setFocus()
+    qapp.processEvents()
+    QTest.keyClick(table, QtCore.Qt.Key.Key_Left)
+    qapp.processEvents()
+    index = table.currentIndex()
+    assert index.column() == 3
+    assert table.visualRect(index).left() >= frozen

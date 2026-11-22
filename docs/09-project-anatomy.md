@@ -69,6 +69,7 @@ poc-data-src/extraction/
       excel_export.py          # Workbook con intestazione a due livelli
       app_paths.py             # Percorsi da sorgente e bundle
       bootstrap.py             # Preflight prima dell’import della UI
+      error_report.py          # sys.excepthook: un errore in uno slot Qt viene registrato e mostrato, non chiude l'app
       llm_router.py            # PageRouter base + LLMPageRouter (OpenAI Vision) + MLPageRouter
       page_classifier.py       # BPERPagePrototypeClassifier -- prototype matching DINOv2 ViT-S/14
       image_ops.py             # preprocess_for_ocr() (scala/unsharp/autocontrast), encoder png8/webp

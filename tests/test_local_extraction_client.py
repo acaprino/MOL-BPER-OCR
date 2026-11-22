@@ -391,9 +391,12 @@ def test_error_only_job_is_never_unexported() -> None:
     client.shutdown()
 
 
-def test_session_labels_number_sessions_in_start_order() -> None:
+def test_session_labels_number_sessions_in_order_of_their_first_frame() -> None:
+    app = _app()
     client = lec.LocalExtractionClient(pipeline=FakePipeline())
     first, second = client.start_job(), client.start_job()
+    _ingest(client, first, "p1", app)
+    _ingest(client, second, "p1", app)
     assert re.fullmatch(r"Sessione 1 · \d\d:\d\d", client.session_label(first))
     assert client.session_label(second).startswith("Sessione 2 · ")
     client.shutdown()
@@ -464,3 +467,25 @@ def test_a_label_with_control_characters_does_not_break_the_export(tmp_path) -> 
     client.export_workbook(job, path)
     assert _cell(path, "tipo", row=2).value == "Tipo"
     client.shutdown()
+
+
+def test_a_start_without_frames_does_not_consume_a_session_number() -> None:
+    app = _app()
+    client = lec.LocalExtractionClient(pipeline=FakePipeline())
+    client.start_job()  # Avvia then Ferma with no frame in between
+    real = client.start_job()
+    _ingest(client, real, "p1", app)
+    assert re.fullmatch(r"Sessione 1 · \d\d:\d\d", client.session_label(real))
+    client.shutdown()
+
+
+def test_practice_count_counts_practices_with_content_only() -> None:
+    app = _app()
+    client, job = _client_with_practice(app)
+    assert client.practice_count(job) == 1
+    broken = lec.LocalExtractionClient(pipeline=BrokenPipeline())
+    broken_job = broken.start_job()
+    _ingest(broken, broken_job, "p1", app)
+    assert broken.practice_count(broken_job) == 0
+    client.shutdown()
+    broken.shutdown()

@@ -28,7 +28,7 @@ from extraction.field_definitions import (
 )
 from extraction.page_definitions import CANONICAL_PAGE_NAMES, PAGE_SHEET_ORDER
 
-from practice_consolidation import Corrections, PracticeRecord, consolidate
+from practice_consolidation import Corrections, PracticeRecord, consolidate, has_content
 
 # ============================================================
 # Layout constants
@@ -232,6 +232,7 @@ def export_results(
     buttons cannot drift apart. `corrections` are the operator's edits, applied
     over the merged values. Returns the number of practices written.
     """
-    records = consolidate(results, corrections)
+    # A session of errors only consolidates to one blank record: it is not a practice.
+    records = [record for record in consolidate(results, corrections) if has_content(record)]
     write_workbook(records, build_columns(labels), path)
     return len(records)

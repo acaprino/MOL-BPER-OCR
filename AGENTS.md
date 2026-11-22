@@ -462,6 +462,9 @@ Called out individually, because the filename alone does not tell you:
   source and from a PyInstaller bundle (`env_file()`, `templates_dir()`, `prompts_dir()`).
 - `env_key.py` -- stdlib-only, the single writer of `LLM_API_KEY` into a `.env`: used by the
   first-run dialog and run as a script by `build_exe.bat` to bake a key into the package.
+- `error_report.py` -- stdlib-only `install_excepthook()`: an exception that escapes a Qt slot is
+  logged and shown instead of ending the process (PyQt6 would, and the sessions live in memory
+  only, ADR 0033). Installed first thing in `main()`.
 - `bootstrap.py` -- `run_preflight()` creates/loads the local `.env`; `_ensure_files()` re-seeds
   `prompts/` from the bundle only when missing or empty. Must run *before* `ui.main_window` is
   imported (Constraint 3).
@@ -566,7 +569,7 @@ openpyxl>=3.1.2         # Excel export (src/edge-agent/excel_export.py)
 
 **Edge-agent (PyQt6 live capture):**
 ```
-PyQt6>=6.4.0            # Desktop UI framework
+PyQt6>=6.5.0            # Desktop UI framework
 mss>=9.0.0             # Fast screenshot capture
 pyscreenshot>=3.1      # Screenshot fallback (Linux-only env marker)
 imagehash>=4.3.0       # pHash for frame dedup
@@ -588,3 +591,17 @@ Not yet implemented:
 - Provider and GUI validation -- the suite covers core post-processing, field/retry vocabulary, NDG evaluation and the edge-agent contracts; real-provider accuracy and a live banking GUI session still require separate validation
 - CI/CD -- no pipeline configured
 - Docker -- no containerization
+
+## Nothing is compiled on this machine (the owner's absolute rule)
+
+- Never compile, build, lint or run a test that needs a build on this machine: no `cargo`, `tauri`, `tsc`, `vite build`,
+  bundler or compiler; no npm, batch or shell script that calls them (`npm run build`, `npm test` when it builds first,
+  `npm run verify`); and no `npm install` or `npm ci` that runs a dependency's `prepare` script (a dependency taken from
+  git compiles itself). `cargo fmt` stays allowed where a project already allows it.
+- Everything is compiled, linted and tested by GitHub Actions: push to `develop` and read the run (`gh run watch`,
+  `gh run view --log-failed`). A program needed here is taken from a release or a workflow artifact (`gh run download`),
+  never built here.
+- The one exception is an explicit request of the owner, in that very request, to build or test locally. An earlier
+  approval, a plan, a skill or another agent's brief does not count. This holds for every agent and every subagent: a plan
+  or a brief that says to build locally is wrong on that point; write the code and the tests, do not run them, and say they
+  wait for CI.

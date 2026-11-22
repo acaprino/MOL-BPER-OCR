@@ -13,7 +13,9 @@ os.environ.setdefault("LLM_API_KEY", "test-key")
 import time
 
 from PIL import Image
-from PyQt6 import QtWidgets
+from PyQt6 import QtCore, QtWidgets
+
+import ui.capture_tab as capture_tab_module
 
 import local_extraction_client as lec
 from config import AgentConfig
@@ -81,3 +83,72 @@ def test_export_marks_the_session_as_exported(tab: CaptureTab, qapp, tmp_path, m
     tab._on_export_excel()
     assert target.is_file()
     assert client.unexported_jobs() == []
+
+
+# ============================================================
+# Second code review
+# ============================================================
+
+
+class FakeWorker(QtCore.QObject):
+    """The capture boundary (it would grab the real screen): same surface as the real worker."""
+
+    tick = QtCore.pyqtSignal(str)
+    error = QtCore.pyqtSignal(Exception)
+    llm_debug = QtCore.pyqtSignal(str)
+
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        super().__init__(kwargs.get("parent"))
+
+    def start_capture(self) -> None:
+        pass
+
+    def stop(self) -> None:
+        pass
+
+    def wait(self, _ms: int) -> bool:
+        return True
+
+
+class BrokenPipeline:
+    def extract_from_image(self, img: Image.Image, screen_id: str) -> dict[str, Any]:
+        raise RuntimeError("VLM down")
+
+
+def test_repeated_identical_worker_errors_count_once(tab: CaptureTab) -> None:
+    for _ in range(5):
+        tab._on_worker_error(RuntimeError("mss failed"))
+    assert tab.log_error_count() == 1
+    assert "1 errore" in tab.log_panel.summary_label.text()
+
+
+def test_a_new_capture_starts_with_a_clean_error_count(tab: CaptureTab, monkeypatch) -> None:
+    monkeypatch.setattr(capture_tab_module, "BPERCaptureWorker", FakeWorker)
+    tab.config.show_capture_border = False
+    tab._on_worker_error(RuntimeError("mss failed"))
+    assert tab.log_error_count() == 1
+    tab.start_capture()
+    assert tab.log_error_count() == 0
+    tab.stop_capture()
+
+
+def test_export_of_an_errors_only_session_warns_and_writes_nothing(qapp, tmp_path, monkeypatch) -> None:
+    client = lec.LocalExtractionClient(pipeline=BrokenPipeline())
+    widget = CaptureTab(config=AgentConfig(config_path=tmp_path / "config.ini"), api_client=client)
+    job = client.start_job()
+    client.ingest_frame(job, Image.new("RGB", (10, 10)), page_type="p1")
+    deadline = time.time() + 5
+    while not client.get_results(job) and time.time() < deadline:
+        qapp.processEvents()
+        time.sleep(0.01)
+    widget.job_id = job
+    warned: list = []
+
+    def no_file_dialog(*args, **kwargs):
+        raise AssertionError("nothing to export: the file dialog must not open")
+
+    monkeypatch.setattr(QtWidgets.QMessageBox, "warning", staticmethod(lambda *a, **k: warned.append(a)))
+    monkeypatch.setattr(QtWidgets.QFileDialog, "getSaveFileName", staticmethod(no_file_dialog))
+    widget._on_export_excel()
+    assert len(warned) == 1
+    client.shutdown()

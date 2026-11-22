@@ -4,11 +4,10 @@ from __future__ import annotations
 
 from typing import List, Optional, Sequence
 
-from PyQt6 import QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 import theme
 from config import AgentConfig
 from local_extraction_client import LocalExtractionClient
-from practice_consolidation import consolidate, has_content
 
 from .capture_tab import CaptureTab
 from .data_table_tab import DataTableTab
@@ -62,7 +61,7 @@ class MainWindow(QtWidgets.QMainWindow):
         show_debug: bool = False,
         parent: Optional[QtWidgets.QWidget] = None,
         extraction_client: Optional[LocalExtractionClient] = None,
-    ):
+    ) -> None:
         super().__init__(parent)
 
         self.config = config
@@ -73,11 +72,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.resize(1180, 760)
         self._init_ui()
 
-        # Barra del titolo (ed eventuale Mica) coerenti col tema, anche se Windows cambia.
+        # Title bar (and Mica, if enabled) follow the theme, also when Windows switches.
+        # A bound method, not a lambda: Qt drops the connection with the window.
         self._effects_applied = False
-        QtWidgets.QApplication.instance().styleHints().colorSchemeChanged.connect(
-            lambda _scheme: self._apply_window_effects()
-        )
+        QtWidgets.QApplication.instance().styleHints().colorSchemeChanged.connect(self._on_scheme_changed)
 
     # ------------------------------------------------------------------ UI setup
 
@@ -105,7 +103,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.header = StatusHeader(self)
         self.stack = QtWidgets.QStackedWidget(self)
 
-        # Cattura = 0, Dati estratti = 1, Debug LLM = 2 (solo con --debug).
+        # Capture = 0, Extracted data = 1, Debug LLM = 2 (only with --debug).
         self.stack.addWidget(self.capture_tab)
         self.nav.add_page("Cattura", "scan")
         self.stack.addWidget(self.data_tab)
@@ -135,7 +133,10 @@ class MainWindow(QtWidgets.QMainWindow):
 
     # ------------------------------------------------------------------ Eventi
 
-    def showEvent(self, event) -> None:  # type: ignore[override]
+    def _on_scheme_changed(self, _scheme: QtCore.Qt.ColorScheme) -> None:
+        self._apply_window_effects()
+
+    def showEvent(self, event: QtGui.QShowEvent) -> None:  # type: ignore[override]
         super().showEvent(event)
         if not self._effects_applied:
             self._effects_applied = True
@@ -161,16 +162,13 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _on_counters(self, queued: int, done: int) -> None:
         job_id = self.capture_tab.get_current_job_id()
-        practices = 0
-        if job_id:
-            records = consolidate(self.extraction_client.get_results(job_id))
-            practices = sum(1 for record in records if has_content(record))
+        practices = self.extraction_client.practice_count(job_id) if job_id else 0
         self.header.set_counters(queued, done, practices)
 
     # ------------------------------------------------------------------ Chiusura finestra
 
     def _ask_leave_unexported(self, labels: List[str], pending: int) -> bool:
-        """True se l'operatore sceglie di uscire senza esportare."""
+        """True if the operator chooses to leave without exporting."""
         box = QtWidgets.QMessageBox(self)
         box.setIcon(QtWidgets.QMessageBox.Icon.Warning)
         box.setWindowTitle("Dati non esportati")
@@ -182,8 +180,8 @@ class MainWindow(QtWidgets.QMainWindow):
         box.exec()
         return box.clickedButton() is leave
 
-    def closeEvent(self, event) -> None:  # type: ignore[override]
-        # Prima di fermare la cattura: chi torna indietro non deve perdere nulla.
+    def closeEvent(self, event: QtGui.QCloseEvent) -> None:  # type: ignore[override]
+        # Before stopping the capture: whoever goes back must lose nothing.
         unexported = self.extraction_client.unexported_jobs()
         # Frames still being extracted count even when nothing is "modified" yet:
         # shutdown() discards them, so their result would be lost without a word.

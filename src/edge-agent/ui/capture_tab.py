@@ -69,10 +69,10 @@ class CaptureTab(QWidget):
         self._debug_tab: Optional[QtWidgets.QWidget] = debug_tab
         self._n_results: int = 0
         self._n_queued: int = 0
-        self._error_count: int = 0
+        self._error_messages: set[str] = set()  # distinct errors since the capture started
 
         self._init_ui()
-        # Le impostazioni valgono all'avvio: mentre si cattura non si toccano.
+        # Settings are read when a capture starts: they are locked while it runs.
         self.running_changed.connect(lambda running: self.settings_card.setEnabled(not running))
 
         # Connessioni uniche al client (vive quanto la finestra): i contatori
@@ -90,7 +90,7 @@ class CaptureTab(QWidget):
         layout.setContentsMargins(20, 16, 20, 16)
         layout.setSpacing(14)
 
-        # --- Card impostazioni (si blocca mentre si cattura) ---
+        # --- Settings card (locked while capturing) ---
         self.settings_card = Card("Impostazioni", self)
         grid = QGridLayout()
         grid.setHorizontalSpacing(16)
@@ -103,7 +103,7 @@ class CaptureTab(QWidget):
         self.mode_combo.addItem("Generico", userData="default")
         self.mode_combo.setCurrentIndex(0)
 
-        # FPS: niente pulsanti su/giù (poco leggibili); si digita o si usano le frecce
+        # FPS: no up/down buttons (hard to read); type the number or use the arrow keys
         self.fps_spin = QSpinBox(self.settings_card)
         self.fps_spin.setRange(1, 10)
         self.fps_spin.setValue(self.config.fps)
@@ -158,7 +158,7 @@ class CaptureTab(QWidget):
         actions.addWidget(self.export_button)
         layout.addLayout(actions)
 
-        # --- Registro: chiuso, con l'ultima riga e il numero di errori in vista ---
+        # --- Log: closed, showing its last line and the error count ---
         self.log_text = QTextEdit(self)
         self.log_text.setReadOnly(True)
         self.log_text.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
@@ -191,18 +191,19 @@ class CaptureTab(QWidget):
         self.log_text.append(f"[{ts}] {message}")
         self.log_text.ensureCursorVisible()
         if "[ERROR]" in message or message.startswith("[WORKER ERROR]"):
-            self._error_count += 1
+            # Distinct messages: a failing backend repeats itself every loop.
+            self._error_messages.add(message)
         self.log_panel.set_summary(self._summary_line(message if summary is None else summary))
 
     def _summary_line(self, text: str) -> str:
         line = text if len(text) <= 90 else text[:87] + "…"
-        if self._error_count:
-            word = "errore" if self._error_count == 1 else "errori"
-            line += f"  ·  {self._error_count} {word}"
+        if self._error_messages:
+            word = "errore" if len(self._error_messages) == 1 else "errori"
+            line += f"  ·  {len(self._error_messages)} {word}"
         return line
 
     def log_error_count(self) -> int:
-        return self._error_count
+        return len(self._error_messages)
 
     def _create_job_id(self) -> Optional[str]:
         """Avvia un nuovo job locale e ritorna il job_id."""
@@ -237,6 +238,7 @@ class CaptureTab(QWidget):
         self.job_id = job_id
         self._n_results = 0
         self._n_queued = 0
+        self._error_messages.clear()
         self.counters_changed.emit(0, 0)
 
         # Aggiorna la config dai controlli UI
@@ -352,18 +354,17 @@ class CaptureTab(QWidget):
         self._log(message)
 
     def _on_worker_error(self, exc: Exception) -> None:
-        # Riga tecnica nel registro; chi lo tiene chiuso legge una frase chiara.
+        # Technical line in the log; whoever keeps it closed reads a plain sentence.
         self._log(
             f"[WORKER ERROR] {type(exc).__name__}: {exc}",
-            # La cattura continua: il worker segnala l'errore a ogni giro e riprova.
+            # The capture goes on: the worker reports the error every loop and retries.
             summary="Errore durante la cattura. Apri il registro per i dettagli.",
         )
 
     # ------------------------------------------------------------------ Azioni backend
 
     def _on_export_excel(self) -> None:
-        results = self.api_client.get_results(self.job_id) if self.job_id else []
-        if not results:
+        if not self.job_id or self.api_client.practice_count(self.job_id) == 0:
             QMessageBox.warning(
                 self,
                 "Niente da esportare",
@@ -381,7 +382,7 @@ class CaptureTab(QWidget):
             return
 
         try:
-            # Unico percorso di export: correzioni ed etichette incluse.
+            # The single export path: corrections and labels included.
             written = self.api_client.export_workbook(self.job_id, file_path)
         except Exception as e:  # noqa: BLE001
             self._log(f"[ERROR] Export Excel fallita: {e}")

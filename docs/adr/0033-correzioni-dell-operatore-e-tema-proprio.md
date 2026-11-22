@@ -57,6 +57,9 @@ Correggere nella tabella non basta, per due motivi che stanno nel codice:
 
 - Una correzione sopravvive ai frame successivi, compare in entrambi gli export, si ripristina; un
   risultato che arriva mentre un editor è aperto aspetta la chiusura dell'editor.
+- Un errore in uno slot Qt non chiude l'app: `error_report.install_excepthook()` lo registra in
+  `edge-agent.log` e lo mostra (PyQt6 altrimenti termina il processo, e le sessioni, solo in
+  memoria, andrebbero perse). Test: `test_error_report.py`.
 - Nessuna evidenza visiva delle celle incerte (lo vieta il vincolo "l'edge-agent mostra solo dati di
   business") e nessuna validazione di date e importi: restano fuori.
 - Test che tengono vera la decisione: `test_practice_consolidation.py` (precedenza, NDG scritto in
