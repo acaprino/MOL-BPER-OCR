@@ -75,6 +75,7 @@ tarati, e nessun test lo verificava.
 | [0031](0031-modello-dinov2-nel-pacchetto.md) | Il pacchetto contiene il modello DINOv2 | Accettato |
 | [0032](0032-data-in-una-sola-radice.md) | `data/` contiene un solo archivio pulito, `data/dataset` | Accettato |
 | [0033](0033-correzioni-dell-operatore-e-tema-proprio.md) | Le correzioni dell'operatore vincono sul consolidato, solo in memoria; tema proprio al posto di `qt-material` | Accettato |
+| [0034](0034-lightonocr-surya-oxr-rifiutati.md) | Rifiutati LightOnOCR-3, Surya e OXR-1.0 per leggere e dividere le schermate | Rifiutato |
 
 ## Da scrivere
 
