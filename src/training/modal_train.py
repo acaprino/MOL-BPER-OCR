@@ -40,7 +40,7 @@ def _experiment_id(examples: list[dict[str, Any]], roles: list[str], settings: d
 
 
 @app.function(
-    image=image, gpu="L4", cpu=(2.0, 4.0), memory=12288, timeout=1800,
+    image=image, gpu="L4", cpu=(2.0, 4.0), memory=12288, timeout=2700,
     max_containers=1, scaledown_window=2, retries=0, volumes={"/vol": volume},
 )
 @modal.concurrent(max_inputs=1)
@@ -64,7 +64,7 @@ def run_training(
     result["remote_wall_seconds"] = round(time.perf_counter() - started, 3)
     result["remote_model_dir"] = name
     result["resources"] = {"gpu": "L4", "cpu_request": 2, "cpu_limit": 4,
-                           "memory_mib": 12288, "timeout_seconds": 1800,
+                           "memory_mib": 12288, "timeout_seconds": 2700,
                            "max_containers": 1, "retries": 0}
     return result
 
@@ -75,8 +75,8 @@ def _write_json(path: Path, value: Any) -> None:
 
 @app.local_entrypoint()
 def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: int = 7,
-         patience: int = 2) -> None:
-    """Train once and download the ordinary CPU-loadable model and its report."""
+         patience: int = 2, also_train: str = "", final_test: bool = False, download_weights: bool = True) -> None:
+    """Train once and write its report; the CPU-loadable model comes too unless it should stay on the volume."""
     dataset = Path(data_dir)
     output = Path(out_dir)
     if not dataset.is_absolute() or not output.is_absolute():
@@ -88,34 +88,38 @@ def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: 
     if output.exists():
         raise FileExistsError("Output directory must be new; previous experiments are immutable")
     settings = {"epochs": epochs, "variants": variants, "seed": seed,
-                "batch_size": 2, "accumulation_steps": 4, "patience": patience}
-    if not 1 <= epochs <= 16 or not 0 <= variants <= 2 or not 1 <= patience <= 4:
-        raise ValueError("The bounded experiment allows at most 16 epochs, 2 train variants and patience 4")
+                "batch_size": 2, "accumulation_steps": 4, "patience": patience,
+                "also_train": [practice for practice in also_train.split(",") if practice], "final_test": final_test}
+    if not 1 <= epochs <= 16 or not 0 <= variants <= 3 or not 1 <= patience <= 4:
+        raise ValueError("The bounded experiment allows at most 16 epochs, 3 train variants and patience 4")
     output.mkdir(parents=True, exist_ok=False)
     result = run_training.remote(examples, roles, manifest, settings)
     _write_json(output / "result.json", result)
-    _write_json(output / "test_predictions.json", result["test_predictions"])
+    if final_test:
+        _write_json(output / "test_predictions.json", result["test_predictions"])
     _write_json(output / "validation_predictions.json", result["validation_predictions"])
+    _write_json(output / "extended_predictions.json", result["extended_predictions"])
     _write_json(output / "metrics.json", result["metrics"])
-    model_dir = output / "cpu_model"
-    model_dir.mkdir()
-    for filename in result["model_files"]:
-        if PurePosixPath(filename).name != filename or "\\" in filename:
-            raise ValueError("Trainer returned an unsafe model filename")
-        remote_path = str(PurePosixPath(result["remote_model_dir"]) / filename)
-        with (model_dir / filename).open("xb") as stream:
-            for block in volume.read_file(remote_path):
-                stream.write(block)
+    if download_weights:
+        model_dir = output / "cpu_model"
+        model_dir.mkdir()
+        for filename in result["model_files"]:
+            if PurePosixPath(filename).name != filename or "\\" in filename:
+                raise ValueError("Trainer returned an unsafe model filename")
+            remote_path = str(PurePosixPath(result["remote_model_dir"]) / filename)
+            with (model_dir / filename).open("xb") as stream:
+                for block in volume.read_file(remote_path):
+                    stream.write(block)
     _write_json(output / "download_manifest.json", {
         "volume": "bper-lilt-spike", "remote_model_dir": result["remote_model_dir"],
-        "files": {path.name: {"bytes": path.stat().st_size,
-                             "sha256": _file_sha256(path)} for path in model_dir.iterdir()},
+        "files": ({path.name: {"bytes": path.stat().st_size, "sha256": _file_sha256(path)}
+                   for path in model_dir.iterdir()} if download_weights else {}),
     })
+    extended = result["metrics"]["extended_validation"] or {}
     print(json.dumps({"best_epoch": result["best_epoch"], "train_seconds": result["train_seconds"],
-                      "val_f1": result["metrics"]["validation"]["f1"],
-                      "test_f1": result["metrics"]["test"]["f1"],
-                      "remote_model_dir": result["remote_model_dir"],
-                      "local_model_dir": str(model_dir)}, ensure_ascii=False), flush=True)
+                      "val_field_accuracy": result["metrics"]["validation"]["field_accuracy"],
+                      "val_ext_field_accuracy": extended.get("field_accuracy"),
+                      "remote_model_dir": result["remote_model_dir"]}, ensure_ascii=False), flush=True)
 
 
 def _file_sha256(path: Path) -> str:

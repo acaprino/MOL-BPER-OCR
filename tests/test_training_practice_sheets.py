@@ -224,7 +224,7 @@ def test_field_out_of_a_screen_keeps_its_value_on_the_others(tmp_path: Path) -> 
 def test_note_cut_by_the_screen_keeps_its_text_as_partial(tmp_path: Path) -> None:
     record = _rows(tmp_path)[("Note", "Note della richiesta")]
     assert record["outcome"] == "PARZIALE"
-    assert record["value"].startswith("Numero Finanziamento")
+    assert record["value"].startswith("- Numero Finanziamento")
 
 
 def test_tooltip_is_on_the_screen_that_shows_it(tmp_path: Path) -> None:
@@ -314,3 +314,90 @@ def test_refuses_correction_that_does_not_match_the_cell(tmp_path: Path) -> None
 def test_refuses_correction_of_a_row_that_does_not_exist(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="60000001!99"):
         _rows(tmp_path, corrections=[{**FIX, "riga_excel": "60000001!99"}])
+
+
+# ============================================================
+# The note as the screen shows it
+# ============================================================
+
+
+def _note(tmp_path: Path, text: str) -> str:
+    return _fields(_workbook(tmp_path, _changed("Note della richiesta", text)))["note_della_richiesta"]["value"]
+
+
+def test_bullet_of_a_note_becomes_the_dash_of_the_screen(tmp_path: Path) -> None:
+    assert _note(tmp_path, "•\tNumero proposta DESK: N.D.") == "- Numero proposta DESK: N.D."
+
+
+def test_list_line_of_a_note_without_a_mark_gets_its_dash(tmp_path: Path) -> None:
+    assert _note(tmp_path, "Numero Finanziamento FICS: 017/5\nImporto perizia: N.D.") == (
+        "- Numero Finanziamento FICS: 017/5 - Importo perizia: N.D.")
+
+
+def test_list_line_of_a_note_with_its_dash_stays_as_it_is(tmp_path: Path) -> None:
+    assert _note(tmp_path, "- Codice immobile: 5103971;") == "- Codice immobile: 5103971;"
+
+
+def test_free_text_of_a_note_gets_no_dash(tmp_path: Path) -> None:
+    assert _note(tmp_path, "La cliente richiede un mutuo") == "La cliente richiede un mutuo"
+
+
+def test_guarantee_line_after_the_list_of_guarantees_gets_its_dash(tmp_path: Path) -> None:
+    text = "Sono presenti le garanzie fideiussorie seguenti:\nGaranzia FIDEJUSSIONE, Garante ROSSI (1)"
+    assert _note(tmp_path, text) == "- Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE, Garante ROSSI (1)"
+
+
+def test_line_about_a_guarantee_in_free_text_gets_no_dash(tmp_path: Path) -> None:
+    assert _note(tmp_path, "Mutuo prima casa\nGaranzia Consap al 50%") == "Mutuo prima casa Garanzia Consap al 50%"
+
+
+# ============================================================
+# The header of a detail screen, derived for the labels only
+# ============================================================
+
+TIPO = "BPI Mutui / Med. Creditizi"
+
+
+def _derived_rows(tmp_path: Path) -> dict[tuple[str, str], dict]:
+    import json
+
+    path = _workbook(tmp_path)
+    review = _review(path)
+    recorded = json.loads(review.read_text(encoding="utf-8"))
+    recorded["tipo_pratica"] = {"60000001": TIPO}
+    review.write_text(json.dumps(recorded), encoding="utf-8")
+    records = read_practice_sheets(path, review)
+    return {(record["screen"].split("__", 1)[1], record["display_name"]): record for record in records}
+
+
+def test_ndg_of_a_detail_screen_comes_from_the_list_page(tmp_path: Path) -> None:
+    record = _derived_rows(tmp_path)[("GestioneFidi2", "NDG")]
+    assert (record["value"], record["outcome"]) == ("60000001", "DERIVATO")
+
+
+def test_name_of_a_detail_screen_comes_from_the_first_subject(tmp_path: Path) -> None:
+    assert _derived_rows(tmp_path)[("Soggetti", "DENOMINAZIONE")]["value"] == "ROSSI MARIO, BIANCHI ANNA"
+
+
+def test_branch_of_a_detail_screen_comes_from_the_note_page(tmp_path: Path) -> None:
+    assert _derived_rows(tmp_path)[("Soggetti", "Filiale relazione")]["value"] == "230 - BO XXI APRIL"
+
+
+def test_type_of_a_detail_screen_comes_from_the_review(tmp_path: Path) -> None:
+    assert _derived_rows(tmp_path)[("Note", "Tipo")]["value"] == TIPO
+
+
+def test_note_page_keeps_its_reviewed_branch(tmp_path: Path) -> None:
+    assert _derived_rows(tmp_path)[("Note", "Filiale relazione")]["outcome"] == "TRASCRITTO"
+
+
+def test_list_page_has_no_derived_header(tmp_path: Path) -> None:
+    assert _derived_rows(tmp_path)[("Elenco", "NDG")]["outcome"] == "TRASCRITTO"
+
+
+def test_screen_scrolled_past_the_header_has_no_derived_row(tmp_path: Path) -> None:
+    assert ("Note2", "NDG") not in _derived_rows(tmp_path)
+
+
+def test_separator_line_of_a_note_stays_as_it_is(tmp_path: Path) -> None:
+    assert _note(tmp_path, "--- SI RICHIEDE INNALZAMENTO ---") == "--- SI RICHIEDE INNALZAMENTO ---"

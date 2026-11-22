@@ -10,6 +10,7 @@ import unicodedata
 from collections import Counter, defaultdict
 from collections.abc import Callable
 from decimal import Decimal, InvalidOperation
+from difflib import SequenceMatcher
 from statistics import median
 from typing import Any
 
@@ -19,7 +20,25 @@ from training.schema import field_role, vocabulary
 IGNORED_LABELS = {"IGNORE", -100, None}
 SUBJECT_ROLES = {"sogg_ndg", "sogg_denominazione", "sogg_ruolo"}
 FIDI_ROLES = ("n_fido", "rapporto", "descrizione", "scadenza", "importo_euro", "tipo_op")
-METRIC_VERSION = "strict-v3-fidi-first-row"
+METRIC_VERSION = "strict-v6-table-columns"
+# How close a word must read to a table header. Lower, and "Importo" reads as "Tipo" (ADR 0028).
+HEADER_MATCH = 0.8
+# The Elenco columns the model's roles must stay in (cells within 0.6 word heights of their header), and the other
+# headers of that table, which tell a column scrolled away from a header the OCR misread (ADR 0028).
+LIST_ROLES = ("tipo", "stato", "fase", "creazione", "evidenze")
+# This column stays on the right whatever the scroll: with no header of its own, the header was misread.
+LIST_PINNED_ROLE = "evidenze"
+LIST_OTHER_HEADERS = ("abi", "ndg", "denom", "importo", "data", "ass./del", "assegnata", "dest", "delib", "d.r", "area",
+                      "filiale")
+LIST_CELL_MARGIN = 1.0
+LIST_OTHER_MARGIN = 2.0
+# A wrapped subject cell sits around the NDG at the middle of its row: its lines stay within 0.56 word heights of
+# it, and two rows are at least 1.47 heights apart on every reviewed screen (ADR 0025).
+SUBJECT_CELL_REACH = 0.75
+# The words of a Fidi row stay within 0.61 word heights of its number, a tooltip or the next row start from 1.18 (ADR 0026).
+FIDI_CELL_REACH = 0.9
+FIDI_HEADERS = (("rapporto", "rapporto"), ("descrizione", "descrizione"), ("scadenza", "scadenza"),
+                ("importo", "importo_euro"), ("tipo", "tipo_op"))
 QUANTITY_FIELDS = {
     "importo_euro", "retribuzione_annua_netta", "importo_totale_annuo_nucleo",
     "nr_altri_componenti_nucleo", "di_cui_percepiscono_reddito", "numero_mensilita",
@@ -131,7 +150,7 @@ def _subject_row_centers(
         repeated = [column for column in columns if len(_lines(column)) >= 2]
         markers = repeated[-1] if repeated else []
     if markers:
-        return [median((_box(w)[1] + _box(w)[3]) / 2 for w in line) for line in _lines(markers)], tolerance
+        return [median((_box(w)[1] + _box(w)[3]) / 2 for w in line) for line in _lines(markers)], height
     centers: list[float] = []
     previous: float | None = None
     for line in _lines(subjects):
@@ -139,11 +158,22 @@ def _subject_row_centers(
         if previous is None or center - previous > 1.5 * height:
             centers.append(center)
         previous = center
-    return centers, tolerance
+    return centers, height
 
 
 def _center_y(word: dict[str, Any]) -> float:
     return (_box(word)[1] + _box(word)[3]) / 2
+
+
+def _height(word: dict[str, Any]) -> float:
+    return max(1.0, _box(word)[3] - _box(word)[1])
+
+
+def _fido_row_bottom(words: list[dict[str, Any]], anchor: dict[str, Any]) -> float:
+    """Where the row of a fido number ends: halfway to the next word aligned in its column."""
+    below = [_center_y(w) for w in words
+             if abs(_box(w)[0] - _box(anchor)[0]) <= _height(anchor) and _center_y(w) > _center_y(anchor) + _height(anchor)]
+    return (_center_y(anchor) + min(below)) / 2 if below else float("inf")
 
 
 def _first_fido_row(
@@ -153,13 +183,7 @@ def _first_fido_row(
     anchors = by_role.get("n_fido", [])
     if not anchors:
         return
-    anchor = min(anchors, key=_center_y)
-    left, height = _box(anchor)[0], max(1.0, _box(anchor)[3] - _box(anchor)[1])
-    below = [_center_y(w) for w in words
-             if abs(_box(w)[0] - left) <= height and _center_y(w) > _center_y(anchor) + height]
-    if not below:
-        return
-    bottom = (_center_y(anchor) + min(below)) / 2
+    bottom = _fido_row_bottom(words, min(anchors, key=_center_y))
     for role in FIDI_ROLES:
         if role in by_role:
             by_role[role] = [w for w in by_role[role] if _center_y(w) < bottom]
@@ -167,11 +191,166 @@ def _first_fido_row(
                 del by_role[role]
 
 
+def _is_header(word: dict[str, Any], name: str) -> bool:
+    """Whether a word reads as a table header, as the OCR misreads them: Deacrizione, T\u00edpo, Tip."""
+    folded = unicodedata.normalize("NFKD", str(word["text"]).strip().casefold())
+    plain = "".join(char for char in folded if not unicodedata.combining(char))
+    return SequenceMatcher(None, plain[:len(name)], name).ratio() >= HEADER_MATCH
+
+
+def _fidi_columns(words: list[dict[str, Any]], anchor: dict[str, Any]) -> list[tuple[str, float, float]]:
+    """Each Fidi role with the span of its column, from the table header above the row; empty if not read whole.
+
+    The cells are centered under their header, so a column ends halfway to the next header. Two tables sit side by
+    side: the columns are those of the left one, the proposed loans, between the fido number of the row and the
+    number column of the right table. An account can be wider than its header, so its column starts at the number.
+    """
+    above = [w for w in words if _center_y(w) < _center_y(anchor) and _is_header(w, "rapporto")]
+    if not above:
+        return []
+    level = _center_y(max(above, key=_center_y))
+    line = sorted((w for w in words if abs(_center_y(w) - level) <= _height(anchor)), key=lambda w: _box(w)[0])
+    index = next(i for i, w in enumerate(line) if _is_header(w, "rapporto"))
+    if _box(anchor)[2] > _box(line[index])[0]:
+        return []
+    found: list[tuple[str, int]] = []
+    for name, role in FIDI_HEADERS:
+        while index < len(line) and not _is_header(line[index], name):
+            index += 1
+        if index == len(line):
+            return []
+        found.append((role, index))
+        index += 1
+    while index < len(line) and not _is_header(line[index], "fido"):
+        index += 1
+    if index == len(line):
+        return []
+
+    def gap_before(position: int) -> float:
+        return (_box(line[position - 1])[2] + _box(line[position])[0]) / 2
+
+    lefts = [_box(anchor)[2], *[gap_before(position) for _, position in found[1:]]]
+    rights = [*lefts[1:], gap_before(index - 1)]
+    return [(role, left, right) for (role, _), left, right in zip(found, lefts, rights)]
+
+
+def _fidi_cells(words: list[dict[str, Any]], by_role: dict[str, list[dict[str, Any]]]) -> None:
+    """Read the first row by column: the model finds the row, the header says what each word in it is (ADR 0026)."""
+    anchors = by_role.get("n_fido", [])
+    if not anchors:
+        return
+    anchor = min(anchors, key=_center_y)
+    columns = _fidi_columns(words, anchor)
+    if not columns:
+        return
+    reach = FIDI_CELL_REACH * _height(anchor)
+    top, bottom = _center_y(anchor) - reach, min(_center_y(anchor) + reach, _fido_row_bottom(words, anchor))
+    for role, left, right in columns:
+        cell = [w for w in words
+                if top <= _center_y(w) <= bottom and left <= (_box(w)[0] + _box(w)[2]) / 2 < right]
+        if cell:
+            by_role[role] = cell
+        else:
+            by_role.pop(role, None)
+
+
+def _center_x(word: dict[str, Any]) -> float:
+    return (_box(word)[0] + _box(word)[2]) / 2
+
+
+def _under(word: dict[str, Any], header: dict[str, Any], margin: float) -> bool:
+    """Whether a word stands under a header, within that many word heights of its sides."""
+    reach = margin * _height(header)
+    return _box(header)[0] - reach <= _center_x(word) <= _box(header)[2] + reach
+
+
+def _list_columns(words: list[dict[str, Any]], by_role: dict[str, list[dict[str, Any]]]) -> None:
+    """Keep the Elenco roles in their columns, on the table with "ABI" and "Denom." in its header (ADR 0028).
+
+    A column can be scrolled away, or its header misread: with no header of its own, a role only loses the words
+    standing under another header of the table.
+    """
+    line: list[dict[str, Any]] = []
+    for first in sorted((w for w in words if str(w["text"]).strip().casefold() == "abi"), key=_center_y):
+        same = [w for w in words if abs(_center_y(w) - _center_y(first)) <= _height(first)]
+        if any(_is_header(w, "denom") for w in same):
+            line = same
+            break
+    if not line:
+        return
+    others = [w for w in line if any(_is_header(w, name) for name in (*LIST_OTHER_HEADERS, *LIST_ROLES))]
+    for role in LIST_ROLES:
+        if role not in by_role:
+            continue
+        own = [w for w in line if _is_header(w, role)]
+        if own:
+            kept = [w for w in by_role[role] if any(_under(w, header, LIST_CELL_MARGIN) for header in own)]
+        elif role == LIST_PINNED_ROLE:
+            continue
+        else:
+            kept = [w for w in by_role[role] if not any(_under(w, header, LIST_OTHER_MARGIN) for header in others)]
+        if kept:
+            by_role[role] = kept
+        else:
+            del by_role[role]
+
+
+def _subject_cells(words: list[dict[str, Any]], by_role: dict[str, list[dict[str, Any]]]) -> dict[str, str] | None:
+    """Read the subjects by column: the model says the page has them, the table header what each word is (ADR 0028).
+
+    The rows are the numbers under NDG. Names and roles are left-aligned, so a column starts at the left edge of its
+    header. Returns None when the header is not read whole: the model's roles then stand.
+    """
+    if not any(role in by_role for role in SUBJECT_ROLES):
+        return None
+    for ruolo in sorted((w for w in words if _is_header(w, "ruolo")), key=_center_y):
+        height = _height(ruolo)
+        line = sorted((w for w in words if abs(_center_y(w) - _center_y(ruolo)) <= height), key=lambda w: _box(w)[0])
+        ndg = next((w for w in line if _is_header(w, "ndg")), None)
+        name = next((w for w in line if _is_header(w, "denominazione")), None)
+        if ndg is None or name is None:
+            continue
+        markers = [w for w in words if _center_y(w) > _center_y(ruolo) + height
+                   and re.fullmatch(r"\d[\d., ]*", str(w["text"]).strip())
+                   and abs(_box(w)[2] - _box(ndg)[2]) <= height]
+        if not markers:
+            continue
+        reach = SUBJECT_CELL_REACH * median(_height(w) for w in markers)
+        centers = [median(_center_y(w) for w in row) for row in _lines(markers)]
+        following = next((_box(w)[0] for w in line if _box(w)[0] > _box(ruolo)[2]), float("inf"))
+        columns = (("ndg", _box(ndg)[2] - 4 * height, _box(name)[0]), ("denominazione", _box(name)[0], _box(ruolo)[0]),
+                   ("ruolo", _box(ruolo)[0], following))
+        fields: dict[str, str] = {}
+        for index, center in enumerate(centers[:4]):
+            bottom = centers[index + 1] - reach if index + 1 < len(centers) else center + reach
+            for key, left, right in columns:
+                cell = [w for w in words if center - reach <= _center_y(w) < bottom and left <= _center_x(w) < right]
+                if cell:
+                    fields[f"{key}_{index + 1}"] = _join(cell)
+        return fields
+    return None
+
+
+def _header_line(words: list[dict[str, Any]], by_role: dict[str, list[dict[str, Any]]]) -> None:
+    """Read the NDG and the name from the line "NDG: number - name"; the model also finds them elsewhere on the page."""
+    labels = [w for w in words if str(w["text"]).strip() == "NDG:"]
+    if not labels:
+        return
+    label = min(labels, key=_center_y)
+    line = sorted((w for w in words if abs(_center_y(w) - _center_y(label)) <= _height(label) / 2
+                   and _box(w)[0] >= _box(label)[2]), key=lambda w: _box(w)[0])
+    dash = next((i for i, w in enumerate(line) if str(w["text"]).strip() == "-"), None)
+    if dash:
+        by_role["ndg"] = line[:dash]
+        if line[dash + 1:]:
+            by_role["denominazione"] = line[dash + 1:]
+
+
 def decode_fields(
     example: dict[str, Any], predicted_roles: list[str],
     probabilities: list[float] | None = None,
 ) -> dict[str, str]:
-    """Decode raw OCR text using predicted roles, subject-row and FIDI-row geometry.
+    """Decode raw OCR text using predicted roles and the geometry of the tables.
 
     The ground-truth values do not influence reconstruction. Probabilities are
     accepted for the prediction contract; no hidden confidence cutoff is used.
@@ -186,11 +365,18 @@ def decode_fields(
         if role not in IGNORED_LABELS and role != "O":
             by_role[role].append(word)
     _first_fido_row(words, by_role)
+    _fidi_cells(words, by_role)
+    _header_line(words, by_role)
+    _list_columns(words, by_role)
     fields = {role: _join(ws) for role, ws in by_role.items() if role not in SUBJECT_ROLES}
-    centers, tolerance = _subject_row_centers(words, by_role)
+    subjects = _subject_cells(words, by_role)
+    if subjects is not None:
+        return {**fields, **subjects}
+    centers, height = _subject_row_centers(words, by_role)
+    reach = SUBJECT_CELL_REACH * height
     for index, center in enumerate(centers[:4]):
-        top = center - tolerance if index else float("-inf")
-        bottom = centers[index + 1] - tolerance if index + 1 < len(centers) else float("inf")
+        top = center - reach
+        bottom = centers[index + 1] - reach if index + 1 < len(centers) else float("inf")
         for role, key in (("sogg_ndg", "ndg"), ("sogg_denominazione", "denominazione"), ("sogg_ruolo", "ruolo")):
             in_row = [w for w in by_role.get(role, []) if top <= (_box(w)[1] + _box(w)[3]) / 2 < bottom]
             if in_row:

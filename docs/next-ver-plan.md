@@ -227,6 +227,8 @@ eccezioni, coordinate o stringhe ricavate dai suoi errori. L'esecuzione OCR sull
 sue immagini è ammessa per creare cache complete; le metriche e le osservazioni
 di test non partecipano alla selezione.
 
+Ogni pratica ha un ruolo, addestramento, controllo o test, e nessuna resta esclusa (ADR 0027): la validazione estesa addestra anche il modello finale ed è misurata da addestramenti a rotazione.
+
 Le nuove pratiche di G8 sono assegnate a validazione estesa o conferma prima
 delle prove, con separazione di pratica, NDG dei soggetti e immagini anche rispetto
 al corpus originario; l'NDG del Fondo di garanzia non conta (ADR 0024). La conferma resta sigillata fino al congelamento di codice,
@@ -378,7 +380,7 @@ la promozione: la presenza di thread daemon non dimostra il recupero da un blocc
   in conferma no.
 - `LUNARDI_26871394` (9 schermate, verità in `data/reference/dati.csv`) è il corpus
   di riferimento su cui il motore VLM è stato sviluppato e misurato: è esposta e non
-  vale come conferma.
+  vale come conferma, quindi addestra (ADR 0027, `ground-truth-v3.4`).
 
 **Fabbisogno minimo.** Per ciascuno dei 15 campi scoperti servono almeno tre pratiche
 nuove con un valore non vuoto: una di validazione estesa e due di conferma. In
@@ -447,7 +449,7 @@ contratti verificati. Questo piano non rappresenta codice già implementato.
 
 1. Se train/val mostrano limiti delle regole o dell'ibrido, addestrare B2 sulle feature ammesse e confrontarlo sulla validazione, senza consultare il test per scegliere feature o soglie.
 2. Riaddestrare LiLT soltanto se train/val dimostrano un contributo utile ai campi variabili e un problema di distribuzione dei nuovi box. Prima di creare `ground-truth-v3.2`, aggiornare esplicitamente il builder e il contratto di `validate_reviewed_dataset()`: oggi scrivono/accettano soltanto v3.1. Preservare controlli di revisione, split, classi, impronte e rifiuto delle versioni sconosciute, con regressioni per v3.1 e v3.2. Una directory rinominata non è una nuova versione del dataset. *Fatto il 2026-10-28:* il builder legge più lotti (`--lot`), il contratto è la tabella `DATASET_CONTRACTS` per versione, `data/training/ground-truth-v3.2/` contiene la verità unificata con esempi per gli split v3.1 e `val_ext` (nessun esempio per la conferma).
-3. Un eventuale training Modal è un esperimento separato dall'esecuzione operativa offline, con perimetro e dati trasferiti dichiarati secondo ADR 0022. Selezionare l'epoca sulla validazione; l'automatismo di valutazione del test nel training va adeguato prima di confrontare nuovi candidati, per rispettare il congelamento previsto qui.
+3. Un eventuale training Modal è un esperimento separato dall'esecuzione operativa offline, con perimetro e dati trasferiti dichiarati secondo ADR 0022. Selezionare l'epoca sulla validazione; l'automatismo di valutazione del test nel training va adeguato prima di confrontare nuovi candidati, per rispettare il congelamento previsto qui. *Fatto il 2026-11-07:* `train_model()` esegue il test solo con `final_test` e misura ogni run sulla validazione estesa. Primo run su `ground-truth-v3.3` (`runs/lilt-v3.3-20261107-T8-seed7/`, un solo seed, stesse 8 pratiche, copie con altra inquadratura): validazione 139/146, validazione estesa 340/360 con le regole degli ADR 0025 e 0026, ricavate da quella stessa popolazione. G5 Fidi in validazione resta a 22/25 contro 23/25, per letture dell'OCR. Non è un candidato congelato. Poi, sul corpus `ground-truth-v3.4` con 18 pratiche di addestramento (ADR 0027) e le tabelle Elenco e Soggetti lette per colonna (ADR 0028): `runs/lilt-v3.4-20261107-T18-seed7/`, un seed, 139/146 in validazione, G4 target superato, G5 Soggetti 14/15, G5 Fidi 22/25; test storico 178/192, sopra l'equivalente del target (177/192) ma già analizzato. A rotazione sulle 9 pratiche di validazione estesa: 348/360, con Fidi 104/106 e Soggetti 51/51, ottimistico perché le regole vengono da lì.
 
 ### Verifica Finale del Candidato Congelato
 

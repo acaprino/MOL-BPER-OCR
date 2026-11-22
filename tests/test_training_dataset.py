@@ -258,11 +258,14 @@ V3_1 = ["51185037", "52062600", "52067184", "52068422", "52080223", "52102599", 
 BOX = [[10, 10], [40, 10], [40, 30], [10, 30]]
 
 
-def _png(path: Path, shade: int) -> None:
-    from PIL import Image
+def _png(path: Path, shade: int, ink: tuple[tuple[int, int, int, int], ...] = ()) -> None:
+    from PIL import Image, ImageDraw
 
     path.parent.mkdir(parents=True, exist_ok=True)
-    Image.new("RGB", (200, 100), (shade, shade, shade)).save(path)
+    image = Image.new("RGB", (200, 100), (shade, shade, shade))
+    for box in ink:
+        ImageDraw.Draw(image).rectangle(box, fill=(0, 0, 0))
+    image.save(path)
 
 
 def _digests(path: Path) -> dict[str, str]:
@@ -386,7 +389,8 @@ SHEET_VIEWS = {"GestioneFidi2": {"tooltip": "tooltip su valore campo Descrizione
                "GestioneFidi4": {"tooltip": "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS"}}
 
 
-def _sheet_corpus(tmp_path: Path, same_subject: bool = False, guarantor: bool = False):
+def _sheet_corpus(tmp_path: Path, same_subject: bool = False, guarantor: bool = False,
+                  ink: tuple[tuple[int, int, int, int], ...] = ()):
     """The earlier corpus plus a lot of sheets: one practice whose screens were checked, one sealed practice."""
     import hashlib
     import json
@@ -407,7 +411,7 @@ def _sheet_corpus(tmp_path: Path, same_subject: bool = False, guarantor: bool = 
     lot_workbook = write_sheets(lot_dir / "lotto.xlsx", sheets)
     digests = {}
     for shade, (practice, name) in enumerate(((p, n) for p in subjects for n in SHEET_SCREENS), 100):
-        _png(shots / practice / f"{name}.png", shade)
+        _png(shots / practice / f"{name}.png", shade, ink)
         digests[f"{practice}__{name}"] = _digests(shots / practice / f"{name}.png")
     assignment = lot_dir / "g8_assegnazione.json"
     assignment.write_text(json.dumps({"lotto": "lotto-2026-11-05",
@@ -478,3 +482,148 @@ def test_guarantee_fund_in_both_groups_is_accepted(tmp_path: Path) -> None:
 
 def test_manifest_names_the_ndgs_that_are_not_identities(tmp_path: Path) -> None:
     assert _build_sheet_bundle(tmp_path)["institutional_ndgs"] == ["11153238"]
+
+
+
+
+def test_derived_header_is_in_the_truth(tmp_path: Path) -> None:
+    from training.dataset import build_dataset
+
+    workbook, shots, ocr, lots = _sheet_corpus(tmp_path)
+    build_dataset(workbook, shots, ocr, tmp_path / "out", lots=lots)
+    rows = {(r["Fotogramma"], r["Denominazione da attribuire"]): r for r in _csv_rows(tmp_path / "out" / "ground_truth.csv")}
+    assert rows[("70000001__Soggetti", "NDG")]["Esito"] == "DERIVATO"
+
+
+def test_derived_header_is_not_a_target(tmp_path: Path) -> None:
+    import json
+
+    from training.dataset import build_dataset
+
+    workbook, shots, ocr, lots = _sheet_corpus(tmp_path)
+    build_dataset(workbook, shots, ocr, tmp_path / "out", lots=lots)
+    example = next(e for e in json.loads((tmp_path / "out" / "examples.json").read_text(encoding="utf-8"))
+                   if e["id"] == "70000001__Soggetti")
+    assert "ndg" not in example["values"]
+
+
+def test_derived_header_labels_the_words_it_finds(tmp_path: Path) -> None:
+    import json
+
+    from training.dataset import build_dataset
+
+    workbook, shots, ocr, lots = _sheet_corpus(tmp_path, ink=((14, 14, 34, 26), (56, 14, 104, 26)))
+    lots[1].ocr.write_text(json.dumps({f"70000001__{name}": {"items": [["NDG:", 0.99, [[10, 10], [40, 10], [40, 30], [10, 30]]],
+                                                                       ["70000011", 0.99, [[50, 10], [120, 10], [120, 30], [50, 30]]]]}
+                                       for name in SHEET_SCREENS}), encoding="utf-8")
+    build_dataset(workbook, shots, ocr, tmp_path / "out", lots=lots)
+    example = next(e for e in json.loads((tmp_path / "out" / "examples.json").read_text(encoding="utf-8"))
+                   if e["id"] == "70000001__Soggetti")
+    assert dict(zip((w["text"] for w in example["words"]), example["labels"]))["70000011"] == "ndg"
+
+
+# ============================================================
+# The reference practice, and a role for every practice
+# ============================================================
+
+REFERENCE = "REF_26871394"
+
+
+def _reference_lot(tmp_path: Path, shots: Path, rows: str | None = None, sha256: str | None = None):
+    """A reference practice with its truth as CSV, assigned to training."""
+    import hashlib
+    import json
+
+    from training.dataset import Lot
+
+    lot_dir = tmp_path / "riferimento"
+    lot_dir.mkdir()
+    truth = lot_dir / "dati.csv"
+    truth.write_text("Fotogramma,Denominazione da attribuire,Valore rilevato\n"
+                     + (rows if rows is not None else "screen 1,NDG,26871394\nscreen 1,Tipo,\nscreen 2,Stato,LAV\n"),
+                     encoding="utf-8")
+    frames = lot_dir / "fotogrammi.json"
+    frames.write_text(json.dumps({"workbook_sha256": sha256 or hashlib.sha256(truth.read_bytes()).hexdigest(),
+                                  "pratica": REFERENCE, "fotogrammi": {"screen 1": "Elenco", "screen 2": "Elenco_dx"}}),
+                      encoding="utf-8")
+    digests = {}
+    for shade, name in enumerate(("Elenco", "Elenco_dx"), 200):
+        _png(shots / REFERENCE / f"{name}.png", shade)
+        digests[f"{REFERENCE}__{name}"] = _digests(shots / REFERENCE / f"{name}.png")
+    assignment = lot_dir / "assegnazione.json"
+    assignment.write_text(json.dumps({"lotto": "riferimento-lunardi", "gruppi": {"addestramento": [REFERENCE]},
+                                      "schermate": digests}), encoding="utf-8")
+    ocr = lot_dir / "ocr.json"
+    ocr.write_text(json.dumps({f"{REFERENCE}__{name}": {"items": [["7", 0.99, BOX]]} for name in ("Elenco", "Elenco_dx")}),
+                   encoding="utf-8")
+    return Lot(truth, assignment, frames, ocr)
+
+
+def _reference_records(tmp_path: Path, rows: str | None = None, sha256: str | None = None) -> list[dict]:
+    from training.dataset import read_reference_truth
+
+    lot = _reference_lot(tmp_path, tmp_path / "pratiche", rows, sha256)
+    return read_reference_truth(lot.workbook, lot.corrections)
+
+
+def _full_corpus(tmp_path: Path):
+    workbook, shots, ocr, lots = _sheet_corpus(tmp_path)
+    return workbook, shots, ocr, [*lots, _reference_lot(tmp_path, shots)]
+
+
+def _build_full_bundle(tmp_path: Path) -> dict:
+    from training.dataset import build_dataset
+
+    workbook, shots, ocr, lots = _full_corpus(tmp_path)
+    return build_dataset(workbook, shots, ocr, tmp_path / "out", lots=lots)
+
+
+def test_reference_row_becomes_the_value_of_its_screen(tmp_path: Path) -> None:
+    record = _reference_records(tmp_path)[0]
+    assert (record["screen"], record["field"], record["value"]) == (f"{REFERENCE}__Elenco", "ndg", "26871394")
+
+
+def test_blank_reference_value_is_an_absence(tmp_path: Path) -> None:
+    record = _reference_records(tmp_path)[1]
+    assert (record["value"], record["outcome"]) == (None, "VUOTO")
+
+
+def test_refuses_reference_frame_without_a_screen(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="screen 9"):
+        _reference_records(tmp_path, "screen 9,NDG,1\n")
+
+
+def test_refuses_reference_field_outside_the_vocabulary(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="Campo inventato"):
+        _reference_records(tmp_path, "screen 1,Campo inventato,1\n")
+
+
+def test_refuses_frames_recorded_for_another_file(tmp_path: Path) -> None:
+    with pytest.raises(ValueError, match="altro file"):
+        _reference_records(tmp_path, sha256="altro")
+
+
+def test_reference_lot_makes_a_v3_4_bundle(tmp_path: Path) -> None:
+    assert _build_full_bundle(tmp_path)["dataset_version"] == "ground-truth-v3.4"
+
+
+def test_reference_practice_trains(tmp_path: Path) -> None:
+    assert REFERENCE in _build_full_bundle(tmp_path)["practice_splits"]["train"]
+
+
+def test_practice_folder_without_a_role_is_refused(tmp_path: Path) -> None:
+    from training.dataset import build_dataset
+
+    workbook, shots, ocr, lots = _full_corpus(tmp_path)
+    _png(shots / "99999999" / "Elenco.png", 7)
+    with pytest.raises(ValueError, match="99999999"):
+        build_dataset(workbook, shots, ocr, tmp_path / "out", lots=lots)
+
+
+@pytest.mark.parametrize(("practice", "role"), [
+    (REFERENCE, "addestramento"), ("51185037", "addestramento"), ("60000001", "addestramento"), ("70000001", "addestramento"),
+    ("51659595", "controllo"), ("51531667", "test"), ("60000002", "test"), ("70000002", "test"),
+])
+def test_practice_table_names_the_role_of_a_practice(tmp_path: Path, practice: str, role: str) -> None:
+    _build_full_bundle(tmp_path)
+    assert {r["Pratica"]: r["Ruolo"] for r in _csv_rows(tmp_path / "out" / "practices.csv")}[practice] == role

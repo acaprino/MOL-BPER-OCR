@@ -48,6 +48,13 @@ TOOLTIP_DISPLAYS = (M_CONSAP_TOOLTIP, DR_BIS_TOOLTIP, MORTGAGE_TOOLTIP)
 # A tooltip starts with the product code: only these codes have a field among the 45.
 LOAN_TOOLTIP_CODES = {"340176": M_CONSAP_TOOLTIP}
 GUARANTEE_TOOLTIP_CODES = {"55": MORTGAGE_TOOLTIP, "457": DR_BIS_TOOLTIP}
+NOTE_LABEL = "Note della richiesta"
+# The list lines the application writes at the top of a note: on screen they start with a dash.
+NOTE_LIST_LINES = ("Numero Finanziamento FICS:", "Numero proposta DESK:", "Importo perizia:", "Valore immobile presunto:",
+                   "Immobile da ipotecare", "Dettaglio importi mutuo:", "Codice immobile:", "Sono presenti le garanzie")
+NOTE_MARK = re.compile(r"^(?:[•·]|-(?!-))\s*")
+# Who is on the header of a detail screen, as the other pages say: the reviewer does not list it there.
+HEADER_FROM = {"NDG": "NDG", "DENOMINAZIONE": "DENOMINAZIONE 1", "Filiale relazione": "Filiale relazione"}
 DELIVERED_FILE = re.compile(r"(elenco|soggetti|gestionefidi|note)(\d*)\.png", re.IGNORECASE)
 DELIVERED_PAGES = {"elenco": "Elenco", "soggetti": "Soggetti", "gestionefidi": "GestioneFidi", "note": "Note"}
 
@@ -71,6 +78,20 @@ def _text(label: str, value: Any, where: str) -> str | None:
         return f"{int(value):,}".replace(",", ".") if label in AMOUNT_LABELS else str(int(value))
     text = " ".join(str(value).split())
     return None if text.casefold() == EMPTY_VALUE else text
+
+
+def _note_text(value: Any) -> str:
+    """The note as the screen shows it: pasting through Word turned the dash of its list lines into a bullet, or dropped it."""
+    lines: list[str] = []
+    among_guarantees = False
+    for line in str(value).splitlines():
+        stripped = line.strip()
+        bare = NOTE_MARK.sub("", stripped)
+        guarantee = among_guarantees and bare.startswith("Garanzia ")
+        listed = bare != stripped or guarantee or bare.startswith(NOTE_LIST_LINES)
+        among_guarantees = guarantee or bare.startswith("Sono presenti le garanzie")
+        lines.append(f"- {bare}" if listed else stripped)
+    return "\n".join(lines)
 
 
 def _tooltip_display(value: str | None, codes: Mapping[str, str], outside: str) -> str:
@@ -129,7 +150,7 @@ def _read_sheet(sheet: Any, mapping: Mapping[str, str]) -> list[dict[str, Any]]:
             raise ValueError(f"Il ground truth contiene una formula in {where}.")
         if value_cell.value is None or not str(value_cell.value).strip():
             raise ValueError(f"Campo senza valore in {where}: {label}.")
-        value = _text(label, value_cell.value, where)
+        value = _text(label, _note_text(value_cell.value) if label == NOTE_LABEL else value_cell.value, where)
         if page == "GestioneFidi" and label == GUARANTEE_START:
             guarantee += 1
         display = _display(page, label, guarantee, value)
@@ -176,15 +197,20 @@ def _page_of(screen: str) -> str:
 
 
 def _on_screens(practice: str, records: list[dict[str, Any]], screens: Mapping[str, Mapping[str, Any]],
-                ) -> list[dict[str, Any]]:
+                tipo: str | None, mapping: Mapping[str, str]) -> list[dict[str, Any]]:
     """The values of the pages as rows of each screen, following what was checked on that screen.
 
     A field of the page is on all its screens unless hidden there; a tooltip only on the screen that shows it.
     What is outside the vocabulary stays on the first screen of the page: it is kept, not looked for.
+    The header of a detail screen is not listed by the reviewer: its rows are derived from the other pages, and teach
+    the model without being measured. A screen hiding its branch is scrolled past the header and has none.
     """
     missing = [page for page in PAGES if page not in screens]
     if missing:
         raise ValueError(f"Manca la prima schermata delle pagine {missing} nella pratica {practice}.")
+    reviewed = {record["display_name"]: record["value"] for record in records}
+    header = {display: reviewed.get(source) for display, source in HEADER_FROM.items()}
+    header["Tipo"] = tipo
     rows: list[dict[str, Any]] = []
     shown: set[str] = set()
     for name, view in screens.items():
@@ -215,6 +241,13 @@ def _on_screens(practice: str, records: list[dict[str, Any]], screens: Mapping[s
             elif display in partial:
                 row.update(outcome="PARZIALE", reviewer_status="PARZIALE")
             rows.append(row)
+        if page == "Elenco" or "Filiale relazione" in hidden:
+            continue
+        on_page = {record["display_name"] for record in values}
+        for display, value in header.items():
+            if value is not None and display not in on_page:
+                rows.append(dict(_record(practice, page, display, value, mapping, None), screen=f"{practice}__{name}",
+                                 outcome="DERIVATO", reviewer_status="DERIVATO"))
     lost = [record["display_name"] for record in records if record["display_name"] in TOOLTIP_DISPLAYS
             and record["value"] is not None and record["display_name"] not in shown]
     if lost:
@@ -231,11 +264,13 @@ def read_practice_sheets(path: Path, corrections_path: Path | None = None) -> li
     """
     screens: Mapping[str, Mapping[str, Any]] = {}
     corrections: list[dict[str, Any]] = []
+    tipos: Mapping[str, str] = {}
     if corrections_path is not None:
         recorded = json.loads(corrections_path.read_text(encoding="utf-8"))
         if recorded["workbook_sha256"] != hashlib.sha256(path.read_bytes()).hexdigest():
             raise ValueError("Le correzioni si riferiscono a un altro workbook.")
         screens, corrections = recorded.get("schermate", {}), recorded.get("correzioni", [])
+        tipos = recorded.get("tipo_pratica", {})
     mapping = vocabulary()[1]
     workbook = load_workbook(path, read_only=True, data_only=False)
     try:
@@ -254,5 +289,6 @@ def read_practice_sheets(path: Path, corrections_path: Path | None = None) -> li
     result: list[dict[str, Any]] = []
     for practice in dict.fromkeys(record["practice"] for record in records):
         own = [record for record in records if record["practice"] == practice]
-        result += _on_screens(practice, own, screens[practice]) if screens.get(practice) else own
+        result += (_on_screens(practice, own, screens[practice], tipos.get(practice), mapping)
+                   if screens.get(practice) else own)
     return result

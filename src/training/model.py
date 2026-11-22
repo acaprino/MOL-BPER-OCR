@@ -9,6 +9,7 @@ import math
 import random
 import time
 from collections import Counter
+from collections.abc import Sequence
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -26,9 +27,13 @@ DATASET_CONTRACTS: dict[str, dict[str, dict[str, int]]] = {
                           "splits": {"train": 8, "val": 2, "test": 2, "val_ext": 5}},
     "ground-truth-v3.3": {"counts": {"reviewed_rows": 1368, "screens": 162, "practices": 21},
                           "splits": {"train": 8, "val": 2, "test": 2, "val_ext": 9}},
+    "ground-truth-v3.4": {"counts": {"reviewed_rows": 1445, "screens": 171, "practices": 22},
+                          "splits": {"train": 9, "val": 2, "test": 2, "val_ext": 9}},
 }
-# "val_ext" is the G8 extended validation: scored, never trained on, absent from the v3.1 bundle.
-KNOWN_SPLITS = ("train", "val", "test", "val_ext")
+# "val_ext" is the G8 extended validation, absent from the v3.1 bundle. It is scored by the runs that hold it out, and
+# trains the final model through `also_train` (ADR 0027).
+EXTENDED_SPLIT = "val_ext"
+KNOWN_SPLITS = ("train", "val", "test", EXTENDED_SPLIT)
 
 
 def dataset_fingerprint(examples: list[dict[str, Any]], roles: list[str]) -> str:
@@ -246,6 +251,30 @@ def _augment(example: dict[str, Any], rng: random.Random) -> dict[str, Any]:
     return augmented
 
 
+def _reframe(example: dict[str, Any], rng: random.Random) -> dict[str, Any]:
+    """Frame a training copy differently, as a screenshot taken with another window, scroll or crop would be.
+
+    LiLT reads each word's position relative to the whole image. The training screens are nearly all framed alike,
+    while the screens of the later lots go from 1218 to 1924 wide and from 853 to 1299 tall, and lose the header when
+    scrolled. The ranges come from those screens. Words that fall out of the new frame leave with their labels.
+    """
+    width, height = example["image_size"]
+    left = rng.uniform(0.0, 0.18) * width if rng.random() < 0.3 else 0.0
+    right = rng.uniform(0.0, 0.38) * width if rng.random() < 0.3 else 0.0
+    top = rng.uniform(0.0, 0.45) * height if rng.random() < 0.6 else 0.0
+    bottom = rng.uniform(0.0, 0.15) * height if rng.random() < 0.4 else 0.0
+    taller = rng.uniform(0.0, 0.3) * height if rng.random() < 0.3 else 0.0
+    new_width, new_height = width - left - right, height - top - bottom
+    words, labels = [], []
+    for word, label in zip(example["words"], example["labels"]):
+        center_x, center_y = (word["x0"] + word["x1"]) / 2 - left, (word["y0"] + word["y1"]) / 2 - top
+        if 0 <= center_x <= new_width and 0 <= center_y <= new_height:
+            words.append({**word, "x0": max(0.0, word["x0"] - left), "x1": min(new_width, word["x1"] - left),
+                          "y0": max(0.0, word["y0"] - top), "y1": min(new_height, word["y1"] - top)})
+            labels.append(label)
+    return {**example, "image_size": [new_width, new_height + taller], "words": words, "labels": labels}
+
+
 CREDIT_FIELDS = {"n_fido", "rapporto", "descrizione", "scadenza", "importo_euro", "tipo_op"}
 NOTE_ROLES = {"note_della_richiesta", "note_scheda_privati"}
 
@@ -314,15 +343,23 @@ def train_model(
     base_revision: str | None = None, epochs: int = 8, variants: int = 2,
     seed: int = 7, batch_size: int = 2, accumulation_steps: int = 4,
     learning_rate: float = 3e-5, device: str = "cuda", patience: int = 2,
+    also_train: Sequence[str] = (), final_test: bool = False,
 ) -> dict[str, Any]:
-    """Train a new model; test labels never participate in checkpoint selection."""
+    """Train a new model; test labels never participate in checkpoint selection.
+
+    The historical test stays out unless ``final_test`` asks for it, which only a frozen candidate does. The practices
+    in ``also_train`` come from the extended validation: they train this run and leave its score.
+    """
     import torch
     from transformers import AutoTokenizer, LiltForTokenClassification
 
     validate_splits(examples)
-    if not (1 <= epochs <= 16 and 0 <= variants <= 2 and 1 <= batch_size <= 4
+    if not (1 <= epochs <= 16 and 0 <= variants <= 3 and 1 <= batch_size <= 4
             and 1 <= accumulation_steps <= 8 and 1 <= patience <= 4):
         raise ValueError("Training parameters exceed the bounded experiment limits")
+    extended = {example["practice"] for example in examples if example["split"] == EXTENDED_SPLIT}
+    if set(also_train) - extended:
+        raise ValueError(f"Practices outside the extended validation cannot train: {sorted(set(also_train) - extended)}")
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
     rng = random.Random(seed)
@@ -337,14 +374,17 @@ def train_model(
     ).to(device)
     if hasattr(model, "gradient_checkpointing_enable"):
         model.gradient_checkpointing_enable()
-    train_examples = [example for example in examples if example["split"] == "train"]
+    train_examples = [example for example in examples if example["split"] == "train" or example["practice"] in also_train]
     val_examples = [example for example in examples if example["split"] == "val"]
     test_examples = [example for example in examples if example["split"] == "test"]
+    extended_examples = [example for example in examples
+                         if example["split"] == EXTENDED_SPLIT and example["practice"] not in also_train]
     data = []
     for example in train_examples:
         data.extend(encode_chunks(example, tokenizer, roles))
-        for _ in range(variants):
-            data.extend(encode_chunks(_augment(example, rng), tokenizer, roles))
+        for variant in range(variants):
+            copy_ = _augment(example, rng)
+            data.extend(encode_chunks(_reframe(copy_, rng) if variant else copy_, tokenizer, roles))
     data = [chunk for chunk in data if any(target != -100 for target in chunk["labels"])]
     if not data:
         raise ValueError("No supervised training words remain")
@@ -424,7 +464,9 @@ def train_model(
         raise RuntimeError("No validation checkpoint was selected")
     model.load_state_dict(best_weights)
     validation, val_predictions = _evaluate(model, tokenizer, val_examples, roles)
-    test_metrics, test_predictions = _evaluate(model, tokenizer, test_examples, roles)
+    test_metrics, test_predictions = _evaluate(model, tokenizer, test_examples, roles) if final_test else (None, {})
+    extended_metrics, extended_predictions = (_evaluate(model, tokenizer, extended_examples, roles)
+                                              if extended_examples else (None, {}))
     elapsed = round(time.perf_counter() - started, 3)
     model.eval().cpu().float()
     model.save_pretrained(output_dir)
@@ -432,27 +474,28 @@ def train_model(
     settings = {"epochs_max": epochs, "variants_train_only": variants, "seed": seed,
                 "batch_size": batch_size, "accumulation_steps": accumulation_steps,
                 "learning_rate": learning_rate, "early_stopping_patience": patience,
-                "max_length": 512, "device": device}
+                "max_length": 512, "device": device, "also_train": sorted(also_train)}
     fingerprints = dataset_fingerprint(examples, roles)
     manifest = {"created_utc": datetime.now(timezone.utc).isoformat(), "base_model": BASE_MODEL,
                 "base_revision": base_revision, "initialization": "fresh pretrained; no BPER checkpoint",
                 "dataset_sha256": fingerprints, "dataset_manifest": dataset_manifest,
                 "settings": settings,
                 "checkpoint_selection": "validation whole-field accuracy, then non-note word F1, then word micro F1",
-                "test_evaluations": 1, "best_epoch": best_epoch,
+                "test_evaluations": 1 if final_test else 0, "best_epoch": best_epoch,
                 "train_sequences_including_augmentation": len(data), "train_seconds": elapsed,
                 "packages": {"torch": str(torch.__version__),
                              "transformers": str(__import__("transformers").__version__)}}
-    metrics = {"validation": validation, "test": test_metrics}
+    metrics = {"validation": validation, "test": test_metrics, "extended_validation": extended_metrics}
     splits = {split: {"practices": sorted({example["practice"] for example in examples if example["split"] == split}),
                       "examples": [example["id"] for example in examples if example["split"] == split]}
-              for split in ("train", "val", "test")}
+              for split in ("train", "val", "test", EXTENDED_SPLIT)}
     for filename, content in (("training_manifest.json", manifest), ("splits.json", splits),
                               ("labelmap.json", {"roles": roles}), ("metrics.json", metrics),
                               ("training_log.json", log), ("validation_predictions.json", val_predictions),
-                              ("test_predictions.json", test_predictions)):
+                              ("test_predictions.json", test_predictions),
+                              ("extended_predictions.json", extended_predictions)):
         _write_json(output_dir / filename, content)
     return {"best_epoch": best_epoch, "train_seconds": elapsed, "train_log": log,
             "metrics": metrics, "test_predictions": test_predictions,
-            "validation_predictions": val_predictions, "manifest": manifest,
+            "validation_predictions": val_predictions, "extended_predictions": extended_predictions, "manifest": manifest,
             "model_files": sorted(path.name for path in output_dir.iterdir() if path.is_file())}

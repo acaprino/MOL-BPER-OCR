@@ -381,3 +381,10 @@ def test_reading_a_practice_of_the_confirmation_group_is_refused(tmp_path: Path)
 def test_reading_a_practice_outside_the_assignment_is_refused(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="60000003"):
         load_assigned_screens(_assignment(tmp_path), tmp_path, ["60000003"])
+
+
+def test_assigned_screens_of_a_training_practice_can_be_read(tmp_path: Path) -> None:
+    path = tmp_path / "assegnazione.json"
+    path.write_text(json.dumps({"gruppi": {"addestramento": ["REF_1"]},
+                                "schermate": {"REF_1__Elenco": {"image_sha256": "ddd"}}}), encoding="utf-8")
+    assert [screen.id for screen in load_assigned_screens(path, tmp_path, ["REF_1"])] == ["REF_1__Elenco"]

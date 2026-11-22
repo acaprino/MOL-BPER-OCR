@@ -473,6 +473,10 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   sealed `conferma`, recorded between v3.1 and the G8 groups), derives the dataset version from the lot
   composition (`DATASET_VERSIONS`) and seals the bundle with its three truth tables
   (`build_dataset()`, `seal_dataset()`). `truth_export.py` writes those tables as one workbook.
+- Every practice has a role (ADR 0027): training 18, control 2, test 13, column `Ruolo` of `practices.csv`.
+  `build_dataset()` on the newest version refuses a `data/pratiche` folder with no role. The reference practice
+  `LUNARDI_26871394` trains (`read_reference_truth()`, lot `riferimento-lunardi`); the extended validation trains
+  the final model through `also_train` and is measured by runs that hold out a third of it in rotation.
 - `practice_sheets.py` -- reads a lot delivered as one sheet per practice (`read_practice_sheets()`): one
   value per page, typed cells, the literal `vuoto`. Its `correzioni.json` says what each screen of an
   extended-validation practice shows and corrects values checked against the screen. Values outside the
@@ -482,17 +486,23 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   (`11153238`): it is a guarantor in a large share of the practices, so it is not an identity in any check,
   here or in `audit_splits()` (ADR 0024). A new institution goes in that list, without moving a practice.
 - `model.py` -- normalizes word boxes to `0..1000`, builds 512-subword chunks without splitting the
-  `FIDI` table block from its header (`encode_chunks()`), augments training copies (`_augment()`),
-  trains `LiltForTokenClassification` selecting checkpoints on validation whole-field accuracy
-  (`train_model()`, `score_predictions()`), and runs CPU/GPU inference (`predict()`).
+  `FIDI` table block from its header (`encode_chunks()`), augments training copies with geometry and digit
+  jitter (`_augment()`) and with other framings of the page, cropped or taller (`_reframe()`), because LiLT reads
+  positions relative to the whole image and the training screens are nearly all framed alike. Trains
+  `LiltForTokenClassification` selecting checkpoints on validation whole-field accuracy (`train_model()`,
+  `score_predictions()`): the historical test stays out unless `final_test` asks for it, and `also_train` moves
+  extended-validation practices into training for one run. Runs CPU/GPU inference (`predict()`).
 - `evaluation.py` -- reconstructs the 45 fields from predicted word roles (`decode_fields()`, which
-  keeps the FIDI fields to the topmost table row, ADR 0023) and
+  reads the FIDI cells of the topmost table row by column under the table header, ADR 0023 and 0026, reads
+  the Soggetti table by column and keeps the Elenco roles in their columns, ADR 0028, and reads the header from
+  the line `NDG: number - name`, ADR 0025) and
   reports strict whole-field accuracy, content availability, and word-level F1
   (`evaluate_predictions()`, `word_metrics()`); `evaluate_field_values()` scores field-level
   extractors (per screen `{"fields": ..., "abstained": [...]}`) with the same records, comparators
   and summaries, and both report `complete` when every screen has an outcome.
 - `modal_train.py` -- bounded GPU entrypoint on Modal that writes an immutable run and downloads the
-  CPU-loadable model (`cpu_model/`).
+  CPU-loadable model (`cpu_model/`, or leaves it on the volume with `--no-download-weights`). `--also-train` and
+  `--final-test` reach `train_model()`.
 - `ocr_runner.py` -- resumable stage A OCR runs (`run_ocr()`, configurations `A0`..`A4`, CPU
   profiles `pc4`/`vdi2`): per-screen results, `cache.json` only when every screen succeeded, model
   hashes in the manifest; `report()` builds the derived dataset and train/validation-only selection
@@ -517,7 +527,7 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
 | `data/reference/screen *.png` | Test banking screenshots (9 BPER images, tracked in git) |
 | `data/pratiche/` | Unified per-practice screenshot dataset (33 practices, 240 in-scope + 22 off-topic PNGs, `manifest.json`) |
 | `data/revisione/` | Reviewed ground-truth workbook (`revisione/Revisione_ground_truth_v3_1.xlsx`), crops, and 12-practice `dati.csv` |
-| `data/training/` | Sealed `ground-truth-v3.1/` bundle, the unified `ground-truth-v3.2/` and `ground-truth-v3.3/` truths (three CSV tables plus `ground_truth.xlsx`, examples for the v3.1 splits and the G8 `val_ext` group, none for the sealed `conferma` group) and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
+| `data/training/` | Sealed `ground-truth-v3.1/` bundle, the unified `ground-truth-v3.2/`, `ground-truth-v3.3/` and current `ground-truth-v3.4/` truths (three CSV tables plus `ground_truth.xlsx`, examples for the v3.1 splits and the G8 `val_ext` group, none for the sealed `conferma` group) and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
 | `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `src/prompt_store.py` |
 | `src/edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
 

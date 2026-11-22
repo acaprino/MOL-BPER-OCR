@@ -94,13 +94,14 @@ def load_screens(examples_path: Path, screenshots_dir: Path) -> list[Screen]:
 
 
 def load_assigned_screens(assignment_path: Path, screenshots_dir: Path, practices: list[str]) -> list[Screen]:
-    """The screens of practices in the G8 extended validation; anything else stays unread (plan §5.4, rule 4)."""
+    """The screens of assigned practices; the sealed group and anything unassigned stay unread (plan §5.4, rule 4)."""
     from training.dataset import resolve_screenshot_path
 
     assignment = _read_json(assignment_path)
-    refused = sorted(set(practices) - set(assignment["gruppi"]["validazione_estesa"]))
+    readable = {practice for group, members in assignment["gruppi"].items() if group != "conferma" for practice in members}
+    refused = sorted(set(practices) - readable)
     if refused:
-        raise ValueError(f"Pratiche fuori dalla validazione estesa, da non leggere: {refused}.")
+        raise ValueError(f"Pratiche sigillate o non assegnate, da non leggere: {refused}.")
     return [Screen(screen, resolve_screenshot_path(screenshots_dir, screen), digests["image_sha256"])
             for screen, digests in assignment["schermate"].items() if screen.split("__", 1)[0] in practices]
 

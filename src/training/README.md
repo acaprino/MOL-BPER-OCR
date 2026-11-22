@@ -62,6 +62,14 @@ La versione la decide la composizione dei lotti (`DATASET_VERSIONS`) e la
 convalida di `validate_reviewed_dataset()` confronta conteggi e split con il
 contratto della versione dichiarata: una cartella rinominata non è una versione.
 
+### Ogni pratica ha un ruolo: `ground-truth-v3.4`
+
+Addestramento 18 (train, `LUNARDI_26871394`, validazione estesa con `--also-train`), controllo 2,
+test 13 (test storico e conferma sigillata): colonna `Ruolo` di `practices.csv`, ADR 0027. La
+costruzione della versione più recente rifiuta una cartella di `data/pratiche` senza ruolo. Il
+lotto `riferimento-lunardi` è un CSV (`read_reference_truth()`): si passa con `--lots` come gli
+altri, con `dati.csv`, `assegnazione.json`, `fotogrammi.json` e la sua cache OCR.
+
 ### Un foglio per pratica: `ground-truth-v3.3`
 
 Il lotto 2026-11-05 è consegnato con un foglio per pratica e un valore per pagina, senza
@@ -150,8 +158,11 @@ etichette restano in locale. Se il processo locale si ferma, l'app staccata cont
 
 L'addestramento parte dal modello pubblico `nielsr/lilt-xlm-roberta-base`, con una
 nuova testa di classificazione. Non riutilizza i precedenti pesi BPER, la cui storia
-di addestramento potrebbe sovrapporsi alle pratiche di prova. Le varianti geometriche
-e numeriche si applicano solo a copie dell'insieme di addestramento.
+di addestramento potrebbe sovrapporsi alle pratiche di prova. Le varianti si applicano
+solo a copie dell'insieme di addestramento: con `--variants 3` una copia con piccoli
+spostamenti e cifre cambiate, e due con la pagina inquadrata diversamente (tagliata o più
+alta, `_reframe()`), perché LiLT legge le posizioni rispetto all'immagine intera e le
+schermate di addestramento hanno quasi tutte la stessa inquadratura.
 
 Con Modal configurato sull'account che possiede il volume `bper-lilt-spike`:
 
@@ -162,7 +173,7 @@ modal run -m training.modal_train --data-dir D:/Projects/poc-data-extraction/dat
 ```
 
 La cartella di uscita deve essere nuova. L'esecuzione è limitata a un container L4,
-30 minuti, massimo 16 epoche (8 per default) e nessun tentativo automatico. Senza
+45 minuti, massimo 16 epoche (8 per default) e nessun tentativo automatico. Senza
 miglioramento in validazione si ferma dopo `--patience` epoche (2 per default, al
 massimo 4). Il servizio riceve le
 parole OCR, le coordinate, le etichette e i manifest; gli screenshot e l'Excel
@@ -171,14 +182,18 @@ sovrascrivono i modelli precedenti.
 
 La selezione dell'epoca usa l'accuratezza sul valore completo dei campi di
 validazione (con spareggio sulla F1 delle parole non-nota e poi sulla F1 micro
-complessiva); il test viene eseguito dopo la selezione. La suddivisione in finestre
+complessiva). Il test storico si esegue solo con `--final-test`, su un candidato
+congelato; ogni run misura invece la validazione estesa (`extended_predictions.json`), e
+`--also-train` sposta pratiche di validazione estesa nell'addestramento per quel run.
+La suddivisione in finestre
 di 512 sottotoken preserva intero il blocco della tabella `FIDI` insieme alla sua
-intestazione. La cartella `cpu_model` scaricata contiene pesi e tokenizer
+intestazione. La cartella `cpu_model` scaricata (`--no-download-weights` lascia i pesi sul volume) contiene pesi e tokenizer
 caricabili con Transformers su CPU, insieme a etichette, split e manifest. Le
 predizioni riportano un ruolo per ogni parola OCR. `training.evaluation` ricostruisce
 i 45 campi e misura corretto, errato, mancante, allucinato e assenza corretta sul
 ground truth completo. I campi della tabella `FIDI` vengono dalla sola riga più in
-alto, quella del primo numero di fido predetto (ADR 0023). Il confronto conserva cifre e punteggiatura, tollerando
+alto, quella del primo numero di fido predetto (ADR 0023), letta per colonna sotto la testata della tabella (ADR 0026). Anche i Soggetti si leggono
+per colonna, e nell'Elenco una parola resta nella colonna del suo ruolo (ADR 0028). Il confronto conserva cifre e punteggiatura, tollerando
 solo differenze di rappresentazione documentate nei test. Per un estrattore che
 produce direttamente i valori dei campi, `evaluate_field_values()` applica gli
 stessi confronti e riepiloghi a `{"fields": {campo: testo o None}, "abstained":

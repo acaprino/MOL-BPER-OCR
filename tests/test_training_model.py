@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import json
+import random
 from pathlib import Path
 from typing import Any
 
 import pytest
 
 from training.model import (
-    _augment, dataset_fingerprint, encode_chunks, normalize_boxes, predict,
+    _augment, _reframe, dataset_fingerprint, encode_chunks, normalize_boxes, predict,
     score_predictions, train_model, validate_reviewed_dataset, validate_splits,
 )
 
@@ -188,7 +189,7 @@ def tiny_training_run(tmp_path_factory: pytest.TempPathFactory) -> tuple[dict[st
     base, examples = _tiny_base(tmp_path)
     output = tmp_path / "trained"
     result = train_model(examples, ["O", "ndg"], output, {}, base_path=str(base),
-                         epochs=1, variants=0, device="cpu")
+                         epochs=1, variants=0, device="cpu", final_test=True)
     return result, output
 
 
@@ -330,6 +331,19 @@ def test_reviewed_dataset_accepts_v3_3_with_nine_extended_validation_practices()
     validate_reviewed_dataset(examples, roles, manifest)
 
 
+def test_reviewed_dataset_accepts_v3_4_with_the_reference_practice_in_training() -> None:
+    examples = _v3_1_examples()
+    for index in range(49):
+        examples.append({**example(["a"]), "id": f"ext-{index}", "practice": f"ext-{index % 9}", "split": "val_ext",
+                         "values": {f"field-{field}": "value" for field in range(8 if index < 17 else 7)}})
+    for index in range(9):
+        examples.append({**example(["a"]), "id": f"ref-{index}", "practice": "ref", "split": "train",
+                         "values": {f"field-{field}": "value" for field in range(9 if index < 5 else 8)}})
+    roles = ["O", "ndg"]
+    manifest = _manifest(examples, roles, "ground-truth-v3.4", {"reviewed_rows": 1445, "screens": 171, "practices": 22})
+    validate_reviewed_dataset(examples, roles, manifest)
+
+
 def test_reviewed_dataset_refuses_an_unknown_version() -> None:
     examples, roles = _v3_1_examples(), ["O", "ndg"]
     manifest = _manifest(examples, roles, "ground-truth-v3.9", {"reviewed_rows": 1008, "screens": 113, "practices": 12})
@@ -342,3 +356,109 @@ def test_reviewed_dataset_refuses_v3_1_content_relabelled_as_v3_2() -> None:
     manifest = _manifest(examples, roles, "ground-truth-v3.2", {"reviewed_rows": 1008, "screens": 113, "practices": 12})
     with pytest.raises(ValueError, match="count"):
         validate_reviewed_dataset(examples, roles, manifest)
+
+
+# ============================================================
+# Training copies framed differently
+# ============================================================
+
+
+def _page() -> dict[str, Any]:
+    words = [{"text": f"w{row}{column}", "x0": 100.0 + 200 * column, "x1": 150.0 + 200 * column,
+              "y0": 100.0 + 200 * row, "y1": 120.0 + 200 * row, "row": row}
+             for row in range(4) for column in range(4)]
+    return {"id": "s", "practice": "p", "split": "train", "image_size": [1000, 1000], "words": words,
+            "labels": [word["text"].upper() for word in words], "values": {}}
+
+
+def test_reframed_copy_keeps_each_word_with_its_label() -> None:
+    for seed in range(40):
+        copy = _reframe(_page(), random.Random(seed))
+        assert [word["text"].upper() for word in copy["words"]] == copy["labels"]
+
+
+def test_reframed_copy_keeps_every_box_inside_its_image() -> None:
+    for seed in range(40):
+        copy = _reframe(_page(), random.Random(seed))
+        width, height = copy["image_size"]
+        assert all(0 <= word["x0"] <= word["x1"] <= width and 0 <= word["y0"] <= word["y1"] <= height
+                   for word in copy["words"])
+
+
+def test_reframed_copy_moves_the_words_together() -> None:
+    for seed in range(40):
+        kept = {word["text"]: word for word in _reframe(_page(), random.Random(seed))["words"]}
+        if "w11" in kept and "w21" in kept:
+            assert kept["w21"]["y0"] - kept["w11"]["y0"] == pytest.approx(200.0)
+
+
+def test_some_reframed_copies_lose_the_top_of_the_page() -> None:
+    kept = ["w00" in {word["text"] for word in _reframe(_page(), random.Random(seed))["words"]} for seed in range(40)]
+    assert any(kept) and not all(kept)
+
+
+def test_some_reframed_copies_lose_the_right_of_the_page() -> None:
+    kept = ["w13" in {word["text"] for word in _reframe(_page(), random.Random(seed))["words"]} for seed in range(40)]
+    assert any(kept) and not all(kept)
+
+
+def test_some_reframed_copies_are_taller_than_the_page() -> None:
+    assert any(_reframe(_page(), random.Random(seed))["image_size"][1] > 1000 for seed in range(40))
+
+
+def test_reframing_leaves_the_source_example_untouched() -> None:
+    page = _page()
+    _reframe(page, random.Random(1))
+    assert page == _page()
+
+
+# ============================================================
+# What a run trains on and what it evaluates
+# ============================================================
+
+
+def _with_extended_validation(examples: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    return [*examples, *[{**example(["a", "b"]), "id": name, "practice": name, "split": "val_ext"}
+                         for name in ("ext-a", "ext-b")]]
+
+
+def test_a_run_leaves_the_historical_test_alone_by_default(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    result = train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base), epochs=1, variants=0,
+                         device="cpu")
+    assert (result["test_predictions"], result["manifest"]["test_evaluations"]) == ({}, 0)
+
+
+def test_a_run_scores_the_extended_validation(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    result = train_model(_with_extended_validation(examples), ["O", "ndg"], tmp_path / "trained", {},
+                         base_path=str(base), epochs=1, variants=0, device="cpu")
+    assert set(result["extended_predictions"]) == {"ext-a", "ext-b"}
+
+
+def test_a_practice_trained_on_is_not_scored(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    result = train_model(_with_extended_validation(examples), ["O", "ndg"], tmp_path / "trained", {},
+                         base_path=str(base), epochs=1, variants=0, device="cpu", also_train=["ext-a"])
+    assert set(result["extended_predictions"]) == {"ext-b"}
+
+
+def test_a_run_refuses_to_train_on_another_split(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    with pytest.raises(ValueError, match="val"):
+        train_model(_with_extended_validation(examples), ["O", "ndg"], tmp_path / "trained", {},
+                    base_path=str(base), epochs=1, variants=0, device="cpu", also_train=["val"])
+
+
+def test_a_run_may_use_three_variants(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    result = train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base), epochs=1, variants=3,
+                         device="cpu")
+    assert result["best_epoch"] == 1
+
+
+def test_a_run_refuses_four_variants(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    with pytest.raises(ValueError, match="bounded experiment"):
+        train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base), epochs=1, variants=4,
+                    device="cpu")

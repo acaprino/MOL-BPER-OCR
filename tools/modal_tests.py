@@ -2,8 +2,8 @@
 
     env -u HTTPS_PROXY -u HTTP_PROXY .venv/Scripts/python.exe -m modal run tools/modal_tests.py --args "tests/test_training_dataset.py -q"
 
-The container has what the fast lane needs, with Qt offscreen but no torch: the DINOv2 cases skip, so run the
-fast lane (``-m "not slow"``). tests/fixtures stays out of the upload.
+The container has what the fast lane needs, with Qt offscreen, torch and transformers for the training cases. Run
+the fast lane (``-m "not slow"``): the DINOv2 cases need files that stay out of the upload, like tests/fixtures.
 """
 
 from __future__ import annotations
@@ -25,6 +25,7 @@ image = (
     .pip_install("pytest>=8.0", "Pillow>=10.0.0", "numpy", "openpyxl>=3.1.2", "pandas", "python-dotenv",
                  "langchain-core", "langchain-openai", "langchain-google-genai", "PyQt6>=6.4.0", "qt-material>=2.14",
                  "mss>=9.0.0", "imagehash>=4.3.0", "requests>=2.31.0", "openai>=1.51.0")
+    .pip_install("torch==2.12.0", "transformers==5.15.0", "tokenizers==0.22.2", "huggingface_hub")
     .env({"QT_QPA_PLATFORM": "offscreen"})
     .add_local_file(str(ROOT / "pyproject.toml"), f"{REPO}/pyproject.toml")
     .add_local_file(str(ROOT / ".env.example"), f"{REPO}/.env.example")

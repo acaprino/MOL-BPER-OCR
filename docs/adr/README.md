@@ -66,6 +66,10 @@ tarati, e nessun test lo verificava.
 | [0022](0022-addestramento-lilt-da-revisione-umana.md) | Addestrare LiLT da valori revisionati e pratiche separate | Accettato |
 | [0023](0023-campi-fidi-dalla-prima-riga-della-tabella.md) | Ricostruire i campi Fidi dalla prima riga della tabella | Accettato |
 | [0024](0024-ndg-del-fondo-di-garanzia-non-e-identita.md) | L'NDG del Fondo di garanzia non è un'identità | Accettato |
+| [0025](0025-righe-dei-soggetti-centrate-e-testata-sulla-riga-ndg.md) | Righe dei soggetti centrate e testata letta dalla sua etichetta | Accettato |
+| [0026](0026-celle-fidi-lette-per-colonna.md) | Celle Fidi lette per colonna sotto la testata della tabella | Accettato |
+| [0027](0027-ogni-pratica-ha-un-ruolo.md) | Ogni pratica ha un ruolo: addestramento, controllo o test | Accettato |
+| [0028](0028-tabelle-elenco-e-soggetti-lette-per-colonna.md) | Tabelle Elenco e Soggetti lette per colonna | Accettato |
 
 ## Da scrivere
 
