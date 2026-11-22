@@ -1,0 +1,67 @@
+[
+ {
+  "run": "lilt-v3.3-20261107-T8-seed7",
+  "strict": "340/360",
+  "fidi_non_null": "104/106",
+  "soggetti_non_null": "48/51",
+  "per_pratica": {
+   "51788077": "49/54",
+   "51798191": "17/22",
+   "51849993": "52/54",
+   "51859514": "21/21",
+   "52013664": "11/11",
+   "52032077": "34/36",
+   "52080736": "51/54",
+   "52125946": "54/55",
+   "52137073": "51/53"
+  },
+  "errori": [
+   [
+    "denominazione",
+    4
+   ],
+   [
+    "note_della_richiesta",
+    4
+   ],
+   [
+    "evidenze",
+    2
+   ],
+   [
+    "tipo",
+    2
+   ],
+   [
+    "tipo_op",
+    2
+   ],
+   [
+    "ruolo_4",
+    2
+   ],
+   [
+    "filiale_relazione",
+    1
+   ],
+   [
+    "denominazione_1",
+    1
+   ],
+   [
+    "tooltip_evidenze_b",
+    1
+   ],
+   [
+    "tooltip_descrizione_ipoteca",
+    1
+   ]
+  ],
+  "stati": {
+   "correct": 280,
+   "correct_null": 60,
+   "missing": 7,
+   "wrong": 13
+  }
+ }
+]

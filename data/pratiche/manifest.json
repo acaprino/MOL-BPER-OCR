@@ -6,7 +6,7 @@
     {
       "practice": "51027430",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 9,
       "offtopic_count": 0,
       "screens": [
@@ -20,7 +20,8 @@
         "Note2.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "51185037",
@@ -40,7 +41,8 @@
       ],
       "offtopic_screens": [
         "OffTopic1.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "51531667",
@@ -65,7 +67,8 @@
       ],
       "offtopic_screens": [
         "OffTopic.png"
-      ]
+      ],
+      "ruolo": "test"
     },
     {
       "practice": "51659595",
@@ -83,12 +86,13 @@
         "Note.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "controllo"
     },
     {
       "practice": "51772928",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 6,
       "offtopic_count": 0,
       "screens": [
@@ -99,12 +103,13 @@
         "GestioneFidi_Tooltip2.png",
         "GestioneFidi_Tooltip3.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "51788077",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 5,
       "offtopic_count": 2,
       "screens": [
@@ -117,12 +122,13 @@
       "offtopic_screens": [
         "NoteIstruttoria_aperto.png",
         "NoteIstruttoria_chiuso.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "51792073",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 3,
       "offtopic_count": 0,
       "screens": [
@@ -130,12 +136,13 @@
         "Elenco_dx.png",
         "Elenco_tooltip1.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "51798191",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 3,
       "offtopic_count": 0,
       "screens": [
@@ -143,12 +150,13 @@
         "Elenco_dx.png",
         "Elenco_tooltip1.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
     },
     {
       "practice": "51800301",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 7,
       "offtopic_count": 0,
       "screens": [
@@ -160,12 +168,13 @@
         "Note_chiuso.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "51849993",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 9,
       "offtopic_count": 0,
       "screens": [
@@ -179,12 +188,13 @@
         "Note2.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
     },
     {
       "practice": "51859514",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 3,
       "offtopic_count": 0,
       "screens": [
@@ -192,12 +202,13 @@
         "Elenco_dx.png",
         "Elenco_tooltip1.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
     },
     {
       "practice": "51886329",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 8,
       "offtopic_count": 0,
       "screens": [
@@ -210,46 +221,50 @@
         "Note2.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "51997531",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 1,
       "offtopic_count": 0,
       "screens": [
         "GestioneFidi_Tooltip1.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "52013664",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 1,
       "offtopic_count": 0,
       "screens": [
         "GestioneFidi_Tooltip1.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52022324",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 2,
       "offtopic_count": 0,
       "screens": [
         "GestioneFidi_Tooltip1.png",
         "GestioneFidi_Tooltip2.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "52032077",
       "batch": "lotto-2026-08-21",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 3,
       "offtopic_count": 2,
       "screens": [
@@ -260,7 +275,8 @@
       "offtopic_screens": [
         "NoteIstruttoria_aperto.png",
         "NoteIstruttoria_chiuso.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52060489",
@@ -282,7 +298,8 @@
       "offtopic_screens": [
         "OffTopic1.png",
         "OffTopic2.png"
-      ]
+      ],
+      "ruolo": "test"
     },
     {
       "practice": "52062600",
@@ -309,7 +326,8 @@
       "offtopic_screens": [
         "OffTopic1.png",
         "OffTopic2.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52067184",
@@ -329,7 +347,8 @@
       ],
       "offtopic_screens": [
         "OffTopic1.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52068422",
@@ -351,7 +370,8 @@
       "offtopic_screens": [
         "OffTopic1.png",
         "OffTopic2.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52080223",
@@ -372,12 +392,13 @@
       "offtopic_screens": [
         "OffTopic1.png",
         "OffTopic2.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52080736",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 9,
       "offtopic_count": 0,
       "screens": [
@@ -391,7 +412,8 @@
         "Note2.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52102599",
@@ -414,12 +436,13 @@
       ],
       "offtopic_screens": [
         "OffTopic.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52102964",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 7,
       "offtopic_count": 0,
       "screens": [
@@ -431,12 +454,13 @@
         "Note.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "52125946",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 8,
       "offtopic_count": 0,
       "screens": [
@@ -449,7 +473,8 @@
         "Note.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52126316",
@@ -470,7 +495,8 @@
       "offtopic_screens": [
         "OffTopic.png",
         "OffTopic2.png"
-      ]
+      ],
+      "ruolo": "controllo"
     },
     {
       "practice": "52130861",
@@ -494,7 +520,8 @@
         "OffTopic.png",
         "OffTopic1.png",
         "OffTopic2.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52135039",
@@ -513,12 +540,13 @@
       ],
       "offtopic_screens": [
         "OffTopic.png"
-      ]
+      ],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52136040",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 9,
       "offtopic_count": 0,
       "screens": [
@@ -532,12 +560,13 @@
         "Note2.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "52137073",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "val_ext",
       "in_scope_count": 8,
       "offtopic_count": 0,
       "screens": [
@@ -550,12 +579,13 @@
         "Note.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
     },
     {
       "practice": "52186431",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 8,
       "offtopic_count": 0,
       "screens": [
@@ -568,12 +598,13 @@
         "Note.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "52196577",
       "batch": "lotto-2026-11-05",
-      "ground_truth_split": null,
+      "ground_truth_split": "conferma",
       "in_scope_count": 9,
       "offtopic_count": 0,
       "screens": [
@@ -587,12 +618,13 @@
         "Note2.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "test"
     },
     {
       "practice": "LUNARDI_26871394",
       "batch": "reference-lunardi",
-      "ground_truth_split": null,
+      "ground_truth_split": "train",
       "in_scope_count": 9,
       "offtopic_count": 0,
       "screens": [
@@ -606,7 +638,8 @@
         "Note.png",
         "Soggetti.png"
       ],
-      "offtopic_screens": []
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
     }
   ]
 }

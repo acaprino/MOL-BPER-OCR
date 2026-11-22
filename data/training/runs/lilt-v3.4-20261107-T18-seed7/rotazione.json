@@ -1,0 +1,51 @@
+[
+ {
+  "run": "lilt-v3.4-20261107-fold1-seed7,lilt-v3.4-20261107-fold2-seed7,lilt-v3.4-20261107-fold3-seed7",
+  "strict": "348/360",
+  "fidi_non_null": "104/106",
+  "soggetti_non_null": "51/51",
+  "per_pratica": {
+   "51788077": "50/54",
+   "51798191": "20/22",
+   "51849993": "53/54",
+   "51859514": "21/21",
+   "52013664": "11/11",
+   "52032077": "34/36",
+   "52080736": "52/54",
+   "52125946": "54/55",
+   "52137073": "53/53"
+  },
+  "errori": [
+   [
+    "note_della_richiesta",
+    3
+   ],
+   [
+    "evidenze",
+    2
+   ],
+   [
+    "tipo",
+    2
+   ],
+   [
+    "tipo_op",
+    2
+   ],
+   [
+    "denominazione",
+    2
+   ],
+   [
+    "filiale_relazione",
+    1
+   ]
+  ],
+  "stati": {
+   "correct": 288,
+   "correct_null": 60,
+   "missing": 1,
+   "wrong": 11
+  }
+ }
+]

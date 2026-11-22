@@ -1,14 +1,14 @@
 {
- "metric_version": "strict-v3-fidi-first-row",
+ "metric_version": "strict-v5-fidi-columns",
  "overall": {
   "total": 360,
-  "correct": 275,
-  "accuracy": 0.7638888888888888,
+  "correct": 312,
+  "accuracy": 0.8666666666666667,
   "counts": {
-   "correct": 217,
+   "correct": 254,
    "correct_null": 58,
-   "missing": 30,
-   "wrong": 53,
+   "missing": 22,
+   "wrong": 24,
    "hallucinated": 2
   },
   "abstained": 0,
@@ -45,13 +45,13 @@
   },
   "denominazione": {
    "total": 23,
-   "correct": 16,
-   "accuracy": 0.6956521739130435,
+   "correct": 20,
+   "accuracy": 0.8695652173913043,
    "counts": {
-    "correct": 13,
-    "wrong": 4,
+    "correct": 17,
     "correct_null": 3,
-    "missing": 3
+    "missing": 2,
+    "wrong": 1
    },
    "abstained": 0,
    "content_availability": {
@@ -66,11 +66,10 @@
   },
   "denominazione_1": {
    "total": 6,
-   "correct": 4,
-   "accuracy": 0.6666666666666666,
+   "correct": 6,
+   "accuracy": 1.0,
    "counts": {
-    "correct": 4,
-    "wrong": 2
+    "correct": 6
    },
    "abstained": 0,
    "content_availability": {
@@ -85,12 +84,12 @@
   },
   "denominazione_2": {
    "total": 6,
-   "correct": 3,
-   "accuracy": 0.5,
+   "correct": 5,
+   "accuracy": 0.8333333333333334,
    "counts": {
     "correct_null": 1,
-    "wrong": 3,
-    "correct": 2
+    "wrong": 1,
+    "correct": 4
    },
    "abstained": 0,
    "content_availability": {
@@ -105,12 +104,11 @@
   },
   "denominazione_3": {
    "total": 6,
-   "correct": 5,
-   "accuracy": 0.8333333333333334,
+   "correct": 6,
+   "accuracy": 1.0,
    "counts": {
     "correct_null": 3,
-    "wrong": 1,
-    "correct": 2
+    "correct": 3
    },
    "abstained": 0,
    "content_availability": {
@@ -125,12 +123,11 @@
   },
   "denominazione_4": {
    "total": 6,
-   "correct": 5,
-   "accuracy": 0.8333333333333334,
+   "correct": 6,
+   "accuracy": 1.0,
    "counts": {
     "correct_null": 3,
-    "wrong": 1,
-    "correct": 2
+    "correct": 3
    },
    "abstained": 0,
    "content_availability": {
@@ -145,12 +142,12 @@
   },
   "descrizione": {
    "total": 21,
-   "correct": 10,
-   "accuracy": 0.47619047619047616,
+   "correct": 18,
+   "accuracy": 0.8571428571428571,
    "counts": {
-    "correct": 10,
+    "correct": 18,
     "missing": 2,
-    "wrong": 9
+    "wrong": 1
    },
    "abstained": 0,
    "content_availability": {
@@ -226,12 +223,12 @@
   },
   "importo_euro": {
    "total": 22,
-   "correct": 14,
-   "accuracy": 0.6363636363636364,
+   "correct": 18,
+   "accuracy": 0.8181818181818182,
    "counts": {
-    "correct": 14,
-    "missing": 4,
-    "wrong": 4
+    "correct": 18,
+    "missing": 3,
+    "wrong": 1
    },
    "abstained": 0,
    "content_availability": {
@@ -266,12 +263,11 @@
   },
   "ndg": {
    "total": 23,
-   "correct": 22,
-   "accuracy": 0.9565217391304348,
+   "correct": 23,
+   "accuracy": 1.0,
    "counts": {
-    "correct": 19,
-    "correct_null": 3,
-    "missing": 1
+    "correct": 20,
+    "correct_null": 3
    },
    "abstained": 0,
    "content_availability": {
@@ -399,11 +395,10 @@
   },
   "ruolo_1": {
    "total": 6,
-   "correct": 5,
-   "accuracy": 0.8333333333333334,
+   "correct": 6,
+   "accuracy": 1.0,
    "counts": {
-    "correct": 5,
-    "wrong": 1
+    "correct": 6
    },
    "abstained": 0,
    "content_availability": {
@@ -418,12 +413,12 @@
   },
   "ruolo_2": {
    "total": 6,
-   "correct": 2,
-   "accuracy": 0.3333333333333333,
+   "correct": 4,
+   "accuracy": 0.6666666666666666,
    "counts": {
     "correct_null": 1,
-    "wrong": 4,
-    "correct": 1
+    "wrong": 2,
+    "correct": 3
    },
    "abstained": 0,
    "content_availability": {
@@ -438,12 +433,12 @@
   },
   "ruolo_3": {
    "total": 6,
-   "correct": 4,
-   "accuracy": 0.6666666666666666,
+   "correct": 5,
+   "accuracy": 0.8333333333333334,
    "counts": {
     "correct_null": 3,
-    "correct": 1,
-    "wrong": 2
+    "correct": 2,
+    "wrong": 1
    },
    "abstained": 0,
    "content_availability": {
@@ -458,13 +453,12 @@
   },
   "ruolo_4": {
    "total": 6,
-   "correct": 4,
-   "accuracy": 0.6666666666666666,
+   "correct": 5,
+   "accuracy": 0.8333333333333334,
    "counts": {
     "correct_null": 3,
-    "correct": 1,
-    "missing": 1,
-    "wrong": 1
+    "correct": 2,
+    "missing": 1
    },
    "abstained": 0,
    "content_availability": {
@@ -479,11 +473,11 @@
   },
   "scadenza": {
    "total": 22,
-   "correct": 16,
-   "accuracy": 0.7272727272727273,
+   "correct": 20,
+   "accuracy": 0.9090909090909091,
    "counts": {
-    "correct": 16,
-    "missing": 6
+    "correct": 20,
+    "missing": 2
    },
    "abstained": 0,
    "content_availability": {
@@ -538,12 +532,12 @@
   },
   "tipo_op": {
    "total": 22,
-   "correct": 12,
-   "accuracy": 0.5454545454545454,
+   "correct": 17,
+   "accuracy": 0.7727272727272727,
    "counts": {
-    "wrong": 6,
-    "missing": 4,
-    "correct": 12
+    "wrong": 2,
+    "missing": 3,
+    "correct": 17
    },
    "abstained": 0,
    "content_availability": {
@@ -2812,13 +2806,13 @@
   },
   "val_ext": {
    "total": 360,
-   "correct": 275,
-   "accuracy": 0.7638888888888888,
+   "correct": 312,
+   "accuracy": 0.8666666666666667,
    "counts": {
-    "correct": 217,
+    "correct": 254,
     "correct_null": 58,
-    "missing": 30,
-    "wrong": 53,
+    "missing": 22,
+    "wrong": 24,
     "hallucinated": 2
    },
    "abstained": 0,
@@ -2845,13 +2839,13 @@
     },
     "denominazione": {
      "total": 23,
-     "correct": 16,
-     "accuracy": 0.6956521739130435,
+     "correct": 20,
+     "accuracy": 0.8695652173913043,
      "counts": {
-      "correct": 13,
-      "wrong": 4,
+      "correct": 17,
       "correct_null": 3,
-      "missing": 3
+      "missing": 2,
+      "wrong": 1
      },
      "abstained": 0,
      "content_availability": {
@@ -2866,11 +2860,10 @@
     },
     "denominazione_1": {
      "total": 6,
-     "correct": 4,
-     "accuracy": 0.6666666666666666,
+     "correct": 6,
+     "accuracy": 1.0,
      "counts": {
-      "correct": 4,
-      "wrong": 2
+      "correct": 6
      },
      "abstained": 0,
      "content_availability": {
@@ -2885,12 +2878,12 @@
     },
     "denominazione_2": {
      "total": 6,
-     "correct": 3,
-     "accuracy": 0.5,
+     "correct": 5,
+     "accuracy": 0.8333333333333334,
      "counts": {
       "correct_null": 1,
-      "wrong": 3,
-      "correct": 2
+      "wrong": 1,
+      "correct": 4
      },
      "abstained": 0,
      "content_availability": {
@@ -2905,12 +2898,11 @@
     },
     "denominazione_3": {
      "total": 6,
-     "correct": 5,
-     "accuracy": 0.8333333333333334,
+     "correct": 6,
+     "accuracy": 1.0,
      "counts": {
       "correct_null": 3,
-      "wrong": 1,
-      "correct": 2
+      "correct": 3
      },
      "abstained": 0,
      "content_availability": {
@@ -2925,12 +2917,11 @@
     },
     "denominazione_4": {
      "total": 6,
-     "correct": 5,
-     "accuracy": 0.8333333333333334,
+     "correct": 6,
+     "accuracy": 1.0,
      "counts": {
       "correct_null": 3,
-      "wrong": 1,
-      "correct": 2
+      "correct": 3
      },
      "abstained": 0,
      "content_availability": {
@@ -2945,12 +2936,12 @@
     },
     "descrizione": {
      "total": 21,
-     "correct": 10,
-     "accuracy": 0.47619047619047616,
+     "correct": 18,
+     "accuracy": 0.8571428571428571,
      "counts": {
-      "correct": 10,
+      "correct": 18,
       "missing": 2,
-      "wrong": 9
+      "wrong": 1
      },
      "abstained": 0,
      "content_availability": {
@@ -3026,12 +3017,12 @@
     },
     "importo_euro": {
      "total": 22,
-     "correct": 14,
-     "accuracy": 0.6363636363636364,
+     "correct": 18,
+     "accuracy": 0.8181818181818182,
      "counts": {
-      "correct": 14,
-      "missing": 4,
-      "wrong": 4
+      "correct": 18,
+      "missing": 3,
+      "wrong": 1
      },
      "abstained": 0,
      "content_availability": {
@@ -3066,12 +3057,11 @@
     },
     "ndg": {
      "total": 23,
-     "correct": 22,
-     "accuracy": 0.9565217391304348,
+     "correct": 23,
+     "accuracy": 1.0,
      "counts": {
-      "correct": 19,
-      "correct_null": 3,
-      "missing": 1
+      "correct": 20,
+      "correct_null": 3
      },
      "abstained": 0,
      "content_availability": {
@@ -3199,11 +3189,10 @@
     },
     "ruolo_1": {
      "total": 6,
-     "correct": 5,
-     "accuracy": 0.8333333333333334,
+     "correct": 6,
+     "accuracy": 1.0,
      "counts": {
-      "correct": 5,
-      "wrong": 1
+      "correct": 6
      },
      "abstained": 0,
      "content_availability": {
@@ -3218,12 +3207,12 @@
     },
     "ruolo_2": {
      "total": 6,
-     "correct": 2,
-     "accuracy": 0.3333333333333333,
+     "correct": 4,
+     "accuracy": 0.6666666666666666,
      "counts": {
       "correct_null": 1,
-      "wrong": 4,
-      "correct": 1
+      "wrong": 2,
+      "correct": 3
      },
      "abstained": 0,
      "content_availability": {
@@ -3238,12 +3227,12 @@
     },
     "ruolo_3": {
      "total": 6,
-     "correct": 4,
-     "accuracy": 0.6666666666666666,
+     "correct": 5,
+     "accuracy": 0.8333333333333334,
      "counts": {
       "correct_null": 3,
-      "correct": 1,
-      "wrong": 2
+      "correct": 2,
+      "wrong": 1
      },
      "abstained": 0,
      "content_availability": {
@@ -3258,13 +3247,12 @@
     },
     "ruolo_4": {
      "total": 6,
-     "correct": 4,
-     "accuracy": 0.6666666666666666,
+     "correct": 5,
+     "accuracy": 0.8333333333333334,
      "counts": {
       "correct_null": 3,
-      "correct": 1,
-      "missing": 1,
-      "wrong": 1
+      "correct": 2,
+      "missing": 1
      },
      "abstained": 0,
      "content_availability": {
@@ -3279,11 +3267,11 @@
     },
     "scadenza": {
      "total": 22,
-     "correct": 16,
-     "accuracy": 0.7272727272727273,
+     "correct": 20,
+     "accuracy": 0.9090909090909091,
      "counts": {
-      "correct": 16,
-      "missing": 6
+      "correct": 20,
+      "missing": 2
      },
      "abstained": 0,
      "content_availability": {
@@ -3338,12 +3326,12 @@
     },
     "tipo_op": {
      "total": 22,
-     "correct": 12,
-     "accuracy": 0.5454545454545454,
+     "correct": 17,
+     "accuracy": 0.7727272727272727,
      "counts": {
-      "wrong": 6,
-      "missing": 4,
-      "correct": 12
+      "wrong": 2,
+      "missing": 3,
+      "correct": 17
      },
      "abstained": 0,
      "content_availability": {
@@ -3442,13 +3430,13 @@
    },
    "word_metrics": {
     "micro": {
-     "tp": 1335,
-     "fp": 815,
+     "tp": 1989,
+     "fp": 93,
      "fn": 81,
-     "support": 1416,
-     "precision": 0.6209302325581395,
-     "recall": 0.9427966101694916,
-     "f1": 0.7487380818844643
+     "support": 2070,
+     "precision": 0.9553314121037464,
+     "recall": 0.9608695652173913,
+     "f1": 0.958092485549133
     },
     "by_role": {
      "creazione": {
@@ -3461,13 +3449,13 @@
       "f1": 0.896551724137931
      },
      "denominazione": {
-      "tp": 29,
-      "fp": 91,
+      "tp": 108,
+      "fp": 7,
       "fn": 4,
-      "support": 33,
-      "precision": 0.24166666666666667,
-      "recall": 0.8787878787878788,
-      "f1": 0.3790849673202614
+      "support": 112,
+      "precision": 0.9391304347826087,
+      "recall": 0.9642857142857143,
+      "f1": 0.9515418502202643
      },
      "descrizione": {
       "tp": 29,
@@ -3497,13 +3485,13 @@
       "f1": 1.0
      },
      "filiale_relazione": {
-      "tp": 22,
-      "fp": 65,
+      "tp": 87,
+      "fp": 0,
       "fn": 3,
-      "support": 25,
-      "precision": 0.25287356321839083,
-      "recall": 0.88,
-      "f1": 0.39285714285714285
+      "support": 90,
+      "precision": 1.0,
+      "recall": 0.9666666666666667,
+      "f1": 0.9830508474576272
      },
      "importo_euro": {
       "tp": 18,
@@ -3524,22 +3512,22 @@
       "f1": 0.9047619047619048
      },
      "ndg": {
-      "tp": 19,
-      "fp": 24,
+      "tp": 42,
+      "fp": 0,
       "fn": 1,
-      "support": 20,
-      "precision": 0.4418604651162791,
-      "recall": 0.95,
-      "f1": 0.6031746031746031
+      "support": 43,
+      "precision": 1.0,
+      "recall": 0.9767441860465116,
+      "f1": 0.9882352941176471
      },
      "note_della_richiesta": {
-      "tp": 840,
-      "fp": 528,
+      "tp": 1261,
+      "fp": 45,
       "fn": 11,
-      "support": 851,
-      "precision": 0.6140350877192983,
-      "recall": 0.9870740305522914,
-      "f1": 0.7570977917981072
+      "support": 1272,
+      "precision": 0.9655436447166922,
+      "recall": 0.9913522012578616,
+      "f1": 0.978277734678045
      },
      "note_scheda_privati": {
       "tp": 0,
@@ -3605,13 +3593,13 @@
       "f1": 0.9629629629629629
      },
      "tipo": {
-      "tp": 14,
-      "fp": 66,
+      "tp": 80,
+      "fp": 0,
       "fn": 0,
-      "support": 14,
-      "precision": 0.175,
+      "support": 80,
+      "precision": 1.0,
       "recall": 1.0,
-      "f1": 0.2978723404255319
+      "f1": 1.0
      },
      "tipo_op": {
       "tp": 34,
@@ -3659,19 +3647,19 @@
       "f1": 0.6666666666666666
      }
     },
-    "ignored_words": 118
+    "ignored_words": 192
    }
   }
  },
  "word_metrics": {
   "micro": {
-   "tp": 1335,
-   "fp": 815,
+   "tp": 1989,
+   "fp": 93,
    "fn": 81,
-   "support": 1416,
-   "precision": 0.6209302325581395,
-   "recall": 0.9427966101694916,
-   "f1": 0.7487380818844643
+   "support": 2070,
+   "precision": 0.9553314121037464,
+   "recall": 0.9608695652173913,
+   "f1": 0.958092485549133
   },
   "by_role": {
    "creazione": {
@@ -3684,13 +3672,13 @@
     "f1": 0.896551724137931
    },
    "denominazione": {
-    "tp": 29,
-    "fp": 91,
+    "tp": 108,
+    "fp": 7,
     "fn": 4,
-    "support": 33,
-    "precision": 0.24166666666666667,
-    "recall": 0.8787878787878788,
-    "f1": 0.3790849673202614
+    "support": 112,
+    "precision": 0.9391304347826087,
+    "recall": 0.9642857142857143,
+    "f1": 0.9515418502202643
    },
    "descrizione": {
     "tp": 29,
@@ -3720,13 +3708,13 @@
     "f1": 1.0
    },
    "filiale_relazione": {
-    "tp": 22,
-    "fp": 65,
+    "tp": 87,
+    "fp": 0,
     "fn": 3,
-    "support": 25,
-    "precision": 0.25287356321839083,
-    "recall": 0.88,
-    "f1": 0.39285714285714285
+    "support": 90,
+    "precision": 1.0,
+    "recall": 0.9666666666666667,
+    "f1": 0.9830508474576272
    },
    "importo_euro": {
     "tp": 18,
@@ -3747,22 +3735,22 @@
     "f1": 0.9047619047619048
    },
    "ndg": {
-    "tp": 19,
-    "fp": 24,
+    "tp": 42,
+    "fp": 0,
     "fn": 1,
-    "support": 20,
-    "precision": 0.4418604651162791,
-    "recall": 0.95,
-    "f1": 0.6031746031746031
+    "support": 43,
+    "precision": 1.0,
+    "recall": 0.9767441860465116,
+    "f1": 0.9882352941176471
    },
    "note_della_richiesta": {
-    "tp": 840,
-    "fp": 528,
+    "tp": 1261,
+    "fp": 45,
     "fn": 11,
-    "support": 851,
-    "precision": 0.6140350877192983,
-    "recall": 0.9870740305522914,
-    "f1": 0.7570977917981072
+    "support": 1272,
+    "precision": 0.9655436447166922,
+    "recall": 0.9913522012578616,
+    "f1": 0.978277734678045
    },
    "note_scheda_privati": {
     "tp": 0,
@@ -3828,13 +3816,13 @@
     "f1": 0.9629629629629629
    },
    "tipo": {
-    "tp": 14,
-    "fp": 66,
+    "tp": 80,
+    "fp": 0,
     "fn": 0,
-    "support": 14,
-    "precision": 0.175,
+    "support": 80,
+    "precision": 1.0,
     "recall": 1.0,
-    "f1": 0.2978723404255319
+    "f1": 1.0
    },
    "tipo_op": {
     "tp": 34,
@@ -3882,7 +3870,7 @@
     "f1": 0.6666666666666666
    }
   },
-  "ignored_words": 118
+  "ignored_words": 192
  },
  "records": [
   {
@@ -3979,8 +3967,8 @@
    "split": "val_ext",
    "field": "denominazione",
    "expected": "BEN ROMDHANE NAJEH",
-   "predicted": "BEN ROMDHANE NAJEH BEN ROMDHA BAONN",
-   "status": "wrong",
+   "predicted": "BEN ROMDHANE NAJEH",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -4903,8 +4891,8 @@
    "split": "val_ext",
    "field": "descrizione",
    "expected": "M.I.PF NO FOND",
-   "predicted": "M.I.PF FOND",
-   "status": "wrong",
+   "predicted": "M.I.PF NO FOND",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -4936,8 +4924,8 @@
    "split": "val_ext",
    "field": "tipo_op",
    "expected": "Nuova Finanza",
-   "predicted": "NO Nuova Finanza",
-   "status": "wrong",
+   "predicted": "Nuova Finanza",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -4969,8 +4957,8 @@
    "split": "val_ext",
    "field": "descrizione",
    "expected": "M.I.PF NO FOND",
-   "predicted": "M.I.PF FOND",
-   "status": "wrong",
+   "predicted": "M.I.PF NO FOND",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5002,8 +4990,8 @@
    "split": "val_ext",
    "field": "tipo_op",
    "expected": "Nuova Finanza",
-   "predicted": "NO Nuova Finanza",
-   "status": "wrong",
+   "predicted": "Nuova Finanza",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5035,8 +5023,8 @@
    "split": "val_ext",
    "field": "descrizione",
    "expected": "M.I.PF NO FOND",
-   "predicted": "M.I.PF FOND",
-   "status": "wrong",
+   "predicted": "M.I.PF NO FOND",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5068,8 +5056,8 @@
    "split": "val_ext",
    "field": "tipo_op",
    "expected": "Nuova Finanza",
-   "predicted": "NO Nuova Finanza",
-   "status": "wrong",
+   "predicted": "Nuova Finanza",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5112,8 +5100,8 @@
    "split": "val_ext",
    "field": "descrizione",
    "expected": "M.I.PF NO FOND",
-   "predicted": "M.I.PF FOND",
-   "status": "wrong",
+   "predicted": "M.I.PF NO FOND",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5145,8 +5133,8 @@
    "split": "val_ext",
    "field": "tipo_op",
    "expected": "Nuova Finanza",
-   "predicted": "NO Nuova Finanza",
-   "status": "wrong",
+   "predicted": "Nuova Finanza",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5166,7 +5154,7 @@
    "practice": "51849993",
    "split": "val_ext",
    "field": "note_della_richiesta",
-   "expected": "Numero Finanziamento FICS: 017/5628090 Numero proposta DESK: 2919380 Importo perizia: 249.000,00 € Valore immobile presunto: 245.000,00 Immobile da ipotecare è ad uso abitativo: Si Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 199.300,00 € IMPORTO PER PRIMA CASA : 199.300,00 € IMPORTO RICHIESTO : 199.300,00 € Codice immobile: 5103971; Sono presenti le garanzie fideiussorie seguenti: Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante JAGATH CRISANTHA KARUNARATHNAGE RODRIGO (3324948) TRATTASI DI MUTUO ASSICURATO ASSISTITO DA MEDIATORE CREDITIZIO MARCO RAGUCCI CREDIPASS (SI RICHIEDE DI INSERIRE L’NDG 4711973 PRESENTATORE IN FASE DI PRESTIPULA) --- SI RICHIEDE INNALZAMENTO DELL’ORGANO DI DELIBERA, come previsto per le pratiche provenienti dal canale “Mediatori Creditizi”--- Richiediamo mutuo promo assicurato per acquisto prima casa cointestato tra i fratelli e con il padre garante. Richiesta mutuo 199.300 € Durata 360 mesi Rata 845,64 € Tasso fisso consap 3,05 % I clientI ci richiede mutuo ipotecario per acquisto prima casa sita in via Malatesta 48, Spilamberto MO, prezzo concordato in 245.000 €, immobile già periziato valore rilevato 249.000 €. Si tratta di due fratelli, SASIKA E KAVISHKA mutuatari, e il padre, JAGATH, garante, saranno tutti e tre proprietari dell’immobile. Il sig. SASIKA lavora a tempo indeterminato presso la società “NUOVA RGR SRL” (NDG 3417083 cliente presso la nostra filiale di Spilamberto) dal Febbraio 2026, percepisce circa 18.000 € annui desunti dal contratto di lavoro allegato. Il sig. KAVISHKA lavora a tempo indeterminato presso la società “T.C.Z. SRL” (NDG 30051451 cliente presso centro Imprese Modena Sud) da Settembre 2024, percepisce circa 24.000 € annui. Il sig. JAGATH lavora a tempo indeterminato presso la società “NUOVA RGR SRL” (NDG 3417083 cliente presso la nostra filiale di Spilamberto) da Ottobre 2006, percepisce circa 21.000 € annui. Ha in essere un prestito Deutsche Bank con debito residuo di 46.000 €, rata mensile 434 € che verrà mantenuto, mentre estinguerà il prestito di Agos ducato con rata mensile di 148 €. RR SOLO MUTUATARI 23,8 % RR CON GARANTE 17,4 % EFFETTUATO CHECK UP ASSICURATIVO",
+   "expected": "- Numero Finanziamento FICS: 017/5628090 - Numero proposta DESK: 2919380 - Importo perizia: 249.000,00 € - Valore immobile presunto: 245.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 199.300,00 € IMPORTO PER PRIMA CASA : 199.300,00 € IMPORTO RICHIESTO : 199.300,00 € - Codice immobile: 5103971; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante JAGATH CRISANTHA KARUNARATHNAGE RODRIGO (3324948) TRATTASI DI MUTUO ASSICURATO ASSISTITO DA MEDIATORE CREDITIZIO MARCO RAGUCCI CREDIPASS (SI RICHIEDE DI INSERIRE L’NDG 4711973 PRESENTATORE IN FASE DI PRESTIPULA) --- SI RICHIEDE INNALZAMENTO DELL’ORGANO DI DELIBERA, come previsto per le pratiche provenienti dal canale “Mediatori Creditizi”--- Richiediamo mutuo promo assicurato per acquisto prima casa cointestato tra i fratelli e con il padre garante. Richiesta mutuo 199.300 € Durata 360 mesi Rata 845,64 € Tasso fisso consap 3,05 % I clientI ci richiede mutuo ipotecario per acquisto prima casa sita in via Malatesta 48, Spilamberto MO, prezzo concordato in 245.000 €, immobile già periziato valore rilevato 249.000 €. Si tratta di due fratelli, SASIKA E KAVISHKA mutuatari, e il padre, JAGATH, garante, saranno tutti e tre proprietari dell’immobile. Il sig. SASIKA lavora a tempo indeterminato presso la società “NUOVA RGR SRL” (NDG 3417083 cliente presso la nostra filiale di Spilamberto) dal Febbraio 2026, percepisce circa 18.000 € annui desunti dal contratto di lavoro allegato. Il sig. KAVISHKA lavora a tempo indeterminato presso la società “T.C.Z. SRL” (NDG 30051451 cliente presso centro Imprese Modena Sud) da Settembre 2024, percepisce circa 24.000 € annui. Il sig. JAGATH lavora a tempo indeterminato presso la società “NUOVA RGR SRL” (NDG 3417083 cliente presso la nostra filiale di Spilamberto) da Ottobre 2006, percepisce circa 21.000 € annui. Ha in essere un prestito Deutsche Bank con debito residuo di 46.000 €, rata mensile 434 € che verrà mantenuto, mentre estinguerà il prestito di Agos ducato con rata mensile di 148 €. RR SOLO MUTUATARI 23,8 % RR CON GARANTE 17,4 % EFFETTUATO CHECK UP ASSICURATIVO",
    "predicted": "Numero Finanziamento FICS: 017/5628090 - Numero proposta DESK: 2919380 - Importo perizia: 249.000,00 € - Valore immobile presunto: 245.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 199.300,00 € IMPORTO PER PRIMA CASA: 199.300,00 € IMPORTO RICHIESTO : 199.300,00 € - Codice immobile: 5103971; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante JAGATH CRISANTHA KARUNARATHNAGE RODRIGO (3324948) 4711973 PRESENTATORE IN FASE DI PRESTIPULA) Richiedíamo mutuo promo assicurato per acquisto prima casa cointestato tra i fratelli e con il padre garante. Richiesta mutuo 199,300 € Durata 360 mesi Rata 845,64 € Tasso fisso consap 3,05 % I clientl ci richiede mutuo ipotecario per acquisto prima casa sita in via Malatesta 48, Spilamberto MO, prezzo concordato in 245.000 €, immobile già periziato valore rilevato 249.000 €. Si tratta di due fratelli, SASIKA E KAVISHKA mutuatari, e il padre, JAGATH, garante, saranno tutti e tre proprietari dell'immobile. Il sig. SASIKA lavora a tempo indeterminato presso la società \"NUOVA RGR SRL\" (NDG 3417083 cliente presso la nostra filiale di Spilamberto) dal Febbraio 2026, percepisce circa 18.000 € annui desunti dal contratto di lavoro allegato. Il sig. KAVISHKA lavora a tempo indeterminato presso la società \"T.C.Z. SRL\" (NDG 30051451 cliente presso centro Imprese Modena Sud) da Settembre 2024, percepisce circa 24.000 € annui. Il sig. JAGATH lavora a tempo indeterminato presso la società \"NUOVA RGR SRL* (NDG 3417083 cliente presso la nostra filiale di Spilamberto) da Ottobre 2006, percepisce circa 21.000 € annui. Ha in essere un prestito Deutsche Bank con debito residuo di 46.000 €, rata mensile 434 € che verrà mantenuto, mentre estinguerà il prestito di Agos ducato con rata mensile di 148 €. RR SOLO MUTUATARI 23,8 % RR CON GARANTE 17,4 % EFFETTUATO CHECK UP ASSICURATIVO",
    "status": "wrong",
    "content_available": false,
@@ -5266,8 +5254,8 @@
    "split": "val_ext",
    "field": "denominazione_3",
    "expected": "KARUNARATHNAGE RODRIGO SASIKA MADUWA",
-   "predicted": "KARUNARATHNAGE RODRIGO SASIKA MADUWA KARUNARATHNAGE RODRIGO",
-   "status": "wrong",
+   "predicted": "KARUNARATHNAGE RODRIGO SASIKA MADUWA",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5299,8 +5287,8 @@
    "split": "val_ext",
    "field": "denominazione_4",
    "expected": "KARUNARATHNAGE RODRIGO KAVISHKA MIHI",
-   "predicted": "KAVISHKA MIHI",
-   "status": "wrong",
+   "predicted": "KARUNARATHNAGE RODRIGO KAVISHKA MIHI",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5552,8 +5540,8 @@
    "split": "val_ext",
    "field": "ndg",
    "expected": "32401336",
-   "predicted": null,
-   "status": "missing",
+   "predicted": "32401336",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5563,8 +5551,8 @@
    "split": "val_ext",
    "field": "denominazione",
    "expected": "LOOR RENDON SOLANGE",
-   "predicted": null,
-   "status": "missing",
+   "predicted": "LOOR RENDON SOLANGE",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5618,8 +5606,8 @@
    "split": "val_ext",
    "field": "descrizione",
    "expected": "M.F. PF FONDO",
-   "predicted": "M.F.",
-   "status": "wrong",
+   "predicted": "M.F. PF FONDO",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5629,8 +5617,8 @@
    "split": "val_ext",
    "field": "scadenza",
    "expected": "15/08/2056",
-   "predicted": null,
-   "status": "missing",
+   "predicted": "15/08/2056",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5640,8 +5628,8 @@
    "split": "val_ext",
    "field": "importo_euro",
    "expected": "129.000",
-   "predicted": null,
-   "status": "missing",
+   "predicted": "129.000",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5651,8 +5639,8 @@
    "split": "val_ext",
    "field": "tipo_op",
    "expected": "In Lavoraz.",
-   "predicted": null,
-   "status": "missing",
+   "predicted": "In Lavoraz.",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5684,8 +5672,8 @@
    "split": "val_ext",
    "field": "denominazione",
    "expected": "GRECO ALESSANDRO",
-   "predicted": "SEBASTIANO ADRIANO GRECO ALESSANDRO",
-   "status": "wrong",
+   "predicted": "GRECO ALESSANDRO",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -5904,8 +5892,8 @@
    "split": "val_ext",
    "field": "denominazione",
    "expected": "GRECO ALESSANDRO",
-   "predicted": "SEBASTIANO ADRIANO GRECO ALESSANDRO",
-   "status": "wrong",
+   "predicted": "GRECO ALESSANDRO",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -6508,7 +6496,7 @@
    "practice": "52080736",
    "split": "val_ext",
    "field": "note_della_richiesta",
-   "expected": "Numero Finanziamento FICS: 017/5669279 Numero proposta DESK: N.D. Importo perizia: 197.000,00 € Valore immobile presunto: 197.000,00 Immobile da ipotecare è ad uso abitativo: Si Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 156.300,00 € IMPORTO PER PRIMA CASA : 156.300,00 € IMPORTO RICHIESTO : 156.300,00 € Codice immobile: 5114096; Sono presenti le garanzie fideiussorie seguenti: Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante SERGIO ENRICO DELLA TORRE (19368615) Cliente di nuova acquisizione. Longhi Niccolo' è un agente immobiliare, che attualmente svolge libera professione dall'anno scorso. Nel 2024 ha percepito dalla società So.G.Imm. Società Gestioni Imm, redditi da cud per euro 34843,00 Per l'anno 2025, a nostre mani abbiamo un PF provvisorio con reddito netto annuo calcolato con Caren di 20297,00 Per l'anno in corso abbiamo un bilancino provvisorio per il periodo 01/01/2026 - 30/04/2026, con un risultato d'esercizio per euro 15323,00, in proporzione in aumento rispetto all’anno precedente. Non ha immobili di proprietà. Ha un finanziamento in corso con impegno mensile per euro 340,00, con scadenza 05/2027 e un importo residuo di euro 3740,00. Il cliente chiuderà il finanziamento ante rogito. La mamma, Daniela Spano, cointestataria, ha redditi netti da caren da pf per euro 13734,00, svolge libera professione presso studio commercialistico Da visure risulta proprietaria per il 50% di un immobile sito in Monza. Garante a sostegno della pratica il signor Della torre Sergio Enrico (marito della signora Spano), redditi netti da caren di euro 20.619, lavoratore autonomo, agente immobiliare (allegato report persona) Proprietario con la moglie di immobile sito a Monza. Niccolo' insieme alla madre Spanio Daniela ci richiedono mutuo ipotecario promo assicurato, per un immobile sito in Vedano al Lambro, in via Adamello 4, già periziato per il valore di 197000.00 Rata mensile 667,43 istruttoria 1875,6 tasso 3,10 incasso rata 2.75 PROPRIETA' AL 100% A LONGHI NICCOLO' COME DA SCHEDA IMMOBILI , la madre risulta solo cointestataria del mutuo.",
+   "expected": "- Numero Finanziamento FICS: 017/5669279 - Numero proposta DESK: N.D. - Importo perizia: 197.000,00 € - Valore immobile presunto: 197.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 156.300,00 € IMPORTO PER PRIMA CASA : 156.300,00 € IMPORTO RICHIESTO : 156.300,00 € - Codice immobile: 5114096; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante SERGIO ENRICO DELLA TORRE (19368615) Cliente di nuova acquisizione. Longhi Niccolo' è un agente immobiliare, che attualmente svolge libera professione dall'anno scorso. Nel 2024 ha percepito dalla società So.G.Imm. Società Gestioni Imm, redditi da cud per euro 34843,00 Per l'anno 2025, a nostre mani abbiamo un PF provvisorio con reddito netto annuo calcolato con Caren di 20297,00 Per l'anno in corso abbiamo un bilancino provvisorio per il periodo 01/01/2026 - 30/04/2026, con un risultato d'esercizio per euro 15323,00, in proporzione in aumento rispetto all’anno precedente. Non ha immobili di proprietà. Ha un finanziamento in corso con impegno mensile per euro 340,00, con scadenza 05/2027 e un importo residuo di euro 3740,00. Il cliente chiuderà il finanziamento ante rogito. La mamma, Daniela Spano, cointestataria, ha redditi netti da caren da pf per euro 13734,00, svolge libera professione presso studio commercialistico Da visure risulta proprietaria per il 50% di un immobile sito in Monza. Garante a sostegno della pratica il signor Della torre Sergio Enrico (marito della signora Spano), redditi netti da caren di euro 20.619, lavoratore autonomo, agente immobiliare (allegato report persona) Proprietario con la moglie di immobile sito a Monza. Niccolo' insieme alla madre Spanio Daniela ci richiedono mutuo ipotecario promo assicurato, per un immobile sito in Vedano al Lambro, in via Adamello 4, già periziato per il valore di 197000.00 Rata mensile 667,43 istruttoria 1875,6 tasso 3,10 incasso rata 2.75 PROPRIETA' AL 100% A LONGHI NICCOLO' COME DA SCHEDA IMMOBILI , la madre risulta solo cointestataria del mutuo.",
    "predicted": "Numero Finanziamento FICS: 017/5669279 Numero proposta DESK: N.D. Importo perizia: 197.000,00 € Valore immobile presunto: 197.000,00 -Immobile da ipotecare è ad uso abitativo: Si Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 156.300,00 € IMPORTO PER PRIMA CASA: 156.300,00 € IMPORTO RICHIESTO : 156.300,00 € Codice immobile: 5114096; Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante SERGIO ENRICO DELLA TORRE (19368615) Cliente di nuova acquisizione. Longhi Niccolo' è un agente immobiliare, che attualmente svolge libera professione dall'anno scorso. Nel 2024 ha percepito dalla società So.G.Imm. Società Gestioni Imm, redditi da cud per euro 34843,00 Per l'anno 2025, a nostre mani abbiamo un PF provvisorio con reddito netto annuo calcolato con Caren di 20297,00 proporzione in aumento rispetto all'anno precedente. Non ha immobili di proprietà. Ha un finanziamento in corso con impegno mensile per euro 340,00, con scadenza 05/2027 e un importo residuo di euro 3740,00. Il cliente chiuderà il finanziamento ante rogito. La mamma, Daniela Spano, cointestataria, ha redditi netti da caren da pf per euro 13734,00, svolge libera professione presso studio commercialistico Da visure risulta proprietaria per il 50% di un immobile sito in Monza. Garante a sostegno della pratica il signor Della torre Sergio Enrico (marito della signora Spano), redditi netti da caren di euro 20.619, lavoratore autonomo, agente immobiliare (allegato report persona) Proprietario con la moglie di immobile sito a Monza. Niccolo insieme alla madre Spanio Daniela ci richiedono mutuo ipotecario promo assicurato, per un immobile sito in Vedano al Lambro, in via Adamello 4, già periziato per il valore di 197000.00 Rata mensile 667,43 istruttoria 1875,6 tasso 3,10 incasso rata 2.75 PROPRIETA' AL 100% A LONGHI NICCOLO' COME DA SCHEDA IMMOBILI , la madre risulta solo cointestataria del mutuo.",
    "status": "wrong",
    "content_available": false,
@@ -7147,8 +7135,8 @@
    "split": "val_ext",
    "field": "denominazione_1",
    "expected": "SHEELAN MENAH",
-   "predicted": "SHEELAN MENAH FONDO DI GARANZIA PER LA PRIMA",
-   "status": "wrong",
+   "predicted": "SHEELAN MENAH",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7158,8 +7146,8 @@
    "split": "val_ext",
    "field": "ruolo_1",
    "expected": "Richiedente",
-   "predicted": "Richiedente Nuovo Garante/nuovo Datore",
-   "status": "wrong",
+   "predicted": "Richiedente",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7180,8 +7168,8 @@
    "split": "val_ext",
    "field": "denominazione_2",
    "expected": "FONDO DI GARANZIA PER LA PRIMA CASA",
-   "predicted": "CASA",
-   "status": "wrong",
+   "predicted": "FONDO DI GARANZIA PER LA PRIMA CASA",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7191,8 +7179,8 @@
    "split": "val_ext",
    "field": "ruolo_2",
    "expected": "Nuovo Garante/nuovo Datore di Pegno",
-   "predicted": "Di Pegno",
-   "status": "wrong",
+   "predicted": "Nuovo Garante/nuovo Datore Di Pegno",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7444,8 +7432,8 @@
    "split": "val_ext",
    "field": "descrizione",
    "expected": "M.F. PF FONDO",
-   "predicted": "M.F.",
-   "status": "wrong",
+   "predicted": "M.F. PF FONDO",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7455,8 +7443,8 @@
    "split": "val_ext",
    "field": "scadenza",
    "expected": "15/10/2056",
-   "predicted": null,
-   "status": "missing",
+   "predicted": "15/10/2056",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7466,8 +7454,8 @@
    "split": "val_ext",
    "field": "importo_euro",
    "expected": "129.000",
-   "predicted": "PF 15/10/2056 129.000",
-   "status": "wrong",
+   "predicted": "129.000",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7576,8 +7564,8 @@
    "split": "val_ext",
    "field": "descrizione",
    "expected": "M.F. PF FONDO",
-   "predicted": "M.F.",
-   "status": "wrong",
+   "predicted": "M.F. PF FONDO",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7587,8 +7575,8 @@
    "split": "val_ext",
    "field": "scadenza",
    "expected": "15/10/2056",
-   "predicted": null,
-   "status": "missing",
+   "predicted": "15/10/2056",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7598,8 +7586,8 @@
    "split": "val_ext",
    "field": "importo_euro",
    "expected": "129.000",
-   "predicted": "PF 15/10/2056 129.000",
-   "status": "wrong",
+   "predicted": "129.000",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7642,8 +7630,8 @@
    "split": "val_ext",
    "field": "descrizione",
    "expected": "M.F. PF FONDO",
-   "predicted": "M.F. PF",
-   "status": "wrong",
+   "predicted": "M.F. PF FONDO",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7653,8 +7641,8 @@
    "split": "val_ext",
    "field": "scadenza",
    "expected": "15/10/2056",
-   "predicted": null,
-   "status": "missing",
+   "predicted": "15/10/2056",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7664,8 +7652,8 @@
    "split": "val_ext",
    "field": "importo_euro",
    "expected": "129.000",
-   "predicted": "15/10/2056 129.000",
-   "status": "wrong",
+   "predicted": "129.000",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7696,7 +7684,7 @@
    "practice": "52137073",
    "split": "val_ext",
    "field": "note_della_richiesta",
-   "expected": "• Numero Finanziamento FICS: 017/5680271 • Numero proposta DESK: 3103228 • Importo perizia: 134.000,00 € • Valore immobile presunto: 134.000,00 • Immobile da ipotecare è ad uso abitativo: Si • Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 129.000,00 € IMPORTO PER PRIMA CASA : 129.000,00 € IMPORTO RICHIESTO : 129.000,00 € • Codice immobile: 5141895; Mutuo Acquisto Prima Casa Fondo di Garanzia Consap 50% - Under 36 Trattasi di richiesta mutuo euro 126.000,00 acquisto immobile + euro 3.000,00 spese notarili. Richiedenti: trattasi di Dessì Alessandro, socio e chef de cuisine ristorante Dessì di Savona, locale top della ristorazione Riviera di Ponente. Cointestataria: Ortega Lopez Emily Maria, fidanzata di Dessì, figlia della socia di Dessì snc e dipendente quale maitre di sala del ristorante stesso. Ndg di nuova acquisizione ma appartenenti a nucleo familiare cliente Istituto da più di 20 anni, noti e stimati su piazza. Si allega ISEE nucleo familiare di provenienza Ortega ad evidenziare ampio patrimonio mobiliare e immobiliare (e consistente reddito annuale) Ulteriori dettagli in Scheda Privati ndg singoli.",
+   "expected": "- Numero Finanziamento FICS: 017/5680271 - Numero proposta DESK: 3103228 - Importo perizia: 134.000,00 € - Valore immobile presunto: 134.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 129.000,00 € IMPORTO PER PRIMA CASA : 129.000,00 € IMPORTO RICHIESTO : 129.000,00 € - Codice immobile: 5141895; Mutuo Acquisto Prima Casa Fondo di Garanzia Consap 50% - Under 36 Trattasi di richiesta mutuo euro 126.000,00 acquisto immobile + euro 3.000,00 spese notarili. Richiedenti: trattasi di Dessì Alessandro, socio e chef de cuisine ristorante Dessì di Savona, locale top della ristorazione Riviera di Ponente. Cointestataria: Ortega Lopez Emily Maria, fidanzata di Dessì, figlia della socia di Dessì snc e dipendente quale maitre di sala del ristorante stesso. Ndg di nuova acquisizione ma appartenenti a nucleo familiare cliente Istituto da più di 20 anni, noti e stimati su piazza. Si allega ISEE nucleo familiare di provenienza Ortega ad evidenziare ampio patrimonio mobiliare e immobiliare (e consistente reddito annuale) Ulteriori dettagli in Scheda Privati ndg singoli.",
    "predicted": "- Numero Finanziamento FICS: 017/5680271 - Numero proposta DESK: 3103228 - Importo perizia: 134.000,00 € - Valore immobile presunto: 134.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 129.000,00 € IMPORTO PER PRIMA CASA: 129.000,00 € IMPORTO RICHIESTO : 129.000,00 € - Codice immobile: 5141895; Mutuo Acquisto Prima Casa Fondo di Garanzia Consap 50% - Under 36 Trattasi di richiesta mutuo euro 126.000,00 acquisto immobile + euro 3.000,00 spese notarili. Richiedenti: trattasi di Dessì Alessandro, socio e chef de cuisine ristorante Dessì di Savona, locale top della ristorazione Riviera di Ponente. Cointestataria: Ortega Lopez Emily Maria, fidanzata di Dessì, figlia della socia di Dessì snc e dipendente quale maitre di sala del ristorante stesso. Ndg di nuova acquisizione ma appartenenti a nucleo familiare cliente Istituto da più di 20 anni, noti e stimati su piazza. Si allega ISEE nucleo familiare di provenienza Ortega ad evidenziare ampio patrimonio mobiliare e immobiliare (e consistente reddito annuale)",
    "status": "wrong",
    "content_available": false,
@@ -7730,8 +7718,8 @@
    "split": "val_ext",
    "field": "denominazione_1",
    "expected": "ORTEGA LOPEZ EMILY MARIA,DESSI ALESS",
-   "predicted": "ORTEGA LOPEZ EMILY MARIA,DESSI ALESS FONDO DI GARANZIA PER LA PRIMA",
-   "status": "wrong",
+   "predicted": "ORTEGA LOPEZ EMILY MARIA,DESSI ALESS",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7763,8 +7751,8 @@
    "split": "val_ext",
    "field": "denominazione_2",
    "expected": "FONDO DI GARANZIA PER LA PRIMA CASA",
-   "predicted": "CASA",
-   "status": "wrong",
+   "predicted": "FONDO DI GARANZIA PER LA PRIMA CASA",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7774,8 +7762,8 @@
    "split": "val_ext",
    "field": "ruolo_2",
    "expected": "Nuovo Garante/nuovo Datore di Pegno",
-   "predicted": "Nuovo Garante/nuovo Datore Di Pegno Nuovo Garante/nuovo Datore",
-   "status": "wrong",
+   "predicted": "Nuovo Garante/nuovo Datore Di Pegno",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7807,8 +7795,8 @@
    "split": "val_ext",
    "field": "ruolo_3",
    "expected": "Nuovo Garante/nuovo Datore di Pegno",
-   "predicted": "Di Pegno Nuovo Garante/nuovo Datore",
-   "status": "wrong",
+   "predicted": "Nuovo Garante/nuovo Datore Di Pegno",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   },
@@ -7840,8 +7828,8 @@
    "split": "val_ext",
    "field": "ruolo_4",
    "expected": "Nuovo Garante/nuovo Datore di Pegno",
-   "predicted": "Di Pegno",
-   "status": "wrong",
+   "predicted": "Nuovo Garante/nuovo Datore Di Pegno",
+   "status": "correct",
    "content_available": true,
    "abstained": false
   }
