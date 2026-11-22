@@ -6,7 +6,7 @@ Lo spec da solo produce comunque un bundle avviabile: config.ini, env.template
 e assets sono nei datas e il bootstrap li semina accanto all'exe al primo avvio.
 """
 
-from PyInstaller.utils.hooks import collect_data_files, collect_submodules
+from PyInstaller.utils.hooks import collect_submodules
 
 # Default dentro il bundle: il bootstrap li semina/ripristina accanto all'exe.
 datas = [
@@ -17,10 +17,9 @@ datas = [
     # (creata da build_exe.bat) e usa questa come fallback.
     ("prompts/*.json", "prompts"),
 ]
-# qt_material carica template XML/CSS da file: vanno raccolti esplicitamente.
-datas += collect_data_files("qt_material")
 
-hiddenimports = []
+# Le icone sono SVG (assets/icons, già nei datas): QtSvg e i suoi plugin vanno nel pacchetto.
+hiddenimports = ["PyQt6.QtSvg"]
 hiddenimports += collect_submodules("langchain_google_genai")
 hiddenimports += collect_submodules("langchain_openai")
 

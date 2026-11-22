@@ -16,7 +16,7 @@ Python è l'unico linguaggio di implementazione. La codebase mescola però delib
 |-----------|------|--------------------|
 | LangChain | Il layer di astrazione LLM e la dipendenza portante del progetto. `create_chat_model()` (`src/extraction/llm_factory.py:16`) restituisce un `BaseChatModel`; `call_vlm()` (`src/extraction/vlm_client.py:122`) pilota l'output strutturato Pydantic via `.with_structured_output()`. Entrambi i provider, tutti e tre i passaggi, tutte le interfacce ci passano attraverso. | `langchain-core`, `langchain-openai`, `langchain-google-genai`, tutti senza vincolo (`requirements.txt:1-3`) |
 | PyQt6 | UI desktop dell'edge-agent (cattura dal vivo dello schermo). Entry `src/edge-agent/edge_agent.py`; finestra e schede in `src/edge-agent/ui/`; i worker di cattura sono sottoclassi di `QThread` e i risultati tornano al thread UI tramite segnali Qt. | `PyQt6>=6.4.0` (`requirements.txt:7`) |
-| qt-material | Tema Material (`dark_cyan.xml`) applicato all'avvio dell'edge-agent (`src/edge-agent/edge_agent.py`). Opzionale: l'avvio degrada allo stile di default se l'import fallisce. | `qt-material>=2.14` (`requirements.txt:8`) |
+| tema proprio | Token di colore e stylesheet in `src/edge-agent/theme.py`, chiaro o scuro come Windows (ADR 0033). Nessuna dipendenza esterna: ha sostituito `qt-material`. | `src/edge-agent/theme.py` |
 | Tkinter | La GUI desktop standalone `gui_app.py` (selettore immagini, menu provider/modello, vista dei risultati, esportazione CSV/JSON). Libreria standard, quindi nessuna voce in `requirements.txt`. | stdlib |
 | PyTorch / torchvision | Classificatore locale `BPERPagePrototypeClassifier`: embedding DINOv2 ViT-S/14 (384 dimensioni) confrontati con prototipi tramite coseno centrato. È usato da `ml`, dal fallback `hybrid` e da `local-first`. Se l’import fallisce, il classificatore si disabilita. `config.ini` spedisce `llm`, mentre `AgentConfig.DEFAULT_ROUTER_MODE` resta `ml`. | `torch`, `torchvision`, senza vincolo (`requirements.txt`) |
 
@@ -80,7 +80,7 @@ pip con un **unico `requirements.txt` piatto** alla radice del repo: dipendenze 
 Coesistono questi stili di vincolo:
 - **Senza vincolo:** il trio LangChain, `pandas`, `python-dotenv`, `torch`, `torchvision`. I pacchetti LangChain non pinnati sono l'elemento a rischio più alto: il comportamento di output strutturato su cui `src/extraction/vlm_client.py` si dirama per provider/famiglia di modello (`_GEMINI_JSON_SCHEMA_MODELS`, `vlm_client.py:18,134-138`) è sensibile alla deriva di versione di LangChain.
 - **Intervallo di versione:** `pyinstaller>=6.10,<7`.
-- **Limite inferiore (`>=`):** `PyQt6`, `qt-material`, `mss`, `pyscreenshot`, `Pillow`, `imagehash`, `requests`, `openai`, `openpyxl`.
+- **Limite inferiore (`>=`):** `PyQt6`, `mss`, `pyscreenshot`, `Pillow`, `imagehash`, `requests`, `openai`, `openpyxl`.
 
 Nulla è pinnato in modo esatto, quindi un `pip install -r requirements.txt` fresco non è riproducibile da un giorno all'altro: versioni diverse di LangChain o torch possono arrivare in silenzio. `pyscreenshot` porta un marker di piattaforma (solo Linux), quindi le installazioni cross-platform differiscono di proposito; torch resta fra i componenti più pesanti.
 

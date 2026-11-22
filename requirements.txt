@@ -4,7 +4,6 @@ langchain-google-genai
 pandas
 python-dotenv
 PyQt6>=6.4.0
-qt-material>=2.14
 mss>=9.0.0
 pyscreenshot>=3.1; sys_platform == 'linux'
 Pillow>=10.0.0
