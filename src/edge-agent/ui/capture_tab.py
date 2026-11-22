@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Callable, Optional
 
-from PyQt6 import QtGui
+from PyQt6 import QtCore, QtGui
 from PyQt6 import QtWidgets
 from PyQt6.QtWidgets import (
     QWidget,
@@ -42,7 +42,13 @@ class CaptureTab(QWidget):
     - export CSV
     - forza scatto manuale (solo BPER)
     - log testuale in tempo reale
+
+    Avvia/Ferma vive nella barra di stato della finestra: la tab possiede il
+    worker ed espone start_capture()/stop_capture()/is_running() più i segnali.
     """
+
+    running_changed = QtCore.pyqtSignal(bool)        # cattura avviata / fermata
+    counters_changed = QtCore.pyqtSignal(int, int)   # (frame inviati, risultati elaborati)
 
     def __init__(
             self,
@@ -115,8 +121,6 @@ class CaptureTab(QWidget):
         # Box job (sostituiti pulsanti inutili per locale)
         controls_layout = QHBoxLayout()
 
-        self.start_button = QPushButton("▶  Avvia", self)
-        self.stop_button = QPushButton("■  Ferma", self)
         # self.requeue_button = QPushButton("Requeue job", self) # Inutile in locale
         self.export_button = QPushButton("⬇️  Esporta Excel", self)
 
@@ -129,8 +133,6 @@ class CaptureTab(QWidget):
 
         self.job_label = QLabel("Sessione: –", self)
 
-        controls_layout.addWidget(self.start_button)
-        controls_layout.addWidget(self.stop_button)
         # controls_layout.addWidget(self.requeue_button)
         controls_layout.addWidget(self.export_button)
         controls_layout.addWidget(self.force_page_combo)
@@ -148,14 +150,9 @@ class CaptureTab(QWidget):
         layout.addWidget(self.log_text, stretch=1)
 
         # Collegamenti segnali UI
-        self.start_button.clicked.connect(self._on_start_capture)
-        self.stop_button.clicked.connect(self._on_stop_capture)
         # self.requeue_button.clicked.connect(self._on_requeue_job)
         self.export_button.clicked.connect(self._on_export_excel)
         self.force_capture_button.clicked.connect(self._on_force_capture)
-
-        # Stato iniziale
-        self.stop_button.setEnabled(False)
 
     # ------------------------------------------------------------------ Helpers
 
@@ -189,7 +186,7 @@ class CaptureTab(QWidget):
 
     # ------------------------------------------------------------------ Gestione worker
 
-    def _on_start_capture(self) -> None:
+    def start_capture(self) -> None:
         if self.worker is not None:
             QMessageBox.warning(self, "Avviso", "Cattura già in corso.")
             return
@@ -209,6 +206,7 @@ class CaptureTab(QWidget):
         self._n_results = 0
         self._n_queued = 0
         self._update_session_label()
+        self.counters_changed.emit(0, 0)
 
         # Aggiorna la config dai controlli UI
         self.config.update_from_ui(
@@ -281,8 +279,7 @@ class CaptureTab(QWidget):
             # l'overlay non è critico; ignora errori
             self._overlay = None
 
-        self.start_button.setEnabled(False)
-        self.stop_button.setEnabled(True)
+        self.running_changed.emit(True)
         # Aggiorna stato bottoni forza scatto (se non settato sopra)
         if isinstance(self.worker, BPERCaptureWorker):
             has_pages = self.force_page_combo.count() > 0
@@ -309,8 +306,7 @@ class CaptureTab(QWidget):
                 self._log(f"Cattura arrestata. Estrazioni ancora in corso: {in_flight} (proseguono in background).")
             else:
                 self._log("Cattura arrestata.")
-            self.start_button.setEnabled(True)
-            self.stop_button.setEnabled(False)
+            self.running_changed.emit(False)
             self.force_page_combo.setEnabled(False)
             self.force_capture_button.setEnabled(False)
             # Nasconde overlay se presente
@@ -384,11 +380,13 @@ class CaptureTab(QWidget):
         if job_id == self.job_id:
             self._n_queued += 1
             self._update_session_label()
+            self.counters_changed.emit(self._n_queued, self._n_results)
 
     def _on_result_ready_count(self, job_id: str, result: dict) -> None:
         if job_id == self.job_id:
             self._n_results += 1
             self._update_session_label()
+            self.counters_changed.emit(self._n_queued, self._n_results)
             page = str(result.get("_page_type") or result.get("screen_id") or "?")
             status = str(result.get("_status") or "OK")
             self._log(f"Elaborazione terminata: «{page}» (stato: {status})")
@@ -397,6 +395,9 @@ class CaptureTab(QWidget):
 
     def get_current_job_id(self) -> Optional[str]:
         return self.job_id
+
+    def is_running(self) -> bool:
+        return self.worker is not None
 
     def stop_capture(self) -> None:
         self._on_stop_capture()

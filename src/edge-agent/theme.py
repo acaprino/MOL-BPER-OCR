@@ -118,6 +118,17 @@ QFrame#card { background: $surface; border: 1px solid $border; border-radius: 8p
 QGroupBox { border: 1px solid $border; border-radius: 8px; margin-top: 12px; padding-top: 8px; }
 QGroupBox::title { subcontrol-origin: margin; left: 10px; padding: 0 4px; }
 
+QFrame#navRail { background: $surface; border: none; border-right: 1px solid $border; }
+QToolButton[nav="true"] {
+    background: transparent; color: $text; border: none; border-left: 3px solid transparent;
+    border-radius: 6px; padding: 10px 12px; text-align: left;
+}
+QToolButton[nav="true"]:hover { background: $surface_alt; }
+QToolButton[nav="true"]:checked { background: $selection_bg; border-left: 3px solid $primary; font-weight: 600; }
+QToolButton[nav="true"]:focus { border: 2px solid $focus; }
+QFrame#statusHeader { background: $surface; border: none; border-bottom: 1px solid $border; }
+QLabel#headerState { font-weight: 600; }
+
 QToolTip { background: $surface; color: $text; border: 1px solid $input_border; padding: 4px 6px; }
 
 QPushButton {
