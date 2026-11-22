@@ -7,12 +7,16 @@ before `bootstrap.run_preflight()`, so it must not import either.
 
 from __future__ import annotations
 
+import tempfile
 from dataclasses import asdict, dataclass
+from pathlib import Path
 from string import Template
 from typing import Optional
 
 from PyQt6 import QtGui, QtWidgets
 from PyQt6.QtCore import Qt
+
+import app_paths
 
 # ============================================================
 # Tokens
@@ -155,7 +159,11 @@ QLineEdit:focus, QSpinBox:focus, QComboBox:focus, QTextEdit:focus, QPlainTextEdi
 QLineEdit:disabled, QSpinBox:disabled, QComboBox:disabled {
     background: $background; color: $text_muted; border-color: $border;
 }
-QComboBox::drop-down { border: none; width: 24px; }
+QComboBox::drop-down { border: none; width: 28px; }
+QComboBox::down-arrow { image: url($arrow_down); width: 16px; height: 16px; }
+QLabel#cardTitle { font-weight: 600; font-size: 11pt; }
+QToolButton#panelToggle { background: transparent; border: none; font-weight: 600; padding: 4px 6px; }
+QToolButton#panelToggle:focus { border: 2px solid $focus; border-radius: 6px; }
 QComboBox QAbstractItemView {
     background: $surface; color: $text; border: 1px solid $input_border;
     selection-background-color: $selection_bg; selection-color: $text;
@@ -184,9 +192,27 @@ QScrollBar::add-line, QScrollBar::sub-line { height: 0; width: 0; }
 """)
 
 
+def _tinted_icon_path(name: str, color: str) -> str:
+    """Path of a bundled icon drawn in `color`, for a stylesheet `url()`.
+
+    QSS cannot tint an image, so a coloured copy is written once to the temp folder.
+    Empty when the icon is not bundled: the arrow is then simply absent.
+    """
+    source = app_paths.bundled_assets_dir() / "icons" / f"{name}.svg"
+    if not source.is_file():
+        return ""
+    folder = Path(tempfile.gettempdir()) / "edge-agent-theme"
+    folder.mkdir(parents=True, exist_ok=True)
+    target = folder / f"{name}-{color.lstrip('#')}.svg"
+    if not target.is_file():
+        target.write_text(source.read_text(encoding="utf-8").replace("currentColor", color), encoding="utf-8")
+    return target.as_posix()
+
+
 def build_stylesheet(tokens: Tokens) -> str:
     """The application stylesheet for one set of tokens."""
-    return _QSS.substitute(asdict(tokens))
+    values = {**asdict(tokens), "arrow_down": _tinted_icon_path("chevron-down", tokens.text)}
+    return _QSS.substitute(values)
 
 
 # ============================================================

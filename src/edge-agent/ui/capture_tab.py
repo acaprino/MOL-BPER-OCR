@@ -12,7 +12,6 @@ from PyQt6.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QGridLayout,
-    QGroupBox,
     QLabel,
     QLineEdit,
     QPushButton,
@@ -20,16 +19,19 @@ from PyQt6.QtWidgets import (
     QSpinBox,
     QComboBox,
     QMessageBox,
+    QAbstractSpinBox,
 )
 from config import AgentConfig
-from excel_export import export_results
+import theme
 from workers.capture import (
     BaseCaptureWorker,
     DefaultCaptureWorker,
     BPERCaptureWorker,
 )
 
+from . import icons
 from .overlay import CaptureBorderOverlay
+from .widgets import Card, CollapsiblePanel, default_export_name
 
 
 class CaptureTab(QWidget):
@@ -68,8 +70,11 @@ class CaptureTab(QWidget):
         self._debug_tab: Optional[QtWidgets.QWidget] = debug_tab
         self._n_results: int = 0
         self._n_queued: int = 0
+        self._error_count: int = 0
 
         self._init_ui()
+        # Le impostazioni valgono all'avvio: mentre si cattura non si toccano.
+        self.running_changed.connect(lambda running: self.settings_card.setEnabled(not running))
 
         # Connessioni uniche al client (vive quanto la finestra): i contatori
         # filtrano per job_id, quindi nessun connect/disconnect per sessione.
@@ -83,71 +88,86 @@ class CaptureTab(QWidget):
 
     def _init_ui(self) -> None:
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(20, 16, 20, 16)
+        layout.setSpacing(14)
+        tokens = theme.current_tokens()
 
-        # --- Box configurazione ---
-        config_group = QGroupBox("Impostazioni", self)
-        config_layout = QGridLayout(config_group)
+        # --- Card impostazioni (si blocca mentre si cattura) ---
+        self.settings_card = Card("Impostazioni", self)
+        grid = QGridLayout()
+        grid.setHorizontalSpacing(16)
+        grid.setVerticalSpacing(10)
+        grid.setColumnStretch(1, 1)
 
         # Modalità (BPER / default)
-        mode_label = QLabel("Modalità:", config_group)
-        self.mode_combo = QComboBox(config_group)
+        self.mode_combo = QComboBox(self.settings_card)
         self.mode_combo.addItem("BPER", userData="bper")
         self.mode_combo.addItem("Generico", userData="default")
         self.mode_combo.setCurrentIndex(0)
 
-        # FPS
-        fps_label = QLabel("Velocità acquisizione (fps):", config_group)
-        self.fps_spin = QSpinBox(config_group)
+        # FPS: niente pulsanti su/giù (poco leggibili); si digita o si usano le frecce
+        self.fps_spin = QSpinBox(self.settings_card)
         self.fps_spin.setRange(1, 10)
         self.fps_spin.setValue(self.config.fps)
+        self.fps_spin.setSuffix(" fps")
+        self.fps_spin.setButtonSymbols(QAbstractSpinBox.ButtonSymbols.NoButtons)
+        self.fps_spin.setToolTip("Fotogrammi al secondo da acquisire (1-10). Digita il numero o usa le frecce su/giù.")
 
         # Filtro finestra (titolo contiene)
-        win_label = QLabel("Titolo finestra da monitorare:", config_group)
-        self.window_filter_edit = QLineEdit(config_group)
+        self.window_filter_edit = QLineEdit(self.settings_card)
         self.window_filter_edit.setText(self.config.window_title_contains)
+        self.window_filter_edit.setPlaceholderText("Parte del titolo della finestra")
 
-        config_layout.addWidget(mode_label, 0, 0)
-        config_layout.addWidget(self.mode_combo, 0, 1)
+        for row, (text, field) in enumerate((
+            ("Modalità", self.mode_combo),
+            ("Velocità di acquisizione", self.fps_spin),
+            ("Titolo della finestra", self.window_filter_edit),
+        )):
+            label = QLabel(text, self.settings_card)
+            label.setBuddy(field)
+            grid.addWidget(label, row, 0)
+            grid.addWidget(field, row, 1)
+        self.settings_card.content.addLayout(grid)
+        layout.addWidget(self.settings_card)
 
-        config_layout.addWidget(fps_label, 1, 0)
-        config_layout.addWidget(self.fps_spin, 1, 1)
-
-        config_layout.addWidget(win_label, 2, 0)
-        config_layout.addWidget(self.window_filter_edit, 2, 1)
-
-        config_group.setLayout(config_layout)
-        layout.addWidget(config_group)
-
-        # Box job (sostituiti pulsanti inutili per locale)
-        controls_layout = QHBoxLayout()
+        # --- Azioni: acquisizione manuale a sinistra, export a destra ---
+        actions = QHBoxLayout()
+        actions.setSpacing(10)
 
         # self.requeue_button = QPushButton("Requeue job", self) # Inutile in locale
-        self.export_button = QPushButton("⬇️  Esporta Excel", self)
-
-        # Forza scatto: selezione pagina + bottone
+        manual_label = QLabel("Acquisizione manuale", self)
+        manual_label.setProperty("muted", True)
         self.force_page_combo = QComboBox(self)
         self.force_page_combo.setEditable(False)
         self.force_page_combo.setEnabled(False)
-        self.force_capture_button = QPushButton("📷  Acquisisci ora", self)
+        self.force_page_combo.setMinimumWidth(220)
+        self.force_page_combo.setToolTip("Pagina da acquisire subito")
+        self.force_capture_button = QPushButton("Acquisisci ora", self)
+        self.force_capture_button.setIcon(icons.icon("camera", tokens.text, 18))
+        self.force_capture_button.setToolTip("Acquisisci subito la pagina scelta (solo in modalità BPER)")
         self.force_capture_button.setEnabled(False)
 
-        self.job_label = QLabel("Sessione: –", self)
+        self.export_button = QPushButton("Esporta Excel", self)
+        self.export_button.setIcon(icons.icon("download", tokens.text, 18))
+        self.export_button.setShortcut(QtGui.QKeySequence("Ctrl+E"))
+        self.export_button.setToolTip("Esporta in Excel le pratiche della sessione (Ctrl+E)")
 
-        # controls_layout.addWidget(self.requeue_button)
-        controls_layout.addWidget(self.export_button)
-        controls_layout.addWidget(self.force_page_combo)
-        controls_layout.addWidget(self.force_capture_button)
-        controls_layout.addStretch(1)
-        controls_layout.addWidget(self.job_label)
+        # actions.addWidget(self.requeue_button)
+        actions.addWidget(manual_label)
+        actions.addWidget(self.force_page_combo)
+        actions.addWidget(self.force_capture_button)
+        actions.addStretch(1)
+        actions.addWidget(self.export_button)
+        layout.addLayout(actions)
 
-        layout.addLayout(controls_layout)
-
-        # --- Box log ---
-        layout.addWidget(QLabel("Registro attività:", self))
+        # --- Registro: chiuso, con l'ultima riga e il numero di errori in vista ---
         self.log_text = QTextEdit(self)
         self.log_text.setReadOnly(True)
         self.log_text.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
-        layout.addWidget(self.log_text, stretch=1)
+        self.log_text.setFont(QtGui.QFont("Consolas", 9))
+        self.log_panel = CollapsiblePanel("Registro attività", self.log_text, self)
+        layout.addWidget(self.log_panel, stretch=1)
+        layout.addStretch(0)
 
         # Collegamenti segnali UI
         # self.requeue_button.clicked.connect(self._on_requeue_job)
@@ -167,10 +187,24 @@ class CaptureTab(QWidget):
         except Exception:
             return []
 
-    def _log(self, message: str) -> None:
+    def _log(self, message: str, summary: Optional[str] = None) -> None:
+        """Append a technical line to the log; `summary` is what the closed panel shows."""
         ts = datetime.now().strftime("%H:%M:%S")
         self.log_text.append(f"[{ts}] {message}")
         self.log_text.ensureCursorVisible()
+        if "[ERROR]" in message or message.startswith("[WORKER ERROR]"):
+            self._error_count += 1
+        self.log_panel.set_summary(self._summary_line(message if summary is None else summary))
+
+    def _summary_line(self, text: str) -> str:
+        line = text if len(text) <= 90 else text[:87] + "…"
+        if self._error_count:
+            word = "errore" if self._error_count == 1 else "errori"
+            line += f"  ·  {self._error_count} {word}"
+        return line
+
+    def log_error_count(self) -> int:
+        return self._error_count
 
     def _create_job_id(self) -> Optional[str]:
         """Avvia un nuovo job locale e ritorna il job_id."""
@@ -196,16 +230,15 @@ class CaptureTab(QWidget):
         if not job_id:
             QMessageBox.critical(
                 self,
-                "Errore creazione job",
-                "Impossibile creare un nuovo job via API.\n"
-                "Verifica che il servizio sia attivo.",
+                "Avvio non riuscito",
+                "Non riesco ad avviare la sessione. Chiudi e riapri l'app; "
+                "se succede ancora, contatta l'assistenza.",
             )
             return
 
         self.job_id = job_id
         self._n_results = 0
         self._n_queued = 0
-        self._update_session_label()
         self.counters_changed.emit(0, 0)
 
         # Aggiorna la config dai controlli UI
@@ -321,71 +354,60 @@ class CaptureTab(QWidget):
         self._log(message)
 
     def _on_worker_error(self, exc: Exception) -> None:
-        self._log(f"[WORKER ERROR] {type(exc).__name__}: {exc}")
+        # Riga tecnica nel registro; chi lo tiene chiuso legge una frase chiara.
+        self._log(
+            f"[WORKER ERROR] {type(exc).__name__}: {exc}",
+            summary="Cattura interrotta da un errore. Apri il registro per i dettagli.",
+        )
 
     # ------------------------------------------------------------------ Azioni backend
 
     def _on_export_excel(self) -> None:
-        if not self.job_id:
-            QMessageBox.warning(
-                self,
-                "Nessun job",
-                "Non è presente alcun job corrente da esportare.",
-            )
-            return
-
-        results = self.api_client.get_results(self.job_id)
+        results = self.api_client.get_results(self.job_id) if self.job_id else []
         if not results:
-            self._log(f"[ERROR] Export Excel fallita: nessun risultato per {self.job_id}.")
             QMessageBox.warning(
                 self,
-                "Nessun dato",
-                "Nessuna estrazione completata da esportare.",
+                "Niente da esportare",
+                "Non c'è ancora niente da esportare. Avvia la cattura e attendi almeno un'estrazione.",
             )
             return
 
         file_path, _ = QtWidgets.QFileDialog.getSaveFileName(
             self,
             "Salva Excel",
-            f"dati-{self.job_id}.xlsx",
+            default_export_name(),
             "File Excel (*.xlsx)",
         )
         if not file_path:
             return
 
         try:
-            written = export_results(results, file_path)
+            # Unico percorso di export: correzioni ed etichette incluse.
+            written = self.api_client.export_workbook(self.job_id, file_path)
         except Exception as e:  # noqa: BLE001
             self._log(f"[ERROR] Export Excel fallita: {e}")
             QMessageBox.critical(
                 self,
-                "Errore scrittura",
-                f"Errore durante la scrittura del file:\n{e}",
+                "Salvataggio non riuscito",
+                f"Non riesco a salvare il file:\n{e}",
             )
             return
 
         self._log(f"Export Excel salvata in: {file_path} ({written} pratiche)")
         QMessageBox.information(
             self,
-            "Export completata",
+            "Esportazione completata",
             f"{written} pratiche salvate in:\n{file_path}",
-        )
-
-    def _update_session_label(self) -> None:
-        self.job_label.setText(
-            f"Sessione attiva  |  Inviate: {self._n_queued}  |  Elaborate: {self._n_results}"
         )
 
     def _on_frame_queued(self, job_id: str, _page_type: str) -> None:
         if job_id == self.job_id:
             self._n_queued += 1
-            self._update_session_label()
             self.counters_changed.emit(self._n_queued, self._n_results)
 
     def _on_result_ready_count(self, job_id: str, result: dict) -> None:
         if job_id == self.job_id:
             self._n_results += 1
-            self._update_session_label()
             self.counters_changed.emit(self._n_queued, self._n_results)
             page = str(result.get("_page_type") or result.get("screen_id") or "?")
             status = str(result.get("_status") or "OK")
