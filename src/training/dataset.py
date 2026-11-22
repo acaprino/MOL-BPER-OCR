@@ -1,176 +1,135 @@
-"""Build supervised examples from reviewed values and untouched OCR observations."""
+"""Build supervised examples from the clean practice archive (data/dataset) and untouched OCR observations."""
 from __future__ import annotations
 
 import argparse
 import csv
 import hashlib
 import json
-import os
-import re
 from collections import Counter, defaultdict
 from pathlib import Path
-from typing import Any, Mapping, NamedTuple, Sequence
+from typing import Any, Mapping, NamedTuple
 
-from openpyxl import load_workbook
 from PIL import Image
 
-from training.g8_assignment import INSTITUTIONAL_NDGS
-from training.practice_sheets import read_practice_sheets
-from training.schema import REPOSITORY, field_role, role_vocabulary, vocabulary
+from training.schema import field_role, role_vocabulary, vocabulary
 
-DEFAULT_PRACTICES = {
-    "train": ["51185037", "52062600", "52067184", "52068422", "52080223", "52102599", "52130861", "52135039"],
-    "val": ["51659595", "52126316"],
-    "test": ["51531667", "52060489"],
-}
-# G8 groups of a transcribed lot (docs/next-ver-plan.md §5.4): the extended validation gets examples,
-# the confirmation group is sealed and keeps only its reviewed values and image digests.
-EXTENDED_SPLIT = "val_ext"
-SEALED_SPLIT = "conferma"
-GROUP_SPLITS = {"validazione_estesa": EXTENDED_SPLIT, "conferma": SEALED_SPLIT, "addestramento": "train"}
-# Every practice serves one of these (ADR 0027): the extended validation trains the final model and is measured in rotation.
-ROLE_OF_SPLIT = {"train": "addestramento", EXTENDED_SPLIT: "addestramento", "val": "controllo", "test": "test",
-                 SEALED_SPLIT: "test"}
-V3_1_LOT = "riscontro-2026-10-07"
-# Which lots compose each dataset version. The manifest names the version; a directory name never does.
-DATASET_VERSIONS = {"ground-truth-v3.1": (), "ground-truth-v3.2": ("lotto-2026-08-21",),
-                    "ground-truth-v3.3": ("lotto-2026-08-21", "lotto-2026-11-05"),
-                    "ground-truth-v3.4": ("lotto-2026-08-21", "lotto-2026-11-05", "riferimento-lunardi"),
-                    # v3.4 with the reference practice under its practice number, 51350695 (ADR 0029)
-                    "ground-truth-v3.5": ("lotto-2026-08-21", "lotto-2026-11-05", "riferimento-2025-09-09")}
-GROUND_TRUTH_COLUMNS = ["Fotogramma", "Denominazione da attribuire", "Valore rilevato", "Esito", "Stato revisione",
-                        "Pratica", "Lotto", "Gruppo", "Riga Excel", "Correzione"]
-
-
-class Lot(NamedTuple):
-    """A lot reviewed by transcription and assigned to the G8 groups (data/revisione/<lotto>/assegnazione_g8.py)."""
-
-    workbook: Path
-    assignment: Path
-    corrections: Path | None = None
-    ocr: Path | None = None
-REVIEW_STATES = re.compile(r"^(Confermato|Corretto)(\s+da\s+.+|\s+dall['’]utente)?$")
-# Outcomes of a lot reviewed by transcription (lotto-2026-08-21 onwards); the v3.1 workbook has no outcome column.
-TRANSCRIPTION_OUTCOMES = ("TRASCRITTO", "VUOTO", "NON VISIBILE", "PARZIALE", "NON LEGGIBILE")
-OUTCOMES_WITH_TEXT = ("TRASCRITTO", "PARZIALE")
+DATASET_VERSION = "dataset"
+# The role of a practice in the archive (ADR 0027) is the split its screens belong to.
+SPLIT_OF_ROLE = {"addestramento": "train", "controllo": "val", "test": "test"}
+TEST_SPLIT = "test"
+KNOWN_SPLITS = ("train", "val", TEST_SPLIT)
+# NDGs of institutions, not of clients. The Fondo di garanzia per la prima casa guarantees first-home mortgages and
+# is a subject of a large share of the practices: finding it in two of them says nothing about the two (ADR 0024).
+INSTITUTIONAL_NDGS = frozenset({"11153238"})
+# Outcomes of a reviewed value. Text goes with TRASCRITTO, PARZIALE and DERIVATO; the others record an absence.
+OUTCOMES = ("TRASCRITTO", "VUOTO", "NON VISIBILE", "PARZIALE", "NON LEGGIBILE", "DERIVATO")
+OUTCOMES_WITH_TEXT = ("TRASCRITTO", "PARZIALE", "DERIVATO")
 # Outcomes that give an example a target: the value, or its absence. The others leave the field unscored.
 SCORED_OUTCOMES = ("TRASCRITTO", "VUOTO", "NON VISIBILE")
 # Outcomes that label the words they find without being measured: a partial text, a header derived from other pages.
 # Without them those words would count as background, and teach the model to skip them.
 LABEL_ONLY_OUTCOMES = ("PARZIALE", "DERIVATO")
+POLICY = ("Exact aligned fields and ordered exact words within reviewed notes and validation-date text use fitted geometry. "
+          "Uncertain background and conflicting roles are masked; independently verified exact positives are retained. "
+          "Whole-field exactness is measured separately. Original OCR text and all reviewed targets are preserved.")
+
+# The aligner reads the kind of a page from its name. The archive names pages `<pagina>-<NN>` and keeps the
+# variant in schermate.csv, so the name the aligner sees is rebuilt from the two.
+PAGE_NAMES = {"elenco": "elenco", "soggetti": "soggetti", "gestione-fidi": "gestionefidi", "note": "note",
+              "scheda-privati": "scheda_privati"}
+VARIANT_NAMES = {("elenco", "tooltip"): "elenco_tooltip", ("elenco", "destra"): "elenco_dx",
+                 ("gestione-fidi", "tooltip"): "gestionefidi_tooltip", ("gestione-fidi", "basso"): "gestionefidi_down"}
 
 
-def _cell_text(value: Any) -> str | None:
-    return None if value is None or not str(value).strip() else str(value).strip()
+def alignment_name(page: str, variant: str) -> str:
+    """The page name the aligner reads its kind from: `elenco_dx`, `gestionefidi_tooltip`, `note`, ..."""
+    return VARIANT_NAMES.get((page, variant), PAGE_NAMES[page])
 
 
-def _review_rows(path: Path, required: tuple[str, ...], mapping: Mapping[str, str]):
-    """Yield (excel_row, cells) of the Revisione sheet, refusing missing columns, formulas and odd keys."""
-    workbook = load_workbook(path, read_only=True, data_only=False)
-    try:
-        rows = workbook["Revisione"].iter_rows()
-        header = {str(cell.value): index for index, cell in enumerate(next(rows))}
-        if any(name not in header for name in required):
-            raise ValueError(f"Il file non è una revisione completata: mancano le colonne {required}.")
-        keys: set[tuple[str, str]] = set()
-        for number, row in enumerate(rows, 2):
-            if not any(cell.value is not None for cell in row):
-                continue
-            if any(row[header[name]].data_type == "f" for name in required):
-                raise ValueError(f"Il ground truth contiene una formula alla riga {number}.")
-            cells = {name: row[index].value for name, index in header.items()}
-            screen = str(cells["ID schermata"] or "").strip()
-            display = str(cells["Campo"] or "").strip()
-            if not screen or "__" not in screen or display not in mapping:
-                raise ValueError(f"Schermata o campo non riconosciuto alla riga {number}.")
-            practice = screen.split("__", 1)[0]
-            if "Pratica" in header and str(cells["Pratica"] or "").strip() != practice:
-                raise ValueError(f"Numero pratica incoerente alla riga {number}.")
-            key = (screen, mapping[display])
-            if key in keys:
-                raise ValueError(f"Campo duplicato: {key}.")
-            keys.add(key)
-            yield number, {"screen": screen, "practice": practice, "display_name": display, "field": mapping[display],
-                           "cells": cells}
-    finally:
-        workbook.close()
+def screen_id(archive_screen: str) -> str:
+    """`51350695/elenco-01` in the archive is `51350695__elenco-01` in examples and OCR caches."""
+    return archive_screen.replace("/", "__")
 
 
-def read_reviewed_truth(path: Path, mapping: Mapping[str, str] | None = None) -> list[dict[str, Any]]:
-    """Read effective values, refusing drafts, ambiguous keys and executable cells."""
-    mapping = vocabulary()[1] if mapping is None else mapping
-    result: list[dict[str, Any]] = []
-    for number, row in _review_rows(path, ("ID schermata", "Campo", "Valore aggiornato v3.1", "Stato v3.1"), mapping):
-        state = str(row["cells"]["Stato v3.1"] or "").strip()
-        if not REVIEW_STATES.match(state):
-            raise ValueError(f"Revisione non completata alla riga {number}: {state!r}.")
-        value = _cell_text(row["cells"]["Valore aggiornato v3.1"])
-        result.append({"screen": row["screen"], "practice": row["practice"], "display_name": row["display_name"],
-                       "field": row["field"], "value": value, "outcome": "TRASCRITTO" if value is not None else "VUOTO",
-                       "reviewer_status": state, "excel_row": number, "correction": None})
-    if not result:
-        raise ValueError("La revisione non contiene valori.")
-    return result
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def read_transcribed_truth(path: Path, corrections_path: Path | None = None,
-                           mapping: Mapping[str, str] | None = None) -> list[dict[str, Any]]:
-    """Read a lot reviewed by transcription (Trascrizione + Esito), applying its recorded corrections.
+def _write_json(path: Path, value: Any) -> None:
+    def scalar(item: Any) -> Any:
+        if hasattr(item, "item"):
+            return item.item()
+        raise TypeError(f"Tipo non serializzabile: {type(item).__name__}")
 
-    A correction replaces the reviewed outcome and text of one Excel row; the original stays in the record.
-    """
-    mapping = vocabulary()[1] if mapping is None else mapping
-    corrections: dict[int, dict[str, Any]] = {}
-    if corrections_path is not None:
-        recorded = json.loads(corrections_path.read_text(encoding="utf-8"))
-        if recorded["workbook_sha256"] != _sha256(path):
-            raise ValueError("Le correzioni si riferiscono a un altro workbook.")
-        corrections = {fix["riga_excel"]: fix for fix in recorded["correzioni"]}
-    result: list[dict[str, Any]] = []
-    for number, row in _review_rows(path, ("ID schermata", "Campo", "Trascrizione", "Esito"), mapping):
-        outcome = str(row["cells"]["Esito"] or "").strip()
-        text = _cell_text(row["cells"]["Trascrizione"])
-        fix = corrections.pop(number, None)
-        if fix is not None:
-            if (fix["schermata"], fix["campo"], fix["revisione"]["esito"]) != (row["screen"], row["display_name"], outcome):
-                raise ValueError(f"La correzione della riga {number} non corrisponde alla revisione.")
-            outcome, text = fix["corretto"]["esito"], fix["corretto"]["trascrizione"]
-        if outcome not in TRANSCRIPTION_OUTCOMES:
-            raise ValueError(f"Esito non riconosciuto alla riga {number}: {outcome!r}.")
-        if (outcome in OUTCOMES_WITH_TEXT) != (text is not None):
-            raise ValueError(f"Esito incoerente con la trascrizione alla riga {number}: {outcome!r}.")
-        result.append({"screen": row["screen"], "practice": row["practice"], "display_name": row["display_name"],
-                       "field": row["field"], "value": text, "outcome": outcome, "reviewer_status": outcome,
-                       "excel_row": number, "correction": fix})
-    if corrections:
-        raise ValueError(f"Correzioni senza riga nel workbook: {sorted(corrections)}.")
-    if not result:
-        raise ValueError("La revisione non contiene valori.")
-    return result
+    path.write_text(json.dumps(value, ensure_ascii=False, default=scalar, separators=(",", ":")), encoding="utf-8")
 
 
-def read_reference_truth(path: Path, frames_path: Path, mapping: Mapping[str, str] | None = None) -> list[dict[str, Any]]:
-    """Read the truth of the reference practice: one CSV row per value of a frame, blank where the screen has none."""
-    mapping = vocabulary()[1] if mapping is None else mapping
-    recorded = json.loads(frames_path.read_text(encoding="utf-8"))
-    if recorded["workbook_sha256"] != _sha256(path):
-        raise ValueError("I fotogrammi si riferiscono a un altro file.")
-    practice, frames = recorded["pratica"], recorded["fotogrammi"]
-    result: list[dict[str, Any]] = []
+# ============================================================
+# The archive
+# ============================================================
+
+class Archive(NamedTuple):
+    root: Path
+    roles: dict[str, str]                 # practice -> role
+    screens: dict[str, dict[str, str]]    # archive screen id -> its row of schermate.csv
+    records: list[dict[str, Any]]         # the values with a canonical field: screen (OCR id), practice, field, value...
+
+
+def _read_table(path: Path) -> list[dict[str, str]]:
     with path.open(encoding="utf-8-sig", newline="") as stream:
-        for number, row in enumerate(csv.DictReader(stream), 2):
-            frame, display = row["Fotogramma"].strip(), row["Denominazione da attribuire"].strip()
-            if frame not in frames:
-                raise ValueError(f"Fotogramma senza schermata alla riga {number}: {frame}.")
-            if display not in mapping:
-                raise ValueError(f"Campo non riconosciuto alla riga {number}: {display}.")
-            value = _cell_text(row["Valore rilevato"])
-            outcome = "TRASCRITTO" if value is not None else "VUOTO"
-            result.append({"screen": f"{practice}__{frames[frame]}", "practice": practice, "display_name": display,
-                           "field": mapping[display], "value": value, "outcome": outcome, "reviewer_status": outcome,
-                           "excel_row": number, "correction": None})
-    return result
+        return list(csv.DictReader(stream, delimiter=";"))
 
+
+def read_archive(root: Path) -> Archive:
+    """Read data/dataset, refusing a changed image, an unknown role, screen or field, and an outcome without its text."""
+    fields, mapping = vocabulary()
+    roles = {row["Pratica"]: row["Ruolo"] for row in _read_table(root / "pratiche.csv")}
+    unknown = sorted({role for role in roles.values() if role not in SPLIT_OF_ROLE})
+    if unknown:
+        raise ValueError(f"Ruolo non riconosciuto: {unknown}.")
+    screens: dict[str, dict[str, str]] = {}
+    for row in _read_table(root / "schermate.csv"):
+        if row["Pratica"] not in roles:
+            raise ValueError(f"Schermata di una pratica senza ruolo: {row['Schermata']}.")
+        if row["Pagina"] not in PAGE_NAMES:
+            raise ValueError(f"Pagina non riconosciuta: {row['Schermata']}.")
+        path = root / row["File"]
+        if not path.is_file() or _sha256(path) != row["SHA256"]:
+            raise ValueError(f"{row['File']} manca o differisce dall'immagine registrata.")
+        screens[row["Schermata"]] = row
+    records: list[dict[str, Any]] = []
+    seen: set[tuple[str, str]] = set()
+    for number, row in enumerate(_read_table(root / "valori.csv"), 2):
+        if row["Schermata"] not in screens:
+            raise ValueError(f"Valore su una schermata sconosciuta alla riga {number}: {row['Schermata']}.")
+        if row["Esito"] not in OUTCOMES:
+            raise ValueError(f"Esito non riconosciuto alla riga {number}: {row['Esito']!r}.")
+        if (row["Esito"] in OUTCOMES_WITH_TEXT) != bool(row["Valore"]):
+            raise ValueError(f"Esito incoerente con il valore alla riga {number}: {row['Esito']!r}.")
+        key = (row["Schermata"], row["Campo"])
+        if key in seen:
+            raise ValueError(f"Campo duplicato: {key}.")
+        seen.add(key)
+        if not row["Chiave"]:
+            continue                                  # outside the 45 fields: in the truth, never a target
+        if row["Chiave"] not in fields or mapping.get(row["Campo"]) != row["Chiave"]:
+            raise ValueError(f"Campo non riconosciuto alla riga {number}: {row['Campo']} / {row['Chiave']}.")
+        records.append({"screen": screen_id(row["Schermata"]), "archive_screen": row["Schermata"],
+                        "practice": screens[row["Schermata"]]["Pratica"], "display_name": row["Campo"],
+                        "field": row["Chiave"], "value": row["Valore"] or None, "outcome": row["Esito"]})
+    return Archive(root, roles, screens, records)
+
+
+def ocr_screens(archive: Archive, include_test: bool = False) -> list[str]:
+    """The screens (OCR ids) an OCR cache must cover: those of the readable practices with a scored value."""
+    readable = {"train", "val"} | ({TEST_SPLIT} if include_test else set())
+    return sorted({record["screen"] for record in archive.records
+                   if SPLIT_OF_ROLE[archive.roles[record["practice"]]] in readable and record["outcome"] in SCORED_OUTCOMES})
+
+
+# ============================================================
+# Supervision
+# ============================================================
 
 def apply_supervision(words: list[dict[str, Any]], alignments: Mapping[str, dict[str, Any]],
                       roles: Mapping[str, str]) -> tuple[list[str], dict[str, str]]:
@@ -231,18 +190,15 @@ def apply_supervision(words: list[dict[str, Any]], alignments: Mapping[str, dict
 def audit_splits(examples: list[dict[str, Any]]) -> dict[str, Any]:
     """Fail closed if related practices, identities or images cross a split boundary.
 
-    Between the v3.1 splits and the G8 extended validation an identity in common is recorded,
-    not refused (docs/next-ver-plan.md §5.4, rule 3): no reviewed practice is excluded.
     An institution's NDG is not an identity: it relates no practice to another (ADR 0024).
     """
     from extraction.normalization import normalize_ndg
 
     seen: dict[str, dict[str, str]] = {kind: {} for kind in ("pratica", "NDG", "immagine", "pixel")}
     counts: Counter[str] = Counter()
-    overlaps: dict[tuple[str, str], dict[str, Any]] = {}
     for example in examples:
         split = example["split"]
-        if split not in ("train", "val", "test", EXTENDED_SPLIT, SEALED_SPLIT):
+        if split not in KNOWN_SPLITS:
             raise ValueError(f"Split non valido: {split}.")
         counts[split] += 1
         identifiers = {normalize_ndg(value) for key, value in example["values"].items()
@@ -256,157 +212,58 @@ def audit_splits(examples: list[dict[str, Any]]) -> dict[str, Any]:
                 continue
             old = seen[kind].get(identity)
             if old is not None and old != split:
-                pair = {old, split}
-                if not pair & {EXTENDED_SPLIT, SEALED_SPLIT} or pair == {EXTENDED_SPLIT, SEALED_SPLIT}:
-                    raise ValueError(f"Contaminazione fra split per {kind}: {identity} ({old}, {split}).")
-                overlaps[(kind, identity)] = {"tipo": kind, "valore": identity, "split": sorted({old, split})}
-                continue
+                raise ValueError(f"Contaminazione fra split per {kind}: {identity} ({old}, {split}).")
             seen[kind][identity] = split
     return {"status": "passed", "screens_by_split": dict(counts),
             "unique_practices": len(seen["pratica"]), "unique_ndgs": len(seen["NDG"]),
-            "checks": ["whole_practice", "all_subject_ndgs", "source_image_bytes", "decoded_image_pixels"],
-            "recorded_overlaps": list(overlaps.values())}
+            "checks": ["whole_practice", "all_subject_ndgs", "source_image_bytes", "decoded_image_pixels"]}
 
 
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+# ============================================================
+# The bundle
+# ============================================================
 
+def build_dataset(archive_dir: Path, ocr_path: Path, output_dir: Path, include_test: bool = False) -> dict[str, Any]:
+    """Create the bundle from the archive and an OCR cache of its screens, without any provider call.
 
-def _write_json(path: Path, value: Any) -> None:
-    def scalar(item: Any) -> Any:
-        if hasattr(item, "item"):
-            return item.item()
-        raise TypeError(f"Tipo non serializzabile: {type(item).__name__}")
-
-    path.write_text(json.dumps(value, ensure_ascii=False, default=scalar, separators=(",", ":")), encoding="utf-8")
-
-
-def resolve_screenshot_path(screenshots_dir: Path, screen: str) -> Path:
-    """Resolve `<practice>__<page>` from per-practice folders or flat layout."""
-    practice, page = screen.split("__", 1)
-    for candidate in (
-        screenshots_dir / practice / f"{page}.png",
-        screenshots_dir / "pratiche" / practice / f"{page}.png",
-        screenshots_dir.parent / "pratiche" / practice / f"{page}.png",
-        screenshots_dir / "pratiche" / practice / f"{screen}.png",
-        screenshots_dir / practice / f"{screen}.png",
-        screenshots_dir / f"{screen}.png",
-    ):
-        if candidate.is_file():
-            return candidate
-    return screenshots_dir / practice / f"{page}.png"
-
-
-def _source(path: Path) -> dict[str, str]:
-    return {"path": str(path.resolve()), "sha256": _sha256(path)}
-
-
-def _read_lot_truth(workbook_path: Path, corrections: Path | None) -> list[dict[str, Any]]:
-    """Read a lot in the shape it was delivered: a CSV, rows of a review sheet, or one sheet per practice."""
-    if workbook_path.suffix.casefold() == ".csv":
-        return read_reference_truth(workbook_path, corrections)
-    workbook = load_workbook(workbook_path, read_only=True)
-    try:
-        has_review_sheet = "Revisione" in workbook.sheetnames
-    finally:
-        workbook.close()
-    reader = read_transcribed_truth if has_review_sheet else read_practice_sheets
-    return reader(workbook_path, corrections)
-
-
-def _collect_truth(workbook_path: Path, lots: Sequence[Lot]) -> tuple[list[dict[str, Any]], dict[str, str],
-                                                                      dict[str, dict[str, str]], list[dict[str, Any]]]:
-    """Read every reviewed lot: records with their lot, the split of each practice, the digests the sealed
-    screens were assigned with, and the sources for the manifest."""
-    records = [dict(record, lot=V3_1_LOT) for record in read_reviewed_truth(workbook_path)]
-    splits = {practice: split for split, practices in DEFAULT_PRACTICES.items() for practice in practices}
-    if {record["practice"] for record in records} != set(splits):
-        raise ValueError("Le pratiche non coincidono con il piano di separazione verificato.")
-    sources = [{"lotto": V3_1_LOT, "workbook": _source(workbook_path)}]
-    sealed_digests: dict[str, dict[str, str]] = {}
-    for lot in lots:
-        assignment = json.loads(lot.assignment.read_text(encoding="utf-8"))
-        name = assignment["lotto"]
-        groups = {practice: GROUP_SPLITS[group] for group, practices in assignment["gruppi"].items()
-                  for practice in practices}
-        lot_records = _read_lot_truth(lot.workbook, lot.corrections)
-        unassigned = {record["practice"] for record in lot_records} - set(groups)
-        if unassigned:
-            raise ValueError(f"Pratiche del lotto {name} senza gruppo G8: {sorted(unassigned)}.")
-        if set(groups) & set(splits):
-            raise ValueError(f"Pratiche del lotto {name} già presenti: {sorted(set(groups) & set(splits))}.")
-        splits.update(groups)
-        records += [dict(record, lot=name) for record in lot_records]
-        for screen, digests in assignment["schermate"].items():
-            if groups.get(screen.split("__", 1)[0]) == SEALED_SPLIT:
-                sealed_digests[screen] = digests
-        source = {"lotto": name, "workbook": _source(lot.workbook), "assignment": _source(lot.assignment)}
-        if lot.corrections is not None:
-            source["corrections"] = _source(lot.corrections)
-        if lot.ocr is not None:
-            source["ocr"] = _source(lot.ocr)
-        sources.append(source)
-    return records, splits, sealed_digests, sources
-
-
-def build_dataset(workbook_path: Path, screenshots_dir: Path, ocr_path: Path,
-                  output_dir: Path, lots: Sequence[Lot] = ()) -> dict[str, Any]:
-    """Create the versioned bundle without any provider call.
-
-    The truth tables (ground_truth.csv, screens.csv, practices.csv) cover every reviewed lot. Examples exist
-    only for the screens with an OCR reading: the v3.1 splits and the G8 extended validation. The sealed
-    confirmation group keeps its values and image digests, and an OCR reading of its screens is refused.
+    Examples exist for the screens of the training and control practices. The test practices are read only when
+    ``include_test`` asks for it, which only a frozen candidate does: an OCR reading of a test screen is refused
+    otherwise, and a missing one is refused when asked for.
     """
     from training.alignment import align_screen
 
-    records, splits, sealed_digests, sources = _collect_truth(workbook_path, lots)
-    lot_names = tuple(source["lotto"] for source in sources[1:])
-    version = next((name for name, composition in DATASET_VERSIONS.items() if composition == lot_names), None)
-    if version is None:
-        raise ValueError(f"Nessuna versione del dataset è composta dai lotti {lot_names}.")
-    if version == next(reversed(DATASET_VERSIONS)):
-        without_role = sorted({path.name for path in screenshots_dir.iterdir() if path.is_dir()} - set(splits))
-        if without_role:
-            raise ValueError(f"Pratiche senza ruolo: {without_role}.")
+    archive = read_archive(archive_dir)
+    splits = {practice: SPLIT_OF_ROLE[role] for practice, role in archive.roles.items()}
+    readable = {"train", "val"} | ({TEST_SPLIT} if include_test else set())
     raw_ocr = json.loads(ocr_path.read_text(encoding="utf-8"))
-    for lot in lots:
-        if lot.ocr is not None:
-            extra = json.loads(lot.ocr.read_text(encoding="utf-8"))
-            if set(extra) & set(raw_ocr):
-                raise ValueError(f"Schermate lette in due cache OCR: {sorted(set(extra) & set(raw_ocr))}.")
-            raw_ocr.update(extra)
-    sealed_read = sorted(screen for screen in raw_ocr if splits.get(screen.split("__", 1)[0]) == SEALED_SPLIT)
-    if sealed_read:
-        raise ValueError(f"Schermate sigillate con una lettura OCR: {sealed_read}.")
+    refused = sorted(screen for screen in raw_ocr if splits.get(screen.split("__", 1)[0]) not in readable)
+    if refused:
+        raise ValueError(f"Schermate di pratiche che non si leggono ancora (test senza include_test) o sconosciute: {refused}.")
     by_screen: dict[str, list[dict[str, Any]]] = defaultdict(list)
     label_only: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for record in records:
-        if splits[record["practice"]] == SEALED_SPLIT or not record["field"]:
+    for record in archive.records:
+        if splits[record["practice"]] not in readable:
             continue
         if record["outcome"] in SCORED_OUTCOMES:
             by_screen[record["screen"]].append(record)
         elif record["outcome"] in LABEL_ONLY_OUTCOMES:
             label_only[record["screen"]].append(record)
     if set(by_screen) != set(raw_ocr):
-        raise ValueError("Le schermate del cache OCR non coincidono con il ground truth revisionato.")
-    assigned_digests = {screen: digests for lot in lots
-                        for screen, digests in json.loads(lot.assignment.read_text(encoding="utf-8"))["schermate"].items()}
+        raise ValueError("Le schermate del cache OCR non coincidono con la verità dell'archivio.")
+    row_of = {screen_id(archive_screen): row for archive_screen, row in archive.screens.items()}
     examples: list[dict[str, Any]] = []
     alignment_rows: list[dict[str, Any]] = []
     for number, (screen, fields) in enumerate(sorted(by_screen.items()), 1):
-        image_path = resolve_screenshot_path(screenshots_dir, screen)
+        row = row_of[screen]
         raw = raw_ocr[screen]
         lines = [{"text": item[0], "score": item[1], "box": item[2]} for item in raw["items"]]
         labelling = [*fields, *label_only.get(screen, [])]
-        with Image.open(image_path) as image:
+        with Image.open(archive.root / row["File"]) as image:
             rgb = image.convert("RGB")
             image_size = list(rgb.size)
             pixel_hash = hashlib.sha256(rgb.tobytes()).hexdigest()
-            located = align_screen(screen.split("__", 1)[1],
+            located = align_screen(alignment_name(row["Pagina"], row["Variante"]),
                                    [(record["display_name"], record["value"] or "") for record in labelling], lines, rgb)
-        image_hash = _sha256(image_path)
-        if screen in assigned_digests and assigned_digests[screen]["image_sha256"] != image_hash:
-            raise ValueError(f"{screen} differisce dall'immagine assegnata ai gruppi G8.")
         words = located["words"]
         for word in words:
             word["x0"], word["x1"] = max(0.0, float(word["x0"])), min(float(image_size[0]), float(word["x1"]))
@@ -423,7 +280,7 @@ def build_dataset(workbook_path: Path, screenshots_dir: Path, ocr_path: Path,
         field_alignment = {record["field"]: dict(located["fields"][record["display_name"]],
                                                  supervision=supervision[record["display_name"]]) for record in fields}
         examples.append({"id": screen, "practice": practice, "split": splits[practice],
-                         "image_size": image_size, "image_sha256": image_hash, "pixel_sha256": pixel_hash,
+                         "image_size": image_size, "image_sha256": row["SHA256"], "pixel_sha256": pixel_hash,
                          "words": words, "labels": labels, "values": {record["field"]: record["value"] for record in fields},
                          "field_alignment": field_alignment})
         for record in fields:
@@ -436,44 +293,8 @@ def build_dataset(workbook_path: Path, screenshots_dir: Path, ocr_path: Path,
             print(f"Aligned {number}/{len(by_screen)} screenshots", flush=True)
     leakage = audit_splits(examples)
 
-    # The truth tables: every screen of every lot, hashed from the file; the sealed ones keep the digests
-    # they were assigned with, so no pixel of theirs is decoded here.
-    by_id = {example["id"]: example for example in examples}
-    lot_of_practice = {record["practice"]: record["lot"] for record in records}
-    lot_of = {screen: lot_of_practice[screen.split("__", 1)[0]] for screen in sealed_digests}
-    lot_of.update({record["screen"]: record["lot"] for record in records})
-    screen_rows: list[dict[str, Any]] = []
-    for screen in sorted(lot_of):
-        practice = screen.split("__", 1)[0]
-        image_path = resolve_screenshot_path(screenshots_dir, screen)
-        example = by_id.get(screen)
-        if example is not None:
-            image_hash, pixel_hash, image_size = example["image_sha256"], example["pixel_sha256"], example["image_size"]
-        else:
-            image_hash = _sha256(image_path)
-            with Image.open(image_path) as image:
-                image_size = list(image.size)
-                pixel_hash = (sealed_digests[screen]["pixel_sha256"] if screen in sealed_digests
-                              else hashlib.sha256(image.convert("RGB").tobytes()).hexdigest())
-            if screen in sealed_digests and sealed_digests[screen]["image_sha256"] != image_hash:
-                raise ValueError(f"{screen} differisce dall'immagine assegnata ai gruppi G8.")
-        screen_rows.append({"Schermata": screen, "Pratica": practice, "Lotto": lot_of[screen], "Gruppo": splits[practice],
-                            "Percorso": Path(os.path.relpath(image_path, screenshots_dir)).as_posix(),
-                            "SHA256 immagine": image_hash, "SHA256 pixel": pixel_hash,
-                            "Larghezza": image_size[0], "Altezza": image_size[1], "Esempio": "sì" if example else "no"})
-    truth_isolation = audit_splits([
-        {"id": row["Schermata"], "practice": row["Pratica"], "split": row["Gruppo"],
-         "image_sha256": row["SHA256 immagine"], "pixel_sha256": row["SHA256 pixel"],
-         "values": {record["field"]: record["value"] for record in records
-                    if record["screen"] == row["Schermata"] and record["field"] and record["outcome"] == "TRASCRITTO"}}
-        for row in screen_rows])
-    practice_rows = [{"Pratica": practice, "Lotto": lot_of_practice[practice], "Gruppo": split,
-                      "Ruolo": ROLE_OF_SPLIT[split], "Schermate": sum(row["Pratica"] == practice for row in screen_rows),
-                      "Righe": sum(record["practice"] == practice for record in records)}
-                     for practice, split in sorted(splits.items(), key=lambda item: (not item[0].isdigit(), item[0]))]
-
+    example_splits = [split for split in KNOWN_SPLITS if any(e["split"] == split for e in examples)]
     coverage: dict[str, Any] = {}
-    example_splits = [split for split in ("train", "val", "test", EXTENDED_SPLIT) if any(e["split"] == split for e in examples)]
     for field in vocabulary()[0]:
         coverage[field] = {split: {"reviewed": 0, "nonempty": 0, "supervised": 0} for split in example_splits}
     for record in alignment_rows:
@@ -484,45 +305,30 @@ def build_dataset(workbook_path: Path, screenshots_dir: Path, ocr_path: Path,
     counts = Counter(row["supervision"] for row in alignment_rows)
     roles = role_vocabulary()
     training_roles = Counter(label for example in examples if example["split"] == "train" for label in example["labels"])
-    practice_splits = {split: sorted(p for p, s in splits.items() if s == split)
-                       for split in ("train", "val", "test", EXTENDED_SPLIT, SEALED_SPLIT) if split in splits.values()}
-    manifest = {"schema_version": 1, "dataset_version": version,
+    practice_splits = {split: sorted(p for p, s in splits.items() if s == split) for split in KNOWN_SPLITS}
+    heldout = TEST_SPLIT if include_test else "val"
+    manifest = {"schema_version": 1, "dataset_version": DATASET_VERSION,
                 "reviewed_rows": sum(len(example["values"]) for example in examples),
                 "screens": len(examples), "practices": len({example["practice"] for example in examples}),
-                "truth_counts": {"rows": len(records), "screens": len(screen_rows), "practices": len(splits)},
-                "roles": roles, "workbook": sources[0]["workbook"],
+                "truth_counts": {"rows": len(archive.records), "screens": len(archive.screens), "practices": len(archive.roles)},
+                "roles": roles, "include_test": include_test,
+                "archive": {name: {"path": str((archive.root / name).resolve()), "sha256": _sha256(archive.root / name)}
+                            for name in ("pratiche.csv", "schermate.csv", "valori.csv")},
                 "ocr": {"path": str(ocr_path.resolve()), "sha256": _sha256(ocr_path), "scale": "1x", "words_rewritten": False},
-                "sources": sources, "practice_splits": practice_splits, "leakage_audit": leakage,
-                "truth_isolation": truth_isolation, "institutional_ndgs": sorted(INSTITUTIONAL_NDGS),
+                "practice_splits": practice_splits, "leakage_audit": leakage,
+                "institutional_ndgs": sorted(INSTITUTIONAL_NDGS),
                 "supervision_counts": dict(counts), "training_role_words": dict(training_roles),
                 "fields_without_heldout_positive_examples": [key for key, value in coverage.items()
-                                                             if not value["test"]["nonempty"]],
+                                                             if not value.get(heldout, {}).get("nonempty")],
                 "fields_without_supervised_training_examples": [key for key, value in coverage.items()
-                                                                if not value["train"]["supervised"]],
-                "policy": "Exact aligned fields and ordered exact words within reviewed notes and validation-date text use fitted geometry. Uncertain background and conflicting roles are masked; independently verified exact positives are retained. Whole-field exactness is measured separately. Original OCR text and all reviewed targets are preserved.",
+                                                                if not value.get("train", {}).get("supervised")],
+                "policy": POLICY,
                 "code_sha256": {path.name: _sha256(path) for path in sorted(Path(__file__).parent.glob("*.py"))}}
-    if SEALED_SPLIT in practice_splits:
-        manifest["sealed"] = {"split": SEALED_SPLIT, "practices": practice_splits[SEALED_SPLIT],
-                              "screens": sum(row["Gruppo"] == SEALED_SPLIT for row in screen_rows),
-                              "policy": "Reviewed values and image digests only: no OCR, metrics or inspection until the candidate is frozen (docs/next-ver-plan.md §5.4, rule 4)."}
     output_dir.mkdir(parents=True, exist_ok=True)
     _write_json(output_dir / "examples.json", examples)
     _write_json(output_dir / "roles.json", roles)
     _write_json(output_dir / "coverage.json", coverage)
     _write_json(output_dir / "manifest.json", manifest)
-    with (output_dir / "ground_truth.csv").open("w", encoding="utf-8-sig", newline="") as stream:
-        writer = csv.writer(stream, delimiter=";")
-        writer.writerow(GROUND_TRUTH_COLUMNS)
-        writer.writerows((record["screen"], record["display_name"], record["value"] or "", record["outcome"],
-                          record["reviewer_status"], record["practice"], record["lot"], splits[record["practice"]],
-                          record["excel_row"],
-                          json.dumps(record["correction"]["revisione"], ensure_ascii=False) if record["correction"] else "")
-                         for record in records)
-    for name, rows in (("screens.csv", screen_rows), ("practices.csv", practice_rows)):
-        with (output_dir / name).open("w", encoding="utf-8-sig", newline="") as stream:
-            writer = csv.DictWriter(stream, fieldnames=list(rows[0]), delimiter=";")
-            writer.writeheader()
-            writer.writerows(rows)
     with (output_dir / "alignment_report.csv").open("w", encoding="utf-8-sig", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=list(alignment_rows[0]), delimiter=";")
         writer.writeheader()
@@ -539,25 +345,21 @@ def seal_dataset(output_dir: Path) -> dict[str, Any]:
     manifest = json.loads((output_dir / "manifest.json").read_text(encoding="utf-8"))
     manifest["dataset_content_sha256"] = dataset_fingerprint(examples, roles)
     manifest["code_sha256"] = {path.name: _sha256(path) for path in sorted(Path(__file__).parent.glob("*.py"))}
-    manifest["policy"] = "Exact aligned fields and ordered exact words within reviewed notes and validation-date text use fitted geometry. Uncertain background and conflicting roles are masked; independently verified exact positives are retained. Whole-field exactness is measured separately. Original OCR text and all reviewed targets are preserved."
+    manifest["policy"] = POLICY
     _write_json(output_dir / "manifest.json", manifest)
     return manifest
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Prepare the reviewed BPER LiLT training dataset.")
-    parser.add_argument("--workbook", type=Path, required=True)
-    parser.add_argument("--screenshots", type=Path, required=True)
-    parser.add_argument("--ocr", type=Path, required=True)
+    parser = argparse.ArgumentParser(description="Prepare the BPER LiLT training dataset from data/dataset.")
+    parser.add_argument("--archive", type=Path, required=True, help="the archive folder, data/dataset")
+    parser.add_argument("--ocr", type=Path, required=True, help="an OCR cache (cache.json) of the screens to read")
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--lot", nargs=4, action="append", default=[], metavar=("WORKBOOK", "ASSIGNMENT", "CORRECTIONS", "OCR"),
-                        help="a lot reviewed by transcription; write - for a missing corrections file or OCR cache")
+    parser.add_argument("--include-test", action="store_true", help="read the test practices too: only for a frozen candidate")
     arguments = parser.parse_args()
-    lots = [Lot(Path(workbook), Path(assignment), None if corrections == "-" else Path(corrections),
-                None if ocr == "-" else Path(ocr)) for workbook, assignment, corrections, ocr in arguments.lot]
-    result = build_dataset(arguments.workbook, arguments.screenshots, arguments.ocr, arguments.output, lots)
+    result = build_dataset(arguments.archive, arguments.ocr, arguments.output, arguments.include_test)
     print(json.dumps({key: result[key] for key in ("dataset_version", "reviewed_rows", "screens", "practices", "truth_counts",
-                                                   "supervision_counts", "leakage_audit", "truth_isolation")}, indent=2))
+                                                   "supervision_counts", "leakage_audit")}, indent=2))
 
 
 if __name__ == "__main__":

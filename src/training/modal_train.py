@@ -2,7 +2,7 @@
 
 Invoke with ``modal run -m training.modal_train --data-dir ABS --out-dir ABS``.
 Only reviewed OCR words, boxes, labels, and provenance are sent to the trainer.
-The original screenshots and workbooks remain local.
+The original screenshots remain local.
 """
 
 from __future__ import annotations
@@ -36,7 +36,7 @@ image = (
 def _experiment_id(examples: list[dict[str, Any]], roles: list[str], settings: dict[str, Any]) -> str:
     payload = json.dumps({"examples": examples, "roles": roles, "settings": settings,
                           "base_model": BASE_MODEL}, sort_keys=True, ensure_ascii=False)
-    return "model_v3_1_" + hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
+    return "model_"+ hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
 @app.function(
@@ -75,7 +75,7 @@ def _write_json(path: Path, value: Any) -> None:
 
 @app.local_entrypoint()
 def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: int = 7,
-         patience: int = 2, also_train: str = "", final_test: bool = False, download_weights: bool = True) -> None:
+         patience: int = 2, final_test: bool = False, download_weights: bool = True) -> None:
     """Train once and write its report; the CPU-loadable model comes too unless it should stay on the volume."""
     dataset = Path(data_dir)
     output = Path(out_dir)
@@ -89,7 +89,7 @@ def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: 
         raise FileExistsError("Output directory must be new; previous experiments are immutable")
     settings = {"epochs": epochs, "variants": variants, "seed": seed,
                 "batch_size": 2, "accumulation_steps": 4, "patience": patience,
-                "also_train": [practice for practice in also_train.split(",") if practice], "final_test": final_test}
+                "final_test": final_test}
     if not 1 <= epochs <= 16 or not 0 <= variants <= 3 or not 1 <= patience <= 4:
         raise ValueError("The bounded experiment allows at most 16 epochs, 3 train variants and patience 4")
     output.mkdir(parents=True, exist_ok=False)
@@ -98,7 +98,6 @@ def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: 
     if final_test:
         _write_json(output / "test_predictions.json", result["test_predictions"])
     _write_json(output / "validation_predictions.json", result["validation_predictions"])
-    _write_json(output / "extended_predictions.json", result["extended_predictions"])
     _write_json(output / "metrics.json", result["metrics"])
     if download_weights:
         model_dir = output / "cpu_model"
@@ -115,10 +114,8 @@ def main(data_dir: str, out_dir: str, epochs: int = 8, variants: int = 2, seed: 
         "files": ({path.name: {"bytes": path.stat().st_size, "sha256": _file_sha256(path)}
                    for path in model_dir.iterdir()} if download_weights else {}),
     })
-    extended = result["metrics"]["extended_validation"] or {}
     print(json.dumps({"best_epoch": result["best_epoch"], "train_seconds": result["train_seconds"],
                       "val_field_accuracy": result["metrics"]["validation"]["field_accuracy"],
-                      "val_ext_field_accuracy": extended.get("field_accuracy"),
                       "remote_model_dir": result["remote_model_dir"]}, ensure_ascii=False), flush=True)
 
 

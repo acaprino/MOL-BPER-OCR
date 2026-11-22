@@ -8,7 +8,7 @@ from typing import Any, Callable
 
 import pytest
 
-from training.ocr_runner import Screen, load_assigned_screens, merge_runs, ocr_selection_metrics, report, run_ocr
+from training.ocr_runner import Screen, load_screens, merge_runs, ocr_selection_metrics, report, run_ocr
 
 PROVENANCE = {"models": {"Det": {"file": "det.onnx", "sha256": "d1"}}, "versions": {"rapidocr": "test"}}
 
@@ -170,14 +170,14 @@ def test_timing_summary_describes_the_stored_screens(tmp_path: Path) -> None:
 def test_report_refuses_a_partial_run(tmp_path: Path) -> None:
     _run(tmp_path / "run", _screens(tmp_path), FakeEngine(fail_on=("p1__b",)))
     with pytest.raises(ValueError, match="not a complete OCR run"):
-        report(tmp_path / "run", tmp_path / "workbook.xlsx", tmp_path / "images")
+        report(tmp_path / "run", tmp_path / "dataset")
 
 
 def test_report_refuses_a_cache_edited_after_the_run(tmp_path: Path) -> None:
     _run(tmp_path / "run", _screens(tmp_path), FakeEngine())
     (tmp_path / "run" / "cache.json").write_text("{}", encoding="utf-8")
     with pytest.raises(ValueError, match="not a complete OCR run"):
-        report(tmp_path / "run", tmp_path / "workbook.xlsx", tmp_path / "images")
+        report(tmp_path / "run", tmp_path / "dataset")
 
 
 # ============================================================
@@ -355,36 +355,43 @@ def test_other_digit_confusions_are_not_counted_as_six_read_as_eight() -> None:
 
 
 # ============================================================
-# Screens of a lot: only what the G8 assignment allows to read
+# Screens of the archive: what may be read
 # ============================================================
 
 
-def _assignment(tmp_path: Path) -> Path:
-    path = tmp_path / "g8_assegnazione.json"
-    path.write_text(json.dumps({
-        "gruppi": {"validazione_estesa": ["60000001"], "conferma": ["60000002"]},
-        "schermate": {"60000001__Elenco": {"image_sha256": "aaa"}, "60000001__Note": {"image_sha256": "bbb"},
-                      "60000002__Elenco": {"image_sha256": "ccc"}}}), encoding="utf-8")
-    return path
+def _archive(tmp_path: Path) -> Path:
+    """Three practices, one screen each: training, control and test."""
+    import csv
+    import hashlib
+
+    from PIL import Image
+
+    root = tmp_path / "dataset"
+    roles = {"111": "addestramento", "222": "controllo", "333": "test"}
+    screens, values = [], []
+    for shade, practice in enumerate(roles, 1):
+        path = root / "pratiche" / practice / "elenco-01.png"
+        path.parent.mkdir(parents=True)
+        Image.new("RGB", (20, 10), (shade, shade, shade)).save(path)
+        screens.append([f"{practice}/elenco-01", practice, "elenco", "01", "", f"pratiche/{practice}/elenco-01.png",
+                        hashlib.sha256(path.read_bytes()).hexdigest(), "20", "10"])
+        values.append([f"{practice}/elenco-01", "NDG", "ndg", practice, "TRASCRITTO"])
+    for name, head, rows in (("pratiche", ["Pratica", "Ruolo", "Schermate", "Valori"], [[p, r, "1", "1"] for p, r in roles.items()]),
+                             ("schermate", ["Schermata", "Pratica", "Pagina", "Numero", "Variante", "File", "SHA256", "Larghezza", "Altezza"], screens),
+                             ("valori", ["Schermata", "Campo", "Chiave", "Valore", "Esito"], values)):
+        with (root / f"{name}.csv").open("w", encoding="utf-8-sig", newline="") as stream:
+            writer = csv.writer(stream, delimiter=";")
+            writer.writerow(head)
+            writer.writerows(rows)
+    return root
 
 
-def test_assigned_screens_are_those_of_the_chosen_practice(tmp_path: Path) -> None:
-    screens = load_assigned_screens(_assignment(tmp_path), tmp_path, ["60000001"])
-    assert [(screen.id, screen.sha256) for screen in screens] == [("60000001__Elenco", "aaa"), ("60000001__Note", "bbb")]
+def test_the_screens_to_read_are_those_of_the_training_and_control_practices(tmp_path: Path) -> None:
+    screens = load_screens(_archive(tmp_path))
+    assert [(screen.id, screen.path.name) for screen in screens] == [("111__elenco-01", "elenco-01.png"),
+                                                                      ("222__elenco-01", "elenco-01.png")]
+    assert all(len(screen.sha256) == 64 for screen in screens)
 
 
-def test_reading_a_practice_of_the_confirmation_group_is_refused(tmp_path: Path) -> None:
-    with pytest.raises(ValueError, match="60000002"):
-        load_assigned_screens(_assignment(tmp_path), tmp_path, ["60000002"])
-
-
-def test_reading_a_practice_outside_the_assignment_is_refused(tmp_path: Path) -> None:
-    with pytest.raises(ValueError, match="60000003"):
-        load_assigned_screens(_assignment(tmp_path), tmp_path, ["60000003"])
-
-
-def test_assigned_screens_of_a_training_practice_can_be_read(tmp_path: Path) -> None:
-    path = tmp_path / "assegnazione.json"
-    path.write_text(json.dumps({"gruppi": {"addestramento": ["REF_1"]},
-                                "schermate": {"REF_1__Elenco": {"image_sha256": "ddd"}}}), encoding="utf-8")
-    assert [screen.id for screen in load_assigned_screens(path, tmp_path, ["REF_1"])] == ["REF_1__Elenco"]
+def test_the_test_screens_are_read_only_when_asked_for(tmp_path: Path) -> None:
+    assert [screen.id for screen in load_screens(_archive(tmp_path), include_test=True)][-1] == "333__elenco-01"

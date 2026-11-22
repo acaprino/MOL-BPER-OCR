@@ -14,26 +14,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from training.dataset import DATASET_VERSION
+
 BASE_MODEL = "nielsr/lilt-xlm-roberta-base"
 IGNORE_LABEL = "IGNORE"
 
 
-# The reviewed datasets this code may train on. A manifest names its version and these pin what it
-# must contain: a renamed directory, or v3.1 content relabelled as v3.2, is refused.
-DATASET_CONTRACTS: dict[str, dict[str, dict[str, int]]] = {
-    "ground-truth-v3.1": {"counts": {"reviewed_rows": 1008, "screens": 113, "practices": 12},
-                          "splits": {"train": 8, "val": 2, "test": 2}},
-    "ground-truth-v3.2": {"counts": {"reviewed_rows": 1152, "screens": 128, "practices": 17},
-                          "splits": {"train": 8, "val": 2, "test": 2, "val_ext": 5}},
-    "ground-truth-v3.3": {"counts": {"reviewed_rows": 1368, "screens": 162, "practices": 21},
-                          "splits": {"train": 8, "val": 2, "test": 2, "val_ext": 9}},
-    "ground-truth-v3.4": {"counts": {"reviewed_rows": 1445, "screens": 171, "practices": 22},
-                          "splits": {"train": 9, "val": 2, "test": 2, "val_ext": 9}},
-}
-# "val_ext" is the G8 extended validation, absent from the v3.1 bundle. It is scored by the runs that hold it out, and
-# trains the final model through `also_train` (ADR 0027).
-EXTENDED_SPLIT = "val_ext"
-KNOWN_SPLITS = ("train", "val", "test", EXTENDED_SPLIT)
+KNOWN_SPLITS = ("train", "val", "test")
 
 
 def dataset_fingerprint(examples: list[dict[str, Any]], roles: list[str]) -> str:
@@ -44,26 +31,20 @@ def dataset_fingerprint(examples: list[dict[str, Any]], roles: list[str]) -> str
 def validate_reviewed_dataset(examples: list[dict[str, Any]], roles: list[str], manifest: dict[str, Any]) -> None:
     """Fail closed on an incomplete, modified, or unreviewed corpus of a known version."""
     validate_splits(examples)
-    version = manifest.get("dataset_version")
-    contract = DATASET_CONTRACTS.get(version)
-    if contract is None or manifest.get("leakage_audit", {}).get("status") != "passed":
-        raise ValueError(f"A reviewed dataset of a known version ({', '.join(DATASET_CONTRACTS)}) "
-                         "with a passed leakage audit is required")
-    expected_counts = contract["counts"]
+    if manifest.get("dataset_version") != DATASET_VERSION or manifest.get("leakage_audit", {}).get("status") != "passed":
+        raise ValueError(f"A dataset built from the archive (version {DATASET_VERSION!r}) with a passed leakage audit is required")
     actual_counts = {"reviewed_rows": sum(len(example["values"]) for example in examples),
                      "screens": len(examples), "practices": len({example["practice"] for example in examples})}
-    if actual_counts != expected_counts or any(manifest.get(key) != value for key, value in expected_counts.items()):
-        raise ValueError(f"Reviewed dataset counts for {version} must be {expected_counts}, not {actual_counts}")
+    if any(manifest.get(key) != value for key, value in actual_counts.items()):
+        raise ValueError(f"Dataset counts in the manifest must be {actual_counts}")
     if manifest.get("roles") != roles or len(roles) != len(set(roles)) or "O" not in roles or IGNORE_LABEL in roles:
         raise ValueError("Role order must exactly match the unique manifest vocabulary")
     if manifest.get("dataset_content_sha256") != dataset_fingerprint(examples, roles):
         raise ValueError("Dataset content fingerprint does not match its reviewed manifest hash")
     practice_splits = {split: {example["practice"] for example in examples if example["split"] == split}
-                       for split in contract["splits"]}
-    if {key: len(value) for key, value in practice_splits.items()} != contract["splits"]:
-        raise ValueError(f"The reviewed practice split for {version} must be {contract['splits']}")
+                       for split in KNOWN_SPLITS}
     if "practice_splits" in manifest and any(set(manifest["practice_splits"].get(split, [])) != practices
-                                             for split, practices in practice_splits.items()):
+                                             for split, practices in practice_splits.items() if practices):
         raise ValueError("Example practice splits differ from the manifest")
     for example in examples:
         if len(example["labels"]) != len(example["words"]):
@@ -229,8 +210,8 @@ def validate_splits(examples: list[dict[str, Any]]) -> None:
         if practice in practices and practices[practice] != split:
             raise ValueError("A practice appears in more than one split")
         practices[practice] = split
-    if not {"train", "val", "test"} <= {example["split"] for example in examples}:
-        raise ValueError("Training requires nonempty train, val, and test splits")
+    if not {"train", "val"} <= {example["split"] for example in examples}:
+        raise ValueError("Training requires nonempty train and val splits")
 
 
 def _augment(example: dict[str, Any], rng: random.Random) -> dict[str, Any]:
@@ -343,12 +324,12 @@ def train_model(
     base_revision: str | None = None, epochs: int = 8, variants: int = 2,
     seed: int = 7, batch_size: int = 2, accumulation_steps: int = 4,
     learning_rate: float = 3e-5, device: str = "cuda", patience: int = 2,
-    also_train: Sequence[str] = (), final_test: bool = False,
+    final_test: bool = False,
 ) -> dict[str, Any]:
     """Train a new model; test labels never participate in checkpoint selection.
 
-    The historical test stays out unless ``final_test`` asks for it, which only a frozen candidate does. The practices
-    in ``also_train`` come from the extended validation: they train this run and leave its score.
+    The test practices stay out unless ``final_test`` asks for it, which only a frozen candidate does: the dataset
+    must then have been built with ``include_test``.
     """
     import torch
     from transformers import AutoTokenizer, LiltForTokenClassification
@@ -357,9 +338,6 @@ def train_model(
     if not (1 <= epochs <= 16 and 0 <= variants <= 3 and 1 <= batch_size <= 4
             and 1 <= accumulation_steps <= 8 and 1 <= patience <= 4):
         raise ValueError("Training parameters exceed the bounded experiment limits")
-    extended = {example["practice"] for example in examples if example["split"] == EXTENDED_SPLIT}
-    if set(also_train) - extended:
-        raise ValueError(f"Practices outside the extended validation cannot train: {sorted(set(also_train) - extended)}")
     output_dir = Path(output_dir)
     output_dir.mkdir(parents=True, exist_ok=False)
     rng = random.Random(seed)
@@ -374,11 +352,11 @@ def train_model(
     ).to(device)
     if hasattr(model, "gradient_checkpointing_enable"):
         model.gradient_checkpointing_enable()
-    train_examples = [example for example in examples if example["split"] == "train" or example["practice"] in also_train]
+    train_examples = [example for example in examples if example["split"] == "train"]
     val_examples = [example for example in examples if example["split"] == "val"]
     test_examples = [example for example in examples if example["split"] == "test"]
-    extended_examples = [example for example in examples
-                         if example["split"] == EXTENDED_SPLIT and example["practice"] not in also_train]
+    if final_test and not test_examples:
+        raise ValueError("final_test needs the test practices: build the dataset with include_test")
     data = []
     for example in train_examples:
         data.extend(encode_chunks(example, tokenizer, roles))
@@ -465,8 +443,6 @@ def train_model(
     model.load_state_dict(best_weights)
     validation, val_predictions = _evaluate(model, tokenizer, val_examples, roles)
     test_metrics, test_predictions = _evaluate(model, tokenizer, test_examples, roles) if final_test else (None, {})
-    extended_metrics, extended_predictions = (_evaluate(model, tokenizer, extended_examples, roles)
-                                              if extended_examples else (None, {}))
     elapsed = round(time.perf_counter() - started, 3)
     model.eval().cpu().float()
     model.save_pretrained(output_dir)
@@ -474,7 +450,7 @@ def train_model(
     settings = {"epochs_max": epochs, "variants_train_only": variants, "seed": seed,
                 "batch_size": batch_size, "accumulation_steps": accumulation_steps,
                 "learning_rate": learning_rate, "early_stopping_patience": patience,
-                "max_length": 512, "device": device, "also_train": sorted(also_train)}
+                "max_length": 512, "device": device}
     fingerprints = dataset_fingerprint(examples, roles)
     manifest = {"created_utc": datetime.now(timezone.utc).isoformat(), "base_model": BASE_MODEL,
                 "base_revision": base_revision, "initialization": "fresh pretrained; no BPER checkpoint",
@@ -485,17 +461,16 @@ def train_model(
                 "train_sequences_including_augmentation": len(data), "train_seconds": elapsed,
                 "packages": {"torch": str(torch.__version__),
                              "transformers": str(__import__("transformers").__version__)}}
-    metrics = {"validation": validation, "test": test_metrics, "extended_validation": extended_metrics}
+    metrics = {"validation": validation, "test": test_metrics}
     splits = {split: {"practices": sorted({example["practice"] for example in examples if example["split"] == split}),
                       "examples": [example["id"] for example in examples if example["split"] == split]}
-              for split in ("train", "val", "test", EXTENDED_SPLIT)}
+              for split in KNOWN_SPLITS}
     for filename, content in (("training_manifest.json", manifest), ("splits.json", splits),
                               ("labelmap.json", {"roles": roles}), ("metrics.json", metrics),
                               ("training_log.json", log), ("validation_predictions.json", val_predictions),
-                              ("test_predictions.json", test_predictions),
-                              ("extended_predictions.json", extended_predictions)):
+                              ("test_predictions.json", test_predictions)):
         _write_json(output_dir / filename, content)
     return {"best_epoch": best_epoch, "train_seconds": elapsed, "train_log": log,
             "metrics": metrics, "test_predictions": test_predictions,
-            "validation_predictions": val_predictions, "extended_predictions": extended_predictions, "manifest": manifest,
+            "validation_predictions": val_predictions, "manifest": manifest,
             "model_files": sorted(path.name for path in output_dir.iterdir() if path.is_file())}

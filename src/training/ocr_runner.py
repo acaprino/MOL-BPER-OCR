@@ -1,6 +1,6 @@
 """Resumable OCR caches for the stage A comparison of ``docs/next-ver-plan.md``.
 
-One run reads every reviewed screen with one engine configuration and one CPU
+One run reads every screen of the archive with one engine configuration and one CPU
 profile. Each screen is written as soon as it is read, so an interrupted run
 resumes where it stopped and a partial run is never taken for a complete one:
 ``cache.json``, in the format ``build_dataset()`` reads, exists only once every
@@ -8,12 +8,11 @@ screen has a result, and the manifest binds its digest.
 
 Read the screens with an interpreter that has rapidocr and onnxruntime, from ``src/``::
 
-    python -m training.ocr_runner run --config A1 --profile pc4 \\
-        --examples ../data/training/ground-truth-v3.1/examples.json --screenshots ../data --out DIR
+    python -m training.ocr_runner run --config A1 --profile pc4 --archive ../data/dataset --out DIR
 
 ``report`` then builds the derived dataset from a complete cache and writes the
-OCR-only selection metrics. They cover train and validation; the historical test
-is left out, as the plan requires for every choice made before the freeze.
+OCR-only selection metrics. They cover train and validation; the test practices
+are left out (``--include-test``) until a candidate is frozen.
 """
 
 from __future__ import annotations
@@ -85,25 +84,14 @@ def _read_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def load_screens(examples_path: Path, screenshots_dir: Path) -> list[Screen]:
-    """Reviewed screens in bundle order, each bound to the image digest the review used."""
-    from training.dataset import resolve_screenshot_path
+def load_screens(archive_dir: Path, include_test: bool = False) -> list[Screen]:
+    """The screens an OCR cache of the archive must cover, each bound to the image digest the archive recorded."""
+    from training.dataset import ocr_screens, read_archive, screen_id
 
-    examples = _read_json(examples_path)
-    return [Screen(e["id"], resolve_screenshot_path(screenshots_dir, e["id"]), e["image_sha256"]) for e in examples]
-
-
-def load_assigned_screens(assignment_path: Path, screenshots_dir: Path, practices: list[str]) -> list[Screen]:
-    """The screens of assigned practices; the sealed group and anything unassigned stay unread (plan §5.4, rule 4)."""
-    from training.dataset import resolve_screenshot_path
-
-    assignment = _read_json(assignment_path)
-    readable = {practice for group, members in assignment["gruppi"].items() if group != "conferma" for practice in members}
-    refused = sorted(set(practices) - readable)
-    if refused:
-        raise ValueError(f"Pratiche sigillate o non assegnate, da non leggere: {refused}.")
-    return [Screen(screen, resolve_screenshot_path(screenshots_dir, screen), digests["image_sha256"])
-            for screen, digests in assignment["schermate"].items() if screen.split("__", 1)[0] in practices]
+    archive = read_archive(archive_dir)
+    rows = {screen_id(name): row for name, row in archive.screens.items()}
+    return [Screen(screen, archive.root / rows[screen]["File"], rows[screen]["SHA256"])
+            for screen in ocr_screens(archive, include_test)]
 
 
 # ============================================================
@@ -416,12 +404,12 @@ def ocr_selection_metrics(examples: list[dict[str, Any]]) -> dict[str, Any]:
             "by_split": by_split, "per_practice": per_practice}
 
 
-def report(run_dir: Path, workbook: Path, screenshots: Path) -> dict[str, Any]:
+def report(run_dir: Path, archive_dir: Path, include_test: bool = False) -> dict[str, Any]:
     """Build the derived dataset of a complete run, then write its OCR selection metrics."""
     manifest, cache = _complete_run(run_dir, "reporting")
     from training.dataset import build_dataset
 
-    build_dataset(workbook, screenshots, cache, run_dir / "dataset")
+    build_dataset(archive_dir, cache, run_dir / "dataset", include_test)
     metrics = {
         "config": manifest["identity"]["config"], "profile": manifest["identity"]["profile"],
         "cache_sha256": manifest["cache_sha256"], "timing": manifest["timing"],
@@ -438,20 +426,20 @@ def main() -> None:
     run = commands.add_parser("run", help="read every reviewed screen with one configuration")
     run.add_argument("--config", choices=sorted(CONFIGS), required=True)
     run.add_argument("--profile", choices=sorted(PROFILES), required=True)
-    run.add_argument("--examples", type=Path, required=True)
-    run.add_argument("--screenshots", type=Path, required=True)
+    run.add_argument("--archive", type=Path, required=True, help="the archive folder, data/dataset")
+    run.add_argument("--include-test", action="store_true", help="read the test practices: only for a frozen candidate")
     run.add_argument("--out", type=Path, required=True)
     summary = commands.add_parser("report", help="derived dataset and selection metrics of a complete run")
     summary.add_argument("--run", type=Path, required=True)
-    summary.add_argument("--workbook", type=Path, required=True)
-    summary.add_argument("--screenshots", type=Path, required=True)
+    summary.add_argument("--archive", type=Path, required=True)
+    summary.add_argument("--include-test", action="store_true")
     arguments = parser.parse_args()
     if arguments.command == "run":
         manifest = run_ocr(arguments.config, arguments.profile,
-                           load_screens(arguments.examples, arguments.screenshots), arguments.out)
+                           load_screens(arguments.archive, arguments.include_test), arguments.out)
         print(json.dumps({key: manifest.get(key) for key in ("status", "failed", "pending", "timing")}, indent=2))
     else:
-        metrics = report(arguments.run, arguments.workbook, arguments.screenshots)
+        metrics = report(arguments.run, arguments.archive, arguments.include_test)
         print(json.dumps({key: metrics[key] for key in ("config", "profile", "by_split")}, indent=2))
 
 

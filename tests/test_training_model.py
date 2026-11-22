@@ -138,22 +138,42 @@ def test_practices_cannot_cross_split_boundaries() -> None:
         validate_splits([first, second])
 
 
+def _reviewed(examples: list[dict[str, Any]], roles: list[str]) -> dict[str, Any]:
+    counts = {"reviewed_rows": sum(len(item["values"]) for item in examples), "screens": len(examples),
+              "practices": len({item["practice"] for item in examples})}
+    return {**counts, "roles": roles, "dataset_version": "dataset", "leakage_audit": {"status": "passed"},
+            "dataset_content_sha256": dataset_fingerprint(examples, roles)}
+
+
+def _dataset(count: int = 6) -> list[dict[str, Any]]:
+    return [{**example(["a"]), "id": str(index), "practice": str(index % 3),
+             "split": ("train", "val", "test")[index % 3], "values": {"ndg": "1"}} for index in range(count)]
+
+
 def test_reviewed_dataset_rejects_modified_labels() -> None:
-    examples = []
-    for index in range(113):
-        practice = index % 12
-        item = {**example(["a"]), "id": str(index), "practice": str(practice),
-                "split": "train" if practice < 8 else "val" if practice < 10 else "test",
-                "values": {f"field-{field}": "value" for field in range(9 if index < 104 else 8)}}
-        examples.append(item)
-    roles = ["O", "ndg"]
-    manifest = {"reviewed_rows": 1008, "screens": 113, "practices": 12, "roles": roles,
-                "dataset_version": "ground-truth-v3.1", "leakage_audit": {"status": "passed"},
-                "dataset_content_sha256": dataset_fingerprint(examples, roles)}
+    examples, roles = _dataset(), ["O", "ndg"]
+    manifest = _reviewed(examples, roles)
     validate_reviewed_dataset(examples, roles, manifest)
     examples[0]["labels"] = ["O"]
     with pytest.raises(ValueError, match="fingerprint|hash"):
         validate_reviewed_dataset(examples, roles, manifest)
+
+
+def test_reviewed_dataset_refuses_an_unknown_version() -> None:
+    examples, roles = _dataset(), ["O", "ndg"]
+    with pytest.raises(ValueError, match="version"):
+        validate_reviewed_dataset(examples, roles, {**_reviewed(examples, roles), "dataset_version": "ground-truth-v3.9"})
+
+
+def test_reviewed_dataset_refuses_counts_that_differ_from_its_examples() -> None:
+    examples, roles = _dataset(), ["O", "ndg"]
+    with pytest.raises(ValueError, match="counts"):
+        validate_reviewed_dataset(examples, roles, {**_reviewed(examples, roles), "screens": 99})
+
+
+def test_a_dataset_without_the_test_practices_is_valid() -> None:
+    examples, roles = [item for item in _dataset() if item["split"] != "test"], ["O", "ndg"]
+    validate_reviewed_dataset(examples, roles, _reviewed(examples, roles))
 
 
 def _tiny_base(tmp_path: Path) -> tuple[Path, list[dict[str, Any]]]:
@@ -296,68 +316,6 @@ def test_score_predictions_reports_whole_field_and_non_note_metrics() -> None:
 
 
 
-def _v3_1_examples() -> list[dict[str, Any]]:
-    examples = []
-    for index in range(113):
-        practice = index % 12
-        examples.append({**example(["a"]), "id": str(index), "practice": str(practice),
-                         "split": "train" if practice < 8 else "val" if practice < 10 else "test",
-                         "values": {f"field-{field}": "value" for field in range(9 if index < 104 else 8)}})
-    return examples
-
-
-def _manifest(examples: list[dict[str, Any]], roles: list[str], version: str, counts: dict[str, int]) -> dict[str, Any]:
-    return {**counts, "roles": roles, "dataset_version": version, "leakage_audit": {"status": "passed"},
-            "dataset_content_sha256": dataset_fingerprint(examples, roles)}
-
-
-def test_reviewed_dataset_accepts_v3_2_with_the_extended_validation_split() -> None:
-    examples = _v3_1_examples()
-    for index in range(15):
-        examples.append({**example(["a"]), "id": f"ext-{index}", "practice": f"ext-{index % 5}", "split": "val_ext",
-                         "values": {f"field-{field}": "value" for field in range(10 if index < 9 else 9)}})
-    roles = ["O", "ndg"]
-    manifest = _manifest(examples, roles, "ground-truth-v3.2", {"reviewed_rows": 1152, "screens": 128, "practices": 17})
-    validate_reviewed_dataset(examples, roles, manifest)
-
-
-def test_reviewed_dataset_accepts_v3_3_with_nine_extended_validation_practices() -> None:
-    examples = _v3_1_examples()
-    for index in range(49):
-        examples.append({**example(["a"]), "id": f"ext-{index}", "practice": f"ext-{index % 9}", "split": "val_ext",
-                         "values": {f"field-{field}": "value" for field in range(8 if index < 17 else 7)}})
-    roles = ["O", "ndg"]
-    manifest = _manifest(examples, roles, "ground-truth-v3.3", {"reviewed_rows": 1368, "screens": 162, "practices": 21})
-    validate_reviewed_dataset(examples, roles, manifest)
-
-
-def test_reviewed_dataset_accepts_v3_4_with_the_reference_practice_in_training() -> None:
-    examples = _v3_1_examples()
-    for index in range(49):
-        examples.append({**example(["a"]), "id": f"ext-{index}", "practice": f"ext-{index % 9}", "split": "val_ext",
-                         "values": {f"field-{field}": "value" for field in range(8 if index < 17 else 7)}})
-    for index in range(9):
-        examples.append({**example(["a"]), "id": f"ref-{index}", "practice": "ref", "split": "train",
-                         "values": {f"field-{field}": "value" for field in range(9 if index < 5 else 8)}})
-    roles = ["O", "ndg"]
-    manifest = _manifest(examples, roles, "ground-truth-v3.4", {"reviewed_rows": 1445, "screens": 171, "practices": 22})
-    validate_reviewed_dataset(examples, roles, manifest)
-
-
-def test_reviewed_dataset_refuses_an_unknown_version() -> None:
-    examples, roles = _v3_1_examples(), ["O", "ndg"]
-    manifest = _manifest(examples, roles, "ground-truth-v3.9", {"reviewed_rows": 1008, "screens": 113, "practices": 12})
-    with pytest.raises(ValueError, match="version"):
-        validate_reviewed_dataset(examples, roles, manifest)
-
-
-def test_reviewed_dataset_refuses_v3_1_content_relabelled_as_v3_2() -> None:
-    examples, roles = _v3_1_examples(), ["O", "ndg"]
-    manifest = _manifest(examples, roles, "ground-truth-v3.2", {"reviewed_rows": 1008, "screens": 113, "practices": 12})
-    with pytest.raises(ValueError, match="count"):
-        validate_reviewed_dataset(examples, roles, manifest)
-
-
 # ============================================================
 # Training copies framed differently
 # ============================================================
@@ -417,39 +375,6 @@ def test_reframing_leaves_the_source_example_untouched() -> None:
 # ============================================================
 
 
-def _with_extended_validation(examples: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    return [*examples, *[{**example(["a", "b"]), "id": name, "practice": name, "split": "val_ext"}
-                         for name in ("ext-a", "ext-b")]]
-
-
-def test_a_run_leaves_the_historical_test_alone_by_default(tmp_path: Path) -> None:
-    base, examples = _tiny_base(tmp_path)
-    result = train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base), epochs=1, variants=0,
-                         device="cpu")
-    assert (result["test_predictions"], result["manifest"]["test_evaluations"]) == ({}, 0)
-
-
-def test_a_run_scores_the_extended_validation(tmp_path: Path) -> None:
-    base, examples = _tiny_base(tmp_path)
-    result = train_model(_with_extended_validation(examples), ["O", "ndg"], tmp_path / "trained", {},
-                         base_path=str(base), epochs=1, variants=0, device="cpu")
-    assert set(result["extended_predictions"]) == {"ext-a", "ext-b"}
-
-
-def test_a_practice_trained_on_is_not_scored(tmp_path: Path) -> None:
-    base, examples = _tiny_base(tmp_path)
-    result = train_model(_with_extended_validation(examples), ["O", "ndg"], tmp_path / "trained", {},
-                         base_path=str(base), epochs=1, variants=0, device="cpu", also_train=["ext-a"])
-    assert set(result["extended_predictions"]) == {"ext-b"}
-
-
-def test_a_run_refuses_to_train_on_another_split(tmp_path: Path) -> None:
-    base, examples = _tiny_base(tmp_path)
-    with pytest.raises(ValueError, match="val"):
-        train_model(_with_extended_validation(examples), ["O", "ndg"], tmp_path / "trained", {},
-                    base_path=str(base), epochs=1, variants=0, device="cpu", also_train=["val"])
-
-
 def test_a_run_may_use_three_variants(tmp_path: Path) -> None:
     base, examples = _tiny_base(tmp_path)
     result = train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base), epochs=1, variants=3,
@@ -462,3 +387,11 @@ def test_a_run_refuses_four_variants(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="bounded experiment"):
         train_model(examples, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base), epochs=1, variants=4,
                     device="cpu")
+
+
+def test_a_final_test_needs_the_test_practices(tmp_path: Path) -> None:
+    base, examples = _tiny_base(tmp_path)
+    without_test = [item for item in examples if item["split"] != "test"]
+    with pytest.raises(ValueError, match="include_test"):
+        train_model(without_test, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base), epochs=1, variants=0,
+                    device="cpu", final_test=True)

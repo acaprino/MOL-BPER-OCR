@@ -8,7 +8,7 @@ entrypoint stores every shard unchanged and joins them with ``merge_runs()``, so
 ``ocr_runner report`` reads the result like a local run. An optional cost panel reads the
 same few screens with every configuration in one container, so their timings share one host.
 
-The reviewed screenshots are sent to Modal; the workbook and the labels stay local.
+The screenshots of the archive are sent to Modal; the values stay local.
 If the local process stops, the detached app keeps reading: run again with ``--collect``
 to download what has finished.
 """
@@ -23,7 +23,7 @@ from typing import Any
 
 import modal
 
-from training.ocr_runner import CONFIGS, PROFILES, Screen, load_assigned_screens, load_screens, merge_runs, run_ocr
+from training.ocr_runner import CONFIGS, PROFILES, Screen, load_screens, merge_runs, run_ocr
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -125,17 +125,16 @@ def _jobs(screens: list[Screen], configs: list[str], shard_size: int, whole: set
 
 @app.local_entrypoint()
 def main(out_dir: str, configs: str = "A0,A1,A2,A3,A4", profile: str = "pc4", shard_size: int = 8,
-         whole: str = "A0,A4", panel: str = "51185037__Elenco,51185037__GestioneFidi,51185037__Note",
-         collect: bool = False, assignment: str = "", practices: str = "") -> None:
+         whole: str = "A0,A4", panel: str = "51185037__elenco-01,51185037__gestione-fidi-01,51185037__note-01",
+         collect: bool = False, include_test: bool = False) -> None:
     """Spawn every shard and the cost panel, then download each result and merge each configuration.
 
-    With ``--assignment`` and ``--practices`` the screens are those of a lot's extended-validation practices.
+    The screens are those of the archive's training and control practices; ``--include-test`` adds the test ones.
     """
     output = Path(out_dir)
     if not output.is_absolute():
         raise ValueError("out-dir must be an absolute path")
-    screens = (load_assigned_screens(Path(assignment), ROOT / "data", practices.split(",")) if assignment
-               else load_screens(ROOT / "data/training/ground-truth-v3.1/examples.json", ROOT / "data"))
+    screens = load_screens(ROOT / "data" / "dataset", include_test)
     by_id = {s.id: s for s in screens}
     calls_path = output / "calls.json"
     if not collect:
