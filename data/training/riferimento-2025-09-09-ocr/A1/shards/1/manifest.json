@@ -14,14 +14,7 @@
       "inter_op": 1
     },
     "screens": {
-      "LUNARDI_26871394__Elenco": "60921680696f98b742017c40f99ed80de7f43751cdf1caefc686f9af993e6a10",
-      "LUNARDI_26871394__Elenco_dx": "27e30ae29d588de9fe1aafa6e72ae91018622b4889633d4785bbcbebd080e12b",
-      "LUNARDI_26871394__Elenco_tooltip1": "b5e29af6f0c0c5b7d0548f1e86cb2755a61e25d23f6e9b559825f75701fadbef",
-      "LUNARDI_26871394__Soggetti": "9d9e6a5398bd6238203782babed16940542443df9deac8bc467b0d4e98343cc1",
-      "LUNARDI_26871394__GestioneFidi": "98307c21fc063ad9133c023e0e66a798ad92c9873b439e0010addf1346db2b30",
-      "LUNARDI_26871394__GestioneFidi_Tooltip1": "f13c3bac8781e4710e9ac9fd767cb0cde1ab451b1a0f4cf608c65a37151bece7",
-      "LUNARDI_26871394__GestioneFidi_Tooltip2": "5139271444c2a49ebd3573f387addafd0872dd7f70691d6a25924474cd4b4132",
-      "LUNARDI_26871394__GestioneFidi_Tooltip3": "9024e0592607bfc5164a66e3d02c39cdc58b2abc2c9003c6fa09759834dc0421"
+      "51350695__Note": "ceba4b8c9cdbf10b3d2f1bbc198c3c779c38ba903c494261a032dec5d2892eb9"
     }
   },
   "provenance": {
@@ -405,24 +398,24 @@
   },
   "sessions": [
     {
-      "started_utc": "2026-11-07T17:18:33+00:00",
-      "engine_load_seconds": 1.607,
-      "warmup_seconds": 3.916,
-      "screens_read": 8,
+      "started_utc": "2026-11-22T10:34:53+00:00",
+      "engine_load_seconds": 1.708,
+      "warmup_seconds": 7.251,
+      "screens_read": 1,
       "screens_failed": 0,
-      "peak_memory_bytes": 1372532736
+      "peak_memory_bytes": 1230442496
     }
   ],
   "status": "complete",
   "failed": {},
   "pending": [],
-  "cache_sha256": "0b176d1ec4c95ef2a1ada718c2f4ee534d207be22598ea71659d7898b8c3c17a",
+  "cache_sha256": "c1c0d015b002e910f01f263038fc7d07330cdbf4cee2f0f484048943611cdf5f",
   "timing": {
-    "screens": 8,
-    "mean": 6.239625,
-    "median": 6.832000000000001,
-    "p95": 8.53435,
-    "max": 8.562,
+    "screens": 1,
+    "mean": 7.993,
+    "median": 7.993,
+    "p95": 7.993,
+    "max": 7.993,
     "sessions": 1,
     "scope": "seconds per screen include PNG decoding; the warm-up read and engine loading are excluded"
   }

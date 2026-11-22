@@ -1,0 +1,36 @@
+{
+  "profile": "pc4",
+  "resources": {
+    "cpu": 4.0,
+    "memory_mib": 4096,
+    "timeout_seconds": 7200,
+    "retries": 1,
+    "max_containers": 50
+  },
+  "jobs": [
+    {
+      "config": "A1",
+      "shard": 0,
+      "ids": [
+        "51350695__Elenco",
+        "51350695__Elenco_dx",
+        "51350695__Elenco_tooltip1",
+        "51350695__Soggetti",
+        "51350695__GestioneFidi",
+        "51350695__GestioneFidi_Tooltip1",
+        "51350695__GestioneFidi_Tooltip2",
+        "51350695__GestioneFidi_Tooltip3"
+      ],
+      "call": "fc-01M81D59AFRJRHKZDFTBYPBXAA"
+    },
+    {
+      "config": "A1",
+      "shard": 1,
+      "ids": [
+        "51350695__Note"
+      ],
+      "call": "fc-01M81D5AJGNTAPN13AQHE95XK5"
+    }
+  ],
+  "panel": null
+}

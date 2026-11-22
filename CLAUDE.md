@@ -29,7 +29,7 @@ OpenAI (default):
 
 ```bash
 export LLM_API_KEY="sk-..."
-python main.py                        # CLI batch mode (requires data/reference/dati.csv)
+python main.py                        # CLI batch mode on the reference practice data/pratiche/51350695
 python gui_app.py                     # Tkinter desktop GUI
 python src/edge-agent/edge_agent.py       # Edge-agent UI (or: python main.py --gui)
 ```
@@ -59,7 +59,8 @@ All defaults verified against `src/extraction/config.py`.
 | `LLM_API_KEY` | *(required)* | API credential (OpenAI or Gemini key) |
 | `LLM_MODEL` | `gpt-4o` | Model for the main pass |
 | `LLM_MODEL_ANCHOR` | same as `LLM_MODEL` | Model for the anchor pass |
-| `INPUT_DIR` | `data/reference` | Data directory (screenshots + ground truth) |
+| `INPUT_DIR` | `data/pratiche/51350695` | Screenshot folder. Its truth is a `dati.csv` in it, else its sheet of `data/pratiche/pratiche.xlsx` (ADR 0029) |
+| `OUTPUT_DIR` | `outputs/<INPUT_DIR folder name>` | CLI results (`poc_outputs_improved.json`, `poc_debug_improved.csv`) and `debug_crops/`, kept out of the archive |
 | `PARALLEL_WORKERS` | `4` | Thread pool size |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
 | `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Max VLM calls per screen (1 anchor + 1 main + 1 retry per retry area). Lowering it starves the trailing areas of `AREA_TO_FIELDS` |
@@ -67,7 +68,7 @@ All defaults verified against `src/extraction/config.py`.
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Early exit when both anchor values are null |
 | `LLM_THINKING_LEVEL` | *(unset)* | Reasoning depth `low`/`medium`/`high`, sent as `thinking_level` to the Gemini 3 family; unset keeps the model default (`high` on Gemini 3). Other families warn and ignore it; any other value is refused at model creation (`src/extraction/model_adapters.py`, ADR 0016) |
 | `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `src/extraction/cli.py` (`config.py:108`) |
-| `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to `INPUT_DIR/debug_crops` |
+| `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to `OUTPUT_DIR/debug_crops` |
 | `PROMPTS_DIR` | *(unset)* | Override the prompt catalog directory (read in `src/prompt_store.py`, not `config.py`); default is `prompts/` at the repo root, or next to the exe when frozen. An explicit override fails closed: no fallback to the bundled copy |
 
 ### Secrets policy
@@ -130,8 +131,8 @@ still runs the full suite. No default marker filter, build metadata or CI is con
 Dev dependencies for the suite install via `pip install -r requirements-dev.txt`. To
 verify changes manually:
 
-1. **Run extraction:** `python main.py` -- should complete without errors (needs `LLM_API_KEY`
-   and a local `data/reference/dati.csv`).
+1. **Run extraction:** `python main.py` -- should complete without errors (needs `LLM_API_KEY`;
+   the reference practice takes its truth from `data/pratiche/pratiche.xlsx`).
 2. **Check accuracy:** output includes a per-field accuracy breakdown (RAW + FILTERED). Compare
    against a baseline.
 3. **Check costs:** `print_cost_summary()` reports per-screen token counts and USD costs. Watch for
@@ -261,7 +262,7 @@ downstream effects.
     extraction are decoupled: `ingest_frame()` queues and returns, extraction runs on
     `PARALLEL_WORKERS` daemon threads sharing one pipeline (same pattern as `BatchRunner`).
 13. **Every relative crop assumes window framing** -- the classifier ROI and the pipeline's
-    `RETRY_AREAS` bands are fractions calibrated on the 848x679 window screenshots in `data/reference`
+    `RETRY_AREAS` bands are fractions calibrated on the 848x679 window screenshots of the reference practice `data/pratiche/51350695`
     (`CONTENT_CROP`/`HEADER_IN_CONTENT` now apply only on the file path over the calibrated
     family, ADR 0010; off calibration the anchor pass reads the whole image). `_grab_raw()` captures the whole monitor, so
     `frame_normalize.normalize_frame()` must run there, before dedup, routing and extraction: with a
@@ -338,7 +339,7 @@ downstream effects.
 
 ## BPER Domain
 
-The extractor targets **9 BPER banking screens** (`data/reference/screen 1.png` ... `screen 9.png`), each a
+The extractor targets **9 BPER banking screens** (the reference practice `data/pratiche/51350695`; the edge-agent keeps the same nine screenshots as page templates `src/edge-agent/assets/templates/bper/screen 1.png` ... `screen 9.png`), each a
 different page of the BPER credit-management application.
 
 **Extracted fields** -- 45 entries in `FIELD_KEYS` (`src/extraction/fields.py`):
@@ -360,19 +361,20 @@ different page of the BPER credit-management application.
 
 ## Data & Evaluation
 
-**Ground-truth CSV** (`data/reference/dati.csv`) uses three columns: `Fotogramma` (screen ID),
+**Ground truth of the CLI** (`resolve_ground_truth()`, ADR 0029): a `dati.csv` in `INPUT_DIR`, else the folder's sheet of `data/pratiche/pratiche.xlsx` (`Schermata`, `Campo`, `Valore`, keyed by page name like `Elenco`). A `dati.csv` uses three columns: `Fotogramma` (screen ID),
 `Denominazione da attribuire` (field name), `Valore rilevato` (expected value). `load_ground_truth()`
 in `src/extraction/evaluation.py` auto-detects alternative column names (`Screenshot`/`Screen`,
 `Campo`/`Field`, `Valore`/`Value`) via `_find_column()`.
 
 **Tracked data under `data/`:** `data/` is versioned in git (except `*.safetensors` model weights
-> 1 GB and `data/reference/debug_crops/`). `python main.py` reads `data/reference/dati.csv` (the
-ground truth for the 9 reference screens, practice LUNARDI) and raises `FileNotFoundError` if
-`INPUT_DIR` is pointed at a folder without `dati.csv` (`src/extraction/cli.py::main`). The
+> 1 GB). `python main.py` reads `data/pratiche/51350695` with its sheet of `data/pratiche/pratiche.xlsx` and raises
+`FileNotFoundError` if `INPUT_DIR` has neither a `dati.csv` nor an archive workbook beside it
+(`src/extraction/cli.py::main`). The delivered `dati.csv` of the reference practice, keyed `screen 1..9`,
+is in `data/revisione/riferimento-2025-09-09/` with the page of each screen in `fotogrammi.json`. The
 Tkinter GUI and the edge-agent work without a CSV (evaluation is optional there).
 Do not restore the older `dati.csv` from commit `e8c677c`: it describes 5 older screenshots of the
 old PEF UI (practice TICCHI/CABRAS, ~2150px wide), not the current 9 "Nuova PEF 3.0" screens
-(practice LUNARDI). The first real-provider baseline (`gemini-3.8-flash`, 3 runs, 93.5-94.8%,
+(practice 51350695). The first real-provider baseline (`gemini-3.8-flash`, 3 runs, 93.5-94.8%,
 ~$0.04/screen) and the proposed acceptance threshold were recorded in
 `.tritech/codebase-xray/baselines/2026-09-29-gemini-3.8-flash/`, removed from the working tree by
 `d9462a4`; read them from history (`git show d939ea5:<path>`).
@@ -476,7 +478,7 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   and, with `--per-practice`, the practice archive `data/pratiche/pratiche.xlsx` (`export_practice_workbook()`).
 - Every practice has a role (ADR 0027): training 18, control 2, test 13, column `Ruolo` of `practices.csv`.
   `build_dataset()` on the newest version refuses a `data/pratiche` folder with no role. The reference practice
-  `LUNARDI_26871394` trains (`read_reference_truth()`, lot `riferimento-lunardi`); the extended validation trains
+  `51350695` trains (`read_reference_truth()`, lot `riferimento-2025-09-09`, ADR 0029); the extended validation trains
   the final model through `also_train` and is measured by runs that hold out a third of it in rotation.
 - `practice_sheets.py` -- reads a lot delivered as one sheet per practice (`read_practice_sheets()`): one
   value per page, typed cells, the literal `vuoto`. Its `correzioni.json` says what each screen of an
@@ -524,11 +526,9 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
 | File | Purpose |
 |---|---|
 | `data/README.md` | Overview of the datasets, 33-practice screenshot collection, and training directories under `data/` |
-| `data/reference/dati.csv` | Ground-truth dataset for the 9 reference screens (tracked in git; required by the CLI) |
-| `data/reference/screen *.png` | Test banking screenshots (9 BPER images, tracked in git) |
 | `data/pratiche/` | The practice archive: `<id>/` screenshots of the 33 practices (240 in-scope + 22 off-topic PNGs), `pratiche.xlsx` with the corrected values of each practice (index sheet plus one sheet per practice, generated by `training.truth_export --per-practice` from the current truth, never hand-edited) and `manifest.json` |
-| `data/revisione/` | Sources of the human data entry as delivered, one folder per lot named after the lot (`riscontro-2026-10-07/` with the v3.1 workbook, `lotto-2026-08-21/`, `lotto-2026-11-05/`, `riferimento-lunardi/`); no zip archives |
-| `data/training/` | Sealed `ground-truth-v3.1/` bundle, the unified `ground-truth-v3.2/`, `ground-truth-v3.3/` and current `ground-truth-v3.4/` truths (three CSV tables plus `ground_truth.xlsx`, examples for the v3.1 splits and the G8 `val_ext` group, none for the sealed `conferma` group) and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
+| `data/revisione/` | Sources of the human data entry as delivered, one folder per lot named after the lot (`riscontro-2026-10-07/` with the v3.1 workbook, `lotto-2026-08-21/`, `lotto-2026-11-05/`, `riferimento-2025-09-09/`); no zip archives |
+| `data/training/` | Sealed `ground-truth-v3.1/` bundle, the unified `ground-truth-v3.2/`, `ground-truth-v3.3/`, `ground-truth-v3.4/` and current `ground-truth-v3.5/` truths (three CSV tables plus `ground_truth.xlsx`, examples for the v3.1 splits and the G8 `val_ext` group, none for the sealed `conferma` group) and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
 | `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `src/prompt_store.py` |
 | `src/edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
 

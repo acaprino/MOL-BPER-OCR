@@ -43,7 +43,6 @@ from typing import Dict, List, Optional, Tuple
 from PIL import Image
 
 FRAMES = Path("tests/fixtures/frames")
-REFERENCES = Path("data/reference")
 REJECT_PREFIX = "SCARTO"
 
 # The classifier drops this fraction off the top before embedding (DEFAULT_CROP_ROI).

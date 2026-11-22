@@ -45,6 +45,26 @@
       "ruolo": "addestramento"
     },
     {
+      "practice": "51350695",
+      "batch": "riferimento-2025-09-09",
+      "ground_truth_split": "train",
+      "in_scope_count": 9,
+      "offtopic_count": 0,
+      "screens": [
+        "Elenco.png",
+        "Elenco_dx.png",
+        "Elenco_tooltip1.png",
+        "GestioneFidi.png",
+        "GestioneFidi_Tooltip1.png",
+        "GestioneFidi_Tooltip2.png",
+        "GestioneFidi_Tooltip3.png",
+        "Note.png",
+        "Soggetti.png"
+      ],
+      "offtopic_screens": [],
+      "ruolo": "addestramento"
+    },
+    {
       "practice": "51531667",
       "batch": "riscontro-2026-10-07",
       "ground_truth_split": "test",
@@ -620,26 +640,6 @@
       ],
       "offtopic_screens": [],
       "ruolo": "test"
-    },
-    {
-      "practice": "LUNARDI_26871394",
-      "batch": "riferimento-lunardi",
-      "ground_truth_split": "train",
-      "in_scope_count": 9,
-      "offtopic_count": 0,
-      "screens": [
-        "Elenco.png",
-        "Elenco_dx.png",
-        "Elenco_tooltip1.png",
-        "GestioneFidi.png",
-        "GestioneFidi_Tooltip1.png",
-        "GestioneFidi_Tooltip2.png",
-        "GestioneFidi_Tooltip3.png",
-        "Note.png",
-        "Soggetti.png"
-      ],
-      "offtopic_screens": [],
-      "ruolo": "addestramento"
     }
   ]
 }

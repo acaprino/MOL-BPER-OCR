@@ -8,7 +8,7 @@ from typing import Dict, Any, List, Optional, Tuple, Callable
 from extraction.llm_factory import create_chat_model
 from extraction.config import (
     INPUT_DIR,
-    GROUND_TRUTH_CSV,
+    OUTPUT_DIR,
     PARALLEL_ENABLED,
     PARALLEL_WORKERS,
     DEBUG_MODE,
@@ -21,7 +21,7 @@ from extraction.config import (
 from extraction.imaging import screen_id_from_path
 from extraction.pipeline import ExtractionPipeline
 from extraction.evaluation import (
-    load_ground_truth,
+    resolve_ground_truth,
     Evaluator,
 )
 from prompt_store import catalog_source
@@ -190,10 +190,7 @@ def run_extraction_batch(
 # ============================================================
 
 def main() -> None:
-    if not os.path.exists(GROUND_TRUTH_CSV):
-        raise FileNotFoundError(f"Ground truth CSV not found: {GROUND_TRUTH_CSV}")
-
-    gt = load_ground_truth(GROUND_TRUTH_CSV)
+    gt = resolve_ground_truth(INPUT_DIR)
     evaluator = Evaluator(gt)
 
     # Process all images in INPUT_DIR (supports 9+ images, not just those in GT)
@@ -214,7 +211,7 @@ def main() -> None:
     outputs = runner.run(screenshot_paths)
 
     # Save outputs
-    outputs_path = os.path.join(INPUT_DIR, "poc_outputs_improved.json")
+    outputs_path = os.path.join(OUTPUT_DIR, "poc_outputs_improved.json")
     os.makedirs(os.path.dirname(outputs_path), exist_ok=True)
     with open(outputs_path, "w", encoding="utf-8") as f:
         json.dump(outputs, f, ensure_ascii=False, indent=2)
@@ -222,7 +219,7 @@ def main() -> None:
     # Evaluate & report
     evaluator.eval(outputs)
 
-    debug_csv_path = os.path.join(INPUT_DIR, "poc_debug_improved.csv")
+    debug_csv_path = os.path.join(OUTPUT_DIR, "poc_debug_improved.csv")
     evaluator.build_debug_report(outputs, debug_csv_path)
     evaluator.print_cost_summary(outputs)
 

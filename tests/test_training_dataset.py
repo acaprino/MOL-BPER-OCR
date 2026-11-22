@@ -551,7 +551,7 @@ def _reference_lot(tmp_path: Path, shots: Path, rows: str | None = None, sha256:
         _png(shots / REFERENCE / f"{name}.png", shade)
         digests[f"{REFERENCE}__{name}"] = _digests(shots / REFERENCE / f"{name}.png")
     assignment = lot_dir / "assegnazione.json"
-    assignment.write_text(json.dumps({"lotto": "riferimento-lunardi", "gruppi": {"addestramento": [REFERENCE]},
+    assignment.write_text(json.dumps({"lotto": "riferimento-2025-09-09", "gruppi": {"addestramento": [REFERENCE]},
                                       "schermate": digests}), encoding="utf-8")
     ocr = lot_dir / "ocr.json"
     ocr.write_text(json.dumps({f"{REFERENCE}__{name}": {"items": [["7", 0.99, BOX]]} for name in ("Elenco", "Elenco_dx")}),
@@ -603,8 +603,8 @@ def test_refuses_frames_recorded_for_another_file(tmp_path: Path) -> None:
         _reference_records(tmp_path, sha256="altro")
 
 
-def test_reference_lot_makes_a_v3_4_bundle(tmp_path: Path) -> None:
-    assert _build_full_bundle(tmp_path)["dataset_version"] == "ground-truth-v3.4"
+def test_reference_lot_makes_a_v3_5_bundle(tmp_path: Path) -> None:
+    assert _build_full_bundle(tmp_path)["dataset_version"] == "ground-truth-v3.5"
 
 
 def test_reference_practice_trains(tmp_path: Path) -> None:

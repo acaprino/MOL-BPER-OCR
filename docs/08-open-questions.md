@@ -1,6 +1,6 @@
 # Domande aperte
 
-Queste sono le cose che il codice da solo non può dirti: decisioni la cui motivazione è invisibile dal sorgente, fatti di dominio che solo chi ha usato l'applicazione BPER può confermare, e code sciolte della storia del progetto (il backend remoto rimosso, la riscrittura della storia git del 2026-07-21). Ogni domanda dichiara cosa è stato osservato e perché la risposta conta. Due di esse costeranno tempo reale a un nuovo sviluppatore fin dal primo giorno se restano senza risposta: dove vive il `data/reference/dati.csv` canonico, e se la chiave OpenAI trapelata sia stata davvero ruotata.
+Queste sono le cose che il codice da solo non può dirti: decisioni la cui motivazione è invisibile dal sorgente, fatti di dominio che solo chi ha usato l'applicazione BPER può confermare, e code sciolte della storia del progetto (il backend remoto rimosso, la riscrittura della storia git del 2026-07-21). Ogni domanda dichiara cosa è stato osservato e perché la risposta conta. Due di esse costeranno tempo reale a un nuovo sviluppatore fin dal primo giorno se restano senza risposta: dove vive il `dati.csv` canonico (risolta il 2026-11-22), e se la chiave OpenAI trapelata sia stata davvero ruotata.
 
 Le domande sono ordinate, entro ciascuna sezione, per impatto sull'efficacia di un nuovo sviluppatore. Contesto correlato: [Architettura](04-architecture.md), [Workflow](05-workflows.md), [Guida alla configurazione](10-configuration-guide.md).
 
@@ -25,7 +25,9 @@ La pipeline ha due entry point per scelta: `extract_from_screen()` normalizza in
 
 ## Logica di business
 
-### Dove vive il `data/reference/dati.csv` canonico, e chi ne è il proprietario?
+### Dove vive il `dati.csv` canonico, e chi ne è il proprietario?
+**Risolta 2026-11-22.** I 77 valori della pratica di riferimento sono stati verificati contro le schermate il 2026-11-07 e stanno in `data/revisione/riferimento-2025-09-09/dati.csv`; la CLI legge i valori corretti di ogni pratica da `data/pratiche/pratiche.xlsx` (ADR 0029). Il resto della sezione è la domanda com'era.
+
 **Aggiornamento 2026-09-29.** Il `dati.csv` ancora presente nella storia git (rimosso in `e8c677c`) descrive 5 screenshot della vecchia interfaccia PEF, non i 9 attuali: non va ripristinato. Per i 9 screenshot attuali esiste una bozza di 77 righe, trascritta a vista e da verificare, copiata in `.tritech/codebase-xray/baselines/2026-09-29-gemini-3.8-flash/dati.csv` (oggi solo nella storia git, `d939ea5`).
 
 La CLI lo richiede tassativamente (`FileNotFoundError` a `src/extraction/cli.py::main`), il README ne documenta il formato (`README.md:221-241`) e l'intero apparato di valutazione è costruito attorno a esso; eppure il file non esiste né nel working tree né in alcun punto di git (`.gitignore:9` esclude `/data`; solo i 9 PNG sono stati aggiunti con force-add). Esiste una copia autorevole (quante righe, quali campi per schermata) e può essere condivisa con ogni sviluppatore? Senza un file di GT comune, `python main.py` non può girare su un clone fresco e i numeri di accuratezza di due sviluppatori non sono confrontabili.

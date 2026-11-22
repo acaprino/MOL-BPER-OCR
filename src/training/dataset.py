@@ -35,7 +35,9 @@ V3_1_LOT = "riscontro-2026-10-07"
 # Which lots compose each dataset version. The manifest names the version; a directory name never does.
 DATASET_VERSIONS = {"ground-truth-v3.1": (), "ground-truth-v3.2": ("lotto-2026-08-21",),
                     "ground-truth-v3.3": ("lotto-2026-08-21", "lotto-2026-11-05"),
-                    "ground-truth-v3.4": ("lotto-2026-08-21", "lotto-2026-11-05", "riferimento-lunardi")}
+                    "ground-truth-v3.4": ("lotto-2026-08-21", "lotto-2026-11-05", "riferimento-lunardi"),
+                    # v3.4 with the reference practice under its practice number, 51350695 (ADR 0029)
+                    "ground-truth-v3.5": ("lotto-2026-08-21", "lotto-2026-11-05", "riferimento-2025-09-09")}
 GROUND_TRUTH_COLUMNS = ["Fotogramma", "Denominazione da attribuire", "Valore rilevato", "Esito", "Stato revisione",
                         "Pratica", "Lotto", "Gruppo", "Riga Excel", "Correzione"]
 

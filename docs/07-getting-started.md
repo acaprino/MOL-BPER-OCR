@@ -117,23 +117,25 @@ La factory rifiuta le coppie disallineate: un modello `gemini-*` con `LLM_PROVID
 
 ### 4. Fornisci il CSV di ground truth (solo CLI)
 
-Colloca `dati.csv` in `INPUT_DIR` (default `data/reference`). Il formato è long, con
-intestazioni `Fotogramma`, `Denominazione da attribuire` e `Valore rilevato`.
+Per le pratiche dell'archivio non serve nulla: con `INPUT_DIR` su una cartella di `data/pratiche` (default
+`data/pratiche/51350695`, la pratica di riferimento) la CLI legge i valori dal foglio della pratica in
+`data/pratiche/pratiche.xlsx` (ADR 0029). Per un'altra cartella colloca un `dati.csv` in `INPUT_DIR`: formato
+long, con intestazioni `Fotogramma`, `Denominazione da attribuire` e `Valore rilevato`.
 `Fotogramma` deve coincidere con il nome dell'immagine senza estensione: per
 `screen 1.png` usa `screen 1`, non `1` né `screen 1.png`. Il loader non converte
 automaticamente questi identificativi. Formati e intestazioni alternative sono
 nel [modello dati](06-data-model.md#ground-truth-csv).
 <!-- Source: src/extraction/config.py:8; src/extraction/evaluation.py:49; src/extraction/imaging.py:29 -->
 
-La GUI Tkinter e l'edge-agent funzionano senza questo file; la CLI ne verifica
-l'esistenza prima di creare il batch. Non usare dati di esempio come baseline di
+La GUI Tkinter e l'edge-agent funzionano senza; la CLI si ferma se non trova né
+`dati.csv` né il foglio della pratica. Non usare dati di esempio come baseline di
 accuratezza: serve il dataset di riferimento autorizzato.
 <!-- Source: src/extraction/cli.py::main; gui_app.py:263 -->
 
 ### 5. Esegui
 
 ```powershell
-python main.py                            # batch CLI su ogni immagine in data/reference/
+python main.py                            # batch CLI sulla pratica di riferimento data/pratiche/51350695
 python gui_app.py                         # GUI desktop Tkinter (scegli i file a mano)
 python main.py --gui                      # edge-agent (PyQt6) con cattura dal vivo
 python src/edge-agent/edge_agent.py           # edge-agent, lanciato direttamente
@@ -228,9 +230,9 @@ python main.py
 Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR`, poi:
 <!-- Source: src/extraction/cli.py::main -->
 
-- scrive `data/reference/poc_outputs_improved.json` (risultati completi per schermata, `src/extraction/cli.py::main`);
+- scrive `outputs/51350695/poc_outputs_improved.json` (risultati completi per schermata, `src/extraction/cli.py::main`);
 - stampa l'accuratezza RAW e FILTERED con il dettaglio per campo;
-- scrive `data/reference/poc_debug_improved.csv`: separatore punto e virgola, `utf-8-sig` (amichevole per Excel, `src/extraction/evaluation.py:15`);
+- scrive `outputs/51350695/poc_debug_improved.csv`: separatore punto e virgola, `utf-8-sig` (amichevole per Excel, `src/extraction/evaluation.py:15`);
 - stampa chiamate/token/USD per schermata via `print_cost_summary()`.
 
 La prima baseline con un provider reale (2026-09-29, `gemini-3.8-flash`, tre run: 93,5-94,8%, circa $0,04 a schermata) è nella storia git (`git show d939ea5:.tritech/codebase-xray/baselines/2026-09-29-gemini-3.8-flash/README.md`), con il ground truth che l'ha prodotta e la soglia di accettazione proposta. Per sapere se una modifica ha aiutato, rilancia sullo stesso `dati.csv` e confronta con quei numeri; se cambi il ground truth, salva prima il JSON precedente e il riepilogo stampato.
@@ -329,7 +331,7 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
 
 ## Trabocchetti
 
-- **La CLI si arresta senza `data/reference/dati.csv`.** Il dataset non è distribuito con il repository: senza il file `python main.py` solleva `FileNotFoundError: Ground truth CSV not found: data/reference/dati.csv`. Procurati il file dal team prima di tentare un'esecuzione CLI; le due GUI funzionano senza.
+- **La CLI si arresta senza verità.** Se `INPUT_DIR` non contiene un `dati.csv` e non sta in una cartella con `pratiche.xlsx` accanto, `python main.py` solleva `FileNotFoundError`; le due GUI funzionano senza.
 <!-- Source: src/extraction/cli.py::main -->
 
 - **La storia git è stata riscritta il 2026-07-21: i cloni stantii sono pericolosi.** Una chiave OpenAI era stata committata in `src/edge-agent/config.ini`; è stata ripulita dall'intera storia con `git filter-repo` e force-pushata. Ogni hash di commit è cambiato. Se il clone precede la riscrittura, conserva separatamente il lavoro locale utile e usa un clone nuovo; evita merge o push della vecchia storia.

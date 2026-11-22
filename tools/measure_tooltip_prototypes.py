@@ -128,7 +128,7 @@ print(f"  {ok_neg}/{len(FUORI_PROCESSO)} sotto soglia o scartate\n")
 print("--- i 9 riferimenti (informativo: altra popolazione, percorso file) ---")
 ok = 0
 for n in range(1, 10):
-    r = clf.classify_detailed(Image.open(REPO / f"data/reference/screen {n}.png"))
+    r = clf.classify_detailed(Image.open(REPO / f"src/edge-agent/assets/templates/bper/screen {n}.png"))
     good = r.label == f"screen {n}"
     ok += good
     flag = "OK " if good else ".. "

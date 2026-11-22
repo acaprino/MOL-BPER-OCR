@@ -25,7 +25,7 @@ from torchvision import transforms as T
 from page_classifier import DINOV2_HUB_REPO, DINOV2_MODEL_NAME
 
 NORM=T.Normalize(mean=[0.485,0.456,0.406],std=[0.229,0.224,0.225])
-FD=Path('tests/fixtures/frames'); TPL=Path('data/reference')
+FD=Path('tests/fixtures/frames'); TPL=Path('src/edge-agent/assets/templates/bper')
 reg=json.loads((FD/'registry.json').read_text(encoding='utf-8'))
 new=json.loads((FD/'relocalized.json').read_text(encoding='utf-8'))
 model=torch.hub.load(DINOV2_HUB_REPO,DINOV2_MODEL_NAME); model.eval()

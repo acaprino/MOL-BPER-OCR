@@ -4,8 +4,11 @@ import os
 # ============================================================
 # Pathing & IO
 # ============================================================
-INPUT_DIR = os.getenv("INPUT_DIR", "data/reference").strip()
+# Default: the reference practice of the archive; its truth is its sheet of data/pratiche/pratiche.xlsx (ADR 0029).
+INPUT_DIR = os.getenv("INPUT_DIR", "data/pratiche/51350695").strip()
 GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, "dati.csv")
+# Results stay out of the screenshot folder, which may be the archive.
+OUTPUT_DIR = os.getenv("OUTPUT_DIR", os.path.join("outputs", os.path.basename(os.path.normpath(INPUT_DIR)))).strip()
 
 PARALLEL_WORKERS = int(os.getenv("PARALLEL_WORKERS", "4"))
 PARALLEL_ENABLED = os.getenv("PARALLEL_ENABLED", "1").strip() == "1"
@@ -70,7 +73,8 @@ MAX_IMAGE_LONG_SIDE = int(os.getenv("MAX_IMAGE_LONG_SIDE", "2000"))
 
 # Crops (relative coordinates 0.0-1.0: left, top, right, bottom)
 #
-# These fractions are calibrated on the 848x679 window screenshots in data/reference:
+# These fractions are calibrated on the 848x679 window screenshots of the reference practice
+# (data/pratiche/51350695, the nine page templates of the edge-agent):
 # 0.18 on the left is the navigator's share of THAT window's width. The navigator
 # is laid out in CSS pixels, so on a wider window its share shrinks and 0.18 cuts
 # into the first table columns. Measured on a real 1536x1032 capture: the crop's
@@ -141,4 +145,4 @@ MAX_CALLS_PER_SCREEN = int(
 # Debug
 DEBUG_MODE = os.getenv("DEBUG_MODE", "0").strip() == "1"
 DEBUG_SAVE_CROPS = os.getenv("DEBUG_SAVE_CROPS", "0") == "1"
-DEBUG_CROP_DIR = os.path.join(INPUT_DIR, "debug_crops")
+DEBUG_CROP_DIR = os.path.join(OUTPUT_DIR, "debug_crops")

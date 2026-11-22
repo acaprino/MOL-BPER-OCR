@@ -1,7 +1,7 @@
 {
- "file": "data/reference/dati.csv",
+ "file": "data/revisione/riferimento-2025-09-09/dati.csv",
  "workbook_sha256": "01ed18a3a00a6edcab3fdf20a34d62935634c4529d7875ff35ce8462d15348bd",
- "pratica": "LUNARDI_26871394",
+ "pratica": "51350695",
  "fotogrammi": {
   "screen 1": "Elenco",
   "screen 2": "Elenco_dx",
@@ -13,5 +13,5 @@
   "screen 8": "GestioneFidi_Tooltip3",
   "screen 9": "Note"
  },
- "nota": "Le 9 schermate di data/reference sono byte per byte quelle di data/pratiche/LUNARDI_26871394. I 77 valori di dati.csv sono stati confrontati con le schermate una per una il 2026-11-07: nessuna correzione."
+ "nota": "Le 9 schermate sono quelle di data/pratiche/51350695 (cartella chiamata LUNARDI_26871394 fino alla verità v3.4, con una copia in data/reference tolta il 2026-11-22). I 77 valori di dati.csv sono stati confrontati con le schermate una per una il 2026-11-07: nessuna correzione."
 }

@@ -44,7 +44,7 @@ Il package `extraction` contiene tutta la logica di business, separata dall'inte
 
 ### Interfacce Utente
 - **Edge Agent (`python src/edge-agent/edge_agent.py`, oppure `python main.py --gui`, oppure `run_edge_agent.bat` su Windows)**: Interfaccia per la cattura real-time e l'estrazione locale. Basata su **PyQt6**.
-- **Batch CLI (`python main.py`)**: Processamento batch dei file già salvati in `data/reference/`. **Richiede** il ground truth `data/reference/dati.csv`.
+- **Batch CLI (`python main.py`)**: Processamento batch di una cartella di screenshot, per default la pratica di riferimento `data/pratiche/51350695`. I valori attesi vengono da un `dati.csv` nella cartella o dal foglio della pratica in `data/pratiche/pratiche.xlsx` (ADR 0029).
 - **Desktop UI (`python gui_app.py`)**: Applicazione nativa **Tkinter** per processing di file selezionati manualmente (il CSV ground truth qui è opzionale).
 
 ---
@@ -70,7 +70,7 @@ Su Windows il modo più rapido è il launcher, che crea/ripara la `.venv`, insta
 run_edge_agent.bat
 ```
 
-> **Nota su `data/reference/dati.csv`:** `data/` è versionata nel repository (inclusi `data/reference/dati.csv` e `data/pratiche/`, con la sola esclusione dei pesi binari `*.safetensors` > 1 GB). Se `INPUT_DIR` viene puntato a una cartella priva di `dati.csv`, `python main.py` solleva `FileNotFoundError` (`src/extraction/cli.py::main`); GUI Tkinter ed Edge Agent funzionano anche senza ground truth.
+> **Nota sui valori attesi:** `data/` è versionata nel repository, con la sola esclusione dei pesi binari `*.safetensors` > 1 GB. Se `INPUT_DIR` non contiene un `dati.csv` e non è una cartella di `data/pratiche`, `python main.py` solleva `FileNotFoundError` (`src/extraction/cli.py::main`); GUI Tkinter ed Edge Agent funzionano anche senza ground truth.
 
 ### 2. Avvio interfacce
 
@@ -83,7 +83,7 @@ run_edge_agent.bat                     # Windows: bootstrap venv + avvio
 ```
 
 #### Batch CLI
-Per un processing di tutti i file già presenti in `data/reference/` (richiede `dati.csv`, vedi sopra):
+Per estrarre e valutare la pratica di riferimento `data/pratiche/51350695` (un'altra pratica con `INPUT_DIR=data/pratiche/<numero>`; i risultati vanno in `outputs/<numero>/`):
 ```bash
 python main.py
 ```
@@ -152,7 +152,8 @@ Tutte le variabili sono configurabili via environment (lette a import time da `s
 | `LLM_MODEL` | `gpt-4o` | Modello per estrazione principale |
 | `LLM_MODEL_ANCHOR` | come `LLM_MODEL` | Modello per il pass anchor |
 | `LLM_THINKING_LEVEL` | *(nessuno)* | Profondità di ragionamento `low`/`medium`/`high`, inviata come `thinking_level` alla famiglia Gemini 3; se assente vale il default del modello (`high` per Gemini 3). Le altre famiglie la ignorano con un avviso; un valore diverso blocca l'avvio |
-| `INPUT_DIR` | `data/reference` | Directory dati (screenshot + ground truth) |
+| `INPUT_DIR` | `data/pratiche/51350695` | Cartella degli screenshot; valori attesi da `dati.csv` o da `pratiche.xlsx` |
+| `OUTPUT_DIR` | `outputs/<cartella di INPUT_DIR>` | Risultati della CLI e `debug_crops/` |
 | `PARALLEL_WORKERS` | `4` | Numero thread paralleli |
 | `PARALLEL_ENABLED` | `1` | Elaborazione parallela (`0` per disattivarla) |
 | `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Budget dei passaggi: 1 anchor + 1 main + un retry per area. Ridurlo elimina le aree in coda a `AREA_TO_FIELDS`; non limita i tentativi di trasporto |
@@ -271,9 +272,8 @@ poc-data-src/extraction/
       modal_train.py       # Esecuzione GPU limitata su Modal e download del modello CPU
       README.md            # Guida operativa per la rigenerazione del dataset e l'addestramento
   tests/                   # Suite pytest (motore, edge-agent, classificatore DINOv2 e training LiLT)
-  data/reference/
-    dati.csv               # Ground truth - NON incluso nel repo, da procurarsi a parte
-    screen *.png           # Screenshot di test (9 immagini, tracciate)
+  data/pratiche/           # Archivio delle pratiche: schermate per pratica e pratiche.xlsx con i valori corretti
+  data/revisione/          # Data entry umana come consegnata, una cartella per lotto
   docs/                    # Documentazione narrativa in italiano (INDEX.md) e ADR (docs/adr/)
   .tritech/codebase-map/   # Mappa del codice generata dal plugin codebase-map
   .env.example             # Template variabili d'ambiente
@@ -281,7 +281,7 @@ poc-data-src/extraction/
 
 ## Ground truth CSV
 
-Il file `data/reference/dati.csv` **non è versionato** (`/data` è in `.gitignore`): va ottenuto dal team e posizionato manualmente. La CLI non parte senza. Formato atteso (long format, 3 colonne):
+Per le pratiche dell'archivio la CLI legge i valori da `data/pratiche/pratiche.xlsx`. Per un'altra cartella serve un `dati.csv` in `INPUT_DIR`, in questo formato (long format, 3 colonne):
 
 ```
 Fotogramma,Denominazione da attribuire,Valore rilevato

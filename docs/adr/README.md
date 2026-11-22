@@ -70,6 +70,7 @@ tarati, e nessun test lo verificava.
 | [0026](0026-celle-fidi-lette-per-colonna.md) | Celle Fidi lette per colonna sotto la testata della tabella | Accettato |
 | [0027](0027-ogni-pratica-ha-un-ruolo.md) | Ogni pratica ha un ruolo: addestramento, controllo o test | Accettato |
 | [0028](0028-tabelle-elenco-e-soggetti-lette-per-colonna.md) | Tabelle Elenco e Soggetti lette per colonna | Accettato |
+| [0029](0029-pratica-di-riferimento-nell-archivio.md) | La pratica di riferimento è una pratica dell'archivio come le altre | Accettato |
 
 ## Da scrivere
 

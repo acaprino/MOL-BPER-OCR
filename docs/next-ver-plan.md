@@ -378,7 +378,7 @@ la promozione: la presenza di thread daemon non dimostra il recupero da un blocc
   tooltip sono coperti: restano scoperti i 13 campi Scheda Privati. I valori del
   workbook sono stati letti prima dell'assegnazione (nota nel manifest); le schermate
   in conferma no.
-- `LUNARDI_26871394` (9 schermate, verità in `data/reference/dati.csv`) è il corpus
+- `51350695`, già `LUNARDI_26871394` (9 schermate, verità in `data/revisione/riferimento-2025-09-09/dati.csv`), è il corpus
   di riferimento su cui il motore VLM è stato sviluppato e misurato: è esposta e non
   vale come conferma, quindi addestra (ADR 0027, `ground-truth-v3.4`).
 

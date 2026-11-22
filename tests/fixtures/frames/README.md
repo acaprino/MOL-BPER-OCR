@@ -8,8 +8,8 @@ riproducibili se le registrazioni si perdono.
 ## Perché esistono
 
 Fino al 2026-08-18 ogni misura sul riconoscimento pagina e sull'inquadratura era
-fatta su materiale costruito in laboratorio: i 9 screenshot di riferimento in
-`data/reference`, oppure composizioni sintetiche. La peer review incrociata
+fatta su materiale costruito in laboratorio: i 9 screenshot di riferimento (oggi
+`data/pratiche/51350695`), oppure composizioni sintetiche. La peer review incrociata
 (`.peer-review/2026-08-17-2114-.../04-verdict.md`, finding F01, accettato e
 certificato) ha stabilito che quel materiale non è un campione della distribuzione
 di produzione, quindi non può sostenere una decisione.
@@ -56,7 +56,7 @@ stessa peer review.
 
 ## Dati reali
 
-Contengono nominativi, NDG e importi di clienti veri, come i 9 screenshot in `data/reference`.
+Contengono nominativi, NDG e importi di clienti veri, come i 9 screenshot di `data/pratiche/51350695`.
 Il repository è privato. Non renderlo pubblico senza averli rimossi dalla cronologia,
 non solo dal working tree: questo repository ha già dovuto riscrivere la propria storia
 una volta, il 2026-07-21, per una chiave API committata.
@@ -147,7 +147,7 @@ registrazioni intercetta le lunghe sessioni di gestione documentale.
 Le quattro pagine scarse sono le quattro con tooltip, e la scarsità non dipende da
 come sono state cercate. Un tooltip esiste solo mentre il cursore ci resta sopra, e
 un operatore non ci passa: conosce già quei codici. Chi ha prodotto i nove
-screenshot di riferimento in `data/reference` ci è passato **apposta**, per documentarli.
+screenshot di riferimento (`data/pratiche/51350695`) ci è passato **apposta**, per documentarli.
 
 Altre estrazioni hanno quindi rendimento marginale su quelle quattro. La strada è
 chiedere screenshot mirati a chi usa l'applicativo.
@@ -209,6 +209,6 @@ Copertura per pagina dopo i due giri (scatti diretti + registrazioni):
 
 La pagina 7 resta la piu' scarsa (un solo esemplare mirato). I manifesti curati
 (`tooltips/manifest.json`, `no-tooltip/manifest.json`,
-`reference-screens.json`, che verbalizza anche i nove riferimenti di data/reference)
+`reference-screens.json`, che verbalizza anche i nove riferimenti, oggi i template `screen N.png` dell'edge-agent)
 vengono fusi nel registro a ogni rebuild da `tools/build_frame_registry.py`,
 cosi' rieseguire gli strumenti non li perde.

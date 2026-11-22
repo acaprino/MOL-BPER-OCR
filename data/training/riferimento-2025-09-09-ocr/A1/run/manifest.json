@@ -14,7 +14,15 @@
       "inter_op": 1
     },
     "screens": {
-      "LUNARDI_26871394__Note": "ceba4b8c9cdbf10b3d2f1bbc198c3c779c38ba903c494261a032dec5d2892eb9"
+      "51350695__Elenco": "60921680696f98b742017c40f99ed80de7f43751cdf1caefc686f9af993e6a10",
+      "51350695__Elenco_dx": "27e30ae29d588de9fe1aafa6e72ae91018622b4889633d4785bbcbebd080e12b",
+      "51350695__Elenco_tooltip1": "b5e29af6f0c0c5b7d0548f1e86cb2755a61e25d23f6e9b559825f75701fadbef",
+      "51350695__Soggetti": "9d9e6a5398bd6238203782babed16940542443df9deac8bc467b0d4e98343cc1",
+      "51350695__GestioneFidi": "98307c21fc063ad9133c023e0e66a798ad92c9873b439e0010addf1346db2b30",
+      "51350695__GestioneFidi_Tooltip1": "f13c3bac8781e4710e9ac9fd767cb0cde1ab451b1a0f4cf608c65a37151bece7",
+      "51350695__GestioneFidi_Tooltip2": "5139271444c2a49ebd3573f387addafd0872dd7f70691d6a25924474cd4b4132",
+      "51350695__GestioneFidi_Tooltip3": "9024e0592607bfc5164a66e3d02c39cdc58b2abc2c9003c6fa09759834dc0421",
+      "51350695__Note": "ceba4b8c9cdbf10b3d2f1bbc198c3c779c38ba903c494261a032dec5d2892eb9"
     }
   },
   "provenance": {
@@ -389,34 +397,56 @@
       "omegaconf": "2.4.0",
       "python": "3.13.3"
     },
-    "platform": {
-      "system": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
-      "processor": "",
-      "logical_cpus": 4
-    },
-    "input": "PIL Image.convert('RGB') as a numpy array, scale 1x"
+    "input": "PIL Image.convert('RGB') as a numpy array, scale 1x",
+    "platforms": [
+      {
+        "system": "Linux-4.19.0-gvisor-x86_64-with-glibc2.36",
+        "processor": "",
+        "logical_cpus": 4
+      }
+    ]
   },
   "sessions": [
     {
-      "started_utc": "2026-11-07T17:18:34+00:00",
-      "engine_load_seconds": 1.522,
-      "warmup_seconds": 7.052,
+      "started_utc": "2026-11-22T10:34:52+00:00",
+      "engine_load_seconds": 1.628,
+      "warmup_seconds": 3.637,
+      "screens_read": 8,
+      "screens_failed": 0,
+      "peak_memory_bytes": 1111556096,
+      "shard": 0
+    },
+    {
+      "started_utc": "2026-11-22T10:34:53+00:00",
+      "engine_load_seconds": 1.708,
+      "warmup_seconds": 7.251,
       "screens_read": 1,
       "screens_failed": 0,
-      "peak_memory_bytes": 1238941696
+      "peak_memory_bytes": 1230442496,
+      "shard": 1
     }
   ],
   "status": "complete",
   "failed": {},
   "pending": [],
-  "cache_sha256": "96250a6ff0d8f6dd7b4ad735a420ace490e00bd13ddad2c1ba82056a872c7181",
+  "cache_sha256": "edea6fa98f00c36ed005c9076c69ef7758847290ede781cc39acc3d9359b2d28",
   "timing": {
-    "screens": 1,
-    "mean": 6.898,
-    "median": 6.898,
-    "p95": 6.898,
-    "max": 6.898,
-    "sessions": 1,
+    "screens": 9,
+    "mean": 5.781888888888889,
+    "median": 6.911,
+    "p95": 7.737399999999999,
+    "max": 7.993,
+    "sessions": 2,
     "scope": "seconds per screen include PNG decoding; the warm-up read and engine loading are excluded"
-  }
+  },
+  "merged_from": [
+    {
+      "run": "../shards/0",
+      "cache_sha256": "8aed91838443327f9e0c6ab5577b5842948df6cf131c2e8e164e123019f1739a"
+    },
+    {
+      "run": "../shards/1",
+      "cache_sha256": "c1c0d015b002e910f01f263038fc7d07330cdbf4cee2f0f484048943611cdf5f"
+    }
+  ]
 }

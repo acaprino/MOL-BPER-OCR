@@ -4,9 +4,11 @@ dist/
 *.spec
 !/edge_agent.spec
 
-# Model weight binaries (>1 GB; exceeds GitHub's 100 MB file limit) and debug crops
+# Model weight binaries (>1 GB; exceeds GitHub's 100 MB file limit)
 *.safetensors
-/data/reference/debug_crops/
+
+# CLI results and debug crops (OUTPUT_DIR, may contain banking PII)
+/outputs/
 
 # Secrets
 .env

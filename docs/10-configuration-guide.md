@@ -36,7 +36,7 @@ Sostituisci il placeholder di `.env.example` con una chiave reale. Anche `gui_ap
 
 **Passo 4 -- Scegliere provider e modello (opzionale).** I default in `src/extraction/config.py:17-18` sono `LLM_PROVIDER=openai` e `LLM_MODEL=gpt-4o`. Con una chiave OpenAI non cambi nulla. Per passare a Gemini, vedi Profili d'ambiente -- provider e modello devono muoversi insieme o la factory li rifiuta.
 
-**Passo 5 -- Mettere i dati dove la CLI li cerca.** La CLI legge screenshot e CSV di ground truth da `INPUT_DIR`, default `data/reference` (`src/extraction/config.py:8`); il percorso della ground truth ne deriva come `data/reference/dati.csv` (`src/extraction/config.py:9`). **`dati.csv` non è nel repository** (`/data` è in gitignore; solo i 9 file `screen *.png` sono stati forzati), e la CLI fallisce duramente senza (`src/extraction/cli.py::main`) -- vedi Risoluzione dei problemi. Procurati il file separatamente e mettilo in `data/reference/` prima di lanciare `python main.py`. La GUI Tkinter e l'edge-agent non ne hanno bisogno: la GUI Tkinter è l'alternativa per estrarre **senza** ground truth.
+**Passo 5 -- Mettere i dati dove la CLI li cerca.** La CLI legge gli screenshot da `INPUT_DIR`, default `data/pratiche/51350695` (la pratica di riferimento), e la verità da un `dati.csv` in quella cartella oppure dal foglio della pratica in `data/pratiche/pratiche.xlsx` (ADR 0029). Per le pratiche dell'archivio non serve preparare nulla. La GUI Tkinter e l'edge-agent non ne hanno bisogno: la GUI Tkinter è l'alternativa per estrarre **senza** ground truth.
 
 **Passo 6 -- Solo edge-agent in modalità `llm`: fornire la chiave del router.** Serve con la configurazione spedita, che usa `router = llm`. In quel caso `[llm] api_key` nel `config.ini` spedito è **vuota** per scelta, e la chiave viene raccolta dall'ambiente in base al provider -- vedi la ricetta più avanti.
 
@@ -97,7 +97,7 @@ Le modalità `ml`/`hybrid` degradano con grazia: se l'import di torch fallisce, 
 Tre interruttori indipendenti, nessuno legato a un "ambiente":
 
 - `DEBUG_MODE=1` -- stampa log `[DEBUG]` di batch/pipeline (`src/extraction/cli.py::_debug_log`; default `0` in `src/extraction/config.py:92`). **Non elencata in `.env.example`** -- esiste solo nel codice.
-- `DEBUG_SAVE_CROPS=1` -- scrive i crop intermedi in `data/reference/debug_crops` (`src/extraction/config.py:93-94`).
+- `DEBUG_SAVE_CROPS=1` -- scrive i crop intermedi in `OUTPUT_DIR/debug_crops` (`src/extraction/config.py:93-94`).
 - Flag `--debug` dell'edge-agent -- aggiunge il tab "Debug LLM" con prompt/risposta grezzi del router (`src/edge-agent/edge_agent.py:51`). La chiave `[debug] show_llm_tab=true` in `config.ini:32` abilita in aggiunta l'emissione del segnale di debug; servono entrambi per vedere il traffico del router.
 
 ## Ricette di configurazione
@@ -244,13 +244,13 @@ Non ci sono database, migrazioni, cache né server long-running -- molte operazi
 python main.py
 ```
 
-Cosa fa (`src/extraction/cli.py::main`): verifica che `data/reference/dati.csv` esista, elenca ogni immagine in `INPUT_DIR`, esegue l'estrazione multi-passaggio (in parallelo con più di un'immagine), valuta rispetto alla ground truth e scrive i risultati. Output atteso, grosso modo in ordine:
+Cosa fa (`src/extraction/cli.py::main`): trova la verità di `INPUT_DIR` (ADR 0029), elenca ogni immagine in `INPUT_DIR`, esegue l'estrazione multi-passaggio (in parallelo con più di un'immagine), valuta rispetto alla ground truth e scrive i risultati. Output atteso, grosso modo in ordine:
 
 - `Parallel enabled: workers=4, screens=9` (`src/extraction/cli.py::BatchRunner.run`)
 - `Done screen 1` ... per ogni schermata completata (`src/extraction/cli.py::BatchRunner.run`)
 - Tabelle di accuratezza RAW e FILTERED da `evaluator.eval()` (`src/extraction/cli.py::main`)
 - Un riepilogo token/costi per schermata da `print_cost_summary()` (`src/extraction/cli.py::main`)
-- `Saved outputs: data/reference\poc_outputs_improved.json` e `Saved debug report: data/reference\poc_debug_improved.csv` (`src/extraction/cli.py::main`)
+- `Saved outputs: outputs\51350695\poc_outputs_improved.json` e `Saved debug report: outputs\51350695\poc_debug_improved.csv` (`src/extraction/cli.py::main`)
 
 ### Avviare la GUI desktop Tkinter
 
@@ -293,8 +293,8 @@ Usa `edge_agent.spec` e produce `dist/EdgeAgent` più uno ZIP datato. Il pacchet
 
 La CLI stampa su stdout. Nel portable senza console, `src/edge-agent/edge_agent.py` reindirizza stdout/stderr su `edge-agent.log`; `_log_extraction()` conserva stato, confidenza, costi e provenienza, mentre la UI mostra i dati di business. Dopo un’esecuzione CLI, ispeziona:
 
-- `data/reference/poc_outputs_improved.json` -- risultati completi per schermata, inclusi `_meta_agg` (chiamate, token, `estimated_cost_usd`) e `_field_sources`.
-- `data/reference/poc_debug_improved.csv` -- classificazione per (schermata, campo); separato da `;`, `utf-8-sig` (si apre pulito in Excel).
+- `outputs/<pratica>/poc_outputs_improved.json` -- risultati completi per schermata, inclusi `_meta_agg` (chiamate, token, `estimated_cost_usd`) e `_field_sources`.
+- `outputs/<pratica>/poc_debug_improved.csv` -- classificazione per (schermata, campo); separato da `;`, `utf-8-sig` (si apre pulito in Excel).
 
 La suite locale si esegue con `python -m pytest tests` dopo `pip install -r requirements-dev.txt`. Non esistono migrazioni database, seeding o comandi di avvio di un server.
 
@@ -307,12 +307,12 @@ Ogni sintomo qui sotto è ancorato a una stringa d'errore o a un comportamento r
 **Sintomo:**
 
 ```
-FileNotFoundError: Ground truth CSV not found: data/reference\dati.csv
+FileNotFoundError: No dati.csv in <INPUT_DIR> and no archive workbook at <cartella superiore>\pratiche.xlsx
 ```
 
-**Causa:** `python main.py` controlla la presenza di `dati.csv` in `INPUT_DIR` prima di ogni altra cosa (`src/extraction/cli.py::main`). Il file è assente dal repository (`/data` è in gitignore; solo i PNG sono tracciati), quindi questo fallimento è garantito su un clone fresco.
+**Causa:** `INPUT_DIR` non contiene un `dati.csv` e non sta dentro `data/pratiche`, dove `pratiche.xlsx` dà i valori di ogni pratica (`resolve_ground_truth()`, ADR 0029).
 
-**Soluzione:** procurati `dati.csv` e mettilo in `data/reference/` (formato in `README.md:221-241`: colonne `Fotogramma`, `Denominazione da attribuire`, `Valore rilevato`). Per estrarre senza ground truth, usa `python gui_app.py` -- lì il CSV è opzionale (`gui_app.py:263`). Dove risieda il `dati.csv` canonico è una questione aperta -- vedi [Domande aperte](08-open-questions.md).
+**Soluzione:** punta `INPUT_DIR` a una cartella di `data/pratiche`, oppure metti un `dati.csv` in `INPUT_DIR` (formato in `README.md:221-241`: colonne `Fotogramma`, `Denominazione da attribuire`, `Valore rilevato`). Per estrarre senza ground truth, usa `python gui_app.py` -- lì il CSV è opzionale (`gui_app.py:263`).
 
 ### API key mancante o non valida
 
@@ -429,7 +429,7 @@ e la schermata indicata è proprio quella che l'operatore ha davanti. Un nome pa
 
 **Causa:** disallineamento di inquadratura fra i prototipi e il frame. I prototipi sono screenshot di **finestra**; se il frame che arriva al classificatore è un monitor intero, le ROI relative cadono su contenuto diverso e la scelta fra le 9 pagine diventa arbitraria. Il nome in `captured_page_types` oggi serve soltanto alla guida: non blocca altre visite della stessa pagina. La normalizzazione resta necessaria per classificare correttamente.
 
-**Come confermarlo:** confronta i valori estratti con le schermate di riferimento in `data/reference`. Se corrispondono a una pagina **diversa** da quella nel log, l'estrazione sta funzionando e il problema è il routing.
+**Come confermarlo:** confronta i valori estratti con le schermate della pratica di riferimento in `data/pratiche/51350695`. Se corrispondono a una pagina **diversa** da quella nel log, l'estrazione sta funzionando e il problema è il routing.
 
 **Soluzione:** verificare che la normalizzazione dell'inquadratura stia agendo. `_grab_raw()` riporta il frame sulla finestra applicativa (`src/edge-agent/frame_normalize.py`), prima via titolo della finestra usando `window_title_contains` in `config.ini`, poi dedotta dallo sfondo del desktop. Se il titolo della finestra non contiene la sottostringa configurata **e** il desktop attorno alla finestra non è uniforme (altre finestre visibili agli angoli), entrambe le strategie rinunciano e il frame passa a schermo intero: allinea `window_title_contains` al titolo reale della finestra. Contesto completo in [ADR 0001](adr/0001-normalizzazione-inquadratura-frame.md).
 
@@ -469,7 +469,7 @@ Non può accadere da questo progetto -- non apre **nessuna** porta. Le voci `htt
 | Bootstrap su Windows | `.\run_edge_agent.bat` | Crea/ripara la `.venv`, installa le dipendenze, avvia l'edge-agent |
 | Installare le dipendenze a mano | `pip install -r requirements.txt` | torch serve solo per router `ml`/`hybrid` |
 | Creare la configurazione | `Copy-Item .env.example .env` | Poi imposta `LLM_API_KEY` |
-| Eseguire il batch CLI | `python main.py` | Richiede `data/reference/dati.csv`; scrive JSON + CSV di debug |
+| Eseguire il batch CLI | `python main.py` | Verità da `dati.csv` o da `pratiche.xlsx`; scrive JSON + CSV di debug in `OUTPUT_DIR` |
 | Avviare la GUI Tkinter | `python gui_app.py` | CSV di GT opzionale; chiave incollabile in-app; output nella CWD |
 | Avviare l'edge-agent | `python src/edge-agent/edge_agent.py` | Equivalente a `python main.py --gui` |
 | Edge-agent + tab di debug | `.\run_edge_agent.bat --debug` | Richiede anche `show_llm_tab = true` in `config.ini:32` |

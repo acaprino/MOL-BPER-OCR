@@ -10,7 +10,7 @@ warnings.filterwarnings("ignore", category=UserWarning, module="langchain_core")
 
 __all__ = [
     # Config
-    "INPUT_DIR", "GROUND_TRUTH_CSV", "PARALLEL_WORKERS", "PARALLEL_ENABLED",
+    "INPUT_DIR", "GROUND_TRUTH_CSV", "OUTPUT_DIR", "PARALLEL_WORKERS", "PARALLEL_ENABLED",
     "MAX_CALLS_PER_SCREEN", "PRICING_PER_1M",
     "CONTENT_CROP", "HEADER_IN_CONTENT", "ANCHOR_CONF_MIN",
     "DEBUG_SAVE_CROPS", "DEBUG_CROP_DIR", "STOP_ON_ANCHOR_UNCERTAIN",
@@ -37,7 +37,7 @@ __all__ = [
     "ExtractionPipeline", "extract_anchors", "extract_from_screen",
     # Evaluation
     "Evaluator",
-    "load_ground_truth", "eval_outputs",
+    "load_ground_truth", "load_practice_truth", "resolve_ground_truth", "eval_outputs",
     "build_debug_report", "print_cost_summary", "export_to_csv",
     # CLI
     "BatchRunner", "main", "run_extraction_batch",
@@ -47,6 +47,7 @@ __all__ = [
 from extraction.config import (
     INPUT_DIR,
     GROUND_TRUTH_CSV,
+    OUTPUT_DIR,
     PARALLEL_WORKERS,
     PARALLEL_ENABLED,
     MAX_CALLS_PER_SCREEN,

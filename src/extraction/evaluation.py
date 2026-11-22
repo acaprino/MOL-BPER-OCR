@@ -1,6 +1,8 @@
 """Ground truth loading, accuracy evaluation, debug reporting, and cost summary."""
+import os
 from typing import Dict, Any, List
 import pandas as pd
+from openpyxl import load_workbook
 from extraction.fields import FIELD_KEYS, CSV_TO_SCHEMA
 from extraction.normalization import (
     classify_field,
@@ -81,6 +83,38 @@ def load_ground_truth(csv_path: str) -> Dict[str, Dict[str, Any]]:
             val = ""
         gt.setdefault(scr, {})[key] = val
     return gt
+
+
+def load_practice_truth(workbook_path: str, practice: str) -> Dict[str, Dict[str, Any]]:
+    """Truth of one practice from the archive workbook: its sheet, keyed by page like the screenshot files."""
+    workbook = load_workbook(workbook_path, read_only=True)
+    try:
+        if practice not in workbook.sheetnames:
+            raise ValueError(f"No sheet for practice {practice} in {workbook_path}")
+        rows = workbook[practice].iter_rows(values_only=True)
+        header = next(rows)
+        screen, key, value = (header.index(column) for column in ("Schermata", "Campo", "Valore"))
+        gt: Dict[str, Dict[str, Any]] = {}
+        for row in rows:
+            if row[key] in (None, ""):
+                continue
+            gt.setdefault(str(row[screen]).strip(), {})[str(row[key]).strip()] = (
+                "" if row[value] is None else str(row[value]).strip())
+        return gt
+    finally:
+        workbook.close()
+
+
+def resolve_ground_truth(input_dir: str) -> Dict[str, Dict[str, Any]]:
+    """Truth of a screenshot folder: its own dati.csv, else its sheet of the archive workbook beside it (ADR 0029)."""
+    csv_path = os.path.join(input_dir, "dati.csv")
+    if os.path.exists(csv_path):
+        return load_ground_truth(csv_path)
+    folder = os.path.normpath(input_dir)
+    workbook_path = os.path.join(os.path.dirname(folder), "pratiche.xlsx")
+    if not os.path.exists(workbook_path):
+        raise FileNotFoundError(f"No dati.csv in {input_dir} and no archive workbook at {workbook_path}")
+    return load_practice_truth(workbook_path, os.path.basename(folder))
 
 # ============================================================
 # Evaluation

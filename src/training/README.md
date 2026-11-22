@@ -64,10 +64,10 @@ contratto della versione dichiarata: una cartella rinominata non è una versione
 
 ### Ogni pratica ha un ruolo: `ground-truth-v3.4`
 
-Addestramento 18 (train, `LUNARDI_26871394`, validazione estesa con `--also-train`), controllo 2,
+Addestramento 18 (train, la pratica di riferimento `51350695`, validazione estesa con `--also-train`), controllo 2,
 test 13 (test storico e conferma sigillata): colonna `Ruolo` di `practices.csv`, ADR 0027. La
 costruzione della versione più recente rifiuta una cartella di `data/pratiche` senza ruolo. Il
-lotto `riferimento-lunardi` è un CSV (`read_reference_truth()`): si passa con `--lots` come gli
+lotto `riferimento-2025-09-09` è un CSV (`read_reference_truth()`): si passa con `--lots` come gli
 altri, con `dati.csv`, `g8_assegnazione.json`, `fotogrammi.json` e la sua cache OCR.
 
 ### Un foglio per pratica: `ground-truth-v3.3`

@@ -1,47 +1,47 @@
 {
- "lotto": "riferimento-lunardi",
+ "lotto": "riferimento-2025-09-09",
  "regola": "ADR 0027: ogni pratica ha un ruolo",
  "motivo": "Su questa pratica il motore VLM è stato sviluppato e misurato: è esposta e non vale come prova cieca, quindi addestra.",
  "gruppi": {
   "addestramento": [
-   "LUNARDI_26871394"
+   "51350695"
   ]
  },
  "schermate": {
-  "LUNARDI_26871394__Elenco": {
-   "path": "data/pratiche/LUNARDI_26871394/Elenco.png",
+  "51350695__Elenco": {
+   "path": "data/pratiche/51350695/Elenco.png",
    "image_sha256": "60921680696f98b742017c40f99ed80de7f43751cdf1caefc686f9af993e6a10"
   },
-  "LUNARDI_26871394__Elenco_dx": {
-   "path": "data/pratiche/LUNARDI_26871394/Elenco_dx.png",
+  "51350695__Elenco_dx": {
+   "path": "data/pratiche/51350695/Elenco_dx.png",
    "image_sha256": "27e30ae29d588de9fe1aafa6e72ae91018622b4889633d4785bbcbebd080e12b"
   },
-  "LUNARDI_26871394__Elenco_tooltip1": {
-   "path": "data/pratiche/LUNARDI_26871394/Elenco_tooltip1.png",
+  "51350695__Elenco_tooltip1": {
+   "path": "data/pratiche/51350695/Elenco_tooltip1.png",
    "image_sha256": "b5e29af6f0c0c5b7d0548f1e86cb2755a61e25d23f6e9b559825f75701fadbef"
   },
-  "LUNARDI_26871394__Soggetti": {
-   "path": "data/pratiche/LUNARDI_26871394/Soggetti.png",
+  "51350695__Soggetti": {
+   "path": "data/pratiche/51350695/Soggetti.png",
    "image_sha256": "9d9e6a5398bd6238203782babed16940542443df9deac8bc467b0d4e98343cc1"
   },
-  "LUNARDI_26871394__GestioneFidi": {
-   "path": "data/pratiche/LUNARDI_26871394/GestioneFidi.png",
+  "51350695__GestioneFidi": {
+   "path": "data/pratiche/51350695/GestioneFidi.png",
    "image_sha256": "98307c21fc063ad9133c023e0e66a798ad92c9873b439e0010addf1346db2b30"
   },
-  "LUNARDI_26871394__GestioneFidi_Tooltip1": {
-   "path": "data/pratiche/LUNARDI_26871394/GestioneFidi_Tooltip1.png",
+  "51350695__GestioneFidi_Tooltip1": {
+   "path": "data/pratiche/51350695/GestioneFidi_Tooltip1.png",
    "image_sha256": "f13c3bac8781e4710e9ac9fd767cb0cde1ab451b1a0f4cf608c65a37151bece7"
   },
-  "LUNARDI_26871394__GestioneFidi_Tooltip2": {
-   "path": "data/pratiche/LUNARDI_26871394/GestioneFidi_Tooltip2.png",
+  "51350695__GestioneFidi_Tooltip2": {
+   "path": "data/pratiche/51350695/GestioneFidi_Tooltip2.png",
    "image_sha256": "5139271444c2a49ebd3573f387addafd0872dd7f70691d6a25924474cd4b4132"
   },
-  "LUNARDI_26871394__GestioneFidi_Tooltip3": {
-   "path": "data/pratiche/LUNARDI_26871394/GestioneFidi_Tooltip3.png",
+  "51350695__GestioneFidi_Tooltip3": {
+   "path": "data/pratiche/51350695/GestioneFidi_Tooltip3.png",
    "image_sha256": "9024e0592607bfc5164a66e3d02c39cdc58b2abc2c9003c6fa09759834dc0421"
   },
-  "LUNARDI_26871394__Note": {
-   "path": "data/pratiche/LUNARDI_26871394/Note.png",
+  "51350695__Note": {
+   "path": "data/pratiche/51350695/Note.png",
    "image_sha256": "ceba4b8c9cdbf10b3d2f1bbc198c3c779c38ba903c494261a032dec5d2892eb9"
   }
  }

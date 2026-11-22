@@ -52,8 +52,8 @@ def clamp_long_side(img: Image.Image, max_side: int) -> Image.Image:
 def select_content_crop(size: Tuple[int, int]) -> Optional[Tuple[float, float, float, float]]:
     """CONTENT_CROP if the image belongs to the calibration family, None otherwise.
 
-    Membership means both the aspect AND the pixel size of the data/reference
-    references. Aspect alone is not identity: 1280x1024 (5:4) sits 0.09% from
+    Membership means both the aspect AND the pixel size of the reference
+    practice's screenshots (data/pratiche/51350695). Aspect alone is not identity: 1280x1024 (5:4) sits 0.09% from
     848/679, so a full-screen legacy grab would pass an aspect-only gate and
     lose its left columns exactly as in the measured 1536x1032 case (see the
     comment on CONTENT_CROP in config.py).

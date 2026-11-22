@@ -48,7 +48,7 @@ Leggere le schermate è metà del punto; il progetto esiste per misurare quanto 
 
 ### Valutazione su ground truth
 
-Ogni campo estratto viene confrontato con il valore atteso di `data/reference/dati.csv` (formato lungo: `Fotogramma` / `Denominazione da attribuire` / `Valore rilevato`; il loader in **`src/extraction/evaluation.py`** tollera nomi di colonna alternativi via `_find_column()`). `classify_field()` in `src/extraction/normalization.py` etichetta ogni campo come **OK**, **WRONG**, **MISSING** (atteso un valore, ricevuto null), **HALLUCINATED** (atteso null, prodotto un valore) o **OK_NULL**. Avvertenza: `dati.csv` è attualmente assente sia dal working tree sia da git (`/data` è in `.gitignore`; solo i 9 PNG sono tracciati), e `cli.main()` lo richiede obbligatoriamente (`src/extraction/cli.py::main`): un clone fresco non può eseguire la valutazione CLI finché non si procura il file. Tracciato in [Domande Aperte](08-open-questions.md).
+Ogni campo estratto viene confrontato con il valore atteso della sua pratica: un `dati.csv` nella cartella di `INPUT_DIR`, altrimenti il foglio della pratica in `data/pratiche/pratiche.xlsx` (ADR 0029). Il `dati.csv` ha formato lungo: `Fotogramma` / `Denominazione da attribuire` / `Valore rilevato`; il loader in **`src/extraction/evaluation.py`** tollera nomi di colonna alternativi via `_find_column()`). `classify_field()` in `src/extraction/normalization.py` etichetta ogni campo come **OK**, **WRONG**, **MISSING** (atteso un valore, ricevuto null), **HALLUCINATED** (atteso null, prodotto un valore) o **OK_NULL**.
 
 ### Metriche RAW e FILTERED
 
@@ -68,7 +68,7 @@ Tre interfacce, un motore. Nessuna reimplementa l'estrazione; la CLI e la GUI Tk
 
 ### Runner batch da CLI
 
-`python main.py` elabora ogni immagine in `INPUT_DIR`, scrive `data/reference/poc_outputs_improved.json`, stampa l'accuratezza RAW + FILTERED e il riepilogo dei costi, e scrive il CSV di debug. **`main.py`** è uno shim sottile (carica `.env`, importa `extraction`); il vero lavoro è `BatchRunner` in `src/extraction/cli.py`, che crea una sola volta i due ChatModel LangChain condivisi (sono trattati come thread-safe) e distribuisce il lavoro su un `ThreadPoolExecutor` (`PARALLEL_WORKERS`, default 4). Conserva gli output delle schermate elaborate senza deduplicarli per pagina canonica.
+`python main.py` elabora ogni immagine in `INPUT_DIR`, scrive `outputs/<pratica>/poc_outputs_improved.json`, stampa l'accuratezza RAW + FILTERED e il riepilogo dei costi, e scrive il CSV di debug. **`main.py`** è uno shim sottile (carica `.env`, importa `extraction`); il vero lavoro è `BatchRunner` in `src/extraction/cli.py`, che crea una sola volta i due ChatModel LangChain condivisi (sono trattati come thread-safe) e distribuisce il lavoro su un `ThreadPoolExecutor` (`PARALLEL_WORKERS`, default 4). Conserva gli output delle schermate elaborate senza deduplicarli per pagina canonica.
 
 ### GUI desktop Tkinter
 
