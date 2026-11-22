@@ -34,7 +34,7 @@ SHOTS = {
     2: ((-1, 118), 889, 662, 42),
     3: ((-4, 115), 889, 662, 123),
     4: ((-2, 118), 889, 662, 213),
-    5: ((-1, 55), 945, 662, 247),
+    5: ((-1, 55), 945, 662, 254),
 }
 LEFT, RIGHT = 4, 1886  # page columns visible in all five screenshots
 # Windows Task View overlay covering the note in screenshot 5 (page coordinates).

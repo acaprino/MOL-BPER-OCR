@@ -134,7 +134,7 @@ h1, h2, h3, p { margin: 0; font: inherit; }
   font: 13.9px/21px "Segoe UI", sans-serif; outline: none;
 }
 .sp-notes textarea::-webkit-scrollbar { width: 15px; background: #fcfcfc; }
-.sp-notes textarea::-webkit-scrollbar-thumb { border: solid #fcfcfc; border-width: 0 4px; border-radius: 8px; background: #8b8b8b; }
+.sp-notes textarea::-webkit-scrollbar-thumb { border: solid #fcfcfc; border-width: 0 3px; border-radius: 8px; background: #8b8b8b; }
 .sp-notes textarea::-webkit-resizer { background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath d='M.5 15V.5H15' fill='none' stroke='%23d9d9d9'/%3E%3Cpath d='M13 9l-4 4M13 12l-1 1' stroke='%23666' stroke-dasharray='1 1'/%3E%3C/svg%3E"); }
 .sp-notes textarea::-webkit-scrollbar-button:single-button { height: 12px; background: center / 8px 6px no-repeat; }
 .sp-notes textarea::-webkit-scrollbar-button:vertical:decrement { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 6'%3E%3Cpath d='M4 0l4 6H0z' fill='%238b8b8b'/%3E%3C/svg%3E"); }
