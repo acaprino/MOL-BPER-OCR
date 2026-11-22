@@ -2,7 +2,7 @@
 
 from typing import Any, Dict, Optional
 
-from practice_consolidation import PracticeRecord, consolidate, normalize_ndg
+from practice_consolidation import PracticeRecord, consolidate, is_correctable, normalize_ndg
 
 
 def _frame(
@@ -137,3 +137,50 @@ def test_record_is_frozen() -> None:
     except Exception:
         return
     raise AssertionError("PracticeRecord must be frozen")
+
+
+# ============================================================
+# Operator corrections
+# ============================================================
+
+
+def test_correction_replaces_the_extracted_value_and_keeps_the_original() -> None:
+    records = consolidate([_frame("12345", tipo=("BPI Mutui", 0.9))], {"12345": {"tipo": "Mutuo"}})
+    field = records[0].fields["tipo"]
+    assert (field["value"], field["original_value"], field["corrected"]) == ("Mutuo", "BPI Mutui", True)
+    assert "corrected" not in records[0].fields["stato"]
+
+
+def test_correction_survives_a_later_frame_with_another_value() -> None:
+    records = consolidate(
+        [_frame("12345", tipo=("A", 0.5)), _frame("12345", tipo=("B", 0.9))],
+        {"12345": {"tipo": "Mutuo"}},
+    )
+    assert records[0].fields["tipo"]["value"] == "Mutuo"
+    assert records[0].fields["tipo"]["original_value"] == "B"
+
+
+def test_correction_applies_when_the_frame_writes_the_ndg_differently() -> None:
+    records = consolidate([_frame("012.345", tipo=("A", 0.9))], {"12345": {"tipo": "Mutuo"}})
+    assert records[0].fields["tipo"]["value"] == "Mutuo"
+
+
+def test_clearing_a_field_is_a_valid_correction() -> None:
+    field = consolidate([_frame("1", tipo=("A", 0.9))], {"1": {"tipo": None}})[0].fields["tipo"]
+    assert (field["value"], field["corrected"]) == (None, True)
+
+
+def test_ndg_and_unknown_keys_cannot_be_corrected_and_other_practices_are_untouched() -> None:
+    records = consolidate(
+        [_frame("1", tipo=("A", 0.9)), _frame("2", tipo=("B", 0.9))],
+        {"1": {"ndg": "999", "boh": "x"}, "2": {}},
+    )
+    assert [r.ndg for r in records] == ["1", "2"]
+    assert "corrected" not in records[0].fields["ndg"] and records[1].fields["tipo"]["value"] == "B"
+
+
+def test_is_correctable_excludes_ndg_and_records_without_ndg() -> None:
+    with_ndg = consolidate([_frame("1", tipo=("A", 0.9))])[0]
+    anonymous = consolidate([_frame(None, tipo=("A", 0.9))])[0]
+    assert is_correctable(with_ndg, "tipo") and not is_correctable(with_ndg, "ndg")
+    assert not is_correctable(anonymous, "tipo")

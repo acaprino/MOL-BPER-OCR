@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import sys
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Sequence, Tuple
+from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
 
 import app_paths
 
@@ -35,6 +35,27 @@ class PracticeRecord:
     fields: Dict[str, Dict[str, Any]]
     source_pages: Tuple[str, ...]
     frame_count: int
+
+
+# ============================================================
+# Operator corrections
+# ============================================================
+
+# {normalized NDG: {schema_key: corrected value, or None when the operator cleared it}}
+Corrections = Mapping[str, Mapping[str, Optional[str]]]
+
+# NDG is the practice identity (the grouping key), so it is never corrected.
+_CORRECTABLE_KEYS = frozenset(FIELD_KEYS) - {"ndg"}
+
+
+def is_correctable(record: PracticeRecord, schema_key: str) -> bool:
+    """Whether the operator may edit this cell.
+
+    A record without an NDG is refused: when the NDG is finally read the record is
+    absorbed into the first identified practice, so a correction made before would
+    be orphaned.
+    """
+    return record.ndg is not None and schema_key in _CORRECTABLE_KEYS
 
 
 # ============================================================
@@ -73,25 +94,46 @@ class _Group:
         self.source_pages.append(str(result.get("_page_type") or ""))
         self.frame_count += 1
 
-    def to_record(self) -> PracticeRecord:
-        denominazione = self.fields["denominazione"]["value"]
+    def to_record(self, corrections: Optional[Mapping[str, Optional[str]]] = None) -> PracticeRecord:
+        fields = self.fields
+        if corrections and self.ndg is not None:
+            # The operator wins over any extracted value, applied after the frame merge
+            # so a later frame cannot undo it. Copy: never alias the accumulator.
+            fields = dict(self.fields)
+            for key, value in corrections.items():
+                if key not in _CORRECTABLE_KEYS:
+                    continue
+                fields[key] = {
+                    **fields[key],
+                    "value": value,
+                    "original_value": fields[key]["value"],
+                    "corrected": True,
+                }
+        denominazione = fields["denominazione"]["value"]
         return PracticeRecord(
             ndg=self.ndg,
             denominazione=None if is_nullish(denominazione) else str(denominazione),
-            fields=self.fields,
+            fields=fields,
             source_pages=tuple(self.source_pages),
             frame_count=self.frame_count,
         )
 
 
-def consolidate(results: Sequence[Dict[str, Any]]) -> List[PracticeRecord]:
+def consolidate(
+    results: Sequence[Dict[str, Any]],
+    corrections: Optional[Corrections] = None,
+) -> List[PracticeRecord]:
     """Group pipeline results into one record per practice.
 
     NDG is the key. A frame whose NDG was not read attaches to the most recent
     practice; frames arriving before any readable NDG wait in a buffer and join
     the first practice identified. A session that never reads an NDG yields a
     single record with ndg=None.
+
+    `corrections` ({normalized NDG: {schema_key: value}}) overrides the merged
+    value of a field; the extracted one stays in `original_value`.
     """
+    corrections = corrections or {}
     groups: Dict[str, _Group] = {}
     order: List[str] = []
     pending: List[Dict[str, Any]] = []
@@ -125,4 +167,4 @@ def consolidate(results: Sequence[Dict[str, Any]]) -> List[PracticeRecord]:
             anonymous.absorb(buffered)
         return [anonymous.to_record()]
 
-    return [groups[key].to_record() for key in order]
+    return [groups[key].to_record(corrections.get(key)) for key in order]
