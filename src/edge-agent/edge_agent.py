@@ -49,14 +49,11 @@ def main() -> int:
     app.setApplicationName("Edge Agent")
     app.setOrganizationName("Tri-tech solutions")
 
-    try:
-        from qt_material import apply_stylesheet
-        from PyQt6.QtCore import Qt
-        is_dark = app.styleHints().colorScheme() == Qt.ColorScheme.Dark
-        theme = "dark_cyan.xml" if is_dark else "dark_cyan.xml"
-        apply_stylesheet(app, theme=theme)
-    except ImportError:
-        pass
+    # Tema proprio (chiaro/scuro come Windows), applicato prima del preflight:
+    # lo stile vale anche per il dialogo del primo avvio. theme.py è top-level e
+    # non importa né `ui` né `extraction` (vincolo dell'ordine di import, sotto).
+    import theme
+    theme.apply_theme(app)
 
     # Pre-flight: file, chiave API, pesi DINOv2, warm-up. Esce se l'utente rinuncia.
     import bootstrap

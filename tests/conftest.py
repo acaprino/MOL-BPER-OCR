@@ -46,3 +46,29 @@ def install_fake_vlm(monkeypatch, recorder, responder=None):
     monkeypatch.setattr(pipeline_mod, "call_vlm_with_retry", fake_call)
     monkeypatch.setattr(pipeline_mod, "STOP_ON_ANCHOR_UNCERTAIN", False)
     monkeypatch.setattr(pipeline_mod, "MAX_IMAGE_LONG_SIDE", 4000)
+
+
+# ------------------------------------------------- shared QApplication (widget tests)
+#
+# One QApplication for the whole session, created at import so a plain
+# QCoreApplication made by an earlier test module can never block widget tests.
+# Offscreen: no display needed (also on Modal). Absent PyQt6 -> widget tests skip.
+
+import os
+
+import pytest
+
+os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
+try:
+    from PyQt6.QtWidgets import QApplication
+
+    _QAPP = QApplication.instance() or QApplication([])
+except ImportError:
+    _QAPP = None
+
+
+@pytest.fixture(scope="session")
+def qapp():
+    if _QAPP is None:
+        pytest.skip("PyQt6 is not installed")
+    return _QAPP
