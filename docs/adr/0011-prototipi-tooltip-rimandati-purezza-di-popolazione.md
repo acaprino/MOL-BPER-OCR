@@ -43,8 +43,8 @@ geometria oltre che al contenuto. Non e' separabile con il materiale attuale.
 
 ## Decisione
 
-Non si cabla nulla: i template spediti restano nove riferimenti + tre classi di
-scarto, e la baseline sui riferimenti non si tocca. Gli scatti restano nel corpus
+Non si cabla nulla: i prototipi spediti restano nove di pagina (costruiti dai riferimenti) e
+tre classi di scarto, e la baseline sui riferimenti non si tocca. Gli scatti restano nel corpus
 (`tests/fixtures/frames/tooltips/`) come materiale di misura.
 
 Il pezzo mancante e' piccolo e concreto: **scatti diretti delle pagine base (1, 2, 4,

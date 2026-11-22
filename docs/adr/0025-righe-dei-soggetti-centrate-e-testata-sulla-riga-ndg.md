@@ -5,11 +5,11 @@
 
 ## Contesto
 
-Sulle pratiche del lotto 2026-11-05, 11 campi della tabella Soggetti si perdevano anche
+Su alcune pratiche, 11 campi della tabella Soggetti si perdevano anche
 ricostruendo dalle etichette revisionate: `FONDO DI GARANZIA PER LA PRIMA CASA` diventava
 `CASA`, e la sua prima riga finiva nel soggetto sopra. `decode_fields()` faceva iniziare una
 riga mezza altezza di parola sopra il suo NDG, ma l'NDG sta al centro verticale della riga:
-su tutte le schermate revisionate di train, validazione e validazione estesa le righe di una
+su tutte le schermate revisionate le righe di una
 cella a capo distano fino a 0,56 altezze da lui. Bastava che la scala della pagina portasse
 quello scarto oltre 0,5 perché la prima riga passasse al soggetto precedente.
 
@@ -31,9 +31,9 @@ ruoli del modello.
 
 ## Conseguenze e verifica
 
-Dalle etichette revisionate nessun campo si perde più: 0 su 574 in train, 0 su 126 in
-validazione, 0 su 287 in validazione estesa (erano 11). Le regole vengono dagli errori della
-validazione estesa, non dal test storico né dalla conferma. L'effetto sui modelli, insieme alla
+Dalle etichette revisionate nessun campo si perde più: 0 su 574 in addestramento, 0 su 126 in
+controllo, 0 su 287 in altre pratiche revisionate (erano 11). Le regole vengono dagli errori di
+queste pratiche, non dal test. L'effetto sui modelli, insieme alla
 lettura per colonna dei Fidi e al cambio di metrica, è nell'[ADR 0026](0026-celle-fidi-lette-per-colonna.md).
 
 `test_training_evaluation.py` copre la prima riga di una cella a capo, le parole sopra la prima

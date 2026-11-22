@@ -10,7 +10,7 @@
 
 `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` toglie navigatore e cromatura prima dei
 passaggi VLM. Le frazioni sono calibrate sugli screenshot di finestra 848x679 di
-`mnt/data`: lo 0.18 sinistro e' la quota di larghezza che il navigatore occupa in
+`data/dataset/pratiche/51350695`: lo 0.18 sinistro e' la quota di larghezza che il navigatore occupa in
 **quella** finestra.
 
 Il navigatore pero' e' impaginato in pixel CSS, non in proporzione: su una finestra
@@ -50,9 +50,9 @@ e il ritaglio la amputerebbe come qualunque altra.
 
 Quindi il ritaglio non e' autorizzato da una proprieta' dell'immagine ma dal punto
 di ingresso: `extract_from_image()` (percorso live, edge-agent) **non ritaglia mai**;
-`extract_from_screen()` (file su disco: i riferimenti di mnt/data, la CLI, la GUI)
+`extract_from_screen()` (file su disco: i riferimenti di `data/dataset/pratiche/51350695`, la CLI, la GUI)
 fa opt-in, e anche li' la guardia di aspetto deve comunque essere d'accordo, cosi'
-un file fuori famiglia messo in mnt/data non viene amputato.
+un file fuori famiglia messo in `INPUT_DIR` non viene amputato.
 
 Il punto cieco della prima versione (aspetto calibrato ma resa CSS piu' larga) resta
 teoricamente aperto solo sul percorso da file, dove pero' la famiglia e' chiusa e
@@ -60,7 +60,7 @@ nota. Sul percorso live non esiste piu' per costruzione.
 
 ## Conseguenze
 
-- Sul percorso CLI (mnt/data, 848x679 normalizzati a 1800 mantenendo l'aspetto)
+- Sul percorso CLI (`data/dataset/pratiche/51350695`, 848x679 normalizzati a 1800 mantenendo l'aspetto)
   il comportamento e' **identico bit a bit** a prima: il ritaglio si applica.
 - Sul percorso edge-agent le finestre reali passano intere al VLM: nessuna colonna
   amputata, costo per chiamata leggermente maggiore.

@@ -5,7 +5,7 @@
 
 ## Contesto
 
-La revisione umana 3.1 fornisce valori corretti per screenshot BPER. Per usarli nel
+La revisione umana fornisce valori corretti per screenshot BPER. Per usarli nel
 riconoscitore locale RapidOCR + LiLT servono etichette sulle parole e coordinate
 relative all'immagine completa. Il testo OCR può contenere errori, e schermate della
 stessa pratica non sono esempi indipendenti. I precedenti pesi BPER non hanno una
@@ -48,8 +48,7 @@ in risposte corrette fittizie. Non si dichiara validato un campo senza esempi ne
 pratiche di prova. Servono ulteriori pratiche per misurare i campi presenti in una
 sola pratica e ulteriori miglioramenti dell'OCR per recuperare cifre lette male.
 
-`test_training_dataset.py` copre revisione, assenze, supervisione e separazione;
+`test_training_dataset.py` copre archivio, assenze, supervisione e separazione;
 `test_training_alignment.py` copre geometria e parole verificate;
 `test_training_model.py` copre sottotoken, split e ciclo reale di salvataggio e
 ricaricamento; `test_training_evaluation.py` copre ricostruzione e confronto rigoroso.
-Le esecuzioni e i loro risultati appartengono alla X-ray.

@@ -16,10 +16,11 @@ Ogni ritaglio del sistema è espresso in **coordinate relative**:
 | `HEADER_IN_CONTENT` | `(0.00, 0.00, 1.00, 0.22)` | `extraction/config.py` |
 | `RETRY_AREAS` | HEADER / BODY / FOOTER | `extraction/config.py` |
 
-Tutte sono tarate sugli screenshot di riferimento in `mnt/data`, che sono **finestre di browser
-846x677 a 850x680** (verificato file per file: la cifra "848x679" che questo ADR
-riportava era generalizzata da un solo file). Gli stessi file sono anche i prototipi del classificatore
-(`edge-agent/assets/templates/bper/screen N.png`).
+Tutte sono tarate sugli screenshot di riferimento in `data/dataset/pratiche/51350695`, che sono
+**finestre di browser 846x677 a 850x680** (verificato file per file: la cifra "848x679" che questo ADR
+riportava era generalizzata da un solo file). Dagli stessi file sono costruiti i prototipi del
+classificatore (`edge-agent/assets/templates/bper/bper_page_prototypes.json`,
+[0030](0030-prototipi-delle-pagine-distribuiti-con-l-app.md)).
 
 `BPERCaptureWorker._grab_raw()` però cattura il **monitor intero** via `mss`. Su un frame
 1920x1080 la frazione 0.12-0.30 non cade sulla stessa parte dell'interfaccia su cui era stata
@@ -38,10 +39,9 @@ di un'altra.
 
 **Correzione (2026-08-18, peer review finding F02/F05).** Questo ADR diceva
 "nessun modo per l'operatore di recuperarla": e' falso. `force_capture()` non
-controlla l'appartenenza a `captured_page_types`
-(`bper_capture_worker.py:544-577`), i risultati si accodano per job
-(`local_extraction_client.py:174-175`) e si consolidano per NDG tramite `pick_best`
-(`practice_consolidation.py:105-145`). Il recupero e' **manuale e parziale**, non
+controlla l'appartenenza a `captured_page_types` (`bper_capture_worker.py`), i risultati si
+accodano per job (`ingest_frame()` in `local_extraction_client.py`) e si consolidano per NDG
+tramite `pick_best` (`consolidate()` in `practice_consolidation.py`). Il recupero e' **manuale e parziale**, non
 assente: l'operatore puo' riacquisire la pagina con "Acquisisci ora". Resta vero che
 la sequenza guidata non si sblocca da sola.
 

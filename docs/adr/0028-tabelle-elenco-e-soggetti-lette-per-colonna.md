@@ -5,7 +5,7 @@
 
 ## Contesto
 
-Dopo l'[ADR 0026](0026-celle-fidi-lette-per-colonna.md), sulle 9 pratiche di validazione estesa
+Dopo l'[ADR 0026](0026-celle-fidi-lette-per-colonna.md), su 9 pratiche revisionate
 misurate da modelli che non le hanno viste restavano 18 errori su 360: 12 letture dell'OCR e 6
 del modello. I 6 erano parole messe nella colonna sbagliata, o lasciate fuori:
 
@@ -40,17 +40,17 @@ rapporti precedenti non si confrontano con i nuovi senza ricalcolo.
 
 ## Conseguenze e verifica
 
-Dalle etichette revisionate nessun campo supervisionato si perde: 0 su 638 in train, 0 su 126 in
-validazione, 0 su 287 in validazione estesa. Letti soltanto per colonna, senza i ruoli del
+Dalle etichette revisionate nessun campo supervisionato si perde: 0 su 638 in addestramento, 0 su 126 in
+controllo, 0 su 287 in altre pratiche revisionate. Letti soltanto per colonna, senza i ruoli del
 modello, i Soggetti sbagliano solo dove sbaglia l'OCR: `KOLAALTIN`, `LA MORGIAANDREA`, `Coinstine`,
-`LANDOGNAANTONINO`; in validazione estesa nessun errore.
+`LANDOGNAANTONINO`; nelle altre pratiche revisionate nessun errore.
 
-Con le stesse predizioni, sulle 9 pratiche misurate a rotazione si passa da 342 a 348 campi esatti
-su 360, con Soggetti 51/51: tutti i 12 errori rimasti sono letture dell'OCR. Il modello finale
-resta a 139/146 in controllo e 178/192 sul test storico.
+Con le stesse predizioni, sulle 9 pratiche misurate da modelli che non le hanno viste si passa da 342 a 348 campi esatti
+su 360, con Soggetti 51/51: tutti i 12 errori rimasti sono letture dell'OCR. In controllo
+resta 139/146.
 
-Le regole vengono dagli errori della validazione estesa, quindi lì la stima è ottimistica: il test
-storico non è stato usato per ricavarle e la prova cieca resta la conferma sigillata. Se
+Le regole vengono dagli errori di quelle pratiche, quindi lì la stima è ottimistica: il test
+non è stato usato per ricavarle e la prova cieca resta il test sigillato. Se
 l'applicazione cambiasse le testate, i Soggetti tornerebbero ai ruoli del modello e il filtro
 dell'Elenco smetterebbe di togliere parole, invece di sbagliare colonna.
 

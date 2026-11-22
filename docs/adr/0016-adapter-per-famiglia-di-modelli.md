@@ -4,7 +4,6 @@
 - **Data:** 2026-09-29
 - **Interessa:** `extraction/model_adapters.py`, `extraction/llm_factory.py`, `extraction/vlm_client.py`
 - **Test:** `tests/test_llm_factory.py`, `tests/test_vlm_call.py`
-- **Misura:** `.codebase-xray/baselines/2026-09-29-gemini-3.8-flash-thinking-low/`
 - **Correlati:** [0004](0004-budget-retry-derivato-dalle-aree.md)
 
 ## Contesto

@@ -26,7 +26,7 @@ l'applicazione. Le 9 schermate erano anche una copia di quelle della pratica `51
   cambio di ROI, resize, modello o regola di punteggio ferma l'avvio invece di servire vettori
   incompatibili.
 - I prototipi si costruiscono solo fuori dall'app, con `tools/build_prototypes.py`: le 9 pagine
-  dalle schermate di `data/pratiche/51350695` (`tools/reference_screens.py` dice quale pagina è
+  dalle schermate di `data/dataset/pratiche/51350695` (`tools/reference_screens.py` dice quale pagina è
   ogni `screen N`), gli scarti da ritagli del registro dei fotogrammi di test, tagliati in una
   cartella temporanea.
 - Le immagini escono dall'app: le 9 schermate restano solo nella pratica, i ritagli si rigenerano

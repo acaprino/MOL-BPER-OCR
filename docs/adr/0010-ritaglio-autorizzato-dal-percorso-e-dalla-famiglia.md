@@ -17,7 +17,7 @@ storia di come ci si e' arrivati, errori compresi.
 ## Contesto
 
 `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` toglie navigatore e cromatura prima dei
-passaggi VLM. Le frazioni sono calibrate sugli screenshot di finestra di `mnt/data`
+passaggi VLM. Le frazioni sono calibrate sugli screenshot di finestra di `data/dataset/pratiche/51350695`
 (846x677-850x680; "848x679" e' la cifra nominale, [0001]). Il navigatore e' impaginato
 in **pixel CSS**, non in proporzione: su qualunque finestra non resa a quella larghezza
 la sua quota cambia e le stesse frazioni tagliano dentro le colonne.

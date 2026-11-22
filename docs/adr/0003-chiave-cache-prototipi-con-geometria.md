@@ -3,7 +3,7 @@
 - **Stato:** Accettato
 - **Data:** 2026-08-17
 - **Interessa:** `edge-agent/page_classifier.py`
-- **Test:** `tests/test_page_classifier.py::test_cache_is_stale_when_the_embedding_geometry_changed`
+- **Test:** `tests/test_page_classifier.py::test_prototypes_of_another_embedding_geometry_are_not_ready`, `tests/test_page_classifier.py::test_classifier_refuses_prototypes_of_another_embedding_geometry`
 - **Nasce da:** [0002](0002-riconoscimento-pagina-roi-e-coseno-centrato.md)
 
 ## Contesto
@@ -36,8 +36,9 @@ Introdurre `embedding_geometry(crop_roi=None) -> str`, che descrive l'identità 
 embedding: nome del modello, ROI arrotondata, dimensione e modalità di resize, regola di punteggio.
 
 La stringa viene scritta nella cache come campo `geometry` e confrontata sia da `cache_is_valid()`
-(usata dal pre-flight, che non importa torch) sia da `_load_or_build_prototypes()`. Se non coincide,
-i prototipi si ricostruiscono.
+(usata dal pre-flight, che non importa torch) sia da `_read_shipped_prototypes()`. Se non coincide,
+i prototipi non sono validi e vanno ricostruiti fuori dall'app con `tools/build_prototypes.py`
+([0030](0030-prototipi-delle-pagine-distribuiti-con-l-app.md)).
 
 Il parametro `crop_roi` esiste perché la ROI è un attributo di istanza, non necessariamente
 `DEFAULT_CROP_ROI`: il classificatore passa la propria, mentre `cache_is_valid()` non ha un'istanza e
@@ -60,21 +61,22 @@ parametri reali non richiede che nessuno se ne ricordi.
 **Correzione (2026-08-18, peer review finding F10).** La formulazione originale di
 questo paragrafo diceva che una stringa derivata dai parametri "non puo' andare fuori
 sincrono": e' falso come scritto. `embedding_geometry()` **enumera a mano** un
-sottoinsieme, e omette la revisione del modello e i pesi (`page_classifier.py:33-37`),
-`InterpolationMode.BICUBIC` (`:337-340`) e `T.Normalize(...)` (`:342-345`). Cambiando
-la revisione DINOv2 fissata senza cambiare il nome del modello, la chiave resta
-identica e i vettori vecchi vengono confrontati con query nuove. La chiave copre le
-modifiche che sono passate per i suoi parametri, non tutte quelle che influenzano
-l'embedding.
+sottoinsieme, e omette la revisione del modello e i pesi (`DINOV2_HUB_REPO` e
+`DINOV2_WEIGHTS_SHA256` in `page_classifier.py`), `InterpolationMode.BICUBIC` e
+`T.Normalize(...)`. Cambiando la revisione DINOv2 fissata senza cambiare il nome del
+modello, la chiave resta identica e i vettori vecchi vengono confrontati con query nuove.
+La chiave copre le modifiche che sono passate per i suoi parametri, non tutte quelle che
+influenzano l'embedding.
 
 ## Conseguenze
 
-Chiunque cambi ROI, dimensione di embedding, modello o regola di punteggio ottiene automaticamente
-una ricostruzione dei prototipi, con qualche secondo di attesa al primo avvio.
+Chiunque cambi ROI, dimensione di embedding, modello o regola di punteggio se ne accorge subito:
+l'app rifiuta i prototipi distribuiti, che vanno ricostruiti con `tools/build_prototypes.py`
+([0030](0030-prototipi-delle-pagine-distribuiti-con-l-app.md)).
 
 Il formato della cache guadagna un campo. I file di cache scritti da versioni precedenti non hanno
-`geometry`, quindi risultano non validi e vengono ricostruiti: è il comportamento desiderato, non una
-migrazione da gestire.
+`geometry`, quindi risultano non validi: è il comportamento desiderato, non una migrazione da
+gestire.
 
 `embedding_geometry()` è ora parte del contratto del modulo: chi aggiunge un parametro che influenza
 l'embedding deve aggiungerlo anche lì. Non esiste un controllo automatico che lo imponga, ed è la

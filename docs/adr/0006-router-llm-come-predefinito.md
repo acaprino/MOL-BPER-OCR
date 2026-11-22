@@ -32,9 +32,8 @@ la scrittura di 0005:
 
 Una misura sulle sette inquadrature realistiche costruite in laboratorio aveva già
 mostrato che `detect_app_rect()` ne gestisce **1 su 7**, e la peer review incrociata
-(`.peer-review/2026-08-17-2114-.../04-verdict.md`, finding F01, accettato e certificato)
-ha stabilito che quelle sette non sono comunque un criterio di decisione, non essendo
-un campione della distribuzione di produzione.
+(finding F01, accettato e certificato) ha stabilito che quelle sette non sono comunque
+un criterio di decisione, non essendo un campione della distribuzione di produzione.
 
 Sommando: non si può normalizzare in modo affidabile un'inquadratura che varia in modi
 che non possiamo osservare, e senza normalizzazione il classificatore a prototipi non

@@ -63,8 +63,8 @@ errore al posto di quella rimossa. Va ripreso dopo aver corretto la mappa.
 
 **Lasciare il letterale e alzarlo a 5.** Fa passare i test di oggi e riproduce il difetto domani:
 aggiungendo una quarta area di retry, il letterale la affama in silenzio. È la stessa classe di
-fragilità che `CLAUDE.md` documenta al vincolo *No startup guards*, dove una chiave assente da
-`AREA_TO_FIELDS` non viene mai ritentata e nessuno se ne accorge.
+fragilità che `CLAUDE.md` documenta al vincolo *Field vocabulary consistency*: una chiave assente da
+`AREA_TO_FIELDS` non viene ritentata, e se ne accorge la suite di test, non l'avvio.
 
 ## Conseguenze
 

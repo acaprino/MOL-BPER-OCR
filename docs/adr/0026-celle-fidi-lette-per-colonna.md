@@ -36,22 +36,18 @@ rapporti precedenti non si confrontano con i nuovi senza ricalcolo.
 
 ## Conseguenze e verifica
 
-Dalle etichette revisionate nessun campo si perde: 0 su 574 in train, 0 su 126 in validazione, 0
-su 287 in validazione estesa, e nessuna parola etichettata cade fuori dalla sua colonna.
+Dalle etichette revisionate nessun campo si perde: 0 su 574 in addestramento, 0 su 126 in controllo,
+0 su 287 in altre pratiche revisionate, e nessuna parola etichettata cade fuori dalla sua colonna.
 
-In validazione estesa, con le regole di questo ADR e dell'[ADR 0025](0025-righe-dei-soggetti-centrate-e-testata-sulla-riga-ndg.md):
-
-| Modello | Prima | Dopo | Fidi non vuoti |
-|---|---|---|---|
-| `lilt-v3.1-20261018-A1-ocr-e16p4-seed7` | 275/360 | 312/360 | 88/106 |
-| `lilt-v3.3-20261107-T8-seed7` | 307/360 | 340/360 | 104/106 |
+Su 9 pratiche revisionate, misurate da modelli che non le hanno viste, con le regole di questo ADR e
+dell'[ADR 0025](0025-righe-dei-soggetti-centrate-e-testata-sulla-riga-ndg.md) due modelli passano da
+275/360 a 312/360 e da 307/360 a 340/360 campi esatti, con Fidi non vuoti 88/106 e 104/106.
 
 In validazione entrambi restano a 139/146: i 7 errori sono tutti letture dell'OCR, e G5 Fidi resta
 a 22/25 contro le 23/25 richieste.
 
-La regola è ricavata dagli errori della validazione estesa, quindi lì non è più una stima
-indipendente: la prova è la conferma, sigillata fino al congelamento. Il test storico non è stato
-eseguito. Se l'applicazione cambiasse la testata della tabella, la lettura tornerebbe ai ruoli
+La regola è ricavata dagli errori di quelle pratiche, quindi lì non è più una stima
+indipendente: la prova è il test, sigillato fino al congelamento, e non è stato eseguito. Se l'applicazione cambiasse la testata della tabella, la lettura tornerebbe ai ruoli
 del modello invece di sbagliare colonna.
 
 `test_training_evaluation.py` copre la parola nella colonna giusta, la cella a capo, la tabella di

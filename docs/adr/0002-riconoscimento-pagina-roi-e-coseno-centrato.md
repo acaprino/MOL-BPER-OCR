@@ -110,7 +110,9 @@ La cache dei prototipi esistente diventa inservibile: è stata costruita con la 
 Non se ne accorgerebbe da sola, ed è la ragione di
 [0003](0003-chiave-cache-prototipi-con-geometria.md).
 
-Il primo avvio dopo questa modifica ricostruisce i 9 prototipi, con un ritardo di alcuni secondi.
+I 9 prototipi vanno ricostruiti con la nuova geometria, con un ritardo di alcuni secondi. Oggi si
+costruiscono fuori dall'app con `tools/build_prototypes.py` e si distribuiscono con essa
+([0030](0030-prototipi-delle-pagine-distribuiti-con-l-app.md)).
 
 La soglia 0.35 è calibrata su due soli negativi sintetici, perché non abbiamo schermate reali
 non-BPER. È conservativa rispetto al margine misurato (il match corretto più debole è a 0.664, quasi
