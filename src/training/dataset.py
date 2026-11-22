@@ -11,9 +11,8 @@ from typing import Any, Mapping, NamedTuple
 
 from PIL import Image
 
-from training.schema import field_role, role_vocabulary, vocabulary
+from training.schema import DATASET_VERSION, field_role, role_vocabulary, vocabulary
 
-DATASET_VERSION = "dataset"
 # The role of a practice in the archive (ADR 0027) is the split its screens belong to.
 SPLIT_OF_ROLE = {"addestramento": "train", "controllo": "val", "test": "test"}
 TEST_SPLIT = "test"

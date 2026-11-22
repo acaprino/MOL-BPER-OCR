@@ -395,3 +395,14 @@ def test_a_final_test_needs_the_test_practices(tmp_path: Path) -> None:
     with pytest.raises(ValueError, match="include_test"):
         train_model(without_test, ["O", "ndg"], tmp_path / "trained", {}, base_path=str(base), epochs=1, variants=0,
                     device="cpu", final_test=True)
+
+
+def test_the_trainer_imports_without_pillow() -> None:
+    """The Modal training image has torch and transformers but no Pillow: model.py must not pull it in."""
+    import subprocess
+    import sys
+
+    code = "import sys; sys.modules['PIL'] = None; import training.model"
+    result = subprocess.run([sys.executable, "-c", code], cwd=Path(__file__).resolve().parents[1] / "src",
+                            capture_output=True, text=True)
+    assert result.returncode == 0, result.stderr[-400:]

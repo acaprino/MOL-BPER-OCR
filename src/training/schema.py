@@ -7,6 +7,9 @@ from pathlib import Path
 
 SRC_DIR = Path(__file__).resolve().parents[1]
 REPOSITORY = SRC_DIR.parent
+# The version of the dataset built from data/dataset. It lives here, with no heavy imports, because the Modal
+# training image has no Pillow and model.py checks the manifest against it.
+DATASET_VERSION = "dataset"
 
 
 def vocabulary() -> tuple[list[str], dict[str, str]]:

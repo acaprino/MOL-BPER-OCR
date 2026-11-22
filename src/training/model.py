@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from training.dataset import DATASET_VERSION
+from training.schema import DATASET_VERSION
 
 BASE_MODEL = "nielsr/lilt-xlm-roberta-base"
 IGNORE_LABEL = "IGNORE"
