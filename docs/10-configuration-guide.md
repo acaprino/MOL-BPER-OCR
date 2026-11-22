@@ -36,7 +36,7 @@ Sostituisci il placeholder di `.env.example` con una chiave reale. Anche `gui_ap
 
 **Passo 4 -- Scegliere provider e modello (opzionale).** I default in `src/extraction/config.py:17-18` sono `LLM_PROVIDER=openai` e `LLM_MODEL=gpt-4o`. Con una chiave OpenAI non cambi nulla. Per passare a Gemini, vedi Profili d'ambiente -- provider e modello devono muoversi insieme o la factory li rifiuta.
 
-**Passo 5 -- Mettere i dati dove la CLI li cerca.** La CLI legge gli screenshot da `INPUT_DIR`, default `data/pratiche/51350695` (la pratica di riferimento), e la verità da un `dati.csv` in quella cartella oppure dal foglio della pratica in `data/pratiche/pratiche.xlsx` (ADR 0029). Per le pratiche dell'archivio non serve preparare nulla. La GUI Tkinter e l'edge-agent non ne hanno bisogno: la GUI Tkinter è l'alternativa per estrarre **senza** ground truth.
+**Passo 5 -- Mettere i dati dove la CLI li cerca.** La CLI legge gli screenshot da `INPUT_DIR`, default `data/dataset/pratiche/51350695` (la pratica di riferimento), e la verità da un `dati.csv` in quella cartella oppure dalle righe della pratica in `data/dataset/valori.csv` (ADR 0032). Per le pratiche dell'archivio non serve preparare nulla. La GUI Tkinter e l'edge-agent non ne hanno bisogno: la GUI Tkinter è l'alternativa per estrarre **senza** ground truth.
 
 **Passo 6 -- Solo edge-agent in modalità `llm`: fornire la chiave del router.** Serve con la configurazione spedita, che usa `router = llm`. In quel caso `[llm] api_key` nel `config.ini` spedito è **vuota** per scelta, e la chiave viene raccolta dall'ambiente in base al provider -- vedi la ricetta più avanti.
 
@@ -310,9 +310,9 @@ Ogni sintomo qui sotto è ancorato a una stringa d'errore o a un comportamento r
 FileNotFoundError: No dati.csv in <INPUT_DIR> and no archive workbook at <cartella superiore>\pratiche.xlsx
 ```
 
-**Causa:** `INPUT_DIR` non contiene un `dati.csv` e non sta dentro `data/pratiche`, dove `pratiche.xlsx` dà i valori di ogni pratica (`resolve_ground_truth()`, ADR 0029).
+**Causa:** `INPUT_DIR` non contiene un `dati.csv` e non sta dentro `data/dataset/pratiche`, dove `valori.csv` dà i valori di ogni pratica (`resolve_ground_truth()`, ADR 0032).
 
-**Soluzione:** punta `INPUT_DIR` a una cartella di `data/pratiche`, oppure metti un `dati.csv` in `INPUT_DIR` (formato in `README.md:221-241`: colonne `Fotogramma`, `Denominazione da attribuire`, `Valore rilevato`). Per estrarre senza ground truth, usa `python gui_app.py` -- lì il CSV è opzionale (`gui_app.py:263`).
+**Soluzione:** punta `INPUT_DIR` a una cartella di `data/dataset/pratiche`, oppure metti un `dati.csv` in `INPUT_DIR` (formato in `README.md:221-241`: colonne `Fotogramma`, `Denominazione da attribuire`, `Valore rilevato`). Per estrarre senza ground truth, usa `python gui_app.py` -- lì il CSV è opzionale (`gui_app.py:263`).
 
 ### API key mancante o non valida
 
@@ -429,7 +429,7 @@ e la schermata indicata è proprio quella che l'operatore ha davanti. Un nome pa
 
 **Causa:** disallineamento di inquadratura fra i prototipi e il frame. I prototipi sono screenshot di **finestra**; se il frame che arriva al classificatore è un monitor intero, le ROI relative cadono su contenuto diverso e la scelta fra le 9 pagine diventa arbitraria. Il nome in `captured_page_types` oggi serve soltanto alla guida: non blocca altre visite della stessa pagina. La normalizzazione resta necessaria per classificare correttamente.
 
-**Come confermarlo:** confronta i valori estratti con le schermate della pratica di riferimento in `data/pratiche/51350695`. Se corrispondono a una pagina **diversa** da quella nel log, l'estrazione sta funzionando e il problema è il routing.
+**Come confermarlo:** confronta i valori estratti con le schermate della pratica di riferimento in `data/dataset/pratiche/51350695`. Se corrispondono a una pagina **diversa** da quella nel log, l'estrazione sta funzionando e il problema è il routing.
 
 **Soluzione:** verificare che la normalizzazione dell'inquadratura stia agendo. `_grab_raw()` riporta il frame sulla finestra applicativa (`src/edge-agent/frame_normalize.py`), prima via titolo della finestra usando `window_title_contains` in `config.ini`, poi dedotta dallo sfondo del desktop. Se il titolo della finestra non contiene la sottostringa configurata **e** il desktop attorno alla finestra non è uniforme (altre finestre visibili agli angoli), entrambe le strategie rinunciano e il frame passa a schermo intero: allinea `window_title_contains` al titolo reale della finestra. Contesto completo in [ADR 0001](adr/0001-normalizzazione-inquadratura-frame.md).
 

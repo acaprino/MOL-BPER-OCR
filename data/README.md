@@ -1,38 +1,53 @@
-# Struttura di `data/` (Dataset pratiche, dati locali e modelli)
+# `data/dataset`: l'archivio delle pratiche
 
-Tutte le sottocartelle di `data/` sono visibili nel progetto; `.gitignore` esclude soltanto i pesi binari dei modelli (`*.safetensors`, ~1,1 GB); i risultati della CLI vanno in `outputs/`, fuori da `data/`.
+Tutto ciò che serve per addestrare da zero, e niente altro: schermate, valori corretti e ruolo di ogni pratica. OCR, modelli e run non ci sono: si rigenerano da qui.
 
-## Sottocartelle
+```
+data/dataset/
+  pratiche/<id>/<pagina>-<NN>.png     240 schermate di 33 pratiche
+  pratiche.csv                        una riga per pratica: Pratica;Ruolo;Schermate;Valori
+  schermate.csv                       una riga per schermata
+  valori.csv                          la verità: una riga per valore
+```
 
-- **`data/pratiche/`** — **L'archivio delle 33 pratiche BPER: si parte da qui.** Ogni pratica ha la sua cartella `<id_pratica>/` con le schermate, nominate per pagina (`Elenco.png`, `Soggetti.png`, `GestioneFidi.png`, `Note.png`, `Scheda_Privati_*.png`), e `offtopic/` per le schermate di altri applicativi: 240 schermate in perimetro e 22 off-topic. Le varianti di una pagina hanno due schemi: i lotti fino ad agosto le descrivono (`Elenco_dx.png`, `Elenco_tooltip1.png`, `GestioneFidi_Tooltip1.png`, `Note_chiuso.png`), il lotto di novembre le numera come sono state consegnate (`Elenco2.png`, `GestioneFidi2.png`, `Note2.png`). I nomi restano questi perché sono gli identificativi delle schermate nelle verità, nelle cache OCR e nelle predizioni dei run; unificarli spetta alla prossima versione della verità.
-  - `pratiche.xlsx`: **i valori autorevoli e corretti di ogni pratica, il file da aprire.** I valori delle 11 pratiche di conferma (gruppo `conferma`) sono sigillati: non si usano per misurare durante lo sviluppo. Il foglio `Indice` dà per ogni pratica lotto, gruppo, ruolo (addestramento, controllo o test, ADR 0027), schermate e righe; segue un foglio per pratica con schermata, campo, valore, esito, stato della revisione, riga del workbook consegnato e correzione. È generato dalla verità corrente `data/training/ground-truth-v3.5` e non si modifica a mano, perché la generazione successiva lo riscrive. Da `src/`: `python -m training.truth_export --bundle ../data/training/ground-truth-v3.5 --out ../data/pratiche/pratiche.xlsx --per-practice`.
-  - `manifest.json`: lo stesso indice in JSON (lotto, gruppo, ruolo ed elenco delle schermate di ogni pratica).
-  - **12 pratiche del riscontro 2026-10-07 (con ground truth revisionato v3.1):**
-    `51185037`, `51531667`, `51659595`, `52060489`, `52062600`, `52067184`, `52068422`, `52080223`, `52102599`, `52126316`, `52130861`, `52135039` (113 schermate in perimetro + 18 off-topic).
-  - **10 pratiche del lotto 2026-08-21 (con/senza tooltip):**
-    `51772928`, `51788077`, `51792073`, `51798191`, `51800301`, `51859514`, `51997531`, `52013664`, `52022324`, `52032077` (34 schermate in perimetro + 4 off-topic).
-  - **10 pratiche del lotto 2026-11-05 (84 schermate):**
-    `51027430`, `51849993`, `51886329`, `52080736`, `52102964`, `52125946`, `52136040`, `52137073`, `52186431`, `52196577`. I nomi vengono dai file consegnati, senza guardare le schermate: `elenco2` diventa `Elenco2`, `gestionefidi3` diventa `GestioneFidi3`, `note2` diventa `Note2`; il primo file di ogni pagina prende il nome della pagina.
-  - **1 pratica di riferimento iniziale (`51350695`):**
-    9 schermate (`Elenco.png`, `Elenco_dx.png`, `Elenco_tooltip1.png`, `Soggetti.png`, `GestioneFidi.png`, `GestioneFidi_Tooltip1..3.png`, `Note.png`), catturate il 2025-09-09. È la pratica su cui è stato sviluppato il motore VLM e l'input predefinito della CLI (`python main.py`). Fino alla verità v3.4 la cartella si chiamava `LUNARDI_26871394` e le schermate avevano una copia in `data/reference`, tolta il 2026-11-22 (ADR 0029).
-- **`data/revisione/`** — **Le fonti della data entry umana, come sono state consegnate:** una cartella per lotto, con il nome del lotto. I workbook consegnati non contengono le correzioni; i valori corretti sono in `data/pratiche/pratiche.xlsx`. Nel repository non ci sono archivi zip: le schermate consegnate stanno solo in `data/pratiche`, e gli archivi tolti il 2026-11-22 restano nella storia git.
-  - `riscontro-2026-10-07/`: le 12 pratiche del riscontro. `Revisione_ground_truth_v3_1.xlsx` è il workbook con i 1.008 valori revisionati e confermati; `dati.csv` il fotogramma dei valori estratti (formato lungo, con colonna `Nota`); `ritagli_2026-10-16/` i ritagli di supporto; `superate/` le versioni precedenti del workbook (`v1`, `v2`, `v3`).
-  - `lotto-2026-08-21/`: revisione umana delle 10 pratiche del lotto 2026-08-21 (`Revisione_10_pratiche_agosto_v1.0.xlsx`, 320 righe, ricevuta il 2026-10-27), `correzioni.json` (18 righe dell'intestazione Gestione Fidi fuori schermo portate a `NON VISIBILE`, più 3 trascrizioni diverse dallo schermo verificate a mano il 2026-10-28: righe 258, 259 e 291) e `g8_assegnazione.json`, prodotto da `assegnazione_g8.py`: gruppi di validazione estesa e conferma del gate G8. Le pratiche in conferma sono sigillate (niente OCR né ispezioni per lo sviluppo). `preparazione/` conserva gli script e i JSON di audit con cui è stato preparato il workbook da compilare (sessione del 2026-10-22): sono un archivio, con percorsi assoluti della cartella di lavoro di allora, e non si rieseguono.
-  - `lotto-2026-11-05/`: le 10 pratiche consegnate il 2026-11-05 con un foglio per pratica (`10 prt novembre 2026.xlsx`, foglio `Descrizione` con le indicazioni della revisione), `correzioni.json` (cosa mostra ogni schermata delle pratiche di validazione estesa, il Tipo Pratica, e 20 valori corretti: 15 contro lo schermo sulle 4 pratiche, Scadenza di 2 pratiche sigillate controllata a mano dal responsabile del progetto, e 3 valori noti senza aprire lo schermo) e `g8_assegnazione.json`, prodotto su Modal da `training.modal_lot` dai due archivi zip della consegna: le loro schermate sono in `data/pratiche` con i nomi normalizzati, `g8_assegnazione.json` conserva lo SHA-256 di ciascun archivio e, per ogni schermata, il file d'origine (`consegna`). I valori fuori vocabolario (tabella Garanzie, Agente proponente) stanno nella verità senza diventare un bersaglio; nelle note i segni di elenco sono riportati ai trattini dello schermo. Le intestazioni delle schermate di dettaglio, che la revisione non riporta, sono ricavate dalle altre pagine (esito `DERIVATO`) e servono solo per le etichette.
-  - `riferimento-2025-09-09/`: la pratica di riferimento `51350695`. `dati.csv` sono i suoi 77 valori, con i fotogrammi chiamati `screen 1..9`; `fotogrammi.json` dice a quale pagina corrisponde ogni fotogramma; `g8_assegnazione.json` la mette in addestramento. L'OCR A1 è in `data/training/riferimento-2025-09-09-ocr/`.
-- **`data/training/validazione-estesa/`**: le pratiche di validazione estesa G8. `lotto-2026-11-05-ocr/` è la lettura A1 delle 4 del lotto di novembre (34 schermate, su Modal); `A1-e16p4-seed7-v3.3.json` è la misura del modello precedente su tutte e 9 (360 campi) con il decoder corrente: strict 312/360, cioè 113/144 sulle 5 di agosto e 199/216 sulle 4 nuove; `confronta.py` confronta i run. Le 5 pratiche di agosto (15 schermate, 144 campi valutati): `ocr-A1/` è la lettura A1 (stessi modelli di `ocr-runs/A1`, eseguita su questo PC il 2026-10-27/28, 155 s medi per schermata contro i 12 s di Modal), unita con `merge_runs()` dai due shard in `ocr-A1-shards/` (4 pratiche, poi `52032077` dopo la sua riassegnazione); `valuta.py` costruisce gli esempi dalla revisione e misura un run LiLT; `A1-e16p4-seed7.json` è il risultato con il decoder di allora: strict 104/144 (72%, 103 prima delle correzioni di `5eafb06`), contro 139/146 dello stesso modello in validazione v3.1.
-- **`data/training/`** — Dataset sigillato e modelli addestrati dal pacchetto `src/training/`:
-  - `ground-truth-v3.1/`: bundle supervisionato generato da `python -m training.dataset` (`examples.json`, `roles.json`, `coverage.json`, `manifest.json`, `ground_truth.csv`, `alignment_report.csv`).
-  - `ground-truth-v3.2/`: la verità unificata (riscontro v3.1 + lotto 2026-08-21: 22 pratiche, 147 schermate, 1.328 righe revisionate) come database di tre tabelle, `practices.csv`, `screens.csv` e `ground_truth.csv` (valore, esito, lotto, gruppo, riga Excel, correzione), più `ground_truth.xlsx` esportato da `training.truth_export` con un foglio per tabella. Gli esempi (`examples.json`, OCR A1) coprono gli split v3.1 e la validazione estesa G8 (`val_ext`): 128 schermate, 17 pratiche; le 5 pratiche di conferma hanno solo valori e impronte. Costruzione in `src/training/README.md`.
-  - `ground-truth-v3.5/`: la verità corrente. È la v3.4 con la pratica di riferimento sotto il suo numero, `51350695`, e il lotto `riferimento-2025-09-09` (ADR 0029): stessi valori, schermate, esempi OCR e ruoli, verificati riga per riga.
-  - `ground-truth-v3.4/`: la verità di prima, con in più `LUNARDI_26871394` in addestramento (33 pratiche, 240 schermate, 2.051 righe). `practices.csv` dà a ognuna il ruolo: addestramento 18, controllo 2, test 13 (ADR 0027). La costruzione rifiuta una cartella di `data/pratiche` senza ruolo.
-  - `ground-truth-v3.3/`: stessa struttura, con in più il lotto 2026-11-05 (32 pratiche, 231 schermate, 1.974 righe). Gli esempi coprono gli split v3.1 e 9 pratiche di validazione estesa (162 schermate, 21 pratiche); le 11 pratiche di conferma hanno solo valori e impronte. Delle 6 pratiche di conferma di novembre, nella verità c'è una riga per valore sulla prima schermata di ogni pagina: la suddivisione per schermata si farà quando si potranno guardare.
-  - `ocr-cache/rapid_v6_small_1x.json`: cache OCR delle 113 schermate (RapidOCR 3.9.2, PP-OCRv6 small, scala 1x) da cui è costruito `ground-truth-v3.1/`, SHA-256 `e261c05b…` come in `manifest.json`. Il manifest conserva il percorso originale, rimosso dal riordino del repository; il file è stato ripristinato qui dalla storia git senza modifiche.
-  - `ocr-runs/A0` .. `ocr-runs/A4`: letture complete delle 113 schermate con le cinque configurazioni dello Stadio A (`manifest.json` con modelli, versioni e tempi, `cache.json`, `ocr_selection.json`) e il dataset derivato in `dataset/`. A0 e A4 sono state lette in locale, A1-A3 su Modal (CPU, 4 core) e unite con `merge_runs()`. `dataset/examples.json` non è versionato: si ricostruisce con `python -m training.ocr_runner report --run data/training/ocr-runs/<config> ...` dalla `cache.json`.
-  - `runs/lilt-v3.1-20261016/`: artefatti del run GPU Modal e pesi scaricati per inferenza CPU (`cpu_model/`). Addestrato su una versione precedente del bundle, con allineamento e codice di `src/training/` anteriori.
-  - `runs/lilt-v3.1-20261018-current-bundle/`: stesso protocollo, addestrato sul bundle `ground-truth-v3.1/` corrente (`dataset_content_sha256` `469c26d1…`) con la selezione dell'epoca sull'accuratezza dei campi interi in validazione. Stessa struttura del run precedente; i pesi `model.safetensors` non sono versionati.
-  - `runs/lilt-v3.1-20261018-A1-ocr/` e `runs/lilt-v3.1-20261018-A2-ocr/`: stesso protocollo e stesse revisioni, ma con le parole OCR delle configurazioni A1 e A2 dello Stadio A. Il dataset di ciascuno è quello derivato in `ocr-runs/<config>/dataset/`. I run con suffisso `-seedN` ripetono A0 (bundle corrente) e A1 con un altro seed. I run `-A1-ocr-e16p4-seedN` addestrano A1 fino a 16 epoche con pazienza 4; il log Modal è in `modal_train.log`, e `compare-A1-e8-vs-e16.json` nel run seed 7 confronta i sei modelli A1 a 8 e 16 epoche con il decoder corrente.
-  - `runs/lilt-v3.3-20261107-T8-seed7/`: stesse 8 pratiche di addestramento, bundle `ground-truth-v3.3`, OCR A1, 16 epoche con pazienza 4 (migliore la 7), 3 copie per schermata di cui 2 con un'altra inquadratura. Validazione 139/146, validazione estesa 340/360 (132/144 su agosto, 208/216 sulle nuove, Fidi 104/106, Soggetti 48/51: `confronto-val-ext.json`). Test storico non eseguito. I pesi stanno sul volume Modal `bper-lilt-spike` in `model_v3_1_bab7602e57479d0f`, non in locale.
-  - `runs/lilt-v3.4-20261107-T18-seed7/`: il modello finale sulle 18 pratiche di addestramento di `ground-truth-v3.4`, OCR A1, migliore l'epoca 7. Con la metrica `strict-v6-table-columns`: controllo 139/146, test storico 178/192 (ADR 0027). I run `lilt-v3.4-20261107-fold1-seed7`, `fold2` e `fold3` tengono fuori un terzo della validazione estesa a rotazione: insieme 348/360 sulle 9 pratiche, 136/144 su agosto e 212/216 sulle nuove, Fidi 104/106, Soggetti 51/51 (`rotazione.json` nel run T18); i 12 errori rimasti sono letture dell'OCR. I pesi stanno sul volume Modal `bper-lilt-spike`, non in locale: T18 `model_v3_1_59ea55f59857055c`, fold1 `model_v3_1_9bd203d2241e4803`, fold2 `model_v3_1_b13a875c2640ec92`, fold3 `model_v3_1_298b630c16e0c363`.
-  - **Pesi presenti in locale:** il 2026-10-31 i `cpu_model/model.safetensors` sono stati eliminati da tutti i run tranne `runs/lilt-v3.1-20261018-current-bundle/` (modello B0) e `runs/lilt-v3.1-20261018-A1-ocr-e16p4-seed7/` (usato da `validazione-estesa/valuta.py`). Gli altri nove run conservano solo metriche, predizioni e manifest, tracciati in git: per riusarne il modello serve riaddestrarlo. I pesi non sono mai stati versionati.
-- **`data/spike-ocr/`** — Script e dati storici del primo spike esplorativo RapidOCR + LiLT (superati da `src/training/`).
+## Nomi
+
+- **Pratica:** il numero di pratica (`51350695`), come sta sull'intestazione della scheda Soggetti.
+- **Schermata:** `<pagina>-<NN>`, con `NN` a due cifre e la schermata base della pagina per prima. Pagine: `elenco`, `soggetti`, `gestione-fidi`, `note`, `scheda-privati`. L'id in `schermate.csv` e `valori.csv` è `<pratica>/<pagina>-<NN>` (`51350695/elenco-01`); il nome del file senza estensione è lo stesso `<pagina>-<NN>`.
+- **Variante** (`schermate.csv`): `destra`, `basso`, `chiuso`, `tooltip`, oppure **vuota**. Vuota vuol dire schermata base o variante non descritta: alcune schermate sono state consegnate solo numerate e non si sono aperte per classificarle.
+
+## Tabelle (separatore `;`, UTF-8 con BOM)
+
+| File | Colonne |
+|---|---|
+| `pratiche.csv` | `Pratica`, `Ruolo`, `Schermate`, `Valori` |
+| `schermate.csv` | `Schermata`, `Pratica`, `Pagina`, `Numero`, `Variante`, `File`, `SHA256`, `Larghezza`, `Altezza` |
+| `valori.csv` | `Schermata`, `Campo`, `Chiave`, `Valore`, `Esito` |
+
+`Campo` è il nome della colonna come lo scrive la revisione (`NDG`, `Tipo`, ...). `Chiave` è il campo canonico tra i 45 di `FIELD_KEYS`; è **vuota** per i 156 valori fuori vocabolario (tabella Garanzie, Agente proponente), che restano nella verità senza essere un bersaglio.
+
+## Esito
+
+| Esito | Significato |
+|---|---|
+| `TRASCRITTO` | valore letto sullo schermo |
+| `VUOTO` | il campo c'è ed è vuoto |
+| `NON VISIBILE` | il campo è fuori dallo schermo |
+| `DERIVATO` | ricavato dalle altre pagine (intestazioni delle schermate di dettaglio): serve solo per le etichette |
+| `PARZIALE`, `NON LEGGIBILE` | restano nella verità, non sono un bersaglio |
+
+## Ruoli
+
+`Ruolo` in `pratiche.csv`: **addestramento** 18, **controllo** 2, **test** 13 (ADR 0027). Le pratiche di test non si usano per scegliere o regolare nulla e non si leggono con l'OCR né si aprono finché non c'è la misura finale: si leggono una volta, a fine sviluppo.
+
+Sei pratiche di test (`51027430`, `51886329`, `52102964`, `52136040`, `52186431`, `52196577`) hanno i valori di ogni pagina tutti sulla sua prima schermata (`<pagina>-01`): la suddivisione per schermata si farà quando si potranno guardare.
+
+## Regole
+
+1. **Le immagini non si modificano.** `SHA256` in `schermate.csv` dice com'erano.
+2. **Il nome di una schermata è la sua chiave** in `valori.csv` e in qualsiasi OCR o modello costruito da qui. Cambiarlo è una nuova versione dell'archivio.
+3. **I risultati della CLI non vanno qui:** stanno in `outputs/<cartella>/`.
+
+## Come è stato costruito
+
+`tools/build_dataset_archive.py` ha letto la verità corrente e le schermate del vecchio albero (lotti, versioni `v3.x`, OCR e run) e le ha riscritte con questi nomi, verificando che ogni immagine avesse la stessa impronta. Il vecchio albero è stato tolto il 2026-11-22 (ADR 0032) e resta nella storia git al commit `b2d4b80`: `git show b2d4b80:data/README.md` ne spiega la disposizione. `src/training` costruisce il dataset da qui (`python -m training.dataset --archive data/dataset ...`, vedi `src/training/README.md`).

@@ -87,16 +87,10 @@ poc-data-src/extraction/
         prompts.json           # 10 definizioni di pagina BPER -- fonte di verità per routing LLM + combo UI
         bper_page_prototypes.json # Prototipi DINOv2 delle pagine, distribuiti con l'app (ADR 0030)
 
-  data/                        # Dataset, screenshot e artefatti locali (ignorati da git salvo i 9 PNG di reference/)
-    README.md                  # Panoramica delle sottocartelle dati e dei dataset locali
-    reference/                 # Directory dati di default (INPUT_DIR); /data/* è in gitignore salvo i 9 PNG
-      screen 1..9.png          # I 9 screenshot di test (tracciati)
-      dati.csv                 # CSV di ground truth -- ATTESO qui ma NON nel repository (vedi sotto)
-      debug_crops/             # Crop intermedi, solo con DEBUG_SAVE_CROPS=1
-    pratiche/                  # Archivio delle 33 pratiche: <id>/ con le schermate, pratiche.xlsx, manifest.json
-    revisione/                 # Fonti della data entry umana, una cartella per lotto (riscontro-2026-10-07/, lotto-*/, riferimento-2025-09-09/)
-    training/                  # Bundle ground-truth-v3.*, OCR e run dei modelli LiLT (runs/)
-    spike-ocr/                 # Script e dati esplorativi dello spike OCR locale
+  data/                        # Dati versionati in git (ADR 0032): solo l'archivio pulito data/dataset
+    README.md                  # Mappa dell'archivio
+    dataset/                   # Archivio pulito (ADR 0032): pratiche/<id>/<pagina>-<NN>.png (INPUT_DIR predefinito: pratiche/51350695),
+                               # valori.csv, schermate.csv, pratiche.csv
 
   docs/                  # Questa documentazione narrativa in italiano (INDEX + doc 00-12)
   .claude/                     # Impostazioni locali Claude Code (solo settings.local.json)
@@ -153,7 +147,7 @@ Tutte le variabili della pipeline sono lette via `os.getenv()` **al momento dell
 | `LLM_MODEL` | `gpt-4o` | no | Modello per il passaggio principale | `src/extraction/config.py:18` |
 | `LLM_MODEL_ANCHOR` | = `LLM_MODEL` | no | Modello per il passaggio anchor | `src/extraction/config.py:19` |
 | `LLM_THINKING_LEVEL` | non impostata | no | `low`/`medium`/`high`; inviata come `thinking_level` alla famiglia Gemini 3, ignorata con avviso dalle altre, rifiutata se non valida | `src/extraction/config.py:19`, `src/extraction/model_adapters.py:196`, `src/extraction/model_adapters.py:228` |
-| `INPUT_DIR` | `data/pratiche/51350695` | no | Cartella degli screenshot; verità da `dati.csv` o da `pratiche.xlsx` (ADR 0029) | `src/extraction/config.py` |
+| `INPUT_DIR` | `data/dataset/pratiche/51350695` | no | Cartella degli screenshot; verità da `dati.csv` o da `valori.csv` (ADR 0032) | `src/extraction/config.py` |
 | `OUTPUT_DIR` | `outputs/<cartella di INPUT_DIR>` | no | Risultati della CLI e `debug_crops/` | `src/extraction/config.py` |
 | `PARALLEL_ENABLED` | `1` | no | `0` disabilita il thread pool del batch | `src/extraction/config.py:12` |
 | `PARALLEL_WORKERS` | `4` | no | Worker del batch e del pool asincrono dell’edge-agent | `src/extraction/config.py`, `src/edge-agent/local_extraction_client.py` |
@@ -176,7 +170,7 @@ Non esiste un registro di script; questi sono tutti gli eseguibili del repo.
 
 ### Sviluppo / esecuzione
 
-- `python main.py` -- estrazione batch CLI + valutazione. Legge la verità da un `dati.csv` in `INPUT_DIR` o dal foglio della pratica in `data/pratiche/pratiche.xlsx` (`src/extraction/cli.py::main` solleva `FileNotFoundError` se non trova né l'uno né l'altro) e una `LLM_API_KEY` valida. Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR` (ordinati lessicalmente), poi scrive `poc_outputs_improved.json` e `poc_debug_improved.csv` in `OUTPUT_DIR` e stampa le accuratezze RAW/FILTERED più la tabella dei costi per schermata (`src/extraction/cli.py::main`).
+- `python main.py` -- estrazione batch CLI + valutazione. Legge la verità da un `dati.csv` in `INPUT_DIR` o dalle righe della pratica in `data/dataset/valori.csv` (`src/extraction/cli.py::main` solleva `FileNotFoundError` se non trova né l'uno né l'altro) e una `LLM_API_KEY` valida. Elabora ogni `.png`/`.jpg`/`.jpeg` in `INPUT_DIR` (ordinati lessicalmente), poi scrive `poc_outputs_improved.json` e `poc_debug_improved.csv` in `OUTPUT_DIR` e stampa le accuratezze RAW/FILTERED più la tabella dei costi per schermata (`src/extraction/cli.py::main`).
 - `python main.py --gui` -- stesso shim, ma inserisce `src/edge-agent/` in `sys.path` e avvia l'edge-agent (`main.py:15-20`).
 - `python gui_app.py` -- GUI desktop Tkinter. Esegue `run_extraction_batch()` su un thread in background; scrive `poc_outputs_gui.json`, `poc_results_gui.csv` e (se è stato selezionato un CSV di ground truth) `poc_debug_gui.csv` nella **directory di lavoro corrente** (`gui_app.py:250-273`), non in `INPUT_DIR`. Carica `.env` prima del motore e usa provider/modello effettivi nei selettori iniziali.
 - `python src/edge-agent/edge_agent.py [--debug]` -- l'edge-agent PyQt6 direttamente. `--debug` aggiunge il tab "Debug LLM" (`src/edge-agent/edge_agent.py:51`).

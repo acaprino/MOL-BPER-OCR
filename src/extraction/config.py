@@ -4,8 +4,8 @@ import os
 # ============================================================
 # Pathing & IO
 # ============================================================
-# Default: the reference practice of the archive; its truth is its sheet of data/pratiche/pratiche.xlsx (ADR 0029).
-INPUT_DIR = os.getenv("INPUT_DIR", "data/pratiche/51350695").strip()
+# Default: the reference practice of the archive; its truth is its rows of data/dataset/valori.csv (ADR 0032).
+INPUT_DIR = os.getenv("INPUT_DIR", "data/dataset/pratiche/51350695").strip()
 GROUND_TRUTH_CSV = os.path.join(INPUT_DIR, "dati.csv")
 # Results stay out of the screenshot folder, which may be the archive.
 OUTPUT_DIR = os.getenv("OUTPUT_DIR", os.path.join("outputs", os.path.basename(os.path.normpath(INPUT_DIR)))).strip()
@@ -74,7 +74,7 @@ MAX_IMAGE_LONG_SIDE = int(os.getenv("MAX_IMAGE_LONG_SIDE", "2000"))
 # Crops (relative coordinates 0.0-1.0: left, top, right, bottom)
 #
 # These fractions are calibrated on the 848x679 window screenshots of the reference practice
-# (data/pratiche/51350695, the nine page templates of the edge-agent):
+# (data/dataset/pratiche/51350695, the nine page templates of the edge-agent):
 # 0.18 on the left is the navigator's share of THAT window's width. The navigator
 # is laid out in CSS pixels, so on a wider window its share shrinks and 0.18 cuts
 # into the first table columns. Measured on a real 1536x1032 capture: the crop's

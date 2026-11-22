@@ -29,7 +29,7 @@ OpenAI (default):
 
 ```bash
 export LLM_API_KEY="sk-..."
-python main.py                        # CLI batch mode on the reference practice data/pratiche/51350695
+python main.py                        # CLI batch mode on the reference practice data/dataset/pratiche/51350695
 python gui_app.py                     # Tkinter desktop GUI
 python src/edge-agent/edge_agent.py       # Edge-agent UI (or: python main.py --gui)
 ```
@@ -59,7 +59,7 @@ All defaults verified against `src/extraction/config.py`.
 | `LLM_API_KEY` | *(required)* | API credential (OpenAI or Gemini key) |
 | `LLM_MODEL` | `gpt-4o` | Model for the main pass |
 | `LLM_MODEL_ANCHOR` | same as `LLM_MODEL` | Model for the anchor pass |
-| `INPUT_DIR` | `data/pratiche/51350695` | Screenshot folder. Its truth is a `dati.csv` in it, else its sheet of `data/pratiche/pratiche.xlsx` (ADR 0029) |
+| `INPUT_DIR` | `data/dataset/pratiche/51350695` | Screenshot folder. Its truth is a `dati.csv` in it, else its rows of `data/dataset/valori.csv` (ADR 0032) |
 | `OUTPUT_DIR` | `outputs/<INPUT_DIR folder name>` | CLI results (`poc_outputs_improved.json`, `poc_debug_improved.csv`) and `debug_crops/`, kept out of the archive |
 | `PARALLEL_WORKERS` | `4` | Thread pool size |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
@@ -112,8 +112,8 @@ Retry subject-row admission, source-page/export-group metadata and GUI environme
 dedicated regressions in `test_pipeline_retry_subjects.py`, `test_page_metadata.py` and
 `test_gui_config.py`. The offline LiLT training and evaluation package (`src/training/`) is covered by
 `test_training_alignment.py`, `test_training_dataset.py`, `test_training_model.py`,
-`test_training_evaluation.py`, `test_training_truth_export.py`, `test_training_practice_sheets.py`
-and `test_training_g8_assignment.py`.
+`test_training_evaluation.py` and `test_training_ocr_runner.py`; the archive and its builder by
+`test_dataset_archive.py`.
 
 This PC is often short of memory: the fast lane also runs on a Modal container with
 `modal run tools/modal_tests.py --args "tests -q -m 'not slow'"` (no torch and no Tk display there, so
@@ -121,7 +121,7 @@ those cases skip). Lot processing, OCR and inference run on Modal too (`src/trai
 
 `test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s) against the prototypes the app
 ships; it skips via `pytest.importorskip` where torch is absent. It rebuilds the
-app-window-inside-a-monitor framing from the nine reference screenshots (`data/pratiche/51350695`,
+app-window-inside-a-monitor framing from the nine reference screenshots (`data/dataset/pratiche/51350695`,
 via `tools/reference_screens.py`) rather than feeding the classifier its own prototypes back, so it
 fails if the ROI, the resize or the scoring rule regress. Do not "simplify" it into classifying the
 screenshots directly: that variant passes even with the geometry that recognized 1 page out of 9 in the field.
@@ -135,7 +135,7 @@ Dev dependencies for the suite install via `pip install -r requirements-dev.txt`
 verify changes manually:
 
 1. **Run extraction:** `python main.py` -- should complete without errors (needs `LLM_API_KEY`;
-   the reference practice takes its truth from `data/pratiche/pratiche.xlsx`).
+   the reference practice takes its truth from `data/dataset/valori.csv`).
 2. **Check accuracy:** output includes a per-field accuracy breakdown (RAW + FILTERED). Compare
    against a baseline.
 3. **Check costs:** `print_cost_summary()` reports per-screen token counts and USD costs. Watch for
@@ -265,7 +265,7 @@ downstream effects.
     extraction are decoupled: `ingest_frame()` queues and returns, extraction runs on
     `PARALLEL_WORKERS` daemon threads sharing one pipeline (same pattern as `BatchRunner`).
 13. **Every relative crop assumes window framing** -- the classifier ROI and the pipeline's
-    `RETRY_AREAS` bands are fractions calibrated on the 848x679 window screenshots of the reference practice `data/pratiche/51350695`
+    `RETRY_AREAS` bands are fractions calibrated on the 848x679 window screenshots of the reference practice `data/dataset/pratiche/51350695`
     (`CONTENT_CROP`/`HEADER_IN_CONTENT` now apply only on the file path over the calibrated
     family, ADR 0010; off calibration the anchor pass reads the whole image). `_grab_raw()` captures the whole monitor, so
     `frame_normalize.normalize_frame()` must run there, before dedup, routing and extraction: with a
@@ -342,7 +342,7 @@ downstream effects.
 
 ## BPER Domain
 
-The extractor targets **9 BPER banking screens** (the screenshots of the reference practice `data/pratiche/51350695`; the page catalog names them `screen 1` ... `screen 9`, and `tools/reference_screens.py` maps each label to its page), each a
+The extractor targets **9 BPER banking screens** (the screenshots of the reference practice `data/dataset/pratiche/51350695`; the page catalog names them `screen 1` ... `screen 9`, and `tools/reference_screens.py` maps each label to its page), each a
 different page of the BPER credit-management application.
 
 **Extracted fields** -- 45 entries in `FIELD_KEYS` (`src/extraction/fields.py`):
@@ -364,16 +364,16 @@ different page of the BPER credit-management application.
 
 ## Data & Evaluation
 
-**Ground truth of the CLI** (`resolve_ground_truth()`, ADR 0029): a `dati.csv` in `INPUT_DIR`, else the folder's sheet of `data/pratiche/pratiche.xlsx` (`Schermata`, `Campo`, `Valore`, keyed by page name like `Elenco`). A `dati.csv` uses three columns: `Fotogramma` (screen ID),
+**Ground truth of the CLI** (`resolve_ground_truth()`, ADR 0032): a `dati.csv` in `INPUT_DIR`, else the folder's rows of `data/dataset/valori.csv` (`Schermata` as `<id>/<page>-<NN>`, `Campo`, `Valore`, keyed by file stem like `elenco-01`). A `dati.csv` uses three columns: `Fotogramma` (screen ID),
 `Denominazione da attribuire` (field name), `Valore rilevato` (expected value). `load_ground_truth()`
 in `src/extraction/evaluation.py` auto-detects alternative column names (`Screenshot`/`Screen`,
 `Campo`/`Field`, `Valore`/`Value`) via `_find_column()`.
 
 **Tracked data under `data/`:** `data/` is versioned in git (except `*.safetensors` model weights
-> 1 GB). `python main.py` reads `data/pratiche/51350695` with its sheet of `data/pratiche/pratiche.xlsx` and raises
-`FileNotFoundError` if `INPUT_DIR` has neither a `dati.csv` nor an archive workbook beside it
+> 1 GB). `python main.py` reads `data/dataset/pratiche/51350695` with its rows of `data/dataset/valori.csv` and raises
+`FileNotFoundError` if `INPUT_DIR` has neither a `dati.csv` nor a `valori.csv` two levels up (nor a `pratiche.xlsx` beside it)
 (`src/extraction/cli.py::main`). The delivered `dati.csv` of the reference practice, keyed `screen 1..9`,
-is in `data/revisione/riferimento-2025-09-09/` with the page of each screen in `fotogrammi.json`. The
+is in `tools/reference/` with the page of each screen in `fotogrammi.json`. The
 Tkinter GUI and the edge-agent work without a CSV (evaluation is optional there).
 Do not restore the older `dati.csv` from commit `e8c677c`: it describes 5 older screenshots of the
 old PEF UI (practice TICCHI/CABRAS, ~2150px wide), not the current 9 "Nuova PEF 3.0" screens
@@ -467,41 +467,33 @@ Called out individually, because the filename alone does not tell you:
 
 ### `src/training/` package (offline OCR + LiLT training and evaluation)
 
-Self-contained offline package for building the human-reviewed token-classification dataset and
-training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0022):
+Self-contained offline package for building the token-classification dataset from `data/dataset` (ADR 0032)
+and training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0022). Everything starts from
+the archive; OCR, datasets and models are rebuilt, never kept as sources:
 
 - `schema.py` -- reads `FIELD_KEYS` and `CSV_TO_SCHEMA` from `src/extraction/fields.py` via AST without
   importing the VLM runtime; maps the 45 fields onto 36 semantic roles plus `O`.
 - `alignment.py` -- aligns reviewed field values to RapidOCR word boxes (`align_screen()`), orders
   multi-line table cells by local visual lines (`_order_cell_indices()`), and scopes unresolved
-  field uncertainty boxes to their candidate region.
-- `dataset.py` -- reads the approved v3.1 Excel workbook (`read_reviewed_truth()`) and the lots reviewed
-  by transcription with their recorded corrections (`read_transcribed_truth()`, one `Lot` per batch with
-  its G8 assignment), applies BIO/role supervision (`apply_supervision()`), audits cross-split
-  practice/NDG/image isolation (`audit_splits()`: refused inside v3.1 and between `val_ext` and the
-  sealed `conferma`, recorded between v3.1 and the G8 groups), derives the dataset version from the lot
-  composition (`DATASET_VERSIONS`) and seals the bundle with its three truth tables
-  (`build_dataset()`, `seal_dataset()`). `truth_export.py` writes those tables as one workbook
-  and, with `--per-practice`, the practice archive `data/pratiche/pratiche.xlsx` (`export_practice_workbook()`).
-- Every practice has a role (ADR 0027): training 18, control 2, test 13, column `Ruolo` of `practices.csv`.
-  `build_dataset()` on the newest version refuses a `data/pratiche` folder with no role. The reference practice
-  `51350695` trains (`read_reference_truth()`, lot `riferimento-2025-09-09`, ADR 0029); the extended validation trains
-  the final model through `also_train` and is measured by runs that hold out a third of it in rotation.
-- `practice_sheets.py` -- reads a lot delivered as one sheet per practice (`read_practice_sheets()`): one
-  value per page, typed cells, the literal `vuoto`. Its `correzioni.json` says what each screen of an
-  extended-validation practice shows and corrects values checked against the screen. Values outside the
-  45 fields (guarantee table, proposing agent) stay in the truth with no field key.
-- `g8_assignment.py` -- the G8 assignment of `docs/next-ver-plan.md` §5.4 (`assign_lot()`).
+  field uncertainty boxes to their candidate region. It reads the kind of a page from its name
+  (`elenco_dx`, `gestionefidi_tooltip`, ...).
+- `dataset.py` -- reads the archive (`read_archive()`: refuses a changed image, an unknown role, screen or
+  field, an outcome that disagrees with its value), turns page and variant into the name the aligner reads
+  (`alignment_name()`), applies role supervision (`apply_supervision()`), audits practice/NDG/image isolation
+  across splits (`audit_splits()`, refused outright) and seals the bundle (`build_dataset()`, `seal_dataset()`).
+  The role of a practice in `pratiche.csv` is its split (ADR 0027): `addestramento` is `train`, `controllo` is
+  `val`, `test` is `test`; the test practices are read only with `include_test`, for a frozen candidate.
   `INSTITUTIONAL_NDGS` lists the NDGs of institutions, today the Fondo di garanzia per la prima casa
-  (`11153238`): it is a guarantor in a large share of the practices, so it is not an identity in any check,
-  here or in `audit_splits()` (ADR 0024). A new institution goes in that list, without moving a practice.
+  (`11153238`): it is a guarantor in a large share of the practices, so it is not an identity in any check
+  (ADR 0024). A new institution goes in that list, without moving a practice.
 - `model.py` -- normalizes word boxes to `0..1000`, builds 512-subword chunks without splitting the
   `FIDI` table block from its header (`encode_chunks()`), augments training copies with geometry and digit
   jitter (`_augment()`) and with other framings of the page, cropped or taller (`_reframe()`), because LiLT reads
   positions relative to the whole image and the training screens are nearly all framed alike. Trains
   `LiltForTokenClassification` selecting checkpoints on validation whole-field accuracy (`train_model()`,
-  `score_predictions()`): the historical test stays out unless `final_test` asks for it, and `also_train` moves
-  extended-validation practices into training for one run. Runs CPU/GPU inference (`predict()`).
+  `score_predictions()`): the test stays out unless `final_test` asks for it. Runs CPU/GPU inference (`predict()`).
+  `validate_reviewed_dataset()` accepts only a dataset of the archive's version whose manifest agrees with its
+  examples and its content digest.
 - `evaluation.py` -- reconstructs the 45 fields from predicted word roles (`decode_fields()`, which
   reads the FIDI cells of the topmost table row by column under the table header, ADR 0023 and 0026, reads
   the Soggetti table by column and keeps the Elenco roles in their columns, ADR 0028, and reads the header from
@@ -511,31 +503,27 @@ training/evaluating the local LiLT model (see `src/training/README.md` and ADR 0
   extractors (per screen `{"fields": ..., "abstained": [...]}`) with the same records, comparators
   and summaries, and both report `complete` when every screen has an outcome.
 - `modal_train.py` -- bounded GPU entrypoint on Modal that writes an immutable run and downloads the
-  CPU-loadable model (`cpu_model/`, or leaves it on the volume with `--no-download-weights`). `--also-train` and
-  `--final-test` reach `train_model()`.
+  CPU-loadable model (`cpu_model/`, or leaves it on the volume with `--no-download-weights`). `--final-test`
+  reaches `train_model()`.
 - `ocr_runner.py` -- resumable stage A OCR runs (`run_ocr()`, configurations `A0`..`A4`, CPU
-  profiles `pc4`/`vdi2`): per-screen results, `cache.json` only when every screen succeeded, model
-  hashes in the manifest; `report()` builds the derived dataset and train/validation-only selection
-  metrics (`ocr_selection_metrics()`). Runs in the separate `.venv-ocr` (`requirements-ocr.txt`);
-  RapidOCR is imported only inside the engine factory, so the suite fakes the engine.
+  profiles `pc4`/`vdi2`) over the screens of the archive (`load_screens()`): per-screen results, `cache.json`
+  only when every screen succeeded, model hashes in the manifest; `report()` builds the derived dataset and
+  train/validation-only selection metrics (`ocr_selection_metrics()`). Runs in the separate `.venv-ocr`
+  (`requirements-ocr.txt`); RapidOCR is imported only inside the engine factory, so the suite fakes the engine.
   `merge_runs()` joins complete runs over disjoint parts of the screen set into one complete run,
   refusing partial or edited shards, gaps, duplicates and mixed configurations or engine builds.
 - `modal_ocr.py` -- reads stage A configurations on Modal CPU containers (4 cores, the
   `requirements-ocr.txt` pins and the local model files) as ordinary `run_ocr()` shards, merges
   them locally with `merge_runs()`, and runs an optional same-host cost panel. Sends the
-  reviewed screenshots to Modal. `--assignment` and `--practices` read a lot's extended-validation
-  practices and refuse any other.
-- `modal_lot.py`, `modal_bundle.py` -- the rest of a lot on Modal: the assignment manifest, then the bundle
-  and the score of a run on the `bper-lilt-spike` volume over the extended validation.
+  screenshots of the archive to Modal; the values stay local.
 
 ### Data files
 
 | File | Purpose |
 |---|---|
-| `data/README.md` | Overview of the datasets, 33-practice screenshot collection, and training directories under `data/` |
-| `data/pratiche/` | The practice archive: `<id>/` screenshots of the 33 practices (240 in-scope + 22 off-topic PNGs), `pratiche.xlsx` with the corrected values of each practice (index sheet plus one sheet per practice, generated by `training.truth_export --per-practice` from the current truth, never hand-edited) and `manifest.json` |
-| `data/revisione/` | Sources of the human data entry as delivered, one folder per lot named after the lot (`riscontro-2026-10-07/` with the v3.1 workbook, `lotto-2026-08-21/`, `lotto-2026-11-05/`, `riferimento-2025-09-09/`); no zip archives |
-| `data/training/` | Sealed `ground-truth-v3.1/` bundle, the unified `ground-truth-v3.2/`, `ground-truth-v3.3/`, `ground-truth-v3.4/` and current `ground-truth-v3.5/` truths (three CSV tables plus `ground_truth.xlsx`, examples for the v3.1 splits and the G8 `val_ext` group, none for the sealed `conferma` group) and `runs/` metadata (`*.safetensors` weights > 1 GB are gitignored) |
+| `data/README.md` | Map of `data/dataset`: layout, naming, tables, outcomes and roles |
+| `data/dataset/` | The clean practice archive (ADR 0032): `pratiche/<id>/<page>-<NN>.png` (240 in-scope screenshots of 33 practices), `valori.csv` (the corrected truth, 2,051 values by screen and field), `schermate.csv` (page, variant, SHA-256, size) and `pratiche.csv` (role: training, control, test). Built by `tools/build_dataset_archive.py`; read `data/README.md` |
+| `tools/reference/` | `dati.csv` and `fotogrammi.json` of the reference practice (`screen 1..9`), read by the simulator and the page-catalog tests |
 | `prompts/*.json` | LLM prompt catalog: one file per prompt, loaded at startup by `src/prompt_store.py` |
 | `src/edge-agent/assets/templates/bper/prompts.json` | Page catalog (names, order, template, hints) for the router and `page_registry.py` -- not a prompt file |
 

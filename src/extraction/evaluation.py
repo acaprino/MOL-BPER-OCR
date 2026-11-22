@@ -1,4 +1,5 @@
 """Ground truth loading, accuracy evaluation, debug reporting, and cost summary."""
+import csv
 import os
 from typing import Dict, Any, List
 import pandas as pd
@@ -105,12 +106,29 @@ def load_practice_truth(workbook_path: str, practice: str) -> Dict[str, Dict[str
         workbook.close()
 
 
+def load_dataset_truth(valori_path: str, practice: str) -> Dict[str, Dict[str, Any]]:
+    """Truth of one practice from the clean archive's valori.csv, keyed by screenshot file stem (ADR 0032)."""
+    gt: Dict[str, Dict[str, Any]] = {}
+    with open(valori_path, encoding="utf-8-sig", newline="") as handle:
+        for row in csv.DictReader(handle, delimiter=";"):
+            owner, screen = row["Schermata"].split("/", 1)
+            if owner == practice and row["Campo"].strip():
+                gt.setdefault(screen, {})[row["Campo"].strip()] = row["Valore"].strip()
+    if not gt:
+        raise ValueError(f"No values for practice {practice} in {valori_path}")
+    return gt
+
+
 def resolve_ground_truth(input_dir: str) -> Dict[str, Dict[str, Any]]:
-    """Truth of a screenshot folder: its own dati.csv, else its sheet of the archive workbook beside it (ADR 0029)."""
+    """Truth of a screenshot folder: its own dati.csv, else the clean archive's valori.csv (ADR 0032), else its
+    sheet of the archive workbook beside it (ADR 0029)."""
     csv_path = os.path.join(input_dir, "dati.csv")
     if os.path.exists(csv_path):
         return load_ground_truth(csv_path)
     folder = os.path.normpath(input_dir)
+    valori_path = os.path.join(os.path.dirname(os.path.dirname(folder)), "valori.csv")
+    if os.path.exists(valori_path):
+        return load_dataset_truth(valori_path, os.path.basename(folder))
     workbook_path = os.path.join(os.path.dirname(folder), "pratiche.xlsx")
     if not os.path.exists(workbook_path):
         raise FileNotFoundError(f"No dati.csv in {input_dir} and no archive workbook at {workbook_path}")

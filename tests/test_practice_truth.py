@@ -13,7 +13,7 @@ HEADER = ("Schermata", "Campo", "Valore", "Esito", "Stato revisione", "Riga Exce
 
 
 def _archive(tmp_path: Path, practice: str = "123") -> Path:
-    """data/pratiche in miniature: the practice folder and the archive workbook beside it."""
+    """The older archive in miniature: the practice folder and the per-practice workbook beside it (ADR 0029)."""
     folder = tmp_path / "pratiche" / practice
     folder.mkdir(parents=True)
     workbook = Workbook()
@@ -49,3 +49,37 @@ def test_a_practice_missing_from_the_archive_workbook_is_refused(tmp_path: Path)
 def test_a_folder_without_any_truth_is_refused(tmp_path: Path) -> None:
     with pytest.raises(FileNotFoundError):
         resolve_ground_truth(str(tmp_path))
+
+
+# ------------------------------------------------- the clean archive (data/dataset)
+
+def _dataset(tmp_path: Path, practice: str = "123") -> Path:
+    """data/dataset in miniature: pratiche/<id>/ with valori.csv at the archive root."""
+    folder = tmp_path / "dataset" / "pratiche" / practice
+    folder.mkdir(parents=True)
+    (tmp_path / "dataset" / "valori.csv").write_text(
+        "Schermata;Campo;Chiave;Valore;Esito\r\n"
+        f"{practice}/elenco-01;NDG;ndg;26871394;TRASCRITTO\r\n"
+        f"{practice}/elenco-01;Tipo;tipo;;VUOTO\r\n"
+        f"{practice}/soggetti-01;Ruolo 1;ruolo_1;Richiedente;TRASCRITTO\r\n"
+        "999/elenco-01;NDG;ndg;11111111;TRASCRITTO\r\n", encoding="utf-8-sig")
+    return folder
+
+
+def test_a_practice_of_the_clean_archive_takes_its_truth_from_valori_csv(tmp_path: Path) -> None:
+    truth = resolve_ground_truth(str(_dataset(tmp_path)))
+    assert truth == {"elenco-01": {"NDG": "26871394", "Tipo": ""}, "soggetti-01": {"Ruolo 1": "Richiedente"}}
+
+
+def test_a_dati_csv_beside_the_screenshots_wins_over_valori_csv(tmp_path: Path) -> None:
+    folder = _dataset(tmp_path)
+    (folder / "dati.csv").write_text("Fotogramma,Denominazione da attribuire,Valore rilevato\nscreen 1,NDG,1\n",
+                                     encoding="utf-8")
+    assert resolve_ground_truth(str(folder)) == {"screen 1": {"NDG": "1"}}
+
+
+def test_a_practice_without_rows_in_valori_csv_is_refused(tmp_path: Path) -> None:
+    _dataset(tmp_path)
+    (tmp_path / "dataset" / "pratiche" / "555").mkdir()
+    with pytest.raises(ValueError, match="555"):
+        resolve_ground_truth(str(tmp_path / "dataset" / "pratiche" / "555"))

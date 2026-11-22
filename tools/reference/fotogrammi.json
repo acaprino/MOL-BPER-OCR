@@ -1,0 +1,15 @@
+{
+ "pratica": "51350695",
+ "fotogrammi": {
+  "screen 1": "elenco-01",
+  "screen 2": "elenco-02",
+  "screen 3": "elenco-03",
+  "screen 4": "soggetti-01",
+  "screen 5": "gestione-fidi-01",
+  "screen 6": "gestione-fidi-02",
+  "screen 7": "gestione-fidi-03",
+  "screen 8": "gestione-fidi-04",
+  "screen 9": "note-01"
+ },
+ "nota": "Le 9 schermate sono quelle di data/dataset/pratiche/51350695, nell'ordine dei template 'screen N' del catalogo di pagine. dati.csv sono i 77 valori consegnati per la pratica, con i fotogrammi chiamati 'screen 1..9': lo leggono il simulatore e i suoi test."
+}

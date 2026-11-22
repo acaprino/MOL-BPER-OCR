@@ -26,7 +26,7 @@ La pipeline ha due entry point per scelta: `extract_from_screen()` normalizza in
 ## Logica di business
 
 ### Dove vive il `dati.csv` canonico, e chi ne è il proprietario?
-**Risolta 2026-11-22.** I 77 valori della pratica di riferimento sono stati verificati contro le schermate il 2026-11-07 e stanno in `data/revisione/riferimento-2025-09-09/dati.csv`; la CLI legge i valori corretti di ogni pratica da `data/pratiche/pratiche.xlsx` (ADR 0029). Il resto della sezione è la domanda com'era.
+**Risolta 2026-11-22.** I 77 valori della pratica di riferimento sono stati verificati contro le schermate il 2026-11-07 e stanno in `tools/reference/dati.csv`; la CLI legge i valori corretti di ogni pratica da `data/dataset/valori.csv` (ADR 0032). Il resto della sezione è la domanda com'era.
 
 **Aggiornamento 2026-09-29.** Il `dati.csv` ancora presente nella storia git (rimosso in `e8c677c`) descrive 5 screenshot della vecchia interfaccia PEF, non i 9 attuali: non va ripristinato. Per i 9 screenshot attuali esiste una bozza di 77 righe, trascritta a vista e da verificare, copiata in `.tritech/codebase-xray/baselines/2026-09-29-gemini-3.8-flash/dati.csv` (oggi solo nella storia git, `d939ea5`).
 

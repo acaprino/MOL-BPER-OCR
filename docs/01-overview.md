@@ -30,7 +30,7 @@ mindmap
 
 ## Cosa fa
 
-Gli dai in pasto gli screenshot dei 9 tipi di schermata BPER conosciuti (le 9 schermate della pratica di riferimento `data/pratiche/51350695`) e ti restituisce un record per schermata che copre le 45 chiavi di `FIELD_KEYS` (**`src/extraction/fields.py`**): identificatori del cliente (`ndg`, `denominazione`), metadati della pratica (`tipo`, `stato`, `fase`, `creazione`, `evidenze`), dati sulle linee di credito (`n_fido`, `importo_euro`, `scadenza`, …), cinque campi tooltip, le colonne appiattite dei cointestatari (`ndg_1..4` / `denominazione_1..4` / `ruolo_1..4`) e i 13 campi della "scheda privati" (`professione_principale`, `retribuzione_annua_netta`, `score_cgs`, …). Ogni campo porta con sé un valore, un punteggio di confidenza e un testo di evidenza.
+Gli dai in pasto gli screenshot dei 9 tipi di schermata BPER conosciuti (le 9 schermate della pratica di riferimento `data/dataset/pratiche/51350695`) e ti restituisce un record per schermata che copre le 45 chiavi di `FIELD_KEYS` (**`src/extraction/fields.py`**): identificatori del cliente (`ndg`, `denominazione`), metadati della pratica (`tipo`, `stato`, `fase`, `creazione`, `evidenze`), dati sulle linee di credito (`n_fido`, `importo_euro`, `scadenza`, …), cinque campi tooltip, le colonne appiattite dei cointestatari (`ndg_1..4` / `denominazione_1..4` / `ruolo_1..4`) e i 13 campi della "scheda privati" (`professione_principale`, `retribuzione_annua_netta`, `score_cgs`, …). Ogni campo porta con sé un valore, un punteggio di confidenza e un testo di evidenza.
 
 La lettura è un algoritmo a tre passaggi in `ExtractionPipeline` (**`src/extraction/pipeline.py`**):
 

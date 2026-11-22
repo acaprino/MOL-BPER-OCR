@@ -48,7 +48,7 @@ Leggere le schermate è metà del punto; il progetto esiste per misurare quanto 
 
 ### Valutazione su ground truth
 
-Ogni campo estratto viene confrontato con il valore atteso della sua pratica: un `dati.csv` nella cartella di `INPUT_DIR`, altrimenti il foglio della pratica in `data/pratiche/pratiche.xlsx` (ADR 0029). Il `dati.csv` ha formato lungo: `Fotogramma` / `Denominazione da attribuire` / `Valore rilevato`; il loader in **`src/extraction/evaluation.py`** tollera nomi di colonna alternativi via `_find_column()`). `classify_field()` in `src/extraction/normalization.py` etichetta ogni campo come **OK**, **WRONG**, **MISSING** (atteso un valore, ricevuto null), **HALLUCINATED** (atteso null, prodotto un valore) o **OK_NULL**.
+Ogni campo estratto viene confrontato con il valore atteso della sua pratica: un `dati.csv` nella cartella di `INPUT_DIR`, altrimenti le righe della pratica in `data/dataset/valori.csv` (ADR 0032). Il `dati.csv` ha formato lungo: `Fotogramma` / `Denominazione da attribuire` / `Valore rilevato`; il loader in **`src/extraction/evaluation.py`** tollera nomi di colonna alternativi via `_find_column()`). `classify_field()` in `src/extraction/normalization.py` etichetta ogni campo come **OK**, **WRONG**, **MISSING** (atteso un valore, ricevuto null), **HALLUCINATED** (atteso null, prodotto un valore) o **OK_NULL**.
 
 ### Metriche RAW e FILTERED
 

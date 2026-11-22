@@ -84,7 +84,7 @@ Two entry methods exist by design:
 
 - **CLI** (`python main.py`): batch-processes every `.png/.jpg/.jpeg` in `INPUT_DIR`, writes JSON
   results, prints accuracy metrics and a cost summary. Takes the truth of `INPUT_DIR` from a `dati.csv`
-  in it, else from its sheet of `data/pratiche/pratiche.xlsx` (ADR 0029; `FileNotFoundError` at
+  in it, else from its rows of `data/dataset/valori.csv` (ADR 0032; `FileNotFoundError` at
   `src/extraction/cli.py::main` when neither exists) -- see Data & Evaluation.
 - **Tkinter GUI** (`python gui_app.py`): desktop window for uploading screenshots, picking
   provider/model, viewing per-screen results, and exporting CSV/JSON. It loads dotenv before

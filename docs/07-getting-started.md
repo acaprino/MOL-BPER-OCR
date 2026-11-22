@@ -118,9 +118,9 @@ La factory rifiuta le coppie disallineate: un modello `gemini-*` con `LLM_PROVID
 
 ### 4. Fornisci il CSV di ground truth (solo CLI)
 
-Per le pratiche dell'archivio non serve nulla: con `INPUT_DIR` su una cartella di `data/pratiche` (default
-`data/pratiche/51350695`, la pratica di riferimento) la CLI legge i valori dal foglio della pratica in
-`data/pratiche/pratiche.xlsx` (ADR 0029). Per un'altra cartella colloca un `dati.csv` in `INPUT_DIR`: formato
+Per le pratiche dell'archivio non serve nulla: con `INPUT_DIR` su una cartella di `data/dataset/pratiche` (default
+`data/dataset/pratiche/51350695`, la pratica di riferimento) la CLI legge i valori dalle righe della pratica in
+`data/dataset/valori.csv` (ADR 0032). Per un'altra cartella colloca un `dati.csv` in `INPUT_DIR`: formato
 long, con intestazioni `Fotogramma`, `Denominazione da attribuire` e `Valore rilevato`.
 `Fotogramma` deve coincidere con il nome dell'immagine senza estensione: per
 `screen 1.png` usa `screen 1`, non `1` né `screen 1.png`. Il loader non converte
@@ -136,7 +136,7 @@ accuratezza: serve il dataset di riferimento autorizzato.
 ### 5. Esegui
 
 ```powershell
-python main.py                            # batch CLI sulla pratica di riferimento data/pratiche/51350695
+python main.py                            # batch CLI sulla pratica di riferimento data/dataset/pratiche/51350695
 python gui_app.py                         # GUI desktop Tkinter (scegli i file a mano)
 python main.py --gui                      # edge-agent (PyQt6) con cattura dal vivo
 python src/edge-agent/edge_agent.py           # edge-agent, lanciato direttamente

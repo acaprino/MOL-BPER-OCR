@@ -1,0 +1,2079 @@
+﻿Schermata;Campo;Chiave;Valore;Esito
+51185037/elenco-01;NDG;ndg;32015734;TRASCRITTO
+51185037/elenco-01;DENOMINAZIONE;denominazione;LUCIAC ...;TRASCRITTO
+51185037/elenco-01;Tipo;tipo;BMM;TRASCRITTO
+51185037/elenco-01;Stato;stato;APP;TRASCRITTO
+51185037/elenco-01;Fase;fase;;VUOTO
+51185037/elenco-01;Creazione;creazione;10/06/2025;TRASCRITTO
+51185037/elenco-01;Evidenze;evidenze;;VUOTO
+51185037/elenco-02;NDG;ndg;32015734;TRASCRITTO
+51185037/elenco-02;DENOMINAZIONE;denominazione;LUCIAC ...;TRASCRITTO
+51185037/elenco-02;Tipo;tipo;BMM;TRASCRITTO
+51185037/elenco-02;Stato;stato;APP;TRASCRITTO
+51185037/elenco-02;Fase;fase;;VUOTO
+51185037/elenco-02;Creazione;creazione;10/06/2025;TRASCRITTO
+51185037/elenco-02;Evidenze;evidenze;;VUOTO
+51185037/soggetti-01;NDG;ndg;32015734;TRASCRITTO
+51185037/soggetti-01;DENOMINAZIONE;denominazione;LUCIAC NICOLAS,LUCIAC MIHAIL;TRASCRITTO
+51185037/soggetti-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+51185037/soggetti-01;Filiale relazione;filiale_relazione;145 - PR S LAZZARO;TRASCRITTO
+51185037/soggetti-01;NDG 1;ndg_1;32015734;TRASCRITTO
+51185037/soggetti-01;DENOMINAZIONE 1;denominazione_1;LUCIAC NICOLAS,LUCIAC MIHAIL;TRASCRITTO
+51185037/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51185037/soggetti-01;NDG 2;ndg_2;2924479;TRASCRITTO
+51185037/soggetti-01;DENOMINAZIONE 2;denominazione_2;IVANOV VIORICA;TRASCRITTO
+51185037/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+51185037/soggetti-01;NDG 3;ndg_3;31950200;TRASCRITTO
+51185037/soggetti-01;DENOMINAZIONE 3;denominazione_3;LUCIAC NICOLAS;TRASCRITTO
+51185037/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+51185037/soggetti-01;NDG 4;ndg_4;31950226;TRASCRITTO
+51185037/soggetti-01;DENOMINAZIONE 4;denominazione_4;LUCIAC MIHAIL;TRASCRITTO
+51185037/soggetti-01;RUOLO 4;ruolo_4;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+51185037/gestione-fidi-01;NDG;ndg;32015734;TRASCRITTO
+51185037/gestione-fidi-01;DENOMINAZIONE;denominazione;LUCIAC NICOLAS,LUCIAC MIHAIL;TRASCRITTO
+51185037/gestione-fidi-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+51185037/gestione-fidi-01;Filiale relazione;filiale_relazione;145 - PR S LAZZARO;TRASCRITTO
+51185037/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51185037/gestione-fidi-01;Rapporto;rapporto;034 0145 0017 05508922;TRASCRITTO
+51185037/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51185037/gestione-fidi-01;Scadenza;scadenza;241 mesi;TRASCRITTO
+51185037/gestione-fidi-01;Importo (€);importo_euro;150.000;TRASCRITTO
+51185037/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51185037/gestione-fidi-02;NDG;ndg;32015734;TRASCRITTO
+51185037/gestione-fidi-02;DENOMINAZIONE;denominazione;LUCIAC NICOLAS,LUCIAC MIHAIL;TRASCRITTO
+51185037/gestione-fidi-02;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+51185037/gestione-fidi-02;Filiale relazione;filiale_relazione;145 - PR S LAZZARO;TRASCRITTO
+51185037/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+51185037/gestione-fidi-02;Rapporto;rapporto;034 0145 0017 05508922;TRASCRITTO
+51185037/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51185037/gestione-fidi-02;Scadenza;scadenza;241 mesi;TRASCRITTO
+51185037/gestione-fidi-02;Importo (€);importo_euro;150.000;TRASCRITTO
+51185037/gestione-fidi-02;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51185037/gestione-fidi-03;NDG;ndg;32015734;TRASCRITTO
+51185037/gestione-fidi-03;DENOMINAZIONE;denominazione;LUCIAC NICOLAS,LUCIAC MIHAIL;TRASCRITTO
+51185037/gestione-fidi-03;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+51185037/gestione-fidi-03;Filiale relazione;filiale_relazione;145 - PR S LAZZARO;TRASCRITTO
+51185037/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+51185037/gestione-fidi-03;Rapporto;rapporto;034 0145 0017 05508922;TRASCRITTO
+51185037/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51185037/gestione-fidi-03;Scadenza;scadenza;241 mesi;TRASCRITTO
+51185037/gestione-fidi-03;Importo (€);importo_euro;150.000;TRASCRITTO
+51185037/gestione-fidi-03;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51185037/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51185037/gestione-fidi-04;NDG;ndg;32015734;TRASCRITTO
+51185037/gestione-fidi-04;DENOMINAZIONE;denominazione;LUCIAC NICOLAS,LUCIAC MIHAIL;TRASCRITTO
+51185037/gestione-fidi-04;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+51185037/gestione-fidi-04;Filiale relazione;filiale_relazione;145 - PR S LAZZARO;TRASCRITTO
+51185037/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+51185037/gestione-fidi-04;Rapporto;rapporto;034 0145 0017 05508922;TRASCRITTO
+51185037/gestione-fidi-04;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51185037/gestione-fidi-04;Scadenza;scadenza;241 mesi;TRASCRITTO
+51185037/gestione-fidi-04;Importo (€);importo_euro;150.000;TRASCRITTO
+51185037/gestione-fidi-04;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51185037/note-01;NDG;ndg;32015734;TRASCRITTO
+51185037/note-01;DENOMINAZIONE;denominazione;LUCIAC NICOLAS,LUCIAC MIHAIL;TRASCRITTO
+51185037/note-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+51185037/note-01;Filiale relazione;filiale_relazione;145 - PR S LAZZARO;TRASCRITTO
+51185037/note-01;Note della richiesta;note_della_richiesta;MUTUO IPOTECARIO PER ACQUISTO IMMOBILE + RISTRUTTURAZIONE DI TOTALI 150.000 EURO (80.000 EURO ACQUISTO + 70.000 EURO PER RISTRUTTURAZIONE) Presentato da mediatore WE UNIT, Francesca Delfanti DURATA 240 MESI ( 228 MESI DI AMMORTAMENTO + 12 MESI DI PRE AMMORTAMENTO) PREZZO DI ACQUISTO 100.000 EURO (IMMOBILE GIA’ ACQUISTATO IN DATA 05/06, COME DA CERTIFICATO DI AVVENUTA STIPULA) COSTO RISTRUTTURAZIONE 180.000 EURO PERIZIA GIA’ EFFETTUATA, ALLEGATA - Valore immobile iniziale: 252.239 euro - Valore immobile a fine lavori: 353.000 euro L’IMMOBILE VERRA’ INTESTATO COME SEGUE: 50% LUCIAC MIHAIL 49% LUCIAC NICOLAS 1% IVANOV VIORICA (RISPETTIVAMENTE MOGLIE E MADRE DEI RICHIEDENTI) INSERIAMO LA SIGNORA VIORICA COME DATORE DI IPOTECA Prima erogazione: 80.000 (80% prezzo di acquisto) SAL ATTUALE 0% LUCIAC MIHAIL è dipendente a tempo indeterminato dal 2012 come operaio presso MELANDRI EMANUELE, impresa individuale del settore logistica. REDDITO NETTO ANNUO DA CAREN 23.953, MENSILIZZATI 1996 EURO PER 12 MESI NESSUNA USCITA MENSILE LUCIAC NICOLAS è dipendente di DI BACCO TRASPORTI come impiegato dal 11/2024. Inizialmente dipendente a tempo determinato part time, dal 02/2025 è inquadrato come apprendista full time. Stipendio netto mensile 1500 euro Nessuna uscita mensile La signora Ivanov Viorica, rispettivamente moglie e madre dei richiedenti, economicamente autonoma andrà ad abitare con loro. Avanziamo favorevolmente anche considerando i mezzi propri del nucleo familiare impiegati per l’operazione;TRASCRITTO
+51531667/elenco-01;NDG;ndg;10269201;TRASCRITTO
+51531667/elenco-01;DENOMINAZIONE;denominazione;TURRONI MATTIA;TRASCRITTO
+51531667/elenco-01;Tipo;tipo;BMS;TRASCRITTO
+51531667/elenco-01;Stato;stato;APP;TRASCRITTO
+51531667/elenco-01;Fase;fase;;VUOTO
+51531667/elenco-01;Creazione;creazione;04/12/2025;TRASCRITTO
+51531667/elenco-01;Evidenze;evidenze;;VUOTO
+51531667/elenco-02;NDG;ndg;10269201;TRASCRITTO
+51531667/elenco-02;DENOMINAZIONE;denominazione;TURRONI MATTIA;TRASCRITTO
+51531667/elenco-02;Tipo;tipo;BMS;TRASCRITTO
+51531667/elenco-02;Stato;stato;APP;TRASCRITTO
+51531667/elenco-02;Fase;fase;;VUOTO
+51531667/elenco-02;Creazione;creazione;04/12/2025;TRASCRITTO
+51531667/elenco-02;Evidenze;evidenze;;VUOTO
+51531667/elenco-03;NDG;ndg;10269201;TRASCRITTO
+51531667/elenco-03;DENOMINAZIONE;denominazione;TURRONI MATTIA;TRASCRITTO
+51531667/elenco-03;Tipo;tipo;BMS;TRASCRITTO
+51531667/elenco-03;Stato;stato;APP;TRASCRITTO
+51531667/elenco-03;Fase;fase;;VUOTO
+51531667/elenco-03;Creazione;creazione;04/12/2025;TRASCRITTO
+51531667/elenco-03;Evidenze;evidenze;;VUOTO
+51531667/soggetti-01;NDG;ndg;10269201;TRASCRITTO
+51531667/soggetti-01;DENOMINAZIONE;denominazione;TURRONI MATTIA;TRASCRITTO
+51531667/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51531667/soggetti-01;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/soggetti-01;NDG 1;ndg_1;10269201;TRASCRITTO
+51531667/soggetti-01;DENOMINAZIONE 1;denominazione_1;TURRONI MATTIA;TRASCRITTO
+51531667/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51531667/soggetti-01;NDG 2;ndg_2;10152311;TRASCRITTO
+51531667/soggetti-01;DENOMINAZIONE 2;denominazione_2;SCHIARITI ROSA,TURRONI STEFANO;TRASCRITTO
+51531667/soggetti-01;RUOLO 2;ruolo_2;Garante;TRASCRITTO
+51531667/soggetti-01;NDG 3;ndg_3;10152313;TRASCRITTO
+51531667/soggetti-01;DENOMINAZIONE 3;denominazione_3;TURRONI STEFANO;TRASCRITTO
+51531667/soggetti-01;RUOLO 3;ruolo_3;Garante;TRASCRITTO
+51531667/soggetti-01;NDG 4;ndg_4;10364373;TRASCRITTO
+51531667/soggetti-01;DENOMINAZIONE 4;denominazione_4;RIVAROLI ARIANNA;TRASCRITTO
+51531667/soggetti-01;RUOLO 4;ruolo_4;Garante;TRASCRITTO
+51531667/gestione-fidi-01;NDG;ndg;10269201;TRASCRITTO
+51531667/gestione-fidi-01;DENOMINAZIONE;denominazione;TURRONI MATTIA;TRASCRITTO
+51531667/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51531667/gestione-fidi-01;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51531667/gestione-fidi-01;Rapporto;rapporto;034 0744 0017 05502254;TRASCRITTO
+51531667/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51531667/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+51531667/gestione-fidi-01;Importo (€);importo_euro;201.000;TRASCRITTO
+51531667/gestione-fidi-01;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51531667/gestione-fidi-02;n° FIDO;n_fido;F2;TRASCRITTO
+51531667/gestione-fidi-02;Rapporto;rapporto;020 0744 0000 04479993;TRASCRITTO
+51531667/gestione-fidi-02;Descrizione;descrizione;C-PREF.PRIVATI;TRASCRITTO
+51531667/gestione-fidi-02;Scadenza;scadenza;30/04/2026;TRASCRITTO
+51531667/gestione-fidi-02;Importo (€);importo_euro;100.000;TRASCRITTO
+51531667/gestione-fidi-02;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51531667/gestione-fidi-03;NDG;ndg;10269201;TRASCRITTO
+51531667/gestione-fidi-03;DENOMINAZIONE;denominazione;TURRONI MATTIA;TRASCRITTO
+51531667/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+51531667/gestione-fidi-03;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+51531667/gestione-fidi-03;Rapporto;rapporto;034 0744 0017 05502254;TRASCRITTO
+51531667/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51531667/gestione-fidi-03;Scadenza;scadenza;361 mesi;TRASCRITTO
+51531667/gestione-fidi-03;Importo (€);importo_euro;201.000;TRASCRITTO
+51531667/gestione-fidi-03;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51531667/gestione-fidi-04;NDG;ndg;10269201;TRASCRITTO
+51531667/gestione-fidi-04;DENOMINAZIONE;denominazione;TURRONI MATTIA;TRASCRITTO
+51531667/gestione-fidi-04;Tipo;tipo;BPI Mutui;TRASCRITTO
+51531667/gestione-fidi-04;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+51531667/gestione-fidi-04;Rapporto;rapporto;034 0744 0017 05502254;TRASCRITTO
+51531667/gestione-fidi-04;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51531667/gestione-fidi-04;Scadenza;scadenza;361 mesi;TRASCRITTO
+51531667/gestione-fidi-04;Importo (€);importo_euro;201.000;TRASCRITTO
+51531667/gestione-fidi-04;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51531667/gestione-fidi-05;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/gestione-fidi-05;n° FIDO;n_fido;F1;TRASCRITTO
+51531667/gestione-fidi-05;Rapporto;rapporto;034 0744 0017 05502254;TRASCRITTO
+51531667/gestione-fidi-05;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51531667/gestione-fidi-05;Scadenza;scadenza;361 mesi;TRASCRITTO
+51531667/gestione-fidi-05;Importo (€);importo_euro;201.000;TRASCRITTO
+51531667/gestione-fidi-05;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51531667/gestione-fidi-05;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51531667/gestione-fidi-06;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/gestione-fidi-06;n° FIDO;n_fido;F1;TRASCRITTO
+51531667/gestione-fidi-06;Rapporto;rapporto;034 0744 0017 05502254;TRASCRITTO
+51531667/gestione-fidi-06;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51531667/gestione-fidi-06;Scadenza;scadenza;361 mesi;TRASCRITTO
+51531667/gestione-fidi-06;Importo (€);importo_euro;201.000;TRASCRITTO
+51531667/gestione-fidi-06;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51531667/gestione-fidi-07;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/gestione-fidi-07;n° FIDO;n_fido;F1;TRASCRITTO
+51531667/gestione-fidi-07;Rapporto;rapporto;034 0744 0017 05502254;TRASCRITTO
+51531667/gestione-fidi-07;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51531667/gestione-fidi-07;Scadenza;scadenza;361 mesi;TRASCRITTO
+51531667/gestione-fidi-07;Importo (€);importo_euro;201.000;TRASCRITTO
+51531667/gestione-fidi-07;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51531667/gestione-fidi-08;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/gestione-fidi-08;n° FIDO;n_fido;F1;TRASCRITTO
+51531667/gestione-fidi-08;Rapporto;rapporto;034 0744 0017 05502254;TRASCRITTO
+51531667/gestione-fidi-08;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51531667/gestione-fidi-08;Scadenza;scadenza;361 mesi;TRASCRITTO
+51531667/gestione-fidi-08;Importo (€);importo_euro;201.000;TRASCRITTO
+51531667/gestione-fidi-08;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51531667/note-01;NDG;ndg;10269201;TRASCRITTO
+51531667/note-01;DENOMINAZIONE;denominazione;TURRONI MATTIA;TRASCRITTO
+51531667/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51531667/note-01;Filiale relazione;filiale_relazione;744 - PINARELLA;TRASCRITTO
+51531667/note-01;Note della richiesta;note_della_richiesta;SI RICHIEDE IL RINNOVO DELLE LINEE IN SEGUITO AL MANCATO RISPETTO DEL TERMINE DI CONSEGNA DELL'IMMOBILE DA PARTE DEL COSTRUTTORE IL QUALE FISSA LA NUOVA SCADENZA AL 31/03/2026. FIRMATO NUOVO PRELIMINARE PER LA VENDITA DELL'IMMOBILE DI PROPRIETA' DELLA GARANTE E DATRICE D'IPOTECA RIVAROLI ARIANNA CON NUOVO TERMINE 31/03/2026. IN VIA PRUDENZIALE INSERITA SCADENZA DEL PREFINANZIAMENTO AL 30/04/26. SI ALLEGA NUOVA DICHIARAZIONE DEI REDDITI DEL RICHIEDENTE, CAREN E SIMULATORE. PER PRATICITA' SI RIPORTA IL COMMENTO ALLA PEF PRECEDENTE: Pre-finanziamento di euro 100 mila sc. 31/12/2025 garantito da pegno su dossier titoli n. 06249105 sul quale verranno trasferiti i titoli dal dossier ordinario per ctv 30.906 intestato a Turroni Stefano e Schiariti Rosa e da pegno su c/c vincolato con liquidità di euro 20 mila intestato al Sig. Turroni Stefano. Pertanto datori di pegno Turroni Stefano e Schiariti Rosa, genitori del richiedente. I titoli a pegno verrano girati dal dossier n. 50139457 come da PI.CO allegata. Il dossier è composto dai seguenti titoli: - Arca C Att PI 27 3 R (risparmio gestito), non ha scadenza, CTV al 20/05/25 di euro 10.656,27 var 0,28%, scarto di garanzia previsto 10%, valore pegno scartato euro 9.590,40, orizzonte temporale coerente - Cert Bper Sto 30 26 (derivato) scadenza 29/09/2026, Valore nominale euro 15.000,00 VAR 0,14% Haircat 100% per cui valore scartato 0, orizzonte temporale coerente - Cert Bper Sto 600 28 (derivato) scadenza 11/02/2028 valore nominale euro 5.000,00 VAR 1,06% Haircut 100%, valore scartato 0, orizzonte temporale coerente.;TRASCRITTO
+51659595/elenco-01;NDG;ndg;32221698;TRASCRITTO
+51659595/elenco-01;DENOMINAZIONE;denominazione;LANDOGNA CORRADO;TRASCRITTO
+51659595/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+51659595/elenco-01;Stato;stato;APP;TRASCRITTO
+51659595/elenco-01;Fase;fase;;VUOTO
+51659595/elenco-01;Creazione;creazione;13/02/2026;TRASCRITTO
+51659595/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+51659595/elenco-02;NDG;ndg;32221698;TRASCRITTO
+51659595/elenco-02;DENOMINAZIONE;denominazione;LANDOGNA CORRADO;TRASCRITTO
+51659595/elenco-02;Tipo;tipo;BMB;TRASCRITTO
+51659595/elenco-02;Stato;stato;APP;TRASCRITTO
+51659595/elenco-02;Fase;fase;;VUOTO
+51659595/elenco-02;Creazione;creazione;13/02/2026;TRASCRITTO
+51659595/elenco-02;Evidenze;evidenze;B;TRASCRITTO
+51659595/elenco-03;NDG;ndg;32221698;TRASCRITTO
+51659595/elenco-03;DENOMINAZIONE;denominazione;LANDOGNA CORRADO;TRASCRITTO
+51659595/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+51659595/elenco-03;Stato;stato;APP;TRASCRITTO
+51659595/elenco-03;Fase;fase;;VUOTO
+51659595/elenco-03;Creazione;creazione;13/02/2026;TRASCRITTO
+51659595/elenco-03;Evidenze;evidenze;B;TRASCRITTO
+51659595/elenco-03;tooltip su valore campo Descrizione: BMB;tooltip_descrizione_bmb;BPI Mutui Origination Bstore;TRASCRITTO
+51659595/elenco-04;NDG;ndg;32221698;TRASCRITTO
+51659595/elenco-04;DENOMINAZIONE;denominazione;LANDOGNA CORRADO;TRASCRITTO
+51659595/elenco-04;Tipo;tipo;BMB;TRASCRITTO
+51659595/elenco-04;Stato;stato;APP;TRASCRITTO
+51659595/elenco-04;Fase;fase;;VUOTO
+51659595/elenco-04;Creazione;creazione;13/02/2026;TRASCRITTO
+51659595/elenco-04;Evidenze;evidenze;B;TRASCRITTO
+51659595/elenco-04;tooltip su valore campo Evidenze: B;tooltip_evidenze_b;Origination BSTORE;TRASCRITTO
+51659595/soggetti-01;NDG;ndg;32221698;TRASCRITTO
+51659595/soggetti-01;DENOMINAZIONE;denominazione;LANDOGNA CORRADO;TRASCRITTO
+51659595/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51659595/soggetti-01;Filiale relazione;filiale_relazione;21 - CASTELFRANCO;TRASCRITTO
+51659595/soggetti-01;NDG 1;ndg_1;32221698;TRASCRITTO
+51659595/soggetti-01;DENOMINAZIONE 1;denominazione_1;LANDOGNA CORRADO;TRASCRITTO
+51659595/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51659595/soggetti-01;NDG 2;ndg_2;32462622;TRASCRITTO
+51659595/soggetti-01;DENOMINAZIONE 2;denominazione_2;LANDOGNA ANTONINO;TRASCRITTO
+51659595/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+51659595/soggetti-01;NDG 3;ndg_3;32462667;TRASCRITTO
+51659595/soggetti-01;DENOMINAZIONE 3;denominazione_3;ADERNO' GIOVANNA;TRASCRITTO
+51659595/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+51659595/soggetti-01;NDG 4;ndg_4;32292028;TRASCRITTO
+51659595/soggetti-01;DENOMINAZIONE 4;denominazione_4;CRISTIANO MARIA SIMONA,LANDOGNA CORR;TRASCRITTO
+51659595/soggetti-01;RUOLO 4;ruolo_4;Cointestazione;TRASCRITTO
+51659595/gestione-fidi-01;NDG;ndg;32221698;TRASCRITTO
+51659595/gestione-fidi-01;DENOMINAZIONE;denominazione;LANDOGNA CORRADO;TRASCRITTO
+51659595/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51659595/gestione-fidi-01;Filiale relazione;filiale_relazione;21 - CASTELFRANCO;TRASCRITTO
+51659595/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51659595/gestione-fidi-01;Rapporto;rapporto;034 0021 0017 05585799;TRASCRITTO
+51659595/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51659595/gestione-fidi-01;Scadenza;scadenza;301 mesi;TRASCRITTO
+51659595/gestione-fidi-01;Importo (€);importo_euro;135.800;TRASCRITTO
+51659595/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51659595/gestione-fidi-02;NDG;ndg;32221698;TRASCRITTO
+51659595/gestione-fidi-02;DENOMINAZIONE;denominazione;LANDOGNA CORRADO;TRASCRITTO
+51659595/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+51659595/gestione-fidi-02;Filiale relazione;filiale_relazione;21 - CASTELFRANCO;TRASCRITTO
+51659595/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+51659595/gestione-fidi-02;Rapporto;rapporto;034 0021 0017 05585799;TRASCRITTO
+51659595/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51659595/gestione-fidi-02;Scadenza;scadenza;301 mesi;TRASCRITTO
+51659595/gestione-fidi-02;Importo (€);importo_euro;135.800;TRASCRITTO
+51659595/gestione-fidi-02;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51659595/gestione-fidi-02;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51659595/note-01;NDG;ndg;32221698;TRASCRITTO
+51659595/note-01;DENOMINAZIONE;denominazione;LANDOGNA CORRADO;TRASCRITTO
+51659595/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51659595/note-01;Filiale relazione;filiale_relazione;21 - CASTELFRANCO;TRASCRITTO
+51659595/note-01;Note della richiesta;note_della_richiesta;"Landogna Corrado, nuovo cliente BPER, intende acquistare immobile in Modena. Prezzo di acquisto: 165.000 euro ; in richiesta mutuo promo assicurato gennaio 2026 di euro 135.800 da restituire in 25 anni a TF. Effettuato check up assicurativo e questionario Arca meet you. Infermiere a tempo indeterminato (presso Ausl di Modena da 01/2021 a 01/2026 e ora presso Azienda Ospedaliero-Universitaria di Modena da 02/2026) percepisce redditi netti annui desunti da CAREN CUD 2025 di circa 24.726 euro. Attualmente vive con la ex compagna in affitto pagando un canone mensile di circa euro 484 totali (circa 242 euro a testa). In richiesta mutuo per acquisto immobile in cui andare a vivere da solo. Inserite garanzie dei due genitori (fideiussione solidale limitata in atto) in quanto mutuo non fondiario e il cliente riferisce di aver vinto un concorso e quindi di aver cambiato lavoro (a tempo indeterminato e senza prova) da Azienda AUSL di Modena a Azienda Ospedaliero - Universitaria di Modena. Sopra si è inserito reddito desunto da CAREN CUD 2025; la decorrenza del nuovo contratto è a partire dal 04/02/2026. Unico impegno a sistema: PP con rata mensile di euro 266 e con scadenza 2030. - Numero Finanziamento FICS: 017/5585799 - Numero proposta DESK: 2790868 - Importo perizia: 176.000,00 € - Valore immobile presunto: 165.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 135.800,00 € IMPORTO PER PRIMA CASA : 135.800,00 € IMPORTO RICHIESTO : 135.800,00 € - Codice immobile: 4805275; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garanti ANTONINO LANDOGNA (32462622), GIOVANNA ADERNO' (32462667)";TRASCRITTO
+52060489/elenco-01;NDG;ndg;36248986;TRASCRITTO
+52060489/elenco-01;DENOMINAZIONE;denominazione;ZHENG L...;TRASCRITTO
+52060489/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52060489/elenco-01;Stato;stato;ABB;TRASCRITTO
+52060489/elenco-01;Fase;fase;IST;TRASCRITTO
+52060489/elenco-01;Creazione;creazione;27/08/2026;TRASCRITTO
+52060489/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+52060489/elenco-02;NDG;ndg;36248986;TRASCRITTO
+52060489/elenco-02;DENOMINAZIONE;denominazione;ZHENG L...;TRASCRITTO
+52060489/elenco-02;Tipo;tipo;BMB;TRASCRITTO
+52060489/elenco-02;Stato;stato;ABB;TRASCRITTO
+52060489/elenco-02;Fase;fase;IST;TRASCRITTO
+52060489/elenco-02;Creazione;creazione;27/08/2026;TRASCRITTO
+52060489/elenco-02;Evidenze;evidenze;B;TRASCRITTO
+52060489/elenco-02;tooltip su valore campo Evidenze: B;tooltip_evidenze_b;Origination BSTORE;TRASCRITTO
+52060489/elenco-03;NDG;ndg;36248986;TRASCRITTO
+52060489/elenco-03;DENOMINAZIONE;denominazione;ZHENG L...;TRASCRITTO
+52060489/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+52060489/elenco-03;Stato;stato;ABB;TRASCRITTO
+52060489/elenco-03;Fase;fase;IST;TRASCRITTO
+52060489/elenco-03;Creazione;creazione;27/08/2026;TRASCRITTO
+52060489/elenco-03;Evidenze;evidenze;B;TRASCRITTO
+52060489/elenco-03;tooltip su valore campo Descrizione: BMB;tooltip_descrizione_bmb;BPI Mutui Origination Bstore;TRASCRITTO
+52060489/soggetti-01;NDG;ndg;36248986;TRASCRITTO
+52060489/soggetti-01;DENOMINAZIONE;denominazione;ZHENG LINA,CHEN WEIHUA;TRASCRITTO
+52060489/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52060489/soggetti-01;Filiale relazione;filiale_relazione;3217 - GALLARATE MA;TRASCRITTO
+52060489/soggetti-01;NDG 1;ndg_1;36248986;TRASCRITTO
+52060489/soggetti-01;DENOMINAZIONE 1;denominazione_1;ZHENG LINA,CHEN WEIHUA;TRASCRITTO
+52060489/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52060489/soggetti-01;NDG 2;ndg_2;20515962;TRASCRITTO
+52060489/soggetti-01;DENOMINAZIONE 2;denominazione_2;CHEN WEIHUA;TRASCRITTO
+52060489/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52060489/soggetti-01;NDG 3;ndg_3;21310900;TRASCRITTO
+52060489/soggetti-01;DENOMINAZIONE 3;denominazione_3;ZHENG LINA;TRASCRITTO
+52060489/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52060489/soggetti-01;NDG 4;ndg_4;;VUOTO
+52060489/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52060489/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52060489/gestione-fidi-01;NDG;ndg;36248986;TRASCRITTO
+52060489/gestione-fidi-01;DENOMINAZIONE;denominazione;ZHENG LINA,CHEN WEIHUA;TRASCRITTO
+52060489/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52060489/gestione-fidi-01;Filiale relazione;filiale_relazione;3217 - GALLARATE MA;TRASCRITTO
+52060489/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52060489/gestione-fidi-01;Rapporto;rapporto;034 3217 0017 05666365;TRASCRITTO
+52060489/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52060489/gestione-fidi-01;Scadenza;scadenza;15/09/2056;TRASCRITTO
+52060489/gestione-fidi-01;Importo (€);importo_euro;210.000;TRASCRITTO
+52060489/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52060489/gestione-fidi-02;NDG;ndg;36248986;TRASCRITTO
+52060489/gestione-fidi-02;DENOMINAZIONE;denominazione;ZHENG LINA,CHEN WEIHUA;TRASCRITTO
+52060489/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+52060489/gestione-fidi-02;Filiale relazione;filiale_relazione;3217 - GALLARATE MA;TRASCRITTO
+52060489/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52060489/gestione-fidi-02;Rapporto;rapporto;034 3217 0017 05666365;TRASCRITTO
+52060489/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52060489/gestione-fidi-02;Scadenza;scadenza;15/09/2056;TRASCRITTO
+52060489/gestione-fidi-02;Importo (€);importo_euro;210.000;TRASCRITTO
+52060489/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52060489/gestione-fidi-03;NDG;ndg;36248986;TRASCRITTO
+52060489/gestione-fidi-03;DENOMINAZIONE;denominazione;ZHENG LINA,CHEN WEIHUA;TRASCRITTO
+52060489/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+52060489/gestione-fidi-03;Filiale relazione;filiale_relazione;3217 - GALLARATE MA;TRASCRITTO
+52060489/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52060489/gestione-fidi-03;Rapporto;rapporto;034 3217 0017 05666365;TRASCRITTO
+52060489/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52060489/gestione-fidi-03;Scadenza;scadenza;15/09/2056;TRASCRITTO
+52060489/gestione-fidi-03;Importo (€);importo_euro;210.000;TRASCRITTO
+52060489/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52060489/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52060489/gestione-fidi-04;NDG;ndg;36248986;TRASCRITTO
+52060489/gestione-fidi-04;DENOMINAZIONE;denominazione;ZHENG LINA,CHEN WEIHUA;TRASCRITTO
+52060489/gestione-fidi-04;Tipo;tipo;BPI Mutui;TRASCRITTO
+52060489/gestione-fidi-04;Filiale relazione;filiale_relazione;3217 - GALLARATE MA;TRASCRITTO
+52060489/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+52060489/gestione-fidi-04;Rapporto;rapporto;034 3217 0017 05666365;TRASCRITTO
+52060489/gestione-fidi-04;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52060489/gestione-fidi-04;Scadenza;scadenza;15/09/2056;TRASCRITTO
+52060489/gestione-fidi-04;Importo (€);importo_euro;210.000;TRASCRITTO
+52060489/gestione-fidi-04;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52060489/note-01;NDG;ndg;36248986;TRASCRITTO
+52060489/note-01;DENOMINAZIONE;denominazione;ZHENG LINA,CHEN WEIHUA;TRASCRITTO
+52060489/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52060489/note-01;Filiale relazione;filiale_relazione;3217 - GALLARATE MA;TRASCRITTO
+52060489/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5666365 - Numero proposta DESK: 3062700 - Importo perizia: N.D. - Valore immobile presunto: 260.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 210.000,00 € IMPORTO PER PRIMA CASA : 210.000,00 € IMPORTO RICHIESTO : 210.000,00 € - Codice immobile: 3365402; 5101639; 1 RICHIEDENTE. La cliente, classe 1991 cittadinanza cinese residente in Italia dal 2012. Lavora con contratto a tempo indeterminato dal 12/2012 preso il ristorante del compagno FELICE FAMIGLIA SAS (ndg 20515962 cliente da oltre 14 anni rating 2 cribis class D) Reddito netto annuo da cud 2026 euro 18955,00. Nubile, convive con il sig. Chen Weihua, in casa di proprieta' sita in Gallarate Via Varese 27 su cui grava nostro mutuo ipotecario in regolare ammortamento con debito residuo di euro 25.175,86 € e rata mensile di euro 330,00. Valore immobile da valutazione dinamica scheda immobile 114.951euro Su questo immobile iscriveremo ipoteca di secondo grado primo sostanziale in modo da diminuire il capitale residuo di questo nuovo mutuo all'atto della vendita, che avverrà nei tempi previsti per usufruire dei benefici prima casa. La cliente ha 3 figli di 14- 13 e 1 anno per i quali percepisce assegno unico di euro 812,00 2 RICHIEDENTE classe 1987, celibe titolare del ristorante FELICE FAMIGLIA SAS reddito netto da pf2025 euro 27863,00. Ci viene richiesto mutuo ipotecario per acquisto e ristrutturazione di casa indipendente sita in Gallarate via Varese 46 dove la famiglia andra' a vivere l'immobile sara' intestato unicamente alla sig.a ZHEN LINA Importo acquisto euro 200.000,00 Caparra 2000,00 in sede di proposta Rogito a saldo Importo computo metrico estimativo euro 100.660,00 Importo mutuo totale 210.000,00 cosi' suddiviso: Importo mutuo per acquisto 160.000,00 Importo mutuo a sal per ristrutturazione 50.000,00 Durata 360 mesi di cui 12 di preammortamento Importo rata 990,00 euro Tasso fisso 3,90% LTV 54% LTC 70%";TRASCRITTO
+52062600/elenco-01;NDG;ndg;36237200;TRASCRITTO
+52062600/elenco-01;DENOMINAZIONE;denominazione;KOLA AL...;TRASCRITTO
+52062600/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52062600/elenco-01;Stato;stato;LAV;TRASCRITTO
+52062600/elenco-01;Fase;fase;DEL;TRASCRITTO
+52062600/elenco-01;Creazione;creazione;28/08/2026;TRASCRITTO
+52062600/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+52062600/elenco-02;NDG;ndg;36237200;TRASCRITTO
+52062600/elenco-02;DENOMINAZIONE;denominazione;KOLA AL...;TRASCRITTO
+52062600/elenco-02;Tipo;tipo;BMB;TRASCRITTO
+52062600/elenco-02;Stato;stato;LAV;TRASCRITTO
+52062600/elenco-02;Fase;fase;DEL;TRASCRITTO
+52062600/elenco-02;Creazione;creazione;28/08/2026;TRASCRITTO
+52062600/elenco-02;Evidenze;evidenze;B;TRASCRITTO
+52062600/elenco-02;tooltip su valore campo Descrizione: BMB;tooltip_descrizione_bmb;BPI Mutui Origination Bstore;TRASCRITTO
+52062600/elenco-03;NDG;ndg;36237200;TRASCRITTO
+52062600/elenco-03;DENOMINAZIONE;denominazione;KOLA AL...;TRASCRITTO
+52062600/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+52062600/elenco-03;Stato;stato;LAV;TRASCRITTO
+52062600/elenco-03;Fase;fase;DEL;TRASCRITTO
+52062600/elenco-03;Creazione;creazione;28/08/2026;TRASCRITTO
+52062600/elenco-03;Evidenze;evidenze;B;TRASCRITTO
+52062600/elenco-03;tooltip su valore campo Evidenze: B;tooltip_evidenze_b;Origination BSTORE;TRASCRITTO
+52062600/soggetti-01;NDG;ndg;36237200;TRASCRITTO
+52062600/soggetti-01;DENOMINAZIONE;denominazione;KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI;TRASCRITTO
+52062600/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52062600/soggetti-01;Filiale relazione;filiale_relazione;14 - SASSUOLO MAR;TRASCRITTO
+52062600/soggetti-01;NDG 1;ndg_1;36237200;TRASCRITTO
+52062600/soggetti-01;DENOMINAZIONE 1;denominazione_1;KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI;TRASCRITTO
+52062600/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52062600/soggetti-01;NDG 2;ndg_2;36214602;TRASCRITTO
+52062600/soggetti-01;DENOMINAZIONE 2;denominazione_2;KOLA ENKELEDA;TRASCRITTO
+52062600/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52062600/soggetti-01;NDG 3;ndg_3;36214640;TRASCRITTO
+52062600/soggetti-01;DENOMINAZIONE 3;denominazione_3;KOLA ALTIN;TRASCRITTO
+52062600/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52062600/soggetti-01;NDG 4;ndg_4;36215691;TRASCRITTO
+52062600/soggetti-01;DENOMINAZIONE 4;denominazione_4;KOLA KLEJDI;TRASCRITTO
+52062600/soggetti-01;RUOLO 4;ruolo_4;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52062600/gestione-fidi-01;NDG;ndg;36237200;TRASCRITTO
+52062600/gestione-fidi-01;DENOMINAZIONE;denominazione;KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI;TRASCRITTO
+52062600/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52062600/gestione-fidi-01;Filiale relazione;filiale_relazione;14 - SASSUOLO MAR;TRASCRITTO
+52062600/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52062600/gestione-fidi-01;Rapporto;rapporto;034 0014 0017 05665788;TRASCRITTO
+52062600/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52062600/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+52062600/gestione-fidi-01;Importo (€);importo_euro;264.000;TRASCRITTO
+52062600/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52062600/gestione-fidi-02;NDG;ndg;36237200;TRASCRITTO
+52062600/gestione-fidi-02;DENOMINAZIONE;denominazione;KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI;TRASCRITTO
+52062600/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+52062600/gestione-fidi-02;Filiale relazione;filiale_relazione;14 - SASSUOLO MAR;TRASCRITTO
+52062600/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52062600/gestione-fidi-02;Rapporto;rapporto;034 0014 0017 05665788;TRASCRITTO
+52062600/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52062600/gestione-fidi-02;Scadenza;scadenza;361 mesi;TRASCRITTO
+52062600/gestione-fidi-02;Importo (€);importo_euro;264.000;TRASCRITTO
+52062600/gestione-fidi-02;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52062600/gestione-fidi-03;NDG;ndg;36237200;TRASCRITTO
+52062600/gestione-fidi-03;DENOMINAZIONE;denominazione;KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI;TRASCRITTO
+52062600/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+52062600/gestione-fidi-03;Filiale relazione;filiale_relazione;14 - SASSUOLO MAR;TRASCRITTO
+52062600/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52062600/gestione-fidi-03;Rapporto;rapporto;034 0014 0017 05665788;TRASCRITTO
+52062600/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52062600/gestione-fidi-03;Scadenza;scadenza;361 mesi;TRASCRITTO
+52062600/gestione-fidi-03;Importo (€);importo_euro;264.000;TRASCRITTO
+52062600/gestione-fidi-03;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52062600/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52062600/note-01;NDG;ndg;36237200;TRASCRITTO
+52062600/note-01;DENOMINAZIONE;denominazione;KOLA ALTIN,KOLA ENKELEDA,KOLA KLEJDI;TRASCRITTO
+52062600/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52062600/note-01;Filiale relazione;filiale_relazione;14 - SASSUOLO MAR;TRASCRITTO
+52062600/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5665788 - Numero proposta DESK: 3060496 - Importo perizia: N.D. - Valore immobile presunto: 333.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 264.000,00 € IMPORTO PER PRIMA CASA : 264.000,00 € IMPORTO RICHIESTO : 264.000,00 € - Codice immobile: 5141509; ------------------------------------------------------------------- Richiesta di mutuo ipotecario fondiario di € 264.000 con durata 30 anni, finalizzata all'acquisto dell'immobile sito in Via Cascariolo n. 16 - Modena, da destinare ad abitazione principale dei richiedenti Kola Altin, Kola Enkeleda e Kola Klejdi. Dettagli dell'operazione Prezzo di acquisto: € 330.000 Importo mutuo richiesto: € 264.000 Mezzi propri: € 66.000 LTV: 80% Durata: 30 anni Tasso: 3,10% Perizia: € 350 Imposta sostitutiva: 0,25% (acquisto prima casa) Spese di istruttoria: 1,20% Perizia da richiedere successivamente all'eventuale delibera creditizia. Trattasi di nuovi clienti della scrivente Filiale, che procederanno all'apertura del rapporto di conto corrente presso BPER Banca in caso di esito favorevole dell'istruttoria. Composizione del nucleo richiedente Il sig. Kola Klejdi, nuovo cliente della scrivente Filiale, è cittadino albanese regolarmente soggiornante in Italia, titolare di permesso di soggiorno con validità fino al 04/01/2028. Dal gennaio 2023 è assunto presso ALB Trasporti 2013 S.r.l. con contratto di lavoro subordinato a tempo indeterminato part-time di 30 ore settimanali e svolge mansioni nell'ambito del trasporto merci. La permanenza presso il medesimo datore di lavoro da oltre tre anni evidenzia una buona continuità lavorativa. Il cliente ha in essere un finanziamento finalizzato all'acquisto di autovettura con rata mensile pari a circa € 338, debito residuo di circa € 11.677 e scadenza prevista per il 02/2028. La posizione CRIF non risulta disponibile in fase di istruttoria.";TRASCRITTO
+52062600/note-02;Note della richiesta;note_della_richiesta;"Richiesta di mutuo ipotecario fondiario di € 264.000 con durata 30 anni, finalizzata all'acquisto dell'immobile sito in Via Cascariolo n. 16 - Modena, da destinare ad abitazione principale dei richiedenti Kola Altin, Kola Enkeleda e Kola Klejdi. Dettagli dell'operazione Prezzo di acquisto: € 330.000 Importo mutuo richiesto: € 264.000 Mezzi propri: € 66.000 LTV: 80% Durata: 30 anni Tasso: 3,10% Perizia: € 350 Imposta sostitutiva: 0,25% (acquisto prima casa) Spese di istruttoria: 1,20% Perizia da richiedere successivamente all'eventuale delibera creditizia. Trattasi di nuovi clienti della scrivente Filiale, che procederanno all'apertura del rapporto di conto corrente presso BPER Banca in caso di esito favorevole dell'istruttoria. Composizione del nucleo richiedente Il sig. Kola Klejdi, nuovo cliente della scrivente Filiale, è cittadino albanese regolarmente soggiornante in Italia, titolare di permesso di soggiorno con validità fino al 04/01/2028. Dal gennaio 2023 è assunto presso ALB Trasporti 2013 S.r.l. con contratto di lavoro subordinato a tempo indeterminato part-time di 30 ore settimanali e svolge mansioni nell'ambito del trasporto merci. La permanenza presso il medesimo datore di lavoro da oltre tre anni evidenzia una buona continuità lavorativa. Il cliente ha in essere un finanziamento finalizzato all'acquisto di autovettura con rata mensile pari a circa € 338, debito residuo di circa € 11.677 e scadenza prevista per il 02/2028. La posizione CRIF non risulta disponibile in fase di istruttoria. La sig.ra Kola Enkeleda, madre del sig. Klejdi e coniuge del sig. Altin, è cittadina albanese regolarmente soggiornante in Italia, titolare di permesso di soggiorno con validità fino al 03/10/2027. Risulta assunta presso Li Lium S.r.l. Unipersonale dal mese di dicembre 2025 con contratto di lavoro a tempo indeterminato e svolge l'attività di parrucchiera presso il Centro Commerciale ""I Portali"" di Modena. La cliente è coniugata in regime di comunione legale dei beni con il sig. Altin, come da certificazione di matrimonio debitamente tradotta e autenticata allegata alla pratica. In procedura BStore è stato allegato il modello 730/2026 relativo al periodo d'imposta 2025. Il reddito netto indicato in scheda privati è stato determinato mediante il Calcolatore PMI, sulla base della documentazione contrattuale prodotta, che prevede una retribuzione lorda mensile pari a € 1.429 per 13 mensilità. La cliente non presenta finanziamenti in essere dichiarati ma fiscalmente a carico al 100% la figlia tredicenne. Anche per la sig.ra Enkeleda la posizione CRIF non risulta disponibile in fase di inserimento della richiesta. Il sig. Kola Altin, coniuge della sig.ra Enkeleda e padre del sig. Klejdi, presta attività lavorativa presso AL Posa S.r.l.s. dal mese di aprile 2025. Il rapporto di lavoro, inizialmente instaurato a tempo determinato, è stato trasformato a tempo indeterminato con decorrenza 01/07/2026. Il cliente svolge la mansione di posatore/piastrellista. Il reddito netto è stato desunto da CAREN sulla base della CU 2026, riferita al periodo d'imposta 2025, che evidenzia redditi percepiti nel periodo compreso tra aprile e dicembre 2025 per complessivi € 14.098. Nella documentazione contrattuale prodotta non è espressamente indicata la retribuzione lorda; il trattamento economico risulta disciplinato dalle previsioni del CCNL Edilizia applicato dall'azienda. Ai fini della valutazione è stato pertanto considerato il minimo tabellare previsto dal CCNL Edilizia per operaio inquadrato al livello 7/1, pari a circa € 2.234,71 lordi mensili. Il cliente è inoltre titolare di regolare permesso di soggiorno con scadenza 02/2027. Nel complesso, il nucleo familiare beneficia della presenza di tre coobbligati e di tre fonti di reddito. Attualmente il nucleo risiede in un immobile condotto in locazione dal gennaio 2023, sostenendo un canone mensile pari a € 550, regolarmente corrisposto. L'operazione presenta un LTV pari all'80%, con apporto di mezzi propri da parte degli acquirenti pari a € 66.000. Parte venditrice: Sig. Giovanni Capasso (MDS Personal) e Sig.ra Giustina Russiello";TRASCRITTO
+52062600/scheda-privati-01;NDG;ndg;036214640;TRASCRITTO
+52062600/scheda-privati-01;DENOMINAZIONE;denominazione;KOLA ALTIN;TRASCRITTO
+52062600/scheda-privati-01;Professione principale;professione_principale;OPERAIO IMPRESE PRIVATE (INDUSTRIA);TRASCRITTO
+52062600/scheda-privati-01;Numero mensilità;numero_mensilita;13;TRASCRITTO
+52062600/scheda-privati-01;Retribuzione annua netta;retribuzione_annua_netta;18.000;TRASCRITTO
+52062600/scheda-privati-01;Tipo contratto;tipo_contratto;TEMPO INDETERMINATO;TRASCRITTO
+52062600/scheda-privati-01;DATORE DI LAVORO ANAGRAFICA;datore_di_lavoro_anagrafica;AL - POSA SRLS;TRASCRITTO
+52062600/scheda-privati-01;RATING UFFICIALE;rating_ufficiale;N/D;TRASCRITTO
+52062600/scheda-privati-01;SCORE CGS;score_cgs;N/D;TRASCRITTO
+52062600/scheda-privati-01;DAL;dal;LUGLIO 2026;TRASCRITTO
+52062600/scheda-privati-01;Ultima validazione scheda privati;ultima_validazione_scheda;02/10/2026 10:54 (4 giorni fa);TRASCRITTO
+52062600/scheda-privati-02;DATORE DI LAVORO ANAGRAFICA;datore_di_lavoro_anagrafica;;VUOTO
+52062600/scheda-privati-02;RATING UFFICIALE;rating_ufficiale;N/D;TRASCRITTO
+52062600/scheda-privati-02;SCORE CGS;score_cgs;N/D;TRASCRITTO
+52062600/scheda-privati-02;Nr altri componenti nucleo familiare;nr_altri_componenti_nucleo;3;TRASCRITTO
+52062600/scheda-privati-02;Di cui percepiscono reddito;di_cui_percepiscono_reddito;2;TRASCRITTO
+52062600/scheda-privati-02;Importo totale annuo altri componenti nucleo familiare;importo_totale_annuo_nucleo;30.000;TRASCRITTO
+52062600/scheda-privati-02;Note Scheda Privati;note_scheda_privati;Nuovo cliente della scrivente Filiale. Richiesta di mutuo cointestato con la moglie, Enkeleda, e il figlio, per un importo di € 264.000, con durata 30 anni.;TRASCRITTO
+52062600/scheda-privati-03;DATORE DI LAVORO ANAGRAFICA;datore_di_lavoro_anagrafica;;VUOTO
+52062600/scheda-privati-03;RATING UFFICIALE;rating_ufficiale;N/D;TRASCRITTO
+52062600/scheda-privati-03;SCORE CGS;score_cgs;N/D;TRASCRITTO
+52062600/scheda-privati-03;Nr altri componenti nucleo familiare;nr_altri_componenti_nucleo;3;TRASCRITTO
+52062600/scheda-privati-03;Di cui percepiscono reddito;di_cui_percepiscono_reddito;2;TRASCRITTO
+52062600/scheda-privati-03;Importo totale annuo altri componenti nucleo familiare;importo_totale_annuo_nucleo;30.000;TRASCRITTO
+52062600/scheda-privati-03;Note Scheda Privati;note_scheda_privati;"Il cliente è assunto presso AL POSA S.r.l.s. dal luglio 2026 con contratto di lavoro a tempo indeterminato; in precedenza risultava impiegato presso la medesima azienda con contratto a tempo determinato da aprile 2025. Svolge la mansione di posatore/piastrellista. Il reddito netto indicato in scheda è stato desunto da CAREN, sulla base della CU 2026 relativa al periodo d'imposta 2025, riferita ai mesi da aprile a dicembre 2025, dalla quale risulta un reddito complessivo pari a € 14.098.";TRASCRITTO
+52062600/scheda-privati-04;DATORE DI LAVORO ANAGRAFICA;datore_di_lavoro_anagrafica;;VUOTO
+52062600/scheda-privati-04;RATING UFFICIALE;rating_ufficiale;N/D;TRASCRITTO
+52062600/scheda-privati-04;SCORE CGS;score_cgs;N/D;TRASCRITTO
+52062600/scheda-privati-04;Nr altri componenti nucleo familiare;nr_altri_componenti_nucleo;3;TRASCRITTO
+52062600/scheda-privati-04;Di cui percepiscono reddito;di_cui_percepiscono_reddito;2;TRASCRITTO
+52062600/scheda-privati-04;Importo totale annuo altri componenti nucleo familiare;importo_totale_annuo_nucleo;30.000;TRASCRITTO
+52062600/scheda-privati-04;Note Scheda Privati;note_scheda_privati;Il cliente vive con il proprio nucleo familiare in un immobile condotto in locazione dal gennaio 2023, in forza di regolare contratto di affitto, con canone mensile pari a € 550. posizione crif non visibile al momento dell'inserimento della pratica - il cleinte dichiara di non avere finanziamenti in corso.;TRASCRITTO
+52062600/scheda-privati-05;DATORE DI LAVORO ANAGRAFICA;datore_di_lavoro_anagrafica;;VUOTO
+52062600/scheda-privati-05;RATING UFFICIALE;rating_ufficiale;N/D;TRASCRITTO
+52062600/scheda-privati-05;SCORE CGS;score_cgs;N/D;TRASCRITTO
+52062600/scheda-privati-05;Nr altri componenti nucleo familiare;nr_altri_componenti_nucleo;3;TRASCRITTO
+52062600/scheda-privati-05;Di cui percepiscono reddito;di_cui_percepiscono_reddito;2;TRASCRITTO
+52062600/scheda-privati-05;Importo totale annuo altri componenti nucleo familiare;importo_totale_annuo_nucleo;30.000;TRASCRITTO
+52067184/elenco-01;NDG;ndg;36253088;TRASCRITTO
+52067184/elenco-01;DENOMINAZIONE;denominazione;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/elenco-01;Tipo;tipo;BMM;TRASCRITTO
+52067184/elenco-01;Stato;stato;ABB;TRASCRITTO
+52067184/elenco-01;Fase;fase;IST;TRASCRITTO
+52067184/elenco-01;Creazione;creazione;31/08/2026;TRASCRITTO
+52067184/elenco-01;Evidenze;evidenze;;VUOTO
+52067184/elenco-02;NDG;ndg;36253088;TRASCRITTO
+52067184/elenco-02;DENOMINAZIONE;denominazione;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/elenco-02;Tipo;tipo;BMM;TRASCRITTO
+52067184/elenco-02;Stato;stato;ABB;TRASCRITTO
+52067184/elenco-02;Fase;fase;IST;TRASCRITTO
+52067184/elenco-02;Creazione;creazione;31/08/2026;TRASCRITTO
+52067184/elenco-02;Evidenze;evidenze;;VUOTO
+52067184/soggetti-01;NDG;ndg;36253088;TRASCRITTO
+52067184/soggetti-01;DENOMINAZIONE;denominazione;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/soggetti-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52067184/soggetti-01;Filiale relazione;filiale_relazione;3052 - BG-CLEMENTIN;TRASCRITTO
+52067184/soggetti-01;NDG 1;ndg_1;36253088;TRASCRITTO
+52067184/soggetti-01;DENOMINAZIONE 1;denominazione_1;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52067184/soggetti-01;NDG 2;ndg_2;11153238;TRASCRITTO
+52067184/soggetti-01;DENOMINAZIONE 2;denominazione_2;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52067184/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52067184/soggetti-01;NDG 3;ndg_3;;VUOTO
+52067184/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+52067184/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+52067184/soggetti-01;NDG 4;ndg_4;;VUOTO
+52067184/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52067184/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52067184/gestione-fidi-01;NDG;ndg;36253088;TRASCRITTO
+52067184/gestione-fidi-01;DENOMINAZIONE;denominazione;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/gestione-fidi-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52067184/gestione-fidi-01;Filiale relazione;filiale_relazione;3052 - BG-CLEMENTIN;TRASCRITTO
+52067184/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52067184/gestione-fidi-01;Rapporto;rapporto;;VUOTO
+52067184/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52067184/gestione-fidi-01;Scadenza;scadenza;360 mesi;TRASCRITTO
+52067184/gestione-fidi-01;Importo (€);importo_euro;140.000;TRASCRITTO
+52067184/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52067184/gestione-fidi-02;NDG;ndg;36253088;TRASCRITTO
+52067184/gestione-fidi-02;DENOMINAZIONE;denominazione;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/gestione-fidi-02;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52067184/gestione-fidi-02;Filiale relazione;filiale_relazione;3052 - BG-CLEMENTIN;TRASCRITTO
+52067184/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52067184/gestione-fidi-02;Rapporto;rapporto;;VUOTO
+52067184/gestione-fidi-02;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52067184/gestione-fidi-02;Scadenza;scadenza;360 mesi;TRASCRITTO
+52067184/gestione-fidi-02;Importo (€);importo_euro;140.000;TRASCRITTO
+52067184/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52067184/gestione-fidi-02;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;340176 - MUTUO FOND PRIV CONSAP >=80%;TRASCRITTO
+52067184/gestione-fidi-03;NDG;ndg;36253088;TRASCRITTO
+52067184/gestione-fidi-03;DENOMINAZIONE;denominazione;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/gestione-fidi-03;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52067184/gestione-fidi-03;Filiale relazione;filiale_relazione;3052 - BG-CLEMENTIN;TRASCRITTO
+52067184/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52067184/gestione-fidi-03;Rapporto;rapporto;;VUOTO
+52067184/gestione-fidi-03;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52067184/gestione-fidi-03;Scadenza;scadenza;360 mesi;TRASCRITTO
+52067184/gestione-fidi-03;Importo (€);importo_euro;140.000;TRASCRITTO
+52067184/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52067184/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52067184/gestione-fidi-04;NDG;ndg;36253088;TRASCRITTO
+52067184/gestione-fidi-04;DENOMINAZIONE;denominazione;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/gestione-fidi-04;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52067184/gestione-fidi-04;Filiale relazione;filiale_relazione;3052 - BG-CLEMENTIN;TRASCRITTO
+52067184/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+52067184/gestione-fidi-04;Rapporto;rapporto;;VUOTO
+52067184/gestione-fidi-04;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52067184/gestione-fidi-04;Scadenza;scadenza;360 mesi;TRASCRITTO
+52067184/gestione-fidi-04;Importo (€);importo_euro;140.000;TRASCRITTO
+52067184/gestione-fidi-04;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52067184/gestione-fidi-04;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS;TRASCRITTO
+52067184/note-01;NDG;ndg;36253088;TRASCRITTO
+52067184/note-01;DENOMINAZIONE;denominazione;ANDREACCHIO GAETANO;TRASCRITTO
+52067184/note-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52067184/note-01;Filiale relazione;filiale_relazione;3052 - BG-CLEMENTIN;TRASCRITTO
+52067184/note-01;Note della richiesta;note_della_richiesta;Mutuo veicolatoci da Credipass srl rif Perego Trattasi di mutuo di euro 140ke con rata mese di euro 628, rapporto rr 31% Assunto dal 2023 a tempo indeterminato in un azienda di costruzioni di Caravaggio Bg Libero senza impegni famigliari Con garanzia consap 80%;TRASCRITTO
+52068422/elenco-01;NDG;ndg;30473741;TRASCRITTO
+52068422/elenco-01;DENOMINAZIONE;denominazione;HETTIAR...;TRASCRITTO
+52068422/elenco-01;Tipo;tipo;BMS;TRASCRITTO
+52068422/elenco-01;Stato;stato;LAV;TRASCRITTO
+52068422/elenco-01;Fase;fase;PRO;TRASCRITTO
+52068422/elenco-01;Creazione;creazione;01/09/2026;TRASCRITTO
+52068422/elenco-01;Evidenze;evidenze;;VUOTO
+52068422/elenco-02;NDG;ndg;30473741;TRASCRITTO
+52068422/elenco-02;DENOMINAZIONE;denominazione;HETTIAR...;TRASCRITTO
+52068422/elenco-02;Tipo;tipo;BMS;TRASCRITTO
+52068422/elenco-02;Stato;stato;LAV;TRASCRITTO
+52068422/elenco-02;Fase;fase;PRO;TRASCRITTO
+52068422/elenco-02;Creazione;creazione;01/09/2026;TRASCRITTO
+52068422/elenco-02;Evidenze;evidenze;;VUOTO
+52068422/soggetti-01;NDG;ndg;30473741;TRASCRITTO
+52068422/soggetti-01;DENOMINAZIONE;denominazione;HETTIARACHCHIGE MENISHA DULASHANI SI;TRASCRITTO
+52068422/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52068422/soggetti-01;Filiale relazione;filiale_relazione;305 - MI CERTOSA;TRASCRITTO
+52068422/soggetti-01;NDG 1;ndg_1;30473741;TRASCRITTO
+52068422/soggetti-01;DENOMINAZIONE 1;denominazione_1;HETTIARACHCHIGE MENISHA DULASHANI SI;TRASCRITTO
+52068422/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52068422/soggetti-01;NDG 2;ndg_2;11153238;TRASCRITTO
+52068422/soggetti-01;DENOMINAZIONE 2;denominazione_2;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52068422/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52068422/soggetti-01;NDG 3;ndg_3;;VUOTO
+52068422/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+52068422/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+52068422/soggetti-01;NDG 4;ndg_4;;VUOTO
+52068422/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52068422/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52068422/gestione-fidi-01;NDG;ndg;30473741;TRASCRITTO
+52068422/gestione-fidi-01;DENOMINAZIONE;denominazione;HETTIARACHCHIGE MENISHA DULASHANI SI;TRASCRITTO
+52068422/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52068422/gestione-fidi-01;Filiale relazione;filiale_relazione;305 - MI CERTOSA;TRASCRITTO
+52068422/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52068422/gestione-fidi-01;Rapporto;rapporto;034 0305 0017 05678008;TRASCRITTO
+52068422/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52068422/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+52068422/gestione-fidi-01;Importo (€);importo_euro;115.000;TRASCRITTO
+52068422/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52068422/gestione-fidi-02;NDG;ndg;30473741;TRASCRITTO
+52068422/gestione-fidi-02;DENOMINAZIONE;denominazione;HETTIARACHCHIGE MENISHA DULASHANI SI;TRASCRITTO
+52068422/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+52068422/gestione-fidi-02;Filiale relazione;filiale_relazione;305 - MI CERTOSA;TRASCRITTO
+52068422/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52068422/gestione-fidi-02;Rapporto;rapporto;034 0305 0017 05678008;TRASCRITTO
+52068422/gestione-fidi-02;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52068422/gestione-fidi-02;Scadenza;scadenza;361 mesi;TRASCRITTO
+52068422/gestione-fidi-02;Importo (€);importo_euro;115.000;TRASCRITTO
+52068422/gestione-fidi-02;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52068422/gestione-fidi-02;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;340176 - MUTUO FOND PRIV CONSAP >=80%;TRASCRITTO
+52068422/gestione-fidi-03;NDG;ndg;30473741;TRASCRITTO
+52068422/gestione-fidi-03;DENOMINAZIONE;denominazione;HETTIARACHCHIGE MENISHA DULASHANI SI;TRASCRITTO
+52068422/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+52068422/gestione-fidi-03;Filiale relazione;filiale_relazione;305 - MI CERTOSA;TRASCRITTO
+52068422/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52068422/gestione-fidi-03;Rapporto;rapporto;034 0305 0017 05678008;TRASCRITTO
+52068422/gestione-fidi-03;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52068422/gestione-fidi-03;Scadenza;scadenza;361 mesi;TRASCRITTO
+52068422/gestione-fidi-03;Importo (€);importo_euro;115.000;TRASCRITTO
+52068422/gestione-fidi-03;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52068422/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52068422/gestione-fidi-04;NDG;ndg;30473741;TRASCRITTO
+52068422/gestione-fidi-04;DENOMINAZIONE;denominazione;HETTIARACHCHIGE MENISHA DULASHANI SI;TRASCRITTO
+52068422/gestione-fidi-04;Tipo;tipo;BPI Mutui;TRASCRITTO
+52068422/gestione-fidi-04;Filiale relazione;filiale_relazione;305 - MI CERTOSA;TRASCRITTO
+52068422/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+52068422/gestione-fidi-04;Rapporto;rapporto;034 0305 0017 05678008;TRASCRITTO
+52068422/gestione-fidi-04;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52068422/gestione-fidi-04;Scadenza;scadenza;361 mesi;TRASCRITTO
+52068422/gestione-fidi-04;Importo (€);importo_euro;115.000;TRASCRITTO
+52068422/gestione-fidi-04;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52068422/gestione-fidi-04;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS;TRASCRITTO
+52068422/note-01;NDG;ndg;30473741;TRASCRITTO
+52068422/note-01;DENOMINAZIONE;denominazione;HETTIARACHCHIGE MENISHA DULASHANI SI;TRASCRITTO
+52068422/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52068422/note-01;Filiale relazione;filiale_relazione;305 - MI CERTOSA;TRASCRITTO
+52068422/note-01;Note della richiesta;note_della_richiesta;"RICHIESTA MUTUO PRIMA CASA CON GARANZIA CONSAP PRATICA PRESENTATA DA UNIPOL SAI Trattasi di richiesta mutuo per acquisto finalità prima casa; Tipologia Tasso Fisso Finito - Assistito da garanzia Consap Under 36 Prioritari - LTV 100% Importo Desiderato € 115.000,00 - Durata rimborso Anni 30. HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ) ?:+39 320 321 5985 ?: menishasilva1994@gmail.com Trattasi di richiesta mutuo per acquisto prima casa ATTESTAZIONE ISEE < 40ek RICHIEDENTE MUTUO RESIDENTE NEL COMUNE DI NOVIGLIO ( MI ) L'immobile oggetto di Acquisto è stato individuato nel comune di Palazzo Pignano ( CR ), è stato formalizzato un preliminare di compravendita, appartamento + cantina e ripostiglio per l'importo di € 115.000,00. Richiedente mutuo e intestatario immobile Sig.ra HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ). La Sig.ra HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ) di anni 32,con cittadinanza SRI LANKA, coniugata in regime di separazione dei beni e residente in Italia dal 2016 in possesso di regolare permesso di soggiorno in corso di validità. Attualmente la Richiedente è residente con il marito Sig. WARNAKULASURIYA SHANE KANISHKA, che non interviene nel mutuo ed è economicamente autonomo ( si forniscono in carico pratica le sue buste paga ), nell'immobile di proprietà della sorella e del cognato nel Comune di Noviglio. Si conferma che la Richiedente, in data 21 Ottobre 2025, ha tramite atto di rinuncia abdicativa alla quota di comproprietà trasferito la sua quota di proprietà dell'immobile ( dove attualmente ancora risiede con marito, sorella e cognato ) alla sorella e al cognato si fornisce copia dell'atto in carico pratica, la richiedente non è più intestataria dell'immobile. Inoltre, confermiamo che Banca MPS ha fornito lettera di accollo liberatorio mutuo, alla Ns richiedente del mutuo sottoscritto con la sorella e il cognato finalizzato all'acquisto del suddetto immobile ( prima casa ). Nucleo familiare costituendo, composto dal solo Richiedente n° 1 Componente. HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ).";TRASCRITTO
+52068422/note-02;Note della richiesta;note_della_richiesta;"RICHIESTA MUTUO PRIMA CASA CON GARANZIA CONSAP PRATICA PRESENTATA DA UNIPOL SAI Trattasi di richiesta mutuo per acquisto finalità prima casa; Tipologia Tasso Fisso Finito - Assistito da garanzia Consap Under 36 Prioritari - LTV 100% Importo Desiderato € 115.000,00 - Durata rimborso Anni 30. HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ) ?:+39 320 321 5985 ?: menishasilva1994@gmail.com Trattasi di richiesta mutuo per acquisto prima casa ATTESTAZIONE ISEE < 40ek RICHIEDENTE MUTUO RESIDENTE NEL COMUNE DI NOVIGLIO ( MI ) L'immobile oggetto di Acquisto è stato individuato nel comune di Palazzo Pignano ( CR ), è stato formalizzato un preliminare di compravendita, appartamento + cantina e ripostiglio per l'importo di € 115.000,00. Richiedente mutuo e intestatario immobile Sig.ra HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ). La Sig.ra HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ) di anni 32,con cittadinanza SRI LANKA, coniugata in regime di separazione dei beni e residente in Italia dal 2016 in possesso di regolare permesso di soggiorno in corso di validità. Attualmente la Richiedente è residente con il marito Sig. WARNAKULASURIYA SHANE KANISHKA, che non interviene nel mutuo ed è economicamente autonomo ( si forniscono in carico pratica le sue buste paga ), nell'immobile di proprietà della sorella e del cognato nel Comune di Noviglio. Si conferma che la Richiedente, in data 21 Ottobre 2025, ha tramite atto di rinuncia abdicativa alla quota di comproprietà trasferito la sua quota di proprietà dell'immobile ( dove attualmente ancora risiede con marito, sorella e cognato ) alla sorella e al cognato si fornisce copia dell'atto in carico pratica, la richiedente non è più intestataria dell'immobile. Inoltre, confermiamo che Banca MPS ha fornito lettera di accollo liberatorio mutuo, alla Ns richiedente del mutuo sottoscritto con la sorella e il cognato finalizzato all'acquisto del suddetto immobile ( prima casa ). Nucleo familiare costituendo, composto dal solo Richiedente n° 1 Componente. HETTIARACHCHIGE ( COGNOME ) MENISHA DULASHANI SILVA ( NOME ). Percepisce reddito da lavoro dipendente presso l'Azienda GXO LOGISTICS PHARMA ITALY SPA, con mansione di impiegata addetta al magazzino con contratto di assunzione a tempo indeterminato full/time dal 01/05/2025; precedentemente la cliente dal 01/01/2024 sino al 30/04/2025 ha lavorato con stessa mansione presso l'Azienda GXO LOGISTICS ITALY SPA, che ha, poi ceduto il contratto all'attuale azienda ( IN CARICO PRATICA FORNIAMO A SUPPORTO DOCUMENTAZIONE MOD. UNILAV ). Reddito lordo mensile € 1804,51 su 14 mensilità ne consegue un reddito lordo annuo dell'importo di € 25.000,00, reddito annuo netto dell'importo di € 20.000,00 mensile netto dell'importo di € 1.667,00. ( FORNIAMO IN CARICO PRATICA LE N° 2 CU PER L'ANNO 2026 , GXO LOGISTICS PHARMA ITALY SPA e GXO LOGISTICS ITALY SPA ). IMPEGNI IN CORSO La Richiedente conferma di non avere impegni in corso.";TRASCRITTO
+52080223/elenco-01;NDG;ndg;32403261;TRASCRITTO
+52080223/elenco-01;DENOMINAZIONE;denominazione;LA MOR...;TRASCRITTO
+52080223/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52080223/elenco-01;Stato;stato;ABB;TRASCRITTO
+52080223/elenco-01;Fase;fase;IST;TRASCRITTO
+52080223/elenco-01;Creazione;creazione;07/09/2026;TRASCRITTO
+52080223/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+52080223/elenco-02;NDG;ndg;32403261;TRASCRITTO
+52080223/elenco-02;DENOMINAZIONE;denominazione;LA MOR...;TRASCRITTO
+52080223/elenco-02;Tipo;tipo;BMB;TRASCRITTO
+52080223/elenco-02;Stato;stato;ABB;TRASCRITTO
+52080223/elenco-02;Fase;fase;IST;TRASCRITTO
+52080223/elenco-02;Creazione;creazione;07/09/2026;TRASCRITTO
+52080223/elenco-02;Evidenze;evidenze;B;TRASCRITTO
+52080223/elenco-02;tooltip su valore campo Descrizione: BMB;tooltip_descrizione_bmb;BPI Mutui Origination Bstore;TRASCRITTO
+52080223/elenco-03;NDG;ndg;32403261;TRASCRITTO
+52080223/elenco-03;DENOMINAZIONE;denominazione;LA MOR...;TRASCRITTO
+52080223/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+52080223/elenco-03;Stato;stato;ABB;TRASCRITTO
+52080223/elenco-03;Fase;fase;IST;TRASCRITTO
+52080223/elenco-03;Creazione;creazione;07/09/2026;TRASCRITTO
+52080223/elenco-03;Evidenze;evidenze;B;TRASCRITTO
+52080223/soggetti-01;NDG;ndg;32403261;TRASCRITTO
+52080223/soggetti-01;DENOMINAZIONE;denominazione;LA MORGIA ANDREA,LA MORGIA MATTEO;TRASCRITTO
+52080223/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52080223/soggetti-01;Filiale relazione;filiale_relazione;37 - MO GIARDINI;TRASCRITTO
+52080223/soggetti-01;NDG 1;ndg_1;32403261;TRASCRITTO
+52080223/soggetti-01;DENOMINAZIONE 1;denominazione_1;LA MORGIA ANDREA,LA MORGIA MATTEO;TRASCRITTO
+52080223/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52080223/soggetti-01;NDG 2;ndg_2;2210829;TRASCRITTO
+52080223/soggetti-01;DENOMINAZIONE 2;denominazione_2;ORI PAOLA;TRASCRITTO
+52080223/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52080223/soggetti-01;NDG 3;ndg_3;7726737;TRASCRITTO
+52080223/soggetti-01;DENOMINAZIONE 3;denominazione_3;LA MORGIA MATTEO;TRASCRITTO
+52080223/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52080223/soggetti-01;NDG 4;ndg_4;32201099;TRASCRITTO
+52080223/soggetti-01;DENOMINAZIONE 4;denominazione_4;LA MORGIA ANDREA;TRASCRITTO
+52080223/soggetti-01;RUOLO 4;ruolo_4;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52080223/gestione-fidi-01;NDG;ndg;32403261;TRASCRITTO
+52080223/gestione-fidi-01;DENOMINAZIONE;denominazione;LA MORGIA ANDREA,LA MORGIA MATTEO;TRASCRITTO
+52080223/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52080223/gestione-fidi-01;Filiale relazione;filiale_relazione;37 - MO GIARDINI;TRASCRITTO
+52080223/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52080223/gestione-fidi-01;Rapporto;rapporto;034 0037 0017 05669132;TRASCRITTO
+52080223/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52080223/gestione-fidi-01;Scadenza;scadenza;15/09/2051;TRASCRITTO
+52080223/gestione-fidi-01;Importo (€);importo_euro;329.000;TRASCRITTO
+52080223/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52080223/gestione-fidi-02;NDG;ndg;32403261;TRASCRITTO
+52080223/gestione-fidi-02;DENOMINAZIONE;denominazione;LA MORGIA ANDREA,LA MORGIA MATTEO;TRASCRITTO
+52080223/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+52080223/gestione-fidi-02;Filiale relazione;filiale_relazione;37 - MO GIARDINI;TRASCRITTO
+52080223/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52080223/gestione-fidi-02;Rapporto;rapporto;034 0037 0017 05669132;TRASCRITTO
+52080223/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52080223/gestione-fidi-02;Scadenza;scadenza;15/09/2051;TRASCRITTO
+52080223/gestione-fidi-02;Importo (€);importo_euro;329.000;TRASCRITTO
+52080223/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52080223/gestione-fidi-03;NDG;ndg;32403261;TRASCRITTO
+52080223/gestione-fidi-03;DENOMINAZIONE;denominazione;LA MORGIA ANDREA,LA MORGIA MATTEO;TRASCRITTO
+52080223/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+52080223/gestione-fidi-03;Filiale relazione;filiale_relazione;37 - MO GIARDINI;TRASCRITTO
+52080223/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52080223/gestione-fidi-03;Rapporto;rapporto;034 0037 0017 05669132;TRASCRITTO
+52080223/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52080223/gestione-fidi-03;Scadenza;scadenza;15/09/2051;TRASCRITTO
+52080223/gestione-fidi-03;Importo (€);importo_euro;329.000;TRASCRITTO
+52080223/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52080223/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52080223/note-01;NDG;ndg;32403261;TRASCRITTO
+52080223/note-01;DENOMINAZIONE;denominazione;LA MORGIA ANDREA,LA MORGIA MATTEO;TRASCRITTO
+52080223/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52080223/note-01;Filiale relazione;filiale_relazione;37 - MO GIARDINI;TRASCRITTO
+52080223/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5669132 - Numero proposta DESK: 3072546 - Importo perizia: 417.843,00 € - Valore immobile presunto: 700.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 329.000,00 € IMPORTO PER PRIMA CASA : 329.000,00 € IMPORTO RICHIESTO : 329.000,00 € - Codice immobile: 4849846; ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: mutuo ristrutturazione preammortamento 12 mesi incluso nei 300 IN RICHIESTA MUTUO IPOTECARIO PER RISTRUTTURAZIONE IMMOBILE DA ADIBIRE A PRIMA CASA ED ABITAZIONE PRINCIPALE. L’IMMOBILE è PERVENUTO AI FRATELLI ANDREA E MATTEO PER SUCCESSIONE. TRA GLI EREDI VI SONO ANCHE GLI ZII ORI PAOLA E ORI ROBERTO CHE COMPARIRANNO COME TERZI DATORI DI IPOTECA. ANDREA, CELIBE, LAVORA CON CONTRATTO A TEMPO INDETERMINATO CON REDDITI DI CA 30MILA EURO, NESSUN FINANZIAMENTO IN ESSERE MATTEO, CELIBE, è LAVORATORE AUTONOMO COME LIBERO PROFESSIONISTA, REDDITI ANNUI DI 31MILA EURO, NESSUN FINANZIAMENTO IN ESSERE L’IMMOBILE, GIA PERIZIATO A LAVORI ULTIMATI AVRA’ UN VALORE DI 1MILIONE DI EURO. I LAVORI DA PERIZIA ALLEGATA SONO STATI QUANTIFICATI IN 625MILA EURO. PARTE DI QUESTI LAVORI è GIA STATA ESEGUITA E SI RICHIEDE UNA PRIMA EROGAZIONE DI EURO 72600 (VD TICKET ALLEGATO) A FINE LAVORI L’IMMOBILE VERRA’ SUDDIVISO IN DUE UNITA’ IMMOBILIARI, DIVISE TRA I DUE RICHIEDENTI";TRASCRITTO
+52102599/elenco-01;NDG;ndg;23007045;TRASCRITTO
+52102599/elenco-01;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52102599/elenco-01;Stato;stato;ABB;TRASCRITTO
+52102599/elenco-01;Fase;fase;IST;TRASCRITTO
+52102599/elenco-01;Creazione;creazione;15/09/2026;TRASCRITTO
+52102599/elenco-01;Evidenze;evidenze;BC;TRASCRITTO
+52102599/elenco-02;NDG;ndg;23007045;TRASCRITTO
+52102599/elenco-02;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/elenco-02;Tipo;tipo;BMB;TRASCRITTO
+52102599/elenco-02;Stato;stato;ABB;TRASCRITTO
+52102599/elenco-02;Fase;fase;IST;TRASCRITTO
+52102599/elenco-02;Creazione;creazione;15/09/2026;TRASCRITTO
+52102599/elenco-02;Evidenze;evidenze;BC;TRASCRITTO
+52102599/elenco-03;NDG;ndg;23007045;TRASCRITTO
+52102599/elenco-03;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+52102599/elenco-03;Stato;stato;ABB;TRASCRITTO
+52102599/elenco-03;Fase;fase;IST;TRASCRITTO
+52102599/elenco-03;Creazione;creazione;15/09/2026;TRASCRITTO
+52102599/elenco-03;Evidenze;evidenze;BC;TRASCRITTO
+52102599/elenco-04;NDG;ndg;23007045;TRASCRITTO
+52102599/elenco-04;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/elenco-04;Tipo;tipo;BMB;TRASCRITTO
+52102599/elenco-04;Stato;stato;ABB;TRASCRITTO
+52102599/elenco-04;Fase;fase;IST;TRASCRITTO
+52102599/elenco-04;Creazione;creazione;15/09/2026;TRASCRITTO
+52102599/elenco-04;Evidenze;evidenze;BC;TRASCRITTO
+52102599/elenco-04;tooltip su valore campo Descrizione: BMB;tooltip_descrizione_bmb;BPI Mutui Origination Bstore;TRASCRITTO
+52102599/soggetti-01;NDG;ndg;23007045;TRASCRITTO
+52102599/soggetti-01;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52102599/soggetti-01;Filiale relazione;filiale_relazione;2075 - SARZANA;TRASCRITTO
+52102599/soggetti-01;NDG 1;ndg_1;23007045;TRASCRITTO
+52102599/soggetti-01;DENOMINAZIONE 1;denominazione_1;CIMINNISI PAMELA;TRASCRITTO
+52102599/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52102599/soggetti-01;NDG 2;ndg_2;;VUOTO
+52102599/soggetti-01;DENOMINAZIONE 2;denominazione_2;;VUOTO
+52102599/soggetti-01;RUOLO 2;ruolo_2;;VUOTO
+52102599/soggetti-01;NDG 3;ndg_3;;VUOTO
+52102599/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+52102599/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+52102599/soggetti-01;NDG 4;ndg_4;;VUOTO
+52102599/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52102599/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52102599/gestione-fidi-01;NDG;ndg;23007045;TRASCRITTO
+52102599/gestione-fidi-01;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52102599/gestione-fidi-01;Filiale relazione;filiale_relazione;2075 - SARZANA;TRASCRITTO
+52102599/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52102599/gestione-fidi-01;Rapporto;rapporto;034 2075 0017 05518084;TRASCRITTO
+52102599/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52102599/gestione-fidi-01;Scadenza;scadenza;15/11/2055;TRASCRITTO
+52102599/gestione-fidi-01;Importo (€);importo_euro;159.431;TRASCRITTO
+52102599/gestione-fidi-01;Tipo Op.;tipo_op;;VUOTO
+52102599/gestione-fidi-02;NDG;ndg;23007045;TRASCRITTO
+52102599/gestione-fidi-02;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+52102599/gestione-fidi-02;Filiale relazione;filiale_relazione;2075 - SARZANA;TRASCRITTO
+52102599/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52102599/gestione-fidi-02;Rapporto;rapporto;034 2075 0017 05518084;TRASCRITTO
+52102599/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52102599/gestione-fidi-02;Scadenza;scadenza;15/11/2055;TRASCRITTO
+52102599/gestione-fidi-02;Importo (€);importo_euro;159.431;TRASCRITTO
+52102599/gestione-fidi-02;Tipo Op.;tipo_op;;VUOTO
+52102599/gestione-fidi-03;NDG;ndg;23007045;TRASCRITTO
+52102599/gestione-fidi-03;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+52102599/gestione-fidi-03;Filiale relazione;filiale_relazione;2075 - SARZANA;TRASCRITTO
+52102599/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52102599/gestione-fidi-03;Rapporto;rapporto;034 2075 0017 05518084;TRASCRITTO
+52102599/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52102599/gestione-fidi-03;Scadenza;scadenza;15/11/2055;TRASCRITTO
+52102599/gestione-fidi-03;Importo (€);importo_euro;159.431;TRASCRITTO
+52102599/gestione-fidi-03;Tipo Op.;tipo_op;;VUOTO
+52102599/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52102599/gestione-fidi-04;NDG;ndg;23007045;TRASCRITTO
+52102599/gestione-fidi-04;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/gestione-fidi-04;Tipo;tipo;BPI Mutui;TRASCRITTO
+52102599/gestione-fidi-04;Filiale relazione;filiale_relazione;2075 - SARZANA;TRASCRITTO
+52102599/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+52102599/gestione-fidi-04;Rapporto;rapporto;034 2075 0017 05518084;TRASCRITTO
+52102599/gestione-fidi-04;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52102599/gestione-fidi-04;Scadenza;scadenza;15/11/2055;TRASCRITTO
+52102599/gestione-fidi-04;Importo (€);importo_euro;159.431;TRASCRITTO
+52102599/gestione-fidi-04;Tipo Op.;tipo_op;;VUOTO
+52102599/note-01;NDG;ndg;23007045;TRASCRITTO
+52102599/note-01;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52102599/note-01;Filiale relazione;filiale_relazione;2075 - SARZANA;TRASCRITTO
+52102599/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5672856 - Numero proposta DESK: N.D. - Importo perizia: 265.197,00 € - Valore immobile presunto: 346.397,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 70.000,00 € IMPORTO PER PRIMA CASA : 70.000,00 € IMPORTO RICHIESTO : 70.000,00 € - Codice immobile: 4771288; In richiesta mutuo ipotecario di euro 70.000 con finalità ristrutturazione a S.A.L. GREEN, da rimborsare in 354 mesi + 6 mesi di preammortamento. L'immobile oggetto dell'intervento è una casa indipendente di 5 vani sita in Arcola (SP), Via Fratelli Rosselli n. 43, acquistata dalla richiedente nel 2025 mediante ns mutuo ipotecario prima casa per un importo originario di euro 162.000, durata 30 anni, tasso fisso 2,90%. La richiedente riveste il ruolo di proprietaria e datrice di ipoteca. Le opere di ristrutturazione previste da computometrico e da perizia ammontano complessivamente a euro 125.000,61, e risultano finalizzate all'efficientamento energetico dell'immobile, in coerenza con le caratteristiche del prodotto richiesto. Dalla Perizia RYZE a S.A.L. emergono i seguenti valori: • Valore ante operam: euro 209.799,00; • Valore allo stato attuale: euro 265.196,54; • Valore a fine lavori: euro 346.397,60; • Costo delle opere di ristrutturazione: euro 125.000,61. La perizia rileva uno stato avanzamento lavori pari al 44,32%, corrispondente a costi già sostenuti con risorse personali della cliente per euro 55.397,54. Pertanto, in conformità alle condizioni del finanziamento, la prima erogazione contestuale alla stipula comprenderà l'80% delle spese già sostenute, pari a euro 44.318,03. Le successive erogazioni SAL avverranno in base alla % di avanzamento del cantiere. La Signora Ciminnisi Pamela dal 2019 è insegnante di ruolo a tempo indeterminato, con reddito annuale di euro 21.048 come da Caren 2025. Beneficia inoltre di assegno di mantenimento pari a euro 700 mensili, come da sentenza di separazione acquisita agli atti, nonché di assegno unico per i figli pari a euro 477 mensili. La richiedente risulta inoltre comproprietaria per la quota di 1/2 di un immobile sito in Carrara (MS), Via Comano n. 18 e nuda proprietaria per 1/2 di un immobile di vani 7 a Parma in Strada Valera di sotto. La rata del finanziamento richiesto è pari a euro 309,00; il relativo RRR risulta pari al 11,7% (tenendo in considerazione prudenzialmente solo metà del valore dell’assegno unico), valore conforme alle policy creditizie della Banca. Si esprime pertanto parere favorevole all'operazione, considerata la storicità della relazione, la congruità del progetto di ristrutturazione, l'adeguata patrimonializzazione della cliente e la comprovata capacità di rimborso.";TRASCRITTO
+52102599/note-02;NDG;ndg;23007045;TRASCRITTO
+52102599/note-02;DENOMINAZIONE;denominazione;CIMINNISI PAMELA;TRASCRITTO
+52102599/note-02;Filiale relazione;filiale_relazione;2075 - SARZANA;TRASCRITTO
+52102599/note-02;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5672856 - Numero proposta DESK: N.D. - Importo perizia: 265.197,00 € - Valore immobile presunto: 346.397,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 70.000,00 € IMPORTO PER PRIMA CASA : 70.000,00 € IMPORTO RICHIESTO : 70.000,00 € - Codice immobile: 4771288; In richiesta mutuo ipotecario di euro 70.000 con finalità ristrutturazione a S.A.L. GREEN, da rimborsare in 354 mesi + 6 mesi di preammortamento. L'immobile oggetto dell'intervento è una casa indipendente di 5 vani sita in Arcola (SP), Via Fratelli Rosselli n. 43, acquistata dalla richiedente nel 2025 mediante ns mutuo ipotecario prima casa per un importo originario di euro 162.000, durata 30 anni, tasso fisso 2,90%. La richiedente riveste il ruolo di proprietaria e datrice di ipoteca. Le opere di ristrutturazione previste da computometrico e da perizia ammontano complessivamente a euro 125.000,61, e risultano finalizzate all'efficientamento energetico dell'immobile, in coerenza con le caratteristiche del prodotto richiesto. Dalla Perizia RYZE a S.A.L. emergono i seguenti valori: • Valore ante operam: euro 209.799,00; • Valore allo stato attuale: euro 265.196,54; • Valore a fine lavori: euro 346.397,60; • Costo delle opere di ristrutturazione: euro 125.000,61. La perizia rileva uno stato avanzamento lavori pari al 44,32%, corrispondente a costi già sostenuti con risorse personali della cliente per euro 55.397,54. Pertanto, in conformità alle condizioni del finanziamento, la prima erogazione contestuale alla stipula comprenderà l'80% delle spese già sostenute, pari a euro 44.318,03. Le successive erogazioni SAL avverranno in base alla % di avanzamento del cantiere. La Signora Ciminnisi Pamela dal 2019 è insegnante di ruolo a tempo indeterminato, con reddito annuale di euro 21.048 come da Caren 2025. Beneficia inoltre di assegno di mantenimento pari a euro 700 mensili, come da sentenza di separazione acquisita agli atti, nonché di assegno unico per i figli pari a euro 477 mensili. La richiedente risulta inoltre comproprietaria per la quota di 1/2 di un immobile sito in Carrara (MS), Via Comano n. 18 e nuda proprietaria per 1/2 di un immobile di vani 7 a Parma in Strada Valera di sotto. La rata del finanziamento richiesto è pari a euro 309,00; il relativo RRR risulta pari al 11,7% (tenendo in considerazione prudenzialmente solo metà del valore dell’assegno unico), valore conforme alle policy creditizie della Banca. Si esprime pertanto parere favorevole all'operazione, considerata la storicità della relazione, la congruità del progetto di ristrutturazione, l'adeguata patrimonializzazione della cliente e la comprovata capacità di rimborso.";TRASCRITTO
+52126316/elenco-01;NDG;ndg;36210255;TRASCRITTO
+52126316/elenco-01;DENOMINAZIONE;denominazione;SANTINI EMANUELE;TRASCRITTO
+52126316/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52126316/elenco-01;Stato;stato;ABB;TRASCRITTO
+52126316/elenco-01;Fase;fase;IST;TRASCRITTO
+52126316/elenco-01;Creazione;creazione;25/09/2026;TRASCRITTO
+52126316/elenco-01;Evidenze;evidenze;BM;TRASCRITTO
+52126316/elenco-02;NDG;ndg;36210255;TRASCRITTO
+52126316/elenco-02;DENOMINAZIONE;denominazione;SANTINI EMANUELE;TRASCRITTO
+52126316/elenco-02;Tipo;tipo;BMB;TRASCRITTO
+52126316/elenco-02;Stato;stato;ABB;TRASCRITTO
+52126316/elenco-02;Fase;fase;IST;TRASCRITTO
+52126316/elenco-02;Creazione;creazione;25/09/2026;TRASCRITTO
+52126316/elenco-02;Evidenze;evidenze;BM;TRASCRITTO
+52126316/elenco-02;tooltip su valore campo Descrizione: BMB;tooltip_descrizione_bmb;BPI Mutui Origination Bstore;TRASCRITTO
+52126316/elenco-03;NDG;ndg;36210255;TRASCRITTO
+52126316/elenco-03;DENOMINAZIONE;denominazione;SANTINI EMANUELE;TRASCRITTO
+52126316/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+52126316/elenco-03;Stato;stato;ABB;TRASCRITTO
+52126316/elenco-03;Fase;fase;IST;TRASCRITTO
+52126316/elenco-03;Creazione;creazione;25/09/2026;TRASCRITTO
+52126316/elenco-03;Evidenze;evidenze;BM;TRASCRITTO
+52126316/soggetti-01;NDG;ndg;36210255;TRASCRITTO
+52126316/soggetti-01;DENOMINAZIONE;denominazione;SANTINI EMANUELE;TRASCRITTO
+52126316/soggetti-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52126316/soggetti-01;Filiale relazione;filiale_relazione;800 - RAVENNA;TRASCRITTO
+52126316/soggetti-01;NDG 1;ndg_1;36210255;TRASCRITTO
+52126316/soggetti-01;DENOMINAZIONE 1;denominazione_1;SANTINI EMANUELE;TRASCRITTO
+52126316/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52126316/soggetti-01;NDG 2;ndg_2;;VUOTO
+52126316/soggetti-01;DENOMINAZIONE 2;denominazione_2;;VUOTO
+52126316/soggetti-01;RUOLO 2;ruolo_2;;VUOTO
+52126316/soggetti-01;NDG 3;ndg_3;;VUOTO
+52126316/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+52126316/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+52126316/soggetti-01;NDG 4;ndg_4;;VUOTO
+52126316/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52126316/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52126316/gestione-fidi-01;NDG;ndg;36210255;TRASCRITTO
+52126316/gestione-fidi-01;DENOMINAZIONE;denominazione;SANTINI EMANUELE;TRASCRITTO
+52126316/gestione-fidi-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52126316/gestione-fidi-01;Filiale relazione;filiale_relazione;800 - RAVENNA;TRASCRITTO
+52126316/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52126316/gestione-fidi-01;Rapporto;rapporto;034 0800 0017 05678022;TRASCRITTO
+52126316/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52126316/gestione-fidi-01;Scadenza;scadenza;25/09/2026;TRASCRITTO
+52126316/gestione-fidi-01;Importo (€);importo_euro;160.000;TRASCRITTO
+52126316/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52126316/gestione-fidi-02;NDG;ndg;36210255;TRASCRITTO
+52126316/gestione-fidi-02;DENOMINAZIONE;denominazione;SANTINI EMANUELE;TRASCRITTO
+52126316/gestione-fidi-02;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52126316/gestione-fidi-02;Filiale relazione;filiale_relazione;800 - RAVENNA;TRASCRITTO
+52126316/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52126316/gestione-fidi-02;Rapporto;rapporto;034 0800 0017 05678022;TRASCRITTO
+52126316/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52126316/gestione-fidi-02;Scadenza;scadenza;25/09/2026;TRASCRITTO
+52126316/gestione-fidi-02;Importo (€);importo_euro;160.000;TRASCRITTO
+52126316/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52126316/gestione-fidi-03;NDG;ndg;36210255;TRASCRITTO
+52126316/gestione-fidi-03;DENOMINAZIONE;denominazione;SANTINI EMANUELE;TRASCRITTO
+52126316/gestione-fidi-03;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52126316/gestione-fidi-03;Filiale relazione;filiale_relazione;800 - RAVENNA;TRASCRITTO
+52126316/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52126316/gestione-fidi-03;Rapporto;rapporto;034 0800 0017 05678022;TRASCRITTO
+52126316/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52126316/gestione-fidi-03;Scadenza;scadenza;25/09/2026;TRASCRITTO
+52126316/gestione-fidi-03;Importo (€);importo_euro;160.000;TRASCRITTO
+52126316/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52126316/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52126316/note-01;NDG;ndg;36210255;TRASCRITTO
+52126316/note-01;DENOMINAZIONE;denominazione;SANTINI EMANUELE;TRASCRITTO
+52126316/note-01;Tipo;tipo;BPI Mutui / Med. Creditizi;TRASCRITTO
+52126316/note-01;Filiale relazione;filiale_relazione;800 - RAVENNA;TRASCRITTO
+52126316/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5678022 - Numero proposta DESK: N.D. - Importo perizia: N.D. - Valore immobile presunto: 270000 - Immobile da ipotecare è ad uso abitativo: SI - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 160.000,00 € IMPORTO PER PRIMA CASA : 160.000,00 € IMPORTO RICHIESTO : 160.000,00 € - Codice immobile: 5150258; CLIENTE NUOVO PRESENTATO DA PIU’ MUTUI CASA (CODICE 7320774) IN RICHIESTA MUTUO DI EURO 160.000 DA RESTITUIRE IN 30 ANNI – CONDIZIONI COME DA PROMO GREEN – CLASSE ENERGETICA C. L’IMMOBILE OGGETO D’IPOTECA E’ SITUATO A RAVENNA IN VIA J. LANDONI ED E’ COMPOSTO DA 5.5 VANI (110 MQ) PIU’ RELATIVO C6 DI 15MQ. L’IMMOBILE AVRA’ UN VALORE DI COMPRAVENDITA DI EURO 270.000 (LTV 60%) – LA DIFFERENZA DEL SALDO PREZZO DERIVA DA PROPRI RISPARMI (COME INDICATO DAL MEDIATORE). IL SIG. SANTINI LAVORA A TEMPO INDETERMINATO DAL 30/10/2017 PER OBI ITALIA SRL CON LA MANSIONE DI CAPOSETTORE PRESSO LA SEDE DI RAVENNA. DA CAREN SU CUD 2026 RISULTA UN REDDITO ANNUO NETTO PARI A EURO 33.000 – MENSILIZZATO EUR 2750. DICHIARA DI NON AVERE NESSUN DEBITO IN CORSO E NESSUNA PERSONA A CARICO. RATA DI EUR 692 SOSTENIBILE (SOSTITUISCE L’AFFITTO CHE STA PAGANDO DI EURO 850)";TRASCRITTO
+52130861/elenco-01;NDG;ndg;32503393;TRASCRITTO
+52130861/elenco-01;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52130861/elenco-01;Stato;stato;ABB;TRASCRITTO
+52130861/elenco-01;Fase;fase;IST;TRASCRITTO
+52130861/elenco-01;Creazione;creazione;28/09/2026;TRASCRITTO
+52130861/elenco-01;Evidenze;evidenze;B V;TRASCRITTO
+52130861/elenco-02;NDG;ndg;32503393;TRASCRITTO
+52130861/elenco-02;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/elenco-02;Tipo;tipo;BMB;TRASCRITTO
+52130861/elenco-02;Stato;stato;ABB;TRASCRITTO
+52130861/elenco-02;Fase;fase;IST;TRASCRITTO
+52130861/elenco-02;Creazione;creazione;28/09/2026;TRASCRITTO
+52130861/elenco-02;Evidenze;evidenze;B V;TRASCRITTO
+52130861/elenco-03;NDG;ndg;32503393;TRASCRITTO
+52130861/elenco-03;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+52130861/elenco-03;Stato;stato;ABB;TRASCRITTO
+52130861/elenco-03;Fase;fase;IST;TRASCRITTO
+52130861/elenco-03;Creazione;creazione;28/09/2026;TRASCRITTO
+52130861/elenco-03;Evidenze;evidenze;B V;TRASCRITTO
+52130861/elenco-03;tooltip su valore campo Descrizione: BMB;tooltip_descrizione_bmb;BPI Mutui Origination Bstore;TRASCRITTO
+52130861/elenco-04;NDG;ndg;32503393;TRASCRITTO
+52130861/elenco-04;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/elenco-04;Tipo;tipo;BMB;TRASCRITTO
+52130861/elenco-04;Stato;stato;ABB;TRASCRITTO
+52130861/elenco-04;Fase;fase;IST;TRASCRITTO
+52130861/elenco-04;Creazione;creazione;28/09/2026;TRASCRITTO
+52130861/elenco-04;Evidenze;evidenze;B V;TRASCRITTO
+52130861/elenco-05;NDG;ndg;32503393;TRASCRITTO
+52130861/elenco-05;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/elenco-05;Tipo;tipo;BMB;TRASCRITTO
+52130861/elenco-05;Stato;stato;ABB;TRASCRITTO
+52130861/elenco-05;Fase;fase;IST;TRASCRITTO
+52130861/elenco-05;Creazione;creazione;28/09/2026;TRASCRITTO
+52130861/elenco-05;Evidenze;evidenze;B V;TRASCRITTO
+52130861/soggetti-01;NDG;ndg;32503393;TRASCRITTO
+52130861/soggetti-01;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52130861/soggetti-01;Filiale relazione;filiale_relazione;220 - BO MURRI;TRASCRITTO
+52130861/soggetti-01;NDG 1;ndg_1;32503393;TRASCRITTO
+52130861/soggetti-01;DENOMINAZIONE 1;denominazione_1;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52130861/soggetti-01;NDG 2;ndg_2;;VUOTO
+52130861/soggetti-01;DENOMINAZIONE 2;denominazione_2;;VUOTO
+52130861/soggetti-01;RUOLO 2;ruolo_2;;VUOTO
+52130861/soggetti-01;NDG 3;ndg_3;;VUOTO
+52130861/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+52130861/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+52130861/soggetti-01;NDG 4;ndg_4;;VUOTO
+52130861/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52130861/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52130861/gestione-fidi-01;NDG;ndg;32503393;TRASCRITTO
+52130861/gestione-fidi-01;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52130861/gestione-fidi-01;Filiale relazione;filiale_relazione;220 - BO MURRI;TRASCRITTO
+52130861/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52130861/gestione-fidi-01;Rapporto;rapporto;034 0220 0017 05678764;TRASCRITTO
+52130861/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52130861/gestione-fidi-01;Scadenza;scadenza;15/10/2036;TRASCRITTO
+52130861/gestione-fidi-01;Importo (€);importo_euro;142.500;TRASCRITTO
+52130861/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52130861/gestione-fidi-02;NDG;ndg;32503393;TRASCRITTO
+52130861/gestione-fidi-02;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+52130861/gestione-fidi-02;Filiale relazione;filiale_relazione;220 - BO MURRI;TRASCRITTO
+52130861/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52130861/gestione-fidi-02;Rapporto;rapporto;034 0220 0017 05678764;TRASCRITTO
+52130861/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52130861/gestione-fidi-02;Scadenza;scadenza;15/10/2036;TRASCRITTO
+52130861/gestione-fidi-02;Importo (€);importo_euro;142.500;TRASCRITTO
+52130861/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52130861/gestione-fidi-03;NDG;ndg;32503393;TRASCRITTO
+52130861/gestione-fidi-03;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+52130861/gestione-fidi-03;Filiale relazione;filiale_relazione;220 - BO MURRI;TRASCRITTO
+52130861/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52130861/gestione-fidi-03;Rapporto;rapporto;034 0220 0017 05678764;TRASCRITTO
+52130861/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52130861/gestione-fidi-03;Scadenza;scadenza;15/10/2036;TRASCRITTO
+52130861/gestione-fidi-03;Importo (€);importo_euro;142.500;TRASCRITTO
+52130861/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52130861/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52130861/note-01;NDG;ndg;32503393;TRASCRITTO
+52130861/note-01;DENOMINAZIONE;denominazione;DE MARCHI ALESSANDRO;TRASCRITTO
+52130861/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52130861/note-01;Filiale relazione;filiale_relazione;220 - BO MURRI;TRASCRITTO
+52130861/note-01;Note della richiesta;note_della_richiesta;"VOUCHER MUTUO - Numero Finanziamento FICS: 017/5678764 - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 142.500,00 € IMPORTO PER PRIMA CASA : 142.500,00 € IMPORTO RICHIESTO : 142.500,00 € - Codice immobile: 5150868; _________________ NOTE FILIALE: Opportunità nata da comparatore Immobiliare.it Trattasi del Dr. Alessandro De Marchi, laureato in Medicina e Chirurgia e specializzato in Geriatria, attivo a Bologna presso l'IRCCS Azienda Ospedaliero-Universitaria di Bologna - Policlinico Sant'Orsola-Malpighi. Fa parte dell'equipe dell'unità operativa di Geriatria Acuti, Ortogeriatria e CDCD dello stesso padiglione ospedaliero. Reddito netto annuo pari ad euro 37.763 calcolato mediante modello Caren e ultime buste paga in ns mani. Nessun impegno ulteriore mensile. Attualmente la cliente è alla ricerca di un appartamento nell’ordine di grandezza dei 350/380 mila euro. Dal simulatore Rata/Mutuo, la massima rata mensile sostenibile in una durata di 10 anni, corrisponde ad euro 1.400 euro.";TRASCRITTO
+52135039/elenco-01;NDG;ndg;36306911;TRASCRITTO
+52135039/elenco-01;DENOMINAZIONE;denominazione;KASDAS ...;TRASCRITTO
+52135039/elenco-01;Tipo;tipo;BMS;TRASCRITTO
+52135039/elenco-01;Stato;stato;APP;TRASCRITTO
+52135039/elenco-01;Fase;fase;;VUOTO
+52135039/elenco-01;Creazione;creazione;29/09/2026;TRASCRITTO
+52135039/elenco-01;Evidenze;evidenze;;VUOTO
+52135039/elenco-02;NDG;ndg;36306911;TRASCRITTO
+52135039/elenco-02;DENOMINAZIONE;denominazione;KASDAS ...;TRASCRITTO
+52135039/elenco-02;Tipo;tipo;BMS;TRASCRITTO
+52135039/elenco-02;Stato;stato;APP;TRASCRITTO
+52135039/elenco-02;Fase;fase;;VUOTO
+52135039/elenco-02;Creazione;creazione;29/09/2026;TRASCRITTO
+52135039/elenco-02;Evidenze;evidenze;;VUOTO
+52135039/soggetti-01;NDG;ndg;36306911;TRASCRITTO
+52135039/soggetti-01;DENOMINAZIONE;denominazione;KASDAS SAZIYE,KASDAS SEYDI;TRASCRITTO
+52135039/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52135039/soggetti-01;Filiale relazione;filiale_relazione;2134 - S.DONATO MIL;TRASCRITTO
+52135039/soggetti-01;NDG 1;ndg_1;36306911;TRASCRITTO
+52135039/soggetti-01;DENOMINAZIONE 1;denominazione_1;KASDAS SAZIYE,KASDAS SEYDI;TRASCRITTO
+52135039/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52135039/soggetti-01;NDG 2;ndg_2;36306834;TRASCRITTO
+52135039/soggetti-01;DENOMINAZIONE 2;denominazione_2;KASDAS SEYDI;TRASCRITTO
+52135039/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52135039/soggetti-01;NDG 3;ndg_3;36306876;TRASCRITTO
+52135039/soggetti-01;DENOMINAZIONE 3;denominazione_3;KASDAS SAZIYE;TRASCRITTO
+52135039/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52135039/soggetti-01;NDG 4;ndg_4;;VUOTO
+52135039/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52135039/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52135039/gestione-fidi-01;NDG;ndg;36306911;TRASCRITTO
+52135039/gestione-fidi-01;DENOMINAZIONE;denominazione;KASDAS SAZIYE,KASDAS SEYDI;TRASCRITTO
+52135039/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52135039/gestione-fidi-01;Filiale relazione;filiale_relazione;2134 - S.DONATO MIL;TRASCRITTO
+52135039/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52135039/gestione-fidi-01;Rapporto;rapporto;034 2134 0017 05679841;TRASCRITTO
+52135039/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52135039/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+52135039/gestione-fidi-01;Importo (€);importo_euro;176.000;TRASCRITTO
+52135039/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52135039/gestione-fidi-02;NDG;ndg;36306911;TRASCRITTO
+52135039/gestione-fidi-02;DENOMINAZIONE;denominazione;KASDAS SAZIYE,KASDAS SEYDI;TRASCRITTO
+52135039/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+52135039/gestione-fidi-02;Filiale relazione;filiale_relazione;2134 - S.DONATO MIL;TRASCRITTO
+52135039/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52135039/gestione-fidi-02;Rapporto;rapporto;034 2134 0017 05679841;TRASCRITTO
+52135039/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52135039/gestione-fidi-02;Scadenza;scadenza;361 mesi;TRASCRITTO
+52135039/gestione-fidi-02;Importo (€);importo_euro;176.000;TRASCRITTO
+52135039/gestione-fidi-02;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52135039/gestione-fidi-03;NDG;ndg;36306911;TRASCRITTO
+52135039/gestione-fidi-03;DENOMINAZIONE;denominazione;KASDAS SAZIYE,KASDAS SEYDI;TRASCRITTO
+52135039/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+52135039/gestione-fidi-03;Filiale relazione;filiale_relazione;2134 - S.DONATO MIL;TRASCRITTO
+52135039/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52135039/gestione-fidi-03;Rapporto;rapporto;034 2134 0017 05679841;TRASCRITTO
+52135039/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52135039/gestione-fidi-03;Scadenza;scadenza;361 mesi;TRASCRITTO
+52135039/gestione-fidi-03;Importo (€);importo_euro;176.000;TRASCRITTO
+52135039/gestione-fidi-03;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52135039/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52135039/note-01;NDG;ndg;36306911;TRASCRITTO
+52135039/note-01;DENOMINAZIONE;denominazione;KASDAS SAZIYE,KASDAS SEYDI;TRASCRITTO
+52135039/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52135039/note-01;Filiale relazione;filiale_relazione;2134 - S.DONATO MIL;TRASCRITTO
+52135039/note-01;Note della richiesta;note_della_richiesta;NUMERO FINANZIAMENTO FICS 017/5679841. Clienti presentati da Agenzia Unipol Assimaster srl (Il codice identificativo dell’incaricato è 0000039682030). Coniugi Kasdas che richiedono mutuo ipotecario per acquisto prima casa, ltv 80%, importo in richiesta euro 176.000, acquisto 220.000 euro. Immobile sito in Melzo (MI). Stato di famiglia composto da 5 persone, di cui 2 figli a carico più il suocero che non è a carico e non interviene nell'operazione in richiesta, lavoratore a tempo indeterminato, reddito netto annuo di circa 22.000, del quale si allega busta paga, CUD 2026 e relativo CAREN. La Sig.ra Kasdas Saziye, lavora a tempo indeterminato dal settembre 2023, CAREN 2026 pari ad euro 21.418. Il Sig. Kasdas , lavora a tempo indeterminato dal ottobre 2025, CAREN 2026 pari ad euro 22.750. Attualmente la famiglia vive in un'abitazione in affitto, si allega contratto, canone euro 750 mensili che verranno sostituiti dalla rata in assunzione di euro 780. Nessun impegno dichiarato sul sistema.;TRASCRITTO
+51772928/elenco-01;NDG;ndg;32669007;TRASCRITTO
+51772928/elenco-01;DENOMINAZIONE;denominazione;FRANCO…;TRASCRITTO
+51772928/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+51772928/elenco-01;Stato;stato;ABB;TRASCRITTO
+51772928/elenco-01;Fase;fase;IST;TRASCRITTO
+51772928/elenco-01;Creazione;creazione;03/04/2026;TRASCRITTO
+51772928/elenco-01;Evidenze;evidenze;BMB;TRASCRITTO
+51772928/elenco-02;NDG;ndg;32669007;TRASCRITTO
+51772928/elenco-02;DENOMINAZIONE;denominazione;FRANCO…;TRASCRITTO
+51772928/elenco-02;Tipo;tipo;B;PARZIALE
+51772928/elenco-02;Stato;stato;ABB;TRASCRITTO
+51772928/elenco-02;Fase;fase;IST;TRASCRITTO
+51772928/elenco-02;Creazione;creazione;03/04/2026;TRASCRITTO
+51772928/elenco-02;Evidenze;evidenze;BM;TRASCRITTO
+51772928/elenco-03;NDG;ndg;32669007;TRASCRITTO
+51772928/elenco-03;DENOMINAZIONE;denominazione;FRANCO…;TRASCRITTO
+51772928/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+51772928/elenco-03;Stato;stato;ABB;TRASCRITTO
+51772928/elenco-03;Fase;fase;IST;TRASCRITTO
+51772928/elenco-03;Creazione;creazione;03/04/2026;TRASCRITTO
+51772928/elenco-03;Evidenze;evidenze;BM;TRASCRITTO
+51772928/gestione-fidi-01;NDG;ndg;;NON VISIBILE
+51772928/gestione-fidi-01;DENOMINAZIONE;denominazione;;NON VISIBILE
+51772928/gestione-fidi-01;Tipo;tipo;;NON VISIBILE
+51772928/gestione-fidi-01;Filiale relazione;filiale_relazione;;NON VISIBILE
+51772928/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51772928/gestione-fidi-01;Rapporto;rapporto;034 3752 0017 05614082;TRASCRITTO
+51772928/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+51772928/gestione-fidi-01;Scadenza;scadenza;03/04/2026;TRASCRITTO
+51772928/gestione-fidi-01;Importo (€);importo_euro;137.000;TRASCRITTO
+51772928/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51772928/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;340176 - MUTUO FOND PRIV CONSAP >=80%;TRASCRITTO
+51772928/gestione-fidi-02;NDG;ndg;;NON VISIBILE
+51772928/gestione-fidi-02;DENOMINAZIONE;denominazione;;NON VISIBILE
+51772928/gestione-fidi-02;Tipo;tipo;;NON VISIBILE
+51772928/gestione-fidi-02;Filiale relazione;filiale_relazione;;NON VISIBILE
+51772928/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+51772928/gestione-fidi-02;Rapporto;rapporto;034 3752 0017 05614082;TRASCRITTO
+51772928/gestione-fidi-02;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+51772928/gestione-fidi-02;Scadenza;scadenza;03/04/2026;TRASCRITTO
+51772928/gestione-fidi-02;Importo (€);importo_euro;137.000;TRASCRITTO
+51772928/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51772928/gestione-fidi-02;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS;TRASCRITTO
+51772928/gestione-fidi-03;NDG;ndg;;NON VISIBILE
+51772928/gestione-fidi-03;DENOMINAZIONE;denominazione;;NON VISIBILE
+51772928/gestione-fidi-03;Tipo;tipo;;NON VISIBILE
+51772928/gestione-fidi-03;Filiale relazione;filiale_relazione;;NON VISIBILE
+51772928/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+51772928/gestione-fidi-03;Rapporto;rapporto;034 3752 0017 05614082;TRASCRITTO
+51772928/gestione-fidi-03;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+51772928/gestione-fidi-03;Scadenza;scadenza;03/04/2026;TRASCRITTO
+51772928/gestione-fidi-03;Importo (€);importo_euro;137.000;TRASCRITTO
+51772928/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51772928/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51788077/elenco-01;NDG;ndg;32688380;TRASCRITTO
+51788077/elenco-01;DENOMINAZIONE;denominazione;BEN ROMDHANE NAJEH;TRASCRITTO
+51788077/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+51788077/elenco-01;Stato;stato;APP;TRASCRITTO
+51788077/elenco-01;Fase;fase;;VUOTO
+51788077/elenco-01;Creazione;creazione;13/04/2026;TRASCRITTO
+51788077/elenco-01;Evidenze;evidenze;B V;TRASCRITTO
+51788077/gestione-fidi-01;NDG;ndg;32688380;TRASCRITTO
+51788077/gestione-fidi-01;DENOMINAZIONE;denominazione;BEN ROMDHANE NAJEH;TRASCRITTO
+51788077/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51788077/gestione-fidi-01;Filiale relazione;filiale_relazione;95 - SALSOMAGGIOR;TRASCRITTO
+51788077/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51788077/gestione-fidi-01;Rapporto;rapporto;034 0095 0017 05616550;TRASCRITTO
+51788077/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51788077/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+51788077/gestione-fidi-01;Importo (€);importo_euro;90.000;TRASCRITTO
+51788077/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51788077/gestione-fidi-02;NDG;ndg;;NON VISIBILE
+51788077/gestione-fidi-02;DENOMINAZIONE;denominazione;;NON VISIBILE
+51788077/gestione-fidi-02;Tipo;tipo;;NON VISIBILE
+51788077/gestione-fidi-02;Filiale relazione;filiale_relazione;;NON VISIBILE
+51788077/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+51788077/gestione-fidi-02;Rapporto;rapporto;034 0095 0017 05616550;TRASCRITTO
+51788077/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51788077/gestione-fidi-02;Scadenza;scadenza;361 mesi;TRASCRITTO
+51788077/gestione-fidi-02;Importo (€);importo_euro;90.000;TRASCRITTO
+51788077/gestione-fidi-02;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51788077/gestione-fidi-03;NDG;ndg;;NON VISIBILE
+51788077/gestione-fidi-03;DENOMINAZIONE;denominazione;;NON VISIBILE
+51788077/gestione-fidi-03;Tipo;tipo;;NON VISIBILE
+51788077/gestione-fidi-03;Filiale relazione;filiale_relazione;;NON VISIBILE
+51788077/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+51788077/gestione-fidi-03;Rapporto;rapporto;034 0095 0017 05616550;TRASCRITTO
+51788077/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51788077/gestione-fidi-03;Scadenza;scadenza;361 mesi;TRASCRITTO
+51788077/gestione-fidi-03;Importo (€);importo_euro;90.000;TRASCRITTO
+51788077/gestione-fidi-03;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51788077/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51788077/soggetti-01;NDG;ndg;32688380;TRASCRITTO
+51788077/soggetti-01;DENOMINAZIONE;denominazione;BEN ROMDHANE NAJEH;TRASCRITTO
+51788077/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51788077/soggetti-01;Filiale relazione;filiale_relazione;95 - SALSOMAGGIOR;TRASCRITTO
+51788077/soggetti-01;NDG 1;ndg_1;32688380;TRASCRITTO
+51788077/soggetti-01;DENOMINAZIONE 1;denominazione_1;BEN ROMDHANE NAJEH;TRASCRITTO
+51788077/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51788077/soggetti-01;NDG 2;ndg_2;;VUOTO
+51788077/soggetti-01;DENOMINAZIONE 2;denominazione_2;;VUOTO
+51788077/soggetti-01;RUOLO 2;ruolo_2;;VUOTO
+51788077/soggetti-01;NDG 3;ndg_3;;VUOTO
+51788077/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+51788077/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+51788077/soggetti-01;NDG 4;ndg_4;;VUOTO
+51788077/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+51788077/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+51792073/elenco-01;NDG;ndg;32526867;TRASCRITTO
+51792073/elenco-01;DENOMINAZIONE;denominazione;MAURA…;TRASCRITTO
+51792073/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+51792073/elenco-01;Stato;stato;APP;TRASCRITTO
+51792073/elenco-01;Fase;fase;;VUOTO
+51792073/elenco-01;Creazione;creazione;14/04/2026;TRASCRITTO
+51792073/elenco-01;Evidenze;evidenze;BM;TRASCRITTO
+51792073/elenco-02;NDG;ndg;32526867;TRASCRITTO
+51792073/elenco-02;DENOMINAZIONE;denominazione;MAURA…;TRASCRITTO
+51792073/elenco-02;Tipo;tipo;;NON VISIBILE
+51792073/elenco-02;Stato;stato;APP;TRASCRITTO
+51792073/elenco-02;Fase;fase;;VUOTO
+51792073/elenco-02;Creazione;creazione;14/04/2026;TRASCRITTO
+51792073/elenco-02;Evidenze;evidenze;BM;TRASCRITTO
+51792073/elenco-03;NDG;ndg;32526867;TRASCRITTO
+51792073/elenco-03;DENOMINAZIONE;denominazione;MAURA…;TRASCRITTO
+51792073/elenco-03;Tipo;tipo;;NON VISIBILE
+51792073/elenco-03;Stato;stato;;NON VISIBILE
+51792073/elenco-03;Fase;fase;IST;TRASCRITTO
+51792073/elenco-03;Creazione;creazione;13/04/2026;TRASCRITTO
+51792073/elenco-03;Evidenze;evidenze;BM;TRASCRITTO
+51798191/elenco-01;NDG;ndg;32740019;TRASCRITTO
+51798191/elenco-01;DENOMINAZIONE;denominazione;CANDO…;TRASCRITTO
+51798191/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+51798191/elenco-01;Stato;stato;ABB;TRASCRITTO
+51798191/elenco-01;Fase;fase;IST;TRASCRITTO
+51798191/elenco-01;Creazione;creazione;16/04/2026;TRASCRITTO
+51798191/elenco-01;Evidenze;evidenze;B V;TRASCRITTO
+51798191/elenco-02;NDG;ndg;32740019;TRASCRITTO
+51798191/elenco-02;DENOMINAZIONE;denominazione;CANDO…;TRASCRITTO
+51798191/elenco-02;Tipo;tipo;;NON VISIBILE
+51798191/elenco-02;Stato;stato;ABB;TRASCRITTO
+51798191/elenco-02;Fase;fase;IST;TRASCRITTO
+51798191/elenco-02;Creazione;creazione;16/04/2026;TRASCRITTO
+51798191/elenco-02;Evidenze;evidenze;B V;TRASCRITTO
+51798191/elenco-03;NDG;ndg;32740019;TRASCRITTO
+51798191/elenco-03;DENOMINAZIONE;denominazione;CANDO…;TRASCRITTO
+51798191/elenco-03;Tipo;tipo;BMB;TRASCRITTO
+51798191/elenco-03;Stato;stato;ABB;TRASCRITTO
+51798191/elenco-03;Fase;fase;IST;TRASCRITTO
+51798191/elenco-03;Creazione;creazione;16/04/2026;TRASCRITTO
+51798191/elenco-03;Evidenze;evidenze;B V;TRASCRITTO
+51798191/elenco-03;tooltip su valore campo Evidenze: B;tooltip_evidenze_b;Origination BSTORE;TRASCRITTO
+51800301/gestione-fidi-01;NDG;ndg;32731685;TRASCRITTO
+51800301/gestione-fidi-01;DENOMINAZIONE;denominazione;DONNIAQUIO ANDREA,ARGENTI LUCIA;TRASCRITTO
+51800301/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51800301/gestione-fidi-01;Filiale relazione;filiale_relazione;3603 - GE CESAREA;TRASCRITTO
+51800301/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51800301/gestione-fidi-01;Rapporto;rapporto;034 3603 0017 05619811;TRASCRITTO
+51800301/gestione-fidi-01;Descrizione;descrizione;M.I.PF NO FOND;TRASCRITTO
+51800301/gestione-fidi-01;Scadenza;scadenza;15/05/2056;TRASCRITTO
+51800301/gestione-fidi-01;Importo (€);importo_euro;283.500;TRASCRITTO
+51800301/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51800301/gestione-fidi-02;NDG;ndg;;NON VISIBILE
+51800301/gestione-fidi-02;DENOMINAZIONE;denominazione;;NON VISIBILE
+51800301/gestione-fidi-02;Tipo;tipo;;NON VISIBILE
+51800301/gestione-fidi-02;Filiale relazione;filiale_relazione;;NON VISIBILE
+51800301/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+51800301/gestione-fidi-02;Rapporto;rapporto;034 3603 0017 05618911;TRASCRITTO
+51800301/gestione-fidi-02;Descrizione;descrizione;M.I.PF NO FOND;TRASCRITTO
+51800301/gestione-fidi-02;Scadenza;scadenza;15/05/2026;TRASCRITTO
+51800301/gestione-fidi-02;Importo (€);importo_euro;283.500;TRASCRITTO
+51800301/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51800301/gestione-fidi-03;NDG;ndg;;NON VISIBILE
+51800301/gestione-fidi-03;DENOMINAZIONE;denominazione;;NON VISIBILE
+51800301/gestione-fidi-03;Tipo;tipo;;NON VISIBILE
+51800301/gestione-fidi-03;Filiale relazione;filiale_relazione;;NON VISIBILE
+51800301/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+51800301/gestione-fidi-03;Rapporto;rapporto;034 3603 0017 05618911;TRASCRITTO
+51800301/gestione-fidi-03;Descrizione;descrizione;M.I.PF NO FOND;TRASCRITTO
+51800301/gestione-fidi-03;Scadenza;scadenza;15/15/2056;TRASCRITTO
+51800301/gestione-fidi-03;Importo (€);importo_euro;283.500;TRASCRITTO
+51800301/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51800301/gestione-fidi-04;NDG;ndg;;NON VISIBILE
+51800301/gestione-fidi-04;DENOMINAZIONE;denominazione;;NON VISIBILE
+51800301/gestione-fidi-04;Tipo;tipo;;NON VISIBILE
+51800301/gestione-fidi-04;Filiale relazione;filiale_relazione;;NON VISIBILE
+51800301/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+51800301/gestione-fidi-04;Rapporto;rapporto;034 3603 0017 05618911;TRASCRITTO
+51800301/gestione-fidi-04;Descrizione;descrizione;M.I.PF NO FOND;TRASCRITTO
+51800301/gestione-fidi-04;Scadenza;scadenza;15/05/2056;TRASCRITTO
+51800301/gestione-fidi-04;Importo (€);importo_euro;283.500;TRASCRITTO
+51800301/gestione-fidi-04;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51800301/gestione-fidi-04;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51800301/note-01;NDG;ndg;32731685;TRASCRITTO
+51800301/note-01;DENOMINAZIONE;denominazione;DONNIAQUIO ANDREA,ARGENTI LUCIA;TRASCRITTO
+51800301/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51800301/note-01;Filiale relazione;filiale_relazione;3603 - GE CESAREA;TRASCRITTO
+51800301/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5618911
+- Numero proposta DESK: 2889569
+- Importo perizia: 359.000,00 €
+- Valore immobile presunto: 340.000,00
+- Immobile da ipotecare è ad uso abitativo: Si
+- Dettaglio importi mutuo:
+IMPORTO INSERIMENTO PRE-VENDITA: 283.500,00 €
+IMPORTO PER PRIMA CASA : 272.000,00 €
+IMPORTO RICHIESTO : 272.000,00 €
+- Codice immobile: 4854898;
+I clienti, ossia la giovane coppia Andrea Donniaquio e Lucia Argenti, richiedono il mutuo di euro 283.500,00 a tasso fisso durata 30 anni, finalizzato all’acquisto della prima casa. Tipologia di mutuo, Mutuo Assicurato Promo Marzo 2,95%.
+Iscrizione ipotecaria su immobile Sito in Genova (GE) in via Nizza 11 sc B/19, Fg 66 Part. 41 sub 95 CAT A/2.
+Valore commerciale immobili ipotecabili pari a 359.000 euro (già periziato).
+Il prezzo di acquisto è stato fissato a 340.000,00 euro.
+Andrea Donniaquio è un medico a tempo indeterminato dell’ospedale Galliera, con reddito annuo netto pari a 37.469 euro (CAREN).
+Anche la sua compagna Lucia Argenti è un medico a tempo indeterminato c/o Ospedale Villa Scassi e percepisce reddito MENSILE pari a euro 3 mila euro circa. Da CUD risulta ancora una parte di lavoro a tempo determinato in quanto ha vinto il concorso a tempo indeterminato a novembre, ma attualmente è ormai a tempo indeterminato. In allegato anche il contratto a tempo indeterminato. Invece, per il calcolo dei redditi moltiplichiamo il reddito netto mensile per l’anno.
+Non hanno figli a carico.
+Il sig. Donniaquio è il figlio di clienti personal della scrivente filiale, con patrimonio superiore ai 300 mila euro.
+EFFETTUATO CHECK UP ASSICURATIVO E QUESTIONARIO ARCA MEET YOU
+
+CONDIZIONI DEL FINANZIAMENTO:
+Prodotto: BPER mutuo assicurato prima casa, importo richiesto euro 283.500, durata 30 anni, tasso fisso 2.95%.
+Rata mensile euro 1.187,62
+LTV 78,9%
+LTC 83,38%
+Prezzo di acquisto 340.000,00 euro
+Rapporto R/R 19%";TRASCRITTO
+51800301/note-02;NDG;ndg;32731685;TRASCRITTO
+51800301/note-02;DENOMINAZIONE;denominazione;DONNIAQUIO ANDREA,ARGENTI LUCIA;TRASCRITTO
+51800301/note-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+51800301/note-02;Filiale relazione;filiale_relazione;3603 - GE CESAREA;TRASCRITTO
+51800301/note-02;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5618911
+- Numero proposta DESK: 2889569";PARZIALE
+51800301/soggetti-01;NDG;ndg;32731685;TRASCRITTO
+51800301/soggetti-01;DENOMINAZIONE;denominazione;DONNIAQUIO ANDREA,ARGENTI LUCIA;TRASCRITTO
+51800301/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51800301/soggetti-01;Filiale relazione;filiale_relazione;3603 - GE CESAREA;TRASCRITTO
+51800301/soggetti-01;NDG 1;ndg_1;32731685;TRASCRITTO
+51800301/soggetti-01;DENOMINAZIONE 1;denominazione_1;DONNIAQUIO ANDREA,ARGENTI LUCIA;TRASCRITTO
+51800301/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51800301/soggetti-01;NDG 2;ndg_2;24190674;TRASCRITTO
+51800301/soggetti-01;DENOMINAZIONE 2;denominazione_2;ARGENTI LUCIA;TRASCRITTO
+51800301/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+51800301/soggetti-01;NDG 3;ndg_3;26844678;TRASCRITTO
+51800301/soggetti-01;DENOMINAZIONE 3;denominazione_3;DONNIAQUIO ANDREA;TRASCRITTO
+51800301/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+51800301/soggetti-01;NDG 4;ndg_4;;VUOTO
+51800301/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+51800301/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+51859514/elenco-01;NDG;ndg;30429881;TRASCRITTO
+51859514/elenco-01;DENOMINAZIONE;denominazione;MILAZZO FEDERICO;TRASCRITTO
+51859514/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+51859514/elenco-01;Stato;stato;APP;TRASCRITTO
+51859514/elenco-01;Fase;fase;;VUOTO
+51859514/elenco-01;Creazione;creazione;18/05/2026;TRASCRITTO
+51859514/elenco-01;Evidenze;evidenze;BC;TRASCRITTO
+51859514/elenco-02;NDG;ndg;30429881;TRASCRITTO
+51859514/elenco-02;DENOMINAZIONE;denominazione;MILAZZO FEDERICO;TRASCRITTO
+51859514/elenco-02;Tipo;tipo;;NON VISIBILE
+51859514/elenco-02;Stato;stato;APP;TRASCRITTO
+51859514/elenco-02;Fase;fase;;VUOTO
+51859514/elenco-02;Creazione;creazione;18/05/2026;TRASCRITTO
+51859514/elenco-02;Evidenze;evidenze;BC;TRASCRITTO
+51859514/elenco-03;NDG;ndg;30429881;TRASCRITTO
+51859514/elenco-03;DENOMINAZIONE;denominazione;MILAZZO FEDERICO;TRASCRITTO
+51859514/elenco-03;Tipo;tipo;;NON VISIBILE
+51859514/elenco-03;Stato;stato;;NON VISIBILE
+51859514/elenco-03;Fase;fase;;NON VISIBILE
+51859514/elenco-03;Creazione;creazione;;NON VISIBILE
+51859514/elenco-03;Evidenze;evidenze;BC;TRASCRITTO
+51997531/gestione-fidi-01;NDG;ndg;31092893;TRASCRITTO
+51997531/gestione-fidi-01;DENOMINAZIONE;denominazione;FRATTO SALVATORE,OLIVERIO MARGHERITA;TRASCRITTO
+51997531/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51997531/gestione-fidi-01;Filiale relazione;filiale_relazione;624 - S.GIOVANNI F;TRASCRITTO
+51997531/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51997531/gestione-fidi-01;Rapporto;rapporto;034 0624 0017 05656688;TRASCRITTO
+51997531/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >80%;TRASCRITTO
+51997531/gestione-fidi-01;Scadenza;scadenza;15/08/2056;TRASCRITTO
+51997531/gestione-fidi-01;Importo (€);importo_euro;109.100;TRASCRITTO
+51997531/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51997531/gestione-fidi-01;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52013664/gestione-fidi-01;NDG;ndg;32401336;TRASCRITTO
+52013664/gestione-fidi-01;DENOMINAZIONE;denominazione;LOOR RENDON SOLANGE;TRASCRITTO
+52013664/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52013664/gestione-fidi-01;Filiale relazione;filiale_relazione;3352 - LANDRIANO;TRASCRITTO
+52013664/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52013664/gestione-fidi-01;Rapporto;rapporto;034 3352 0017 05659938;TRASCRITTO
+52013664/gestione-fidi-01;Descrizione;descrizione;M.F. PF FONDO;TRASCRITTO
+52013664/gestione-fidi-01;Scadenza;scadenza;15/08/2056;TRASCRITTO
+52013664/gestione-fidi-01;Importo (€);importo_euro;129.000;TRASCRITTO
+52013664/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52013664/gestione-fidi-01;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52022324/gestione-fidi-01;NDG;ndg;;NON VISIBILE
+52022324/gestione-fidi-01;DENOMINAZIONE;denominazione;;NON VISIBILE
+52022324/gestione-fidi-01;Tipo;tipo;;NON VISIBILE
+52022324/gestione-fidi-01;Filiale relazione;filiale_relazione;;NON VISIBILE
+52022324/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52022324/gestione-fidi-01;Rapporto;rapporto;034 0005 0017 05661524;TRASCRITTO
+52022324/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >80%;TRASCRITTO
+52022324/gestione-fidi-01;Scadenza;scadenza;15/08/2056;TRASCRITTO
+52022324/gestione-fidi-01;Importo (€);importo_euro;230.000;TRASCRITTO
+52022324/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52022324/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS;TRASCRITTO
+52022324/gestione-fidi-02;NDG;ndg;;NON VISIBILE
+52022324/gestione-fidi-02;DENOMINAZIONE;denominazione;;NON VISIBILE
+52022324/gestione-fidi-02;Tipo;tipo;;NON VISIBILE
+52022324/gestione-fidi-02;Filiale relazione;filiale_relazione;;NON LEGGIBILE
+52022324/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52022324/gestione-fidi-02;Rapporto;rapporto;034 0005 0017 05661524;TRASCRITTO
+52022324/gestione-fidi-02;Descrizione;descrizione;M.CONSAP >80%;TRASCRITTO
+52022324/gestione-fidi-02;Scadenza;scadenza;15/08/2056;TRASCRITTO
+52022324/gestione-fidi-02;Importo (€);importo_euro;230.000;TRASCRITTO
+52022324/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52022324/gestione-fidi-02;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52032077/gestione-fidi-01;NDG;ndg;32661219;TRASCRITTO
+52032077/gestione-fidi-01;DENOMINAZIONE;denominazione;GRECO ALESSANDRO;TRASCRITTO
+52032077/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52032077/gestione-fidi-01;Filiale relazione;filiale_relazione;908 - SIRACUSA;TRASCRITTO
+52032077/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52032077/gestione-fidi-01;Rapporto;rapporto;034 0908 0017 05662866;TRASCRITTO
+52032077/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52032077/gestione-fidi-01;Scadenza;scadenza;15/08/2056;TRASCRITTO
+52032077/gestione-fidi-01;Importo (€);importo_euro;80.000;TRASCRITTO
+52032077/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52032077/gestione-fidi-02;NDG;ndg;;NON VISIBILE
+52032077/gestione-fidi-02;DENOMINAZIONE;denominazione;;NON VISIBILE
+52032077/gestione-fidi-02;Tipo;tipo;;NON VISIBILE
+52032077/gestione-fidi-02;Filiale relazione;filiale_relazione;;NON VISIBILE
+52032077/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52032077/gestione-fidi-02;Rapporto;rapporto;034 0908 0017 05662866;TRASCRITTO
+52032077/gestione-fidi-02;Descrizione;descrizione;M.CONSAP >80;PARZIALE
+52032077/gestione-fidi-02;Scadenza;scadenza;15/08/2056;TRASCRITTO
+52032077/gestione-fidi-02;Importo (€);importo_euro;80.000;TRASCRITTO
+52032077/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52032077/gestione-fidi-02;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;340176 - MUTUO FOND PRIV CONSAP >=80%;TRASCRITTO
+52032077/soggetti-01;NDG;ndg;32661219;TRASCRITTO
+52032077/soggetti-01;DENOMINAZIONE;denominazione;GRECO ALESSANDRO;TRASCRITTO
+52032077/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+52032077/soggetti-01;Filiale relazione;filiale_relazione;908 - SIRACUSA;TRASCRITTO
+52032077/soggetti-01;NDG 1;ndg_1;32661219;TRASCRITTO
+52032077/soggetti-01;DENOMINAZIONE 1;denominazione_1;GRECO ALESSANDRO;TRASCRITTO
+52032077/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52032077/soggetti-01;NDG 2;ndg_2;11153238;TRASCRITTO
+52032077/soggetti-01;DENOMINAZIONE 2;denominazione_2;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52032077/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+52032077/soggetti-01;NDG 3;ndg_3;;VUOTO
+52032077/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+52032077/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+52032077/soggetti-01;NDG 4;ndg_4;;VUOTO
+52032077/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52032077/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52102964/elenco-01;NDG;ndg;36149183;TRASCRITTO
+52102964/elenco-01;DENOMINAZIONE;denominazione;ERARIO…;TRASCRITTO
+52102964/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52102964/elenco-01;Stato;stato;APP;TRASCRITTO
+52102964/elenco-01;Fase;fase;;VUOTO
+52102964/elenco-01;Creazione;creazione;15/09/2026;TRASCRITTO
+52102964/elenco-01;Evidenze;evidenze;BC;TRASCRITTO
+52102964/soggetti-01;NDG 1;ndg_1;36149183;TRASCRITTO
+52102964/soggetti-01;DENOMINAZIONE 1;denominazione_1;ERARIO ROBERTO,MILANOVIC MIRJANA;TRASCRITTO
+52102964/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52102964/soggetti-01;NDG 2;ndg_2;651928;TRASCRITTO
+52102964/soggetti-01;DENOMINAZIONE 2;denominazione_2;ERARIO ROBERTO,MILANOVICMIRJANA;TRASCRITTO
+52102964/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52102964/soggetti-01;NDG 3;ndg_3;23165377;TRASCRITTO
+52102964/soggetti-01;DENOMINAZIONE 3;denominazione_3;MILANOVIC MIRJANA;TRASCRITTO
+52102964/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52102964/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52102964/gestione-fidi-01;Rapporto;rapporto;034 0230 0017 05673792;TRASCRITTO
+52102964/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52102964/gestione-fidi-01;Fido: tooltip Descrizione;;340170 - MUTUO FONDIARIO PRIVATI;TRASCRITTO
+52102964/gestione-fidi-01;Scadenza;scadenza;241 mesi;TRASCRITTO
+52102964/gestione-fidi-01;Importo (€);importo_euro;125.000;TRASCRITTO
+52102964/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52102964/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+52102964/gestione-fidi-01;Garanzia 1: Descrizione;;IPOTECA I GR;TRASCRITTO
+52102964/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+52102964/gestione-fidi-01;Garanzia 1: NDG;;651928 23165377;TRASCRITTO
+52102964/gestione-fidi-01;Garanzia 1: Denominazione;;ERARIO ROB MILANOVIC;TRASCRITTO
+52102964/gestione-fidi-01;Garanzia 1: Imp (€)%;;225.000;TRASCRITTO
+52102964/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova;TRASCRITTO
+52102964/gestione-fidi-01;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52102964/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5673792 - Numero proposta DESK: N.D. - Importo perizia: N.D. - Valore immobile presunto: 182.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 125.000,00 € IMPORTO PER PRIMA CASA: 125.000,00 € IMPORTO RICHIESTO: 125.000,00 € - Codice immobile: 5147082; I sigg.ri Erario e Milanovic ci richiedono mutuo per acquisto prima casa. L'immobile ha un costo di euro 182.000,00, che verrà sostenuto, per un 68% dal mutuo in richiesta, e per la rimanente parte da mezzi propri che il sig. erario ricaverà dalla vendita dell'appartamento di attuale residenza.";TRASCRITTO
+52102964/note-01;Filiale relazione;filiale_relazione;230 - BO XXI APRIL;TRASCRITTO
+52102964/note-01;Agente proponente;;Simona Galloni;TRASCRITTO
+52102964/soggetti-01;NDG 4;ndg_4;;VUOTO
+52102964/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52102964/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52102964/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;;VUOTO
+52102964/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;;VUOTO
+52080736/elenco-01;NDG;ndg;36269316;TRASCRITTO
+52080736/elenco-01;DENOMINAZIONE;denominazione;LONGHI…;TRASCRITTO
+52080736/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52080736/elenco-01;Stato;stato;APP;TRASCRITTO
+52080736/elenco-01;Fase;fase;;VUOTO
+52080736/elenco-01;Creazione;creazione;07/09/2026;TRASCRITTO
+52080736/elenco-01;Evidenze;evidenze;BC;TRASCRITTO
+52080736/elenco-02;NDG;ndg;36269316;TRASCRITTO
+52080736/elenco-02;DENOMINAZIONE;denominazione;LONGHI…;TRASCRITTO
+52080736/elenco-02;Tipo;tipo;;NON VISIBILE
+52080736/elenco-02;Stato;stato;;NON VISIBILE
+52080736/elenco-02;Fase;fase;;NON VISIBILE
+52080736/elenco-02;Creazione;creazione;;NON VISIBILE
+52080736/elenco-02;Evidenze;evidenze;BC;TRASCRITTO
+52080736/soggetti-01;NDG 1;ndg_1;36269316;TRASCRITTO
+52080736/soggetti-01;DENOMINAZIONE 1;denominazione_1;LONGHI NICCOLO,SPANIO DANIELA;TRASCRITTO
+52080736/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52080736/soggetti-01;NDG 2;ndg_2;19368615;TRASCRITTO
+52080736/soggetti-01;DENOMINAZIONE 2;denominazione_2;DELLA TORRE SERGIO ENRICO;TRASCRITTO
+52080736/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52080736/soggetti-01;NDG 3;ndg_3;36065544;TRASCRITTO
+52080736/soggetti-01;DENOMINAZIONE 3;denominazione_3;LONGHI NICCOLO;TRASCRITTO
+52080736/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52080736/soggetti-01;NDG 4;ndg_4;25033872;TRASCRITTO
+52080736/soggetti-01;DENOMINAZIONE 4;denominazione_4;SPANIO DANIELA;TRASCRITTO
+52080736/soggetti-01;RUOLO 4;ruolo_4;Cointestato;TRASCRITTO
+52080736/soggetti-01;NDG;ndg;36269316;DERIVATO
+52080736/soggetti-01;DENOMINAZIONE;denominazione;LONGHI NICCOLO,SPANIO DANIELA;DERIVATO
+52080736/soggetti-01;Filiale relazione;filiale_relazione;328 - MONZA;DERIVATO
+52080736/soggetti-01;Tipo;tipo;BPI Mutui;DERIVATO
+52080736/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52080736/gestione-fidi-01;Rapporto;rapporto;034 0328 0017 05669279;TRASCRITTO
+52080736/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52080736/gestione-fidi-01;Fido: tooltip Descrizione;;340170 - MUTUO FONDIARIO PRIVATI;TRASCRITTO
+52080736/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+52080736/gestione-fidi-01;Importo (€);importo_euro;156.300;TRASCRITTO
+52080736/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 1: Descrizione;;IPOTECA I GR.;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 1: NDG;;36065544;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 1: Denominazione;;LONGHI NIC;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 1: Imp (€)%;;281.340;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 2: n° Gar.;;G2;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 2: Descrizione;;FID LIM INATTO;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 2: Fido;;F1;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 2: NDG;;19368615;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 2: Denominazione;;DELLA TORR;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 2: Imp (€)%;;156.300;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 2: Tipo Op.;;Nuova;TRASCRITTO
+52080736/gestione-fidi-01;Garanzia 2: tooltip Descrizione;;49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO;TRASCRITTO
+52080736/gestione-fidi-01;NDG;ndg;36269316;DERIVATO
+52080736/gestione-fidi-01;DENOMINAZIONE;denominazione;LONGHI NICCOLO,SPANIO DANIELA;DERIVATO
+52080736/gestione-fidi-01;Filiale relazione;filiale_relazione;328 - MONZA;DERIVATO
+52080736/gestione-fidi-01;Tipo;tipo;BPI Mutui;DERIVATO
+52080736/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52080736/gestione-fidi-02;Rapporto;rapporto;034 0328 0017 05669279;TRASCRITTO
+52080736/gestione-fidi-02;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52080736/gestione-fidi-02;Scadenza;scadenza;361 mesi;TRASCRITTO
+52080736/gestione-fidi-02;Importo (€);importo_euro;156.300;TRASCRITTO
+52080736/gestione-fidi-02;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52080736/gestione-fidi-02;NDG;ndg;36269316;DERIVATO
+52080736/gestione-fidi-02;DENOMINAZIONE;denominazione;LONGHI NICCOLO,SPANIO DANIELA;DERIVATO
+52080736/gestione-fidi-02;Filiale relazione;filiale_relazione;328 - MONZA;DERIVATO
+52080736/gestione-fidi-02;Tipo;tipo;BPI Mutui;DERIVATO
+52080736/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52080736/gestione-fidi-03;Rapporto;rapporto;034 0328 0017 05669279;TRASCRITTO
+52080736/gestione-fidi-03;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52080736/gestione-fidi-03;Scadenza;scadenza;361 mesi;TRASCRITTO
+52080736/gestione-fidi-03;Importo (€);importo_euro;156.300;TRASCRITTO
+52080736/gestione-fidi-03;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52080736/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52080736/gestione-fidi-03;NDG;ndg;36269316;DERIVATO
+52080736/gestione-fidi-03;DENOMINAZIONE;denominazione;LONGHI NICCOLO,SPANIO DANIELA;DERIVATO
+52080736/gestione-fidi-03;Filiale relazione;filiale_relazione;328 - MONZA;DERIVATO
+52080736/gestione-fidi-03;Tipo;tipo;BPI Mutui;DERIVATO
+52080736/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+52080736/gestione-fidi-04;Rapporto;rapporto;034 0328 0017 05669279;TRASCRITTO
+52080736/gestione-fidi-04;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+52080736/gestione-fidi-04;Scadenza;scadenza;361 mesi;TRASCRITTO
+52080736/gestione-fidi-04;Importo (€);importo_euro;156.300;TRASCRITTO
+52080736/gestione-fidi-04;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52080736/gestione-fidi-04;NDG;ndg;36269316;DERIVATO
+52080736/gestione-fidi-04;DENOMINAZIONE;denominazione;LONGHI NICCOLO,SPANIO DANIELA;DERIVATO
+52080736/gestione-fidi-04;Filiale relazione;filiale_relazione;328 - MONZA;DERIVATO
+52080736/gestione-fidi-04;Tipo;tipo;BPI Mutui;DERIVATO
+52080736/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5669279 - Numero proposta DESK: N.D. - Importo perizia: 197.000,00 € - Valore immobile presunto: 197.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 156.300,00 € IMPORTO PER PRIMA CASA : 156.300,00 € IMPORTO RICHIESTO : 156.300,00 € - Codice immobile: 5114096; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante SERGIO ENRICO DELLA TORRE (19368615) Cliente di nuova acquisizione. Longhi Niccolo' è un agente immobiliare, che attualmente svolge libera professione dall'anno scorso. Nel 2024 ha percepito dalla società So.G.Imm. Società Gestioni Imm, redditi da cud per euro 34843,00 Per l'anno 2025, a nostre mani abbiamo un PF provvisorio con reddito netto annuo calcolato con Caren di 20297,00 Per l'anno in corso abbiamo un bilancino provvisorio per il periodo 01/01/2026 - 30/04/2026, con un risultato d'esercizio per euro 15323,00, in proporzione in aumento rispetto all’anno precedente. Non ha immobili di proprietà. Ha un finanziamento in corso con impegno mensile per euro 340,00, con scadenza 05/2027 e un importo residuo di euro 3740,00. Il cliente chiuderà il finanziamento ante rogito. La mamma, Daniela Spano, cointestataria, ha redditi netti da caren da pf per euro 13734,00, svolge libera professione presso studio commercialistico Da visure risulta proprietaria per il 50% di un immobile sito in Monza. Garante a sostegno della pratica il signor Della torre Sergio Enrico (marito della signora Spano), redditi netti da caren di euro 20.619, lavoratore autonomo, agente immobiliare (allegato report persona) Proprietario con la moglie di immobile sito a Monza. Niccolo' insieme alla madre Spanio Daniela ci richiedono mutuo ipotecario promo assicurato, per un immobile sito in Vedano al Lambro, in via Adamello 4, già periziato per il valore di 197000.00 Rata mensile 667,43 istruttoria 1875,6 tasso 3,10 incasso rata 2.75 PROPRIETA' AL 100% A LONGHI NICCOLO' COME DA SCHEDA IMMOBILI , la madre risulta solo cointestataria del mutuo.";PARZIALE
+52080736/note-01;Filiale relazione;filiale_relazione;328 - MONZA;TRASCRITTO
+52080736/note-01;Agente proponente;;Andrea Ballini;TRASCRITTO
+52080736/note-01;NDG;ndg;36269316;DERIVATO
+52080736/note-01;DENOMINAZIONE;denominazione;LONGHI NICCOLO,SPANIO DANIELA;DERIVATO
+52080736/note-01;Tipo;tipo;BPI Mutui;DERIVATO
+52080736/note-02;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5669279 - Numero proposta DESK: N.D. - Importo perizia: 197.000,00 € - Valore immobile presunto: 197.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 156.300,00 € IMPORTO PER PRIMA CASA : 156.300,00 € IMPORTO RICHIESTO : 156.300,00 € - Codice immobile: 5114096; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante SERGIO ENRICO DELLA TORRE (19368615) Cliente di nuova acquisizione. Longhi Niccolo' è un agente immobiliare, che attualmente svolge libera professione dall'anno scorso. Nel 2024 ha percepito dalla società So.G.Imm. Società Gestioni Imm, redditi da cud per euro 34843,00 Per l'anno 2025, a nostre mani abbiamo un PF provvisorio con reddito netto annuo calcolato con Caren di 20297,00 Per l'anno in corso abbiamo un bilancino provvisorio per il periodo 01/01/2026 - 30/04/2026, con un risultato d'esercizio per euro 15323,00, in proporzione in aumento rispetto all’anno precedente. Non ha immobili di proprietà. Ha un finanziamento in corso con impegno mensile per euro 340,00, con scadenza 05/2027 e un importo residuo di euro 3740,00. Il cliente chiuderà il finanziamento ante rogito. La mamma, Daniela Spano, cointestataria, ha redditi netti da caren da pf per euro 13734,00, svolge libera professione presso studio commercialistico Da visure risulta proprietaria per il 50% di un immobile sito in Monza. Garante a sostegno della pratica il signor Della torre Sergio Enrico (marito della signora Spano), redditi netti da caren di euro 20.619, lavoratore autonomo, agente immobiliare (allegato report persona) Proprietario con la moglie di immobile sito a Monza. Niccolo' insieme alla madre Spanio Daniela ci richiedono mutuo ipotecario promo assicurato, per un immobile sito in Vedano al Lambro, in via Adamello 4, già periziato per il valore di 197000.00 Rata mensile 667,43 istruttoria 1875,6 tasso 3,10 incasso rata 2.75 PROPRIETA' AL 100% A LONGHI NICCOLO' COME DA SCHEDA IMMOBILI , la madre risulta solo cointestataria del mutuo.";TRASCRITTO
+52080736/note-02;Filiale relazione;filiale_relazione;;NON VISIBILE
+51849993/elenco-01;NDG;ndg;36020851;TRASCRITTO
+51849993/elenco-01;DENOMINAZIONE;denominazione;KARUNA…;TRASCRITTO
+51849993/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+51849993/elenco-01;Stato;stato;APP;TRASCRITTO
+51849993/elenco-01;Fase;fase;;VUOTO
+51849993/elenco-01;Creazione;creazione;13/05/2026;TRASCRITTO
+51849993/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+51849993/elenco-02;NDG;ndg;36020851;TRASCRITTO
+51849993/elenco-02;DENOMINAZIONE;denominazione;KARUNA…;TRASCRITTO
+51849993/elenco-02;Tipo;tipo;;NON VISIBILE
+51849993/elenco-02;Stato;stato;APP;TRASCRITTO
+51849993/elenco-02;Fase;fase;;VUOTO
+51849993/elenco-02;Creazione;creazione;13/05/2026;TRASCRITTO
+51849993/elenco-02;Evidenze;evidenze;B;TRASCRITTO
+51849993/soggetti-01;NDG 1;ndg_1;36020851;TRASCRITTO
+51849993/soggetti-01;DENOMINAZIONE 1;denominazione_1;KARUNARATHNAGE RODRIGO SASIKA MADUWA;TRASCRITTO
+51849993/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51849993/soggetti-01;NDG 2;ndg_2;3324948;TRASCRITTO
+51849993/soggetti-01;DENOMINAZIONE 2;denominazione_2;KARUNARATHNAGE RODRIGO JAGATH CRISAN;TRASCRITTO
+51849993/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+51849993/soggetti-01;NDG 3;ndg_3;23239780;TRASCRITTO
+51849993/soggetti-01;DENOMINAZIONE 3;denominazione_3;KARUNARATHNAGE RODRIGO SASIKA MADUWA;TRASCRITTO
+51849993/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+51849993/soggetti-01;NDG 4;ndg_4;36016577;TRASCRITTO
+51849993/soggetti-01;DENOMINAZIONE 4;denominazione_4;KARUNARATHNAGE RODRIGO KAVISHKA MIHI;TRASCRITTO
+51849993/soggetti-01;RUOLO 4;ruolo_4;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+51849993/soggetti-01;NDG;ndg;36020851;DERIVATO
+51849993/soggetti-01;DENOMINAZIONE;denominazione;KARUNARATHNAGE RODRIGO SASIKA MADUWA;DERIVATO
+51849993/soggetti-01;Filiale relazione;filiale_relazione;36 - CAMPOGALLIAN;DERIVATO
+51849993/soggetti-01;Tipo;tipo;BPI Mutui;DERIVATO
+51849993/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51849993/gestione-fidi-01;Rapporto;rapporto;034 0036 0017 05628090;TRASCRITTO
+51849993/gestione-fidi-01;Descrizione;descrizione;M.I.PF NO FOND;TRASCRITTO
+51849993/gestione-fidi-01;Fido: tooltip Descrizione;;340110 - MUTUO IPO NON FONDIARIO PRIVATI;TRASCRITTO
+51849993/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+51849993/gestione-fidi-01;Importo (€);importo_euro;199.300;TRASCRITTO
+51849993/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 1: Descrizione;;IPOTECA I GR.;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 1: NDG;;3324948 36016577 23239780;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 1: Denominazione;;KARUNARATH KARUNARATH KARUNARATH;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 1: Imp (€)%;;358.740;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 2: n° Gar.;;G2;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 2: Descrizione;;FID LIM INATTO;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 2: Fido;;F1;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 2: NDG;;3324948;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 2: Denominazione;;KARUNARATH;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 2: Imp (€)%;;199.300;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 2: Tipo Op.;;Nuova;TRASCRITTO
+51849993/gestione-fidi-01;Garanzia 2: tooltip Descrizione;;49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO;TRASCRITTO
+51849993/gestione-fidi-01;NDG;ndg;36020851;DERIVATO
+51849993/gestione-fidi-01;DENOMINAZIONE;denominazione;KARUNARATHNAGE RODRIGO SASIKA MADUWA;DERIVATO
+51849993/gestione-fidi-01;Filiale relazione;filiale_relazione;36 - CAMPOGALLIAN;DERIVATO
+51849993/gestione-fidi-01;Tipo;tipo;BPI Mutui;DERIVATO
+51849993/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+51849993/gestione-fidi-02;Rapporto;rapporto;034 0036 0017 05628090;TRASCRITTO
+51849993/gestione-fidi-02;Descrizione;descrizione;M.I.PF NO FOND;TRASCRITTO
+51849993/gestione-fidi-02;Scadenza;scadenza;361 mesi;TRASCRITTO
+51849993/gestione-fidi-02;Importo (€);importo_euro;199.300;TRASCRITTO
+51849993/gestione-fidi-02;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51849993/gestione-fidi-02;NDG;ndg;36020851;DERIVATO
+51849993/gestione-fidi-02;DENOMINAZIONE;denominazione;KARUNARATHNAGE RODRIGO SASIKA MADUWA;DERIVATO
+51849993/gestione-fidi-02;Filiale relazione;filiale_relazione;36 - CAMPOGALLIAN;DERIVATO
+51849993/gestione-fidi-02;Tipo;tipo;BPI Mutui;DERIVATO
+51849993/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+51849993/gestione-fidi-03;Rapporto;rapporto;034 0036 0017 05628090;TRASCRITTO
+51849993/gestione-fidi-03;Descrizione;descrizione;M.I.PF NO FOND;TRASCRITTO
+51849993/gestione-fidi-03;Scadenza;scadenza;361 mesi;TRASCRITTO
+51849993/gestione-fidi-03;Importo (€);importo_euro;199.300;TRASCRITTO
+51849993/gestione-fidi-03;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51849993/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51849993/gestione-fidi-03;NDG;ndg;36020851;DERIVATO
+51849993/gestione-fidi-03;DENOMINAZIONE;denominazione;KARUNARATHNAGE RODRIGO SASIKA MADUWA;DERIVATO
+51849993/gestione-fidi-03;Filiale relazione;filiale_relazione;36 - CAMPOGALLIAN;DERIVATO
+51849993/gestione-fidi-03;Tipo;tipo;BPI Mutui;DERIVATO
+51849993/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+51849993/gestione-fidi-04;Rapporto;rapporto;034 0036 0017 05628090;TRASCRITTO
+51849993/gestione-fidi-04;Descrizione;descrizione;M.I.PF NO FOND;TRASCRITTO
+51849993/gestione-fidi-04;Scadenza;scadenza;361 mesi;TRASCRITTO
+51849993/gestione-fidi-04;Importo (€);importo_euro;199.300;TRASCRITTO
+51849993/gestione-fidi-04;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51849993/gestione-fidi-04;NDG;ndg;36020851;DERIVATO
+51849993/gestione-fidi-04;DENOMINAZIONE;denominazione;KARUNARATHNAGE RODRIGO SASIKA MADUWA;DERIVATO
+51849993/gestione-fidi-04;Filiale relazione;filiale_relazione;36 - CAMPOGALLIAN;DERIVATO
+51849993/gestione-fidi-04;Tipo;tipo;BPI Mutui;DERIVATO
+51849993/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5628090 - Numero proposta DESK: 2919380 - Importo perizia: 249.000,00 € - Valore immobile presunto: 245.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 199.300,00 € IMPORTO PER PRIMA CASA : 199.300,00 € IMPORTO RICHIESTO : 199.300,00 € - Codice immobile: 5103971; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante JAGATH CRISANTHA KARUNARATHNAGE RODRIGO (3324948) TRATTASI DI MUTUO ASSICURATO ASSISTITO DA MEDIATORE CREDITIZIO MARCO RAGUCCI CREDIPASS (SI RICHIEDE DI INSERIRE L’NDG 4711973 PRESENTATORE IN FASE DI PRESTIPULA) --- SI RICHIEDE INNALZAMENTO DELL’ORGANO DI DELIBERA, come previsto per le pratiche provenienti dal canale “Mediatori Creditizi”--- Richiediamo mutuo promo assicurato per acquisto prima casa cointestato tra i fratelli e con il padre garante. Richiesta mutuo 199.300 € Durata 360 mesi Rata 845,64 € Tasso fisso consap 3,05 % I clientI ci richiede mutuo ipotecario per acquisto prima casa sita in via Malatesta 48, Spilamberto MO, prezzo concordato in 245.000 €, immobile già periziato valore rilevato 249.000 €. Si tratta di due fratelli, SASIKA E KAVISHKA mutuatari, e il padre, JAGATH, garante, saranno tutti e tre proprietari dell’immobile. Il sig. SASIKA lavora a tempo indeterminato presso la società “NUOVA RGR SRL” (NDG 3417083 cliente presso la nostra filiale di Spilamberto) dal Febbraio 2026, percepisce circa 18.000 € annui desunti dal contratto di lavoro allegato. Il sig. KAVISHKA lavora a tempo indeterminato presso la società “T.C.Z. SRL” (NDG 30051451 cliente presso centro Imprese Modena Sud) da Settembre 2024, percepisce circa 24.000 € annui. Il sig. JAGATH lavora a tempo indeterminato presso la società “NUOVA RGR SRL” (NDG 3417083 cliente presso la nostra filiale di Spilamberto) da Ottobre 2006, percepisce circa 21.000 € annui. Ha in essere un prestito Deutsche Bank con debito residuo di 46.000 €, rata mensile 434 € che verrà mantenuto, mentre estinguerà il prestito di Agos ducato con rata mensile di 148 €. RR SOLO MUTUATARI 23,8 % RR CON GARANTE 17,4 % EFFETTUATO CHECK UP ASSICURATIVO";PARZIALE
+51849993/note-01;Filiale relazione;filiale_relazione;36 - CAMPOGALLIAN;TRASCRITTO
+51849993/note-01;Agente proponente;;Elisa Manzini;TRASCRITTO
+51849993/note-01;NDG;ndg;36020851;DERIVATO
+51849993/note-01;DENOMINAZIONE;denominazione;KARUNARATHNAGE RODRIGO SASIKA MADUWA;DERIVATO
+51849993/note-01;Tipo;tipo;BPI Mutui;DERIVATO
+51849993/note-02;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5628090 - Numero proposta DESK: 2919380 - Importo perizia: 249.000,00 € - Valore immobile presunto: 245.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 199.300,00 € IMPORTO PER PRIMA CASA : 199.300,00 € IMPORTO RICHIESTO : 199.300,00 € - Codice immobile: 5103971; - Sono presenti le garanzie fideiussorie seguenti: - Garanzia FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO, In Atto, Garante JAGATH CRISANTHA KARUNARATHNAGE RODRIGO (3324948) TRATTASI DI MUTUO ASSICURATO ASSISTITO DA MEDIATORE CREDITIZIO MARCO RAGUCCI CREDIPASS (SI RICHIEDE DI INSERIRE L’NDG 4711973 PRESENTATORE IN FASE DI PRESTIPULA) --- SI RICHIEDE INNALZAMENTO DELL’ORGANO DI DELIBERA, come previsto per le pratiche provenienti dal canale “Mediatori Creditizi”--- Richiediamo mutuo promo assicurato per acquisto prima casa cointestato tra i fratelli e con il padre garante. Richiesta mutuo 199.300 € Durata 360 mesi Rata 845,64 € Tasso fisso consap 3,05 % I clientI ci richiede mutuo ipotecario per acquisto prima casa sita in via Malatesta 48, Spilamberto MO, prezzo concordato in 245.000 €, immobile già periziato valore rilevato 249.000 €. Si tratta di due fratelli, SASIKA E KAVISHKA mutuatari, e il padre, JAGATH, garante, saranno tutti e tre proprietari dell’immobile. Il sig. SASIKA lavora a tempo indeterminato presso la società “NUOVA RGR SRL” (NDG 3417083 cliente presso la nostra filiale di Spilamberto) dal Febbraio 2026, percepisce circa 18.000 € annui desunti dal contratto di lavoro allegato. Il sig. KAVISHKA lavora a tempo indeterminato presso la società “T.C.Z. SRL” (NDG 30051451 cliente presso centro Imprese Modena Sud) da Settembre 2024, percepisce circa 24.000 € annui. Il sig. JAGATH lavora a tempo indeterminato presso la società “NUOVA RGR SRL” (NDG 3417083 cliente presso la nostra filiale di Spilamberto) da Ottobre 2006, percepisce circa 21.000 € annui. Ha in essere un prestito Deutsche Bank con debito residuo di 46.000 €, rata mensile 434 € che verrà mantenuto, mentre estinguerà il prestito di Agos ducato con rata mensile di 148 €. RR SOLO MUTUATARI 23,8 % RR CON GARANTE 17,4 % EFFETTUATO CHECK UP ASSICURATIVO";TRASCRITTO
+51849993/note-02;Filiale relazione;filiale_relazione;;NON VISIBILE
+52186431/elenco-01;NDG;ndg;36070527;TRASCRITTO
+52186431/elenco-01;DENOMINAZIONE;denominazione;XHAFERI;TRASCRITTO
+52186431/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52186431/elenco-01;Stato;stato;LAV;TRASCRITTO
+52186431/elenco-01;Fase;fase;DEL;TRASCRITTO
+52186431/elenco-01;Creazione;creazione;21/10/2026;TRASCRITTO
+52186431/elenco-01;Evidenze;evidenze;BM;TRASCRITTO
+52186431/soggetti-01;NDG 1;ndg_1;36070527;TRASCRITTO
+52186431/soggetti-01;DENOMINAZIONE 1;denominazione_1;XHAFERI XHEMALI, BODLLI LOREDANA;TRASCRITTO
+52186431/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52186431/soggetti-01;NDG 2;ndg_2;11153238;TRASCRITTO
+52186431/soggetti-01;DENOMINAZIONE 2;denominazione_2;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52186431/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52186431/soggetti-01;NDG 3;ndg_3;36070525;TRASCRITTO
+52186431/soggetti-01;DENOMINAZIONE 3;denominazione_3;XHAFERI XHEMALI;TRASCRITTO
+52186431/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52186431/soggetti-01;NDG 4;ndg_4;36070526;TRASCRITTO
+52186431/soggetti-01;DENOMINAZIONE 4;denominazione_4;BODLLI LOREDANA;TRASCRITTO
+52186431/soggetti-01;RUOLO 4;ruolo_4;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52186431/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52186431/gestione-fidi-01;Rapporto;rapporto;034 3041 0017 05688065;TRASCRITTO
+52186431/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52186431/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;340176 - MUTUO FOND PRIV CONSAP >=80%;TRASCRITTO
+52186431/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+52186431/gestione-fidi-01;Importo (€);importo_euro;150.000;TRASCRITTO
+52186431/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 1: Descrizione;;CONSAP DR BIS;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 1: NDG;;11153238;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 1: Denominazione;;FONDO DI G;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 1: Imp (€)%;;80.00;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova;TRASCRITTO
+52186431/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 2: n° Gar.;;G2;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 2: Descrizione;;IPOTECA I GR;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 2: Fido;;F1;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 2: NDG;;36070526 36070525;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 2: Denominazione;;BODLLI LOR XHAFERI XH;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 2: Imp (€)%;;270.000;TRASCRITTO
+52186431/gestione-fidi-01;Garanzia 2: Tipo Op.;;Nuova;TRASCRITTO
+52186431/gestione-fidi-01;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52186431/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5688065 - Numero proposta DESK: N.D. - Importo perizia: N.D. - Valore immobile presunto: 150000 - Immobile da ipotecare è ad uso abitativo: SI - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 150.000,00 € IMPORTO PER PRIMA CASA: 150.000,00 € IMPORTO RICHIESTO: 150.000,00 € - Codice immobile: 5112493; MUTUO CON GARANZIA CONSAP";TRASCRITTO
+52186431/note-01;Filiale relazione;filiale_relazione;3041 - CO CAMERLATA;TRASCRITTO
+52186431/note-01;Agente proponente;;Giuseppe Soluri;TRASCRITTO
+51886329/elenco-01;NDG;ndg;36095334;TRASCRITTO
+51886329/elenco-01;DENOMINAZIONE;denominazione;GURI BE…;TRASCRITTO
+51886329/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+51886329/elenco-01;Stato;stato;APP;TRASCRITTO
+51886329/elenco-01;Fase;fase;;VUOTO
+51886329/elenco-01;Creazione;creazione;03/06/2026;TRASCRITTO
+51886329/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+51886329/soggetti-01;NDG 1;ndg_1;36095334;TRASCRITTO
+51886329/soggetti-01;DENOMINAZIONE 1;denominazione_1;GURI BENEDETTA,GURI ANDREA;TRASCRITTO
+51886329/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51886329/soggetti-01;NDG 2;ndg_2;23304942;TRASCRITTO
+51886329/soggetti-01;DENOMINAZIONE 2;denominazione_2;GURI BENEDETTA;TRASCRITTO
+51886329/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+51886329/soggetti-01;NDG 3;ndg_3;31864033;TRASCRITTO
+51886329/soggetti-01;DENOMINAZIONE 3;denominazione_3;MAROTTA SAMUEL;TRASCRITTO
+51886329/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+51886329/soggetti-01;NDG 4;ndg_4;11875132;TRASCRITTO
+51886329/soggetti-01;DENOMINAZIONE 4;denominazione_4;GURI ANDREA;TRASCRITTO
+51886329/soggetti-01;RUOLO 4;ruolo_4;Cointestato;TRASCRITTO
+51886329/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51886329/gestione-fidi-01;Rapporto;rapporto;034 2076 0017 05636081;TRASCRITTO
+51886329/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51886329/gestione-fidi-01;Fido: tooltip Descrizione;;340174 - MUTUO FOND. PRIV. FONDO GAR. PRIMA CASA;TRASCRITTO
+51886329/gestione-fidi-01;Scadenza;scadenza;241 mesi;TRASCRITTO
+51886329/gestione-fidi-01;Importo (€);importo_euro;72.000;TRASCRITTO
+51886329/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+51886329/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+51886329/gestione-fidi-01;Garanzia 1: Descrizione;;IPOTECA I GR.;TRASCRITTO
+51886329/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+51886329/gestione-fidi-01;Garanzia 1: NDG;;31864033 23304942;TRASCRITTO
+51886329/gestione-fidi-01;Garanzia 1: Denominazione;;MAROTTA SA GURI BENED;TRASCRITTO
+51886329/gestione-fidi-01;Garanzia 1: Imp (€)%;;129.600;TRASCRITTO
+51886329/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova;TRASCRITTO
+51886329/gestione-fidi-01;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51886329/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5636081 - Numero proposta DESK: 2946363 - Importo perizia: 193.000,00 € - Valore immobile presunto: 180.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 72.000,00 € IMPORTO PER PRIMA CASA : 72.000,00 € IMPORTO RICHIESTO : 72.000,00 € - Codice immobile: 5114288; PROMO ASSCIURATO 2026 I richiedenti Guri Andrea e Guri Bendetta, clienti storici della filiale (cc aperto nel 2001). Mutuatari: Guri Bendetta e Guri Andrea Datrice d’ipoteca: Guri Bendetta Terzo Datore d’ipoteca: Marotta Samuel In oggetto la richiesta di mutuo di 72.000 euro, prezzo d’acquisto 90.000€ come si evince da compromesso. Mutuo richiesto con le seguenti condizioni: 72.000€, durata 20 anni tasso fisso promo assicurato 3,05% rata mensile di circa 401€. L’appartamento oggetto di mutuo è sito a Torino, più precisamente Piazza Madama Cristina 7. Viene inserito come terzo datore d’ipoteca Il Sig. Marotta Samuel, proprietario per il 50% dell’immobile oggetto di mutuo, la Sig.na Guri acquisterà il 50% restante dalla Sig.ra Marotta Denise, sorella di Manuel (quota ricevuta per successione). La Sig.na Guri Benedetta, attualmente vive da sola in affitto, è apprendista presso Studio Notarile Tarallo come impiegata amministrativa, percepisce stipendio mensile di 1150€ circa; ma considerato reddito zero per la pratica di mutuo.Interviene quindi a supporto della richiesta di mutuo come solo mutuatario anche il padre, il Sig. Guri Andrea, titolare di ditta individuale con rapporto attivo su ns filiale (ndg ditta 13896435). Il Sig. Guri lavora nel campo edile; presenta redditi da caren di circa 55000€ annui.Il Sig. Guri vive in casa di proprietà con la moglie su cui non vi è mutuo, ha un leasing per il mezzo di lavoro e paga una rata mensile di 843€ mensili con scadenza 2028. Il nucleo famigliare una volta acquistato l’appartamento verrà quindi costituito da Guri Benedetta e dal fidanzato Marotta Samuel. LTC: 80% Le analisi effettuate sul nominativo non hanno rilevato criticità e/o anomalie. Sulla base dei concetti esposti, si propone favorevolmente quanto in domanda. Alleghiamo perizia che attesa valore commerciale di 193.000€ complessivi.";TRASCRITTO
+51886329/note-01;Filiale relazione;filiale_relazione;2076 - TO VERRAZZAN;TRASCRITTO
+51886329/note-01;Agente proponente;;Giulia Azzalin;TRASCRITTO
+51886329/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;;VUOTO
+51886329/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;;VUOTO
+52136040/elenco-01;NDG;ndg;36304622;TRASCRITTO
+52136040/elenco-01;DENOMINAZIONE;denominazione;ZURLO ALESSIO;TRASCRITTO
+52136040/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52136040/elenco-01;Stato;stato;APP;TRASCRITTO
+52136040/elenco-01;Fase;fase;;VUOTO
+52136040/elenco-01;Creazione;creazione;30/06/2026;TRASCRITTO
+52136040/elenco-01;Evidenze;evidenze;BM;TRASCRITTO
+52136040/soggetti-01;NDG 1;ndg_1;36304622;TRASCRITTO
+52136040/soggetti-01;DENOMINAZIONE 1;denominazione_1;ZURLO ALESSIO;TRASCRITTO
+52136040/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52136040/soggetti-01;NDG 2;ndg_2;11153238;TRASCRITTO
+52136040/soggetti-01;DENOMINAZIONE 2;denominazione_2;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52136040/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52136040/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52136040/gestione-fidi-01;Rapporto;rapporto;034 0069 0017 05679968;TRASCRITTO
+52136040/gestione-fidi-01;Descrizione;descrizione;M.F.PF FONDO;TRASCRITTO
+52136040/gestione-fidi-01;Fido: tooltip Descrizione;;340174 - MUTUO FOND. PRIV. FONDO GAR. PRIMA CASA;TRASCRITTO
+52136040/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+52136040/gestione-fidi-01;Importo (€);importo_euro;160.000;TRASCRITTO
+52136040/gestione-fidi-01;Tipo Op.;tipo_op;Nuova Finanza;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 1: Descrizione;;FONDO 1 CASA;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 1: NDG;;11153238;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 1: Denominazione;;FONDO DI G;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 1: Imp (€)%;;50.00;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 1: tooltip Descrizione;;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 2: n° Gar.;;G2;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 2: Descrizione;;IPOTECA I GR;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 2: Fido;;F1;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 2: NDG;;36304622;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 2: Denominazione;;ZURLO ALES;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 2: Imp (€)%;;288.000;TRASCRITTO
+52136040/gestione-fidi-01;Garanzia 2: Tipo Op.;;Nuova;TRASCRITTO
+52136040/gestione-fidi-01;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52136040/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5679968 - Numero proposta DESK: N.D. - Importo perizia: N.D. - Valore immobile presunto: 160000 - Immobile da ipotecare è ad uso abitativo: SI - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 160.000,00 € IMPORTO PER PRIMA CASA : 160.000,00 € IMPORTO RICHIESTO : 160.000,00 € - Codice immobile: 5149773; RELAZIONE: MUTUO PRESENTATO DA MEDIATORE KIRON RICHIESTA: MUTUO IPO CONSAP UNDER36 TX FISSO GAR 50% per isee sup. 40.000 IMPORTO ACQUISTO 160.000 IMPORTO RICHIESTO 160.000 DURATA 30 ANNI EFFETTUATO CHECK UP ASSICURATIVO RICHIEDENTE: ALESSIO ZURLO INTESTATARIO IMMOBILE: ALESSIO ZURLO REGIME PATRIMONIALE: CELIBE NUCLEO FAMILIARE: VA A VIVERE DA SOLO ALESSIO, DI STATO CIBILE LIBERO, LAVORA PRESSO MENOZZI LUGI & C. DA GENNAIO 2022 ATEMPO INDETERMINATO DA CAREN PERCEPISCE REDDITI ANNUALI NETTI PER EUR. 23.764 ACQUISITION NO PRESTITI";TRASCRITTO
+52136040/note-01;Filiale relazione;filiale_relazione;69 - NOVELLARA;TRASCRITTO
+52136040/note-01;Agente proponente;;Sara Pierotti;TRASCRITTO
+52136040/soggetti-01;NDG 3;ndg_3;;VUOTO
+52136040/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+52136040/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+52136040/soggetti-01;NDG 4;ndg_4;;VUOTO
+52136040/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52136040/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52136040/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;;VUOTO
+52136040/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;;VUOTO
+51027430/elenco-01;NDG;ndg;19589204;TRASCRITTO
+51027430/elenco-01;DENOMINAZIONE;denominazione;BOLFE KEVIN;TRASCRITTO
+51027430/elenco-01;Tipo;tipo;BMS;TRASCRITTO
+51027430/elenco-01;Stato;stato;APP;TRASCRITTO
+51027430/elenco-01;Fase;fase;;VUOTO
+51027430/elenco-01;Creazione;creazione;10/01/2025;TRASCRITTO
+51027430/elenco-01;Evidenze;evidenze;;VUOTO
+51027430/soggetti-01;NDG 1;ndg_1;19589204;TRASCRITTO
+51027430/soggetti-01;DENOMINAZIONE 1;denominazione_1;BOLFE KEVIN;TRASCRITTO
+51027430/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51027430/soggetti-01;NDG 2;ndg_2;17957152;TRASCRITTO
+51027430/soggetti-01;DENOMINAZIONE 2;denominazione_2;BOLFE VALTER;TRASCRITTO
+51027430/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+51027430/soggetti-01;NDG 3;ndg_3;30372351;TRASCRITTO
+51027430/soggetti-01;DENOMINAZIONE 3;denominazione_3;BOLFE KEVIN, BOLFE VALTER;TRASCRITTO
+51027430/soggetti-01;RUOLO 3;ruolo_3;Cointestazione;TRASCRITTO
+51027430/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51027430/gestione-fidi-01;Rapporto;rapporto;034 3191 0017 05442810;TRASCRITTO
+51027430/gestione-fidi-01;Descrizione;descrizione;M.FOND.PRIVATI;TRASCRITTO
+51027430/gestione-fidi-01;Fido: tooltip Descrizione;;340170 - MUTUO FONDIARIO PRIVATI;TRASCRITTO
+51027430/gestione-fidi-01;Scadenza;scadenza;361 mesi;TRASCRITTO
+51027430/gestione-fidi-01;Importo (€);importo_euro;350.000;TRASCRITTO
+51027430/gestione-fidi-01;Tipo Op.;tipo_op;Sostituzione;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 1: Descrizione;;IPOTECA I GR;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 1: NDG;;19589204;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 1: Denominazione;;BOLFE KEVI;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 1: Imp (€)%;;630.000;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova;TRASCRITTO
+51027430/gestione-fidi-01;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 2: n° Gar.;;G2;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 2: Descrizione;;FID. LIMITATA;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 2: Fido;;F1;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 2: NDG;;17957152;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 2: Denominazione;;BOLFE VALT;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 2: Imp (€)%;;350.000;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 2: Tipo Op.;;Nuova;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 2: tooltip Descrizione;;51-FIDEIUSSIONE SOLIDALE LIMITATA;TRASCRITTO
+51027430/gestione-fidi-01;Garanzia 3: n° Gar.;;;VUOTO
+51027430/gestione-fidi-01;Garanzia 3: Descrizione;;;VUOTO
+51027430/gestione-fidi-01;Garanzia 3: Fido;;;VUOTO
+51027430/gestione-fidi-01;Garanzia 3: NDG;;;VUOTO
+51027430/gestione-fidi-01;Garanzia 3: Denominazione;;;VUOTO
+51027430/gestione-fidi-01;Garanzia 3: Imp (€)%;;;VUOTO
+51027430/gestione-fidi-01;Garanzia 3: Tipo Op.;;Estinta;TRASCRITTO
+51027430/note-01;Note della richiesta;note_della_richiesta;"LA PRATICA VIENE INSERITA PEF BPI MUTUI E NON BSTORE COME DA INDICAZIONI DELL'ORGANO SUPERIORE DELIBERATE, SCELTA RESA NECESSARIA DALL'ESIGENZA DI EFFETTUARE COLLEGAMENTO ""FIDO FIDO"" TRA LE DUE LINEE DI CREDITO DOVENDO IL NUOVO MUTUO SOSTITUIRE IN TOTO QUELLO GIA' IN ESSERE EVITANDO IN TAL MODO LA DELIBERA DELLA SOMMA DELLE DUE LINEE. VI CHIEDIAMO DI PROCEDERE AD EFFETTUARE TALE COLLEGAMENTO. Commento BOLFE KEVIN Il Sig. Bolfe Kevin, libero senza figli a carico, è nostro cliente da 8 anni, figlio di nostro pluriennale cliente Bolfe Valter titolare di omonima ditta individuale confluita a maggio 2023 nella ""Bolfe S.r.l."" di cui i Sigg.ri Bolfe Valter e Kevin sono soci ed amministratori; rapporti di quest'ultima e relativi affidamenti presso il nostro istituto trasferiti dalla precedente DI. La dichiarazione redditi 2023 rif. 2022 evidenzia i redditi da partecipazione nell’attività del padre “Bolfe Valter DI” al 49% pari ad Euro 33.409 lordi. Per il 2023 la dichiarazione dei redditi 2024 evidenzia ulteriori redditi da partecipazione all’attività del padre fino a maggio 2023, data del passaggio alla S.r.l.. Da tale data al Sig. Bolfe Kevin viene riconosciuto un compenso amministratore fisso su base mensile. Da dichiarazione redditi 2024 rif. 2023 redditi per Euro 50.197, Euro 4.183 su base mensile. Da CU 2024, rif. 2023, per il periodo da maggio a dicembre redditi netti per Euro 35.785, Euro 2.982 su base mensile. Ad oggi il Sig. Bolfe Kevin riceve in qualità di socio amministratore della società, come da delibera della società stessa del 2/01/24, un compenso netto mensile pari ad Euro 5.500 su 12 mensilità già canalizzati sul rapporto n. 42148448 presso la nostra filiale di Cannobio, Euro 66.000 annuali. Consideriamo questi ultimi redditi ai fini della richiesta in corso essendo quelli attuali. Il Sig. Bolfe Kevin ha concluso in data 29/06/2022 mutuo SAL con il nostro istituto per costruzione prima abitazione, deliberati Euro 200.000, TF 2,25, 30Y di cui pre-ammortamento 36 mesi, scadenza preammortamento il 15/07/2025, valore del terreno acquistato in autonomia Euro 186.239,71, lavori preventivati per Euro 648.553,39, presunto valore commerciale a lavori ultimati Euro 834.795 (dati riferiti alla prima perizia del 07/03/22). LTC 31%, LTV 24%. Prima erogazione per il 10% dell’importo in richiesta corrispondenti ad Euro 20.000, in data 15/07/2022, successiva erogazione per Euro 25.600 in data 2/10/2023, erogazioni effettuate per complessivi Euro 45.600. In fase di costruzione l’aumento dei costi dei materiali così come alcune modifiche apportate al progetto iniziale hanno fatto innalzare i costi di realizzazione, ci viene di conseguenza richiesta revisione dell’operazione inizialmente concessa in questi termini: nuovo mutuo ipotecario a SAL per Euro 350.000 in 360 mesi di cui 24 di preammortamento, TF 3,45, rate per Euro 1.625 calcolate su 336 mesi di ammortamento, destinato per Euro 45.600 alla chiusura del precedente mutuo a SAL e, per i restanti Euro 304.400, al completamento dell’abitazione. Rapporto rata/reddito 29,50%, reddito di sussistenza preservato. Come da perizia costi di costruzione preventivati per Euro 847.260,46, già sostenuti per Euro 333.365,38, LTC pari al 41,31%, valore commerciale immobile finito Euro 1.086.456,00, LTV pari al 32,21% Vista la percentuale di avanzamento lavori attuale pari al 39,35% prima erogazione contestuale all’atto per Euro 137.725,00 di cui Euro 45.600 destinati alla chiusura precedente mutuo. Il terreno inizialmente ipotecato con concessione di nostro mutuo è stato oggetto di frazionamento, una parte su cui sorge l’immobile in costruzione (1401) rimarrà di sua proprietà, l’altra parte (1412) verrà ceduta come di seguito indicato, la parte tra i due fondi (1413) servirà entrambe e verrà ceduta in comproprietà contestualmente (su questa non iscriveremo ipoteca poiché cointestata). La parte che residua dopo il frazionamento (1412) verrà ceduta in permuta alla “Ingeo S.r.l” di Cannobio, cliente già collaboratore del Sig. Bolfe in ambito commerciale. Come contropartita a tale cessione la società fornirà al Sig. Bolfe manodopera e materiali ai fini di ultimazione medesima per un valore di Euro 280.000 (vedi contratto allegato). Oggetto di nostra ipoteca sarà solo la Part. 1401. In sede di atto notarile andremo a chiudere il vecchio mutuo a SAL (ed estinguere l’ipoteca sull’intero terreno) a stipulare nuovo contratto di mutuo con il quale l’ipoteca sarà estesa alla sola frazione di terreno in cui sorge l’immobile (Part. 1401) del Sig. Bolfe, contestualmente si concluderà l’atto di permuta della frazione di terreno 1412, (a questo punto libera da nostra ipoteca), che diventerà di proprietà della ditta “Ingeo S.r.l.”. Per cui riassumendo, il giorno dell’atto: Stipula nostro mutuo per Euro 350.000 con contestuale erogazione di Euro 137.725,00 di cui Euro 45.600 destinati alla chiusura del precedente mutuo. Cancellazione precedente iscrizione ipotecaria e chiusura precedente mutuo; Cessione da parte del Sig. Bolfe Kevin in permuta di parte del terreno frazionato ovvero della Part. 1412 alla “Ingeo S.r.l” di Cannobio per Euro 260.000 a fronte di lavori da effettuare sull’immobile in costruzione e di cui. Cessione in comproprietà della part. 1413 servente alle due unità immobiliari in costruzione. CHIARIMENTI ULTERIORI RELATIVI ALL’OPERAZIONE: IL SIG. BOLFE, NEL GIUGNO 2022 SI ERA GIA’ ACCORDATO CON LA DITTA CERONI E CARMINE PER QUANTO RIGUARDA IL CONTRATTO DI PERMUTA CHE DI FATTO PERO’ E’ STATO FORMALIZZATO SOLTANTO AL TERMINE DEL 2024. IN ALTRE PAROLE, HA CHIESTO “SOLO” 200.000 EURO DEI 648.553,39 PREVENTIVATI NEL 2022 PERCHE’ AVREBBE FATTO CONTO GIA’ ALLORA DI SCALARE PARTE DEI COSTI CHE AVREBBE DOVUTO SOSTENERE IN AUTONOMIA (448.553,39) TRAMITE IL CONTRATTO DI PERMUTA POI FORMALIZZATO. PER QUESTO MOTIVO L’AUMENTO DEI COSTI E LA VARIAZIONE DEL PROGETTO CHE IN SEGUITO SI SONO PRESENTATI (COSTI STIMATI DA PERIZIA INIZIALE PER 648.553,39 ED INSEGUITO DA PERIZIA SUCCESSIVA PER 847.260,46) LO HANNO PORTATO A CHIEDERCI UN ULTERIORE NOSTRO INTERVENTO DI 150.000 EURO, (CHE IN REALTA E’ SOLO DI 105.000 SE CONSIDERIAMO CHE ANDREMO A CHIUDERE IL VECCHIO SAL IN CUI ABBIAMO EROGATO GIA’ 45.600). IN ASSENZA DI QUESTO INCREMENTO DEI COSTI NON CI AVREBBE CHIESTO ALCUNB INTERVENTO AGGIUNTIVO, MA AVREBBE ULTIMATO I LAVORI IN AUTONOMIA. A SOSTEGNO DELL’OPERAZIONE RACCOGLIAMO INOLTRE FIDEJUSSIONE PERSONALE DEL PADRE BOLFE VALTER. BOLFE SRL La Bolfe Valter DI facente capo all’omonimo titolare è stata nostra cliente fin dal giugno 2016, acquisita a seguito di attività di sviluppo, nominativo conosciuto personalmente dallo scrivente ed ottimamente referenziato, in attività fin dal 1980, azienda tramandata da padre in figlio ed ora giunta alla terza generazione, leader nella zona in ambito di impianti elettrici, assistenza e manutenzione caldaie. Il Sig. Bolfe ha deciso di conferire la “Bolfe Valter DI” NDG 19663037 nella “Bolfe S.r.l.” NDG 30352415, atto di costituzione del 12/05/2023. In concomitanza a tale operazione abbiamo provveduto a trasferire apertura di credito per Euro 90.000 + linea PTF per Euro 30.000 dalla DI alla SRL assistiti da fidejussione dei Sigg.ri Bolfe Valter e Kevin. In qualità di DI ricavi stabilmente attestati attorno ai 1.000K di Euro per il 2022 (Euro 1.018.781 nel 2021, Euro 934.758 nel 2020), utile per l’esercizio 2022 per Euro 103.144 (Euro 77.156 nel 2021, Euro 83.750 nel 2020). Il bilancio relativo alla SRL per il periodo interessato, successivo al trasferimento dalla DI alla SRL, da maggio a dicembre 2023, evidenzia ricavi per Euro 975.000 a fronte di utili per Euro 37.724. Da provvisorio al 17/12/24 GDA per Euro 1.300.000 ca a fronte di utili in formazione per Euro 41.098. Due enti segnalanti, il nostro e Banca Intesa subentrata a Veneto Banca presso cui il Sig. Bolfe ha sempre intrattenuto i rapporti in via esclusiva fino al nostro ingresso (accordati BPER Euro 90.000 apertura di credito in CC + 30.000 PTF; Banca Intesa Euro 60.000 apertura di credito in CC + Euro 30.000 PTF + Euro 60.000, finanziamento acceso nel 07/23 a 5 anni, rate per Euro 1.248 mensili in regolare ammortamento; LeasingEuro 463 mensili in scadenza al 10/2024); Ce.ri senza tensioni; ottima la movimentazione a noi riservata. IMMOBILI Tutti gli immobili, cosi come evidenziati nella visura in allegato, ove svolge l’attività prima la DI ed ora la SRL sono tutti di proprietà esclusiva del Sig. Bolfe Valter, trattasi di magazzini e laboratori per circa 300 Mq. Oltre a questi, nella stessa struttura, al piano superiore, appartamento di 7 vani + 1,5, valutazione media considerando i prezzi di Cannobio almeno per Euro 700.000. Ulteriore immobile di proprietà in Cannobio, trattasi di villa in via Sant’Anna n. 22/A con annesso garage e terreni, valutabile prudenzialmente almeno Euro 500.000 considerando gli alti prezzi della zona.";TRASCRITTO
+51027430/note-01;Filiale relazione;filiale_relazione;3191 - CANNOBIO;TRASCRITTO
+51027430/note-01;Agente proponente;;Nodari Davide;TRASCRITTO
+51027430/soggetti-01;NDG 4;ndg_4;;VUOTO
+51027430/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+51027430/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+51027430/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;;VUOTO
+51027430/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;;VUOTO
+52137073/elenco-01;NDG;ndg;36314361;TRASCRITTO
+52137073/elenco-01;DENOMINAZIONE;denominazione;ORTEGA…;TRASCRITTO
+52137073/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52137073/elenco-01;Stato;stato;ABB;TRASCRITTO
+52137073/elenco-01;Fase;fase;IST;TRASCRITTO
+52137073/elenco-01;Creazione;creazione;30/09/2026;TRASCRITTO
+52137073/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+52137073/elenco-02;NDG;ndg;36314361;TRASCRITTO
+52137073/elenco-02;DENOMINAZIONE;denominazione;ORTEGA…;TRASCRITTO
+52137073/elenco-02;Tipo;tipo;;NON VISIBILE
+52137073/elenco-02;Stato;stato;ABB;TRASCRITTO
+52137073/elenco-02;Fase;fase;IST;TRASCRITTO
+52137073/elenco-02;Creazione;creazione;30/09/2026;TRASCRITTO
+52137073/elenco-02;Evidenze;evidenze;B;TRASCRITTO
+52137073/soggetti-01;NDG 1;ndg_1;36314361;TRASCRITTO
+52137073/soggetti-01;DENOMINAZIONE 1;denominazione_1;ORTEGA LOPEZ EMILY MARIA,DESSI ALESS;TRASCRITTO
+52137073/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52137073/soggetti-01;NDG 2;ndg_2;11153238;TRASCRITTO
+52137073/soggetti-01;DENOMINAZIONE 2;denominazione_2;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52137073/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52137073/soggetti-01;NDG 3;ndg_3;26975548;TRASCRITTO
+52137073/soggetti-01;DENOMINAZIONE 3;denominazione_3;DESSI ALESSANDRO;TRASCRITTO
+52137073/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52137073/soggetti-01;NDG 4;ndg_4;27237305;TRASCRITTO
+52137073/soggetti-01;DENOMINAZIONE 4;denominazione_4;ORTEGA LOPEZ EMILY MARIA;TRASCRITTO
+52137073/soggetti-01;RUOLO 4;ruolo_4;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52137073/soggetti-01;NDG;ndg;36314361;DERIVATO
+52137073/soggetti-01;DENOMINAZIONE;denominazione;ORTEGA LOPEZ EMILY MARIA,DESSI ALESS;DERIVATO
+52137073/soggetti-01;Filiale relazione;filiale_relazione;3724 - ALTARE;DERIVATO
+52137073/soggetti-01;Tipo;tipo;BPI Mutui;DERIVATO
+52137073/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52137073/gestione-fidi-01;Rapporto;rapporto;034 3724 0017 05680271;TRASCRITTO
+52137073/gestione-fidi-01;Descrizione;descrizione;M.F. PF FONDO;TRASCRITTO
+52137073/gestione-fidi-01;Fido: tooltip Descrizione;;340174 - MUTUO FOND. PRIV. FONDO GAR. PRIMA CASA;TRASCRITTO
+52137073/gestione-fidi-01;Scadenza;scadenza;15/10/2056;TRASCRITTO
+52137073/gestione-fidi-01;Importo (€);importo_euro;129.000;TRASCRITTO
+52137073/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 1: Descrizione;;FONDO 1 CASA;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 1: NDG;;11153238;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 1: Denominazione;;FONDO DI G;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 1: Imp (€)%;;64.500;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova / In Lavoraz.;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 1: tooltip Descrizione;;458-IMPEGNO FIDEIUSSORIO FONDO 1 CASA;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 2: n° Gar.;;G2;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 2: Descrizione;;IPOTECA I GR.;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 2: Fido;;F1;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 2: NDG;;;VUOTO
+52137073/gestione-fidi-01;Garanzia 2: Denominazione;;;VUOTO
+52137073/gestione-fidi-01;Garanzia 2: Imp (€)%;;232.200;TRASCRITTO
+52137073/gestione-fidi-01;Garanzia 2: Tipo Op.;;Nuova / In Lavoraz.;TRASCRITTO
+52137073/gestione-fidi-01;NDG;ndg;36314361;DERIVATO
+52137073/gestione-fidi-01;DENOMINAZIONE;denominazione;ORTEGA LOPEZ EMILY MARIA,DESSI ALESS;DERIVATO
+52137073/gestione-fidi-01;Filiale relazione;filiale_relazione;3724 - ALTARE;DERIVATO
+52137073/gestione-fidi-01;Tipo;tipo;BPI Mutui;DERIVATO
+52137073/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52137073/gestione-fidi-02;Rapporto;rapporto;034 3724 0017 05680271;TRASCRITTO
+52137073/gestione-fidi-02;Descrizione;descrizione;M.F. PF FONDO;TRASCRITTO
+52137073/gestione-fidi-02;Scadenza;scadenza;15/10/2056;TRASCRITTO
+52137073/gestione-fidi-02;Importo (€);importo_euro;129.000;TRASCRITTO
+52137073/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52137073/gestione-fidi-02;NDG;ndg;36314361;DERIVATO
+52137073/gestione-fidi-02;DENOMINAZIONE;denominazione;ORTEGA LOPEZ EMILY MARIA,DESSI ALESS;DERIVATO
+52137073/gestione-fidi-02;Filiale relazione;filiale_relazione;3724 - ALTARE;DERIVATO
+52137073/gestione-fidi-02;Tipo;tipo;BPI Mutui;DERIVATO
+52137073/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52137073/gestione-fidi-03;Rapporto;rapporto;034 3724 0017 05680271;TRASCRITTO
+52137073/gestione-fidi-03;Descrizione;descrizione;M.F. PF FONDO;TRASCRITTO
+52137073/gestione-fidi-03;Scadenza;scadenza;15/10/2056;TRASCRITTO
+52137073/gestione-fidi-03;Importo (€);importo_euro;129.000;TRASCRITTO
+52137073/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52137073/gestione-fidi-03;NDG;ndg;36314361;DERIVATO
+52137073/gestione-fidi-03;DENOMINAZIONE;denominazione;ORTEGA LOPEZ EMILY MARIA,DESSI ALESS;DERIVATO
+52137073/gestione-fidi-03;Filiale relazione;filiale_relazione;3724 - ALTARE;DERIVATO
+52137073/gestione-fidi-03;Tipo;tipo;BPI Mutui;DERIVATO
+52137073/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+52137073/gestione-fidi-04;Rapporto;rapporto;034 3724 0017 05680271;TRASCRITTO
+52137073/gestione-fidi-04;Descrizione;descrizione;M.F. PF FONDO;TRASCRITTO
+52137073/gestione-fidi-04;Scadenza;scadenza;15/10/2056;TRASCRITTO
+52137073/gestione-fidi-04;Importo (€);importo_euro;129.000;TRASCRITTO
+52137073/gestione-fidi-04;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52137073/gestione-fidi-04;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52137073/gestione-fidi-04;NDG;ndg;36314361;DERIVATO
+52137073/gestione-fidi-04;DENOMINAZIONE;denominazione;ORTEGA LOPEZ EMILY MARIA,DESSI ALESS;DERIVATO
+52137073/gestione-fidi-04;Filiale relazione;filiale_relazione;3724 - ALTARE;DERIVATO
+52137073/gestione-fidi-04;Tipo;tipo;BPI Mutui;DERIVATO
+52137073/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5680271 - Numero proposta DESK: 3103228 - Importo perizia: 134.000,00 € - Valore immobile presunto: 134.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 129.000,00 € IMPORTO PER PRIMA CASA : 129.000,00 € IMPORTO RICHIESTO : 129.000,00 € - Codice immobile: 5141895; Mutuo Acquisto Prima Casa Fondo di Garanzia Consap 50% - Under 36 Trattasi di richiesta mutuo euro 126.000,00 acquisto immobile + euro 3.000,00 spese notarili. Richiedenti: trattasi di Dessì Alessandro, socio e chef de cuisine ristorante Dessì di Savona, locale top della ristorazione Riviera di Ponente. Cointestataria: Ortega Lopez Emily Maria, fidanzata di Dessì, figlia della socia di Dessì snc e dipendente quale maitre di sala del ristorante stesso. Ndg di nuova acquisizione ma appartenenti a nucleo familiare cliente Istituto da più di 20 anni, noti e stimati su piazza. Si allega ISEE nucleo familiare di provenienza Ortega ad evidenziare ampio patrimonio mobiliare e immobiliare (e consistente reddito annuale) Ulteriori dettagli in Scheda Privati ndg singoli.";TRASCRITTO
+52137073/note-01;Filiale relazione;filiale_relazione;3724 - ALTARE;TRASCRITTO
+52137073/note-01;Agente proponente;;Isella Ghidoni;TRASCRITTO
+52137073/note-01;NDG;ndg;36314361;DERIVATO
+52137073/note-01;DENOMINAZIONE;denominazione;ORTEGA LOPEZ EMILY MARIA,DESSI ALESS;DERIVATO
+52137073/note-01;Tipo;tipo;BPI Mutui;DERIVATO
+52196577/elenco-01;NDG;ndg;36277688;TRASCRITTO
+52196577/elenco-01;DENOMINAZIONE;denominazione;CASTELL…;TRASCRITTO
+52196577/elenco-01;Tipo;tipo;BMB;TRASCRITTO
+52196577/elenco-01;Stato;stato;ABB;TRASCRITTO
+52196577/elenco-01;Fase;fase;IST;TRASCRITTO
+52196577/elenco-01;Creazione;creazione;26/10/2026;TRASCRITTO
+52196577/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+52196577/soggetti-01;NDG 1;ndg_1;36277688;TRASCRITTO
+52196577/soggetti-01;DENOMINAZIONE 1;denominazione_1;CASTELLI STEFANO,PANZARIU ADINA FLOR;TRASCRITTO
+52196577/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52196577/soggetti-01;NDG 2;ndg_2;7674605;TRASCRITTO
+52196577/soggetti-01;DENOMINAZIONE 2;denominazione_2;CASTELLI STEFANO;TRASCRITTO
+52196577/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52196577/soggetti-01;NDG 3;ndg_3;11153238;TRASCRITTO
+52196577/soggetti-01;DENOMINAZIONE 3;denominazione_3;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52196577/soggetti-01;RUOLO 3;ruolo_3;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52196577/soggetti-01;NDG 4;ndg_4;30959851;TRASCRITTO
+52196577/soggetti-01;DENOMINAZIONE 4;denominazione_4;PANZARIU ADINA FLORENTINA;TRASCRITTO
+52196577/soggetti-01;RUOLO 4;ruolo_4;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52196577/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52196577/gestione-fidi-01;Rapporto;rapporto;034 0029 0017 05682465;TRASCRITTO
+52196577/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52196577/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;340176 - MUTUO FOND PRIV CONSAP >=80%;TRASCRITTO
+52196577/gestione-fidi-01;Scadenza;scadenza;15/10/2056;TRASCRITTO
+52196577/gestione-fidi-01;Importo (€);importo_euro;189.000;TRASCRITTO
+52196577/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 1: Descrizione;;CONSAP L.BIL24;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 1: NDG;;11153238;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 1: Denominazione;;FONDO DI G;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 1: Imp (€)%;;151.200;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova / In Lavoraz;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 1: tooltip Descrizione;;458-IMPEGNO FIDEJUSSORIO FONDO 1 CASA;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 2: n° Gar.;;G2;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 2: Descrizione;;IPOTECA I GR.;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 2: Fido;;F1;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 2: NDG;;;VUOTO
+52196577/gestione-fidi-01;Garanzia 2: Denominazione;;;VUOTO
+52196577/gestione-fidi-01;Garanzia 2: Imp (€)%;;340.200;TRASCRITTO
+52196577/gestione-fidi-01;Garanzia 2: Tipo Op.;;Nuova / In Lavoraz;TRASCRITTO
+52196577/gestione-fidi-01;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52196577/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5682465 - Numero proposta DESK: 3114649 - Importo perizia: N.D. - Valore immobile presunto: 189.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 189.000,00 € IMPORTO RICHIESTO : 189.000,00 € - Codice immobile: 5153056; MUTUO TASSO FISSO CONSAP UNDER 36 FINALITA’: Acquisto prima casa IMMOBILE OGGETTO DI IPOTECA: Acquisto immobile terra-tetto a Castelvetro in via Passanello n. 6 di mq 83 costituito da: garage di mq 25 e servizio igenico sottoscala al piano terra; soggiorno/pranzo con angolo cottura, bagno, antibagno al primo piano; due camere da letto, disimpegno e ripostiglio al secondo piano. Identificativi catastali: fg 46 part 190 sub 5 (a/2) e sub 6 (c/6) IMPORTO MUTUO: € 189.000 DURATA 360 mesi PIANO DI SPESA: Prezzo di acquisto : € 189.000 Caparra a titolo di cauzione : € 1.000 Caparra da versare alla sott contratto preliminare : € 4.000 Saldo a rogito : € 184.000 Importo mutuo richiesto:€ 189.000 Mezzi propri: € 0 PERIZIA: DA EFFETTUARE Ltc: 100% Ltv presunta: 100 % INTESTATARIO IMMOBILE: Castelli Stefano e Panzariu Adina Florentina REGIME PATRIMONIALE / STATO CIVILE: Stefano celibe, Adina nubile SOSTENIBILITA’: reddito annuo netto Stefano: € 26.310 Reddito annuo netto Adina € 20.528 Redditi complessivi richiedenti: € 46.838 Impegni annui richiedenti: 6.704,04 Totale rate annue mutuo: € 10.311,36 Rapporto rata reddito richiedenti al netto impegni in essere: 25,69 % Reddito disponibile annuo richiedenti : € 29822 DESCRIZIONE SOGGETTI COINVOLTI: I richiedenti sono conviventi ed attualmente vivono in immobile in affitto con canone di locazione di € 600 mensili che non abbiamo inserito nelle uscite in quanto ad operazione avvenuta tale esborso non sarà piu’ presente. Entrambi sono dipendenti a tempo indeterminato della ditta Fiorani & c srl di Castelnuovo rangone (cliente bper) rispettivamente Stefano dal 10/2018 e Adina dal 7/2025. CONDIZIONI FINANZIAMENTO: standard mutuo consap - Mutuo tasso fisso finito: 3,60 % - Spese istruttoria : € 950 - Spese incasso rata: € 2,75";TRASCRITTO
+52196577/note-01;Filiale relazione;filiale_relazione;29 - CA' DI SOLA;TRASCRITTO
+52196577/note-01;Agente proponente;;Riccardo Dalia;TRASCRITTO
+52196577/gestione-fidi-01;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;;VUOTO
+52125946/elenco-01;NDG;ndg;36303133;TRASCRITTO
+52125946/elenco-01;DENOMINAZIONE;denominazione;SHEELAN MENAH;TRASCRITTO
+52125946/elenco-01;Tipo;tipo;BMM;TRASCRITTO
+52125946/elenco-01;Stato;stato;ABB;TRASCRITTO
+52125946/elenco-01;Fase;fase;IST;TRASCRITTO
+52125946/elenco-01;Creazione;creazione;25/09/2026;TRASCRITTO
+52125946/elenco-01;Evidenze;evidenze;;VUOTO
+52125946/elenco-02;NDG;ndg;36303133;TRASCRITTO
+52125946/elenco-02;DENOMINAZIONE;denominazione;SHEELAN MENAH;TRASCRITTO
+52125946/elenco-02;Tipo;tipo;;NON VISIBILE
+52125946/elenco-02;Stato;stato;ABB;TRASCRITTO
+52125946/elenco-02;Fase;fase;IST;TRASCRITTO
+52125946/elenco-02;Creazione;creazione;25/09/2026;TRASCRITTO
+52125946/elenco-02;Evidenze;evidenze;;VUOTO
+52125946/soggetti-01;NDG 1;ndg_1;36303133;TRASCRITTO
+52125946/soggetti-01;DENOMINAZIONE 1;denominazione_1;SHEELAN MENAH;TRASCRITTO
+52125946/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+52125946/soggetti-01;NDG 2;ndg_2;11153238;TRASCRITTO
+52125946/soggetti-01;DENOMINAZIONE 2;denominazione_2;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+52125946/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore di Pegno;TRASCRITTO
+52125946/soggetti-01;NDG 3;ndg_3;;VUOTO
+52125946/soggetti-01;DENOMINAZIONE 3;denominazione_3;;VUOTO
+52125946/soggetti-01;RUOLO 3;ruolo_3;;VUOTO
+52125946/soggetti-01;NDG 4;ndg_4;;VUOTO
+52125946/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+52125946/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+52125946/soggetti-01;NDG;ndg;36303133;DERIVATO
+52125946/soggetti-01;DENOMINAZIONE;denominazione;SHEELAN MENAH;DERIVATO
+52125946/soggetti-01;Filiale relazione;filiale_relazione;305 - MI CERTOSA;DERIVATO
+52125946/soggetti-01;Tipo;tipo;BPI Mutui / Med. Creditizi;DERIVATO
+52125946/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+52125946/gestione-fidi-01;Rapporto;rapporto;;VUOTO
+52125946/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52125946/gestione-fidi-01;Scadenza;scadenza;360 mesi;TRASCRITTO
+52125946/gestione-fidi-01;Importo (€);importo_euro;115.000;TRASCRITTO
+52125946/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 1: n° Gar.;;G1;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 1: Descrizione;;IPOTECA I GR.;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 1: Fido;;F1;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 1: NDG;;;VUOTO
+52125946/gestione-fidi-01;Garanzia 1: Denominazione;;;VUOTO
+52125946/gestione-fidi-01;Garanzia 1: Imp (€)%;;207.000;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 1: Tipo Op.;;Nuova / In Lavoraz.;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 2: n° Gar.;;G2;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 2: Descrizione;;CONSAP DR BIS;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 2: Fido;;F1;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 2: NDG;;11153238;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 2: Denominazione;;FONDO DI G;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 2: Imp (€)%;;80,00;TRASCRITTO
+52125946/gestione-fidi-01;Garanzia 2: Tipo Op.;;Nuova / In Lavoraz.;TRASCRITTO
+52125946/gestione-fidi-01;NDG;ndg;36303133;DERIVATO
+52125946/gestione-fidi-01;DENOMINAZIONE;denominazione;SHEELAN MENAH;DERIVATO
+52125946/gestione-fidi-01;Filiale relazione;filiale_relazione;305 - MI CERTOSA;DERIVATO
+52125946/gestione-fidi-01;Tipo;tipo;BPI Mutui / Med. Creditizi;DERIVATO
+52125946/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+52125946/gestione-fidi-02;Rapporto;rapporto;;VUOTO
+52125946/gestione-fidi-02;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52125946/gestione-fidi-02;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;340176 - MUTUO FOND PRIV CONSAP >=80%;TRASCRITTO
+52125946/gestione-fidi-02;Scadenza;scadenza;360 mesi;TRASCRITTO
+52125946/gestione-fidi-02;Importo (€);importo_euro;115.000;TRASCRITTO
+52125946/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52125946/gestione-fidi-02;NDG;ndg;36303133;DERIVATO
+52125946/gestione-fidi-02;DENOMINAZIONE;denominazione;SHEELAN MENAH;DERIVATO
+52125946/gestione-fidi-02;Filiale relazione;filiale_relazione;305 - MI CERTOSA;DERIVATO
+52125946/gestione-fidi-02;Tipo;tipo;BPI Mutui / Med. Creditizi;DERIVATO
+52125946/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+52125946/gestione-fidi-03;Rapporto;rapporto;;VUOTO
+52125946/gestione-fidi-03;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52125946/gestione-fidi-03;Scadenza;scadenza;360 mesi;TRASCRITTO
+52125946/gestione-fidi-03;Importo (€);importo_euro;115.000;TRASCRITTO
+52125946/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52125946/gestione-fidi-03;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+52125946/gestione-fidi-03;NDG;ndg;36303133;DERIVATO
+52125946/gestione-fidi-03;DENOMINAZIONE;denominazione;SHEELAN MENAH;DERIVATO
+52125946/gestione-fidi-03;Filiale relazione;filiale_relazione;305 - MI CERTOSA;DERIVATO
+52125946/gestione-fidi-03;Tipo;tipo;BPI Mutui / Med. Creditizi;DERIVATO
+52125946/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+52125946/gestione-fidi-04;Rapporto;rapporto;;VUOTO
+52125946/gestione-fidi-04;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+52125946/gestione-fidi-04;Scadenza;scadenza;360 mesi;TRASCRITTO
+52125946/gestione-fidi-04;Importo (€);importo_euro;115.000;TRASCRITTO
+52125946/gestione-fidi-04;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+52125946/gestione-fidi-04;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS;TRASCRITTO
+52125946/gestione-fidi-04;NDG;ndg;36303133;DERIVATO
+52125946/gestione-fidi-04;DENOMINAZIONE;denominazione;SHEELAN MENAH;DERIVATO
+52125946/gestione-fidi-04;Filiale relazione;filiale_relazione;305 - MI CERTOSA;DERIVATO
+52125946/gestione-fidi-04;Tipo;tipo;BPI Mutui / Med. Creditizi;DERIVATO
+52125946/note-01;Note della richiesta;note_della_richiesta;La cliente, Sheelan Menah , età 22 anni, richiede un mutuo per acquisto prima casa dell'importo di 155.000€ con durata 30 anni, LTV 100% e accesso alla garanzia Consap Under 36 prioritari. L'immobile, sito nel comune di Bresso (MI) è stato individuato e la proposta di acquisto risulta essere accettata per l'importo sopraindicato. La richiedente è nubile, cittadina italiana, e attualmente risiede con i genitori nell'immobile di proprietà di famiglia. Il nucleo familare ai fini della pratica risulta composto da 1 componente e presenta ISEE inferiore a € 40.000. Dal punto di vista lavorativo, la cliente è dipendente a tempo indeterminato full time dal 21/08/2024 presso Airport Global Service S.r.l., dove svolge mansioni di impiegata. Da Cu 2025 emerge un reddito di € 44.365,35 corrispondente ad un reddito netto annuo di circa € 31.686,34 ed un netto mensile di € 2.723,81. Non risultano impegni finanziari in corso. La cliente presenta pertanto una situazione reddituale stabile, supportata da contratto a tempo indeterminato, in assenza di esposizioni finanziarie rilevate. Si sottopone la pratica per la valutazione della richiesta di finanziamento finalizzata all'acquisto prima casa con LTV 100% e garanzia Consap Under 36. Grazie mille, buon lavoro.;TRASCRITTO
+52125946/note-01;Filiale relazione;filiale_relazione;305 - MI CERTOSA;TRASCRITTO
+52125946/note-01;Agente proponente;;Giordano Miriam;TRASCRITTO
+52125946/note-01;NDG;ndg;36303133;DERIVATO
+52125946/note-01;DENOMINAZIONE;denominazione;SHEELAN MENAH;DERIVATO
+52125946/note-01;Tipo;tipo;BPI Mutui / Med. Creditizi;DERIVATO
+51350695/elenco-01;NDG;ndg;26871394;TRASCRITTO
+51350695/elenco-01;DENOMINAZIONE;denominazione;LUNARDI GIANMARCO;TRASCRITTO
+51350695/elenco-01;Stato;stato;LAV;TRASCRITTO
+51350695/elenco-01;Fase;fase;VEP;TRASCRITTO
+51350695/elenco-01;Creazione;creazione;09/09/2025;TRASCRITTO
+51350695/elenco-01;Evidenze;evidenze;B;TRASCRITTO
+51350695/elenco-01;Tipo;tipo;;VUOTO
+51350695/elenco-02;NDG;ndg;26871394;TRASCRITTO
+51350695/elenco-02;DENOMINAZIONE;denominazione;LUNARDI GIANMARCO;TRASCRITTO
+51350695/elenco-02;Creazione;creazione;09/09/2025;TRASCRITTO
+51350695/elenco-02;Evidenze;evidenze;B;TRASCRITTO
+51350695/elenco-03;Evidenze;evidenze;B;TRASCRITTO
+51350695/elenco-03;tooltip su valore campo Evidenze: B;tooltip_evidenze_b;Origination BSTORE;TRASCRITTO
+51350695/soggetti-01;NDG;ndg;26871394;TRASCRITTO
+51350695/soggetti-01;DENOMINAZIONE;denominazione;LUNARDI GIANMARCO;TRASCRITTO
+51350695/soggetti-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51350695/soggetti-01;Filiale relazione;filiale_relazione;3749 - GRUGLIASCO;TRASCRITTO
+51350695/soggetti-01;NDG 1;ndg_1;26871394;TRASCRITTO
+51350695/soggetti-01;DENOMINAZIONE 1;denominazione_1;LUNARDI GIANMARCO;TRASCRITTO
+51350695/soggetti-01;RUOLO 1;ruolo_1;Richiedente;TRASCRITTO
+51350695/soggetti-01;NDG 2;ndg_2;11153238;TRASCRITTO
+51350695/soggetti-01;DENOMINAZIONE 2;denominazione_2;FONDO DI GARANZIA PER LA PRIMA CASA;TRASCRITTO
+51350695/soggetti-01;RUOLO 2;ruolo_2;Nuovo Garante/nuovo Datore Di Pegno;TRASCRITTO
+51350695/soggetti-01;NDG 3;ndg_3;29011926;TRASCRITTO
+51350695/soggetti-01;DENOMINAZIONE 3;denominazione_3;CARRER MONICA LUNARDI GIANMARCO;TRASCRITTO
+51350695/soggetti-01;RUOLO 3;ruolo_3;Cointestazione;TRASCRITTO
+51350695/soggetti-01;NDG 4;ndg_4;;VUOTO
+51350695/soggetti-01;DENOMINAZIONE 4;denominazione_4;;VUOTO
+51350695/soggetti-01;RUOLO 4;ruolo_4;;VUOTO
+51350695/gestione-fidi-01;NDG;ndg;26871394;TRASCRITTO
+51350695/gestione-fidi-01;DENOMINAZIONE;denominazione;LUNARDI GIANMARCO;TRASCRITTO
+51350695/gestione-fidi-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51350695/gestione-fidi-01;Filiale relazione;filiale_relazione;3749 - GRUGLIASCO;TRASCRITTO
+51350695/gestione-fidi-01;n° FIDO;n_fido;F1;TRASCRITTO
+51350695/gestione-fidi-01;Rapporto;rapporto;034 3749 0017 05531236;TRASCRITTO
+51350695/gestione-fidi-01;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+51350695/gestione-fidi-01;Scadenza;scadenza;15/09/2055;TRASCRITTO
+51350695/gestione-fidi-01;Importo (€);importo_euro;158.800;TRASCRITTO
+51350695/gestione-fidi-01;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51350695/gestione-fidi-02;NDG;ndg;26871394;TRASCRITTO
+51350695/gestione-fidi-02;DENOMINAZIONE;denominazione;LUNARDI GIANMARCO;TRASCRITTO
+51350695/gestione-fidi-02;Tipo;tipo;BPI Mutui;TRASCRITTO
+51350695/gestione-fidi-02;Filiale relazione;filiale_relazione;3749 - GRUGLIASCO;TRASCRITTO
+51350695/gestione-fidi-02;n° FIDO;n_fido;F1;TRASCRITTO
+51350695/gestione-fidi-02;Rapporto;rapporto;034 3749 0017 05531236;TRASCRITTO
+51350695/gestione-fidi-02;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+51350695/gestione-fidi-02;Scadenza;scadenza;15/09/2055;TRASCRITTO
+51350695/gestione-fidi-02;Importo (€);importo_euro;158.800;TRASCRITTO
+51350695/gestione-fidi-02;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51350695/gestione-fidi-02;tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%;tooltip_descrizione_m_consap;340176 - MUTUO FOND PRIV CONSAP >=80%;TRASCRITTO
+51350695/gestione-fidi-03;NDG;ndg;26871394;TRASCRITTO
+51350695/gestione-fidi-03;DENOMINAZIONE;denominazione;LUNARDI GIANMARCO;TRASCRITTO
+51350695/gestione-fidi-03;Tipo;tipo;BPI Mutui;TRASCRITTO
+51350695/gestione-fidi-03;Filiale relazione;filiale_relazione;3749 - GRUGLIASCO;TRASCRITTO
+51350695/gestione-fidi-03;n° FIDO;n_fido;F1;TRASCRITTO
+51350695/gestione-fidi-03;Rapporto;rapporto;034 3749 0017 05531236;TRASCRITTO
+51350695/gestione-fidi-03;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+51350695/gestione-fidi-03;Scadenza;scadenza;15/09/2055;TRASCRITTO
+51350695/gestione-fidi-03;Importo (€);importo_euro;158.800;TRASCRITTO
+51350695/gestione-fidi-03;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51350695/gestione-fidi-03;tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS;tooltip_descrizione_consap_dr_bis;457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS;TRASCRITTO
+51350695/gestione-fidi-04;NDG;ndg;26871394;TRASCRITTO
+51350695/gestione-fidi-04;DENOMINAZIONE;denominazione;LUNARDI GIANMARCO;TRASCRITTO
+51350695/gestione-fidi-04;Tipo;tipo;BPI Mutui;TRASCRITTO
+51350695/gestione-fidi-04;Filiale relazione;filiale_relazione;3749 - GRUGLIASCO;TRASCRITTO
+51350695/gestione-fidi-04;n° FIDO;n_fido;F1;TRASCRITTO
+51350695/gestione-fidi-04;Rapporto;rapporto;034 3749 0017 05531236;TRASCRITTO
+51350695/gestione-fidi-04;Descrizione;descrizione;M.CONSAP >=80%;TRASCRITTO
+51350695/gestione-fidi-04;Scadenza;scadenza;15/09/2055;TRASCRITTO
+51350695/gestione-fidi-04;Importo (€);importo_euro;158.800;TRASCRITTO
+51350695/gestione-fidi-04;Tipo Op.;tipo_op;In Lavoraz.;TRASCRITTO
+51350695/gestione-fidi-04;tooltip su valore campo Descrizione (riga 2): IPOTECA I GR.;tooltip_descrizione_ipoteca;55-IPOTECA DI PRIMO GRADO;TRASCRITTO
+51350695/note-01;NDG;ndg;26871394;TRASCRITTO
+51350695/note-01;DENOMINAZIONE;denominazione;LUNARDI GIANMARCO;TRASCRITTO
+51350695/note-01;Tipo;tipo;BPI Mutui;TRASCRITTO
+51350695/note-01;Filiale relazione;filiale_relazione;3749 - GRUGLIASCO;TRASCRITTO
+51350695/note-01;Note della richiesta;note_della_richiesta;"- Numero Finanziamento FICS: 017/5531236 - Numero proposta DESK: 2602257 - Importo perizia: N.D. - Valore immobile presunto: 160.000,00 - Immobile da ipotecare è ad uso abitativo: Si - Dettaglio importi mutuo: IMPORTO INSERIMENTO PRE-VENDITA: 158.800,00 € IMPORTO PER PRIMA CASA : 158.800,00 € IMPORTO RICHIESTO : 158.800,00 € - Codice immobile: 4781760; RICHIESTA DI MUTUO CONSAP PRIORITARIO CON FINANZIAMENTO DEGLI ONERI NOTARILI. LUNARDI GIANMARCO - 32 ANNI. CELIBE. VIVE IN AFFITTO E PAGA UN CANONE MENSILE DI EURO 500,00. DIPENDENTE CON CONTRATTO A TEMPO INDETERMINATO PRESSO LA SOCIETA' ELITECHGROUP SPA CON REDDITO MENSILIZZATO DI EURO 2.350,00. NON HA ALTRI IMPEGNI RATEALI IN CORSO.";TRASCRITTO

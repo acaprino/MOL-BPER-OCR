@@ -2,7 +2,7 @@
 
 The app never computes them (ADR 0030): it loads bper_page_prototypes.json from its
 templates folder. This tool writes that file. The nine page prototypes come from the
-screenshots of the reference practice in data/pratiche (tools/reference_screens.py); the
+screenshots of the reference practice in data/dataset/pratiche (tools/reference_screens.py); the
 reject prototypes from crops of the labelled frame registry, cut in a temporary folder.
 
 A rebuild is a behaviour change. The shipped file was built on 2026-08-18; the registry grew
