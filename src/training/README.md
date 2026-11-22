@@ -62,7 +62,7 @@ La versione la decide la composizione dei lotti (`DATASET_VERSIONS`) e la
 convalida di `validate_reviewed_dataset()` confronta conteggi e split con il
 contratto della versione dichiarata: una cartella rinominata non è una versione.
 
-### Ogni pratica ha un ruolo: `ground-truth-v3.4`
+### Ogni pratica ha un ruolo, dalla `ground-truth-v3.4`
 
 Addestramento 18 (train, la pratica di riferimento `51350695`, validazione estesa con `--also-train`), controllo 2,
 test 13 (test storico e conferma sigillata): colonna `Ruolo` di `practices.csv`, ADR 0027. La

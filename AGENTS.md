@@ -68,7 +68,7 @@ All defaults verified against `src/extraction/config.py`.
 | `STOP_ON_ANCHOR_UNCERTAIN` | `0` | Early exit when both anchor values are null |
 | `LLM_THINKING_LEVEL` | *(unset)* | Reasoning depth `low`/`medium`/`high`, sent as `thinking_level` to the Gemini 3 family; unset keeps the model default (`high` on Gemini 3). Other families warn and ignore it; any other value is refused at model creation (`src/extraction/model_adapters.py`, ADR 0016) |
 | `DEBUG_MODE` | `0` | Verbose `[DEBUG]` logging in `src/extraction/cli.py` (`config.py:108`) |
-| `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to `INPUT_DIR/debug_crops` |
+| `DEBUG_SAVE_CROPS` | `0` | Save intermediate crop images to `OUTPUT_DIR/debug_crops` |
 | `PROMPTS_DIR` | *(unset)* | Override the prompt catalog directory (read in `src/prompt_store.py`, not `config.py`); default is `prompts/` at the repo root, or next to the exe when frozen. An explicit override fails closed: no fallback to the bundled copy |
 
 ### Secrets policy

@@ -83,7 +83,7 @@ run_edge_agent.bat                     # Windows: bootstrap venv + avvio
 ```
 
 #### Batch CLI
-Per estrarre e valutare la pratica di riferimento `data/pratiche/51350695` (un'altra pratica con `INPUT_DIR=data/pratiche/<numero>`; i risultati vanno in `outputs/<numero>/`):
+Per estrarre e valutare la pratica di riferimento `data/pratiche/51350695` (un'altra pratica con `INPUT_DIR=data/pratiche/<numero>`; i risultati vanno in `outputs/<numero>/`). Non lanciarla sulle 11 pratiche di conferma (ruolo `test`, gruppo `conferma` nel foglio `Indice` di `pratiche.xlsx`): sono sigillate e non si misurano durante lo sviluppo.
 ```bash
 python main.py
 ```

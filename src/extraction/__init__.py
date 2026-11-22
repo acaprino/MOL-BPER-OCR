@@ -113,6 +113,8 @@ from extraction.pipeline import ExtractionPipeline, extract_anchors, extract_fro
 from extraction.evaluation import (
     Evaluator,
     load_ground_truth,
+    load_practice_truth,
+    resolve_ground_truth,
     eval_outputs,
     build_debug_report,
     print_cost_summary,
