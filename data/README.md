@@ -48,6 +48,16 @@ Sei pratiche di test (`51027430`, `51886329`, `52102964`, `52136040`, `52186431`
 2. **Il nome di una schermata è la sua chiave** in `valori.csv` e in qualsiasi OCR o modello costruito da qui. Cambiarlo è una nuova versione dell'archivio.
 3. **I risultati della CLI non vanno qui:** stanno in `outputs/<cartella>/`.
 
+## Registro: le pratiche di test lette prima della misura finale
+
+Chi legge la misura finale deve sapere cosa è già stato visto. Nessuna delle voci ha scelto un parametro di un modello.
+
+- **2026-11-22, confronto del classificatore di pagine (DINOv2 e DINOv3):** sono stati calcolati gli embedding delle 240
+  schermate, comprese quelle delle 13 pratiche di test, e un'accuratezza aggregata che le includeva. Nessuna immagine è stata
+  guardata; il risultato è stato scartato e rifatto sulle sole 20 pratiche di addestramento e controllo. Lo stesso giorno
+  `frame_normalize` è stato fatto girare su tutte le 240 per vedere se riconosceva la finestra.
+- **2026-11-22, prova di OXR-1.0 e LightOnOCR-3** (altra sessione, ADR 0034): lettura di `51027430`.
+
 ## Come è stato costruito
 
 `tools/build_dataset_archive.py` ha letto la verità corrente e le schermate del vecchio albero (lotti, versioni `v3.x`, OCR e run) e le ha riscritte con questi nomi, verificando che ogni immagine avesse la stessa impronta. Il vecchio albero è stato tolto il 2026-11-22 (ADR 0032) e resta nella storia git al commit `b2d4b80`: `git show b2d4b80:data/README.md` ne spiega la disposizione. `src/training` costruisce il dataset da qui (`python -m training.dataset --archive data/dataset ...`, vedi `src/training/README.md`).
