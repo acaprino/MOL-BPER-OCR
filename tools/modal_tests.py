@@ -36,6 +36,7 @@ image = (
     .add_local_dir(str(ROOT / "src"), f"{REPO}/src",
                    ignore=["edge-agent/assets/**/*.pt", "edge-agent/assets/**/*.png", "**/__pycache__/**"])
     .add_local_dir(str(ROOT / "tests"), f"{REPO}/tests", ignore=["fixtures/**", "**/__pycache__/**"])
+    .add_local_dir(str(ROOT / "tools"), f"{REPO}/tools", ignore=["**/__pycache__/**"])
 )
 
 

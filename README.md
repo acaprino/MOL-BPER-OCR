@@ -124,7 +124,7 @@ set EDGE_AGENT_PACKAGE_KEY=<chiave dedicata alla beta>
 build_exe.bat
 ```
 
-Consegnare l'intera cartella del pacchetto, non soltanto l'eseguibile. Il build rifiuta un `config.ini` con `api_key` valorizzata. Al primo avvio il preflight prepara i componenti e, se il pacchetto non ha la chiave, la richiede. Dettagli in [Avvio e sviluppo](docs/07-getting-started.md).
+Consegnare l'intera cartella del pacchetto, non soltanto l'eseguibile. Il build rifiuta un `config.ini` con `api_key` valorizzata. Il pacchetto contiene già il modello DINOv2 e i prototipi delle pagine, quindi il riconoscimento funziona senza rete; al primo avvio il preflight chiede la chiave se il pacchetto non la contiene. Dettagli in [Avvio e sviluppo](docs/07-getting-started.md).
 
 ## I 45 campi estratti
 

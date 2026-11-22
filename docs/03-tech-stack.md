@@ -54,7 +54,7 @@ Non c’è database né broker esterno. Esistono code locali in memoria (`extrac
 Servizi esterni vivi (tutti HTTPS in uscita):
 - **API OpenAI**: provider di estrazione via LangChain (`gpt-4o` come default del codice) e provider possibile per il router tramite SDK OpenAI.
 - **API Google Gemini**: provider di estrazione alternativo e provider del router nella configurazione INI spedita, attraverso l’endpoint compatibile OpenAI. «Locale» descrive l’orchestrazione, non un’estrazione offline.
-- **torch.hub**: i pesi DINOv2 vengono scaricati una volta al primo avvio del router ML.
+- **torch.hub**: il pacchetto contiene repo e pesi DINOv2 nella sua `torch-cache` (ADR 0031), quindi il riconoscimento funziona senza rete; da sorgente i pesi si scaricano una volta al primo avvio.
 
 Infrastruttura morta, referenziata nella configurazione ma inutilizzata nel flusso BPER solo-locale, residui dell'era del backend remoto rimosso (commit `ea04ef7`):
 - Un'API di ingestione frame su `http://localhost:8081` (`src/edge-agent/config.ini:10`, `[api]`), raggiungibile solo dalla modalità generica legacy.

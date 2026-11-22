@@ -72,6 +72,7 @@ tarati, e nessun test lo verificava.
 | [0028](0028-tabelle-elenco-e-soggetti-lette-per-colonna.md) | Tabelle Elenco e Soggetti lette per colonna | Accettato |
 | [0029](0029-pratica-di-riferimento-nell-archivio.md) | La pratica di riferimento è una pratica dell'archivio come le altre | Accettato |
 | [0030](0030-prototipi-delle-pagine-distribuiti-con-l-app.md) | I prototipi delle pagine sono distribuiti con l'app, non calcolati all'avvio | Accettato |
+| [0031](0031-modello-dinov2-nel-pacchetto.md) | Il pacchetto contiene il modello DINOv2 | Accettato |
 
 ## Da scrivere
 

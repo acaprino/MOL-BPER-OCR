@@ -9,7 +9,7 @@ Le domande sono ordinate, entro ciascuna sezione, per impatto sull'efficacia di 
 ### ~~Qual è il router di pagina inteso come default, LLM o ML?~~ RISOLTA (2026-08-17)
 Il file `src/edge-agent/config.ini` spedito usa `router = llm`, mentre `AgentConfig.DEFAULT_ROUTER_MODE` resta `ml` quando l’impostazione manca. Le motivazioni storiche restano negli [ADR 0005](adr/0005-router-ml-invece-di-router-llm.md) e [0006](adr/0006-router-llm-come-predefinito.md). `hybrid` prova LLM e poi ML; `local-first` ha un percorso locale per margine, ma l’inizializzazione attuale gli assegna `MLPageRouter`, senza il fallback remoto previsto nell’ADR 0008.
 
-Resta aperto il sotto-problema: **serve una storia offline** per i pesi DINOv2 su rete blindata. Oggi il primo avvio richiede internet una volta.
+~~Resta aperto il sotto-problema: **serve una storia offline** per i pesi DINOv2 su rete blindata.~~ **Risolto 2026-11-22:** il pacchetto contiene repo e pesi DINOv2 ([ADR 0031](adr/0031-modello-dinov2-nel-pacchetto.md)).
 
 ### La GUI Tkinter dovrebbe passare un modello anchor accanto al modello principale?
 `gui_app.py:238-247` inoltra a `run_extraction_batch()` il provider selezionato dal menu a tendina e `model_main`, ma mai `model_anchor`, quindi il passaggio anchor ricade sul `LLM_MODEL_ANCHOR` derivato dall'ambiente (default `gpt-4o`). Selezionare Gemini nella GUI mentre l'ambiente contiene i default OpenAI solleva quindi a metà esecuzione il `ValueError` di mismatch provider/modello in `src/extraction/llm_factory.py:59-63`. La GUI dovrebbe derivare il modello anchor dal provider selezionato, o il percorso Gemini del menu a tendina è notoriamente rotto?

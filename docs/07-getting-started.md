@@ -24,7 +24,8 @@ partono dalla radice del repository; gli esempi di configurazione sono segnapost
   riportato sulla finestra applicativa prima di routing ed estrazione.
 - **torch/torchvision e pesi DINOv2** per il riconoscimento ML. Le dipendenze sono nel
   file comune; il preflight dell'edge-agent gestisce preparazione e warm-up. Il primo
-  avvio può scaricare i pesi DINOv2; i prototipi delle pagine arrivano già pronti con l'app.
+  avvio da sorgente scarica i pesi DINOv2; il pacchetto li contiene già (ADR 0031), come i prototipi
+  delle pagine.
 
 <!-- Source: run_edge_agent.bat:43; src/extraction/config.py:16; src/extraction/llm_factory.py:18; src/extraction/cli.py::main; src/edge-agent/workers/capture/bper_capture_worker.py:442; src/edge-agent/bootstrap.py:489; requirements.txt:13 -->
 

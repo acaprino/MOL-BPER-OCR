@@ -87,6 +87,9 @@ All defaults verified against `src/extraction/config.py`.
   suffixes the zip `_CON-CHIAVE`. `src/edge-agent/env_key.py` is the single writer of `LLM_API_KEY`,
   shared with the first-run dialog. Anyone holding that zip can read the key: use a dedicated,
   spend-capped key and revoke it after the beta.
+- `build_exe.bat` also puts the DINOv2 model (pinned hub repo plus weights checked against
+  `DINOV2_WEIGHTS_SHA256`) into `dist\EdgeAgent\torch-cache` via `tools/bundle_dinov2.py`, so the
+  package recognises pages offline from the first start (ADR 0031); it fails the build otherwise.
 - `AgentConfig.save()` re-persists `llm_api_key` back into `config.ini`
   (`src/edge-agent/config.py:326-332`; currently uncalled). Do not wire it up with a real key loaded.
 - Real keys belong in `.env` (gitignored; template in `.env.example`).

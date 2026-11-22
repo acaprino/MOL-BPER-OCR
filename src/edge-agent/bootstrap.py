@@ -3,7 +3,7 @@ Pre-flight di avvio per utenti non tecnici.
 
 Eseguito da edge_agent.main() prima di creare la MainWindow:
 verifica i file essenziali, la chiave API (dialog al primo avvio),
-i pesi DINOv2 (download con progresso e checksum al primo avvio) e il
+i pesi DINOv2 (già nel pacchetto; da sorgente, download con progresso e checksum al primo avvio) e il
 warm-up del classificatore (saltato quando pesi e prototipi sono già pronti).
 Ogni problema è spiegato con un dialog in italiano.
 """

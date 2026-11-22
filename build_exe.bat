@@ -96,6 +96,15 @@ rem Solo i .json: la cartella sorgente non deve poter spedire altri file nello z
 if not exist "dist\EdgeAgent\prompts" mkdir "dist\EdgeAgent\prompts"
 copy /y "prompts\*.json" "dist\EdgeAgent\prompts" >nul
 
+rem Modello DINOv2 (repo fissato + pesi verificati con SHA-256) nella torch-cache del
+rem pacchetto: il riconoscimento delle pagine funziona senza rete dal primo avvio.
+echo [INFO] Includo il modello DINOv2 nel pacchetto...
+".venv\Scripts\python.exe" "tools\bundle_dinov2.py" "dist\EdgeAgent\torch-cache"
+if errorlevel 1 (
+    echo [ERRORE] Modello DINOv2 non incluso: serve la rete una volta, o la cache torch di questo PC.
+    exit /b 1
+)
+
 rem Template .env (fonte unica: src\edge-agent\defaults\env.template). Senza chiave
 rem precompilata, la chiave viene chiesta al primo avvio.
 copy /y "src\edge-agent\defaults\env.template" "dist\EdgeAgent\.env" >nul
@@ -121,10 +130,10 @@ echo [OK] Pacchetto finale pronto: %ZIP_PATH%
 if defined ZIP_SUFFIX (
     echo [ATTENZIONE] Lo zip contiene la chiave API: chi lo riceve puo' usarla.
     echo      Consegnalo solo ai tester e revoca la chiave a fine beta.
-    echo      Al primo avvio scarica i componenti AI; la chiave non viene chiesta.
+    echo      Il riconoscimento delle pagine funziona anche senza rete; la chiave non viene chiesta.
 ) else (
-    echo      Consegnalo cosi' com'e': al primo avvio scarica i componenti AI
-    echo      e chiede la chiave API.
+    echo      Consegnalo cosi' com'e': il riconoscimento delle pagine funziona anche
+    echo      senza rete; al primo avvio chiede la chiave API.
 )
 endlocal
 exit /b 0
