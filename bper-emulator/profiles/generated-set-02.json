@@ -1,0 +1,3575 @@
+{
+ "format": "bper-emulator-profiles/1",
+ "profiles": [
+  {
+   "key": "gen2-001",
+   "role": "sintetica",
+   "number": "99219850",
+   "ndg": "98622280",
+   "name": "TREVIGNANI FIORELLA",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "15/09/2025",
+   "created": "15/09/2025",
+   "assigned": "17/09/2025",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "63",
+   "branchName": "FANO",
+   "abi": "5387",
+   "assignee": "904210",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904210",
+   "operatorName": "Tommaso Ravagli",
+   "officeCode": "09042",
+   "noteAuthor": "Tommaso Ravagli",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98622280",
+     "name": "TREVIGNANI FIORELLA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98183968",
+     "name": "CASTELVETRI IRIS",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98681278",
+     "name": "GOLINELLI CINZIA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98398423",
+     "name": "GIBERTINI ANNA LISA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0063 0017 00070001",
+     "description": "M.FOND.PRIVATI",
+     "due": "360 mesi",
+     "amount": "240.850",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "362.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98183968 CASTELVETRI IRIS",
+     "amount": "290.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "240.850",
+   "guaranteeTotal": "652.000",
+   "notes": "- Numero proposta DESK: 9923624\n- Valore immobile presunto: 326.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 240.850,00 €\nLa cliente chiede un mutuo fondiario di € 240.850, durata 30 anni, per acquistare la casa in cui andrà a vivere con la famiglia a Fano.\nTrevignani Fiorella, 41 anni, lavora come sviluppatrice software presso una società di consulenza informatica dal 2006. Netto mensile € 4.200 per 14 mensilità, ultime buste paga e CU acquisite.\n- LTV 74%\n- Rata € 970 al mese a tasso fisso\n- Rata/reddito 23%\n- Nessun altro finanziamento in corso\nGaranzia aggiuntiva: fideiussione solidale limitata a € 290.000 prestata da Castelvetri Iris, proprietaria dell'abitazione in cui risiede.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-002",
+   "role": "sintetica",
+   "number": "99253217",
+   "ndg": "98663127",
+   "name": "GRISENDI TERESA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "19/09/2025",
+   "created": "19/09/2025",
+   "assigned": "22/09/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "3410",
+   "branchName": "PIACENZA",
+   "abi": "5387",
+   "assignee": "905118",
+   "assigneeName": "BPI MUTUI LOMBARDIA",
+   "operatorId": "905118",
+   "operatorName": "Giada Ferlini",
+   "officeCode": "09051",
+   "noteAuthor": "Giada Ferlini",
+   "scenario": "Prima casa con Fondo di garanzia",
+   "subjects": [
+    {
+     "ndg": "98663127",
+     "name": "GRISENDI TERESA, BERTOGALLI NORBERTO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 3410 0017 00070002",
+     "description": "M.F. PF FONDO",
+     "due": "30/09/2055",
+     "amount": "199.900",
+     "operation": "In Lavoraz.",
+     "tooltip": "310930 - MUTUO FONDIARIO CON GARANZIA DEL FONDO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. FONDO P.C.",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "99.950",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "460-GARANZIA DEL FONDO PRIMA CASA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "300.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "199.900",
+   "guaranteeTotal": "399.950",
+   "notes": "- Numero proposta DESK: 9923138\n- Valore immobile presunto: 264.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 199.900,00 €\nAcquisto prima casa a Piacenza: mutuo di € 199.900, durata 30 anni, assistito dal Fondo di garanzia per la prima casa al 50%.\nLa cliente ha 32 anni ed è addetta di magazzino presso un operatore logistico dal 2015, a tempo indeterminato; percepisce € 2.200 netti al mese su 14 mensilità.\n- LTV 76%\n- Rata € 805 al mese a tasso fisso\n- Rata/reddito 22%\n- Nessun altro finanziamento in corso\nCointestatario Bertogalli Norberto, addetto vendite, netto mensile € 1.450; i redditi sono canalizzati su conto cointestato.\nCompromesso risolto per mancato accordo tra le parti; la cliente non intende proseguire e la pratica viene abbandonata.\nNucleo composto da 2 persone. Canone di locazione attuale € 450, a carico del richiedente fino al rogito.\nImmobile oggetto di acquisto: appartamento di 84 mq al piano 2, con cantina e posto auto, classe energetica C; prezzo € 264.000, perizia attesa in linea.\nInterrogazioni CRIF regolari. La cliente dichiara un prestito personale con rata € 230, in scadenza tra 32 mesi.\nDifferenza di € 64.100 coperta per metà con risparmi propri e per metà con una donazione dei genitori, documentata con bonifico.\nCliente della filiale dal 2024, titolare di conto corrente con accredito dello stipendio, carta di debito e un piano di accumulo; nessun insoluto né sconfinamento negli ultimi 24 mesi.\nIl datore di lavoro è un'azienda solida, presente sul territorio da molti anni; la busta paga riporta anzianità di servizio e scatti contrattuali regolari, senza cessioni del quinto.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-003",
+   "role": "sintetica",
+   "number": "99243972",
+   "ndg": "98180819",
+   "name": "GIBERTINI ENRICO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "25/12/2025",
+   "created": "25/12/2025",
+   "assigned": "26/12/2025",
+   "evidence": "B V",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "2305",
+   "branchName": "REGGIO E. OSPIZIO",
+   "abi": "5387",
+   "assignee": "906027",
+   "assigneeName": "BPI MUTUI CENTRO",
+   "operatorId": "906027",
+   "operatorName": "Corrado Biancalani",
+   "officeCode": "09060",
+   "noteAuthor": "Corrado Biancalani",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98180819",
+     "name": "GIBERTINI ENRICO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98699607",
+     "name": "BELLELLI ROBERTA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98462857",
+     "name": "DE PIETRI PIERLUIGI",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98757512",
+     "name": "ACERBONI NADIA",
+     "role": "Cointestato"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 2305 0017 00070003",
+     "description": "M.FOND.PRIVATI",
+     "due": "31/12/2050",
+     "amount": "162.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "243.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98699607 BELLELLI ROBERTA",
+     "amount": "195.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "162.000",
+   "guaranteeTotal": "438.000",
+   "notes": "Mutuo fondiario richiesto € 162.000, 25 anni, finalità acquisto abitazione principale nel comune di Reggio Emilia.\nIl cliente ha 44 anni ed è autista presso un'azienda di trasporto pubblico dal 2016, a tempo indeterminato; percepisce € 1.450 netti al mese su 13 mensilità.\n- Prezzo di acquisto € 229.000\n- Finanziamento richiesto € 162.000\n- Rata mensile stimata € 783\n- Incidenza rata sul reddito 32%\n- Anticipo e spese con mezzi propri\nGaranzia aggiuntiva: fideiussione solidale limitata a € 195.000 prestata da Bellelli Roberta, proprietaria dell'abitazione in cui risiede.\nIl mutuo è cointestato con Acerboni Nadia, convivente, che contribuisce al reddito familiare con un netto di € 1.000 mensili.\nIstruttoria in corso; richiesta la perizia al tecnico convenzionato, in attesa del rapporto di valutazione.\nNucleo composto da 3 persone. Canone di locazione attuale € 460, a carico del richiedente fino al rogito.\nSi tratta di una porzione di villetta a schiera di 97 mq con giardino, classe D, prezzo pattuito € 229.000. Perizia richiesta, sopralluogo fissato.\nInterrogazioni CRIF regolari. Il cliente dichiara un prestito personale con rata € 380, in scadenza tra 8 mesi.\nAnticipo di € 67.000 versato con risparmi propri, giacenti sul conto da oltre un anno; spese notarili e imposte coperte da liquidità disponibile.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-004",
+   "role": "sintetica",
+   "number": "99297769",
+   "ndg": "98300666",
+   "name": "SGARBANTI PAOLO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "23/07/2025",
+   "created": "23/07/2025",
+   "assigned": "25/07/2025",
+   "evidence": "B V",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "735",
+   "branchName": "SAN DONA' DI PIAVE",
+   "abi": "5387",
+   "assignee": "907344",
+   "assigneeName": "BPI MUTUI SARDEGNA",
+   "operatorId": "907344",
+   "operatorName": "Ilaria Montecchi",
+   "officeCode": "09073",
+   "noteAuthor": "Ilaria Montecchi",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98300666",
+     "name": "SGARBANTI PAOLO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98105540",
+     "name": "SGARBANTI PAOLO VALDOSSI SAMUELE",
+     "role": "Cointestazione"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0735 0017 00070004",
+     "description": "M.CONSAP >=80%",
+     "due": "31/07/2050",
+     "amount": "125.950",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "100.760",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "189.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "125.950",
+   "guaranteeTotal": "289.760",
+   "notes": "- Numero proposta DESK: 9925793\n- Valore immobile presunto: 147.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 125.950,00 €\nRichiesta di mutuo prima casa di € 125.950 in 25 anni con accesso al Fondo di garanzia per la prima casa (CONSAP) nella misura dell'80%. Sgarbanti Paolo, 30 anni, lavora come magazziniere presso un operatore logistico dal 2015. Netto mensile € 1.150 per 13 mensilità, ultime buste paga e CU acquisite.\n- Prezzo di acquisto € 147.000\n- Finanziamento richiesto € 125.950\n- Rata mensile stimata € 609\n- Incidenza rata sul reddito 31%\n- Anticipo e spese con mezzi propri\nIl cliente rientra nelle categorie prioritarie del Fondo prima casa; ISEE € 25.000. Garanzia CONSAP all'80% sulla quota capitale. Il mutuo è cointestato con Valdossi Samuele, convivente, che contribuisce al reddito familiare con un netto di € 800 mensili. Compromesso risolto per mancato accordo tra le parti; il cliente non intende proseguire e la pratica viene abbandonata. Il cliente risiede con il nucleo familiare (2 componenti) in un appartamento in locazione a € 850 al mese. Si tratta di una porzione di villetta a schiera di 125 mq con giardino, classe D, prezzo pattuito € 147.000. Perizia richiesta, sopralluogo fissato.\nDa CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 340 e residuo di 22 mesi. Differenza di € 21.050 coperta per metà con risparmi propri e per metà con una donazione dei genitori, documentata con bonifico. Nuovo cliente, acquisito tramite la filiale di San Donà di Piave: aprirà il conto corrente contestualmente alla stipula e vi canalizzerà lo stipendio; consegnati i moduli di adeguata verifica. Percorso lavorativo stabile: dopo il diploma e un primo contratto a termine di 7 anni, assunzione a tempo indeterminato presso l'attuale datore di lavoro, con superamento del periodo di prova. Dalla relazione notarile preliminare non emergono gravami; il notaio incaricato è lo studio Bertacchini Lodi, che ha già ricevuto copia del compromesso e degli atti di provenienza.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-005",
+   "role": "sintetica",
+   "number": "99287332",
+   "ndg": "98601432",
+   "name": "BONACORSI RENATA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "10/04/2026",
+   "created": "10/04/2026",
+   "assigned": "13/04/2026",
+   "evidence": "BC",
+   "evidenceTooltip": "",
+   "branch": "528",
+   "branchName": "CREMA",
+   "abi": "5387",
+   "assignee": "908152",
+   "assigneeName": "BPI MUTUI ADRIATICA",
+   "operatorId": "908152",
+   "operatorName": "Renato Sciarretta",
+   "officeCode": "09081",
+   "noteAuthor": "Renato Sciarretta",
+   "scenario": "Prima casa con Fondo di garanzia",
+   "subjects": [
+    {
+     "ndg": "98601432",
+     "name": "BONACORSI RENATA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0528 0017 00070005",
+     "description": "M.F. PF FONDO",
+     "due": "361 mesi",
+     "amount": "215.000",
+     "operation": "Nuova Finanza",
+     "tooltip": "310930 - MUTUO FONDIARIO CON GARANZIA DEL FONDO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. FONDO P.C.",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "107.500",
+     "operation": "Nuova",
+     "tooltip": "460-GARANZIA DEL FONDO PRIMA CASA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "323.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "215.000",
+   "guaranteeTotal": "430.500",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-006",
+   "role": "sintetica",
+   "number": "99283985",
+   "ndg": "98368275",
+   "name": "RIGHETTONI PAOLO",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMM",
+   "typeName": "",
+   "state": "APP",
+   "phase": "",
+   "date": "15/12/2025",
+   "created": "15/12/2025",
+   "assigned": "17/12/2025",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "7021",
+   "branchName": "TREVISO",
+   "abi": "5387",
+   "assignee": "909066",
+   "assigneeName": "BPI MUTUI NORD EST",
+   "operatorId": "909066",
+   "operatorName": "Paola Zanichelli",
+   "officeCode": "09090",
+   "noteAuthor": "Paola Zanichelli",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98368275",
+     "name": "RIGHETTONI PAOLO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98290438",
+     "name": "TOSCHI ALBERTO",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98717164",
+     "name": "FIACCADORI DEBORA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 7021 0017 00070006",
+     "description": "M.CONSAP >=80%",
+     "due": "181 mesi",
+     "amount": "186.150",
+     "operation": "Nuova Finanza",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "148.920",
+     "operation": "Nuova",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "280.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G3",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98290438 TOSCHI ALBERTO",
+     "amount": "224.000",
+     "operation": "Nuova",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "186.150",
+   "guaranteeTotal": "652.920",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-007",
+   "role": "sintetica",
+   "number": "99272933",
+   "ndg": "98677998",
+   "name": "COCCAPANI WALTER",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "24/12/2025",
+   "created": "24/12/2025",
+   "assigned": "29/12/2025",
+   "evidence": "B V",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "4518",
+   "branchName": "ANCONA",
+   "abi": "5387",
+   "assignee": "904275",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904275",
+   "operatorName": "Fabio Cerioli",
+   "officeCode": "09042",
+   "noteAuthor": "Fabio Cerioli",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98677998",
+     "name": "COCCAPANI WALTER",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 4518 0017 00070007",
+     "description": "M.FOND.PRIVATI",
+     "due": "361 mesi",
+     "amount": "249.150",
+     "operation": "Nuova Finanza",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "374.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "249.150",
+   "guaranteeTotal": "374.000",
+   "notes": "Il cliente chiede un mutuo fondiario di € 249.150, durata 30 anni, per acquistare la casa in cui andrà a vivere con la famiglia a Ancona.\nRichiedente di 45 anni, addetto vendite presso una catena della grande distribuzione con contratto a tempo indeterminato dal 2008; reddito netto mensile di € 3.600 su 14 mensilità.\n- Prezzo di acquisto € 333.000\n- Finanziamento richiesto € 249.150\n- Rata mensile stimata € 1.004\n- Incidenza rata sul reddito 28%\n- Anticipo e spese con mezzi propri\nDelibera positiva comunicata al cliente. Inviata la lettera di accettazione delle condizioni, stipula prevista entro la fine del trimestre.\nNucleo composto da 1 persone. Canone di locazione attuale € 460, a carico del richiedente fino al rogito.\nSi tratta di una porzione di villetta a schiera di 61 mq con giardino, classe E, prezzo pattuito € 333.000. Perizia richiesta, sopralluogo fissato.\nDa CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 300 e residuo di 26 mesi.\nAnticipo di € 83.850 versato con risparmi propri, giacenti sul conto da oltre un anno; spese notarili e imposte coperte da liquidità disponibile.\nIl rapporto con la banca è attivo dal 2008: conto corrente con domiciliazione delle utenze e accredito dello stipendio, andamento regolare, saldo medio coerente con il reddito dichiarato.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-008",
+   "role": "sintetica",
+   "number": "99242121",
+   "ndg": "98137330",
+   "name": "DIEGOLI ANNA LISA",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMM",
+   "typeName": "",
+   "state": "APP",
+   "phase": "",
+   "date": "18/09/2025",
+   "created": "18/09/2025",
+   "assigned": "22/09/2025",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "2305",
+   "branchName": "REGGIO E. OSPIZIO",
+   "abi": "5387",
+   "assignee": "904210",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904210",
+   "operatorName": "Tommaso Ravagli",
+   "officeCode": "09042",
+   "noteAuthor": "Tommaso Ravagli",
+   "scenario": "Mutuo ipotecario non fondiario",
+   "subjects": [
+    {
+     "ndg": "98137330",
+     "name": "DIEGOLI ANNA LISA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98055368",
+     "name": "CAMPOLMI OTTAVIA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98796686",
+     "name": "VALDOSSI LUIGI",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98586127",
+     "name": "DIEGOLI ANNA LISA DIEGOLI EMILIO",
+     "role": "Cointestazione"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 2305 0017 00070008",
+     "description": "M. IPOTECARIO",
+     "due": "121 mesi",
+     "amount": "104.900",
+     "operation": "Nuova Finanza",
+     "tooltip": "310920 - MUTUO IPOTECARIO NON FONDIARIO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "210.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98055368 CAMPOLMI OTTAVIA",
+     "amount": "126.000",
+     "operation": "Nuova",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "104.900",
+   "guaranteeTotal": "336.000",
+   "notes": "- Numero proposta DESK: 9929387\n- Valore immobile presunto: 122.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 104.900,00 €\nMutuo ipotecario di € 104.900, 10 anni, non fondiario per rapporto tra finanziamento e valore oltre i limiti del fondiario. La cliente ha 32 anni ed è sviluppatrice software presso una società di consulenza informatica dal 2020, a tempo indeterminato; percepisce € 3.750 netti al mese su 13 mensilità. - Prezzo di acquisto € 122.000 - Finanziamento richiesto € 104.900 - Rata mensile stimata € 1.268 - Incidenza rata sul reddito 22% - Anticipo e spese con mezzi propri\nContatto pervenuto tramite il mediatore creditizio CREDITO SERENO S.R.L.; provvigione a carico della cliente come da mandato. Garanzia aggiuntiva: fideiussione solidale limitata a € 126.000 prestata da Campolmi Ottavia, proprietaria dell'abitazione in cui risiede. Il mutuo è cointestato con Diegoli Emilio, convivente, che contribuisce al reddito familiare con un netto di € 2.000 mensili. Delibera positiva comunicata alla cliente. Inviata la lettera di accettazione delle condizioni, stipula prevista entro 60 giorni. Nucleo composto da 2 persone. Canone di locazione attuale € 560, a carico del richiedente fino al rogito. Immobile oggetto di acquisto: appartamento di 121 mq al piano 2, con cantina e posto auto, classe energetica C; prezzo € 122.000, perizia attesa in linea. Centrale Rischi senza sconfinamenti; risulta una carta revolving con utilizzo contenuto e rata di € 390. Anticipo di € 17.100 versato con risparmi propri, giacenti sul conto da oltre un anno; spese notarili e imposte coperte da liquidità disponibile. Il rapporto con la banca è attivo dal 2020: conto corrente con domiciliazione delle utenze e accredito dello stipendio, andamento regolare, saldo medio coerente con il reddito dichiarato. Percorso lavorativo stabile: dopo il diploma e un primo contratto a termine di 3 anni, assunzione a tempo indeterminato presso l'attuale datore di lavoro, con superamento del periodo di prova. Il venditore è una persona fisica; l'immobile è libero da ipoteche e pignoramenti come risulta dalla visura ipotecaria, e la conformità urbanistica e catastale sarà attestata dal tecnico prima del rogito. La rata prevista di € 1.268 risulta inferiore al canone di locazione attualmente pagato; la cliente ha mantenuto negli ultimi due anni una capacità di risparmio mensile costante, documentata dagli estratti conto. La cliente preferisce il tasso fisso; consegnato il prospetto informativo europeo standardizzato.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-009",
+   "role": "sintetica",
+   "number": "99224599",
+   "ndg": "98144010",
+   "name": "MARVERTI PATRIZIA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "11/05/2026",
+   "created": "11/05/2026",
+   "assigned": "14/05/2026",
+   "evidence": "BC",
+   "evidenceTooltip": "",
+   "branch": "205",
+   "branchName": "VIGNOLA",
+   "abi": "5387",
+   "assignee": "905118",
+   "assigneeName": "BPI MUTUI LOMBARDIA",
+   "operatorId": "905118",
+   "operatorName": "Giada Ferlini",
+   "officeCode": "09051",
+   "noteAuthor": "Giada Ferlini",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98144010",
+     "name": "MARVERTI PATRIZIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98499965",
+     "name": "STEFANUCCI LETIZIA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98205787",
+     "name": "ROVATTI LUIGI",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98350570",
+     "name": "GOLINELLI PIERLUIGI",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0205 0017 00070009",
+     "description": "M.FOND.PRIVATI",
+     "due": "31/05/2056",
+     "amount": "156.800",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "236.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98499965 STEFANUCCI LETIZIA",
+     "amount": "189.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "156.800",
+   "guaranteeTotal": "425.000",
+   "notes": "La cliente chiede un mutuo fondiario di € 156.800, durata 30 anni, per acquistare la casa in cui andrà a vivere con la famiglia a Vignola. La cliente ha 40 anni ed è infermiera presso l'azienda ospedaliera provinciale dal 2017, a tempo indeterminato; percepisce € 2.450 netti al mese su 14 mensilità.\n- Valore immobile: € 286.000\n- LTV: 55%\n- Rata stimata: € 632 mensili\n- Rapporto rata/reddito: 26%\nA supporto interviene Stefanucci Letizia con fideiussione limitata di € 189.000; reddito e patrimonio del garante documentati. La cliente ha comunicato di aver rinunciato all'acquisto dopo l'esito della perizia: pratica da abbandonare. La cliente risiede con il nucleo familiare (1 componenti) in un appartamento in locazione a € 840 al mese.\nImmobile oggetto di acquisto: appartamento di 93 mq al piano 1, con cantina e posto auto, classe energetica D; prezzo € 286.000, perizia attesa in linea. Da CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 140 e residuo di 21 mesi. Anticipo di € 129.200 versato con risparmi propri, giacenti sul conto da oltre un anno; spese notarili e imposte coperte da liquidità disponibile.\nIl rapporto con la banca è attivo dal 2011: conto corrente con domiciliazione delle utenze e accredito dello stipendio, andamento regolare, saldo medio coerente con il reddito dichiarato.\nPercorso lavorativo stabile: dopo il diploma e un primo contratto a termine di 4 anni, assunzione a tempo indeterminato presso l'attuale datore di lavoro, con superamento del periodo di prova. L'immobile è venduto da un'impresa costruttrice: acquisite la fideiussione a garanzia degli acconti versati e la polizza decennale postuma, oltre al certificato di agibilità.\nSostenibilità: a fronte di una rata di € 632 il reddito disponibile residuo del nucleo, al netto del canone che cesserà e delle altre rate, resta adeguato alle spese familiari ordinarie anche con una riduzione temporanea del reddito.\nRichiesto tasso fisso per tutta la durata; la cliente ha preso visione del PIES e del TAEG indicativo. Proposta la polizza a protezione del credito (CPI), che la cliente si è riservato di valutare; obbligatoria la sola polizza incendio e scoppio sull'immobile.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-010",
+   "role": "sintetica",
+   "number": "99247067",
+   "ndg": "98694562",
+   "name": "ACERBONI NORBERTO",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMM",
+   "typeName": "",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "17/08/2026",
+   "created": "17/08/2026",
+   "assigned": "17/08/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "611",
+   "branchName": "OLBIA",
+   "abi": "5387",
+   "assignee": "906027",
+   "assigneeName": "BPI MUTUI CENTRO",
+   "operatorId": "906027",
+   "operatorName": "Corrado Biancalani",
+   "officeCode": "09060",
+   "noteAuthor": "Corrado Biancalani",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98694562",
+     "name": "ACERBONI NORBERTO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0611 0017 00070010",
+     "description": "M.CONSAP >=80%",
+     "due": "31/08/2046",
+     "amount": "175.300",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "140.240",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "263.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "175.300",
+   "guaranteeTotal": "403.240",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-011",
+   "role": "sintetica",
+   "number": "99245724",
+   "ndg": "98419699",
+   "name": "LA ROCCA RICCARDO",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "28/07/2026",
+   "created": "28/07/2026",
+   "assigned": "28/07/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "4518",
+   "branchName": "ANCONA",
+   "abi": "5387",
+   "assignee": "907344",
+   "assigneeName": "BPI MUTUI SARDEGNA",
+   "operatorId": "907344",
+   "operatorName": "Ilaria Montecchi",
+   "officeCode": "09073",
+   "noteAuthor": "Ilaria Montecchi",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98419699",
+     "name": "LA ROCCA RICCARDO",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 4518 0017 00070011",
+     "description": "M.FOND.PRIVATI",
+     "due": "31/07/2051",
+     "amount": "297.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "446.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "297.000",
+   "guaranteeTotal": "446.000",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-012",
+   "role": "sintetica",
+   "number": "99250833",
+   "ndg": "98387667",
+   "name": "LUPI ENZO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "03/12/2025",
+   "created": "03/12/2025",
+   "assigned": "04/12/2025",
+   "evidence": "B V",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "611",
+   "branchName": "OLBIA",
+   "abi": "5387",
+   "assignee": "908152",
+   "assigneeName": "BPI MUTUI ADRIATICA",
+   "operatorId": "908152",
+   "operatorName": "Renato Sciarretta",
+   "officeCode": "09081",
+   "noteAuthor": "Renato Sciarretta",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98387667",
+     "name": "LUPI ENZO, PRANDINI GIACOMO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0611 0017 00070012",
+     "description": "M.CONSAP >=80%",
+     "due": "181 mesi",
+     "amount": "152.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "121.600",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "228.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "152.000",
+   "guaranteeTotal": "349.600",
+   "notes": "- Numero proposta DESK: 9925018\n- Valore immobile presunto: 162.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 152.000,00 €\nIl richiedente, under 36, chiede € 152.000 in 15 anni per la prima casa a Olbia, avvalendosi della garanzia CONSAP all'80%. Richiedente di 28 anni, magazziniere presso un operatore logistico con contratto a tempo indeterminato dal 2023; reddito netto mensile di € 3.050 su 13 mensilità.\n- Valore immobile: € 162.000\n- LTV: 94%\n- Rata stimata: € 1.224 mensili\n- Rapporto rata/reddito: 26%\nRequisiti del Fondo verificati: età inferiore a 36 anni, ISEE di € 14.000, nessun'altra proprietà abitativa. Domanda CONSAP da inoltrare dopo la delibera. Cointestatario Prandini Giacomo, geometra, netto mensile € 1.650; i redditi sono canalizzati su conto cointestato. Il cliente ha comunicato di aver rinunciato all'acquisto dopo l'esito della perizia: pratica da abbandonare. Nucleo composto da 2 persone. Canone di locazione attuale € 650, a carico del richiedente fino al rogito. L'immobile è un trilocale di 83 mq al 2° piano con garage, classe D. Compromesso registrato al prezzo di € 162.000; rogito previsto entro fine mese. Centrale Rischi senza sconfinamenti; risulta una carta revolving con utilizzo contenuto e rata di € 300. Differenza di € 10.000 coperta per metà con risparmi propri e per metà con una donazione dei genitori, documentata con bonifico. Nuovo cliente, acquisito tramite la filiale di Olbia: aprirà il conto corrente contestualmente alla stipula e vi canalizzerà lo stipendio; consegnati i moduli di adeguata verifica. Il datore di lavoro è un'azienda solida, presente sul territorio da molti anni; la busta paga riporta anzianità di servizio e scatti contrattuali regolari, senza cessioni del quinto. Il venditore è una persona fisica; l'immobile è libero da ipoteche e pignoramenti come risulta dalla visura ipotecaria, e la conformità urbanistica e catastale sarà attestata dal tecnico prima del rogito. Sostenibilità: a fronte di una rata di € 1.224 il reddito disponibile residuo del nucleo, al netto del canone che cesserà e delle altre rate, resta adeguato alle spese familiari ordinarie anche con una riduzione temporanea del reddito.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-013",
+   "role": "sintetica",
+   "number": "99273631",
+   "ndg": "98131965",
+   "name": "DE PIETRI MANUELA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "22/09/2025",
+   "created": "22/09/2025",
+   "assigned": "25/09/2025",
+   "evidence": "BC",
+   "evidenceTooltip": "",
+   "branch": "735",
+   "branchName": "SAN DONA' DI PIAVE",
+   "abi": "5387",
+   "assignee": "909066",
+   "assigneeName": "BPI MUTUI NORD EST",
+   "operatorId": "909066",
+   "operatorName": "Paola Zanichelli",
+   "officeCode": "09090",
+   "noteAuthor": "Paola Zanichelli",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98131965",
+     "name": "DE PIETRI MANUELA",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0735 0017 00070013",
+     "description": "M.FOND.PRIVATI",
+     "due": "30/09/2055",
+     "amount": "267.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "401.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "267.000",
+   "guaranteeTotal": "401.000",
+   "notes": "LA CLIENTE CHIEDE UN MUTUO FONDIARIO DI € 267.000, DURATA 30 ANNI, PER ACQUISTARE LA CASA IN CUI ANDRÀ A VIVERE CON LA FAMIGLIA A SAN DONÀ DI PIAVE.\nRICHIEDENTE DI 37 ANNI, AGENTE DI POLIZIA LOCALE PRESSO IL COMUNE CON CONTRATTO A TEMPO INDETERMINATO DAL 2018; REDDITO NETTO MENSILE DI € 3.350 SU 13 MENSILITÀ.\n- VALORE IMMOBILE: € 347.000\n- LTV: 77%\n- RATA STIMATA: € 1.075 MENSILI\n- RAPPORTO RATA/REDDITO: 32%\nISTRUTTORIA IN CORSO; RICHIESTA LA PERIZIA AL TECNICO CONVENZIONATO, IN ATTESA DEL RAPPORTO DI VALUTAZIONE.\nLA CLIENTE RISIEDE CON IL NUCLEO FAMILIARE (2 COMPONENTI) IN UN APPARTAMENTO IN LOCAZIONE A € 480 AL MESE.\nSI TRATTA DI UNA PORZIONE DI VILLETTA A SCHIERA DI 112 MQ CON GIARDINO, CLASSE B, PREZZO PATTUITO € 347.000. PERIZIA RICHIESTA, SOPRALLUOGO FISSATO.\nCENTRALE RISCHI SENZA SCONFINAMENTI; RISULTA UNA CARTA REVOLVING CON UTILIZZO CONTENUTO E RATA DI € 300.\nDIFFERENZA DI € 80.000 COPERTA PER METÀ CON RISPARMI PROPRI E PER METÀ CON UNA DONAZIONE DEI GENITORI, DOCUMENTATA CON BONIFICO.\nIL RAPPORTO CON LA BANCA È ATTIVO DAL 2006: CONTO CORRENTE CON DOMICILIAZIONE DELLE UTENZE E ACCREDITO DELLO STIPENDIO, ANDAMENTO REGOLARE, SALDO MEDIO COERENTE CON IL REDDITO DICHIARATO.\nPERCORSO LAVORATIVO STABILE: DOPO IL DIPLOMA E UN PRIMO CONTRATTO A TERMINE DI 2 ANNI, ASSUNZIONE A TEMPO INDETERMINATO PRESSO L'ATTUALE DATORE DI LAVORO, CON SUPERAMENTO DEL PERIODO DI PROVA.\nDALLA RELAZIONE NOTARILE PRELIMINARE NON EMERGONO GRAVAMI; IL NOTAIO INCARICATO È LO STUDIO BERTACCHINI LODI, CHE HA GIÀ RICEVUTO COPIA DEL COMPROMESSO E DEGLI ATTI DI PROVENIENZA.\nLA RATA PREVISTA DI € 1.075 RISULTA INFERIORE AL CANONE DI LOCAZIONE ATTUALMENTE PAGATO; LA CLIENTE HA MANTENUTO NEGLI ULTIMI DUE ANNI UNA CAPACITÀ DI RISPARMIO MENSILE COSTANTE, DOCUMENTATA DAGLI ESTRATTI CONTO.\nOPZIONE A TASSO VARIABILE CON CAP VALUTATA E SCARTATA DALLA CLIENTE, CHE CONFERMA IL TASSO FISSO.\nLA CLIENTE SOTTOSCRIVERÀ LA POLIZZA INCENDIO E SCOPPIO CON VINCOLO A FAVORE DELLA BANCA E VALUTA UNA COPERTURA FACOLTATIVA PER IL CASO MORTE, OFFERTA IN ABBINAMENTO AL MUTUO.\nDOCUMENTAZIONE PRESENTE IN PRATICA:\n- DICHIARAZIONE DEI REDDITI DELL'ULTIMO ANNO\n- CONTRATTO DI LAVORO\n- VISURA CATASTALE E IPOTECARIA\n- PRELIMINARE DI COMPRAVENDITA\n- CERTIFICAZIONE ENERGETICA\nDOCUMENTAZIONE COMPLETA CARICATA IN GESTIONE DOCUMENTALE.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-014",
+   "role": "sintetica",
+   "number": "99210564",
+   "ndg": "98691321",
+   "name": "MURA ELSA",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMM",
+   "typeName": "",
+   "state": "APP",
+   "phase": "",
+   "date": "20/04/2026",
+   "created": "20/04/2026",
+   "assigned": "22/04/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "6134",
+   "branchName": "SASSARI",
+   "abi": "5387",
+   "assignee": "904275",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904275",
+   "operatorName": "Fabio Cerioli",
+   "officeCode": "09042",
+   "noteAuthor": "Fabio Cerioli",
+   "scenario": "Prima casa con Fondo di garanzia",
+   "subjects": [
+    {
+     "ndg": "98691321",
+     "name": "MURA ELSA, VALDOSSI PIERLUIGI",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 6134 0017 00070014",
+     "description": "M.F. PF FONDO",
+     "due": "360 mesi",
+     "amount": "199.850",
+     "operation": "Nuova Finanza",
+     "tooltip": "310930 - MUTUO FONDIARIO CON GARANZIA DEL FONDO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. FONDO P.C.",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "99.925",
+     "operation": "Nuova",
+     "tooltip": "460-GARANZIA DEL FONDO PRIMA CASA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "300.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "199.850",
+   "guaranteeTotal": "399.925",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-015",
+   "role": "sintetica",
+   "number": "99224610",
+   "ndg": "98660045",
+   "name": "ZACCARELLI DONATELLA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "30/06/2025",
+   "created": "30/06/2025",
+   "assigned": "30/06/2025",
+   "evidence": "BC",
+   "evidenceTooltip": "",
+   "branch": "1024",
+   "branchName": "MI-ISOLA",
+   "abi": "5387",
+   "assignee": "904210",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904210",
+   "operatorName": "Tommaso Ravagli",
+   "officeCode": "09042",
+   "noteAuthor": "Tommaso Ravagli",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98660045",
+     "name": "ZACCARELLI DONATELLA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98002821",
+     "name": "SAVIOLI IRIS",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98585250",
+     "name": "GUAITOLI PAOLO",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98430426",
+     "name": "PIGNEDOLI ANGELO",
+     "role": "Cointestato"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 1024 0017 00070015",
+     "description": "M.FOND.PRIVATI",
+     "due": "30/06/2050",
+     "amount": "258.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "387.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98002821 SAVIOLI IRIS",
+     "amount": "310.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "258.000",
+   "guaranteeTotal": "697.000",
+   "notes": "- Numero proposta DESK: 9926888\n- Valore immobile presunto: 374.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 258.000,00 €\nRICHIESTA DI MUTUO FONDIARIO DI € 258.000 IN 25 ANNI PER L'ACQUISTO DELL'ABITAZIONE PRINCIPALE A MILANO.\nLA CLIENTE HA 30 ANNI ED È AUTISTA PRESSO UN'AZIENDA DI TRASPORTO PUBBLICO DAL 2023, A TEMPO INDETERMINATO; PERCEPISCE € 2.550 NETTI AL MESE SU 14 MENSILITÀ.\n- LTV 69%\n- RATA € 1.247 AL MESE A TASSO FISSO\n- RATA/REDDITO 32%\n- NESSUN ALTRO FINANZIAMENTO IN CORSO\nA SUPPORTO INTERVIENE SAVIOLI IRIS CON FIDEIUSSIONE LIMITATA DI € 310.000; REDDITO E PATRIMONIO DEL GARANTE DOCUMENTATI.\nCOINTESTATARIO PIGNEDOLI ANGELO, TECNICO MANUTENTORE, NETTO MENSILE € 1.350; I REDDITI SONO CANALIZZATI SU CONTO COINTESTATO.\nLA CLIENTE HA COMUNICATO DI AVER RINUNCIATO ALL'ACQUISTO DOPO L'ESITO DELLA PERIZIA: PRATICA DA ABBANDONARE.\nLA CLIENTE RISIEDE CON IL NUCLEO FAMILIARE (4 COMPONENTI) IN UN APPARTAMENTO IN LOCAZIONE A € 780 AL MESE.\nSI TRATTA DI UNA PORZIONE DI VILLETTA A SCHIERA DI 126 MQ CON GIARDINO, CLASSE A, PREZZO PATTUITO € 374.000. PERIZIA RICHIESTA, SOPRALLUOGO FISSATO.\nDA CRIF E CENTRALE RISCHI NESSUNA SEGNALAZIONE NEGATIVA; IN ESSERE UN FINANZIAMENTO AUTO CON RATA DI € 380 E RESIDUO DI 28 MESI.\nANTICIPO DI € 116.000 VERSATO CON RISPARMI PROPRI, GIACENTI SUL CONTO DA OLTRE UN ANNO; SPESE NOTARILI E IMPOSTE COPERTE DA LIQUIDITÀ DISPONIBILE.\nIL RAPPORTO CON LA BANCA È ATTIVO DAL 2019: CONTO CORRENTE CON DOMICILIAZIONE DELLE UTENZE E ACCREDITO DELLO STIPENDIO, ANDAMENTO REGOLARE, SALDO MEDIO COERENTE CON IL REDDITO DICHIARATO.\nPRIMA DELL'ATTUALE IMPIEGO LA CLIENTE HA LAVORATO PER CIRCA 8 ANNI NELLO STESSO SETTORE, SENZA PERIODI DI DISOCCUPAZIONE DOCUMENTATI; L'ESTRATTO CONTRIBUTIVO INPS CONFERMA LA CONTINUITÀ LAVORATIVA.\nDALLA RELAZIONE NOTARILE PRELIMINARE NON EMERGONO GRAVAMI; IL NOTAIO INCARICATO È LO STUDIO CASONI MARTELLI, CHE HA GIÀ RICEVUTO COPIA DEL COMPROMESSO E DEGLI ATTI DI PROVENIENZA.\nLA RATA PREVISTA DI € 1.247 RISULTA INFERIORE AL CANONE DI LOCAZIONE ATTUALMENTE PAGATO; LA CLIENTE HA MANTENUTO NEGLI ULTIMI DUE ANNI UNA CAPACITÀ DI RISPARMIO MENSILE COSTANTE, DOCUMENTATA DAGLI ESTRATTI CONTO.\nRICHIESTO TASSO FISSO PER TUTTA LA DURATA; LA CLIENTE HA PRESO VISIONE DEL PIES E DEL TAEG INDICATIVO.\nLA CLIENTE SOTTOSCRIVERÀ LA POLIZZA INCENDIO E SCOPPIO CON VINCOLO A FAVORE DELLA BANCA E VALUTA UNA COPERTURA FACOLTATIVA PER IL CASO MORTE, OFFERTA IN ABBINAMENTO AL MUTUO.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-016",
+   "role": "sintetica",
+   "number": "99257088",
+   "ndg": "98710079",
+   "name": "STEFANUCCI UMBERTO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "05/10/2026",
+   "created": "05/10/2026",
+   "assigned": "05/10/2026",
+   "evidence": "B V",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "1187",
+   "branchName": "BERGAMO BORGO PALAZZO",
+   "abi": "5387",
+   "assignee": "905118",
+   "assigneeName": "BPI MUTUI LOMBARDIA",
+   "operatorId": "905118",
+   "operatorName": "Giada Ferlini",
+   "officeCode": "09051",
+   "noteAuthor": "Giada Ferlini",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98710079",
+     "name": "STEFANUCCI UMBERTO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98088541",
+     "name": "BERTOGALLI CINZIA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98168659",
+     "name": "VEZZALINI VANESSA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98084688",
+     "name": "MESCHIARI NORBERTO",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 1187 0017 00070016",
+     "description": "M.FOND.PRIVATI",
+     "due": "301 mesi",
+     "amount": "312.000",
+     "operation": "Nuova Finanza",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "468.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98088541 BERTOGALLI CINZIA",
+     "amount": "375.000",
+     "operation": "Nuova",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "312.000",
+   "guaranteeTotal": "843.000",
+   "notes": "- Numero proposta DESK: 9922500\n- Valore immobile presunto: 538.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 312.000,00 €\nRichiesta di mutuo fondiario di € 312.000 in 25 anni per l'acquisto dell'abitazione principale a Bergamo. Stefanucci Umberto, 32 anni, lavora come educatore presso un nido d'infanzia comunale dal 2016. Netto mensile € 4.700 per 14 mensilità, ultime buste paga e CU acquisite.\n- Valore immobile: € 538.000 - LTV: 58% - Rata stimata: € 1.508 mensili - Rapporto rata/reddito: 32%\nA supporto interviene Bertogalli Cinzia con fideiussione limitata di € 375.000; reddito e patrimonio del garante documentati. Approvata. Restano da acquisire la polizza incendio e scoppio vincolata e l'atto di provenienza aggiornato. Nucleo composto da 4 persone. Canone di locazione attuale € 860, a carico del richiedente fino al rogito. Si tratta di una porzione di villetta a schiera di 86 mq con giardino, classe D, prezzo pattuito € 538.000. Perizia richiesta, sopralluogo fissato. Da CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 320 e residuo di 17 mesi. Differenza di € 226.000 coperta per metà con risparmi propri e per metà con una donazione dei genitori, documentata con bonifico. Il rapporto con la banca è attivo dal 2019: conto corrente con domiciliazione delle utenze e accredito dello stipendio, andamento regolare, saldo medio coerente con il reddito dichiarato. Prima dell'attuale impiego il cliente ha lavorato per circa 7 anni nello stesso settore, senza periodi di disoccupazione documentati; l'estratto contributivo INPS conferma la continuità lavorativa. Il venditore è una persona fisica; l'immobile è libero da ipoteche e pignoramenti come risulta dalla visura ipotecaria, e la conformità urbanistica e catastale sarà attestata dal tecnico prima del rogito. La rata prevista di € 1.508 risulta inferiore al canone di locazione attualmente pagato; il cliente ha mantenuto negli ultimi due anni una capacità di risparmio mensile costante, documentata dagli estratti conto. Il cliente preferisce il tasso fisso; consegnato il prospetto informativo europeo standardizzato. Proposta la polizza a protezione del credito (CPI), che il cliente si è riservato di valutare; obbligatoria la sola polizza incendio e scoppio sull'immobile.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-017",
+   "role": "sintetica",
+   "number": "99271950",
+   "ndg": "98736136",
+   "name": "GOLINELLI ENRICO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "06/04/2026",
+   "created": "06/04/2026",
+   "assigned": "06/04/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "317",
+   "branchName": "IMOLA EST",
+   "abi": "5387",
+   "assignee": "906027",
+   "assigneeName": "BPI MUTUI CENTRO",
+   "operatorId": "906027",
+   "operatorName": "Corrado Biancalani",
+   "officeCode": "09060",
+   "noteAuthor": "Corrado Biancalani",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98736136",
+     "name": "GOLINELLI ENRICO, VALDOSSI LETIZIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0317 0017 00070017",
+     "description": "M.CONSAP >=80%",
+     "due": "30/04/2056",
+     "amount": "196.000",
+     "operation": "",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "156.800",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "294.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "196.000",
+   "guaranteeTotal": "450.800",
+   "notes": "Richiesta di mutuo prima casa di € 196.000 in 30 anni con accesso al Fondo di garanzia per la prima casa (CONSAP) nella misura dell'80%.\nGolinelli Enrico, 30 anni, lavora come geometra presso uno studio tecnico associato dal 2020. Netto mensile € 2.500 per 13 mensilità, ultime buste paga e CU acquisite.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-018",
+   "role": "sintetica",
+   "number": "99281366",
+   "ndg": "98107676",
+   "name": "BARDELLINI ILENIA",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "17/06/2026",
+   "created": "17/06/2026",
+   "assigned": "22/06/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "3410",
+   "branchName": "PIACENZA",
+   "abi": "5387",
+   "assignee": "907344",
+   "assigneeName": "BPI MUTUI SARDEGNA",
+   "operatorId": "907344",
+   "operatorName": "Ilaria Montecchi",
+   "officeCode": "09073",
+   "noteAuthor": "Ilaria Montecchi",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98107676",
+     "name": "BARDELLINI ILENIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 3410 0017 00070018",
+     "description": "M.CONSAP >=80%",
+     "due": "30/06/2056",
+     "amount": "180.200",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "144.160",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "271.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "180.200",
+   "guaranteeTotal": "415.160",
+   "notes": "- Numero proposta DESK: 9926050\n- Valore immobile presunto: 199.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 180.200,00 €\nMutuo per l'acquisto della prima casa a Piacenza: importo € 180.200, durata 30 anni, con garanzia del Fondo prima casa gestito da CONSAP.\nLa cliente ha 24 anni ed è addetta vendite presso una catena della grande distribuzione dal 2025, a tempo indeterminato; percepisce € 2.500 netti al mese su 14 mensilità.\n- Prezzo di acquisto € 199.000\n- Finanziamento richiesto € 180.200\n- Rata mensile stimata € 726\n- Incidenza rata sul reddito 29%\n- Anticipo e spese con mezzi propri\nLa cliente rientra nelle categorie prioritarie del Fondo prima casa; ISEE € 25.000. Garanzia CONSAP all'80% sulla quota capitale.\nPratica abbandonata su richiesta della cliente, che ha ottenuto il finanziamento presso altro istituto.\nNucleo composto da 4 persone. Canone di locazione attuale € 820, a carico del richiedente fino al rogito.\nL'immobile è un trilocale di 83 mq al 3° piano con garage, classe D. Compromesso registrato al prezzo di € 199.000; rogito previsto entro fine mese.\nInterrogazioni CRIF regolari. La cliente dichiara un prestito personale con rata € 420, in scadenza tra 15 mesi.\nAnticipo di € 18.800 versato con risparmi propri, giacenti sul conto da oltre un anno; spese notarili e imposte coperte da liquidità disponibile.\nIl rapporto con la banca è attivo dal 2023: conto corrente con domiciliazione delle utenze e accredito dello stipendio, andamento regolare, saldo medio coerente con il reddito dichiarato.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-019",
+   "role": "sintetica",
+   "number": "99233539",
+   "ndg": "98225720",
+   "name": "ACERBONI PIERLUIGI",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "02/07/2026",
+   "created": "02/07/2026",
+   "assigned": "03/07/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "1024",
+   "branchName": "MI-ISOLA",
+   "abi": "5387",
+   "assignee": "908152",
+   "assigneeName": "BPI MUTUI ADRIATICA",
+   "operatorId": "908152",
+   "operatorName": "Renato Sciarretta",
+   "officeCode": "09081",
+   "noteAuthor": "Renato Sciarretta",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98225720",
+     "name": "ACERBONI PIERLUIGI",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98589582",
+     "name": "ACERBONI PIERLUIGI, DIEGOLI RICCARDO",
+     "role": "Cointestazione"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 1024 0017 00070019",
+     "description": "M.CONSAP >=80%",
+     "due": "181 mesi",
+     "amount": "183.650",
+     "operation": "Nuova Finanza",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "146.920",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "276.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "183.650",
+   "guaranteeTotal": "422.920",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-020",
+   "role": "sintetica",
+   "number": "99243103",
+   "ndg": "98626532",
+   "name": "PIVA RITA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "01/06/2026",
+   "created": "01/06/2026",
+   "assigned": "04/06/2026",
+   "evidence": "BC",
+   "evidenceTooltip": "",
+   "branch": "466",
+   "branchName": "LA SPEZIA",
+   "abi": "5387",
+   "assignee": "909066",
+   "assigneeName": "BPI MUTUI NORD EST",
+   "operatorId": "909066",
+   "operatorName": "Paola Zanichelli",
+   "officeCode": "09090",
+   "noteAuthor": "Paola Zanichelli",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98626532",
+     "name": "PIVA RITA",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0466 0017 00070020",
+     "description": "M.FOND.PRIVATI",
+     "due": "30/06/2056",
+     "amount": "206.000",
+     "operation": "",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "309.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "206.000",
+   "guaranteeTotal": "309.000",
+   "notes": "- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 206.000,00 €\nRichiesta di mutuo fondiario di € 206.000 in 30 anni per l'acquisto dell'abitazione principale a La Spezia.\nRichiedente di 41 anni, sviluppatrice software presso una società di consulenza informatica con contratto a tempo indeterminato dal 2007; reddito netto mensile di € 3.050 su 14 mensilità.\n- Prezzo di acquisto € 279.000\n- Finanziamento richiesto € 206.000\n- Rata mensile stimata € 830\n- Incidenza rata sul reddito 27%\n- Anticipo e spese con mezzi propri\nLa cliente ha comunicato di aver rinunciato all'acquisto dopo l'esito della perizia: pratica da abbandonare.\nLa cliente risiede con il nucleo familiare (4 componenti) in un appartamento in locazione a € 700 al mese.\nL'immobile è un trilocale di 91 mq al 5° piano con garage, classe A. Compromesso registrato al prezzo di € 279.000; rogito previsto entro 60 giorni.\nDa CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 250 e residuo di 9 mesi.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-021",
+   "role": "sintetica",
+   "number": "99215770",
+   "ndg": "98067035",
+   "name": "SCARPELLINI TERESA",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMM",
+   "typeName": "",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "02/03/2026",
+   "created": "02/03/2026",
+   "assigned": "05/03/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "6134",
+   "branchName": "SASSARI",
+   "abi": "5387",
+   "assignee": "904275",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904275",
+   "operatorName": "Fabio Cerioli",
+   "officeCode": "09042",
+   "noteAuthor": "Fabio Cerioli",
+   "scenario": "Mutuo ipotecario non fondiario",
+   "subjects": [
+    {
+     "ndg": "98067035",
+     "name": "SCARPELLINI TERESA",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 6134 0017 00070021",
+     "description": "M. IPOTECARIO",
+     "due": "31/03/2041",
+     "amount": "68.100",
+     "operation": "In Lavoraz.",
+     "tooltip": "310920 - MUTUO IPOTECARIO NON FONDIARIO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "137.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "68.100",
+   "guaranteeTotal": "137.000",
+   "notes": "- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 68.100,00 €\nMUTUO IPOTECARIO DI € 68.100, 15 ANNI, NON FONDIARIO PER RAPPORTO TRA FINANZIAMENTO E VALORE OLTRE I LIMITI DEL FONDIARIO.\nRICHIEDENTE DI 43 ANNI, INFERMIERA PRESSO L'AZIENDA OSPEDALIERA PROVINCIALE CON CONTRATTO A TEMPO INDETERMINATO DAL 2022; REDDITO NETTO MENSILE DI € 1.900 SU 14 MENSILITÀ.\n- PREZZO DI ACQUISTO € 73.000\n- FINANZIAMENTO RICHIESTO € 68.100\n- RATA MENSILE STIMATA € 549\n- INCIDENZA RATA SUL REDDITO 29%\n- ANTICIPO E SPESE CON MEZZI PROPRI\nPRATICA PRESENTATA DAL MEDIATORE CREDITIZIO MUTUILINEA MEDIAZIONE CREDITIZIA S.P.A., CHE HA RACCOLTO LA DOCUMENTAZIONE REDDITUALE E ANAGRAFICA.\nLA CLIENTE HA COMUNICATO DI AVER RINUNCIATO ALL'ACQUISTO DOPO L'ESITO DELLA PERIZIA: PRATICA DA ABBANDONARE.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-022",
+   "role": "sintetica",
+   "number": "99216321",
+   "ndg": "98213362",
+   "name": "GORI UGO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "29/08/2025",
+   "created": "29/08/2025",
+   "assigned": "01/09/2025",
+   "evidence": "BC",
+   "evidenceTooltip": "",
+   "branch": "17",
+   "branchName": "CARPI",
+   "abi": "5387",
+   "assignee": "904210",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904210",
+   "operatorName": "Tommaso Ravagli",
+   "officeCode": "09042",
+   "noteAuthor": "Tommaso Ravagli",
+   "scenario": "Mutuo ipotecario non fondiario",
+   "subjects": [
+    {
+     "ndg": "98213362",
+     "name": "GORI UGO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98037151",
+     "name": "VENTUROLI ROBERTA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98786208",
+     "name": "FOLLONI CLAUDIO",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98414183",
+     "name": "ORLANDELLI FIORELLA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0017 0017 00070022",
+     "description": "M. IPOTECARIO",
+     "due": "121 mesi",
+     "amount": "82.450",
+     "operation": "Nuova Finanza",
+     "tooltip": "310920 - MUTUO IPOTECARIO NON FONDIARIO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "165.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98037151 VENTUROLI ROBERTA",
+     "amount": "99.000",
+     "operation": "Nuova",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "82.450",
+   "guaranteeTotal": "264.000",
+   "notes": "- Numero proposta DESK: 9925713\n- Valore immobile presunto: 87.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 82.450,00 €\nMUTUO IPOTECARIO DI € 82.450, 10 ANNI, NON FONDIARIO PER RAPPORTO TRA FINANZIAMENTO E VALORE OLTRE I LIMITI DEL FONDIARIO.\nRICHIEDENTE DI 54 ANNI, IMPIEGATO AMMINISTRATIVO PRESSO UNA COOPERATIVA SOCIALE CON CONTRATTO A TEMPO INDETERMINATO DAL 2018; REDDITO NETTO MENSILE DI € 3.850 SU 13 MENSILITÀ.\n- VALORE IMMOBILE: € 87.000\n- LTV: 95%\n- RATA STIMATA: € 996 MENSILI\n- RAPPORTO RATA/REDDITO: 26%\nGARANZIA AGGIUNTIVA: FIDEIUSSIONE SOLIDALE LIMITATA A € 99.000 PRESTATA DA VENTUROLI ROBERTA, PROPRIETARIA DELL'ABITAZIONE IN CUI RISIEDE.\nDELIBERA POSITIVA COMUNICATA AL CLIENTE. INVIATA LA LETTERA DI ACCETTAZIONE DELLE CONDIZIONI, STIPULA PREVISTA ENTRO FINE MESE.\nNUCLEO COMPOSTO DA 2 PERSONE. CANONE DI LOCAZIONE ATTUALE € 770, A CARICO DEL RICHIEDENTE FINO AL ROGITO.\nIMMOBILE OGGETTO DI ACQUISTO: APPARTAMENTO DI 128 MQ AL PIANO 5, CON CANTINA E POSTO AUTO, CLASSE ENERGETICA A; PREZZO € 87.000, PERIZIA ATTESA IN LINEA.\nCENTRALE RISCHI SENZA SCONFINAMENTI; RISULTA UNA CARTA REVOLVING CON UTILIZZO CONTENUTO E RATA DI € 240.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-023",
+   "role": "sintetica",
+   "number": "99285432",
+   "ndg": "98278637",
+   "name": "SALA IVO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "31/12/2025",
+   "created": "31/12/2025",
+   "assigned": "02/01/2026",
+   "evidence": "B V",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "402",
+   "branchName": "CESENA",
+   "abi": "5387",
+   "assignee": "905118",
+   "assigneeName": "BPI MUTUI LOMBARDIA",
+   "operatorId": "905118",
+   "operatorName": "Giada Ferlini",
+   "officeCode": "09051",
+   "noteAuthor": "Giada Ferlini",
+   "scenario": "Prima casa con Fondo di garanzia",
+   "subjects": [
+    {
+     "ndg": "98278637",
+     "name": "SALA IVO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98718165",
+     "name": "SOLIERI ANGELO",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98205228",
+     "name": "NOTARANGELO ANGELO",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98294677",
+     "name": "TREVIGNANI PATRIZIA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "",
+     "description": "M.F. PF FONDO",
+     "due": "31/12/2040",
+     "amount": "199.800",
+     "operation": "In Lavoraz.",
+     "tooltip": "310930 - MUTUO FONDIARIO CON GARANZIA DEL FONDO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "300.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98718165 SOLIERI ANGELO",
+     "amount": "240.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "199.800",
+   "guaranteeTotal": "540.000",
+   "notes": "- Numero proposta DESK: 9929704\n- Valore immobile presunto: 282.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 199.800,00 €\nRichiesta di mutuo fondiario di € 199.800 in 15 anni per l'acquisto della prima casa a Cesena, con impegno del Fondo di garanzia prima casa.\nSala Ivo, 35 anni, lavora come infermiere presso l'azienda ospedaliera provinciale dal 2013. Netto mensile € 7.000 per 14 mensilità, ultime buste paga e CU acquisite.\n- Valore immobile: € 282.000\n- LTV: 71%\n- Rata stimata: € 1.610 mensili\n- Rapporto rata/reddito: 23%\nA supporto interviene Solieri Angelo con fideiussione limitata di € 240.000; reddito e patrimonio del garante documentati. Compromesso risolto per mancato accordo tra le parti; il cliente non intende proseguire e la pratica viene abbandonata.\nNucleo familiare di 2 persone; il cliente vive attualmente in affitto con un canone di € 880 mensili, che cesserà con l'acquisto. Si tratta di una porzione di villetta a schiera di 78 mq con giardino, classe E, prezzo pattuito € 282.000. Perizia richiesta, sopralluogo fissato.\nDa CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 220 e residuo di 29 mesi. Il cliente dispone di risparmi per € 82.200 a copertura della differenza tra prezzo e mutuo e delle spese accessorie.\nIl rapporto con la banca è attivo dal 2010: conto corrente con domiciliazione delle utenze e accredito dello stipendio, andamento regolare, saldo medio coerente con il reddito dichiarato.\nPercorso lavorativo stabile: dopo il diploma e un primo contratto a termine di 7 anni, assunzione a tempo indeterminato presso l'attuale datore di lavoro, con superamento del periodo di prova.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-024",
+   "role": "sintetica",
+   "number": "99287063",
+   "ndg": "98583059",
+   "name": "BELLELLI MIRKO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "24/12/2025",
+   "created": "24/12/2025",
+   "assigned": "25/12/2025",
+   "evidence": "B V",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "5602",
+   "branchName": "BARI POGGIOFRANCO",
+   "abi": "5387",
+   "assignee": "906027",
+   "assigneeName": "BPI MUTUI CENTRO",
+   "operatorId": "906027",
+   "operatorName": "Corrado Biancalani",
+   "officeCode": "09060",
+   "noteAuthor": "Corrado Biancalani",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98583059",
+     "name": "BELLELLI MIRKO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98379711",
+     "name": "SAVIOLI VANESSA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98166955",
+     "name": "TREVIGNANI OSCAR",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98504614",
+     "name": "SAVIOLI MIRKO",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 5602 0017 00070024",
+     "description": "M.FOND.PRIVATI",
+     "due": "31/12/2050",
+     "amount": "92.050",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "139.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98379711 SAVIOLI VANESSA",
+     "amount": "111.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "92.050",
+   "guaranteeTotal": "250.000",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-025",
+   "role": "sintetica",
+   "number": "99247574",
+   "ndg": "98763724",
+   "name": "ZANFROGNI EMILIO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "07/04/2025",
+   "created": "07/04/2025",
+   "assigned": "09/04/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "63",
+   "branchName": "FANO",
+   "abi": "5387",
+   "assignee": "907344",
+   "assigneeName": "BPI MUTUI SARDEGNA",
+   "operatorId": "907344",
+   "operatorName": "Ilaria Montecchi",
+   "officeCode": "09073",
+   "noteAuthor": "Ilaria Montecchi",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98763724",
+     "name": "ZANFROGNI EMILIO",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0063 0017 00070025",
+     "description": "M.FOND.PRIVATI",
+     "due": "30/04/2045",
+     "amount": "143.400",
+     "operation": "Nuova Finanza",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "216.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "143.400",
+   "guaranteeTotal": "216.000",
+   "notes": "- Numero proposta DESK: 9922496\n- Valore immobile presunto: 244.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 143.400,00 €\nMutuo fondiario richiesto € 143.400, 20 anni, finalità acquisto abitazione principale nel comune di Fano.\nIl cliente ha 50 anni ed è agente di polizia locale presso il Comune dal 2015, a tempo indeterminato; percepisce € 3.600 netti al mese su 14 mensilità.\n- Prezzo di acquisto € 244.000\n- Finanziamento richiesto € 143.400\n- Rata mensile stimata € 866\n- Incidenza rata sul reddito 24%\n- Anticipo e spese con mezzi propri\nIstruttoria completata, proposta in predisposizione per l'organo deliberante.\nNucleo familiare di 4 persone; il cliente vive attualmente in affitto con un canone di € 800 mensili, che cesserà con l'acquisto.\nImmobile oggetto di acquisto: appartamento di 124 mq al piano 5, con cantina e posto auto, classe energetica B; prezzo € 244.000, perizia attesa in linea.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-026",
+   "role": "sintetica",
+   "number": "99245932",
+   "ndg": "98552339",
+   "name": "DIEGOLI NICOLETTA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "03/06/2025",
+   "created": "03/06/2025",
+   "assigned": "03/06/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "7021",
+   "branchName": "TREVISO",
+   "abi": "5387",
+   "assignee": "908152",
+   "assigneeName": "BPI MUTUI ADRIATICA",
+   "operatorId": "908152",
+   "operatorName": "Renato Sciarretta",
+   "officeCode": "09081",
+   "noteAuthor": "Renato Sciarretta",
+   "scenario": "Prima casa con Fondo di garanzia",
+   "subjects": [
+    {
+     "ndg": "98552339",
+     "name": "DIEGOLI NICOLETTA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98393393",
+     "name": "BENASSATI NORBERTO",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98256729",
+     "name": "CREMASCHI GIACOMO",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "98246199",
+     "name": "ZANFROGNI FABRIZIO",
+     "role": "Cointestato"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 7021 0017 00070026",
+     "description": "M.F. PF FONDO",
+     "due": "30/06/2050",
+     "amount": "173.400",
+     "operation": "In Lavoraz.",
+     "tooltip": "310930 - MUTUO FONDIARIO CON GARANZIA DEL FONDO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "261.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98393393 BENASSATI NORBERTO",
+     "amount": "209.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "173.400",
+   "guaranteeTotal": "470.000",
+   "notes": "- Numero proposta DESK: 9921660\n- Valore immobile presunto: 238.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 173.400,00 €\nRICHIESTA DI MUTUO FONDIARIO DI € 173.400 IN 25 ANNI PER L'ACQUISTO DELLA PRIMA CASA A TREVISO, CON IMPEGNO DEL FONDO DI GARANZIA PRIMA CASA.\nRICHIEDENTE DI 38 ANNI, INFERMIERA PRESSO L'AZIENDA OSPEDALIERA PROVINCIALE CON CONTRATTO A TEMPO INDETERMINATO DAL 2024; REDDITO NETTO MENSILE DI € 2.100 SU 13 MENSILITÀ.\n- VALORE IMMOBILE: € 238.000\n- LTV: 73%\n- RATA STIMATA: € 838 MENSILI\n- RAPPORTO RATA/REDDITO: 26%\nA SUPPORTO INTERVIENE BENASSATI NORBERTO CON FIDEIUSSIONE LIMITATA DI € 209.000; REDDITO E PATRIMONIO DEL GARANTE DOCUMENTATI.\nIL MUTUO È COINTESTATO CON ZANFROGNI FABRIZIO, CONVIVENTE, CHE CONTRIBUISCE AL REDDITO FAMILIARE CON UN NETTO DI € 1.100 MENSILI.\nIN CORSO LA VERIFICA PRELIMINARE: ATTESI LA BUSTA PAGA DI NOVEMBRE E L'ESTRATTO CONTO DEGLI ULTIMI SEI MESI. NUCLEO COMPOSTO DA 4 PERSONE. CANONE DI LOCAZIONE ATTUALE € 790, A CARICO DEL RICHIEDENTE FINO AL ROGITO.\nL'IMMOBILE È UN TRILOCALE DI 124 MQ AL 2° PIANO CON GARAGE, CLASSE D. COMPROMESSO REGISTRATO AL PREZZO DI € 238.000; ROGITO PREVISTO ENTRO 60 GIORNI.\nDA CRIF E CENTRALE RISCHI NESSUNA SEGNALAZIONE NEGATIVA; IN ESSERE UN FINANZIAMENTO AUTO CON RATA DI € 260 E RESIDUO DI 15 MESI.\nANTICIPO DI € 64.600 VERSATO CON RISPARMI PROPRI, GIACENTI SUL CONTO DA OLTRE UN ANNO; SPESE NOTARILI E IMPOSTE COPERTE DA LIQUIDITÀ DISPONIBILE.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-027",
+   "role": "sintetica",
+   "number": "99228510",
+   "ndg": "98032175",
+   "name": "STEFANUCCI PATRIZIA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "02/06/2026",
+   "created": "02/06/2026",
+   "assigned": "03/06/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "402",
+   "branchName": "CESENA",
+   "abi": "5387",
+   "assignee": "909066",
+   "assigneeName": "BPI MUTUI NORD EST",
+   "operatorId": "909066",
+   "operatorName": "Paola Zanichelli",
+   "officeCode": "09090",
+   "noteAuthor": "Paola Zanichelli",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98032175",
+     "name": "STEFANUCCI PATRIZIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "",
+     "description": "M.CONSAP >=80%",
+     "due": "30/06/2041",
+     "amount": "129.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "103.200",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "194.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "129.000",
+   "guaranteeTotal": "297.200",
+   "notes": "- Numero proposta DESK: 9922090\n- Valore immobile presunto: 147.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 129.000,00 €\nLA RICHIEDENTE, UNDER 36, CHIEDE € 129.000 IN 15 ANNI PER LA PRIMA CASA A CESENA, AVVALENDOSI DELLA GARANZIA CONSAP ALL'80%.\nLA CLIENTE HA 29 ANNI ED È AGENTE DI POLIZIA LOCALE PRESSO IL COMUNE DAL 2020, A TEMPO INDETERMINATO; PERCEPISCE € 4.350 NETTI AL MESE SU 13 MENSILITÀ.\n- PREZZO DI ACQUISTO € 147.000\n- FINANZIAMENTO RICHIESTO € 129.000\n- RATA MENSILE STIMATA € 1.039\n- INCIDENZA RATA SUL REDDITO 24%\n- ANTICIPO E SPESE CON MEZZI PROPRI\nREQUISITI DEL FONDO VERIFICATI: ETÀ INFERIORE A 36 ANNI, ISEE DI € 12.000, NESSUN'ALTRA PROPRIETÀ ABITATIVA. DOMANDA CONSAP DA INOLTRARE DOPO LA DELIBERA.\nCOMPROMESSO RISOLTO PER MANCATO ACCORDO TRA LE PARTI; LA CLIENTE NON INTENDE PROSEGUIRE E LA PRATICA VIENE ABBANDONATA.\nNUCLEO COMPOSTO DA 1 PERSONE. CANONE DI LOCAZIONE ATTUALE € 840, A CARICO DEL RICHIEDENTE FINO AL ROGITO.\nL'IMMOBILE È UN TRILOCALE DI 84 MQ AL 2° PIANO CON GARAGE, CLASSE E. COMPROMESSO REGISTRATO AL PREZZO DI € 147.000; ROGITO PREVISTO ENTRO 60 GIORNI.\nINTERROGAZIONI CRIF REGOLARI. LA CLIENTE DICHIARA UN PRESTITO PERSONALE CON RATA € 420, IN SCADENZA TRA 16 MESI.\nLA CLIENTE DISPONE DI RISPARMI PER € 18.000 A COPERTURA DELLA DIFFERENZA TRA PREZZO E MUTUO E DELLE SPESE ACCESSORIE.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-028",
+   "role": "sintetica",
+   "number": "99233982",
+   "ndg": "98297014",
+   "name": "COCCAPANI PATRIZIA",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "13/08/2026",
+   "created": "13/08/2026",
+   "assigned": "17/08/2026",
+   "evidence": "BM",
+   "evidenceTooltip": "",
+   "branch": "118",
+   "branchName": "SASSUOLO",
+   "abi": "5387",
+   "assignee": "904275",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904275",
+   "operatorName": "Fabio Cerioli",
+   "officeCode": "09042",
+   "noteAuthor": "Fabio Cerioli",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98297014",
+     "name": "COCCAPANI PATRIZIA",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0118 0017 00070028",
+     "description": "M.FOND.PRIVATI",
+     "due": "181 mesi",
+     "amount": "144.000",
+     "operation": "Nuova Finanza",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "216.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "144.000",
+   "guaranteeTotal": "216.000",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-029",
+   "role": "sintetica",
+   "number": "99227546",
+   "ndg": "98229664",
+   "name": "STEFANUCCI ROBERTA",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMM",
+   "typeName": "",
+   "state": "APP",
+   "phase": "",
+   "date": "25/09/2026",
+   "created": "25/09/2026",
+   "assigned": "28/09/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "1187",
+   "branchName": "BERGAMO BORGO PALAZZO",
+   "abi": "5387",
+   "assignee": "904210",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904210",
+   "operatorName": "Tommaso Ravagli",
+   "officeCode": "09042",
+   "noteAuthor": "Tommaso Ravagli",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98229664",
+     "name": "STEFANUCCI ROBERTA",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 1187 0017 00070029",
+     "description": "M.FOND.PRIVATI",
+     "due": "241 mesi",
+     "amount": "136.000",
+     "operation": "Nuova Finanza",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "204.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "136.000",
+   "guaranteeTotal": "204.000",
+   "notes": "Mutuo fondiario richiesto € 136.000, 20 anni, finalità acquisto abitazione principale nel comune di Bergamo. Richiedente di 50 anni, infermiera presso l'azienda ospedaliera provinciale con contratto a tempo indeterminato dal 2014; reddito netto mensile di € 3.550 su 13 mensilità.\n- LTV 73%\n- Rata € 822 al mese a tasso fisso\n- Rata/reddito 23%\n- Nessun altro finanziamento in corso\nPratica presentata dal mediatore creditizio CREDITO SERENO S.R.L., che ha raccolto la documentazione reddituale e anagrafica. Approvata. Restano da acquisire la polizza incendio e scoppio vincolata e l'atto di provenienza aggiornato. Nucleo composto da 2 persone. Canone di locazione attuale € 700, a carico del richiedente fino al rogito. L'immobile è un trilocale di 87 mq al 1° piano con garage, classe C. Compromesso registrato al prezzo di € 187.000; rogito previsto entro fine mese. Da CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 270 e residuo di 8 mesi. La cliente dispone di risparmi per € 51.000 a copertura della differenza tra prezzo e mutuo e delle spese accessorie. Il rapporto con la banca è attivo dal 2024: conto corrente con domiciliazione delle utenze e accredito dello stipendio, andamento regolare, saldo medio coerente con il reddito dichiarato. Il datore di lavoro è un'azienda solida, presente sul territorio da molti anni; la busta paga riporta anzianità di servizio e scatti contrattuali regolari, senza cessioni del quinto. Dalla relazione notarile preliminare non emergono gravami; il notaio incaricato è lo studio Casoni Martelli, che ha già ricevuto copia del compromesso e degli atti di provenienza. Sostenibilità: a fronte di una rata di € 822 il reddito disponibile residuo del nucleo, al netto del canone che cesserà e delle altre rate, resta adeguato alle spese familiari ordinarie anche con una riduzione temporanea del reddito. Richiesto tasso fisso per tutta la durata; la cliente ha preso visione del PIES e del TAEG indicativo. Proposta la polizza a protezione del credito (CPI), che la cliente si è riservato di valutare; obbligatoria la sola polizza incendio e scoppio sull'immobile.\nDocumenti acquisiti: - documento d'identità e codice fiscale - ultime due buste paga e CU - estratti conto degli ultimi sei mesi - compromesso registrato - atto di provenienza e planimetria catastale",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-030",
+   "role": "sintetica",
+   "number": "99269713",
+   "ndg": "98488345",
+   "name": "POLI EVA",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "18/08/2026",
+   "created": "18/08/2026",
+   "assigned": "19/08/2026",
+   "evidence": "BM",
+   "evidenceTooltip": "",
+   "branch": "205",
+   "branchName": "VIGNOLA",
+   "abi": "5387",
+   "assignee": "905118",
+   "assigneeName": "BPI MUTUI LOMBARDIA",
+   "operatorId": "905118",
+   "operatorName": "Giada Ferlini",
+   "officeCode": "09051",
+   "noteAuthor": "Giada Ferlini",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98488345",
+     "name": "POLI EVA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98549531",
+     "name": "MAGNANINI MANUELA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98645354",
+     "name": "FORGHIERI NADIA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98013238",
+     "name": "STEFANUCCI LORENZO",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0205 0017 00070030",
+     "description": "M.FOND.PRIVATI",
+     "due": "361 mesi",
+     "amount": "113.000",
+     "operation": "Nuova Finanza",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "170.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98549531 MAGNANINI MANUELA",
+     "amount": "136.000",
+     "operation": "Nuova",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "113.000",
+   "guaranteeTotal": "306.000",
+   "notes": "La cliente chiede un mutuo fondiario di € 113.000, durata 30 anni, per acquistare la casa in cui andrà a vivere con la famiglia a Vignola.\nLa cliente ha 44 anni ed è operaia specializzata presso un'azienda ceramica del distretto dal 2017, a tempo indeterminato; percepisce € 1.900 netti al mese su 14 mensilità.\n- LTV 65%\n- Rata € 455 al mese a tasso fisso\n- Rata/reddito 24%\n- Nessun altro finanziamento in corso\nContatto pervenuto tramite il mediatore creditizio MUTUILINEA MEDIAZIONE CREDITIZIA S.P.A.; provvigione a carico della cliente come da mandato.\nA supporto interviene Magnanini Manuela con fideiussione limitata di € 136.000; reddito e patrimonio del garante documentati.\nDelibera positiva comunicata alla cliente. Inviata la lettera di accettazione delle condizioni, stipula prevista entro fine mese.\nNucleo composto da 1 persone. Canone di locazione attuale € 660, a carico del richiedente fino al rogito.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-031",
+   "role": "sintetica",
+   "number": "99229575",
+   "ndg": "98626290",
+   "name": "SCARPELLINI PIERLUIGI",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "04/11/2025",
+   "created": "04/11/2025",
+   "assigned": "07/11/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "842",
+   "branchName": "ALGHERO",
+   "abi": "5387",
+   "assignee": "906027",
+   "assigneeName": "BPI MUTUI CENTRO",
+   "operatorId": "906027",
+   "operatorName": "Corrado Biancalani",
+   "officeCode": "09060",
+   "noteAuthor": "Corrado Biancalani",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98626290",
+     "name": "SCARPELLINI PIERLUIGI",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0842 0017 00070031",
+     "description": "M.FOND.PRIVATI",
+     "due": "300 mesi",
+     "amount": "299.700",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "450.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "299.700",
+   "guaranteeTotal": "450.000",
+   "notes": "- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 299.700,00 €\nRICHIESTA DI MUTUO FONDIARIO DI € 299.700 IN 25 ANNI PER L'ACQUISTO DELL'ABITAZIONE PRINCIPALE A ALGHERO.\nRICHIEDENTE DI 29 ANNI, TECNICO MANUTENTORE PRESSO UNA SOCIETÀ DI IMPIANTI CON CONTRATTO A TEMPO INDETERMINATO DAL 2023; REDDITO NETTO MENSILE DI € 5.000 SU 13 MENSILITÀ.\n- PREZZO DI ACQUISTO € 417.000\n- FINANZIAMENTO RICHIESTO € 299.700\n- RATA MENSILE STIMATA € 1.449\n- INCIDENZA RATA SUL REDDITO 29%\n- ANTICIPO E SPESE CON MEZZI PROPRI\nIL CLIENTE HA COMUNICATO DI AVER RINUNCIATO ALL'ACQUISTO DOPO L'ESITO DELLA PERIZIA: PRATICA DA ABBANDONARE.\nIL CLIENTE RISIEDE CON IL NUCLEO FAMILIARE (2 COMPONENTI) IN UN APPARTAMENTO IN LOCAZIONE A € 650 AL MESE.\nIMMOBILE OGGETTO DI ACQUISTO: APPARTAMENTO DI 112 MQ AL PIANO 3, CON CANTINA E POSTO AUTO, CLASSE ENERGETICA B; PREZZO € 417.000, PERIZIA ATTESA IN LINEA.\nDA CRIF E CENTRALE RISCHI NESSUNA SEGNALAZIONE NEGATIVA; IN ESSERE UN FINANZIAMENTO AUTO CON RATA DI € 270 E RESIDUO DI 9 MESI.\nIL CLIENTE DISPONE DI RISPARMI PER € 117.300 A COPERTURA DELLA DIFFERENZA TRA PREZZO E MUTUO E DELLE SPESE ACCESSORIE.\nIL RAPPORTO CON LA BANCA È ATTIVO DAL 2022: CONTO CORRENTE CON DOMICILIAZIONE DELLE UTENZE E ACCREDITO DELLO STIPENDIO, ANDAMENTO REGOLARE, SALDO MEDIO COERENTE CON IL REDDITO DICHIARATO.\nPRIMA DELL'ATTUALE IMPIEGO IL CLIENTE HA LAVORATO PER CIRCA 6 ANNI NELLO STESSO SETTORE, SENZA PERIODI DI DISOCCUPAZIONE DOCUMENTATI; L'ESTRATTO CONTRIBUTIVO INPS CONFERMA LA CONTINUITÀ LAVORATIVA.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-032",
+   "role": "sintetica",
+   "number": "99240024",
+   "ndg": "98706085",
+   "name": "ZAMBONELLI NICOLETTA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "22/04/2026",
+   "created": "22/04/2026",
+   "assigned": "22/04/2026",
+   "evidence": "BC",
+   "evidenceTooltip": "",
+   "branch": "42",
+   "branchName": "LUGO",
+   "abi": "5387",
+   "assignee": "907344",
+   "assigneeName": "BPI MUTUI SARDEGNA",
+   "operatorId": "907344",
+   "operatorName": "Ilaria Montecchi",
+   "officeCode": "09073",
+   "noteAuthor": "Ilaria Montecchi",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98706085",
+     "name": "ZAMBONELLI NICOLETTA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98542293",
+     "name": "ZAMBONELLI NICOLETTA TREVIGNANI ARIANNA",
+     "role": "Cointestazione"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0042 0017 00070032",
+     "description": "M.CONSAP >=80%",
+     "due": "361 mesi",
+     "amount": "226.000",
+     "operation": "Nuova Finanza",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "180.800",
+     "operation": "Nuova",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "339.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "226.000",
+   "guaranteeTotal": "519.800",
+   "notes": "- Numero proposta DESK: 9927802\n- Valore immobile presunto: 266.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 226.000,00 €\nRichiesta di mutuo prima casa di € 226.000 in 30 anni con accesso al Fondo di garanzia per la prima casa (CONSAP) nella misura dell'80%.\nZambonelli Nicoletta, 25 anni, lavora come impiegata amministrativa presso una cooperativa sociale dal 2025. Netto mensile € 2.750 per 14 mensilità, ultime buste paga e CU acquisite.\n- LTV 85%\n- Rata € 910 al mese a tasso fisso\n- Rata/reddito 23%\n- Nessun altro finanziamento in corso\nLa cliente rientra nelle categorie prioritarie del Fondo prima casa; ISEE € 30.000. Garanzia CONSAP all'80% sulla quota capitale.\nCointestataria Trevignani Arianna, sviluppatrice software, netto mensile € 1.200; i redditi sono canalizzati su conto cointestato.\nApprovata. Restano da acquisire la polizza incendio e scoppio vincolata e l'atto di provenienza aggiornato.\nNucleo composto da 4 persone. Canone di locazione attuale € 600, a carico del richiedente fino al rogito.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-033",
+   "role": "sintetica",
+   "number": "99266432",
+   "ndg": "98299563",
+   "name": "FORGHIERI CINZIA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "25/08/2025",
+   "created": "25/08/2025",
+   "assigned": "26/08/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "466",
+   "branchName": "LA SPEZIA",
+   "abi": "5387",
+   "assignee": "908152",
+   "assigneeName": "BPI MUTUI ADRIATICA",
+   "operatorId": "908152",
+   "operatorName": "Renato Sciarretta",
+   "officeCode": "09081",
+   "noteAuthor": "Renato Sciarretta",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98299563",
+     "name": "FORGHIERI CINZIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98047186",
+     "name": "BERTOGALLI CLAUDIO",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98035474",
+     "name": "MORIGGIA MIRELLA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98750927",
+     "name": "FORGHIERI CINZIA, ZAMBONELLI BRUNO",
+     "role": "Cointestazione"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0466 0017 00070033",
+     "description": "M.FOND.PRIVATI",
+     "due": "31/08/2050",
+     "amount": "251.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "377.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98047186 BERTOGALLI CLAUDIO",
+     "amount": "302.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "251.000",
+   "guaranteeTotal": "679.000",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-034",
+   "role": "sintetica",
+   "number": "99260666",
+   "ndg": "98417204",
+   "name": "PELLIZZARI GABRIELE",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "09/09/2025",
+   "created": "09/09/2025",
+   "assigned": "09/09/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "842",
+   "branchName": "ALGHERO",
+   "abi": "5387",
+   "assignee": "909066",
+   "assigneeName": "BPI MUTUI NORD EST",
+   "operatorId": "909066",
+   "operatorName": "Paola Zanichelli",
+   "officeCode": "09090",
+   "noteAuthor": "Paola Zanichelli",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98417204",
+     "name": "PELLIZZARI GABRIELE",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98680918",
+     "name": "FIACCADORI IVAN",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98567055",
+     "name": "RIGHETTONI LETIZIA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98308778",
+     "name": "VENTUROLI PAOLO",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0842 0017 00070034",
+     "description": "M.FOND.PRIVATI",
+     "due": "360 mesi",
+     "amount": "212.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "318.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98680918 FIACCADORI IVAN",
+     "amount": "255.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "212.000",
+   "guaranteeTotal": "573.000",
+   "notes": "- Numero proposta DESK: 9927656\n- Valore immobile presunto: 322.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 212.000,00 €\nRichiesta di mutuo fondiario di € 212.000 in 30 anni per l'acquisto dell'abitazione principale a Alghero. Il cliente ha 43 anni ed è tecnico manutentore presso una società di impianti dal 2013, a tempo indeterminato; percepisce € 3.400 netti al mese su 14 mensilità.\n- Prezzo di acquisto € 322.000\n- Finanziamento richiesto € 212.000\n- Rata mensile stimata € 854\n- Incidenza rata sul reddito 25%\n- Anticipo e spese con mezzi propri\nGaranzia aggiuntiva: fideiussione solidale limitata a € 255.000 prestata da Fiaccadori Ivan, proprietario dell'abitazione in cui risiede. In corso la verifica preliminare: attesi la busta paga di novembre e l'estratto conto degli ultimi sei mesi. Il cliente risiede con il nucleo familiare (4 componenti) in un appartamento in locazione a € 820 al mese.\nImmobile oggetto di acquisto: appartamento di 121 mq al piano 5, con cantina e posto auto, classe energetica C; prezzo € 322.000, perizia attesa in linea.\nCentrale Rischi senza sconfinamenti; risulta una carta revolving con utilizzo contenuto e rata di € 220. Differenza di € 110.000 coperta per metà con risparmi propri e per metà con una donazione dei genitori, documentata con bonifico.\nNuovo cliente, acquisito tramite la filiale di Alghero: aprirà il conto corrente contestualmente alla stipula e vi canalizzerà lo stipendio; consegnati i moduli di adeguata verifica.\nPercorso lavorativo stabile: dopo il diploma e un primo contratto a termine di 4 anni, assunzione a tempo indeterminato presso l'attuale datore di lavoro, con superamento del periodo di prova.\nIl venditore è una persona fisica; l'immobile è libero da ipoteche e pignoramenti come risulta dalla visura ipotecaria, e la conformità urbanistica e catastale sarà attestata dal tecnico prima del rogito.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-035",
+   "role": "sintetica",
+   "number": "99282604",
+   "ndg": "98406989",
+   "name": "NERI LIA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "31/08/2026",
+   "created": "31/08/2026",
+   "assigned": "31/08/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "5602",
+   "branchName": "BARI POGGIOFRANCO",
+   "abi": "5387",
+   "assignee": "904275",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904275",
+   "operatorName": "Fabio Cerioli",
+   "officeCode": "09042",
+   "noteAuthor": "Fabio Cerioli",
+   "scenario": "Mutuo ipotecario non fondiario",
+   "subjects": [
+    {
+     "ndg": "98406989",
+     "name": "NERI LIA",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 5602 0017 00070035",
+     "description": "M. IPOTECARIO",
+     "due": "241 mesi",
+     "amount": "84.000",
+     "operation": "Nuova Finanza",
+     "tooltip": "310920 - MUTUO IPOTECARIO NON FONDIARIO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "168.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "84.000",
+   "guaranteeTotal": "168.000",
+   "notes": "Mutuo ipotecario di € 84.000, 20 anni, non fondiario per rapporto tra finanziamento e valore oltre i limiti del fondiario.\nLa cliente ha 45 anni ed è infermiera presso l'azienda ospedaliera provinciale dal 2010, a tempo indeterminato; percepisce € 2.300 netti al mese su 14 mensilità.\n- Prezzo di acquisto € 96.000\n- Finanziamento richiesto € 84.000\n- Rata mensile stimata € 508\n- Incidenza rata sul reddito 22%\n- Anticipo e spese con mezzi propri\nApprovata. Restano da acquisire la polizza incendio e scoppio vincolata e l'atto di provenienza aggiornato.\nNucleo familiare di 4 persone; la cliente vive attualmente in affitto con un canone di € 470 mensili, che cesserà con l'acquisto.\nSi tratta di una porzione di villetta a schiera di 93 mq con giardino, classe B, prezzo pattuito € 96.000. Perizia richiesta, sopralluogo fissato.\nDa CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 210 e residuo di 18 mesi.\nLa cliente dispone di risparmi per € 12.000 a copertura della differenza tra prezzo e mutuo e delle spese accessorie.\nNuova cliente, acquisita tramite la filiale di Bari: aprirà il conto corrente contestualmente alla stipula e vi canalizzerà lo stipendio; consegnati i moduli di adeguata verifica.\nPrima dell'attuale impiego la cliente ha lavorato per circa 6 anni nello stesso settore, senza periodi di disoccupazione documentati; l'estratto contributivo INPS conferma la continuità lavorativa.\nL'immobile è venduto da un'impresa costruttrice: acquisite la fideiussione a garanzia degli acconti versati e la polizza decennale postuma, oltre al certificato di agibilità.\nSostenibilità: a fronte di una rata di € 508 il reddito disponibile residuo del nucleo, al netto del canone che cesserà e delle altre rate, resta adeguato alle spese familiari ordinarie anche con una riduzione temporanea del reddito.\nRichiesto tasso fisso per tutta la durata; la cliente ha preso visione del PIES e del TAEG indicativo.\nProposta la polizza a protezione del credito (CPI), che la cliente si è riservato di valutare; obbligatoria la sola polizza incendio e scoppio sull'immobile.\nDocumentazione presente in pratica:\n- dichiarazione dei redditi dell'ultimo anno\n- contratto di lavoro\n- visura catastale e ipotecaria\n- preliminare di compravendita\n- certificazione energetica\nParere della filiale favorevole: cliente nota, rapporto regolare e reddito stabile.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-036",
+   "role": "sintetica",
+   "number": "99282501",
+   "ndg": "98088184",
+   "name": "RE NADIA",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "23/09/2025",
+   "created": "23/09/2025",
+   "assigned": "26/09/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "42",
+   "branchName": "LUGO",
+   "abi": "5387",
+   "assignee": "904210",
+   "assigneeName": "BPI MUTUI EMILIA",
+   "operatorId": "904210",
+   "operatorName": "Tommaso Ravagli",
+   "officeCode": "09042",
+   "noteAuthor": "Tommaso Ravagli",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98088184",
+     "name": "RE NADIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98610343",
+     "name": "MORIGGIA NADIA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98039913",
+     "name": "COCCAPANI FIORELLA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0042 0017 00070036",
+     "description": "M.CONSAP >=80%",
+     "due": "301 mesi",
+     "amount": "238.800",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "191.040",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "359.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G3",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98610343 MORIGGIA NADIA",
+     "amount": "287.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "238.800",
+   "guaranteeTotal": "837.040",
+   "notes": "",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-037",
+   "role": "sintetica",
+   "number": "99277975",
+   "ndg": "98700854",
+   "name": "BO ELIA",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMM",
+   "typeName": "",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "29/07/2025",
+   "created": "29/07/2025",
+   "assigned": "01/08/2025",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "branch": "17",
+   "branchName": "CARPI",
+   "abi": "5387",
+   "assignee": "905118",
+   "assigneeName": "BPI MUTUI LOMBARDIA",
+   "operatorId": "905118",
+   "operatorName": "Giada Ferlini",
+   "officeCode": "09051",
+   "noteAuthor": "Giada Ferlini",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98700854",
+     "name": "BO ELIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0017 0017 00070037",
+     "description": "M.CONSAP >=80%",
+     "due": "31/07/2045",
+     "amount": "199.550",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "159.640",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "300.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "199.550",
+   "guaranteeTotal": "459.640",
+   "notes": "- Numero proposta DESK: 9926828\n- Valore immobile presunto: 230.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 199.550,00 €\nMutuo per l'acquisto della prima casa a Carpi: importo € 199.550, durata 20 anni, con garanzia del Fondo prima casa gestito da CONSAP.\nRichiedente di 26 anni, insegnante di ruolo presso un istituto comprensivo statale con contratto a tempo indeterminato dal 2024; reddito netto mensile di € 5.500 su 14 mensilità.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-038",
+   "role": "sintetica",
+   "number": "99232600",
+   "ndg": "98239027",
+   "name": "LOSCHI LORENZO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "12/05/2025",
+   "created": "12/05/2025",
+   "assigned": "12/05/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "317",
+   "branchName": "IMOLA EST",
+   "abi": "5387",
+   "assignee": "906027",
+   "assigneeName": "BPI MUTUI CENTRO",
+   "operatorId": "906027",
+   "operatorName": "Corrado Biancalani",
+   "officeCode": "09060",
+   "noteAuthor": "Corrado Biancalani",
+   "scenario": "Acquisto abitazione con mutuo fondiario",
+   "subjects": [
+    {
+     "ndg": "98239027",
+     "name": "LOSCHI LORENZO",
+     "role": "Richiedente"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0317 0017 00070038",
+     "description": "M.FOND.PRIVATI",
+     "due": "31/05/2045",
+     "amount": "124.450",
+     "operation": "In Lavoraz.",
+     "tooltip": "310910 - MUTUO FONDIARIO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "187.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "creditTotal": "124.450",
+   "guaranteeTotal": "187.000",
+   "notes": "- Numero proposta DESK: 9924622\n- Valore immobile presunto: 227.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 124.450,00 €\nRichiesta di mutuo fondiario di € 124.450 in 20 anni per l'acquisto dell'abitazione principale a Imola.\nLoschi Lorenzo, 38 anni, lavora come agente di polizia locale presso il Comune dal 2008. Netto mensile € 2.450 per 14 mensilità, ultime buste paga e CU acquisite.\n- Valore immobile: € 227.000\n- LTV: 55%\n- Rata stimata: € 752 mensili\n- Rapporto rata/reddito: 31%\nPratica abbandonata su richiesta del cliente, che ha ottenuto il finanziamento presso altro istituto.\nIl cliente risiede con il nucleo familiare (3 componenti) in un appartamento in locazione a € 910 al mese.\nSi tratta di una porzione di villetta a schiera di 89 mq con giardino, classe C, prezzo pattuito € 227.000. Perizia richiesta, sopralluogo fissato.\nCentrale Rischi senza sconfinamenti; risulta una carta revolving con utilizzo contenuto e rata di € 410.\nAnticipo di € 102.550 versato con risparmi propri, giacenti sul conto da oltre un anno; spese notarili e imposte coperte da liquidità disponibile.\nCliente della filiale dal 2008, titolare di conto corrente con accredito dello stipendio, carta di debito e un piano di accumulo; nessun insoluto né sconfinamento negli ultimi 24 mesi.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-039",
+   "role": "sintetica",
+   "number": "99245273",
+   "ndg": "98728931",
+   "name": "MORIGGIA CLAUDIO",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "ABB",
+   "phase": "IST",
+   "date": "23/06/2025",
+   "created": "23/06/2025",
+   "assigned": "23/06/2025",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "branch": "528",
+   "branchName": "CREMA",
+   "abi": "5387",
+   "assignee": "907344",
+   "assigneeName": "BPI MUTUI SARDEGNA",
+   "operatorId": "907344",
+   "operatorName": "Ilaria Montecchi",
+   "officeCode": "09073",
+   "noteAuthor": "Ilaria Montecchi",
+   "scenario": "Prima casa con Fondo di garanzia",
+   "subjects": [
+    {
+     "ndg": "98728931",
+     "name": "MORIGGIA CLAUDIO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "98111323",
+     "name": "FERRETTINI BEATRICE",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98125690",
+     "name": "MORIGGIA IRIS",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98232087",
+     "name": "MORIGGIA CLAUDIO, PELLIZZARI ENRICO",
+     "role": "Cointestazione"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0528 0017 00070039",
+     "description": "M.F. PF FONDO",
+     "due": "30/06/2055",
+     "amount": "236.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310930 - MUTUO FONDIARIO CON GARANZIA DEL FONDO",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "354.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98111323 FERRETTINI BEATRICE",
+     "amount": "284.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "236.000",
+   "guaranteeTotal": "638.000",
+   "notes": "- Numero proposta DESK: 9925637\n- Valore immobile presunto: 394.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 236.000,00 €\nAcquisto prima casa a Crema: mutuo di € 236.000, durata 30 anni, assistito dal Fondo di garanzia per la prima casa al 50%.\nRichiedente di 37 anni, educatore presso un nido d'infanzia comunale con contratto a tempo indeterminato dal 2020; reddito netto mensile di € 2.600 su 13 mensilità.\n- Prezzo di acquisto € 394.000\n- Finanziamento richiesto € 236.000\n- Rata mensile stimata € 951\n- Incidenza rata sul reddito 22%\n- Anticipo e spese con mezzi propri\nGaranzia aggiuntiva: fideiussione solidale limitata a € 284.000 prestata da Ferrettini Beatrice, proprietaria dell'abitazione in cui risiede. Cointestatario Pellizzari Enrico, insegnante di ruolo, netto mensile € 1.700; i redditi sono canalizzati su conto cointestato.\nIl cliente ha comunicato di aver rinunciato all'acquisto dopo l'esito della perizia: pratica da abbandonare. Nucleo composto da 3 persone. Canone di locazione attuale € 610, a carico del richiedente fino al rogito.\nSi tratta di una porzione di villetta a schiera di 120 mq con giardino, classe C, prezzo pattuito € 394.000. Perizia richiesta, sopralluogo fissato.\nDa CRIF e Centrale Rischi nessuna segnalazione negativa; in essere un finanziamento auto con rata di € 350 e residuo di 13 mesi. Anticipo di € 158.000 versato con risparmi propri, giacenti sul conto da oltre un anno; spese notarili e imposte coperte da liquidità disponibile.\nCliente della filiale dal 2012, titolare di conto corrente con accredito dello stipendio, carta di debito e un piano di accumulo; nessun insoluto né sconfinamento negli ultimi 24 mesi.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen2-040",
+   "role": "sintetica",
+   "number": "99257754",
+   "ndg": "98360743",
+   "name": "DE PIETRI PAOLO",
+   "type": "BPI Mutui / Med. Creditizi",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "APP",
+   "phase": "",
+   "date": "13/03/2026",
+   "created": "13/03/2026",
+   "assigned": "13/03/2026",
+   "evidence": "BM",
+   "evidenceTooltip": "",
+   "branch": "118",
+   "branchName": "SASSUOLO",
+   "abi": "5387",
+   "assignee": "908152",
+   "assigneeName": "BPI MUTUI ADRIATICA",
+   "operatorId": "908152",
+   "operatorName": "Renato Sciarretta",
+   "officeCode": "09081",
+   "noteAuthor": "Renato Sciarretta",
+   "scenario": "Prima casa con garanzia CONSAP",
+   "subjects": [
+    {
+     "ndg": "98360743",
+     "name": "DE PIETRI PAOLO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98719128",
+     "name": "PIGNEDOLI CLAUDIO",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    },
+    {
+     "ndg": "98036948",
+     "name": "DE PIETRI SILVIA",
+     "role": "Nuovo Garante/nuovo Datore di Pegno"
+    }
+   ],
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 0118 0017 00070040",
+     "description": "M.CONSAP >=80%",
+     "due": "240 mesi",
+     "amount": "200.000",
+     "operation": "Nuova Finanza",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "160.000",
+     "operation": "Nuova",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "300.000",
+     "operation": "Nuova",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G3",
+     "creditId": "F1",
+     "description": "FID LIM INATTO",
+     "ndgName": "98719128 PIGNEDOLI CLAUDIO",
+     "amount": "240.000",
+     "operation": "Nuova",
+     "tooltip": "49-FIDEJUSSIONE SOLIDALE LIMITATA IN ATTO",
+     "tooltipField": null
+    }
+   ],
+   "creditTotal": "200.000",
+   "guaranteeTotal": "700.000",
+   "notes": "- Numero proposta DESK: 9921159\n- Valore immobile presunto: 230.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 200.000,00 €\nRICHIESTA DI MUTUO PRIMA CASA DI € 200.000 IN 20 ANNI CON ACCESSO AL FONDO DI GARANZIA PER LA PRIMA CASA (CONSAP) NELLA MISURA DELL'80%.\nDE PIETRI PAOLO, 25 ANNI, LAVORA COME EDUCATORE PRESSO UN NIDO D'INFANZIA COMUNALE DAL 2025. NETTO MENSILE € 4.850 PER 13 MENSILITÀ, ULTIME BUSTE PAGA E CU ACQUISITE.\n- LTV 87%\n- RATA € 1.208 AL MESE A TASSO FISSO\n- RATA/REDDITO 25%\n- NESSUN ALTRO FINANZIAMENTO IN CORSO\nIL CLIENTE RIENTRA NELLE CATEGORIE PRIORITARIE DEL FONDO PRIMA CASA; ISEE € 35.000. GARANZIA CONSAP ALL'80% SULLA QUOTA CAPITALE.\nCONTATTO PERVENUTO TRAMITE IL MEDIATORE CREDITIZIO CASAFACILE MEDIAZIONI S.R.L.; PROVVIGIONE A CARICO DEL CLIENTE COME DA MANDATO.\nA SUPPORTO INTERVIENE PIGNEDOLI CLAUDIO CON FIDEIUSSIONE LIMITATA DI € 240.000; REDDITO E PATRIMONIO DEL GARANTE DOCUMENTATI.\nAPPROVATA. RESTANO DA ACQUISIRE LA POLIZZA INCENDIO E SCOPPIO VINCOLATA E L'ATTO DI PROVENIENZA AGGIORNATO.\nNUCLEO FAMILIARE DI 2 PERSONE; IL CLIENTE VIVE ATTUALMENTE IN AFFITTO CON UN CANONE DI € 550 MENSILI, CHE CESSERÀ CON L'ACQUISTO.\nIMMOBILE OGGETTO DI ACQUISTO: APPARTAMENTO DI 120 MQ AL PIANO 2, CON CANTINA E POSTO AUTO, CLASSE ENERGETICA D; PREZZO € 230.000, PERIZIA ATTESA IN LINEA.\nCENTRALE RISCHI SENZA SCONFINAMENTI; RISULTA UNA CARTA REVOLVING CON UTILIZZO CONTENUTO E RATA DI € 150.\nIL CLIENTE DISPONE DI RISPARMI PER € 30.000 A COPERTURA DELLA DIFFERENZA TRA PREZZO E MUTUO E DELLE SPESE ACCESSORIE.\nCLIENTE DELLA FILIALE DAL 2024, TITOLARE DI CONTO CORRENTE CON ACCREDITO DELLO STIPENDIO, CARTA DI DEBITO E UN PIANO DI ACCUMULO; NESSUN INSOLUTO NÉ SCONFINAMENTO NEGLI ULTIMI 24 MESI.\nIL DATORE DI LAVORO È UN'AZIENDA SOLIDA, PRESENTE SUL TERRITORIO DA MOLTI ANNI; LA BUSTA PAGA RIPORTA ANZIANITÀ DI SERVIZIO E SCATTI CONTRATTUALI REGOLARI, SENZA CESSIONI DEL QUINTO.\nIL VENDITORE È UNA PERSONA FISICA; L'IMMOBILE È LIBERO DA IPOTECHE E PIGNORAMENTI COME RISULTA DALLA VISURA IPOTECARIA, E LA CONFORMITÀ URBANISTICA E CATASTALE SARÀ ATTESTATA DAL TECNICO PRIMA DEL ROGITO.\nLA RATA PREVISTA DI € 1.208 RISULTA INFERIORE AL CANONE DI LOCAZIONE ATTUALMENTE PAGATO; IL CLIENTE HA MANTENUTO NEGLI ULTIMI DUE ANNI UNA CAPACITÀ DI RISPARMIO MENSILE COSTANTE, DOCUMENTATA DAGLI ESTRATTI CONTO.\nOPZIONE A TASSO VARIABILE CON CAP VALUTATA E SCARTATA DAL CLIENTE, CHE CONFERMA IL TASSO FISSO.\nPROPOSTA LA POLIZZA A PROTEZIONE DEL CREDITO (CPI), CHE IL CLIENTE SI È RISERVATO DI VALUTARE; OBBLIGATORIA LA SOLA POLIZZA INCENDIO E SCOPPIO SULL'IMMOBILE.",
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "scheda": null,
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  }
+ ]
+}

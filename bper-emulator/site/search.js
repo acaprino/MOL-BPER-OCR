@@ -7,10 +7,20 @@
 
   // In the video the other criteria stay grey for two 1 fps samples before the list appears.
   const LATENCY = 1500;
-  // Codes of the list's Stato column. Only LAV, ATT and SOSP were seen; the other two codes are a guess and no
-  // practice of the catalogue carries them. "Ab..." is cut in the video: its full label is assumed.
+  // The STATO list as frame 01m39s shows it, with the codes of the list's Stato column. LAV, ATT and SOSP were seen
+  // as codes; ABB as a code only in the MOL lists, and RESP is a guess. "Ab..." is cut in the video: its full label
+  // is assumed. The list goes on past "Ab...", unseen: every other state of the catalogue follows, in code order.
   const STATES = [["In Lavorazione", "LAV"], ["In Attesa", "ATT"], ["Sospesa", "SOSP"], ["Respinta", "RESP"],
                   ["Abbandonata", "ABB"]];
+  // shortcut: labels of the states the form was never seen with (APP: the approved practices of the MOL 05/06
+  // lists), invented; any other code shows as itself. Replace them if a recording shows the list open.
+  const OTHER_LABELS = { APP: "Approvata" };
+
+  function stateOptions(practices) {
+    const known = new Set(STATES.map(([, code]) => code));
+    const others = [...new Set(practices.map(p => p.state).filter(code => code && !known.has(code)))].sort();
+    return [...STATES, ...others.map(code => [OTHER_LABELS[code] ?? code, code])];
+  }
 
   function searchText(value) {
     return String(value ?? "").normalize("NFD").replace(/\p{M}/gu, "")
@@ -72,8 +82,8 @@
         <span class="rp-label" id="rp-state-label" style="top:442.2px">STATO</span>
         <button type="button" id="rp-state" class="rp-control rp-select rp-multi" aria-haspopup="true" aria-expanded="false"
           aria-labelledby="rp-state-label" style="top:458.9px"><span class="rp-value"></span></button>
-        <div class="rp-options" role="group" aria-label="Stati" hidden>${STATES
-          .map(([label, code]) => `<label><input type="checkbox" value="${code}" checked> ${label}</label>`).join("")}</div>
+        <div class="rp-options" role="group" aria-label="Stati" hidden>${stateOptions(practices)
+          .map(([label, code]) => `<label><input type="checkbox" value="${escape(code)}" checked> ${escape(label)}</label>`).join("")}</div>
         <label class="rp-label rp-col2" for="rp-evidence" style="top:442.2px">EVIDENZE</label>
         <select id="rp-evidence" class="rp-control rp-select rp-col2" style="top:458.9px"><option value="">Seleziona</option>${optionTags(evidences)}</select>
         <label class="rp-label" for="rp-type" style="top:496.5px">TIPO PRATICA</label>
@@ -129,9 +139,11 @@
       toggle(false);
       const text = id => get(id).value.trim();
       const states = chosen();
+      // Every state chosen is no state criterion: a practice without a state (two of the archive) is found too.
       const criteria = {
         abi: get("abi").value, ndg: text("ndg"), number: text("number"), matricola: text("matricola"),
-        nome: text("nome"), states: states.map(box => box.value), evidence: get("evidence").value,
+        nome: text("nome"), states: states.length < boxes.length ? states.map(box => box.value) : [],
+        evidence: get("evidence").value,
         type: get("type").value, phase: get("phase").value,
       };
       // "Filtri Attivi" of the list: what the operator set, in the order of the form. Its real content was never

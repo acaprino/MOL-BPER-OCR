@@ -18,8 +18,8 @@
 #detail-view button { appearance: none; margin: 0; font: inherit; color: inherit; cursor: pointer; }
 #detail-view :focus-visible { outline: 1px dotted #074d92; outline-offset: -1px; }
 
-/* The frame follows the window: an 11-of-12 column block one column in from the page margins
-   (left = 36 + (W - 72) / 12 CSS px), down to 39 px above the bottom. The page inside keeps its
+/* The frame follows the window: in the capture window an 11-of-12 column block one column in from the page
+   margins (native scale below), down to 39 px above the bottom. The page inside keeps its
    width (990 CSS px) and scrolls; each scrollbar shows only while the page overflows that way. */
 .pd-window {
   position: absolute;
@@ -43,12 +43,16 @@
 .pd-window[data-hbar="off"] ~ .pd-vertical { height: calc(100% - 60px); }
 .pd-window[data-vbar="off"] { width: calc(728px + (100% - 848px) * 11 / 12); }
 .pd-window[data-vbar="off"] ~ .pd-horizontal { width: calc(724px + (100% - 848px) * 11 / 12); }
-/* At 100% the full-resolution frames (spec 16.7, 1164-1598 px) put the page 26.7 + W / 12 CSS px from the left, the
-   frame's scrollbar thumb 43.2 px from the right (its column ends ~37 px in) and the frame 37 px above the bottom:
-   0.5 px further right, 1.8 px further left and 0.9 px lower than the capture scale's box, in reference px. */
-#frame[data-scale="native"] .pd-window { left: calc(21.85px + 100% / 12); height: calc(100% - 63.1px); }
+/* At native scale the page starts 32.4 + 0.079 W CSS px from the left: the full-resolution frames of the recordings
+   (spec 16.7, 1164-1598 px) and the archive's screenshots at 80-125% in a 1920 px window (1534-2399 px), registered on
+   the shell's logo, all within 0.9 px of it (26.7 + W / 12 drifts 4 px right by 2400). The frame's right edge stays
+   W - 46.2, with its scrollbar thumb 43.2 px from the right (its column ends ~37 px in; 44 in the screenshots), and
+   the frame ends 37 px above the bottom, 0.9 px lower than the capture scale's box. Lengths are reference px. */
+#frame[data-scale="native"] .pd-window { left: calc(26px + 7.9%); width: calc(92.1% - 62.49px); height: calc(100% - 63.1px); }
+#frame[data-scale="native"] .pd-window[data-vbar="off"] { width: calc(92.1% - 53.49px); }
 #frame[data-scale="native"] .pd-window[data-hbar="off"] { height: calc(100% - 54.1px); }
-#frame[data-scale="native"] .pd-horizontal { left: calc(22.85px + 100% / 12); bottom: 29.1px; }
+#frame[data-scale="native"] .pd-horizontal { left: calc(27px + 7.9%); width: calc(92.1% - 66.49px); bottom: 29.1px; }
+#frame[data-scale="native"] .pd-window[data-vbar="off"] ~ .pd-horizontal { width: calc(92.1% - 57.49px); }
 #frame[data-scale="native"] .pd-vertical { right: 29.8px; height: calc(100% - 68.1px); }
 #frame[data-scale="native"] .pd-window[data-hbar="off"] ~ .pd-vertical { height: calc(100% - 59.1px); }
 .pd-vertical::before, .pd-vertical::after, .pd-horizontal::before, .pd-horizontal::after { content: ""; width: 0; height: 0; border: 3px solid transparent; }
@@ -77,9 +81,19 @@
 .pd-mainnav b { color: #777; background: white; border-radius: 5px 5px 0 0; height: 13.5px; font-weight: normal; line-height: 13.5px; }
 .pd-context { display: flex; justify-content: space-between; width: 719px; height: 13px; padding: 2px 2px 0 127px; color: #555; font-size: 7px; font-weight: bold; }
 .pd-context b { color: #e8574c; }
+/* In visualizzazione (detail.js): Istruttore and Proponente after Filiale, each name in a box 92.5 px wide at most that
+   wraps on its own lines (between the widest name seen on one line and the narrowest seen wrapped, calibration
+   screenshots); short of room the Proponente drops under its label and the right part wraps, as on those screenshots.
+   Lines are 10.8 px apart: each extra line moves the page 14.5-15 CSS px down there. */
+.pd-context.pd-named { justify-content: flex-start; height: auto; min-height: 13px; line-height: 10.8px; }
+.pd-named > span:first-child { flex: none; }
+.pd-named > span:last-child { margin-left: auto; padding-left: 6px; text-align: right; }
+.pd-proposer { margin-left: 4px; }
+#detail-view .pd-context .pd-person { display: inline-block; max-width: 92.5px; vertical-align: top; color: inherit; }
 
-/* Row heights are fractional: the original was captured from a zoomed page. */
-.pd-sidebar { position: absolute; left: 3px; top: 62px; width: 111px; }
+/* Row heights are fractional: the original was captured from a zoomed page. The navigator and the work area start
+   where the header ends (62 px down on one line): top auto keeps them at their place in the flow. */
+.pd-sidebar { position: absolute; left: 3px; top: auto; width: 111px; }
 .pd-navbox { margin-bottom: 7px; border: 1px solid #cccac8; border-radius: 4px 4px 1px 1px; }
 .pd-navtitle { display: block; height: 17px; padding: 4px 8px 0; border-radius: 3px 3px 0 0; color: #3c3c3c; font-size: 7.2px; background: linear-gradient(#e9e7e5, #fff); }
 .pd-group, .pd-subitem { position: relative; width: 100%; display: block; border: 0; text-align: left; }
@@ -122,20 +136,23 @@
 .pd-navbox:nth-child(2) .pd-quick { padding-top: 2px; line-height: 10.5px; }
 #detail-view .pd-doclink { color: inherit; text-decoration: none; }
 
-.pd-work { position: absolute; top: 62px; left: 126px; width: 592px; }
+.pd-work { position: absolute; top: auto; left: 126px; width: 592px; }
 .pd-bar { margin: 0; padding: 3px 8px; height: 18px; color: white; border-radius: 4px 4px 0 0; background: var(--pd-blue); font: bold 7.5px/12px Arial, sans-serif; }
 .pd-identity { height: 17px; padding: 2px 8px; }
 /* Foldable panels show a white chevron before their title. */
 .pd-identity, .pd-fold { position: relative; padding-left: 21px; }
 .pd-identity::before, .pd-fold::before { content: ""; position: absolute; left: 8px; top: 5px; width: 9px; height: 6px; background: var(--pd-chevron-white); }
 .pd-identity-details { display: grid; grid-template-columns: repeat(4, 1fr); height: 47px; color: #555; font-size: 7.2px; line-height: 11px; border-bottom: 1px solid #b6b5b2; }
+/* In visualizzazione it grows with the legal form of a joint account and the segment (detail.js). */
+.pd-identity-details.pd-grown { height: auto; min-height: 47px; }
 .pd-identity-details b { color: #2e2e2e; }
 .pd-identity-details > div { padding: 2px 2px 0; border-left: 1px solid #c4c2bf; overflow: hidden; }
 .pd-date { height: 21px; display: flex; align-items: center; justify-content: flex-end; padding-right: 1px; gap: 6px; color: #605e5b; font-size: 6.6px; }
 .pd-subjects .pd-bar { height: 17px; }
 .pd-bluebtn, #detail-view .pd-bluebtn { display: inline-flex; align-items: center; justify-content: center; height: 17px; padding: 1px 6px; border: 1px solid #537195; border-radius: 4px; background: linear-gradient(#0756a1, #00357d 65%, #003477); color: white; font: bold 8.6px/12px Arial, sans-serif; }
-/* Greyed in visualizzazione (MOL 05 06:53): light grey face and border, grey text. */
-#detail-view .pd-bluebtn[aria-disabled="true"] { border-color: #c9c9c9; background: linear-gradient(#f1f1f1, #dcdcdc); color: #a8a8a8; cursor: default; }
+/* Greyed in visualizzazione (MOL 05 06:53; archive screenshots at 90%): flat light grey face, grey border, grey text in
+   the narrow Arial (its widths match those screenshots within 2%). */
+#detail-view .pd-bluebtn[aria-disabled="true"] { border-color: #c4c4c4; background: #e7e7e7; color: #999; font-family: "Arial Narrow", Arial, sans-serif; font-stretch: condensed; cursor: default; }
 .pd-table { border-collapse: collapse; table-layout: fixed; color: #25282a; font: 7.2px/10px Arial, sans-serif; }
 .pd-table th { padding: 2px; background: #999; color: white; font-size: 7.4px; text-align: center; vertical-align: middle; }
 .pd-table td { padding: 1px 2px; border-bottom: 1px solid #ddd; text-align: center; vertical-align: middle; background: white; }
@@ -166,6 +183,15 @@
 .pd-credit-table td:first-child, .pd-credit-table th:first-child { text-align: left; padding-left: 7px; }
 .pd-credit-table :is(td, th):nth-child(5) { text-align: right; }
 .pd-double + .pd-totals { margin-top: 10px; }
+/* With the Richiesta group (detail.js): Aggiungi Fido and Revisione dei Fidi a Revoca under FIDI, Aggiungi Omnibus
+   under GARANZIE (archive screenshots at 90%). */
+.pd-add { display: flex; align-items: center; justify-content: space-between; height: 21px; margin-top: 3px; padding-left: 1px; }
+.pd-add + .pd-totals { margin-top: 3px; }
+.pd-guarantees + .pd-add { margin-bottom: 3px; }
+.pd-revoke { display: inline-flex; align-items: center; gap: 3px; color: #32392e; font-size: 7.2px; }
+#detail-view .pd-revoke input { width: 10.5px; height: 10.5px; margin: 0 1px 0 0; }
+/* Past Istruttoria the inner tabs not open carry a green tick. */
+.pd-worktabs > [data-status="done"]::after { content: ""; display: inline-block; vertical-align: middle; width: 10px; height: 8px; margin-left: 1px; background: var(--pd-check) center / contain no-repeat; }
 .pd-guarantees th { height: 24px; }
 .pd-guarantees td { height: 26px; }
 .pd-guarantees table:first-child td:first-child { text-align: right; padding-right: 11px; }
@@ -185,6 +211,9 @@
 #frame[data-scale="capture"] .pd-credit-main { min-height: 276px; }
 /* Static top: right under the description, however many lines it wraps to. */
 .pd-tooltip { pointer-events: none; position: absolute; top: auto; left: 60%; z-index: 2; padding: 1px 5px; border: 1px solid #8e8d89; background: #fff; color: #444; font: 7.6px/10px Arial, sans-serif; white-space: nowrap; }
+/* At native scale the browser's own tooltip, in device px (--pd-device, set with its place by detail.js). */
+#detail-view .pd-tooltip.pd-native-tip { z-index: 3; padding: calc(3 * var(--pd-device)) calc(7 * var(--pd-device)) calc(4 * var(--pd-device));
+  border: var(--pd-device) solid #3c3c3c; color: #000; font: calc(12 * var(--pd-device))/calc(16 * var(--pd-device)) "Segoe UI", Tahoma, sans-serif; }
 
 .pd-notes { margin-top: 14px; }
 .pd-note-card { border: 1px solid var(--pd-line); padding: 2px 2px 0; min-height: 182px; }

@@ -124,6 +124,36 @@ test('scrolled, NDG settles 4 px and Denom. 13 px left of where they start', asy
     near(moved['Denom.'].cell.left - start['Denom.'].cell.left, -13, 1.5, 'Denom.');
 });
 
+// A practice's list as it opens, without touching its scroll bars.
+async function opened(t, key, width, capture = false) {
+    const page = await browser.newPage({ viewport: { width, height: 897 } });
+    t.after(() => page.close());
+    const url = new URL(base);
+    url.search = `?practice=${encodeURIComponent(key)}${capture ? '&capture=1' : ''}`;
+    url.hash = '1';
+    await page.goto(url.href);
+    await page.locator('#frame[data-ready]').waitFor({ timeout: 8000 });
+    await page.waitForTimeout(100);
+    return page;
+}
+
+test('a window wider than a table shows no scroll bar under it', async t => {
+    // Calibration fold at 90% (about 2120 CSS px): the empty BStore table never has a bar, and a results table narrower
+    // than its container has none either; one that is wider keeps its bar.
+    const bars = page => page.getByRole('scrollbar').count();
+    assert.equal(await bars(await opened(t, longName.key, 2130)), 0);
+    assert.equal(await bars(await opened(t, longName.key, 1283)), 2);
+});
+
+test('outside the capture window the list opens at its first column with the bar idle', async t => {
+    // Calibration elenco-01 screens and video 18:10 show the list at scroll 0 under a pale thumb; the capture window keeps
+    // reference screen 1, scrolled 181 px while the bar was held (darker thumb, beige track).
+    const bar = async page => page.getByRole('scrollbar', { name: /Scorri le colonne/ }).evaluate(el =>
+        [el.getAttribute('aria-valuenow'), getComputedStyle(el.querySelector('.bl-thumb')).backgroundColor]);
+    assert.deepEqual(await bar(await opened(t, longName.key, 1283)), ['0', 'rgb(189, 221, 228)']);
+    assert.deepEqual(await bar(await opened(t, 'reference', 842, true)), ['181', 'rgb(98, 172, 182)']);
+});
+
 test('at the end of the scroll the identity columns stay at 1283 px and leave at 1164 px', async t => {
     // Section 19.4: MOL 04 00:46 (1283, long name) keeps ABI, NDG and Denom.; MOL 01 01:30 (1164, the reference
     // practice) has lost ABI and NDG, and Denom. is cut at the container's left edge.

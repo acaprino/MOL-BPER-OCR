@@ -61,14 +61,49 @@ async function main() {
             const textLeft = cell => { range.selectNodeContents(cell); return range.getBoundingClientRect().left - box.left; };
             range.selectNodeContents(label);
             const icon = label.lastElementChild;
+            const labelWidth = range.getBoundingClientRect().width;
             // Where each text starts with the table at scroll 0 and nothing stuck: undo the scroll and the shift.
             const shift = name => parseFloat(table.style.getPropertyValue(name)) - scroll.scrollLeft;
             const round = value => Math.round(value * 10000) / 10000;
+            // The Evidenze column: as wide as its label, or as its marks and chip need (an invented practice's other
+            // marks, BperList.markShare): its width now, the label's, the cell without marks and one mark's slot.
+            const heads = table.tHead.rows[0].cells, cells = table.tBodies[0].rows[0].cells;
+            const evidenceHead = heads[heads.length - 2], evidenceCell = cells[cells.length - 2];
+            const cellStyle = getComputedStyle(evidenceCell);
+            const width = round(evidenceHead.getBoundingClientRect().width);
+            // Without its marks the cell leaves the column to its label.
+            const marks = [...evidenceCell.querySelectorAll('.bl-mark')];
+            marks.forEach(mark => { mark.style.display = 'none'; });
+            const evidenceLabel = evidenceHead.getBoundingClientRect().width;
+            marks.forEach(mark => { mark.style.display = ''; });
+            const chip = evidenceCell.querySelector('.bl-version');
+            const evidence = {
+                evidence: width, evidenceLabel: round(evidenceLabel),
+                chip: round(parseFloat(cellStyle.paddingLeft) + parseFloat(cellStyle.paddingRight) + chip.getBoundingClientRect().width +
+                    parseFloat(getComputedStyle(chip).marginLeft)),
+                slot: round(evidenceCell.querySelector('.bl-mark').getBoundingClientRect().width),
+            };
+            // An APP row's checkbox widens NDG, and moves it and the name right by as much (ABI stays).
+            const ndgHead = heads[2], before = ndgHead.getBoundingClientRect().width;
+            table.classList.add('bl-selectable');
+            const checkbox = round(ndgHead.getBoundingClientRect().width - before);
+            table.classList.remove('bl-selectable');
+            // Screen 1 (the capture window's start offset) shows Stato, Fase and Creazione left of the pinned Evidenze:
+            // where each text starts at scroll 0, less the demo's name (a practice adds its own), its width, and the
+            // actions' width.
+            const ends = document.createRange();
+            const textBox = cell => { ends.selectNodeContents(cell); return ends.getBoundingClientRect(); };
+            const columns = Object.fromEntries([[7, 'stato'], [8, 'fase'], [9, 'creazione']].map(([index, field]) => {
+                const text = textBox(cells[index]);
+                return [field, [round(text.left - box.left + scroll.scrollLeft - content), round(text.width)]];
+            }));
             return {
                 view: round(box.width), rest: round(whole.width - pinned), pinned: round(pinned - content),
-                label: round(range.getBoundingClientRect().width + parseFloat(getComputedStyle(icon).marginRight)),
+                label: round(labelWidth + parseFloat(getComputedStyle(icon).marginRight)),
                 ndg: round(textLeft(ndgCell) - shift('--bl-pin-ndg')), name: round(textLeft(nameCell) - shift('--bl-pin-name')),
-                settle: BperList.settled.slice(2),
+                settle: BperList.settled.slice(2), ...evidence, checkbox, selectable: BperList.selectable,
+                markShare: BperList.markShare, maxMarks: BperList.maxMarks, columns, actions: round(heads[heads.length - 1].getBoundingClientRect().width),
+                start: BperList.startingOffset,
             };
         });
         const target = path.join(__dirname, 'list_font_metrics.json');

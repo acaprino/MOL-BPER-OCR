@@ -13,7 +13,7 @@ from extraction.fields import CSV_TO_SCHEMA
 from extraction.imaging import screen_id_from_path
 from bper_profiles import SCHEDA_FIELDS
 from bper_simulator_truth import (
-    CSV_LABELS, NOTE_BOX_PX, NOTE_LINE_PX, NOTE_PADDING_PX, available_steps, practice_truth_csv,
+    CSV_LABELS, NOTE_BOX_PX, NOTE_LINE_PX, NOTE_PADDING_PX, available_steps, evidence_slots, practice_truth_csv,
     practice_truth_record_csv, scheda_states,
 )
 from bper_synthetic_db import PENSIONERS, synthetic_practices
@@ -23,7 +23,8 @@ STYLESHEET = Path(__file__).resolve().parents[1] / "bper-emulator" / "site" / "s
 # audit (bper-emulator/audit_truth.cjs) proved the old rows wrong: screen 2 gains the Creazione row, shown there in
 # every practice (the reference's real truth lists it too); screens 1 and 2 lose DENOMINAZIONE for the 11
 # practices whose name the list cuts with an ellipsis; screen 3 gains the NDG or DENOMINAZIONE that the
-# content-sized list still shows at the end of its scroll, in 39 practices (see the fixture's _comment).
+# content-sized list still shows at the end of its scroll, in 39 practices; and in 30 practices whose Evidenze marks
+# widen the list, screen 3 loses them again and one screen 1 its Creazione (see the fixture's _comment).
 SNAPSHOT = Path(__file__).resolve().parent / "fixtures" / "bper_truth_snapshot.json"
 NOTE_ROW = ("screen 9", "Note della richiesta")
 APPLICANT = re.compile(r"Richiedente di \d+ anni, [^.]+\. ")
@@ -174,8 +175,9 @@ def test_a_name_narrower_than_its_label_stays_on_screen_3_with_the_ndg(practice:
 
 
 def test_a_cut_name_leaves_only_its_ndg_on_screen_3(tmp_path: Path) -> None:
-    # The cut name does not widen the column: the NDG stays whole, the name is cut.
-    profile = list_name_profile("fittizia-sopra")
+    # The cut name does not widen the column: the NDG stays whole, the name is cut. Without the other Evidenze marks an
+    # invented practice may draw (this one draws four, which take the NDG off too: test_marks_that_widen_...).
+    profile = {**list_name_profile("fittizia-sopra"), "role": None}
     truth = loaded(profile, tmp_path)
     assert truth["screen 3"]["ndg"] == profile["ndg"]
     assert "denominazione" not in truth["screen 3"]
@@ -185,6 +187,40 @@ def test_a_name_nearly_as_wide_as_the_cell_leaves_screen_3_with_its_ndg(tmp_path
     # 126 px, like the reference practice's name: both identity values have left the list (reference screen 3).
     truth = loaded(list_name_profile("fittizia-sotto"), tmp_path)
     assert "ndg" not in truth["screen 3"] and "denominazione" not in truth["screen 3"]
+
+
+def test_a_checkbox_takes_a_name_off_screen_3_sooner(practice: dict, tmp_path: Path) -> None:
+    # 100 px: a LAV row still shows it at the end of the scroll; an APP or ABB row's checkbox widens NDG by 21.7 px
+    # (list.js), and the name leaves with the identity columns.
+    practice["name"] = "FERRARI ANTONIO"
+    assert loaded({**practice, "state": "LAV"}, tmp_path)["screen 3"]["denominazione"] == "FERRARI ANTONIO"
+    assert "denominazione" not in loaded({**practice, "state": "APP"}, tmp_path)["screen 3"]
+    assert "denominazione" not in loaded({**practice, "state": "ABB"}, tmp_path)["screen 3"]
+
+
+def test_an_invented_practice_counts_the_marks_its_list_cell_draws() -> None:
+    # list.js draws sim-029's cell as clip, note bubble, B, diamond, loop arrow, pink P (bper_directory.cjs pins the
+    # same); an archive practice shows its codes alone.
+    assert evidence_slots({"key": "sim-029", "role": "sintetica", "evidence": "B"}) == 6
+    assert evidence_slots({"key": "sim-029", "role": "addestramento", "evidence": "B V"}) == 2
+    assert evidence_slots({"key": "sim-029", "evidence": ""}) == 0
+    # At most six, the most a calibration row shows: gen2-024 would draw seven.
+    assert evidence_slots({"key": "gen2-024", "role": "sintetica", "evidence": "B V"}) == 6
+
+
+def test_marks_that_widen_evidenze_take_a_name_off_screen_3_sooner(practice: dict, tmp_path: Path) -> None:
+    # Six marks need more than the Evidenze label's width: the table grows and the name leaves at the end of the scroll.
+    practice["name"] = "FERRARI ANTONIO"
+    assert loaded(practice, tmp_path)["screen 3"]["denominazione"] == "FERRARI ANTONIO"
+    assert "denominazione" not in loaded({**practice, "key": "sim-029", "role": "sintetica"}, tmp_path)["screen 3"]
+
+
+def test_marks_that_widen_evidenze_cover_creazione_on_screen_1(practice: dict, tmp_path: Path) -> None:
+    # At the capture window's start offset Creazione ends close to the pinned Evidenze: beside a 110 px name, a cell of
+    # six marks covers it.
+    practice["name"] = "CONTI ALESSANDRA"
+    assert loaded(practice, tmp_path)["screen 1"]["creazione"] == "10/02/2025"
+    assert "creazione" not in loaded({**practice, "key": "sim-029", "role": "sintetica"}, tmp_path)["screen 1"]
 
 
 def test_a_request_note_too_long_for_the_page_is_not_asserted_on_screen_9(practice: dict, tmp_path: Path) -> None:

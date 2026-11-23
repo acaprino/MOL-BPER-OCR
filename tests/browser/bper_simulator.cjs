@@ -182,7 +182,7 @@ test('at screen scale the PEF 2.0 page keeps 990 px while its frame follows the 
         await page.waitForFunction(w => innerWidth === w, width);
         const geometry = await pefGeometry(page);
         assert.ok(near(geometry.page, 990, 3), `page ${geometry.page} at ${width}`);
-        assert.ok(near(geometry.left, 36 + (width - 72) / 12, 4.5), `frame left ${geometry.left} at ${width}`);
+        assert.ok(near(geometry.left, 32.4 + 0.079 * width, 1), `frame left ${geometry.left} at ${width}`);
     }
 });
 

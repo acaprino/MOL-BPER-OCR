@@ -69,20 +69,59 @@ def list_name_fits(name: str) -> bool:
 # the width of Denom. This replays that geometry with what measure_list_font.cjs measured on the demo practice at
 # 842 x 617 (LIST_FONT["end"], reference px): the container, the columns right of Denom., the identity columns besides
 # the name, the label's width, where the NDG and the name start, and how far they stick left once scrolled.
+# Two things widen a row besides its name: the checkbox of a row whose state is in end["selectable"] (NDG and what
+# follows move right) and an Evidenze cell whose marks need more than the column's label (end["evidenceLabel"]).
 # shortcut: end-of-scroll geometry measured on the demo practice (other columns label-sized, 8-digit NDG), re-measure when audit_truth.cjs flags screen 3
-def list_end_shows(name: str) -> tuple[bool, bool]:
+def list_end_shows(name: str, checkbox: bool = False, slots: int = 1) -> tuple[bool, bool]:
     """Whether the list scrolled to its end (screen 3) still shows the NDG whole, and the name whole."""
     end = LIST_FONT["end"]
     fits = list_name_fits(name)
-    pinned = end["pinned"] + (max(_list_width(name), end["label"]) if fits else end["label"])
-    scroll = math.floor(pinned + end["rest"] - end["view"])
+    shift = end["checkbox"] if checkbox else 0.0
+    # Chrome lays the columns out in 1/64 px units: where the identity columns stick turns on half a pixel.
+    pinned = round((end["pinned"] + shift + (max(_list_width(name), end["label"]) if fits else end["label"])) * 64) / 64
+    evidence = max(end["evidenceLabel"], end["chip"] + slots * end["slot"])
+    scroll = math.floor(pinned + end["rest"] - end["evidence"] + evidence - end["view"])
     beyond = max(0.0, scroll - (end["view"] - 1 - pinned + end["settle"][1]))
 
     def starts_inside(left: float, settle: float) -> bool:
         # list.js keeps the pinned cells on whole pixels (Math.round); the audit allows half a pixel.
         return left + math.floor(0.5 - beyond - settle) >= -0.5
 
-    return starts_inside(end["ndg"], end["settle"][0]), fits and starts_inside(end["name"], end["settle"][1])
+    return (starts_inside(end["ndg"] + shift, end["settle"][0]),
+            fits and starts_inside(end["name"] + shift, end["settle"][1]))
+
+
+def list_start_shows(name: str, checkbox: bool = False, slots: int = 1) -> set[str]:
+    """Which of Stato, Fase and Creazione the list shows at the capture window's start offset (screen 1): those the
+    pinned Evidenze, which an invented practice's marks may widen, leaves readable. As audit_truth.cjs judges it, a
+    text is readable while the point at 85% of its width is not covered."""
+    # shortcut: the texts' widths are the demo practice's (a date is always as wide; Stato and Fase codes nearly), re-measure when audit_truth.cjs flags screen 1
+    end = LIST_FONT["end"]
+    shift = end["checkbox"] if checkbox else 0.0
+    column = max(_list_width(name), end["label"]) if list_name_fits(name) else end["label"]
+    wall = end["view"] - end["actions"] - max(end["evidenceLabel"], end["chip"] + slots * end["slot"])
+    return {field for field, (left, width) in end["columns"].items()
+            if left + shift + column - end["start"] + 0.85 * width < wall}
+
+
+def _draw(text: str) -> float:
+    """FNV-1a of the text as a fraction of 2**32, as list.js draws it."""
+    value = 0x811C9DC5
+    for character in text:
+        value = ((value ^ ord(character)) * 0x01000193) & 0xFFFFFFFF
+    return value / 2**32
+
+
+def evidence_slots(practice: dict) -> int:
+    """How many marks the list's Evidenze cell draws: one per code, plus the other marks list.js picks from an
+    invented practice's key (end["markShare"]), at most end["maxMarks"] in all; a real practice's other marks are
+    unknown and not drawn."""
+    count = len(practice.get("evidence", "").split())
+    if practice.get("role") == "sintetica":
+        share = LIST_FONT["end"]["markShare"]
+        drawn = sum(1 for mark in share if _draw(f"{practice['key']}|{mark}") < share[mark])
+        count += min(drawn, max(0, LIST_FONT["end"]["maxMarks"] - count))
+    return count
 
 
 def request_note_fits(note: str) -> bool:
@@ -232,15 +271,18 @@ def practice_truth_csv(practice: dict) -> str:
     first = next(iter(practice["fidi"]), {})
     credit = {field: first.get(prop, "") for field, prop in CREDIT_FIELDS.items()}
     financial = {**detail, **credit, **dict.fromkeys(FINANCIAL_TOOLTIPS, "")}
+    checkbox, slots = practice["state"] in LIST_FONT["end"]["selectable"], evidence_slots(practice)
+    started = list_start_shows(practice["name"], checkbox, slots)
     screens = {
-        1: {**list_fields, "stato": practice["state"], "fase": practice["phase"], "creazione": practice["date"]},
+        1: {**list_fields, **{field: value for field, value in (
+            ("stato", practice["state"]), ("fase", practice["phase"]), ("creazione", practice["date"])) if field in started}},
         # At the middle scroll position Creazione still shows (audit_truth.cjs; the reference's truth lists it).
         2: {**list_fields, "creazione": practice["date"]},
         4: {**detail, **subjects},
         5: financial,
         9: {**detail, **({"note_della_richiesta": practice["notes"]} if request_note_fits(practice["notes"]) else {})},
     }
-    ndg_at_end, name_at_end = list_end_shows(practice["name"])
+    ndg_at_end, name_at_end = list_end_shows(practice["name"], checkbox, slots)
     list_end = {**({"ndg": practice["ndg"]} if ndg_at_end else {}),
                 **({"denominazione": practice["name"]} if name_at_end else {})}
     for step, (field, text) in targets.items():

@@ -222,3 +222,55 @@ def test_a_note_fragment_already_contained_adds_nothing() -> None:
 
 def test_disjoint_note_fragments_become_paragraphs() -> None:
     assert merge_fragments(["Primo paragrafo.", "Secondo paragrafo."]) == "Primo paragrafo.\n\nSecondo paragrafo."
+
+
+# ---- the row of a guarantee's description tooltip (calibration screenshots: the tooltip boxes over the GARANZIE
+# table, and the table rows the archive transcribes). Invented values in a one-practice archive. ----
+
+IPOTECA = "tooltip_descrizione_ipoteca"
+CONSAP = "tooltip_descrizione_consap_dr_bis"
+
+
+def _one_practice(tmp_path: Path, rows: list[tuple[str, str, str, str]]) -> dict:
+    """The profile of an invented practice whose gestione-fidi screens carry these (screen, Campo, Chiave, Valore)."""
+    number = "90000001"
+    screens = sorted({screen for screen, *_ in rows})
+    (tmp_path / "pratiche.csv").write_text(f"Pratica;Ruolo;Schermate;Valori\n{number};addestramento;{len(screens)};{len(rows)}\n",
+                                           encoding="utf-8")
+    (tmp_path / "schermate.csv").write_text(
+        "Schermata;Pratica;Pagina;Numero;Variante;File;SHA256;Larghezza;Altezza\n"
+        + "".join(f"{number}/{screen};{number};gestione-fidi;{screen[-2:]};;;;;\n" for screen in screens), encoding="utf-8")
+    (tmp_path / "valori.csv").write_text(
+        "Schermata;Campo;Chiave;Valore;Esito\n"
+        + "".join(f"{number}/{screen};{label};{key};{value};TRASCRITTO\n" for screen, label, key, value in rows),
+        encoding="utf-8")
+    return archive_profiles(tmp_path)[0]
+
+
+def _tip(n: int, description: str) -> str:
+    return f"tooltip su valore campo Descrizione (riga {n}): {description}"
+
+
+def test_a_guarantee_tooltip_sits_on_the_table_row_showing_its_description(tmp_path: Path) -> None:
+    profile = _one_practice(tmp_path, [
+        ("gestione-fidi-01", "Garanzia 1: Descrizione", "", "IPOTECA I GR."),
+        ("gestione-fidi-01", "Garanzia 2: Descrizione", "", "FID LIM INATTO"),
+        ("gestione-fidi-02", _tip(2, "IPOTECA I GR."), IPOTECA, "55-IPOTECA FITTIZIA"),
+    ])
+    assert [row["tooltipField"] for row in profile["guarantees"]] == [IPOTECA, None]
+
+
+@pytest.mark.parametrize("first, second", [(IPOTECA, CONSAP), (CONSAP, IPOTECA)])
+def test_without_the_table_guarantee_tooltips_take_the_rows_in_the_order_of_their_screens(
+        tmp_path: Path, first: str, second: str) -> None:
+    labels = {IPOTECA: _tip(2, "IPOTECA I GR."), CONSAP: _tip(1, "CONSAP DR BIS")}
+    profile = _one_practice(tmp_path, [("gestione-fidi-03", labels[first], first, "PRIMA FITTIZIA"),
+                                       ("gestione-fidi-04", labels[second], second, "SECONDA FITTIZIA")])
+    assert [row["tooltipField"] for row in profile["guarantees"]] == [first, second]
+
+
+def test_a_lone_guarantee_tooltip_without_the_table_takes_the_first_row_of_the_rows_its_label_counts(
+        tmp_path: Path) -> None:
+    profile = _one_practice(tmp_path, [("gestione-fidi-02", _tip(2, "IPOTECA I GR."), IPOTECA, "55-IPOTECA FITTIZIA")])
+    assert [row["tooltipField"] for row in profile["guarantees"]] == [IPOTECA, None]
+    assert "guarantees.1" in profile["provenance"]["filler"]

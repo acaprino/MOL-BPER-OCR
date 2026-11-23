@@ -52,14 +52,36 @@ async function resultRows(page) {
             .map(cells => cells.length > 4 ? [cells[2], cells[3], cells[4], cells[7]] : cells));
 }
 
+// Keeps exactly the states named, whatever other states the catalogue adds to the list.
 async function chooseStates(page, keep) {
     await page.getByRole('button', { name: 'STATO' }).click();
-    for (const state of ['In Lavorazione', 'In Attesa', 'Sospesa', 'Respinta', 'Abbandonata']) {
+    const states = await page.evaluate(() => [...document.querySelectorAll('#search-view .rp-options label')].map(label => label.textContent.trim()));
+    for (const state of states) {
         const box = page.getByRole('checkbox', { name: state });
         if (await box.evaluate(input => input.checked) !== keep.includes(state)) await box.click();
     }
     await page.keyboard.press('Escape');
 }
+
+// The form drawn by search.js on the catalogue plus two copies of the demo practice: one in a state the recording
+// of the form never shows (APP, the approved practices of the MOL 05 and 06 lists), one without a state (two
+// archive practices have none). window.__found keeps the numbers a search finds.
+async function searchWithOtherStates(t) {
+    const page = await open(t, '/?loading=off#ricerca');
+    await page.evaluate(async () => {
+        const practices = (await (await fetch('/api/practices.json')).json()).practices;
+        const demo = practices.find(p => p.key === 'demo');
+        const others = [{ ...demo, key: 'stato-app', number: '99000901', state: 'APP' },
+                        { ...demo, key: 'stato-vuoto', number: '99000902', state: '' }];
+        window.__found = null;
+        BperSearch.render(document.querySelector('#search-view'), [...practices, ...others],
+            { onSubmit: found => { window.__found = found.map(p => p.number); } });
+    });
+    return page;
+}
+
+const stateOptions = page => page.evaluate(() => [...document.querySelectorAll('#search-view .rp-options input')]
+    .map(box => [box.value, box.parentElement.textContent.trim(), box.checked]));
 
 test('the application opens on the home page with only the home tab', async t => {
     const page = await open(t);
@@ -92,8 +114,13 @@ test('RICERCA opens the Ricerca Pratica tab with the search form', async t => {
         assert.equal(await form.getByRole('textbox', { name }).inputValue(), '', name);
     }
     assert.equal(await form.getByRole('button', { name: 'RICERCA ANAGRAFICA' }).count(), 1);
+    // The recorded states, then those of the catalogue past them (APP in generated-set-02 and the archive).
+    const recorded = ['LAV', 'ATT', 'SOSP', 'RESP', 'ABB'];
+    const others = [...new Set((await catalogue(page)).map(p => p.state).filter(s => s && !recorded.includes(s)))].sort();
+    const labels = (await stateOptions(page)).filter(([code]) => others.includes(code)).map(([, label]) => label);
+    assert.equal(labels.length, others.length);
     assert.equal(await form.getByRole('button', { name: 'STATO' }).innerText(),
-        'In Lavorazione; In Attesa; Sospesa; Respinta; Abbandonata');
+        ['In Lavorazione; In Attesa; Sospesa; Respinta; Abbandonata', ...labels].join('; '));
     for (const [name, value] of [['EVIDENZE', 'Seleziona'], ['TIPO PRATICA', 'Tutte'], ['PROVENIENZA', 'Tutte'], ['FASE', 'Tutte']]) {
         assert.equal(await form.getByRole('combobox', { name }).evaluate(s => s.selectedOptions[0].text), value, name);
     }
@@ -160,6 +187,45 @@ test('the state criterion lists every practice of the catalogue in the chosen st
     assert.equal(await page.locator('.bl-result-count').innerText(), expected.length + ' risultati');
     await page.getByText('Filtri Attivi', { exact: true }).click();
     assert.equal(await page.locator('.bl-filters > div').innerText(), 'Stato Sospesa');
+});
+
+test('the STATO list keeps the recorded states in their order and adds every other state of the catalogue', async t => {
+    const page = await searchWithOtherStates(t);
+    const options = await stateOptions(page);
+    // Frame 01m39s: "In Lavorazione; In Attesa; Sospesa; Respinta; Ab...", all chosen.
+    assert.deepEqual(options.slice(0, 5).map(([code, label]) => [code, label]), [['LAV', 'In Lavorazione'],
+        ['ATT', 'In Attesa'], ['SOSP', 'Sospesa'], ['RESP', 'Respinta'], ['ABB', 'Abbandonata']]);
+    assert.deepEqual(options.slice(5).map(([code]) => code), ['APP']);
+    assert.ok(options[5][1], 'APP has a label');
+    assert.ok(options.every(([, , checked]) => checked), JSON.stringify(options));
+});
+
+test('with every state chosen a search finds the practices of any state, those without one too', async t => {
+    const page = await searchWithOtherStates(t);
+    await page.getByRole('textbox', { name: 'NDG RICHIEDENTE' }).fill((await catalogue(page)).find(p => p.key === 'demo').ndg);
+    await page.keyboard.press('Enter');
+    const found = await page.evaluate(() => window.__found);
+    assert.ok(found.includes('99000901') && found.includes('99000902'), JSON.stringify(found));
+});
+
+test('a state outside the recorded ones can be searched alone', async t => {
+    const page = await searchWithOtherStates(t);
+    const label = (await stateOptions(page)).find(([code]) => code === 'APP')[1];
+    // With the approved practices of the catalogue, if it has some (generated-set-02, the archive).
+    const approved = (await catalogue(page)).filter(p => p.state === 'APP' && String(p.abi).padStart(5, '0') === '05387');
+    await chooseStates(page, [label]);
+    await page.getByRole('region', { name: 'Ricerca Pratica' }).getByRole('button', { name: 'RICERCA', exact: true }).click();
+    assert.deepEqual((await page.evaluate(() => window.__found)).sort(), ['99000901', ...approved.map(p => p.number)].sort());
+});
+
+test('a search with every state lists every practice of the bank in the catalogue', async t => {
+    const page = await open(t, '/?loading=off');
+    const practices = (await catalogue(page)).filter(p => String(p.abi).padStart(5, '0') === '05387');
+    await openSearch(page);
+    await page.getByRole('region', { name: 'Ricerca Pratica' }).getByRole('button', { name: 'RICERCA', exact: true }).click();
+    const listed = new Set((await resultRows(page)).map(row => row[2]));
+    const missing = practices.filter(p => !listed.has(p.number)).map(p => p.state);
+    assert.deepEqual(missing, [], 'states of the practices not listed');
 });
 
 test('the NDG, phase and type criteria combine', async t => {

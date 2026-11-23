@@ -100,6 +100,10 @@ class _Practice:
         return merge_fragments([v.text for v in sorted(best, key=lambda v: v.number)])
 
 
+def _squash(text: str) -> str:
+    return " ".join(text.split()).upper()
+
+
 def _row_of(label: str) -> int:
     match = re.search(r"\(riga (\d+)\)", label)
     return int(match.group(1)) if match else 1
@@ -113,20 +117,32 @@ def _guarantees(practice: _Practice) -> tuple[list[dict], list[str]]:
             column = next((name for prefix, name in GUARANTEE_COLUMNS if match.group(2).startswith(prefix)), None)
             if column:
                 table[int(match.group(1))].setdefault(column, value.text.strip())
-    for key in GUARANTEE_TOOLTIPS:
-        for value in practice.found(key=key):
-            row = table[_row_of(value.label)]
-            if row.get("tooltipField"):
-                continue  # one extracted field per description, its best transcription
-            # The extracted field's own transcription wins over the table's copy of the same tooltip.
-            row.update(tooltip=value.text.strip(), tooltipField=key)
-            # The label names the description the tooltip belongs to: "... (riga 2): IPOTECA I GR.".
-            row.setdefault("description", value.label.partition(": ")[2].strip())
+    # A description tooltip sits on the table row showing its description when the archive transcribes the table;
+    # otherwise the tooltips take the rows from the top in the order of their screens, as the operator hovered them.
+    # The label's "(riga N)" follows the reference practice's convention, not the row: on the calibration fold's
+    # screenshots it puts 4 of 15 tooltips on their row, this rule 14 (the miss: a first guarantee the archive does not
+    # name). The label still counts the rows.
+    shown = {_squash(cells["description"]): n for n, cells in sorted(table.items()) if cells.get("description")}
+    # One extracted field per description, its best transcription.
+    tooltips = sorted((hits[0] for key in GUARANTEE_TOOLTIPS if (hits := practice.found(key=key))),
+                      key=lambda value: value.number)
+    counted = max((_row_of(value.label) for value in tooltips), default=0)
+    taken: set[int] = set()
+    for value in tooltips:
+        # The label names the description the tooltip belongs to: "... (riga 2): IPOTECA I GR.".
+        description = value.label.partition(": ")[2].strip()
+        n = shown.get(_squash(description))
+        if n is None or n in taken:
+            n = next(m for m in range(1, len(table) + len(tooltips) + 2) if m not in taken and m not in shown.values())
+        taken.add(n)
+        # The extracted field's own transcription wins over the table's copy of the same tooltip.
+        table[n].update(tooltip=value.text.strip(), tooltipField=value.key)
+        table[n].setdefault("description", description)
     rows, filler = [], []
-    for n in range(1, max(table, default=0) + 1):
+    for n in range(1, max(max(table, default=0), counted) + 1):
         cells = table.get(n, {})
         if not cells:
-            filler.append(f"guarantees.{n - 1}")  # an empty row before a known one
+            filler.append(f"guarantees.{n - 1}")  # an empty row the table or a label counts
         rows.append({"id": cells.get("id", ""), "creditId": cells.get("creditId", ""),
                      "description": cells.get("description", ""),
                      "ndgName": " ".join(part for part in (cells.get("ndg"), cells.get("name")) if part),

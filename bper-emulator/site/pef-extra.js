@@ -51,23 +51,77 @@
   const subjectsOf = practice => practice.subjects?.length ? practice.subjects
     : [{ ndg: practice.ndg, name: practice.name, role: "Richiedente" }];
 
-  // ---- the navigator of a practice opened in visualizzazione (spec 18.2 Layouts 1) ----
-  // {groups, phase, returned, body}: the groups listed, the practice's phase (the current group), whether Istruttoria
-  // starts with Note alla Restituzione, and the deliberating body under Delibera. Without visualizzazione the
-  // navigator of the reference screenshots; a real practice keeps it, in its own phase.
+  // ---- the practice's mode and navigator (spec 18.2 Layouts 1; the archive's calibration screenshots) ----
+  // A real practice opens as the archive's screenshots show it: worked in Verifica Preliminare (the reference practice),
+  // in visualizzazione past it (13 practices of 13; with the reference, 14 of 14 fit). An invented one is worked unless
+  // ?visualizzazione=1 (detail.js).
+  // shortcut: the mode is read from the phase alone, the archive records no mode; read a profile field once it does.
+  const viewOnlyOf = practice => !invented(practice) && practice.phase !== "VEP";
+
+  // {groups, phase, returned, body, request, done, until}: the groups listed, the practice's phase (the current group),
+  // whether Istruttoria starts with Note alla Restituzione, the deliberating body under Delibera, whether the practice
+  // passed through Richiesta (that group, Modulistica and the extra buttons of Gestione Fidi e Garanzie come together),
+  // whether every step is done, and the Istruttoria item the list stops at. Worked, the navigator of the reference
+  // screenshots. Only an invented practice passes through Richiesta, drawn from its key.
+  // shortcut: a real practice never shows the Richiesta group, the archive does not record it (3 calibration practices
+  // of 13 have it); give the profile a field for it once the archive records it.
   function navigatorOf(practice, viewOnly) {
-    const plain = { groups: ["VEP", "IST", "PRO", "PAR", "DEL"], phase: null, returned: false, body: "" };
+    const plain = { groups: ["VEP", "IST", "PRO", "PAR", "DEL"], phase: null, returned: false, body: "", request: false,
+      done: false, until: null };
     if (!viewOnly) return plain;
     const phase = ["VEP", "IST", "PRO", "DEL"].includes(practice.phase) ? practice.phase : "IST";
-    if (!invented(practice)) return { ...plain, phase };
+    if (!invented(practice)) {
+      // Approved: every step ticked. Istruttoria (or unknown): the steps up to Gestione Fidi e Garanzie, ticked, and no
+      // later group. Proposta: Istruttoria complete and no Parere (4, 7 and 1 practices of the calibration fold).
+      if (practice.state === "APP") return { ...plain, done: true };
+      if (phase === "IST") return { ...plain, groups: ["VEP", "IST"], done: true, until: "fidi" };
+      return { ...plain, groups: phase === "PRO" ? ["VEP", "IST", "PRO", "DEL"] : plain.groups, phase };
+    }
     const next = random(practice.key + "|navigatore");
-    const [richiesta, parere, returned, region] = [next() < 0.5, next() < 0.6, next() < 0.3,
+    const [request, parere, returned, region] = [next() < 0.5, next() < 0.6, next() < 0.3,
       REGIONS[Math.floor(next() * REGIONS.length)]];
+    const withRequest = groups => request ? [groups[0], "RIC", ...groups.slice(1)] : groups;
+    const body = `UFF.AN.E<br>CONC.CR.${region}-...`;
+    const groups = withRequest(["VEP", "IST", "PRO", ...(parere ? ["PAR"] : []), "DEL"]);
+    // Approved or abandoned like the archive's practices (generated-set-02): every step done, or Istruttoria up to
+    // Gestione Fidi e Garanzie and no later group.
+    if (practice.state === "APP") return { ...plain, groups, returned, body, request, done: true };
+    if (practice.state === "ABB") {
+      return { ...plain, groups: withRequest(["VEP", "IST"]), request, done: true, until: "fidi" };
+    }
     return {
-      groups: ["VEP", ...(richiesta ? ["RIC"] : []), "IST", "PRO", ...(parere ? ["PAR"] : []), "DEL"],
+      groups,
       phase,
       returned: returned && phase !== "VEP",
-      body: phase === "PRO" || phase === "DEL" ? `UFF.AN.E<br>CONC.CR.${region}-...` : "",
+      body: phase === "PRO" || phase === "DEL" ? body : "",
+      request, done: false, until: null,
+    };
+  }
+
+  // ---- the header of a practice opened in visualizzazione (the archive's calibration screenshots) ----
+  // {instructor, proposer, legalForm, segment}: Istruttore and Proponente after Filiale, the Proponente from Istruttoria
+  // on (6 practices of 7), the Istruttore past it (5 of 5, a name or a 6-digit id); the legal form of a joint account;
+  // the behavioural segment (13 of 13). An invented practice gets them from its key, a real one only the legal form its
+  // name implies. Worked, the header of the reference screenshots.
+  const STAFF = ["ROSSETTI MARCO", "BELLINI ANNA MARIA", "CARUSO GIANFRANCO EMILIO", "DE ANGELIS PAOLA", "FONTANA LUCA",
+    "MARCHETTI ELISA BEATRICE", "GALLO STEFANO", "VITALE FRANCESCA", "ORLANDI PIER GIORGIO", "SERRA GIULIA"];
+  const SEGMENTS = ["FARES ENTITA' RESIDUALE FAMILY", "FAIMP FAMILY A VALORE FOCUS IMPIEGHI", "FACOR FAMILY CORE"];
+  const JOINT = "CO COINTESTAZIONE FRA PERSONE FISICHE (PF)";
+
+  function headerOf(practice, viewOnly) {
+    const legalForm = viewOnly && String(practice.name).includes(",") ? JOINT : "";
+    // shortcut: a real practice shows no names nor segment, valori.csv has none and the profile format no field for
+    // them; add them to both once the archive records them.
+    if (!viewOnly || !invented(practice)) return { instructor: "", proposer: "", legalForm, segment: "" };
+    const next = random(practice.key + "|intestazione");
+    const pick = list => list[Math.floor(next() * list.length)];
+    const [proposed, numbered, proposer, instructor, id, segment] = [next() < 0.86, next() < 0.6, pick(STAFF), pick(STAFF),
+      String(800000 + Math.floor(next() * 100000)), pick(SEGMENTS)];
+    const past = ["PRO", "DEL"].includes(practice.phase) || practice.state === "APP";
+    return {
+      instructor: past ? (numbered ? id : instructor) : "",
+      proposer: past || (practice.phase === "IST" && proposed) ? proposer : "",
+      legalForm, segment,
     };
   }
 
@@ -201,7 +255,7 @@
   // After Conferma the frame holds a bare page (MOL 06 15:34, read at 480 x 270); the practice tab stays open.
   const LOGOUT = '<div class="pd-logout" data-panel="logout" hidden><p>Pagina logout PEF<br>Si prega di chiudere il tab per poter procedere con la lavorazione/visualizzazione di altre PEF 2.0</p></div>';
 
-  const api = { TIMES, subjectsOf, navigatorOf, alertsOf, alertsPage, resolutionsOf, resolutionsPage, lowerBlocks,
-    NOTICE, ALERT, LOGOUT };
+  const api = { TIMES, subjectsOf, viewOnlyOf, navigatorOf, headerOf, alertsOf, alertsPage, resolutionsOf,
+    resolutionsPage, lowerBlocks, NOTICE, ALERT, LOGOUT };
   window.BperPefExtra = api;
 })();

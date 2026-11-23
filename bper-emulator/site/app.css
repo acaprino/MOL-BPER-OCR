@@ -100,8 +100,8 @@ body.console > main { display: grid; grid-template-columns: minmax(0, 1fr) 252px
   /* Centred in the frame's page area, left of its vertical scrollbar. */
   display: grid; place-items: center; padding: 3.3px 12.3px 0 0; background: #7d7d7d;
 }
-/* At 100% the frame sits 0.5 px further right and 0.9 px lower (detail.css, spec 16.7). */
-#frame[data-scale="native"] .pm-veil { left: calc(89.515px + (100% - 842px) / 12); bottom: 27.1px; }
+/* At native scale the frame starts 32.4 + 0.079 W CSS px from the left and ends 0.9 px lower (detail.css). */
+#frame[data-scale="native"] .pm-veil { left: calc(23.48px + 7.9%); bottom: 27.1px; }
 .pm-dialog { box-sizing: border-box; position: relative; width: 519.4px; height: 67.4px; background: #fff; color: #1f1f1f; font: 7.55px/1 Arial, Helvetica, sans-serif; }
 .pm-title { height: 16.7px; background: #012461; }
 .pm-message { margin: 9.8px 0 0 6.9px; white-space: nowrap; }

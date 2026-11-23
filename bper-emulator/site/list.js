@@ -23,9 +23,30 @@
   // in reference px.
   // shortcut: NDG 4.75 / Denom. 12.4 CSS px measured on 4 frames, mechanism unknown, replace when a frame shows how the real page sticks them
   const settled = [0, 0, 3.4, 9.0];
-  // An APP or ABB row has a checkbox in the first cell; with it NDG and every later column move 30 CSS px right
-  // while ABI keeps its place (MOL 05 51:25, MOL 06 11:23).
+  // An APP or ABB row has a checkbox in the first cell; with it NDG and every later column move 30 CSS px right while
+  // ABI keeps its place (MOL 05 51:25, MOL 06 11:23). The calibration fold disagrees (APP 4 of 4 rows, ABB 0 of 6, LAV
+  // 1 of 2), but APP-only does not fit it either: it frees 52126316's row and makes 52130861's too narrow. Not state-driven.
+  // shortcut: APP and ABB as the video frames read them, cause unknown, replace when a frame shows what decides the checkbox
   const selectable = new Set(["APP", "ABB"]);
+  // The Evidenze cell's other marks, in the real cell's order around the codes: clip, note bubble, (B, BC or BM),
+  // diamond, (V), loop arrow, pink P. Their meaning is unknown, so only an invented (sintetica) practice gets them, each
+  // picked from its key with the share of the 12 calibration rows showing it; archive practices and the reference show
+  // their codes alone. bper_simulator_truth.evidence_slots counts them the same way for the end-of-scroll geometry.
+  // shortcut: marks drawn from the shares of 12 rows (clip 11, note 4, diamond 3, loop 6, P 6), replace when a practice's data says which it has
+  const markShare = { clip: 11 / 12, note: 4 / 12, diamond: 3 / 12, loop: 6 / 12, p: 6 / 12 };
+  // FNV-1a of "<key>|<mark>" as a fraction of 2^32.
+  function draw(text) {
+    let hash = 0x811c9dc5;
+    for (const c of text) hash = Math.imul(hash ^ c.codePointAt(0), 0x01000193) >>> 0;
+    return hash / 2 ** 32;
+  }
+  // At most six marks in a row, the most a calibration row shows: past that the rarest other marks are left out.
+  const maxMarks = 6;
+  function otherMarks(p, codes) {
+    if (p.role !== "sintetica") return new Set();
+    const drawn = Object.keys(markShare).filter((mark) => draw(p.key + "|" + mark) < markShare[mark]);
+    return new Set(drawn.sort((a, b) => markShare[b] - markShare[a]).slice(0, Math.max(0, maxMarks - codes)));
+  }
   // The empty BStore table has no "N°" column. Its actions column is not pinned, so right of the
   // pinned Evidenze header the scrolling header row shows through: the tail of "Data Ass./Del.".
   // Without rows the widths are those measured: ABI, NDG and Denom. do not follow the label + padding rule there
@@ -44,6 +65,9 @@
   // Hover boxes follow the pointer: reference 3 has the evidence box 11 px right of and 6 px below the
   // arrow tip (about 15 and 9 video px at 100% zoom).
   const pointerOffset = [11, 6];
+  // Without a pointer (state 3) reference 3 has the box's left edge 10.8 px right of the B mark's centre (10.83 lands it on
+  // the same layout unit as before).
+  const restOffset = 10.83;
   let showCurrent = () => {};
   // The scroll bars of the panel shown now; a new panel stops watching the old ones.
   let resizing = [];
@@ -187,7 +211,8 @@
   // width and the table its content; while the panel is hidden both keep their last size, and a state
   // placed before the first measure is placed when the panel shows.
   // settle: how far each pinned column sticks left of where it starts (the identity columns of a table with rows).
-  function scroller(scroll, bar, table, settle, onUser) {
+  // onLayout runs after each measure, once the columns have their place.
+  function scroller(scroll, bar, table, settle, onUser, onLayout = () => {}) {
     const thumb = bar.querySelector(".bl-thumb");
     let view = 791;
     let contentWidth = 0;
@@ -232,10 +257,14 @@
       contentWidth = box.width / zoom;
       pinnedWidth = (table.tHead.rows[0].cells[4].getBoundingClientRect().left - box.left) / zoom;
       maximum = Math.max(0, contentWidth - view);
+      // A table that fits has no bar, like a native one: the BStore table and narrow result rows in the calibration
+      // screens at 90% (about 2120 CSS px wide).
+      bar.hidden = maximum < 1;
       thumb.style.width = Math.min(view, view * view / contentWidth) + "px";
       bar.setAttribute("aria-valuemax", String(Math.floor(maximum)));
       set(pending ?? current);
       pending = null;
+      onLayout();
     }
     measure();
     const observer = new ResizeObserver(measure);
@@ -367,7 +396,8 @@
     let menuFor = null;
     const rows = listed.map(addRow);
     const legend = rows.find((row) => row.hasTooltip);
-    get(".bl-legend").hidden = !legend;
+    // Every calibration screen with a row shows the link, with or without an evidence code.
+    get(".bl-legend").hidden = !rows.length;
     get(".bl-legend b").textContent = legend?.code ?? "";
     get(".bl-legend span").textContent = legend?.description ?? "";
     tooltip.textContent = legend?.description ?? "";
@@ -414,9 +444,34 @@
         box.setAttribute("aria-label", "Seleziona pratica " + p.number);
         cells[0].append(box);
       }
+      // Each code is a mark of its own in the cell's row of marks (B, BC, BM and V in the calibration screens), among
+      // the other marks of an invented practice; the text reads as the truth writes it ("B V"). B's description belongs
+      // to the B mark.
       const evidence = document.createElement(hasTooltip ? "button" : "span");
-      evidence.textContent = code;
+      evidence.className = "bl-codes";
       evidence.dataset.field = "evidenze";
+      const codes = code.split(/\s+/).filter(Boolean);
+      const others = otherMarks(p, codes.length);
+      const marks = [];
+      const place = (kind, text = "") => {
+        const mark = document.createElement("span");
+        mark.className = "bl-mark";
+        mark.dataset.mark = kind;
+        if (text) {
+          if (marks.some((m) => m.textContent)) evidence.append(" ");
+          mark.textContent = text;
+        } else {
+          mark.setAttribute("aria-hidden", "true");
+        }
+        evidence.append(mark);
+        marks.push(mark);
+      };
+      for (const kind of ["clip", "note"]) if (others.has(kind)) place(kind);
+      for (const part of codes) if (part !== "V") place(part, part);
+      if (others.has("diamond")) place("diamond");
+      for (const part of codes) if (part === "V") place(part, part);
+      for (const kind of ["loop", "p"]) if (others.has(kind)) place(kind);
+      const anchor = marks.find((mark) => mark.textContent === "B") ?? marks.find((mark) => mark.textContent);
       const badge = document.createElement("span");
       badge.className = "bl-version";
       badge.textContent = "2.0";
@@ -436,7 +491,7 @@
           displayTooltip(true);
         };
         evidence.type = "button";
-        evidence.className = "bl-evidence";
+        evidence.classList.add("bl-evidence");
         evidence.setAttribute("aria-label", "Evidenze " + code);
         evidence.setAttribute("aria-describedby", "bper-evidence-tooltip");
         evidence.addEventListener("pointerenter", (event) => {
@@ -445,9 +500,9 @@
         });
         evidence.addEventListener("pointermove", (event) => follow(tooltip, event));
         evidence.addEventListener("pointerleave", () => displayTooltip(false));
-        // Without a pointer the box takes the place reference 3 shows.
+        // Without a pointer the box takes the place reference 3 shows beside the B mark.
         evidence.addEventListener("focus", () => {
-          if (!evidence.matches(":hover")) tooltip.style.left = tooltip.style.top = "";
+          if (!evidence.matches(":hover")) rest(anchor);
           show();
         });
         evidence.addEventListener("blur", () => displayTooltip(false));
@@ -468,7 +523,7 @@
         });
         cell.addEventListener("pointerleave", () => { hint.hidden = true; });
       }
-      return { code, description, hasTooltip };
+      return { code, description, hasTooltip, anchor };
     }
 
     const empty = get(".bl-empty-wrap .bl-empty");
@@ -478,8 +533,17 @@
     emptyCell.textContent = "Nessun risultato";
 
     const resultsBar = get(".bl-results-bar");
-    let offset = startingOffset;
+    // The capture window shows reference screen 1, scrolled while the bar was held; elsewhere the list opens at its first
+    // column with the bar idle, as the calibration elenco-01 screens and video 18:10 show it.
+    // At 1164-1283 CSS px a whole name pushes Creazione (and Fase at 1164) under the pinned Evidenze there: those fields
+    // come from other states, and the per-practice truth is the reference.
+    // shortcut: the per-screen truth of screen 1 holds at capture scale only, replace if a screen-scale truth per state is needed
+    const capture = Boolean(root.closest('[data-scale="capture"]'));
+    const start = capture ? startingOffset : 0;
+    let offset = start;
     let currentState = 1;
+    // The mark the evidence tooltip rests beside when no pointer places it (state 3, keyboard focus).
+    let resting = null;
     // No frame shows a table without rows scrolled: its columns stick where they start.
     const still = [0, 0, 0, 0];
     const upper = scroller(get(".bl-scroll"), resultsBar, table, listed.length ? settled : still, () => {
@@ -487,11 +551,11 @@
       tooltip.hidden = true;
       closeMenu();
       publish();
-    });
+    }, () => { if (resting && !tooltip.hidden) rest(resting); });
     const queue = scroller(get(".bl-empty-wrap"), get(".bl-empty-bar"), empty, still, () => {});
 
     function publish() {
-      const next = !tooltip.hidden ? 3 : offset >= (startingOffset + extendedOffset) / 2 ? 2 : 1;
+      const next = !tooltip.hidden ? 3 : offset >= (start + extendedOffset) / 2 ? 2 : 1;
       if (next !== currentState) {
         currentState = next;
         onState(next);
@@ -510,8 +574,17 @@
     }
     function follow(box, event) {
       const [x, y] = local(event.clientX, event.clientY);
+      if (box === tooltip) resting = null;
       box.style.left = x + pointerOffset[0] + "px";
       box.style.top = y + pointerOffset[1] + "px";
+    }
+    // Reference 3, without a pointer: the box 10.8 px right of the B mark's centre, at the height list.css gives it. A panel
+    // not shown yet has no boxes: the next measure places it.
+    function rest(mark) {
+      resting = mark;
+      tooltip.style.top = "";
+      const box = mark.getBoundingClientRect();
+      tooltip.style.left = box.width ? local(box.left + box.width / 2, 0)[0] + restOffset + "px" : "";
     }
     content.addEventListener("pointermove", (event) => {
       delete resultsBar.dataset.held;
@@ -601,15 +674,17 @@
     showCurrent = (step) => {
       currentState = step;
       // The end of the scroll is known once the table is measured (a panel rendered hidden waits for it).
-      offset = step === 3 ? Infinity : step === 2 ? extendedOffset : startingOffset;
+      offset = step === 3 ? Infinity : step === 2 ? extendedOffset : start;
       upper.set(offset);
       queue.set(0);
       tooltip.hidden = step !== 3 || !rows[0]?.hasTooltip;
+      resting = null;
       tooltip.style.left = tooltip.style.top = "";
+      if (!tooltip.hidden) rest(rows[0].anchor);
       hint.hidden = true;
       closeMenu();
-      // States 1 and 2 were captured while the bar was being dragged, so it shows its held look.
-      if (step === 3) delete resultsBar.dataset.held;
+      // Reference states 1 and 2 were captured while the bar was being dragged, so there it shows its held look.
+      if (step === 3 || !capture) delete resultsBar.dataset.held;
       else resultsBar.dataset.held = "";
     };
     showCurrent(1);
@@ -621,6 +696,8 @@
     }
   }
 
-  // nameLimit and settled are read by measure_list_font.cjs for the truth (bper_simulator_truth.py).
-  window.BperList = { render, directory, show: (step) => showCurrent(step), nameLimit, settled };
+  // nameLimit, settled, selectable, markShare, maxMarks and startingOffset are read by measure_list_font.cjs for the truth
+  // (bper_simulator_truth.py).
+  window.BperList = { render, directory, show: (step) => showCurrent(step), nameLimit, settled,
+    selectable: [...selectable], markShare, maxMarks, startingOffset };
 })();
