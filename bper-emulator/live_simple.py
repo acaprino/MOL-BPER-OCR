@@ -1,16 +1,17 @@
-"""The simplest live test: the edge agent captures the emulator in a real Chrome window, local OCR reads what it captured.
+"""The simplest live test: the browser shows the emulator, the edge agent's grab reads it, local OCR reads the grabs.
 
     python bper-emulator/live_simple.py --practices 3 [--url http://127.0.0.1:8765]
 
-The first N practices of /api/practices.json are shown page by page in a headed window; the real BPERCaptureWorker
-keeps each frame it adopts (outside of the window greyed), RapidOCR A1 reads them offline in .venv-ocr, and each value
-of /api/truth-practice/<key>.csv is looked for in that practice's OCR with the archive's aligner (Scheda Privati left
-out: the walk never shows it). Nothing paid or remote is called; LiLT is not part of this version.
+The first N practices are shown page by page in a headed window. Near the end of each page's dwell ONE frame is
+grabbed as the real worker grabs (window and foreground guards, desktop greyed, preprocess_for_ocr) and kept whatever
+the classifier says. RapidOCR A1 reads the frames offline (.venv-ocr); each truth value is looked for in them with the
+archive's aligner. Nothing paid or remote is called; LiLT is not part of this version.
 """
 
 from __future__ import annotations
 
-import argparse, csv, io, json, math, os, subprocess, sys, time  # noqa: E401 - one stdlib line keeps it short
+import argparse, csv, ctypes, io, json, os, queue, subprocess, sys, time  # noqa: E401 - one stdlib line keeps it short
+from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -20,13 +21,11 @@ OUT = Path(r"D:\claude-scratch\poc-data-extraction-emulator\live-test\simple")
 OCR_PYTHON = lt.REPO / ".venv-ocr" / "Scripts" / "python.exe"
 OCR = ("import sys\nfrom pathlib import Path\nfrom training.ocr_runner import Screen, _sha256, run_ocr\n"
        "frames = sorted(Path(sys.argv[1]).glob('*.png'))\n"
-       "run_ocr('A1', 'pc4', [Screen(p.stem, p, _sha256(p)) for p in frames], Path(sys.argv[2]))\n")
-DWELL_MS = 5000  # routing took about 1 s per frame on a busy PC, and stability needs 2.0 s after it
-WINDOW_WIDTH = lt.GEOMETRIES["wide"]["window"][0]
-# The page kind the aligner reads its regions from (training.dataset.alignment_name), by the page the agent adopted.
+       "run_ocr(sys.argv[3], 'pc4', [Screen(p.stem, p, _sha256(p)) for p in frames], Path(sys.argv[2]))\n")
+DWELL_MS = 5000
+# The page kind the aligner reads its regions from (training.dataset.alignment_name), by the page on screen.
 KIND = {"screen 1": "elenco", "screen 2": "elenco_dx", "screen 3": "elenco_tooltip", "screen 4": "soggetti",
         "screen 5": "gestionefidi", **dict.fromkeys(("screen 6", "screen 7", "screen 8"), "gestionefidi_tooltip"), "screen 9": "note"}
-LILT = "LiLT: not part of this version (its weights are on the Modal volume, not on this machine)."
 
 
 def walk(keys: Sequence[str]) -> Dict[str, Any]:
@@ -36,43 +35,34 @@ def walk(keys: Sequence[str]) -> Dict[str, Any]:
                   {"do": "unhover", "dwell_ms": 0}, {"do": "open", "practice": key}, {"do": "next"},
                   *({"do": "hover", "target": t} for t in ("fido", "guarantee-1", "guarantee-2")),
                   {"do": "unhover", "dwell_ms": 0}, {"do": "tab", "to": "note"}]
-    return {"name": "simple", "geometry": "wide", "dwell_ms": DWELL_MS, "practices": list(keys), "steps": steps}
+    return lt.load_scenario({"name": "simple", "geometry": "wide", "dwell_ms": DWELL_MS, "practices": list(keys),
+                             "steps": steps})
 
 
-def frame_keeper(folder: Path) -> Any:
-    """live_test's oracle (it keeps the run's consolidation), also saving each adopted frame for the OCR."""
-    import app_paths
-    from PIL import ImageDraw
-    from page_registry import PageRegistry
+def grab_time(step: Dict[str, Any], settled: Dict[str, Any], dwell_ms: int) -> Optional[float]:
+    """1 s before the dwell of a page ends; never for Home, unhover, or a wait inside a step (search form, row menu)."""
+    dwell = step.get("dwell_ms", dwell_ms) / 1000
+    if step.get("do") in (None, "start") or dwell <= 1 or settled.get("what") in ("search form", "row menu"):
+        return None
+    return settled["t"] + dwell - 1.0
 
-    folder.mkdir(parents=True, exist_ok=True)
-    registry = PageRegistry.load(app_paths.templates_dir() / "prompts.json")
 
-    class FrameKeeper(lt.OraclePipeline):
-        def __init__(self, *args: Any) -> None:
-            super().__init__(*args)
-            self.frames: List[Dict[str, Any]] = []
-
-        def extract_from_image(self, img: Any, screen_id: str, **kwargs: Any) -> Dict[str, Any]:
-            t = self._acquired_at()
-            state = lt.state_at(self._probes(), t if t is not None else time.time())
-            # The invisible borders and rounded corners show the desktop: grey them, scaled like the frame.
-            b, (w, h), copy = math.ceil((lt.INVISIBLE_BORDER + 1) * img.width / WINDOW_WIDTH), img.size, img.copy()
-            draw = ImageDraw.Draw(copy)
-            for box in ((0, 0, b, h), (w - b, 0, w, h), (0, h - b, w, h), *((x, y, x + 2 * b, y + 2 * b)
-                        for x in (0, w - 2 * b) for y in (0, h - 2 * b))):
-                draw.rectangle(box, fill=(128, 128, 128))
-            name = f"{len(self.frames):05d}.png"
-            copy.save(folder / name)
-            page = registry.resolve(screen_id)
-            self.frames.append({"file": name, "ndg": lt.practice_of(state), "page": page.template if page else None})
-            return super().extract_from_image(img, screen_id, **kwargs)
-
-    return FrameKeeper
+def capture(worker: Any, state: Dict[str, Any], folder: Path, number: int, recorder: Any = None) -> Optional[dict]:
+    """One frame as the worker grabs and preprocesses it, kept whatever the classifier says; None if a guard drops it."""
+    raw = worker._grab_raw()
+    if raw is None:
+        return None
+    img = worker._preprocess(raw)
+    label, score, _ = worker._detect_page(img)
+    best = ((recorder.current.get("routed") or {}) if recorder else {})
+    name = f"{number:05d}.png"
+    img.save(folder / name)
+    return {"file": name, "ndg": lt.practice_of(state), "page": lt.label_for_probe(state)[0], "classifier": label,
+            "best": best.get("best", label), "score": round(float(best.get("best_score") or score or 0.0), 3)}
 
 
 def found_table(truths: Dict[str, List[tuple]], frames: Sequence[Dict[str, Any]], folder: Path) -> List[Dict[str, Any]]:
-    """Per practice and field with a value: is it in the OCR of a captured frame of that practice (yes/no)."""
+    """Per practice and field with a value: is it in the OCR of a kept frame of that practice (yes/no)."""
     from PIL import Image
     from extraction.field_definitions import CANONICAL_FIELD_DEFINITIONS
     from extraction.normalization import normalize_ndg
@@ -101,49 +91,106 @@ def percentages(rows: Sequence[Dict[str, Any]]) -> Dict[str, float]:
     return {**out, "overall": share(rows)}
 
 
+def browse_and_grab(url: str, scenario: Dict[str, Any], run: Path) -> List[Dict[str, Any]]:
+    """The headed walk: the driver shows the pages, one frame is kept per page dwell."""
+    from PyQt6.QtCore import QCoreApplication
+    from frame_normalize import find_window_rect
+
+    if lt.matching_window_pids(lt.WINDOW_TITLE):
+        raise lt.GuardError(f"a window titled «{lt.WINDOW_TITLE}» is already open: close it first")
+    QCoreApplication.instance() or QCoreApplication([])
+    ctypes.windll.shcore.SetProcessDpiAwareness(2)
+    box: Dict[str, int] = {}
+    own = lambda: lt.window_rect(box["hwnd"]) if box else None  # noqa: E731
+    screen = (ctypes.windll.user32.GetSystemMetrics(0), ctypes.windll.user32.GetSystemMetrics(1))
+
+    def mask() -> tuple:  # what the crop holds outside the drawn window, clipped to the monitor
+        o, d = own(), lt.visible_frame_bounds(box["hwnd"])
+        o = (max(o[0], 0), max(o[1], 0), min(o[2], screen[0]), min(o[3], screen[1]))
+        return tuple(max(0, v) for v in (d[0] - o[0], d[1] - o[1], o[2] - d[2], o[3] - d[3]))
+
+    recorder = lt.Recorder()
+    worker = lt.make_harness_worker(lt.harness_config(run / "agent"), lambda: "simple", None, recorder=recorder,
+                                    rect_provider=find_window_rect, own_rect=own, guard=lt.PrivacyGuard(), live=True,
+                                    exposure=lambda: bool(own()) and lt.window_exposed(box["pid"], own()),
+                                    scrub=lambda img: lt.blank_outside_window(img, mask()))
+    worker._init_router()  # DINOv2, for the informational label only
+    for left in range(10, 0, -1):
+        print(f"HEADED RUN in {left} s: a Chrome window takes over the primary monitor; do not cover it.", flush=True)
+        time.sleep(1)
+    driver = lt.DriverProcess(lt._driver_args(scenario, url, run, headless=False, record=False), run / "driver.log")
+    frames: List[Dict[str, Any]] = []
+    try:
+        pid = int(driver.wait_for("ready", 60)["pid"])
+        mine = lt.own_windows(pid, lt.WINDOW_TITLE)
+        if len(mine) != 1 or lt.matching_window_pids(lt.WINDOW_TITLE) != [pid]:
+            raise lt.GuardError("the emulator window is not the only one with its title")
+        box.update(hwnd=mine[0][0], pid=pid)
+        lt.set_topmost(box["hwnd"], True)
+        driver.send("go")
+        step, end = {}, time.time() + lt.estimate_seconds(scenario) + 60
+        while time.time() < end and not recorder.abort:
+            try:
+                event = driver.queue.get(timeout=0.1)
+            except queue.Empty:
+                continue
+            if event["event"] in ("done", "exit"):
+                break
+            step = event if event["event"] == "action" and "index" in event else step
+            at = grab_time(step, event, scenario["dwell_ms"]) if event["event"] == "settled" else None
+            if at is not None:
+                time.sleep(max(0.0, at - time.time()))
+                kept = capture(worker, driver.probes()[-1]["state"], run / "frames", len(frames), recorder)
+                frames += [{**kept, "step": step["do"]}] if kept else []
+    finally:
+        if box:
+            lt.set_topmost(box["hwnd"], False)
+        driver.close()
+    if recorder.abort:
+        raise lt.PrivacyAbort(recorder.abort)
+    return frames
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
+    os.environ.setdefault("QT_QPA_PLATFORM", "offscreen")
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--practices", type=int, default=3, help="how many practices, from the top of the catalogue")
+    parser.add_argument("--config", default="A1", help="OCR configuration of training.ocr_runner (A0 reads faster)")
     parser.add_argument("--url", help="an emulator already running (default: start our own on a free port)")
     args = parser.parse_args(argv)
     run = OUT / time.strftime("%Y%m%d-%H%M%S")
-    keeper, made, oracle = frame_keeper(run / "read"), [], lt.OraclePipeline
+    (run / "frames").mkdir(parents=True)
     server: Any = lt.RemoteServer(args.url) if args.url else lt.EmulatorServer(lt._default_db(), [])
     try:
         keys = [p["key"] for p in json.loads(server.get("/api/practices.json"))["practices"][: args.practices]]
         truths = {key: [(r["Chiave"], r["Campo"], r["Valore"]) for r in csv.DictReader(io.StringIO(
             server.get(f"/api/truth-practice/{key}.csv").decode("utf-8-sig")), delimiter=";")] for key in keys}
-        scenario = walk(keys)
-        lt.OraclePipeline = lambda *a: made.append(keeper(*a)) or made[-1]  # this run's frames go to the keeper
-        report = lt.run_live(scenario, run / "live", db=lt._default_db(), url=server.url,
-                             max_seconds=lt.estimate_seconds(lt.load_scenario(scenario)) + 60)
+        started = time.time()
+        frames = browse_and_grab(server.url, walk(keys), run)
     except (lt.GuardError, lt.ScenarioError, lt.PrivacyAbort) as exc:
         print(f"refused: {exc}", file=sys.stderr)
         return 1
     finally:
-        lt.OraclePipeline = oracle
         server.stop()
-    frames, started = (made[0].frames if made else []), time.time()  # OCR only what the worker adopted
-    if frames:
+        lt._clean_temp()
+    walked, started = time.time() - started, time.time()
+    if frames:  # the OCR interpreter, offline: RapidOCR and its models are local
         env = {**os.environ, "PYTHONPATH": str(lt.REPO / "src"), "PYTHONDONTWRITEBYTECODE": "1"}
-        subprocess.run([str(OCR_PYTHON), "-c", OCR, str(run / "read"), str(run / "ocr")], check=True, env=env)
+        subprocess.run([str(OCR_PYTHON), "-c", OCR, str(run / "frames"), str(run / "ocr"), args.config], check=True, env=env)
         cache = json.loads((run / "ocr" / "cache.json").read_text(encoding="utf-8"))
-        for frame in frames:
-            frame["items"] = cache[Path(frame["file"]).stem]["items"]
-    rows = found_table(truths, frames, run / "read")
-    scores = percentages(rows)
+        frames = [{**f, "items": cache[Path(f["file"]).stem]["items"]} for f in frames]
+    rows = found_table(truths, frames, run / "frames")
+    for f in frames:
+        print(f"frame {f['file']} {f['step']:<6} shown {f['page'] or '-':<9} classifier {f['classifier'] or '-'} "
+              f"(best {f['best'] or '-'} {f['score']})")
     for r in rows:
         print(f"{r['practice']:<10} {r['field']:<30} {str(r['expected'])[:50]:<52} {r['found']}")
-    from extraction.normalization import normalize_ndg
-    owner = {normalize_ndg(next((v for f, _l, v in t if f == "ndg"), None)): k for k, t in truths.items()}
-    for key in keys:
-        pages = sorted({f["page"] or "-" for f in frames if owner.get(normalize_ndg(f["ndg"])) == key})
-        print(f"{key}: {scores.get(key, 0.0)}% of the values found; pages recognised {pages}")
-    print(f"overall: {scores['overall']}%. Rows consolidated: {report['consolidation']['rows']} for {len(keys)} "
-          f"practices. Walk {report['duration_s']:.0f} s, OCR of {len(frames)} frames {time.time() - started:.0f} s. {LILT}")
+    print(f"Frames kept per page: {dict(Counter(f['page'] or '-' for f in frames))}")
+    print(" ".join(f"{p}: {s}%" for p, s in percentages(rows).items()) + f". Walk {walked:.0f} s, OCR {time.time() - started:.0f} s. "
+          "LiLT: not part of this version (its weights are on the Modal volume).")
     with (run / "found.csv").open("w", newline="", encoding="utf-8-sig") as handle:
         csv.writer(handle, delimiter=";").writerows([["practice", "field", "expected", "found"], *map(dict.values, rows)])
-    print(f"Table: {run / 'found.csv'}; frames read: {run / 'read'}")
+    print(f"Table: {run / 'found.csv'}; frames kept: {run / 'frames'}")
     return 0
 
 

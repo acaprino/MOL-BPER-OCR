@@ -46,15 +46,74 @@ def test_percentages_are_per_practice_and_overall() -> None:
     assert live_simple.percentages(rows) == {"a": 50.0, "b": 100.0, "overall": 75.0}
 
 
-def test_a_saved_frame_carries_no_desktop_pixel(tmp_path) -> None:
-    # A wide window crop after preprocess_for_ocr (x1.25): the invisible borders are about 9 px wide.
-    frame = Image.new("RGB", (2390, 1287), "white")
-    for box in ((0, 0, 9, 1287), (2381, 0, 2390, 1287), (0, 1278, 2390, 1287)):
-        frame.paste((200, 0, 200), box)
-    probes = [{"t": 0.0, "state": {"view": "detail", "loading": False, "page": "subjects", "ndg": "1"}}]
-    keeper = live_simple.frame_keeper(tmp_path)(lambda: probes, {}, lambda: 0.0)
+# ------------------------------------------------- one frame per dwell, whatever the classifier says
 
-    keeper.extract_from_image(frame, "Elenco Soggetti")
+MONITOR = {"left": 0, "top": 0, "width": 1200, "height": 900}
+WINDOW = (200, 150, 800, 630)
+SUBJECTS = {"view": "detail", "loading": False, "page": "subjects", "ndg": "1"}
 
-    saved = Image.open(tmp_path / keeper.frames[0]["file"]).convert("RGB")
-    assert (200, 0, 200) not in {color for _n, color in saved.getcolors(2390 * 1287)}
+
+class _Shot:
+    def __init__(self, img: Image.Image) -> None:
+        self.size, self.rgb = img.size, img.convert("RGB").tobytes()
+
+
+class _Mss:
+    monitors = [MONITOR, MONITOR]
+
+    def grab(self, _mon: Dict[str, int]) -> _Shot:
+        desktop = Image.new("RGB", (MONITOR["width"], MONITOR["height"]), (200, 0, 200))
+        desktop.paste(Image.new("RGB", (586, 473), "white"), (207, 150))
+        return _Shot(desktop)
+
+    def close(self) -> None:
+        pass
+
+
+class _Config:
+    fps, monitor_index, window_title_contains, image_scale = 3, 1, "zzz-no-such-window-zzz", None
+    unsharp_amount, unsharp_radius, unsharp_threshold = 0.8, 1.2, 2
+    router_mode, dedup_threshold, route_retry_seconds, local_margin_min = "ml", 3, 1.0, 0.10
+
+
+def _worker(rect: Any) -> Any:
+    import live_test as lt
+
+    worker = lt.make_harness_worker(_Config(), lambda: "simple", None, recorder=lt.Recorder(),
+                                    rect_provider=lambda _title: rect, own_rect=lambda: WINDOW,
+                                    exposure=lambda: True, guard=lt.PrivacyGuard(), live=True,
+                                    scrub=lambda img: lt.blank_outside_window(img, (7, 0, 7, 7)))
+    worker._mss_ctx = _Mss()
+    worker._detect_page = lambda _img: (None, 0.0, {})  # the classifier recognises nothing
+    return worker
+
+
+def test_a_frame_is_kept_at_a_dwell_even_when_the_classifier_finds_no_page(qapp, tmp_path) -> None:
+    kept = live_simple.capture(_worker(WINDOW), SUBJECTS, tmp_path, 0)
+
+    assert (kept["page"], kept["classifier"]) == ("screen 4", None)
+    assert (tmp_path / kept["file"]).exists()
+
+
+def test_a_kept_frame_carries_no_desktop_pixel(qapp, tmp_path) -> None:
+    kept = live_simple.capture(_worker(WINDOW), SUBJECTS, tmp_path, 0)
+
+    saved = Image.open(tmp_path / kept["file"]).convert("RGB")
+    assert (200, 0, 200) not in {color for _n, color in saved.getcolors(saved.width * saved.height)}
+
+
+def test_the_guard_still_drops_a_frame_of_a_foreign_window(qapp, tmp_path) -> None:
+    kept = live_simple.capture(_worker((0, 0, 600, 480)), SUBJECTS, tmp_path, 0)
+
+    assert kept is None and list(tmp_path.iterdir()) == []
+
+
+def test_the_frame_is_grabbed_near_the_end_of_a_page_dwell() -> None:
+    assert live_simple.grab_time({"do": "next"}, {"t": 10.0, "what": "fidi e garanzie"}, 5000) == 14.0
+
+
+def test_no_frame_is_grabbed_for_a_step_that_shows_no_page_or_for_an_inner_wait() -> None:
+    assert [live_simple.grab_time(step, settled, 5000) for step, settled in [
+        ({"do": "unhover", "dwell_ms": 0}, {"t": 1.0, "what": "no tooltip"}),
+        ({"do": "start"}, {"t": 1.0, "what": "home"}),
+        ({"do": "search"}, {"t": 1.0, "what": "search form"})]] == [None, None, None]
