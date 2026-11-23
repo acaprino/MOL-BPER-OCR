@@ -142,6 +142,8 @@ def browse_and_grab(url: str, scenario: Dict[str, Any], run: Path) -> List[Dict[
                 time.sleep(max(0.0, at - time.time()))
                 kept = capture(worker, driver.probes()[-1]["state"], run / "frames", len(frames), recorder)
                 frames += [{**kept, "step": step["do"]}] if kept else []
+                if not kept:  # say why, so a missing page is not mistaken for an OCR miss
+                    print(f"dropped {step['do']}: {recorder.current.get('reason')}", flush=True)
     finally:
         if box:
             lt.set_topmost(box["hwnd"], False)
