@@ -1,0 +1,78 @@
+{
+ "name": "resize-fast",
+ "headed": true,
+ "geometry": "reference",
+ "dwell_ms": 3000,
+ "description": "A long note (sim-021): careful to Gestione Fidi, a fast operator at 1 s per state (no capture allowed), then the window widened to 1912 px mid-session.",
+ "practices": [
+  "sim-021"
+ ],
+ "steps": [
+  {
+   "do": "start",
+   "dwell_ms": 2000
+  },
+  {
+   "do": "search",
+   "practice": "sim-021"
+  },
+  {
+   "do": "open",
+   "practice": "sim-021"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-2",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "tab",
+   "to": "note",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "tab",
+   "to": "fidi",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "resize",
+   "window": [
+    1912,
+    1030
+   ],
+   "position": [
+    4,
+    4
+   ]
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "list"
+  },
+  {
+   "do": "scroll-list",
+   "to": "end"
+  }
+ ]
+}

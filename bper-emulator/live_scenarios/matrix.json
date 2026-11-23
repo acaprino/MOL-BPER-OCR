@@ -1,0 +1,167 @@
+{
+ "name": "matrix",
+ "geometry": "reference",
+ "dwell_ms": 3500,
+ "description": "Replay matrix (record with --geometry reference and wide): the three default practices in full, then a fast operator.",
+ "practices": [
+  "sim-018",
+  "sim-006",
+  "sim-021"
+ ],
+ "steps": [
+  {
+   "do": "start",
+   "dwell_ms": 2000
+  },
+  {
+   "do": "search",
+   "practice": "sim-018"
+  },
+  {
+   "do": "scroll-list",
+   "to": "middle"
+  },
+  {
+   "do": "hover",
+   "target": "evidence"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "open",
+   "practice": "sim-018"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "sim-006"
+  },
+  {
+   "do": "scroll-list",
+   "to": "middle"
+  },
+  {
+   "do": "hover",
+   "target": "evidence"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "open",
+   "practice": "sim-006"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "sim-021"
+  },
+  {
+   "do": "scroll-list",
+   "to": "middle"
+  },
+  {
+   "do": "hover",
+   "target": "evidence"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "open",
+   "practice": "sim-021"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "tab",
+   "to": "fidi"
+  },
+  {
+   "do": "hover",
+   "target": "fido",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-2",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "tab",
+   "to": "note",
+   "dwell_ms": 1000
+  },
+  {
+   "do": "tab",
+   "to": "fidi",
+   "dwell_ms": 1000
+  }
+ ]
+}

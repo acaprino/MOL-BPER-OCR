@@ -1,0 +1,161 @@
+{
+ "name": "generated-set",
+ "geometry": "wide",
+ "dwell_ms": 3000,
+ "description": "Replay over six practices of the 40-practice set: open, Gestione Fidi, first fido tooltip, note.",
+ "profiles": [
+  "bper-emulator/profiles/generated-set-01.json"
+ ],
+ "practices": [
+  "gen-001",
+  "gen-005",
+  "gen-011",
+  "gen-018",
+  "gen-024",
+  "gen-032"
+ ],
+ "steps": [
+  {
+   "do": "start",
+   "dwell_ms": 2000
+  },
+  {
+   "do": "search",
+   "practice": "gen-001"
+  },
+  {
+   "do": "open",
+   "practice": "gen-001"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "gen-005"
+  },
+  {
+   "do": "open",
+   "practice": "gen-005"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "gen-011"
+  },
+  {
+   "do": "open",
+   "practice": "gen-011"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "gen-018"
+  },
+  {
+   "do": "open",
+   "practice": "gen-018"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "gen-024"
+  },
+  {
+   "do": "open",
+   "practice": "gen-024"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "gen-032"
+  },
+  {
+   "do": "open",
+   "practice": "gen-032"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  }
+ ]
+}

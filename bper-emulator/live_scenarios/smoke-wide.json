@@ -1,0 +1,24 @@
+{
+ "name": "smoke-wide",
+ "headed": true,
+ "geometry": "wide",
+ "dwell_ms": 3500,
+ "description": "Headed smoke, about 25 s: framing strategy, crop size, zoom and one adoption on Elenco Soggetti.",
+ "practices": [
+  "sim-018"
+ ],
+ "steps": [
+  {
+   "do": "start",
+   "dwell_ms": 2000
+  },
+  {
+   "do": "search",
+   "practice": "sim-018"
+  },
+  {
+   "do": "open",
+   "practice": "sim-018"
+  }
+ ]
+}

@@ -1,0 +1,22 @@
+{
+ "name": "modes",
+ "description": "Replay: a pensioner (sim-018) opened in visualizzazione, then two credit lines (sim-006) in lavorazione. The mode is page-wide in the emulator, so the driver reloads the page between them; in visualizzazione Gestione Fidi opens from the navigator.",
+ "geometry": "reference",
+ "dwell_ms": 3500,
+ "practices": [{"key": "sim-018", "mode": "visualizzazione"}, {"key": "sim-006", "mode": "lavorazione"}],
+ "steps": [
+  {"do": "start", "dwell_ms": 2000},
+  {"do": "search", "practice": "sim-018"},
+  {"do": "open", "practice": "sim-018"},
+  {"do": "next"},
+  {"do": "hover", "target": "fido"},
+  {"do": "unhover", "dwell_ms": 0},
+  {"do": "tab", "to": "note"},
+  {"do": "search", "practice": "sim-006"},
+  {"do": "open", "practice": "sim-006"},
+  {"do": "next"},
+  {"do": "hover", "target": "fido"},
+  {"do": "unhover", "dwell_ms": 0},
+  {"do": "tab", "to": "note"}
+ ]
+}

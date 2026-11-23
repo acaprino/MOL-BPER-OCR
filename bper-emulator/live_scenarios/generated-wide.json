@@ -1,0 +1,98 @@
+{
+ "name": "generated-wide",
+ "headed": true,
+ "geometry": "wide",
+ "dwell_ms": 3000,
+ "description": "Two practices of the 40-practice set at the real-archive geometry: a 3,873-character note (gen-011) and two credit lines with three guarantees (gen-032).",
+ "profiles": [
+  "bper-emulator/profiles/generated-set-01.json"
+ ],
+ "practices": [
+  "gen-011",
+  "gen-032"
+ ],
+ "steps": [
+  {
+   "do": "start",
+   "dwell_ms": 2000
+  },
+  {
+   "do": "search",
+   "practice": "gen-011"
+  },
+  {
+   "do": "scroll-list",
+   "to": "middle"
+  },
+  {
+   "do": "hover",
+   "target": "evidence"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "open",
+   "practice": "gen-011"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "gen-032"
+  },
+  {
+   "do": "scroll-list",
+   "to": "middle"
+  },
+  {
+   "do": "hover",
+   "target": "evidence"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "open",
+   "practice": "gen-032"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  }
+ ]
+}

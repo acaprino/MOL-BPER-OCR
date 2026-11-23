@@ -1,0 +1,95 @@
+{
+ "name": "careful-reference",
+ "headed": true,
+ "geometry": "reference",
+ "dwell_ms": 3000,
+ "description": "Careful operator at the reference geometry (1280 px window, zoom 110%): a pensioner (sim-018) and two credit lines (sim-006), list states, PEF pages and tooltips.",
+ "practices": [
+  "sim-018",
+  "sim-006"
+ ],
+ "steps": [
+  {
+   "do": "start",
+   "dwell_ms": 2000
+  },
+  {
+   "do": "search",
+   "practice": "sim-018"
+  },
+  {
+   "do": "scroll-list",
+   "to": "middle"
+  },
+  {
+   "do": "hover",
+   "target": "evidence"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "open",
+   "practice": "sim-018"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  },
+  {
+   "do": "search",
+   "practice": "sim-006"
+  },
+  {
+   "do": "scroll-list",
+   "to": "middle"
+  },
+  {
+   "do": "hover",
+   "target": "evidence"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "open",
+   "practice": "sim-006"
+  },
+  {
+   "do": "next"
+  },
+  {
+   "do": "hover",
+   "target": "fido"
+  },
+  {
+   "do": "hover",
+   "target": "guarantee-1"
+  },
+  {
+   "do": "unhover",
+   "dwell_ms": 0
+  },
+  {
+   "do": "tab",
+   "to": "note"
+  }
+ ]
+}
