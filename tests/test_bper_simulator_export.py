@@ -8,7 +8,10 @@ import sqlite3
 
 import pytest
 
-from bper_site_fixture import assert_site_pixels
+from bper_site_fixture import (
+    ALL_ROLES, archive_identities, assert_site_pixels, leaks, reference_scheda, scheda_personal_values, sealed_only,
+    strings,
+)
 from bper_simulator_export import export_simulator
 
 
@@ -70,6 +73,12 @@ def test_portable_site_only_contains_synthetic_practices_by_default(exported: Do
     assert "LUNARDI" not in json.dumps(dataset)
 
 
+def test_portable_site_carries_the_practice_truth_of_every_practice(exported: Document) -> None:
+    dataset = offline_payload(exported)
+    assert dataset["practiceTruth"].keys() == dataset["truth"].keys()
+    assert dataset["practiceTruth"]["demo"].startswith("Chiave;Campo;Valore")
+
+
 def test_portable_site_hosts_the_scheda_privati_page_without_external_files(exported: Document) -> None:
     page = offline_payload(exported)["schedaPage"]
     assert "<title>BPER Scheda Privati</title>" in page
@@ -80,17 +89,54 @@ def test_portable_site_hosts_the_scheda_privati_page_without_external_files(expo
     assert any("/api/scheda/" in script for script in scheda.scripts)
 
 
-def test_portable_site_keeps_the_reference_scheda_privati_out_by_default(exported: Document) -> None:
+def test_portable_site_embeds_the_synthetic_scheda_privati_of_every_practice(exported: Document) -> None:
     dataset = offline_payload(exported)
-    assert dataset["schede"] == {}
-    assert "KOLA" not in json.dumps(dataset)
+    assert dataset["schede"] == {p["ndg"]: p["scheda"] for p in dataset["practices"]}
+    assert all(p["schedaStates"] and p["role"] == "sintetica" for p in dataset["practices"])
+    assert "scheda-privati-02" in dataset["truth"]["demo"]
+
+
+def test_portable_site_keeps_the_reference_scheda_privati_out_by_default(exported: Document) -> None:
+    assert reference_scheda()["ndg"] not in offline_payload(exported)["schede"]
+    exported_text = "\n".join(exported.scripts)
+    for value in scheda_personal_values():
+        assert value not in exported_text
+
+
+def exported_text(page: Path) -> str:
+    """The page and the decoded strings of its data, so escaped characters still match."""
+    text = page.read_text(encoding="utf-8")
+    start = text.index("window.BperOffline = ") + len("window.BperOffline = ")
+    return strings(text[start:text.index(";</script>", start)]) + "\n" + text
+
+
+def test_default_export_contains_no_value_of_the_archive(tmp_path: Path) -> None:
+    target = tmp_path / "simulatore.html"
+    export_simulator(target, db_path=tmp_path / "demo.sqlite3")
+    assert leaks(exported_text(target), archive_identities(ALL_ROLES)) == {"ndg": 0, "name": 0, "note": 0}
+
+
+def test_export_with_include_archive_holds_the_training_and_control_practices_only(tmp_path: Path) -> None:
+    opened = archive_identities({"addestramento", "controllo"})
+    target = tmp_path / "archivio.html"
+    export_simulator(target, db_path=tmp_path / "demo.sqlite3", include_archive=True)
+    text = exported_text(target)
+    found = leaks(text, opened)
+    assert found["ndg"] == len(opened["ndg"]) and found["name"] > 0 and found["note"] > 0
+    assert leaks(text, sealed_only()) == {"ndg": 0, "name": 0, "note": 0}
+    keys = {p["key"] for p in offline_payload(read_html(target))["practices"]}
+    assert len({key for key in keys if key.startswith("arch-")}) == 20
 
 
 def test_portable_reference_includes_the_reference_scheda_privati(tmp_path: Path) -> None:
     target = tmp_path / "with-reference.html"
     export_simulator(target, db_path=tmp_path / "reference.sqlite3", include_reference=True)
-    schede = offline_payload(read_html(target))["schede"]
-    assert schede["036214640"]["name"] == "KOLA ALTIN"
+    exported = read_html(target)
+    schede = offline_payload(exported)["schede"]
+    assert schede[reference_scheda()["ndg"]] == reference_scheda()
+    assert len(schede) == 65
+    exported_text = "\n".join(exported.scripts)
+    assert all(value in exported_text for value in scheda_personal_values())
 
 
 def test_export_respects_local_changes_in_the_selected_sqlite_database(tmp_path: Path) -> None:

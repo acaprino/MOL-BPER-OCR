@@ -1,0 +1,40 @@
+/* Home (frame 01m35s_npef_home.png). Lengths are reference pixels like the rest of the site: one video
+   pixel of the 1350 px recording is 0.687 of them (0.948 CSS px at 100%, divided by the 1.38 zoom).
+   Buttons and panel keep 26 px from the window edges; nothing else follows the width. */
+#home-view {
+  position: relative; height: calc(100% - 104px); overflow: hidden;
+  background: #fdfbf9; color: #747371; font: 10.8px/1 "Segoe UI", Arial, sans-serif;
+}
+#home-view *, #home-view *::before, #home-view *::after { box-sizing: border-box; }
+.hm-actions { position: absolute; top: 25.4px; right: 26.1px; display: flex; gap: 11px; }
+.hm-actions button {
+  height: 22.7px; padding: 0 0 1px; border: 1px solid #b9b7b5; background: #fff;
+  color: #1b8b98; font: 11.8px/1 "Segoe UI", Arial, sans-serif; cursor: pointer;
+}
+.hm-actions .hm-outline { width: 189.6px; letter-spacing: .3px; }
+.hm-actions .hm-primary { width: 70.1px; border-color: #158f9b; background: #158f9b; color: #fff; }
+.hm-actions button:focus-visible, .hm-chips button:focus-visible { outline: 2px solid #0a828b; outline-offset: 1px; }
+.hm-panel {
+  position: absolute; top: 56.3px; left: 26.1px; right: 26.1px; height: 225.3px;
+  border: 1px solid #cac8c8; background: #fff;
+}
+/* The application's face is wider than Segoe UI at the same cap height: spaced to match. */
+.hm-label { position: absolute; top: 25.9px; left: 23.2px; text-transform: uppercase; letter-spacing: 1px; }
+.hm-select {
+  position: absolute; top: 42.3px; left: 21px; width: 348.3px; height: 22px; margin: 0; padding: 1.4px 0 0 7.5px; letter-spacing: .5px;
+  appearance: none; border: 1px solid #d8d6d3; border-radius: 0; color: #a39d98; font: inherit; opacity: 1;
+  background: #f4f2f0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 7'%3E%3Cpath d='M.5.5 6 6 11.5.5' fill='none' stroke='%23c4c2c0'/%3E%3C/svg%3E") no-repeat right 10.5px center / 8.2px 4.8px;
+}
+.hm-label.hm-second { left: 394.5px; }
+.hm-select.hm-second { left: 392.3px; }
+.hm-chips { position: absolute; top: 81.4px; left: 22.4px; display: flex; gap: 12.6px; }
+.hm-chips button {
+  height: 28.9px; padding: 0 12.2px; border: 1px solid #b4b2b0; border-radius: 15px; background: #f3f3f2;
+  color: #a19f9b; font: 8.8px/1 "Segoe UI", Arial, sans-serif; letter-spacing: .08px; white-space: nowrap;
+}
+/* Loading placeholders that never resolve while the page is on screen. */
+.hm-skeletons {
+  position: absolute; top: 145.3px; left: 22px; right: 22px; height: 57px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 45.3px;
+}
+.hm-skeletons div { background: linear-gradient(90deg, #fcfafb, #fbf9fa 30%, #f4f2f0 58%, #eeece8 78%, #ebe9e5); }

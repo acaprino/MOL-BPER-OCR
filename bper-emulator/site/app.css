@@ -7,11 +7,16 @@ body { margin: 0; }
 [hidden] { display: none !important; }
 body > main { min-height: 100vh; }
 body.console > main { display: grid; grid-template-columns: minmax(0, 1fr) 252px; }
-#stage { position: relative; width: 100%; aspect-ratio: 842 / 617; align-self: start; overflow: hidden; }
+/* Like the real application the page fills the window and nothing in it scales with the window:
+   lengths are reference pixels (842 x 617 is the window of the reference screenshots) and --zoom
+   turns them into screen pixels. Below the minimum size the window scrolls instead of squeezing:
+   704 px is the natural width of the tab strip, 540 px the height of the list (no narrower window
+   was ever seen, so the real behaviour there is unknown). */
+#stage { position: relative; width: 100%; height: 100vh; overflow: auto; }
 #frame {
-  position: absolute; inset: 0 auto auto 0; width: 842px; height: 617px;
-  transform: scale(var(--zoom, 1));
-  transform-origin: top left; overflow: hidden; background: #fdfcfb;
+  position: absolute; inset: 0 auto auto 0; width: 100%; height: 100%;
+  min-width: 704px; min-height: 540px;
+  zoom: var(--zoom, 1); overflow: hidden; background: #fdfcfb;
 }
 #application {
   box-sizing: border-box; width: 100%; height: 100%; overflow: hidden;
@@ -40,6 +45,9 @@ body.console > main { display: grid; grid-template-columns: minmax(0, 1fr) 252px
   width: 4px; height: 4px; margin: 0 0 2px 22px; border-radius: 50%; background: #13818a;
   box-shadow: 0 -6px #13818a, 0 6px #13818a;
 }
+/* At 100% the kebab's centre is 44 CSS px from the window's right edge at every width (spec 16.7, full-resolution
+   frames at 1164-1598 px); the capture scale keeps the reference screenshots' 31 px. */
+#frame[data-scale="native"] .pef-header { padding-right: 29.88px; }
 .pef-nav {
   box-sizing: border-box; height: 47px; display: flex; align-items: end; gap: 4px;
   padding: 0 26px;
@@ -66,10 +74,14 @@ body.console > main { display: grid; grid-template-columns: minmax(0, 1fr) 252px
 }
 .pef-nav i::after { transform: rotate(-45deg); }
 .pef-nav > button[aria-current="page"] { background: #fdfcfb; color: #4f8b95; }
+/* Only the home icon turns teal when its tab is shown (video 01:35); the magnifier stays grey. */
+.pef-nav #home-tab[aria-current="page"] svg { stroke: #2f948f; }
 .pef-nav #list-tab { width: 178px; padding-left: 9px; gap: 11px; border-left: 20px solid #78999a; }
 .pef-nav #list-tab[aria-current="page"] { border-color: #004552; }
 .pef-nav #practice-tab { width: 221px; margin-left: 12px; }
 .pef-home { width: 31px; margin-right: 1px; padding-left: 9px; }
+/* As a button the home tab also matches ".pef-nav > button": keep the house 9 px in, with room for its 12 px. */
+.pef-nav #home-tab { padding: 0 10px 2px 9px; }
 .pef-search { width: 156px; margin-right: 12px; }
 .pef-arrow {
   align-self: end; width: 0; height: 0; margin: 0 8px 12px 2px;
@@ -78,8 +90,25 @@ body.console > main { display: grid; grid-template-columns: minmax(0, 1fr) 252px
 .pef-arrow.right {
   margin: 0 2px 12px auto; border-width: 3.5px 0 3.5px 4px; border-color: transparent #b8b7a7;
 }
-#list-view, #detail-view { position: relative; left: -3px; width: 848px; height: 515px; }
-#original { display: block; position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+/* 3 px wider than the window on each side, as the reference screenshots crop it. */
+#list-view, #detail-view { position: relative; left: -3px; width: calc(100% + 6px); height: calc(100% - 102px); }
+/* "Pratica già in lavorazione" (frame 18m13s): the whole PEF 2.0 frame of #detail-view (detail.css) flat grey,
+   the dialog in its middle. The frame's box is repeated here in #frame coordinates: #detail-view starts 104 px
+   down and 3 px left of the window, its frame 25 px lower and 92 px + 1/12 of the extra width further right. */
+.pm-veil {
+  position: absolute; top: 129px; left: calc(89px + (100% - 842px) / 12); right: 25px; bottom: 28px; z-index: 8;
+  /* Centred in the frame's page area, left of its vertical scrollbar. */
+  display: grid; place-items: center; padding: 3.3px 12.3px 0 0; background: #7d7d7d;
+}
+/* At 100% the frame sits 0.5 px further right and 0.9 px lower (detail.css, spec 16.7). */
+#frame[data-scale="native"] .pm-veil { left: calc(89.515px + (100% - 842px) / 12); bottom: 27.1px; }
+.pm-dialog { box-sizing: border-box; position: relative; width: 519.4px; height: 67.4px; background: #fff; color: #1f1f1f; font: 7.55px/1 Arial, Helvetica, sans-serif; }
+.pm-title { height: 16.7px; background: #012461; }
+.pm-message { margin: 9.8px 0 0 6.9px; white-space: nowrap; }
+.pm-buttons { position: absolute; top: 36.4px; left: 5.5px; right: 6.9px; display: flex; justify-content: space-between; }
+.pm-buttons .pd-bluebtn { width: 46px; cursor: pointer; }
+.pm-buttons .pd-bluebtn + .pd-bluebtn { width: 55px; }
+#original { display: block; position: absolute; inset: 0 auto auto 0; width: 842px; height: 617px; pointer-events: none; }
 #frame.reference #application { opacity: 0; }
 #controls {
   box-sizing: border-box; background: #fcfdfc; border-left: 1px solid #d6dfdc;
@@ -97,6 +126,16 @@ body.console > main { display: grid; grid-template-columns: minmax(0, 1fr) 252px
 #controls #open-capture { margin-top: 25px; background: #005a64; color: white; border-color: #005a64; font-weight: 600; }
 #controls p { margin: 10px 0; font-size: 12px; color: #506664; line-height: 1.55; }
 #truth-download { margin-top: 12px; font-size: 13px; color: #005a64; }
+/* The console's catalogue search (a developer convenience, not part of the application): NDG, name, number. */
+#catalogue .bl-content { position: static; height: auto; background: none; }
+#catalogue .bl-directory { padding: 10px 0 0; }
+#catalogue .bl-directory h2 { padding: 0 0 6px; font-size: 13px; font-weight: 600; }
+#catalogue .bl-directory-search { grid-template-columns: minmax(0, 1fr) auto; margin: 8px 0 4px; }
+#catalogue .bl-directory-search label { font-size: 12px; }
+#catalogue .bl-directory table { table-layout: auto; }
+#catalogue .bl-directory :is(th, td) { width: auto; height: 24px; padding: 0 4px; white-space: normal; text-align: left; }
+#catalogue .bl-directory :is(th, td):nth-child(n+4) { display: none; }
+#catalogue .bl-matches { margin: 6px 0 2px; }
 kbd { font: inherit; font-weight: 600; }
 #error-message { position: fixed; inset: auto 12px 12px; margin: 0; padding: 12px; background: white; color: #851d13; }
 @media (max-width: 850px) {

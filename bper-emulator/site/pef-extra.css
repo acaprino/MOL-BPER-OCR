@@ -1,0 +1,106 @@
+/* PEF 2.0 pages of the recordings beyond the reference screenshots (pef-extra.js). Lengths are reference px like
+   detail.css: one video px of the 1350 px MOL frames is 0.687 of them (0.948 CSS px at 100%, divided by the 1.38 zoom).
+   Positions are measured on the C18_* frames (spec 18.2), relative to the work area's left edge. */
+
+/* These pages are as long as what they show (detail.js, fitPage). */
+.pd-window:is([data-page="segnalazioni"], [data-page="delibere"], [data-page="logout"]) .pd-page { min-height: 0; }
+
+/* The "(?)" after a title: a white ring with a white question mark, raised above the title's line. */
+#detail-view .pd-help { display: inline-block; width: 11px; height: 11px; margin-left: 2.5px; border: 1px solid #fff; border-radius: 50%;
+  vertical-align: 1px; color: #fff; font: bold 8px/9px Arial, sans-serif; font-style: normal; text-align: center; }
+.pd-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; vertical-align: middle; }
+.pd-dot-green { background: linear-gradient(#b8d2b4, #8cc7a0 45%, #1aa647 65%, #5db26c); }
+.pd-dot-red { background: linear-gradient(#f3b4ae, #ee7067 45%, #de2a1d 65%, #e65b51); }
+.pd-dot-grey { background: linear-gradient(#fdfdfd, #dedede); box-shadow: inset 0 0 0 .8px #a9a9a9; }
+
+/* ---- Recupero Segnalazioni (MOL 11 02:23) ---- */
+.rs-subject { display: flex; align-items: center; height: 20px; margin-top: 1px; padding: 0 6px 0 5px; border-radius: 2px;
+  background: var(--pd-blue); color: #fff; font: bold 7.4px Arial, sans-serif; }
+.rs-subject label { flex: none; width: 68px; }
+.rs-select { position: relative; flex: 1; height: 16px; }
+.rs-select select { appearance: none; width: 100%; height: 100%; margin: 0; padding: 0 18px 0 12px; border: 1px solid #8596b3;
+  border-radius: 0; background: #fff; color: #242424; font: 7px Arial, sans-serif; }
+/* The red no-entry sign before the subject, and the blue box with the chevron at the select's right end. */
+.rs-no { position: absolute; left: 2px; top: 3.5px; width: 9px; height: 9px; border-radius: 50%; background: #e3261b; pointer-events: none; }
+.rs-no::after { content: ""; position: absolute; left: 1.5px; top: 3.6px; width: 6px; height: 1.8px; background: #fff; transform: rotate(-45deg); }
+.rs-select::after { content: ""; position: absolute; right: 1px; top: 1px; bottom: 1px; width: 15px; pointer-events: none;
+  border-left: 1px solid #8596b3;
+  background: #eef1f5 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 5'%3E%3Cpath d='M0 0h8L4 5z' fill='%23143f85'/%3E%3C/svg%3E") center / 6px 4px no-repeat; }
+.rs-page > .pd-date { margin-top: 6px; padding-right: 8px; }
+.rs-columns { display: grid; grid-template-columns: 289px 289px; column-gap: 11px; align-items: start; margin: 8.4px 0 0 1px; }
+.rs-box { border: 1px solid #c9c7c5; border-top: 0; border-radius: 4px 4px 0 0; }
+#detail-view .rs-box .pd-bar { height: 16.5px; padding: 2px 8px 0; font-size: 7.3px; }
+.rs-policy { margin-top: 12px; }
+.rs-granted { margin-top: 5.3px; }
+.rs-table { width: 100%; border-collapse: collapse; table-layout: fixed; color: #333; font: 7px/9px Arial, sans-serif; }
+.rs-table td, .rs-table th { height: 13px; padding: 0 3px; border-bottom: 1px solid #e4e2df; white-space: nowrap; overflow: hidden; }
+.rs-table tr:last-child > * { border-bottom: 0; }
+.rs-internal td:nth-child(1) { width: 120px; }
+.rs-internal td:nth-child(2) { width: 98px; text-align: center; }
+.rs-internal td:nth-child(3) { padding-right: 7px; text-align: center; }
+.rs-external td:nth-child(2) { width: 90px; padding-right: 10px; text-align: right; }
+.rs-external td:nth-child(2) .pd-dot { margin-right: -1px; }
+.rs-policy td { height: 18px; }
+.rs-policy td:nth-child(2) { width: 86px; text-align: center; white-space: normal; }
+.rs-policy .rs-strategy { height: 30px; color: #e3261b; font-weight: bold; }
+.rs-granted th { height: 13.7px; font-weight: normal; }
+.rs-granted :is(th, td):nth-child(1) { width: 98px; }
+.rs-granted :is(th, td):nth-child(2) { width: 28px; text-align: right; }
+.rs-granted th:nth-child(2) { text-align: center; }
+.rs-granted :is(th, td):nth-child(3) { text-align: right; }
+#detail-view .rs-link { color: inherit; text-decoration: underline; }
+#detail-view .rs-sow { float: right; color: #fff; font-style: italic; text-decoration: underline; }
+.rs-new { color: #e3261b; font: bold 9px/9px Arial, sans-serif; }
+.rs-columns .pd-actions { margin: 1.6px 1px 0 0; }
+.rs-note { margin: 5.5px 0 0 2px; width: 589px; }
+.rs-note .pd-bar { height: 16.5px; padding-top: 2px; }
+.rs-note-body { height: 150px; border: 1px solid #c9c7c5; border-top: 0; background: #fff; }
+
+/* ---- Note Delibere Precedenti (MOL 04 02:13, main recording 02:52) ---- */
+#detail-view .nd-bar { height: 16px; margin-top: 1px; padding-top: 2px; font-size: 7px; }
+.nd-bar em { float: right; font-weight: bold; }
+.nd-table { width: 100%; border: 1px solid #c9c7c5; border-top: 0; }
+.nd-table th { height: 13px; }
+.nd-table td { height: 17px; }
+.nd-table :is(td, th) { padding: 0 7px; text-align: center; }
+.nd-table :is(td, th):is(:nth-child(1), :nth-child(5)) { text-align: right; }
+.nd-table :is(td, th):nth-child(3) { text-align: left; }
+.nd-zoom { display: inline-block; width: 11px; height: 11px; vertical-align: middle;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 11'%3E%3Ccircle cx='4.3' cy='4.3' r='3.2' fill='%23eef2f6' stroke='%23727272' stroke-width='1.1'/%3E%3Cpath d='M6.6 6.6 10 10' stroke='%23545454' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+.nd-empty { height: 23px; margin: 0; padding-top: 1.5px; border: 1px solid #c9c7c5; border-top: 0; color: #a5a5a5; font: bold 10.9px/20px Arial, sans-serif; text-align: center; }
+.nd-page .pd-actions { margin-top: 5.5px; }
+.nd-page .nd-empty + .pd-actions { margin-top: 2px; }
+/* Under the ring, a little left of the frame's middle (main recording 02:52): left and top are its middle. */
+.nd-notice { position: absolute; z-index: 3; width: 267px; height: 67px; margin: 20px 0 0 -147.7px; padding-top: 4px;
+  border: 1px solid #dcdcdc; background: #fff; color: #2479d8; font: 25.5px/29.5px Arial, sans-serif; text-align: center; }
+.nd-hourglass { display: inline-block; width: 9px; height: 15px; margin-right: 6px; vertical-align: -1px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 13'%3E%3Cpath d='M.5.8h7M.5 12.2h7M1.5 1v1.6C1.5 4.6 4 5.4 4 6.5S1.5 8.4 1.5 10.4V12M6.5 1v1.6C6.5 4.6 4 5.4 4 6.5s2.5 1.9 2.5 3.9V12' fill='none' stroke='%23111' stroke-width='1'/%3E%3Cpath d='M2.6 11.6c0-1.4 1.4-2.2 1.4-3 0 .8 1.4 1.6 1.4 3z' fill='%23111'/%3E%3C/svg%3E") center / contain no-repeat; }
+
+/* ---- Gestione Fidi e Garanzie, under Strategie Politiche Creditizie (MOL 02 01:49) ---- */
+.pd-lower { width: 585px; margin: 15px 0 0 4px; }
+.pd-decalage { width: 177px; border: 1px solid #b5b3b0; border-top: 0; }
+#detail-view .pd-lower .pd-bar { height: 16px; padding-top: 2px; font-size: 7.3px; }
+.pd-decalage table { width: 100%; border-collapse: collapse; color: #333; font: 7px/9px Arial, sans-serif; }
+.pd-decalage td { height: 13.4px; padding: 0 0 0 4px; border-bottom: 1px solid #e4e2df; }
+.pd-decalage tr:last-child td { border-bottom: 0; }
+.pd-decalage td + td { padding: 0 15px 0 0; text-align: right; }
+.pd-policy-notes { margin-top: 25px; }
+#detail-view .pd-save { float: right; display: inline-flex; align-items: center; gap: 3px; padding: 0; border: 0; background: none; color: #fff; font: bold 7.3px Arial, sans-serif; }
+.pd-save i { width: 9px; height: 9px; border: 1px solid #fff; border-radius: 1px; box-shadow: inset 0 3px 0 -1px #fff; }
+.pd-policy-notes textarea { display: block; box-sizing: border-box; width: 100%; height: 56px; margin: 0; padding: 2px 3px; border: 1px solid #c9c7c5;
+  border-top: 0; resize: none; background: #fff; color: #222; font: 7.5px/9px Arial, sans-serif; }
+
+/* ---- Avvertenza (MOL 06 08:22): the widget of "già in lavorazione" (app.css, .pm-dialog) with its title in the strip,
+   placed by detail.js; nothing greyed behind it. ---- */
+.pd-alert { position: absolute; z-index: 6; box-sizing: border-box; width: 519.4px; height: 61.8px; background: #fff; color: #1f1f1f;
+  font: 7.55px/1 Arial, Helvetica, sans-serif; }
+.pd-alert-title { height: 16.5px; padding-left: 10.3px; border-radius: 3px 3px 0 0; background: #012461; color: #fff; font: bold 8.6px/16.5px Arial, sans-serif; }
+.pd-alert-message { margin: 8.6px 0 0 5.5px; white-space: nowrap; }
+.pd-alert-buttons { position: absolute; top: 35.7px; left: 5.5px; right: 6.9px; display: flex; justify-content: space-between; }
+#detail-view .pd-alert-buttons .pd-bluebtn { width: 44.7px; cursor: pointer; }
+#detail-view .pd-alert-buttons .pd-bluebtn + .pd-bluebtn { width: 53.6px; }
+
+/* ---- After Conferma (MOL 06 15:34): the logo and two lines in the browser's default serif, nothing else. ---- */
+.pd-window[data-page="logout"] :is(.pd-mast > span, .pd-mainnav, .pd-context, .pd-sidebar, .pd-work) { display: none; }
+.pd-logout { position: absolute; left: 7px; top: 53px; }
+.pd-logout p { margin: 0; color: #000; font: 11.6px/15.1px "Times New Roman", Times, serif; white-space: nowrap; }

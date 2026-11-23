@@ -1,11 +1,54 @@
 """Evaluator-facing CSV from the single-practice website, at its native viewport."""
+import csv
+import hashlib
+from io import StringIO
+import json
 from pathlib import Path
+import re
 
 import pytest
 
 from extraction.evaluation import eval_outputs, load_ground_truth
 from extraction.fields import CSV_TO_SCHEMA
-from bper_simulator_truth import available_steps, practice_truth_csv
+from extraction.imaging import screen_id_from_path
+from bper_profiles import SCHEDA_FIELDS
+from bper_simulator_truth import (
+    CSV_LABELS, NOTE_BOX_PX, NOTE_LINE_PX, NOTE_PADDING_PX, available_steps, practice_truth_csv,
+    practice_truth_record_csv, scheda_states,
+)
+from bper_synthetic_db import PENSIONERS, synthetic_practices
+
+STYLESHEET = Path(__file__).resolve().parents[1] / "bper-emulator" / "site" / "scheda" / "scheda.css"
+# Screen-row digests of the 64 synthetic practices before the pensioners existed, updated on purpose where the DOM
+# audit (bper-emulator/audit_truth.cjs) proved the old rows wrong: screen 2 gains the Creazione row, shown there in
+# every practice (the reference's real truth lists it too); screens 1 and 2 lose DENOMINAZIONE for the 11
+# practices whose name the list cuts with an ellipsis; screen 3 gains the NDG or DENOMINAZIONE that the
+# content-sized list still shows at the end of its scroll, in 39 practices (see the fixture's _comment).
+SNAPSHOT = Path(__file__).resolve().parent / "fixtures" / "bper_truth_snapshot.json"
+NOTE_ROW = ("screen 9", "Note della richiesta")
+APPLICANT = re.compile(r"Richiedente di \d+ anni, [^.]+\. ")
+TOP_FIELDS = {
+    "ndg", "denominazione", "professione_principale", "dal", "numero_mensilita", "retribuzione_annua_netta",
+    "tipo_contratto", "datore_di_lavoro_anagrafica", "rating_ufficiale", "score_cgs", "ultima_validazione_scheda",
+}
+BOTTOM_FIELDS = {
+    "datore_di_lavoro_anagrafica", "rating_ufficiale", "score_cgs", "nr_altri_componenti_nucleo",
+    "di_cui_percepiscono_reddito", "importo_totale_annuo_nucleo", "note_scheda_privati",
+}
+
+
+def scheda_with(note: str) -> dict:
+    return {
+        "ndg": "09000001", "schedaId": "00000000001", "name": "D'ARCO MARTINA",
+        "fields": {
+            "professione_principale": "IMPIEGATO PUBBLICA AMMINISTRAZIONE", "dal": "MARZO 2019",
+            "numero_mensilita": "13", "retribuzione_annua_netta": "26.650", "tipo_contratto": "TEMPO INDETERMINATO",
+            "datore_di_lavoro_anagrafica": "COMUNE DI PROVA", "rating_ufficiale": "N/D", "score_cgs": "N/D",
+            "nr_altri_componenti_nucleo": "2", "di_cui_percepiscono_reddito": "1",
+            "importo_totale_annuo_nucleo": "18.000", "note_scheda_privati": note,
+            "ultima_validazione_scheda": "12/02/2025 10:15 (6 giorni fa)",
+        },
+    }
 
 
 @pytest.fixture
@@ -47,10 +90,19 @@ def test_list_truth_changes_with_column_visibility(practice: dict, tmp_path: Pat
     assert "tipo" not in truth["screen 1"]
     assert truth["screen 2"]["denominazione"] == practice["name"]
     assert "fase" not in truth["screen 2"]
-    assert "creazione" not in truth["screen 2"]
+    # The DOM audit (audit_truth.cjs) shows the Creazione column at the middle scroll, as the reference's truth does.
+    assert truth["screen 2"]["creazione"] == "10/02/2025"
+    # At the end of the scroll the identity columns have moved left: the NDG is gone. The list sizes Denom. to the name
+    # (spec 19.3), and a name of 97 px is still whole there (audit_truth.cjs); a wider one is not (tests below).
     assert "ndg" not in truth["screen 3"]
-    assert "denominazione" not in truth["screen 3"]
+    assert truth["screen 3"]["denominazione"] == practice["name"]
     assert truth["screen 3"]["tooltip_evidenze_b"] == practice["evidenceTooltip"]
+
+
+def test_the_b_tooltip_is_asserted_when_b_is_one_of_several_evidence_codes(practice: dict, tmp_path: Path) -> None:
+    # The archive lists codes side by side ("B V"); the tooltip shown is the one of the B code.
+    practice["evidence"] = "B V"
+    assert loaded(practice, tmp_path)["screen 3"]["tooltip_evidenze_b"] == practice["evidenceTooltip"]
 
 
 def test_absent_subject_slots_are_explicitly_empty(practice: dict, tmp_path: Path) -> None:
@@ -87,3 +139,197 @@ def test_existing_evaluator_scores_notes_with_quotes_newlines_and_euros(practice
     prediction = {"screen 9": {"fields": {"note_della_richiesta": {"value": practice["notes"]}}}}
     result = eval_outputs(prediction, truth)
     assert result["per_field_filt"]["note_della_richiesta"] == [1, 1]
+
+
+LIST_NAMES = Path(__file__).resolve().parent / "fixtures" / "bper_profiles_list_names.json"
+
+
+def list_name_profile(key: str) -> dict:
+    return next(p for p in json.loads(LIST_NAMES.read_text(encoding="utf-8"))["profiles"] if p["key"] == key)
+
+
+def test_a_list_name_just_narrower_than_its_cell_is_asserted_on_the_list(tmp_path: Path) -> None:
+    # 126.06 px of the cell's 127 px (Chrome): it shows whole.
+    profile = list_name_profile("fittizia-sotto")
+    truth = loaded(profile, tmp_path)
+    assert truth["screen 1"]["denominazione"] == truth["screen 2"]["denominazione"] == "ROCCAFORTE ROSALBA"
+
+
+def test_a_list_name_just_wider_than_its_cell_is_left_out_of_the_list(tmp_path: Path) -> None:
+    # 127.24 px: Chrome cuts it with an ellipsis, so the list states do not assert it; the detail header shows it whole.
+    profile = list_name_profile("fittizia-sopra")
+    truth = loaded(profile, tmp_path)
+    assert "denominazione" not in truth["screen 1"] and "denominazione" not in truth["screen 2"]
+    assert truth["screen 1"]["ndg"] == profile["ndg"]
+    assert truth["screen 4"]["denominazione"] == "BELLAVISTA BENEDETTA"
+
+
+# The list's columns follow their content (spec 19.3), so how far the identity columns have left at the end of the
+# scroll (screen 3, 842 px) depends on the width of Denom.: the narrower it is, the longer they stay (list.js).
+def test_a_name_narrower_than_its_label_stays_on_screen_3_with_the_ndg(practice: dict, tmp_path: Path) -> None:
+    practice["name"] = "NERI ADA"  # 52 px: the column keeps the width of its label
+    truth = loaded(practice, tmp_path)
+    assert truth["screen 3"]["ndg"] == "09000001"
+    assert truth["screen 3"]["denominazione"] == "NERI ADA"
+
+
+def test_a_cut_name_leaves_only_its_ndg_on_screen_3(tmp_path: Path) -> None:
+    # The cut name does not widen the column: the NDG stays whole, the name is cut.
+    profile = list_name_profile("fittizia-sopra")
+    truth = loaded(profile, tmp_path)
+    assert truth["screen 3"]["ndg"] == profile["ndg"]
+    assert "denominazione" not in truth["screen 3"]
+
+
+def test_a_name_nearly_as_wide_as_the_cell_leaves_screen_3_with_its_ndg(tmp_path: Path) -> None:
+    # 126 px, like the reference practice's name: both identity values have left the list (reference screen 3).
+    truth = loaded(list_name_profile("fittizia-sotto"), tmp_path)
+    assert "ndg" not in truth["screen 3"] and "denominazione" not in truth["screen 3"]
+
+
+def test_a_request_note_too_long_for_the_page_is_not_asserted_on_screen_9(practice: dict, tmp_path: Path) -> None:
+    # 26 lines of about 135 characters fit above the bottom of the detail window; this note needs about 37.
+    practice["notes"] = "Nota della richiesta molto lunga, " * 150
+    truth = loaded(practice, tmp_path)
+    assert "note_della_richiesta" not in truth["screen 9"]
+    assert truth["screen 9"]["ndg"] == "09000001"
+
+
+def test_a_request_note_that_fits_the_page_is_asserted_on_screen_9(practice: dict, tmp_path: Path) -> None:
+    practice["notes"] = "Nota della richiesta, " * 120  # about 20 lines
+    assert loaded(practice, tmp_path)["screen 9"]["note_della_richiesta"] == practice["notes"].strip()
+
+
+def test_scheda_states_scroll_the_note_box_one_paragraph_at_a_time() -> None:
+    states = scheda_states(scheda_with("Primo.\n\nSecondo.\n\nTerzo.\n\nQuarto.\n"))
+    assert [(s["name"], s["scroll"], s["noteScroll"]) for s in states] == [
+        ("scheda-privati-01", 0, 0), ("scheda-privati-02", 662, 0),
+        ("scheda-privati-03", 662, 40), ("scheda-privati-04", 662, 77),
+    ]
+
+
+@pytest.mark.parametrize("note", ["Unico paragrafo.\n", "Primo.\n\nSecondo.\n", ""])
+def test_a_note_that_fits_the_box_needs_one_bottom_state(note: str) -> None:
+    assert [s["name"] for s in scheda_states(scheda_with(note))] == ["scheda-privati-01", "scheda-privati-02"]
+
+
+def test_scheda_truth_lists_only_the_fields_visible_in_each_state(practice: dict, tmp_path: Path) -> None:
+    practice["scheda"] = scheda_with("Primo.\n\nSecondo.\n\nTerzo.\n")
+    truth = loaded(practice, tmp_path)
+    assert set(truth["scheda-privati-01"]) == TOP_FIELDS
+    assert truth["scheda-privati-01"]["ndg"] == "09000001"
+    assert truth["scheda-privati-01"]["dal"] == "MARZO 2019"
+    for state in ("scheda-privati-02", "scheda-privati-03"):
+        assert set(truth[state]) == BOTTOM_FIELDS
+        assert truth[state]["datore_di_lavoro_anagrafica"] == "COMUNE DI PROVA"
+    assert truth["scheda-privati-02"]["note_scheda_privati"] == "Primo.\n\nSecondo."
+    assert truth["scheda-privati-03"]["note_scheda_privati"] == "Secondo.\n\nTerzo."
+    assert "scheda-privati-04" not in truth
+
+
+def test_the_note_box_scrolls_past_leading_blank_lines(practice: dict, tmp_path: Path) -> None:
+    # The reference note starts with two blank lines and has no trailing newline.
+    practice["scheda"] = scheda_with("\n\nPrimo.\n\nSecondo.\n\nTerzo.")
+    assert [s["noteScroll"] for s in scheda_states(practice["scheda"])] == [0, 40, 56]
+    truth = loaded(practice, tmp_path)
+    assert truth["scheda-privati-02"]["note_scheda_privati"] == "Primo.\n\nSecondo."
+    assert truth["scheda-privati-03"]["note_scheda_privati"] == "Secondo.\n\nTerzo."
+
+
+def test_adding_a_scheda_leaves_the_screen_rows_unchanged(practice: dict) -> None:
+    screens = practice_truth_csv(practice)
+    practice["scheda"] = scheda_with("Primo.\n")
+    combined = practice_truth_csv(practice)
+    assert combined.startswith(screens)
+    assert combined[len(screens):].startswith("scheda-privati-01,")
+
+
+def test_scheda_state_ids_are_the_png_stems_the_evaluator_joins_on(practice: dict, tmp_path: Path) -> None:
+    practice["scheda"] = scheda_with("Primo.\n\nSecondo.\n\nTerzo.\n")
+    csv_path = tmp_path / "dati.csv"
+    csv_path.write_bytes(practice_truth_csv(practice).encode("utf-8-sig"))
+    truth = load_ground_truth(str(csv_path))
+    pngs = [f"cartella/{state['name']}.png" for state in scheda_states(practice["scheda"])]
+    assert {screen_id_from_path(png) for png in pngs} == {key for key in truth if key.startswith("scheda-")}
+
+
+def practice_rows(practice: dict) -> list[dict[str, str]]:
+    return list(csv.DictReader(StringIO(practice_truth_record_csv(practice), newline=""), delimiter=";"))
+
+
+PEF_KEYS = [key for key in CSV_LABELS if key not in SCHEDA_FIELDS]
+
+
+def test_practice_truth_has_one_row_per_field_in_the_canonical_order(practice: dict) -> None:
+    rows = practice_rows(practice)
+    assert list(rows[0]) == ["Chiave", "Campo", "Valore"]
+    assert [row["Chiave"] for row in rows] == PEF_KEYS
+    assert all(row["Campo"] == CSV_LABELS[row["Chiave"]] for row in rows)
+
+
+def test_practice_truth_holds_the_values_of_the_practice(practice: dict) -> None:
+    values = {row["Chiave"]: row["Valore"] for row in practice_rows(practice)}
+    assert (values["ndg"], values["denominazione"], values["tipo"]) == ("09000001", "D'ARCO MARTINA", "BPI Mutui")
+    assert (values["n_fido"], values["importo_euro"]) == ("F1", "81.250,50")  # the first credit line
+    assert values["filiale_relazione"] == "9901 - FILIALE SINTETICA"
+    assert values["note_della_richiesta"] == practice["notes"]
+    assert values["tooltip_evidenze_b"] == "Origination BSTORE"
+    assert values["tooltip_descrizione_ipoteca"] == "55-IPOTECA DI PRIMO GRADO"
+    assert (values["ndg_1"], values["ruolo_1"], values["ndg_2"]) == ("09000001", "Richiedente", "")
+
+
+def test_practice_truth_adds_the_13_scheda_fields_when_there_is_a_scheda(practice: dict) -> None:
+    practice["scheda"] = scheda_with("Primo.\n\nSecondo.\n")
+    values = {row["Chiave"]: row["Valore"] for row in practice_rows(practice)}
+    assert list(values) == list(CSV_LABELS)
+    assert values["dal"] == "MARZO 2019" and values["note_scheda_privati"] == "Primo.\n\nSecondo."
+
+
+def test_practice_truth_lists_only_the_fields_its_source_states(practice: dict) -> None:
+    # An archive practice states only what its screenshots showed; the rest is unknown, not empty.
+    practice["provenance"] = {"source": "archivio", "filler": [], "stated": ["ndg", "stato", "ndg_2"]}
+    assert [(row["Chiave"], row["Valore"]) for row in practice_rows(practice)] == [
+        ("ndg", "09000001"), ("stato", "LAV"), ("ndg_2", "")]
+
+
+def sha(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def screen_digests(practice: dict) -> dict[str, str]:
+    """The digests of SNAPSHOT for the screen rows of one practice, without its Scheda Privati."""
+    text = practice_truth_csv({**practice, "scheda": None})
+    rows = list(csv.reader(StringIO(text, newline="")))
+    note = next(row[2] for row in rows if tuple(row[:2]) == NOTE_ROW)
+    return {
+        "screens": sha(text),
+        "rows_except_note": sha(json.dumps([row for row in rows if tuple(row[:2]) != NOTE_ROW], ensure_ascii=False)),
+        "note_except_applicant": sha(APPLICANT.sub("", note, count=1)),
+    }
+
+
+@pytest.fixture(scope="module")
+def digests() -> tuple[dict[str, dict[str, str]], dict[str, dict[str, str]]]:
+    before = json.loads(SNAPSHOT.read_text(encoding="utf-8"))["practices"]
+    return before, {p["key"]: screen_digests(p) for p in synthetic_practices()}
+
+
+def test_only_the_pensioner_practices_change_their_screen_rows(digests: tuple) -> None:
+    before, now = digests
+    assert now.keys() == before.keys()
+    assert {key for key in now if now[key]["screens"] != before[key]["screens"]} == PENSIONERS
+
+
+def test_a_pensioner_practice_changes_only_the_applicant_sentence_of_its_request_note(digests: tuple) -> None:
+    before, now = digests
+    for key in now:
+        assert now[key]["rows_except_note"] == before[key]["rows_except_note"], key
+        assert now[key]["note_except_applicant"] == before[key]["note_except_applicant"], key
+
+
+def test_note_box_geometry_matches_the_frozen_stylesheet() -> None:
+    rule = re.search(r"\.sp-notes textarea \{([^}]*)\}", STYLESHEET.read_text(encoding="utf-8")).group(1)
+    assert f"height: {NOTE_BOX_PX}px;" in rule
+    assert f"padding: {NOTE_PADDING_PX}px 0 0 5px;" in rule
+    assert "border-bottom: 1px solid" in rule
+    assert re.search(rf"font: [\d.]+px/{NOTE_LINE_PX}px", rule)

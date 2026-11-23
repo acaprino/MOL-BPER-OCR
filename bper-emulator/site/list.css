@@ -1,8 +1,9 @@
+/* 1 px down, and as much shorter, so that the list overflows only when its content does (see #list-view). */
 .bl-content {
   position: relative;
   top: 1px;
-  width: 848px;
-  height: 515px;
+  width: 100%;
+  height: calc(100% - 1px);
   background: #fefcfa;
   color: #5d6061;
   font: 12px "Segoe UI", Arial, sans-serif;
@@ -42,14 +43,14 @@
 .bl-result-count { top: 86px; }
 .bl-legend { position: absolute; right: 39px; top: 86px; z-index: 4; }
 .bl-legend summary { text-align: right; color: #087d8c; font-weight: 600; text-decoration: underline; }
-.bl-scroll, .bl-empty-wrap { position: absolute; left: 29px; width: 791px; }
-.bl-scroll {
-  top: 120px;
+.bl-scroll, .bl-empty-wrap { position: absolute; left: 29px; right: 28px; }
+.bl-scroll, .bl-empty-wrap {
   overflow: auto hidden;
   scrollbar-width: none;
   overscroll-behavior: contain;
 }
-.bl-scroll::-webkit-scrollbar { display: none; }
+.bl-scroll { top: 120px; }
+.bl-scroll::-webkit-scrollbar, .bl-empty-wrap::-webkit-scrollbar { display: none; }
 .bl-results, .bl-empty {
   margin: 0;
   border: none;
@@ -58,7 +59,13 @@
   color: inherit;
   font: 12px "Segoe UI", Arial, sans-serif;
 }
-.bl-results { width: 1489px; }
+/* A table with rows is as wide as its columns, each the width of its widest label or value plus the padding (spec
+   19.3). Fitted on video 18:10 at scroll 0 and on reference screens 1-3: 8.3 px a side (11.5 CSS px at 100%: 25-26
+   between neighbouring values), and a label's last icon keeps 3.4 px after it, so that label-sized columns come out
+   at label + 27-28 CSS px (Tipo 103, Stato 110, Fase 104 ...).
+   shortcut: padding, icon end, ABI inset, NDG 87 px and Evidenze 14 px fitted on 18:10 and references 1-3, refit when a frame contradicts them */
+.bl-results { table-layout: auto; width: max-content; --bl-pad: 8.3px; --bl-icon-end: 3.4px; --bl-abi-end: 4.3px; }
+.bl-results th > [class^="bl-icon"]:last-child { margin-right: var(--bl-icon-end); }
 .bl-content th, .bl-content td {
   height: 36px;
   padding: 0 6px;
@@ -68,22 +75,89 @@
   line-height: 1.1;
   vertical-align: middle;
 }
+.bl-results :is(th, td) { padding: 0 var(--bl-pad); }
 .bl-content th { height: 38px; background: #fefcfa; text-align: left; font-weight: 650; }
-.bl-results tbody tr { cursor: pointer; }
 .bl-results td { background: #f6f6f5; text-align: center; font-weight: 400; }
-.bl-results tr > :nth-child(-n+4),
-.bl-results tr > :nth-last-child(-n+2) { position: relative; z-index: 1; }
-.bl-results tr > :nth-child(-n+4) { transform: translateX(var(--bl-pin, 0px)); }
-.bl-results tr > :nth-last-child(-n+2) { transform: translateX(var(--bl-last, 0px)); }
+.bl-content .bl-pin, .bl-content .bl-pin-end { position: relative; z-index: 1; }
+.bl-content .bl-pin { transform: translateX(var(--bl-pin, 0px)); }
+.bl-content .bl-pin:nth-child(3) { transform: translateX(var(--bl-pin-ndg, 0px)); }
+.bl-content .bl-pin:nth-child(4) { transform: translateX(var(--bl-pin-name, 0px)); }
+.bl-content .bl-pin-end { transform: translateX(var(--bl-last, 0px)); }
+/* An empty table has no actions to pin: its last header scrolls and leaves a gap right of Evidenze. */
+.bl-empty .bl-pin-end:last-child { position: static; transform: none; }
 .bl-results th { padding-top: 4px; }
-.bl-results th:nth-child(2) { padding-left: 28px; }
-.bl-results th:nth-child(3) { padding-left: 37px; }
-.bl-results td:nth-child(2), .bl-results td:nth-child(3) { text-align: right; }
-.bl-results td:nth-child(4) { text-align: left; white-space: normal; overflow-wrap: anywhere; }
-.bl-results td:nth-child(n+5):nth-child(-n+17) { padding-right: 13px; }
+/* The first cell is narrow and its checkbox (APP and ABB rows) overflows it. */
+.bl-results :is(th, td):first-child { width: 16px; padding: 0; overflow: visible; }
+/* Only the narrow first cell is opaque: the scrolled columns show through the 20 px left of ABI. */
+.bl-results :is(th, td):nth-child(2) { padding-left: calc(20px + var(--bl-pad)); }
+.bl-results th:nth-child(2) { background: linear-gradient(90deg, transparent 20px, #fefcfa 20px); }
+.bl-results td:nth-child(2) { background: linear-gradient(90deg, transparent 20px, #f6f6f5 20px); }
+/* The ABI value ends 4-5 CSS px before its label's filter icon (video 18:10, MOL 05 06:17). */
+.bl-results td:nth-child(2) { padding-right: calc(var(--bl-pad) + var(--bl-abi-end)); }
+/* NDG is wider than its eight digits: 49-55 CSS px separate it from ABI where other neighbours have 25 (spec 19.3). */
+.bl-results th:nth-child(3) { width: 87px; }
+/* With a checkbox column the NDG and everything after it move 30 CSS px right; ABI stays. */
+.bl-results.bl-selectable :is(th, td):nth-child(3) { padding-left: calc(var(--bl-pad) + 21.7px); }
+.bl-results.bl-selectable th:nth-child(3) { width: 108.7px; }
+/* Right-aligned: ABI, NDG, N°, Importo €, Filiale; left: Denom., Tipo; centred: the others (spec 19.1). */
+.bl-results td:nth-child(2), .bl-results :is(th, td):is(:nth-child(3), :nth-child(5), :nth-child(7), :nth-child(17)) {
+  text-align: right;
+}
+.bl-results td:nth-child(4), .bl-results td:nth-child(6) { text-align: left; }
+/* A name too long for the list is cut on one line in a box as wide as the column's label (77-80 CSS px in the video,
+   "LA ROSA ..."); the box does not widen the column, and the hover tooltip has the name whole. */
+.bl-cut { display: block; width: 0; min-width: calc(100% - var(--bl-icon-end)); overflow: hidden; text-overflow: ellipsis; }
 .bl-results td:nth-last-child(2) { text-align: left; }
+/* Evidenze and the actions are pinned right: Evidenze ends 14 px before the actions (reference screens 1-3, MOL 04 00:46
+   and video 18:10 agree on where its label and the scrolled labels sit). */
+.bl-results :is(th, td):nth-last-child(2) { padding: 0 calc(14px - var(--bl-icon-end)) 0 var(--bl-pad); }
+.bl-results th:nth-last-child(2) { padding-top: 4px; }
+.bl-results :is(th, td):last-child { width: 27px; }
 .bl-results td:last-child { padding: 0 8px 1px 0; font-size: 16px; font-weight: bold; }
-.bl-results tr:focus-visible td { box-shadow: inset 0 1px #11899a, inset 0 -1px #11899a; }
+/* MOL 05 51:25: a 30 CSS px square 11.5 px from the table's left edge. */
+.bl-select {
+  position: absolute;
+  left: 8.3px;
+  top: calc(50% - 10.7px);
+  width: 21.4px;
+  height: 21.4px;
+  margin: 0;
+  accent-color: #12859b;
+}
+.bl-results td.bl-has-hint { cursor: text; }
+.bl-kebab {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+.bl-kebab:focus-visible { outline: 1px solid #147e92; }
+.bl-menu {
+  position: absolute;
+  z-index: 6;
+  width: 124px;
+  background: white;
+  box-shadow: 0 2px 9px #32474a30;
+}
+.bl-menu[hidden] { display: none; }
+.bl-menu button {
+  display: block;
+  width: 100%;
+  height: 28px;
+  padding: 0 12px;
+  border: 0;
+  background: none;
+  /* Sampled alike in the video, the menu ink matches the row text. */
+  color: inherit;
+  font: 11px "Segoe UI", Arial, sans-serif;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.bl-menu button:hover, .bl-menu button:focus-visible { background: #dddddd; outline: none; }
 .bl-icon-sort, .bl-icon-filter { position: relative; display: inline-block; vertical-align: middle; }
 .bl-icon-sort { width: 6px; height: 11px; margin: -1px 0 0 6px; }
 .bl-icon-sort::before, .bl-icon-sort::after {
@@ -121,54 +195,33 @@
   font-size: 9px;
   line-height: 14px;
 }
-.bl-slider {
-  appearance: none;
-  position: absolute;
-  left: 29px;
-  top: 194px;
-  width: 791px;
-  height: 10px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: #eae8df;
-  cursor: ew-resize;
-}
-.bl-slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 420px;
-  height: 10px;
-  border: 0;
-  border-radius: 0;
-  background: #62acb6;
-}
-.bl-slider::-moz-range-thumb {
-  width: 420px;
-  height: 10px;
-  border: 0;
-  border-radius: 0;
-  background: #62acb6;
-}
-.bl-content:has(.bl-tooltip:not([hidden])) .bl-slider::-webkit-slider-thumb { background: #bfdfe4; }
-.bl-content:has(.bl-tooltip:not([hidden])) .bl-slider::-moz-range-thumb { background: #bfdfe4; }
-.bl-slider:focus-visible, .bl-evidence:focus-visible { outline: 1px solid #147e92; }
+/* Idle: no track, pale thumb. Hovered, dragged or held (states 1-2): beige track, mid-teal thumb. */
+.bl-bar { position: absolute; left: 29px; right: 28px; height: 10px; touch-action: none; }
+.bl-results-bar { top: calc(194px + var(--bl-extra, 0px)); }
+.bl-thumb { position: absolute; top: 0; bottom: 0; background: #bddde4; }
+.bl-bar:hover, .bl-bar.bl-dragging, .bl-bar[data-held] { background: #eae8df; }
+.bl-bar:hover .bl-thumb, .bl-bar.bl-dragging .bl-thumb, .bl-bar[data-held] .bl-thumb { background: #62acb6; }
+.bl-bar:focus-visible, .bl-evidence:focus-visible { outline: 1px solid #147e92; }
 .bl-tooltip {
   position: absolute;
-  left: 728px;
+  left: calc(100% - 120px); /* under the Evidenze column, pinned to the right edge */
   top: 185px;
   z-index: 3;
-  padding: 8px 9px;
+  /* Box and text land on the reference 3 pixels: 101 x 27, text inset 10 px. */
+  padding: 7px 10px 8px;
   background: white;
   box-shadow: 0 3px 13px #42555a30;
   font-size: 10px;
+  line-height: 12px;
+  letter-spacing: -.25px;
   white-space: nowrap;
   pointer-events: none;
 }
 .bl-tooltip[hidden] { display: none; }
+.bl-hint { z-index: 7; }
 .bl-actions {
   position: absolute;
-  top: 221px;
+  top: calc(221px + var(--bl-extra, 0px));
   left: 29px;
   right: 28px;
   display: flex;
@@ -196,14 +249,29 @@
 .bl-export { width: 163px; text-align: center; }
 .bl-export span { margin-left: 7px; }
 .bl-prints { width: 132px; text-align: center; color: #989994; border-color: #deddd8; }
-.bl-queue-title { position: absolute; left: 29px; top: 279px; font-size: 17px; }
-.bl-empty-count { top: 325px; }
-.bl-empty-wrap { top: 358px; overflow: hidden; }
-.bl-empty { width: 791px; }
+/* Reference glyphs run 1.4% wider than Segoe UI at this size. */
+/* The two tables share the height the window adds: the BStore one starts half of it lower (the reference
+   at 110% and the video at 18:10 put its title 537 and 562 CSS px from the top, 45 px of window apart). */
+.bl-content { --bl-lower: calc(var(--bl-extra, 0px) + max(0px, (100% + 1px - 515px - var(--bl-extra, 0px)) / 2)); }
+.bl-queue-title { position: absolute; left: 29px; top: calc(279px + var(--bl-lower)); font-size: 17px; letter-spacing: .1px; }
+.bl-empty-count { top: calc(325px + var(--bl-lower)); }
+.bl-empty-wrap { top: calc(358px + var(--bl-lower)); }
+.bl-empty { width: 1340px; }
 .bl-empty th { height: 38px; padding-left: 8px; }
-.bl-empty td { height: 25px; padding-right: 80px; text-align: right; }
-.bl-empty th:last-child { color: #b9b9b9; }
-.bl-empty-bar { position: absolute; left: 29px; top: 424px; width: 467px; height: 10px; background: #bddfe4; }
+.bl-empty td { height: 25px; text-align: center; }
+.bl-empty-bar { top: calc(424px + var(--bl-lower)); }
+/* Content taller than the window scrolls in a thin teal bar, like Ricerca Pratica: a list of several results, or one
+   row in a short window (1600 x 772 in MOL 07 02:29: the thumb is 91% of the track, spec 16.7). Its content ends
+   about 500 px down, 36 px more for each further row; the list is 3 px wider than the window on the right, so the
+   thumb leaves that strip transparent. */
+#list-view { overflow: hidden auto; }
+#list-view .bl-content { min-height: calc(500px + var(--bl-extra, 0px)); }
+#list-view::-webkit-scrollbar { width: 12.6px; }
+#list-view::-webkit-scrollbar-thumb { border-right: 3px solid transparent; background: #bfdee2 padding-box; }
+#list-view::-webkit-scrollbar-track { background: transparent; }
+/* The closed menu, a moment at the window's top left (list.js), out of the list it styles. */
+.bl-ghost { left: 0; top: 0; z-index: 12; color: #5d6061; pointer-events: none; }
+.bl-ghost, .bl-ghost * { box-sizing: border-box; }
 
 .bl-directory { box-sizing: border-box; padding: 20px 29px; }
 .bl-directory h2 {

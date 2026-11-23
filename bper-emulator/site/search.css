@@ -1,0 +1,60 @@
+/* Ricerca Pratica (frame 01m39s_ricerca_pratica_form.png), in reference pixels (one video pixel = 0.687).
+   The page scrolls inside its own thin teal bar; the fields sit on a fluid three-column grid with a 22 px
+   gutter (left edges 38, 468 and 899 video px at a 1280 px window) and keep their height. */
+#search-view {
+  position: relative; height: calc(100% - 104px); overflow: hidden auto;
+  background: #fdfbf9; color: #77706a; font: 10.8px/1 "Segoe UI", Arial, sans-serif;
+}
+#search-view::-webkit-scrollbar { width: 9.6px; }
+#search-view::-webkit-scrollbar-thumb { background: #bfdee2; }
+#search-view::-webkit-scrollbar-track { background: transparent; }
+#search-view *, #search-view *::before, #search-view *::after { box-sizing: border-box; }
+/* The video's page continues about 205 px below the fold (its scrollbar thumb is 74% of the track). */
+.rp-form { position: relative; height: 740px; margin: 0 26.1px; }
+.rp-form > * { position: absolute; left: 0; margin: 0; }
+.rp-col2 { left: calc((100% - 44px) / 3 + 22px); }
+.rp-col3 { left: calc((100% - 44px) * 2 / 3 + 44px); }
+/* The application's face is about 12% wider than Segoe UI at the same cap height: spaced to match. */
+.rp-label { line-height: 1; white-space: nowrap; letter-spacing: .9px; }
+.rp-control {
+  width: calc((100% - 44px) / 3); height: 22px; padding: 1.4px 7.2px 0; border: 1px solid #b6b4b3; border-radius: 0;
+  background: #fff; color: #5f5b57; font: 10.8px "Segoe UI", Arial, sans-serif; letter-spacing: .9px; outline: none;
+}
+input.rp-control { height: 21.7px; }
+.rp-control:focus { border-color: #1d8f9c; box-shadow: 0 0 2.5px .5px #1d8f9c8c; }
+.rp-control:disabled { background-color: #f4f3ef; color: #a6a19c; opacity: 1; }
+.rp-select {
+  appearance: none; padding-right: 26px; text-align: left; white-space: nowrap; overflow: hidden; cursor: default;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 7'%3E%3Cpath d='M.5.5 6 6 11.5.5' fill='none' stroke='%23909090'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 11px center; background-size: 9.6px 4.8px;
+}
+.rp-placeholder { color: #c3bcb9; }
+.rp-value { display: block; overflow: hidden; }
+.rp-ndg { width: 110.6px; }
+.rp-registry {
+  left: 110.6px; width: calc((100% - 44px) / 3 - 110.6px); height: 21.7px; padding: 0 0 1px;
+  border: 1px solid #b6b4b3; border-left: 0; background: #fff; color: #1d8b9b;
+  font: 13px/1 "Segoe UI", Arial, sans-serif; cursor: pointer;
+}
+.rp-tabs { top: 119.7px; display: flex; gap: 6.8px; }
+.rp-tabs button {
+  height: 17.6px; padding: 0 4px; border: 0; border-bottom: 2.2px solid transparent; background: none;
+  color: #2f8c99; font: 11.8px/1 "Segoe UI", Arial, sans-serif; cursor: pointer; white-space: nowrap;
+}
+.rp-tabs [aria-selected="true"] { border-bottom-color: #158d9a; color: #1a8590; font-weight: 600; letter-spacing: -.2px; }
+.rp-rule { top: 285.8px; width: 100%; height: 1.4px; border: 0; background: #dfdddb; }
+.rp-heading { color: #3d3933; font: 13.7px/1 "Segoe UI", Arial, sans-serif; letter-spacing: .4px; }
+.rp-options {
+  top: 481px; z-index: 2; width: calc((100% - 44px) / 3); padding: 4px 0;
+  border: 1px solid #c9c7c8; background: #fff; box-shadow: 0 2px 9px #32474a30;
+}
+.rp-options[hidden] { display: none; }
+.rp-options label { display: flex; align-items: center; gap: 6px; height: 18px; padding: 0 7.2px; color: #5f5b57; }
+.rp-options input { margin: 0; accent-color: #158f9b; }
+/* Invented: the video submits with Enter and never shows the bottom of the page. */
+.rp-submit {
+  top: 575px; left: auto; right: 0; width: 70.1px; height: 22.7px; padding: 0 0 1px;
+  border: 1px solid #158f9b; background: #158f9b; color: #fff; font: 11.8px/1 "Segoe UI", Arial, sans-serif; cursor: pointer;
+}
+.rp-submit:disabled { opacity: .6; cursor: default; }
+.rp-tabs button:focus-visible, .rp-registry:focus-visible, .rp-submit:focus-visible, .rp-multi:focus-visible { outline: 1px solid #1d8f9c; }

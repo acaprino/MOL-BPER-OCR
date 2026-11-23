@@ -8,8 +8,18 @@
   <link rel="stylesheet" href="/app.css">
   <link rel="stylesheet" href="/list.css">
   <link rel="stylesheet" href="/detail.css">
+  <link rel="stylesheet" href="/docs.css">
+  <link rel="stylesheet" href="/pef-extra.css">
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/search.css">
+  <link rel="stylesheet" href="/loading.css">
+  <script defer src="/loading.js"></script>
   <script defer src="/list.js"></script>
+  <script defer src="/docs.js"></script>
+  <script defer src="/pef-extra.js"></script>
   <script defer src="/detail.js"></script>
+  <script defer src="/home.js"></script>
+  <script defer src="/search.js"></script>
   <script defer src="/app.js"></script>
 </head>
 <body>
@@ -28,14 +38,27 @@
           </header>
           <nav class="pef-nav" aria-label="Schede applicazione">
             <span class="pef-arrow" aria-hidden="true"></span>
-            <span class="pef-home" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M.8 6.3 6 1.2l5.2 5.1M2.2 5v6.3h7.6V5M4.6 11.3V8h2.8v3.3"/></svg></span>
+            <button id="home-tab" class="pef-home" aria-label="Home"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M.8 6.3 6 1.2l5.2 5.1M2.2 5v6.3h7.6V5M4.6 11.3V8h2.8v3.3"/></svg></button>
             <button id="search-tab" class="pef-search" aria-label="Ricerca Pratica"><svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="5" cy="5" r="4.2"/><path d="m8 8 3.6 3.6"/></svg> Ricerca Pratica <i aria-hidden="true"></i></button>
             <button id="list-tab" aria-label="Elenco Pratiche"><svg class="pef-grid" viewBox="0 0 13 11" aria-hidden="true"><rect width="13" height="11"/><path d="M0 3.5h13M0 7.5h13M4.5 3v8M8.5 3v8"/></svg> Elenco Pratiche <i aria-hidden="true"></i></button>
             <button id="practice-tab" hidden><svg class="pef-gear" viewBox="0 0 12 12" aria-hidden="true"><circle class="pef-teeth" cx="6" cy="6" r="5"/><circle cx="6" cy="6" r="3.6"/><circle cx="6" cy="6" r="1.5"/></svg> <span id="practice-caption"></span> <i aria-hidden="true"></i></button>
             <span class="pef-arrow right" aria-hidden="true"></span>
           </nav>
+          <section id="home-view" aria-label="Home" hidden></section>
+          <section id="search-view" aria-label="Ricerca Pratica" hidden></section>
           <section id="list-view" aria-label="Elenco Pratiche"></section>
           <section id="detail-view" aria-label="Dettaglio Pratica" hidden></section>
+          <!-- PEF 2.0 asks this over its frame on some openings (video 18:12); the trigger is unknown: ?modal=1. -->
+          <div class="pm-veil" hidden>
+            <div class="pm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="pm-message">
+              <div class="pm-title"></div>
+              <div id="pm-message" class="pm-message">PDCGPC0002A :Attenzione! Pratica chiusa in modo anomalo oppure già in lavorazione su altro terminale, continuare?</div>
+              <div class="pm-buttons"><button type="button" class="pd-bluebtn">Annulla</button><button type="button" class="pd-bluebtn">Conferma</button></div>
+            </div>
+          </div>
+          <!-- Loading states at native scale (loading.css): a practice opening under the tab strip, the start splash. -->
+          <div id="shell-cover" class="ld-cover" hidden><i class="ld-ring" role="progressbar" aria-label="Caricamento in corso"></i></div>
+          <div id="splash" class="ld-splash" hidden><div class="ld-logo"><strong class="pef-brand">BPER</strong></div><svg class="ld-arc" viewBox="0 0 22 22" role="progressbar" aria-label="Caricamento in corso"><circle cx="11" cy="11" r="9.5"/></svg></div>
         </div>
         <img id="original" alt="" draggable="false" hidden>
       </div>
@@ -46,6 +69,7 @@
       <select id="practice">
         <option value="">Tutte le pratiche</option>
       </select>
+      <div id="catalogue"></div>
       <label for="mode" hidden>Visualizzazione</label>
       <select id="mode" hidden>
         <option value="interactive">Replica interattiva</option>
@@ -68,7 +92,9 @@
         <button id="next-screen" type="button">Avanti →</button>
       </div>
       <button type="button" id="open-capture">Apri finestra di cattura</button>
+      <button type="button" id="open-scheda" style="margin-top: 8px" disabled>Apri Scheda Privati</button>
       <a id="truth-download" download="dati.csv" hidden>Scarica dati.csv</a>
+      <a id="practice-truth-download" download="practice-truth.csv" hidden>Scarica verità pratica</a>
       <p>Per l’edge-agent apri la finestra di cattura. Usa i tasti da <kbd>1</kbd> a <kbd>9</kbd> per richiamare una schermata.</p>
     </aside>
   </main>

@@ -1,0 +1,64 @@
+/* Loading states (loading.js, app.js, list.js). Lengths are reference px like the rest of the site: one video px of
+   the 1350 px recording is 0.687 of them (0.948 CSS px at 100%, divided by the 1.38 zoom). They only ever show at
+   native scale: ?capture=1 and ?loading=off skip them. */
+
+/* The shell's ring (frames 01m57s, 18m11s): a teal three-quarter ring, 50 video px across with a 4.5 px stroke,
+   turning clockwise about once a second (+95 degrees every 0.25 s at 8 fps). Placed by its centre. */
+.ld-ring {
+  position: absolute; z-index: 4; box-sizing: border-box; width: 34.4px; height: 34.4px; margin: -17.2px 0 0 -17.2px;
+  border: 3.1px solid #1f919b; border-top-color: transparent; border-radius: 50%;
+  animation: ld-turn .95s linear infinite; pointer-events: none;
+}
+@keyframes ld-turn { to { transform: rotate(1turn); } }
+
+/* ---- Opening a practice (spec 7): the area under the tab strip, blank with the ring, then the practice page under a
+   half-transparent veil of the page colour (fit on the 8 fps frames: 0.50 towards #fdfbf9). ---- */
+.ld-cover { position: absolute; top: 104px; left: 0; right: 0; bottom: 0; z-index: 9; background: #fdfbf9; }
+/* 24 CSS px under the middle of the area, in the main recording (100%) and in MOL 01 (110%) alike. */
+.ld-cover .ld-ring { left: 50%; top: calc(50% + 17.4px); }
+:is(#application[data-loading="partial"], #application[data-loading="washed"], #application[data-loading="settle"]) .ld-cover {
+  background: rgba(253, 251, 249, .5);
+}
+:is(#application[data-loading="settle"], #application[data-loading="quiet"]) .ld-cover .ld-ring { display: none; }
+/* Half drawn (frame 02m01s): the page before its images, without navy bars and blue buttons, whose white text goes
+   with them. app.js marks the elements that have a dark or image background. */
+#detail-view .ld-bare { background: transparent !important; }
+#detail-view .ld-bare-icons::before, #detail-view .ld-bare-icons::after { background-image: none !important; }
+/* The grey of the "già in lavorazione" dialog comes up in about 0.4 s (18:12.4-18:12.75). */
+.pm-veil.ld-fade { animation: ld-fade .375s linear; }
+@keyframes ld-fade { from { opacity: 0; } }
+
+/* ---- Application start (main recording 01:32.75, 17:57; MOL 01 01:12.6): a white page with the logo, half as big
+   again as the header's, and a small mint ring under it; the logo comes a quarter of a second after the ring. ---- */
+.ld-splash { position: absolute; inset: 0; z-index: 11; background: #fff; }
+.ld-logo { position: absolute; left: 50%; top: calc(50% - 28.6px); transform: translate(-50%, -50%); }
+.ld-logo .pef-brand { display: block; zoom: 1.54; }
+#application[data-loading="boot"] .ld-logo { visibility: hidden; }
+.ld-arc { position: absolute; left: 50%; top: calc(50% + 53px); width: 22px; height: 22px; margin: -11px 0 0 -11px; animation: ld-turn 1.4s linear infinite; }
+.ld-arc circle { fill: none; stroke: #61cfa8; stroke-width: 2.2; stroke-dasharray: 1 60; animation: ld-dash 1.4s ease-in-out infinite; }
+@keyframes ld-dash {
+  0% { stroke-dasharray: 1 60; stroke-dashoffset: 0; }
+  50% { stroke-dasharray: 45 60; stroke-dashoffset: -8; }
+  100% { stroke-dasharray: 45 60; stroke-dashoffset: -59; }
+}
+/* The home while it loads (spec 18 item 6, MOL 01 01:12.9-01:13.1): its panel at a fifth of its contrast, the two
+   buttons already whole; the header has the operator's name but not the codes or the kebab, the tab strip neither its
+   arrows nor the house in the home tab. */
+#application[data-loading="home"] :is(#operator-codes, .pef-menu-dots, .pef-arrow, #home-tab svg) { visibility: hidden; }
+#application[data-loading="home"] .hm-panel { opacity: .2; }
+
+/* ---- The row menu's wait (18:10.6-18:11.1): header and row at 45% of their contrast, backgrounds unchanged. ---- */
+.bl-results[aria-busy="true"] :is(th, td) { color: rgba(93, 96, 97, .45); }
+.bl-results[aria-busy="true"] :is(th, td) > * { opacity: .45; }
+
+/* ---- PEF 2.0 request (spec 9, frame 05m00s): a red line under the mast and a navy ring over the frame. ---- */
+.ld-wait { position: absolute; top: 16px; right: 4px; color: #e00; font: 7.2px/8px Arial, sans-serif; white-space: nowrap; }
+.ld-spinner {
+  position: absolute; z-index: 3; width: 24.7px; height: 24.7px; margin: -12.35px 0 0 -12.35px; border-radius: 50%;
+  background: radial-gradient(circle, transparent 7.3px, #fff 7.5px 8.3px, transparent 8.5px),
+    conic-gradient(from 200deg, #e6f0f9, #3a75ae 9%, #174a85 25%, #0f3a70 60%, #0c3163 92%, #e6f0f9);
+  -webkit-mask: radial-gradient(circle, transparent 7.2px, #000 7.4px);
+  mask: radial-gradient(circle, transparent 7.2px, #000 7.4px);
+  box-shadow: inset 0 0 0 .9px #fff;
+  animation: ld-turn .9s linear infinite;
+}

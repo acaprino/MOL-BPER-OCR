@@ -1,0 +1,4748 @@
+{
+ "format": "bper-emulator-profiles/1",
+ "profiles": [
+  {
+   "key": "gen-001",
+   "ndg": "95831207",
+   "name": "GUALANDRI SIMONE",
+   "number": "99104217",
+   "scenario": "Acquisto prima casa",
+   "branch": "9104",
+   "branchName": "MODENA CENTRO",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "14/10/2026",
+   "created": "14/10/2026",
+   "assigned": "15/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95831207",
+     "name": "GUALANDRI SIMONE",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96104538",
+     "name": "BERSELLI CHIARA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910382\n- Valore immobile presunto: 230.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 168.000,00 €\nRichiesta di mutuo prima casa di € 168.000, durata 25 anni, per l'acquisto di un trilocale con autorimessa a Modena, zona Crocetta. Compromesso registrato, rogito previsto entro febbraio 2027; perizia in corso, valore di stima atteso in linea con il prezzo di € 230.000.\nRichiedente di 34 anni, dipendente a tempo indeterminato presso CORVINA SISTEMI S.R.L. dal 2017 come sviluppatore software, netto mensile € 2.180 su 14 mensilità. La cointestataria, convivente, è infermiera presso una struttura privata con netto di € 1.650 mensili. Attualmente in affitto con canone di € 720, che cesserà con l'acquisto.\nDa CRIF un finanziamento auto con rata di € 245, residuo 19 mesi. Rata del mutuo stimata in € 780, rapporto rata/reddito complessivo al 24%. Anticipo coperto con risparmi propri e donazione dei genitori della cointestataria.",
+   "creditTotal": "168.000",
+   "guaranteeTotal": "252.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9104 0017 00050001",
+     "description": "M. CASA",
+     "due": "31/10/2051",
+     "amount": "168.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310101 - MUTUO ACQUISTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "252.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95831207",
+    "schedaId": "00088500001",
+    "name": "GUALANDRI SIMONE",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "10/11/2026 10:42 (13 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9104-0000-0000 MODENA CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9104-0000-0000 MODENA CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (SERVIZI)",
+     "dal": "MARZO 2017",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "30.520",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "CORVINA SISTEMI S.R.L.",
+     "rating_ufficiale": "3",
+     "score_cgs": "1",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "21.450",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto della prima casa di € 168.000, durata 25 anni.\n\nIl cliente è assunto presso CORVINA SISTEMI S.R.L. dal marzo 2017 con contratto a tempo indeterminato.\n\nReddito netto desunto dalle ultime buste paga e dalla CU 2026 (anno d'imposta 2025): € 2.180 mensili per 14 mensilità.\n\nIl nucleo vive in un immobile condotto in locazione dal 2021, con canone mensile di € 720.\n\nDa CRIF risulta un finanziamento auto con rata mensile di € 245, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "10/11/2026 10:42 (13 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600037",
+     "employerFrom": "MARZO 2017",
+     "employerTo": "--------- ----",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "AFFITTO",
+     "housingFrom": "2021"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-002",
+   "ndg": "95277461",
+   "name": "MARANGONI ELVIO",
+   "number": "99106653",
+   "scenario": "Riqualificazione energetica",
+   "branch": "9108",
+   "branchName": "TORINO SAN PAOLO",
+   "abi": "5387",
+   "assignee": "903036",
+   "assigneeName": "BPI PRIVATI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Laura Costaferma",
+   "type": "BPI Privati",
+   "typeCode": "BPS",
+   "typeName": "BPI Privati Standard",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "29/09/2026",
+   "created": "29/09/2026",
+   "assigned": "01/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95277461",
+     "name": "MARANGONI ELVIO",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910417\n- Valore immobile presunto: 165.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 18.500,00 €\nIl cliente chiede un prestito di € 18.500 in 7 anni per la sostituzione della caldaia con pompa di calore e la coibentazione del sottotetto dell'abitazione di proprietà a Torino, borgo San Paolo. Preventivi della ditta installatrice allegati, detrazione fiscale già verificata con il professionista.\nRichiedente di 67 anni, pensionato con pensione anticipata INPS dal 2024, netto mensile € 1.940 su 13 mensilità. Vive con la moglie, titolare di pensione di reversibilità. Nessun altro finanziamento in corso, CRIF senza segnalazioni. Rata di circa € 250, sostenibile.",
+   "creditTotal": "18.500",
+   "guaranteeTotal": "0",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9108 0017 00050003",
+     "description": "P. ENERGIA",
+     "due": "30/09/2033",
+     "amount": "18.500",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95277461",
+    "schedaId": "00088500002",
+    "name": "MARANGONI ELVIO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "04/11/2026 15:18 (19 giorni fa)",
+     "user": "03036 LAURA COSTAFERMA",
+     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03036 LAURA COSTAFERMA",
+     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "PENSIONATO",
+     "dal": "MAGGIO 2024",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "25.220",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "9.100",
+     "note_scheda_privati": "\nRichiesta di prestito per l'efficientamento energetico dell'abitazione di € 18.500, durata 7 anni.\n\nIl cliente percepisce dal maggio 2024 una pensione anticipata erogata dall'INPS.\n\nCliente della scrivente Filiale dal 1998, con redditi canalizzati sul conto.\n\nIl cliente risiede con la coniuge nell'immobile di proprietà dal 1991.\n",
+     "ultima_validazione_scheda": "04/11/2026 15:18 (19 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "1991"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-003",
+   "ndg": "95406318",
+   "name": "DELL'ACQUAFREDDA MARIA ANTONIETTA",
+   "number": "99102874",
+   "scenario": "Surroga",
+   "branch": "9102",
+   "branchName": "BOLOGNA SARAGOZZA",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "DEL",
+   "date": "26/08/2026",
+   "created": "26/08/2026",
+   "assigned": "27/08/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95406318",
+     "name": "DELL'ACQUAFREDDA MARIA ANTONIETTA",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910291\n- Valore immobile presunto: 245.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 132.418,37 €\nSurroga del mutuo in essere presso altro istituto, debito residuo di € 132.418,37 da conteggio di estinzione aggiornato, nuova durata 15 anni a tasso fisso. Immobile a Bologna, quartiere Saragozza, appartamento di 110 mq di proprietà della cliente dal 2009.\nRichiedente di 52 anni, lavoratrice autonoma: architetto con studio proprio dal 2004, iscritta all'albo. Reddito netto da dichiarazioni 2024 e 2025 pari a € 58.400 medi annui. Nessun'altra esposizione oltre al mutuo da surrogare, regolarmente pagato. Fascicolo completo, proposta trasmessa per delibera.",
+   "creditTotal": "132.418,37",
+   "guaranteeTotal": "198.627,55",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9102 0017 00050005",
+     "description": "M. SURROGA",
+     "due": "31/08/2041",
+     "amount": "132.418,37",
+     "operation": "In Lavoraz.",
+     "tooltip": "310202 - MUTUO PER PORTABILITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "198.627,55",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95406318",
+    "schedaId": "00088500003",
+    "name": "DELL'ACQUAFREDDA MARIA ANTONIETTA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "12/11/2026 09:36 (11 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "LIBERO PROFESSIONISTA",
+     "dal": "GIUGNO 2004",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "58.400",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "2",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per la surroga del mutuo in essere presso altro istituto di € 132.418,37, durata 15 anni.\n\nLa cliente esercita la libera professione di architetto dal 2004, con studio a Bologna.\n\nReddito desunto dalle dichiarazioni 2024 e 2025: € 58.400 netti annui.\n\nLa cliente risiede con i due figli nell'immobile di proprietà dal 2009.\n\nAggiornamento del 12/11: acquisito l'estratto conto del mutuo da surrogare, confermati i dati reddituali indicati in scheda.\n",
+     "ultima_validazione_scheda": "12/11/2026 09:36 (11 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2009"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-004",
+   "ndg": "95719043",
+   "name": "FIORDALISI MATTEO",
+   "number": "99107105",
+   "scenario": "Prima casa con garanzia pubblica",
+   "branch": "9103",
+   "branchName": "ROMA NOMENTANA",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "20/10/2026",
+   "created": "20/10/2026",
+   "assigned": "22/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95719043",
+     "name": "FIORDALISI MATTEO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910455\n- Valore immobile presunto: 173.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 152.000,00 €\nMutuo prima casa con garanzia del Fondo CONSAP all'80%, importo € 152.000, durata 30 anni. Acquisto di un bilocale a Roma, zona Talenti, prezzo € 172.500; finanziamento all'88% del valore. ISEE 2026 acquisito, requisiti under 36 verificati.\nRichiedente di 29 anni, dipendente a tempo determinato presso l'ISTITUTO COMPRENSIVO MONTESERRA come docente di sostegno, contratto annuale fino al 31/08/2027, terzo rinnovo consecutivo. Netto mensile € 1.720 su 13 mensilità. Vive in affitto con canone di € 680. Nessun finanziamento in corso.",
+   "creditTotal": "152.000",
+   "guaranteeTotal": "349.600",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9103 0017 00050007",
+     "description": "M.CONSAP >=80%",
+     "due": "31/10/2056",
+     "amount": "152.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "121.600",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "228.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95719043",
+    "schedaId": "00088500004",
+    "name": "FIORDALISI MATTEO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "17/11/2026 11:05 (6 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO PUBBLICA AMMINISTRAZIONE",
+     "dal": "SETTEMBRE 2024",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "22.360",
+     "tipo_contratto": "TEMPO DETERMINATO",
+     "datore_di_lavoro_anagrafica": "ISTITUTO COMPRENSIVO MONTESERRA",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per l'acquisto della prima casa con garanzia del Fondo di € 152.000, durata 30 anni.\n\nIl cliente lavora presso l'ISTITUTO COMPRENSIVO MONTESERRA dal settembre 2024 con contratto a tempo determinato in scadenza ad agosto 2027.\n\nNuovo cliente della scrivente Filiale, redditi non ancora canalizzati presso la banca.\n\nIl cliente vive da solo in un immobile in locazione dal 2022, canone mensile € 680.\n",
+     "ultima_validazione_scheda": "17/11/2026 11:05 (6 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600077",
+     "employerFrom": "SETTEMBRE 2024",
+     "employerTo": "AGOSTO 2027",
+     "employerRegistered": true,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "NON SO",
+     "housing": "AFFITTO",
+     "housingFrom": "2022"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-005",
+   "ndg": "95962574",
+   "name": "TADDEUCCI LORENZO",
+   "number": "99108342",
+   "scenario": "Acquisto con lavori",
+   "branch": "9109",
+   "branchName": "FIRENZE RIFREDI",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "09/11/2026",
+   "created": "09/11/2026",
+   "assigned": "11/11/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95962574",
+     "name": "TADDEUCCI LORENZO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96338105",
+     "name": "NOCENTINI SARA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910503\n- Valore immobile presunto: 330.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 222.500,00 €\nAcquisto e ristrutturazione di una porzione di colonica a Sesto Fiorentino: mutuo di € 214.000 in 25 anni e linea separata di € 8.500 in 5 anni per le spese tecniche e gli oneri di avvio cantiere. Capitolato e computo metrico del geometra allegati, erogazione a stato avanzamento lavori.\nRichiedente di 38 anni, dipendente a tempo indeterminato presso CASA DI CURA VILLA CORNIOLA S.R.L. come tecnico di radiologia, netto € 2.050 su 13 mensilità. Cointestataria convivente, impiegata comunale, netto € 1.780. In corso la verifica preliminare della documentazione di reddito.\nCoppia in affitto a Firenze con canone di € 850. CRIF: carta revolving con utilizzo di € 1.200, nessun altro prestito.",
+   "creditTotal": "222.500",
+   "guaranteeTotal": "321.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9109 0017 00050009",
+     "description": "M. ACQ. RISTR.",
+     "due": "30/11/2051",
+     "amount": "214.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310606 - ACQUISTO E RISTRUTTURAZIONE",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9109 0018 00050010",
+     "description": "P. SPESE",
+     "due": "30/11/2031",
+     "amount": "8.500",
+     "operation": "In Lavoraz.",
+     "tooltip": "315014 - PRESTITO PER SPESE TECNICHE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "321.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": null,
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-006",
+   "ndg": "95153896",
+   "name": "DI TOMMASO ARMANDO",
+   "number": "99103519",
+   "scenario": "Liquidità ipotecaria",
+   "branch": "9106",
+   "branchName": "PESCARA PORTANUOVA",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "SOSP",
+   "phase": "IST",
+   "date": "18/05/2026",
+   "created": "18/05/2026",
+   "assigned": "20/05/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "subjects": [
+    {
+     "ndg": "95153896",
+     "name": "DI TOMMASO ARMANDO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96471230",
+     "name": "MARCHEGIANI ROSA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910166\n- Valore immobile presunto: 210.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 55.000,00 €\nFinanziamento ipotecario per liquidità di € 55.000, durata 10 anni, su villino di proprietà a Montesilvano. Finalità: sostegno al figlio per l'avvio di un'attività e saldo di spese mediche.\nRichiedente di 63 anni, pensionato ex dipendente pubblico, pensione anticipata INPS netta € 2.310 su 13 mensilità; la coniuge cointestataria percepisce una pensione di € 980. Nessun finanziamento in corso. Istruttoria sospesa in attesa della relazione notarile ventennale e del certificato di agibilità.",
+   "creditTotal": "55.000",
+   "guaranteeTotal": "82.500",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9106 0017 00050011",
+     "description": "M. LIQUID.",
+     "due": "31/05/2036",
+     "amount": "55.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310707 - FINANZIAMENTO IPOTECARIO PER LIQUIDITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "82.500",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95153896",
+    "schedaId": "00088500006",
+    "name": "DI TOMMASO ARMANDO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "03/11/2026 16:20 (20 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "PENSIONATO",
+     "dal": "GENNAIO 2025",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "30.030",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "12.740",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per esigenze di liquidità con ipoteca sull'abitazione di € 55.000, durata 10 anni.\n\nIl cliente percepisce dal gennaio 2025 una pensione anticipata erogata dall'INPS.\n\nCliente della scrivente Filiale dal 2003, con redditi canalizzati sul conto.\n\nIl cliente risiede con la coniuge nell'immobile di proprietà dal 1996.\n\nAggiornamento del 03/11: acquisito l'ultimo cedolino della pensione, confermati i dati reddituali indicati in scheda.\n",
+     "ultima_validazione_scheda": "03/11/2026 16:20 (20 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "1996"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-007",
+   "ndg": "95580729",
+   "name": "BOCCHIALINI ILARIA",
+   "number": "99105788",
+   "scenario": "Acquisto prima casa",
+   "branch": "9111",
+   "branchName": "PARMA OLTRETORRENTE",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "15/09/2026",
+   "created": "15/09/2026",
+   "assigned": "16/09/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95580729",
+     "name": "BOCCHIALINI ILARIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96215847",
+     "name": "AZZALI GIANLUCA",
+     "role": "Cointestatario"
+    },
+    {
+     "ndg": "97045126",
+     "name": "BOCCHIALINI ERMES",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910324\n- Valore immobile presunto: 188.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 136.000,00 €\nMutuo di € 136.000 in 20 anni per l'acquisto della prima casa a Parma, quartiere Oltretorrente, appartamento al secondo piano con cantina. Rogito fissato per il 18/12/2026.\nRichiedente di 41 anni, senza datore di lavoro: casalinga, percepisce i canoni di un monolocale ereditato a Collecchio, netti € 9.600 annui. Il reddito principale è del coniuge cointestatario, magazziniere a tempo indeterminato con netto di € 1.950 su 14 mensilità. Garante il padre della richiedente, pensionato con immobili di proprietà.\nNucleo di quattro persone, oggi in affitto con canone di € 640. CRIF: prestito personale del coniuge con rata di € 180, scadenza 2027.",
+   "creditTotal": "136.000",
+   "guaranteeTotal": "231.200",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9111 0017 00050013",
+     "description": "M. CASA",
+     "due": "30/09/2046",
+     "amount": "136.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310101 - MUTUO ACQUISTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97045126 BOCCHIALINI ERMES",
+     "amount": "27.200",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "204.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95580729",
+    "schedaId": "00088500007",
+    "name": "BOCCHIALINI ILARIA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "05/11/2026 10:12 (18 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "CASALINGA",
+     "dal": "APRILE 2019",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "9.600",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "3",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "27.300",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto della prima casa di € 136.000, durata 20 anni.\n\nLa cliente non svolge attività lavorativa; percepisce i canoni di locazione di un immobile ereditato nel 2019.\n\nIl coniuge, convivente e cointestatario, percepisce un reddito netto di € 1.950 mensili per 14 mensilità.\n\nIl nucleo vive in un immobile condotto in locazione dal 2014, con canone mensile di € 640.\n\nDa CRIF risulta un prestito personale del coniuge con rata mensile di € 180, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "05/11/2026 10:12 (18 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "AFFITTO",
+     "housingFrom": "2014"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-008",
+   "ndg": "95384502",
+   "name": "PASINETTI OSCAR",
+   "number": "99106091",
+   "scenario": "Acquisto seconda casa",
+   "branch": "9105",
+   "branchName": "BRESCIA OVEST",
+   "abi": "5387",
+   "assignee": "903024",
+   "assigneeName": "BPI MUTUI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Stefano Montelago",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "06/10/2026",
+   "created": "06/10/2026",
+   "assigned": "07/10/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "subjects": [
+    {
+     "ndg": "95384502",
+     "name": "PASINETTI OSCAR",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910398\n- Valore immobile presunto: 205.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 118.000,00 €\nMutuo di € 118.000, durata 15 anni, per l'acquisto di una seconda abitazione a Salò, sul lago di Garda, da destinare in parte a locazione turistica. Anticipo di € 87.000 versato con mezzi propri; valore di perizia € 205.000.\nRichiedente di 47 anni, lavoratore autonomo: titolare di un'impresa artigiana di serramenti in alluminio dal 2008, reddito netto medio 2024-2025 di € 61.200. Vive con la famiglia in casa di proprietà già libera da mutuo. Leasing strumentale con canone di € 690, intestato alla ditta.",
+   "creditTotal": "118.000",
+   "guaranteeTotal": "177.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9105 0017 00050015",
+     "description": "M. II CASA",
+     "due": "31/10/2041",
+     "amount": "118.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310404 - MUTUO SECONDA ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "177.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95384502",
+    "schedaId": "00088500008",
+    "name": "PASINETTI OSCAR",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "06/11/2026 14:47 (17 giorni fa)",
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9105-0000-0000 BRESCIA OVEST",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9105-0000-0000 BRESCIA OVEST",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "ARTIGIANO",
+     "dal": "FEBBRAIO 2008",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "61.200",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "3",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "14.300",
+     "note_scheda_privati": "\nRichiesta di mutuo per l'acquisto di una seconda abitazione di € 118.000, durata 15 anni.\n\nIl cliente è titolare di un'impresa artigiana di serramenti in alluminio dal 2008.\n\nReddito desunto dalle dichiarazioni 2024 e 2025: € 61.200 netti annui.\n\nIl cliente risiede con il proprio nucleo familiare nell'immobile di proprietà dal 2011.\n",
+     "ultima_validazione_scheda": "06/11/2026 14:47 (17 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2011"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-009",
+   "ndg": "95028467",
+   "name": "PATTI ADA",
+   "number": "99105236",
+   "scenario": "Riqualificazione energetica",
+   "branch": "9110",
+   "branchName": "CATANIA BORGO",
+   "abi": "5387",
+   "assignee": "903060",
+   "assigneeName": "BPI PRIVATI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Marta Fonteluna",
+   "type": "BPI Privati",
+   "typeCode": "BPS",
+   "typeName": "BPI Privati Standard",
+   "state": "LAV",
+   "phase": "DEL",
+   "date": "21/09/2026",
+   "created": "21/09/2026",
+   "assigned": "22/09/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95028467",
+     "name": "PATTI ADA",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910347\n- Valore immobile presunto: 190.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 14.200,00 €\nPrestito di € 14.200 in 5 anni per l'installazione di un impianto fotovoltaico da 4,5 kW con accumulo sull'abitazione di proprietà a Catania. Preventivo dell'installatore e pratica di connessione allegati.\nRichiedente di 44 anni, dipendente a tempo indeterminato presso SUPERMERCATI VERDELAGO S.P.A. come capo reparto, netto € 1.870 su 14 mensilità. Mutuo casa in corso presso la nostra banca con rata di € 520, regolare. Fascicolo completo, proposta trasmessa per delibera.",
+   "creditTotal": "14.200",
+   "guaranteeTotal": "0",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9110 0017 00050017",
+     "description": "P. ENERGIA",
+     "due": "30/09/2031",
+     "amount": "14.200",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95028467",
+    "schedaId": "00088500009",
+    "name": "PATTI ADA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "13/11/2026 09:58 (10 giorni fa)",
+     "user": "03060 MARTA FONTELUNA",
+     "branch": "9110-0000-0000 CATANIA BORGO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03060 MARTA FONTELUNA",
+     "branch": "9110-0000-0000 CATANIA BORGO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (COMMERCIO)",
+     "dal": "APRILE 2012",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "26.180",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "SUPERMERCATI VERDELAGO S.P.A.",
+     "rating_ufficiale": "4",
+     "score_cgs": "2",
+     "nr_altri_componenti_nucleo": "2",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "16.900",
+     "note_scheda_privati": "\nRichiesta di prestito per l'efficientamento energetico dell'abitazione di € 14.200, durata 5 anni.\n\nAssunta presso SUPERMERCATI VERDELAGO S.P.A. a tempo determinato da ottobre 2009, a tempo indeterminato da aprile 2012.\n\nDa CRIF risulta il mutuo casa in essere presso la banca con rata mensile di € 520, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "13/11/2026 09:58 (10 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600057",
+     "employerFrom": "OTTOBRE 2009",
+     "employerTo": "--------- ----",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2016"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-010",
+   "ndg": "95647310",
+   "name": "CASSANELLO ARTURO",
+   "number": "99106727",
+   "scenario": "Ristrutturazione",
+   "branch": "9112",
+   "branchName": "GENOVA LEVANTE",
+   "abi": "5387",
+   "assignee": "903024",
+   "assigneeName": "BPI MUTUI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Stefano Montelago",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "01/10/2026",
+   "created": "01/10/2026",
+   "assigned": "05/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95647310",
+     "name": "CASSANELLO ARTURO",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910421\n- Valore immobile presunto: 240.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 78.000,00 €\nRistrutturazione dell'appartamento di proprietà a Genova Nervi: mutuo di € 62.000 in 10 anni per il rifacimento di bagni, impianti e quota della facciata condominiale, e prestito di € 16.000 in 7 anni per serramenti e caldaia a condensazione. Preventivi e delibera condominiale allegati.\nRichiedente di 64 anni, pensionato, già quadro di un'azienda portuale, pensione anticipata INPS netta di € 2.640 su 13 mensilità. Vive con la moglie nell'immobile oggetto dei lavori. Nessun'altra rata in corso.",
+   "creditTotal": "78.000",
+   "guaranteeTotal": "93.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9112 0017 00050019",
+     "description": "M. RISTR.",
+     "due": "31/10/2036",
+     "amount": "62.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310303 - MUTUO RISTRUTTURAZIONE",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9112 0018 00050020",
+     "description": "P. ENERGIA",
+     "due": "31/10/2033",
+     "amount": "16.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "93.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95647310",
+    "schedaId": "00088500010",
+    "name": "CASSANELLO ARTURO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "09/11/2026 11:30 (14 giorni fa)",
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "PENSIONATO",
+     "dal": "MARZO 2024",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "34.320",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per la ristrutturazione dell'abitazione di € 62.000, durata 10 anni, e prestito energia di € 16.000.\n\nIl cliente percepisce dal marzo 2024 una pensione anticipata erogata dall'INPS.\n\nPosizione CRIF regolare; il cliente dichiara di non avere altri finanziamenti in corso.\n",
+     "ultima_validazione_scheda": "09/11/2026 11:30 (14 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "1993"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-011",
+   "ndg": "95503981",
+   "name": "SANTAGOSTINO VALVERDE GIAN MARCO",
+   "number": "99101946",
+   "scenario": "Prima casa con garanzia pubblica",
+   "branch": "9102",
+   "branchName": "BOLOGNA SARAGOZZA",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "DEL",
+   "date": "14/07/2026",
+   "created": "14/07/2026",
+   "assigned": "16/07/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95503981",
+     "name": "SANTAGOSTINO VALVERDE GIAN MARCO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96582014",
+     "name": "MINGARDI ELISA",
+     "role": "Cointestatario"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "97310842",
+     "name": "SANTAGOSTINO VALVERDE RENZO",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910118\n- Valore immobile presunto: 223.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 196.000,00 €\nRichiesta di mutuo prima casa con accesso al Fondo di garanzia CONSAP, quota di copertura dell'80% per richiedenti under 36, importo € 196.000 per una durata di 30 anni a tasso fisso. L'immobile è un appartamento di 92 mq al terzo piano con ascensore, in un condominio degli anni Settanta nel quartiere Navile a Bologna: ingresso, soggiorno con angolo cottura, due camere, bagno, ripostiglio, balcone verandato e cantina al piano seminterrato; classe energetica E, riscaldamento centralizzato con contabilizzazione del calore. Prezzo concordato € 222.000, compromesso registrato il 02/07/2026 con caparra confirmatoria di € 15.000 già versata dal conto della coppia; valore di perizia € 223.000, finanziamento pari a circa l'88% del valore. Il notaio incaricato ha già ricevuto la documentazione urbanistica, la planimetria catastale risulta conforme allo stato dei luoghi e non emergono gravami pregiudizievoli; il rogito è ipotizzato entro la metà di dicembre, compatibilmente con i tempi di rilascio della garanzia del Fondo.\nRichiedente di 33 anni, dipendente a tempo indeterminato presso ELETTROMECCANICA VALSORBA S.R.L. di Castel Maggiore come tecnico di collaudo, assunto a tempo determinato nel settembre 2016 e stabilizzato dal gennaio 2018, inquadramento al quinto livello del contratto metalmeccanico. Netto mensile medio di € 1.890 su 14 mensilità, rilevato dalle ultime tre buste paga e dalla CU 2026, senza considerare gli straordinari. La cointestataria, convivente da quattro anni, è impiegata amministrativa a tempo indeterminato presso uno studio commercialista di Bologna con netto di € 1.560 su 13 mensilità; anche per lei sono state acquisite buste paga e CU. Il reddito netto complessivo della coppia è quindi di circa € 46.700 annui, con ISEE ordinario 2026 di € 27.900, entro la soglia prevista per l'accesso prioritario al Fondo. Il datore di lavoro, cliente della banca, presenta bilanci in utile negli ultimi tre esercizi e un organico stabile di circa 140 addetti.\nLa coppia vive oggi in un bilocale in locazione a Bologna, zona Bolognina, con canone di € 750 mensili oltre alle spese condominiali, regolarmente pagato come risulta dai bonifici degli ultimi dodici mesi; il contratto verrà disdettato con il preavviso di sei mesi già comunicato al locatore. Da CRIF risultano un prestito finalizzato per l'acquisto dell'auto intestato al richiedente, con rata di € 198 e scadenza aprile 2028, e una carta di credito a saldo della cointestataria, entrambi senza ritardi; nessuna segnalazione in Centrale Rischi. La rata del nuovo mutuo, calcolata al tasso di delibera, è di circa € 730 mensili: sommata al finanziamento auto porta il rapporto rata/reddito al 24% del reddito netto complessivo della coppia. Il conto della coppia evidenzia un risparmio medio di circa € 900 al mese negli ultimi due anni, senza sconfinamenti.\nA ulteriore presidio interviene come garante il padre del richiedente, pensionato ex artigiano, proprietario dell'abitazione in cui risiede a San Lazzaro di Savena e di un garage, con pensione netta di € 1.780 mensili e nessun debito in essere; la fideiussione specifica è limitata al 20% dell'importo del mutuo. Le spese notarili, l'imposta sostitutiva e l'arredo sono coperti dai risparmi della coppia, depositati sul conto cointestato aperto presso la nostra filiale nel 2023, sul quale sono già canalizzati entrambi gli stipendi. Si propone il tasso fisso per l'intera durata, con polizza incendio e scoppio vincolata a favore della banca; la polizza a protezione del credito, facoltativa, non è stata sottoscritta. Fascicolo completo e verificato, prenotazione della garanzia del Fondo confermata dal gestore: proposta trasmessa per delibera con parere favorevole della filiale.",
+   "creditTotal": "196.000",
+   "guaranteeTotal": "490.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9102 0017 00050021",
+     "description": "M.CONSAP >=80%",
+     "due": "31/07/2056",
+     "amount": "196.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "156.800",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "294.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G3",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97310842 SANTAGOSTINO VALVERDE RENZO",
+     "amount": "39.200",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95503981",
+    "schedaId": "00088500011",
+    "name": "SANTAGOSTINO VALVERDE GIAN MARCO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "30/10/2026 12:15 (24 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "OPERAIO IMPRESE PRIVATE (INDUSTRIA)",
+     "dal": "GENNAIO 2018",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "26.460",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "ELETTROMECCANICA VALSORBA S.R.L.",
+     "rating_ufficiale": "3",
+     "score_cgs": "1",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "20.280",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto della prima casa con garanzia del Fondo di € 196.000, durata 30 anni.\n\nAssunto presso ELETTROMECCANICA VALSORBA S.R.L. a tempo determinato da settembre 2016, a tempo indeterminato da gennaio 2018.\n\nLa cointestataria, convivente del cliente, percepisce un reddito netto di € 1.560 mensili.\n\nIl nucleo vive in un immobile condotto in locazione dal 2022, con canone mensile di € 750.\n\nDa CRIF risulta un finanziamento in corso con rata mensile di € 198, regolarmente rimborsato.\n\nAggiornamento del 30/10: acquisita l'ultima busta paga, confermati i dati reddituali indicati in scheda.\n",
+     "ultima_validazione_scheda": "30/10/2026 12:15 (24 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600117",
+     "employerFrom": "SETTEMBRE 2016",
+     "employerTo": "--------- ----",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "AFFITTO",
+     "housingFrom": "2022"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-012",
+   "ndg": "95291638",
+   "name": "SERRELI NICOLÒ",
+   "number": "99107862",
+   "scenario": "Acquisto prima casa",
+   "branch": "9107",
+   "branchName": "CAGLIARI CENTRO",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "26/10/2026",
+   "created": "26/10/2026",
+   "assigned": "27/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95291638",
+     "name": "SERRELI NICOLÒ",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "97128459",
+     "name": "SERRELI ANTONELLO",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910472\n- Valore immobile presunto: 160.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 124.000,00 €\nAcquisto della prima casa a Quartu Sant'Elena, appartamento di 70 mq in palazzina di recente costruzione: mutuo di € 124.000 in 30 anni, pari al 77% del valore di perizia di € 160.000. Anticipo e spese coperti con risparmi propri e un contributo dei genitori.\nRichiedente di 27 anni, dipendente a tempo determinato presso AZIENDA OSPEDALIERA SAN CASTORIO come infermiere, contratto di 24 mesi in scadenza a febbraio 2027 e graduatoria del concorso a tempo indeterminato già pubblicata, in posizione utile. Netto € 1.780 su 13 mensilità. Garante il padre, dipendente a tempo indeterminato di un'impresa edile.\nVive con i genitori, nessun canone. CRIF senza finanziamenti in corso.",
+   "creditTotal": "124.000",
+   "guaranteeTotal": "210.800",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9107 0017 00050023",
+     "description": "M. CASA",
+     "due": "31/10/2056",
+     "amount": "124.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310101 - MUTUO ACQUISTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97128459 SERRELI ANTONELLO",
+     "amount": "24.800",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "186.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95291638",
+    "schedaId": "00088500012",
+    "name": "SERRELI NICOLÒ",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "18/11/2026 15:40 (5 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO PUBBLICA AMMINISTRAZIONE",
+     "dal": "MARZO 2025",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "23.140",
+     "tipo_contratto": "TEMPO DETERMINATO",
+     "datore_di_lavoro_anagrafica": "AZIENDA OSPEDALIERA SAN CASTORIO",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "2",
+     "di_cui_percepiscono_reddito": "2",
+     "importo_totale_annuo_nucleo": "41.000",
+     "note_scheda_privati": "\nRichiesta di mutuo per l'acquisto della prima casa di € 124.000, durata 30 anni.\n\nIl cliente lavora presso AZIENDA OSPEDALIERA SAN CASTORIO dal marzo 2025 con contratto a tempo determinato in scadenza a febbraio 2027.\n\nIl cliente risiede con i genitori nell'immobile di proprietà della famiglia dal 2018.\n\nPosizione CRIF regolare; il cliente dichiara di non avere altri finanziamenti in corso.\n",
+     "ultima_validazione_scheda": "18/11/2026 15:40 (5 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600087",
+     "employerFrom": "MARZO 2025",
+     "employerTo": "FEBBRAIO 2027",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2018"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-013",
+   "ndg": "06483157",
+   "name": "VACCARI LIDIA",
+   "number": "99108415",
+   "scenario": "Riqualificazione energetica",
+   "branch": "9104",
+   "branchName": "MODENA CENTRO",
+   "abi": "5387",
+   "assignee": "903012",
+   "assigneeName": "BPI PRIVATI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Irene Vallescura",
+   "type": "BPI Privati",
+   "typeCode": "BPS",
+   "typeName": "BPI Privati Standard",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "12/11/2026",
+   "created": "12/11/2026",
+   "assigned": "13/11/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "06483157",
+     "name": "VACCARI LIDIA",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910511\n- Valore immobile presunto: 140.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 12.800,00 €\nPrestito di € 12.800 in 5 anni per la sostituzione degli infissi e l'installazione di un climatizzatore a pompa di calore nell'appartamento di proprietà a Modena, zona Buon Pastore.\nRichiedente di 70 anni, pensionata: pensione di vecchiaia e pensione di reversibilità INPS per complessivi € 1.690 netti su 13 mensilità. Vedova, vive sola. Nessun finanziamento in corso. In corso la verifica preliminare della documentazione.",
+   "creditTotal": "12.800",
+   "guaranteeTotal": "0",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9104 0017 00050025",
+     "description": "P. ENERGIA",
+     "due": "30/11/2031",
+     "amount": "12.800",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [],
+   "role": "sintetica",
+   "scheda": null,
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-014",
+   "ndg": "95745219",
+   "name": "BOSSOLASCO FEDERICO",
+   "number": "99107254",
+   "scenario": "Acquisto con lavori",
+   "branch": "9108",
+   "branchName": "TORINO SAN PAOLO",
+   "abi": "5387",
+   "assignee": "903024",
+   "assigneeName": "BPI MUTUI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Stefano Montelago",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "19/10/2026",
+   "created": "19/10/2026",
+   "assigned": "21/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95745219",
+     "name": "BOSSOLASCO FEDERICO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96907316",
+     "name": "QUAGLIA MARTINA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910463\n- Valore immobile presunto: 265.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 185.400,00 €\nAcquisto di una casa semindipendente a Pianezza da ristrutturare: mutuo di € 176.000 in 20 anni e linea di € 9.400 in 5 anni per progettazione, direzione lavori e oneri comunali. Titolo edilizio già presentato, erogazione a stato avanzamento lavori.\nRichiedente di 45 anni, lavoratore autonomo: agente di commercio plurimandatario nel settore dell'arredamento dal 2011, reddito netto medio 2024-2025 di € 52.800. La cointestataria, convivente, è impiegata a tempo indeterminato con netto di € 1.720 su 14 mensilità.\nCoppia oggi in affitto a Torino con canone di € 780. In CRIF leasing dell'auto aziendale con rata di € 410, regolare.",
+   "creditTotal": "185.400",
+   "guaranteeTotal": "264.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9108 0017 00050027",
+     "description": "M. ACQ. RISTR.",
+     "due": "31/10/2046",
+     "amount": "176.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310606 - ACQUISTO E RISTRUTTURAZIONE",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9108 0018 00050028",
+     "description": "P. SPESE",
+     "due": "31/10/2031",
+     "amount": "9.400",
+     "operation": "In Lavoraz.",
+     "tooltip": "315014 - PRESTITO PER SPESE TECNICHE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "264.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95745219",
+    "schedaId": "00088500014",
+    "name": "BOSSOLASCO FEDERICO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "11/11/2026 17:05 (12 giorni fa)",
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "AGENTE DI COMMERCIO",
+     "dal": "MAGGIO 2011",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "52.800",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "2",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "24.080",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per acquisto e ristrutturazione dell'immobile di € 176.000, durata 20 anni, oltre a € 9.400 di spese tecniche.\n\nIl cliente esercita l'attività di agente di commercio plurimandatario dal 2011, con sede a Torino.\n\nReddito desunto dalle dichiarazioni 2024 e 2025: € 52.800 netti annui.\n\nLa cointestataria, convivente del cliente, percepisce un reddito netto di € 1.720 mensili.\n\nNuovo cliente della scrivente Filiale, redditi non ancora canalizzati presso la banca.\n",
+     "ultima_validazione_scheda": "11/11/2026 17:05 (12 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "SI",
+     "housing": "AFFITTO",
+     "housingFrom": "2018"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-015",
+   "ndg": "95218706",
+   "name": "CAPECCHI ROBERTO",
+   "number": "99104783",
+   "scenario": "Surroga",
+   "branch": "9109",
+   "branchName": "FIRENZE RIFREDI",
+   "abi": "5387",
+   "assignee": "903012",
+   "assigneeName": "BPI PRIVATI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Irene Vallescura",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "SOSP",
+   "phase": "IST",
+   "date": "08/06/2026",
+   "created": "08/06/2026",
+   "assigned": "10/06/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "subjects": [
+    {
+     "ndg": "95218706",
+     "name": "CAPECCHI ROBERTO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96650283",
+     "name": "BINI GIOVANNA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910247\n- Valore immobile presunto: 215.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 123.746,15 €\nSurroga del mutuo in essere presso altro istituto per il debito residuo di € 98.746,15, durata 20 anni, con contestuale finanziamento ipotecario di € 25.000 in 10 anni per il consolidamento di due prestiti personali e lavori di manutenzione straordinaria. Immobile a Campi Bisenzio, villetta a schiera di proprietà dei coniugi.\nRichiedente di 49 anni, dipendente a tempo indeterminato presso OFFICINE BRUSANTI SNC come saldatore dal 2003, netto € 1.760 su 13 mensilità; la coniuge cointestataria è collaboratrice scolastica con netto di € 1.380. Da CRIF due prestiti personali con rate di € 230 e € 175, da estinguere con la nuova liquidità.\nIstruttoria sospesa in attesa del conteggio di estinzione aggiornato della banca originaria e delle liberatorie dei prestiti.",
+   "creditTotal": "123.746,15",
+   "guaranteeTotal": "148.119,22",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9109 0017 00050029",
+     "description": "M. SURROGA",
+     "due": "30/06/2046",
+     "amount": "98.746,15",
+     "operation": "In Lavoraz.",
+     "tooltip": "310202 - MUTUO PER PORTABILITÀ",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9109 0018 00050030",
+     "description": "M. LIQUID.",
+     "due": "30/06/2036",
+     "amount": "25.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310707 - FINANZIAMENTO IPOTECARIO PER LIQUIDITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "148.119,22",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95218706",
+    "schedaId": "00088500015",
+    "name": "CAPECCHI ROBERTO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "02/11/2026 08:55 (21 giorni fa)",
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "OPERAIO IMPRESE PRIVATE (INDUSTRIA)",
+     "dal": "FEBBRAIO 2003",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "22.880",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "OFFICINE BRUSANTI SNC",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "3",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "17.940",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per la surroga del mutuo in essere di € 98.746,15, durata 20 anni, e liquidità di € 25.000.\n\nIl cliente è assunto presso OFFICINE BRUSANTI SNC dal febbraio 2003 con contratto a tempo indeterminato.\n\nIl nucleo risiede nell'immobile di proprietà dal 2010.\n\nDa CRIF risultano due prestiti personali con rate mensili di € 230 e € 175, da estinguere con l'operazione.\n",
+     "ultima_validazione_scheda": "02/11/2026 08:55 (21 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "0",
+     "employerFrom": "FEBBRAIO 2003",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "NON SO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2010"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-016",
+   "ndg": "95871542",
+   "name": "CAPORASO DEL VECCHIO MARIA ADELAIDE",
+   "number": "99102318",
+   "scenario": "Liquidità ipotecaria",
+   "branch": "9103",
+   "branchName": "ROMA NOMENTANA",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "DEL",
+   "date": "03/08/2026",
+   "created": "03/08/2026",
+   "assigned": "05/08/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95871542",
+     "name": "CAPORASO DEL VECCHIO MARIA ADELAIDE",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910263\n- Valore immobile presunto: 175.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 48.000,00 €\nFinanziamento ipotecario di € 48.000 in 10 anni su appartamento di proprietà a Roma, quartiere Monte Sacro, per esigenze di liquidità legate all'acquisto di un'auto e al sostegno degli studi universitari del nipote.\nRichiedente di 65 anni, pensionata ex insegnante di scuola primaria, pensione INPS gestione pubblica netta di € 2.090 su 13 mensilità dal settembre 2023. Vive sola nell'immobile offerto in garanzia. Nessun'altra rata in corso. Fascicolo completo, proposta trasmessa per delibera.",
+   "creditTotal": "48.000",
+   "guaranteeTotal": "72.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9103 0017 00050031",
+     "description": "M. LIQUID.",
+     "due": "31/08/2036",
+     "amount": "48.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310707 - FINANZIAMENTO IPOTECARIO PER LIQUIDITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "72.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95871542",
+    "schedaId": "00088500016",
+    "name": "CAPORASO DEL VECCHIO MARIA ADELAIDE",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "16/11/2026 10:20 (7 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "PENSIONATO",
+     "dal": "SETTEMBRE 2023",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "27.170",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per esigenze di liquidità con ipoteca sull'abitazione di € 48.000, durata 10 anni.\n\nLa cliente percepisce dal settembre 2023 una pensione anticipata erogata dall'INPS.\n\nCliente della scrivente Filiale dal 1994, con redditi canalizzati sul conto.\n\nLa cliente vive da sola nell'immobile di proprietà dal 1988.\n",
+     "ultima_validazione_scheda": "16/11/2026 10:20 (7 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "1988"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-017",
+   "ndg": "95336074",
+   "name": "GHIRARDINI ETTORE",
+   "number": "99106380",
+   "scenario": "Liquidità ipotecaria",
+   "branch": "9111",
+   "branchName": "PARMA OLTRETORRENTE",
+   "abi": "5387",
+   "assignee": "903012",
+   "assigneeName": "BPI PRIVATI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Irene Vallescura",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "08/10/2026",
+   "created": "08/10/2026",
+   "assigned": "09/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95336074",
+     "name": "GHIRARDINI ETTORE",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910409\n- Valore immobile presunto: 290.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 85.000,00 €\nFinanziamento ipotecario di € 85.000, durata 15 anni, su un immobile a reddito nel centro di Parma (due unità locate a uso ufficio), per il rifacimento del tetto e l'adeguamento degli impianti dell'edificio.\nRichiedente di 58 anni, senza datore di lavoro: vive delle rendite di un patrimonio immobiliare di famiglia, sei unità locate con canoni netti di € 38.400 annui da dichiarazione 2025, oltre ai dividendi di una società immobiliare. Abita nella villa di proprietà a Felino. CRIF: nessun finanziamento in corso.",
+   "creditTotal": "85.000",
+   "guaranteeTotal": "127.500",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9111 0017 00050033",
+     "description": "M. LIQUID.",
+     "due": "31/10/2041",
+     "amount": "85.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310707 - FINANZIAMENTO IPOTECARIO PER LIQUIDITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "127.500",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95336074",
+    "schedaId": "00088500017",
+    "name": "GHIRARDINI ETTORE",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "18/11/2026 11:48 (5 giorni fa)",
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "BENESTANTE",
+     "dal": "GENNAIO 2009",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "38.400",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "24.000",
+     "note_scheda_privati": "\nRichiesta di mutuo per esigenze di liquidità con ipoteca su immobile a reddito di € 85.000, durata 15 anni.\n\nIl cliente non ha un datore di lavoro: percepisce canoni di locazione di sei unità immobiliari dal 2009.\n\nReddito desunto dalla dichiarazione 2025 e dai contratti di locazione registrati: € 38.400 netti annui.\n\nIl cliente risiede con la coniuge nell'immobile di proprietà dal 1999.\n\nAggiornamento del 18/11: acquisiti i contratti di locazione rinnovati, confermati i dati reddituali indicati in scheda.\n",
+     "ultima_validazione_scheda": "18/11/2026 11:48 (5 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "1999"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-018",
+   "ndg": "95427690",
+   "name": "PREVOSTINI NICOLA",
+   "number": "99108127",
+   "scenario": "Acquisto prima casa",
+   "branch": "9105",
+   "branchName": "BRESCIA OVEST",
+   "abi": "5387",
+   "assignee": "903024",
+   "assigneeName": "BPI MUTUI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Stefano Montelago",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "02/11/2026",
+   "created": "02/11/2026",
+   "assigned": "04/11/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95427690",
+     "name": "PREVOSTINI NICOLA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96036514",
+     "name": "FERRAGLIO GIADA",
+     "role": "Cointestatario"
+    },
+    {
+     "ndg": "97268301",
+     "name": "SALVADORI ANGELA",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910496\n- Valore immobile presunto: 255.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 193.000,00 €\nAcquisto della prima casa a Rezzato, villetta a schiera degli anni Ottanta: mutuo di € 158.000 in 30 anni per l'acquisto e mutuo di € 35.000 in 15 anni per il rifacimento di impianti e copertura. Preventivi dell'impresa allegati.\nRichiedente di 31 anni, dipendente a tempo indeterminato presso METALLURGICA PIANCASTELLO S.P.A. come ingegnere di processo, netto € 2.420 su 14 mensilità; la cointestataria convivente è insegnante di ruolo con netto di € 1.640. Garante la madre del richiedente. In corso la verifica preliminare della documentazione di reddito.\nCoppia in affitto a Brescia con canone di € 690. CRIF: nessun finanziamento in corso.",
+   "creditTotal": "193.000",
+   "guaranteeTotal": "268.600",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9105 0017 00050035",
+     "description": "M. CASA",
+     "due": "30/11/2056",
+     "amount": "158.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310101 - MUTUO ACQUISTO ABITAZIONE",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9105 0018 00050036",
+     "description": "M. RISTR.",
+     "due": "30/11/2041",
+     "amount": "35.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310303 - MUTUO RISTRUTTURAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97268301 SALVADORI ANGELA",
+     "amount": "31.600",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "237.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95427690",
+    "schedaId": "00088500018",
+    "name": "PREVOSTINI NICOLA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "19/11/2026 14:10 (4 giorni fa)",
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9105-0000-0000 BRESCIA OVEST",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9105-0000-0000 BRESCIA OVEST",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (INDUSTRIA)",
+     "dal": "OTTOBRE 2020",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "33.880",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "METALLURGICA PIANCASTELLO S.P.A.",
+     "rating_ufficiale": "5",
+     "score_cgs": "3",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "21.320",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto della prima casa di € 158.000, durata 30 anni, oltre a € 35.000 per i lavori.\n\nIl cliente è assunto presso METALLURGICA PIANCASTELLO S.P.A. dall'ottobre 2020 con contratto a tempo indeterminato.\n\nLa cointestataria, convivente del cliente, percepisce un reddito netto di € 1.640 mensili.\n\nIl nucleo vive in un immobile condotto in locazione dal 2023, con canone mensile di € 690.\n",
+     "ultima_validazione_scheda": "19/11/2026 14:10 (4 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600097",
+     "employerFrom": "OTTOBRE 2020",
+     "employerTo": "--------- ----",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "AFFITTO",
+     "housingFrom": "2023"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-019",
+   "ndg": "95860317",
+   "name": "DI FEBO ALESSIA",
+   "number": "99105671",
+   "scenario": "Prima casa con garanzia pubblica",
+   "branch": "9106",
+   "branchName": "PESCARA PORTANUOVA",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "08/09/2026",
+   "created": "08/09/2026",
+   "assigned": "10/09/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95860317",
+     "name": "DI FEBO ALESSIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96748102",
+     "name": "DI MARZIO TOMMASO",
+     "role": "Cointestatario"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910311\n- Valore immobile presunto: 161.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 141.000,00 €\nMutuo prima casa con garanzia del Fondo CONSAP, importo € 141.000, durata 25 anni, per l'acquisto di un trilocale a Pescara, zona Porta Nuova, prezzo € 160.000. Requisiti di priorità verificati: coppia convivente under 36, ISEE 2026 di € 24.300.\nRichiedente di 32 anni, dipendente a tempo determinato presso LOGISTICA ADRIAMARE SRL come impiegata dell'ufficio spedizioni, contratto fino a maggio 2027, netto € 1.540 su 14 mensilità. Il cointestatario è dipendente a tempo indeterminato di un'azienda farmaceutica con netto di € 1.820. In affitto con canone di € 600; nessun finanziamento in corso.",
+   "creditTotal": "141.000",
+   "guaranteeTotal": "324.300",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9106 0017 00050037",
+     "description": "M.CONSAP >=80%",
+     "due": "30/09/2051",
+     "amount": "141.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "112.800",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "211.500",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95860317",
+    "schedaId": "00088500019",
+    "name": "DI FEBO ALESSIA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "10/11/2026 16:33 (13 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (SERVIZI)",
+     "dal": "GIUGNO 2025",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "21.560",
+     "tipo_contratto": "TEMPO DETERMINATO",
+     "datore_di_lavoro_anagrafica": "LOGISTICA ADRIAMARE SRL",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "25.480",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto della prima casa con garanzia del Fondo di € 141.000, durata 25 anni.\n\nLa cliente lavora presso LOGISTICA ADRIAMARE SRL dal giugno 2025 con contratto a tempo determinato in scadenza a maggio 2027.\n\nIl cointestatario, convivente della cliente, percepisce un reddito netto di € 1.820 mensili.\n\nIl nucleo vive in un immobile condotto in locazione dal 2020, con canone mensile di € 600.\n",
+     "ultima_validazione_scheda": "10/11/2026 16:33 (13 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "0",
+     "employerFrom": "GIUGNO 2025",
+     "employerTo": "MAGGIO 2027",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "AFFITTO",
+     "housingFrom": "2020"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-020",
+   "ndg": "95093652",
+   "name": "ORRÙ IVO",
+   "number": "99107419",
+   "scenario": "Riqualificazione energetica",
+   "branch": "9112",
+   "branchName": "GENOVA LEVANTE",
+   "abi": "5387",
+   "assignee": "903036",
+   "assigneeName": "BPI PRIVATI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Laura Costaferma",
+   "type": "BPI Privati",
+   "typeCode": "BPS",
+   "typeName": "BPI Privati Standard",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "27/10/2026",
+   "created": "27/10/2026",
+   "assigned": "28/10/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "subjects": [
+    {
+     "ndg": "95093652",
+     "name": "ORRÙ IVO",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910484\n- Valore immobile presunto: 210.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 22.500,00 €\nPrestito di € 22.500 in 7 anni per impianto fotovoltaico, pompa di calore e cappotto termico della casa di proprietà a Recco. Preventivi allegati.\nRichiedente di 39 anni, lavoratore autonomo: titolare di un negozio di ottica nel centro di Recco dal 2015, reddito netto medio 2024-2025 di € 44.700. Mutuo casa in corso presso altro istituto con rata di € 610. Moglie impiegata part-time.",
+   "creditTotal": "22.500",
+   "guaranteeTotal": "0",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9112 0017 00050039",
+     "description": "P. ENERGIA",
+     "due": "31/10/2033",
+     "amount": "22.500",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95093652",
+    "schedaId": "00088500020",
+    "name": "ORRÙ IVO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "12/11/2026 12:05 (11 giorni fa)",
+     "user": "03036 LAURA COSTAFERMA",
+     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03036 LAURA COSTAFERMA",
+     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "COMMERCIANTE",
+     "dal": "MARZO 2015",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "44.700",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "2",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "13.000",
+     "note_scheda_privati": "\nRichiesta di prestito per l'efficientamento energetico dell'abitazione di € 22.500, durata 7 anni.\n\nIl cliente è titolare di un'attività commerciale a Recco, avviata nel 2015.\n\nReddito desunto dalle dichiarazioni 2024 e 2025: € 44.700 netti annui.\n\nDa CRIF risulta un mutuo presso altro istituto con rata mensile di € 610, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "12/11/2026 12:05 (11 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2019"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-021",
+   "ndg": "95714028",
+   "name": "CAVAZZONI LUCIANO",
+   "number": "99106842",
+   "scenario": "Surroga",
+   "branch": "9102",
+   "branchName": "BOLOGNA SARAGOZZA",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "13/10/2026",
+   "created": "13/10/2026",
+   "assigned": "14/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95714028",
+     "name": "CAVAZZONI LUCIANO",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910436\n- Valore immobile presunto: 198.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 71.902,48 €\nSurroga del mutuo contratto nel 2011 presso altro istituto: debito residuo di € 71.902,48, nuova durata 10 anni a tasso fisso, rata in riduzione di circa € 140 mensili. Immobile a Casalecchio di Reno, appartamento con garage.\nRichiedente di 62 anni, pensionato dal 2025 con pensione anticipata INPS, netto € 2.380 su 13 mensilità; la moglie è impiegata a tempo indeterminato. Nessun'altra rata. Mutuo attuale regolare da piano di ammortamento e quietanze.",
+   "creditTotal": "71.902,48",
+   "guaranteeTotal": "107.853,72",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9102 0017 00050041",
+     "description": "M. SURROGA",
+     "due": "31/10/2036",
+     "amount": "71.902,48",
+     "operation": "In Lavoraz.",
+     "tooltip": "310202 - MUTUO PER PORTABILITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "107.853,72",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95714028",
+    "schedaId": "00088500021",
+    "name": "CAVAZZONI LUCIANO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "17/11/2026 09:40 (6 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "PENSIONATO",
+     "dal": "LUGLIO 2025",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "30.940",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "23.400",
+     "note_scheda_privati": "\nRichiesta di mutuo per la surroga del mutuo in essere presso altro istituto di € 71.902,48, durata 10 anni.\n\nIl cliente percepisce dal luglio 2025 una pensione anticipata erogata dall'INPS.\n\nNuovo cliente della scrivente Filiale, redditi non ancora canalizzati presso la banca.\n\nIl cliente risiede con il proprio nucleo familiare nell'immobile di proprietà dal 2011.\n",
+     "ultima_validazione_scheda": "17/11/2026 09:40 (6 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "NO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2011"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-022",
+   "ndg": "95602471",
+   "name": "BELLODI MARCO",
+   "number": "99105913",
+   "scenario": "Acquisto con lavori",
+   "branch": "9104",
+   "branchName": "MODENA CENTRO",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "24/09/2026",
+   "created": "24/09/2026",
+   "assigned": "28/09/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95602471",
+     "name": "BELLODI MARCO",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910355\n- Valore immobile presunto: 280.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 194.200,00 €\nAcquisto e recupero di un rustico a Castelvetro di Modena: mutuo di € 187.000, durata 20 anni, e linea di € 7.200 in 5 anni per le spese tecniche di progettazione e sicurezza. Permesso di costruire rilasciato, cantiere previsto da gennaio.\nRichiedente di 42 anni, dipendente a tempo indeterminato presso CARPENTERIE VALDORSA S.R.L. come responsabile di produzione, netto € 2.950 su 14 mensilità. Separato, versa un assegno di mantenimento di € 400 per il figlio. Oggi in affitto a Modena con canone di € 700. CRIF: nessun finanziamento in corso.",
+   "creditTotal": "194.200",
+   "guaranteeTotal": "280.500",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9104 0017 00050043",
+     "description": "M. ACQ. RISTR.",
+     "due": "30/09/2046",
+     "amount": "187.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310606 - ACQUISTO E RISTRUTTURAZIONE",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9104 0018 00050044",
+     "description": "P. SPESE",
+     "due": "30/09/2031",
+     "amount": "7.200",
+     "operation": "In Lavoraz.",
+     "tooltip": "315014 - PRESTITO PER SPESE TECNICHE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "280.500",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95602471",
+    "schedaId": "00088500022",
+    "name": "BELLODI MARCO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "06/11/2026 10:05 (17 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9104-0000-0000 MODENA CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9104-0000-0000 MODENA CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "QUADRO IMPRESE PRIVATE (INDUSTRIA)",
+     "dal": "MAGGIO 2014",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "41.300",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "CARPENTERIE VALDORSA S.R.L.",
+     "rating_ufficiale": "5",
+     "score_cgs": "2",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per l'acquisto e la ristrutturazione dell'immobile di € 187.000, durata 20 anni, oltre a € 7.200 per le spese tecniche.\n\nIl cliente è assunto presso CARPENTERIE VALDORSA S.R.L. dal maggio 2014 con contratto a tempo indeterminato.\n\nIl cliente vive da solo in un immobile in locazione dal 2023, canone mensile € 700.\n\nAggiornamento del 06/11: acquisita l'ultima busta paga, confermati i dati reddituali indicati in scheda.\n",
+     "ultima_validazione_scheda": "06/11/2026 10:05 (17 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600017",
+     "employerFrom": "MAGGIO 2014",
+     "employerTo": "--------- ----",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "AFFITTO",
+     "housingFrom": "2023"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-023",
+   "ndg": "95377815",
+   "name": "PIRAS EFISIO",
+   "number": "99105307",
+   "scenario": "Riqualificazione energetica",
+   "branch": "9107",
+   "branchName": "CAGLIARI CENTRO",
+   "abi": "5387",
+   "assignee": "903060",
+   "assigneeName": "BPI PRIVATI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Marta Fonteluna",
+   "type": "BPI Privati",
+   "typeCode": "BPS",
+   "typeName": "BPI Privati Standard",
+   "state": "LAV",
+   "phase": "DEL",
+   "date": "03/09/2026",
+   "created": "03/09/2026",
+   "assigned": "04/09/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95377815",
+     "name": "PIRAS EFISIO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96124709",
+     "name": "LOCCI GIUSEPPINA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910338\n- Valore immobile presunto: 160.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 15.500,00 €\nPrestito cointestato di € 15.500 in 5 anni per impianto solare termico, sostituzione degli infissi e climatizzazione dell'abitazione di proprietà a Selargius.\nRichiedente di 68 anni, pensionato ex dipendente regionale, pensione netta di € 2.150 su 13 mensilità; la moglie cointestataria percepisce una pensione di € 860. Nessun finanziamento in corso. Fascicolo completo, proposta trasmessa per delibera.",
+   "creditTotal": "15.500",
+   "guaranteeTotal": "0",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9107 0017 00050045",
+     "description": "P. ENERGIA",
+     "due": "30/09/2031",
+     "amount": "15.500",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95377815",
+    "schedaId": "00088500023",
+    "name": "PIRAS EFISIO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "02/11/2026 11:22 (21 giorni fa)",
+     "user": "03060 MARTA FONTELUNA",
+     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03060 MARTA FONTELUNA",
+     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "PENSIONATO",
+     "dal": "FEBBRAIO 2021",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "27.950",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "11.180",
+     "note_scheda_privati": "\nRichiesta di prestito cointestato per l'efficientamento energetico dell'abitazione di € 15.500, durata 5 anni.\n\nIl cliente percepisce dal febbraio 2021 una pensione anticipata erogata dall'INPS.\n\nLa cointestataria, coniuge del cliente, percepisce una pensione netta di € 860 mensili.\n\nIl cliente risiede con la coniuge nell'immobile di proprietà dal 1987.\n",
+     "ultima_validazione_scheda": "02/11/2026 11:22 (21 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "1987"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-024",
+   "ndg": "95185340",
+   "name": "LO CASCIO BONFIGLIO ANNA MARIA LUISA",
+   "number": "99103045",
+   "scenario": "Acquisto prima casa",
+   "branch": "9110",
+   "branchName": "CATANIA BORGO",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "SOSP",
+   "phase": "IST",
+   "date": "14/04/2026",
+   "created": "14/04/2026",
+   "assigned": "16/04/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95185340",
+     "name": "LO CASCIO BONFIGLIO ANNA MARIA LUISA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96513827",
+     "name": "TORRISI CALANNA SEBASTIANO",
+     "role": "Cointestatario"
+    },
+    {
+     "ndg": "97402516",
+     "name": "VACCALLUZZO ROSARIA",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910187\n- Valore immobile presunto: 285.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 210.000,00 €\nRichiesta di mutuo di € 210.000, durata 25 anni, per l'acquisto della prima casa a Catania, zona Borgo-Sanzio: appartamento di 125 mq al quarto piano di un edificio del 1968 con servizio di portierato, composto da ampio ingresso, salone doppio, cucina abitabile, tre camere, doppi servizi, due balconi e posto auto coperto nel garage condominiale. Prezzo pattuito € 284.000, compromesso registrato il 27/03/2026 con caparra di € 20.000 versata dal conto della cliente; valore di perizia € 285.000, in linea con il prezzo, con un rapporto tra finanziamento e valore del 74%. La perizia segnala una veranda chiusa non riportata nella planimetria catastale, per la quale il venditore ha avviato la pratica di sanatoria presso il Comune: il rogito resta subordinato al rilascio del titolo in sanatoria e all'aggiornamento catastale, che il notaio ritiene ottenibili entro l'estate. Gli impianti sono stati rifatti nel 2015, il condominio non ha lavori straordinari deliberati e le spese ordinarie ammontano a circa € 1.400 annui.\nRichiedente di 37 anni, lavoratrice autonoma: dottore commercialista iscritta all'Ordine dal 2015, titolare di uno studio individuale con due collaboratrici e un portafoglio di circa 180 clienti tra ditte individuali e piccole società. Reddito netto da dichiarazioni 2024 e 2025 pari rispettivamente a € 46.800 e € 51.800, media di € 49.300, in crescita costante dal 2020; acquisiti anche il bilancio di verifica al 31/03/2026, gli estratti del conto professionale e il certificato di regolarità contributiva della Cassa di previdenza. Il coniuge cointestatario è dipendente a tempo indeterminato di una società di servizi informatici di Misterbianco con netto di € 1.980 su 14 mensilità, rilevato dalle buste paga e dalla CU 2026; anzianità aziendale di nove anni e nessun periodo di cassa integrazione.\nLa famiglia, con due figli minori, vive in un appartamento in locazione nel quartiere Picanello con canone di € 650 mensili, regolarmente corrisposto come da ricevute degli ultimi dodici mesi. Da CRIF risultano un leasing per l'auto intestato allo studio, con canone di € 380 e scadenza novembre 2027, e un prestito personale del coniuge con rata di € 160, residuo di 14 mesi, entrambi in regola; nessuna segnalazione a sofferenza o ritardo in Centrale Rischi. La rata del mutuo, stimata in € 1.020 mensili, porta l'incidenza complessiva degli impegni al 24% del reddito netto familiare, entro i limiti di policy anche considerando la variabilità del reddito professionale e il venir meno del canone di locazione dopo l'acquisto.\nInterviene come garante la madre della richiedente, pensionata ex dipendente pubblica, proprietaria di due immobili liberi da gravami ad Acireale, con pensione netta di € 1.920 mensili; la fideiussione specifica è prestata nella misura del 20% dell'importo del mutuo. L'anticipo residuo di € 54.000 e le spese di acquisto sono coperti da un deposito titoli della richiedente in corso di trasferimento presso la nostra banca, già verificato sull'estratto della banca di provenienza. Istruttoria sospesa in attesa del titolo in sanatoria della veranda e della planimetria catastale aggiornata, senza i quali il notaio non procede alla stipula; la cliente ha chiesto il mantenimento delle condizioni di tasso proposte per novanta giorni, da sottoporre all'ufficio crediti alla ripresa dell'istruttoria.",
+   "creditTotal": "210.000",
+   "guaranteeTotal": "357.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9110 0017 00050047",
+     "description": "M. CASA",
+     "due": "30/04/2051",
+     "amount": "210.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310101 - MUTUO ACQUISTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97402516 VACCALLUZZO ROSARIA",
+     "amount": "42.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "315.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95185340",
+    "schedaId": "00088500024",
+    "name": "LO CASCIO BONFIGLIO ANNA MARIA LUISA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "04/11/2026 12:40 (19 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9110-0000-0000 CATANIA BORGO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9110-0000-0000 CATANIA BORGO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "LIBERO PROFESSIONISTA",
+     "dal": "GENNAIO 2015",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "49.300",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "3",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "27.720",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto della prima casa di € 210.000, durata 25 anni.\n\nLa cliente esercita la libera professione di dottore commercialista dal 2015, con studio a Catania.\n\nReddito desunto dalle dichiarazioni 2024 e 2025: € 49.300 netti annui.\n\nIl cointestatario, coniuge della cliente, percepisce un reddito netto di € 1.980 mensili.\n\nIl nucleo vive in un immobile condotto in locazione dal 2017, con canone mensile di € 650.\n\nDa CRIF risultano un leasing auto dello studio e un prestito del coniuge, regolarmente rimborsati.\n",
+     "ultima_validazione_scheda": "04/11/2026 12:40 (19 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "SI",
+     "housing": "AFFITTO",
+     "housingFrom": "2017"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-025",
+   "ndg": "95938206",
+   "name": "BACIGALUPO STEFANO",
+   "number": "99107316",
+   "scenario": "Acquisto seconda casa",
+   "branch": "9112",
+   "branchName": "GENOVA LEVANTE",
+   "abi": "5387",
+   "assignee": "903024",
+   "assigneeName": "BPI MUTUI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Stefano Montelago",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "22/10/2026",
+   "created": "22/10/2026",
+   "assigned": "23/10/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "subjects": [
+    {
+     "ndg": "95938206",
+     "name": "BACIGALUPO STEFANO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96385740",
+     "name": "TASSARA ELENA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910468\n- Valore immobile presunto: 215.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 142.000,00 €\nMutuo di € 142.000 in 20 anni per l'acquisto di una seconda casa a Santo Stefano d'Aveto, da utilizzare nei fine settimana e da destinare in futuro ai figli. Anticipo di € 73.000 coperto con la liquidazione di una polizza vita.\nRichiedente di 46 anni, dipendente a tempo indeterminato presso CANTIERI NAVALI GROPPALDI S.R.L. come progettista navale, netto € 2.640 su 14 mensilità; la moglie cointestataria è impiegata in uno studio dentistico con netto di € 1.700. Abitazione principale di proprietà a Genova, mutuo residuo presso la nostra banca con rata di € 480.",
+   "creditTotal": "142.000",
+   "guaranteeTotal": "213.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9112 0017 00050049",
+     "description": "M. II CASA",
+     "due": "31/10/2046",
+     "amount": "142.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310404 - MUTUO SECONDA ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "213.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95938206",
+    "schedaId": "00088500025",
+    "name": "BACIGALUPO STEFANO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "09/11/2026 15:15 (14 giorni fa)",
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (INDUSTRIA)",
+     "dal": "NOVEMBRE 2008",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "36.960",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "CANTIERI NAVALI GROPPALDI S.R.L.",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "2",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "22.100",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto di una seconda abitazione di € 142.000, durata 20 anni.\n\nIl cliente è assunto presso CANTIERI NAVALI GROPPALDI S.R.L. dal novembre 2008 con contratto a tempo indeterminato.\n\nCliente della scrivente Filiale dal 2009, con redditi canalizzati sul conto.\n\nIl cliente risiede con il proprio nucleo familiare nell'immobile di proprietà dal 2013.\n\nDa CRIF risulta il mutuo prima casa presso la banca con rata mensile di € 480, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "09/11/2026 15:15 (14 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "0",
+     "employerFrom": "NOVEMBRE 2008",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2013"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-026",
+   "ndg": "95561290",
+   "name": "LAI EVA",
+   "number": "99108574",
+   "scenario": "Riqualificazione energetica",
+   "branch": "9103",
+   "branchName": "ROMA NOMENTANA",
+   "abi": "5387",
+   "assignee": "903060",
+   "assigneeName": "BPI PRIVATI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Marta Fonteluna",
+   "type": "BPI Privati",
+   "typeCode": "BPS",
+   "typeName": "BPI Privati Standard",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "16/11/2026",
+   "created": "16/11/2026",
+   "assigned": "17/11/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95561290",
+     "name": "LAI EVA",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910522\n- Valore immobile presunto: 125.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 13.000,00 €\nPrestito di € 13.000 in 5 anni per la sostituzione della caldaia e degli infissi del monolocale di proprietà a Roma, zona Tufello, ricevuto in donazione dai genitori nel 2023.\nRichiedente di 30 anni, dipendente a tempo determinato presso ALBERGO BELSOGNO S.R.L. come addetta al ricevimento, contratto di 12 mesi in scadenza a febbraio 2027, secondo rinnovo nella stessa struttura. Netto € 1.450 su 14 mensilità. Nessun altro impegno. In corso la verifica preliminare della documentazione di reddito.",
+   "creditTotal": "13.000",
+   "guaranteeTotal": "0",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9103 0017 00050051",
+     "description": "P. ENERGIA",
+     "due": "30/11/2031",
+     "amount": "13.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95561290",
+    "schedaId": "00088500026",
+    "name": "LAI EVA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "19/11/2026 10:30 (4 giorni fa)",
+     "user": "03060 MARTA FONTELUNA",
+     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03060 MARTA FONTELUNA",
+     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (SERVIZI)",
+     "dal": "MARZO 2026",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "20.300",
+     "tipo_contratto": "TEMPO DETERMINATO",
+     "datore_di_lavoro_anagrafica": "ALBERGO BELSOGNO S.R.L.",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di prestito per l'efficientamento energetico dell'abitazione di € 13.000, durata 5 anni.\n\nLa cliente lavora presso ALBERGO BELSOGNO S.R.L. dal marzo 2026 con contratto a tempo determinato in scadenza a febbraio 2027.\n\nLa cliente vive da sola nell'immobile di proprietà dal 2023.\n",
+     "ultima_validazione_scheda": "19/11/2026 10:30 (4 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "0",
+     "employerFrom": "MARZO 2024",
+     "employerTo": "FEBBRAIO 2027",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2023"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-027",
+   "ndg": "95250693",
+   "name": "CAVATORTA BRUNO",
+   "number": "99106205",
+   "scenario": "Ristrutturazione",
+   "branch": "9111",
+   "branchName": "PARMA OLTRETORRENTE",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "30/09/2026",
+   "created": "30/09/2026",
+   "assigned": "02/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95250693",
+     "name": "CAVATORTA BRUNO",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910403\n- Valore immobile presunto: 196.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 58.000,00 €\nMutuo di € 58.000 in 10 anni per la ristrutturazione dell'abitazione di proprietà a Langhirano: rifacimento della copertura, consolidamento del solaio e nuovo bagno al piano terra per esigenze di accessibilità. Erogazione per stato avanzamento lavori su perizia del tecnico.\nRichiedente di 63 anni, pensionato ex dipendente di un prosciuttificio, pensione anticipata INPS di € 1.980 netti su 13 mensilità; vive con la moglie, casalinga. Da CRIF un prestito finalizzato per elettrodomestici con rata di € 95, in chiusura a marzo 2027.",
+   "creditTotal": "58.000",
+   "guaranteeTotal": "87.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9111 0017 00050053",
+     "description": "M. RISTR.",
+     "due": "30/09/2036",
+     "amount": "58.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310303 - MUTUO RISTRUTTURAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "87.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95250693",
+    "schedaId": "00088500027",
+    "name": "CAVATORTA BRUNO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "05/11/2026 15:52 (18 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "PENSIONATO",
+     "dal": "NOVEMBRE 2024",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "25.740",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per la ristrutturazione dell'abitazione di proprietà di € 58.000, durata 10 anni.\n\nIl cliente percepisce dal novembre 2024 una pensione anticipata erogata dall'INPS.\n\nIl cliente risiede con il proprio nucleo familiare nell'immobile di proprietà dal 1990.\n\nDa CRIF risulta un finanziamento in corso con rata mensile di € 95, regolarmente rimborsato.\n\nAggiornamento del 05/11: acquisito l'ultimo cedolino della pensione, confermati i dati reddituali indicati in scheda.\n",
+     "ultima_validazione_scheda": "05/11/2026 15:52 (18 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "1990"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-028",
+   "ndg": "95479163",
+   "name": "CORNAGLIA ALBERTO",
+   "number": "99108239",
+   "scenario": "Prima casa con garanzia pubblica",
+   "branch": "9108",
+   "branchName": "TORINO SAN PAOLO",
+   "abi": "5387",
+   "assignee": "903024",
+   "assigneeName": "BPI MUTUI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Stefano Montelago",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "05/11/2026",
+   "created": "05/11/2026",
+   "assigned": "06/11/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95479163",
+     "name": "CORNAGLIA ALBERTO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910507\n- Valore immobile presunto: 200.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 176.000,00 €\nMutuo prima casa con garanzia del Fondo CONSAP, importo € 176.000, durata 30 anni, per l'acquisto di un quadrilocale a Torino, zona Pozzo Strada, prezzo € 200.000. Richiesta di accesso prioritario come giovane under 36, ISEE in corso di rilascio.\nRichiedente di 34 anni, dipendente a tempo indeterminato presso un'azienda di componentistica automotive di Grugliasco come tecnico di laboratorio, netto € 2.060 su 14 mensilità. Single, in affitto con canone di € 620. Da CRIF carta di credito a saldo. In corso la verifica preliminare della documentazione di reddito.",
+   "creditTotal": "176.000",
+   "guaranteeTotal": "404.800",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9108 0017 00050055",
+     "description": "M.CONSAP >=80%",
+     "due": "30/11/2056",
+     "amount": "176.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "140.800",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "264.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": null,
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-029",
+   "ndg": "95806524",
+   "name": "BARDUCCI FIAMMETTA",
+   "number": "99107583",
+   "scenario": "Riqualificazione energetica",
+   "branch": "9109",
+   "branchName": "FIRENZE RIFREDI",
+   "abi": "5387",
+   "assignee": "903012",
+   "assigneeName": "BPI PRIVATI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Irene Vallescura",
+   "type": "BPI Privati",
+   "typeCode": "BPS",
+   "typeName": "BPI Privati Standard",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "29/10/2026",
+   "created": "29/10/2026",
+   "assigned": "30/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95806524",
+     "name": "BARDUCCI FIAMMETTA",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910479\n- Valore immobile presunto: 420.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 34.000,00 €\nPrestito di € 34.000 in 10 anni per la riqualificazione energetica della villa di proprietà a Fiesole: pompa di calore geotermica e sostituzione di tutti i serramenti. Preventivi e relazione del termotecnico allegati.\nRichiedente di 61 anni, senza datore di lavoro: percepisce i canoni di tre appartamenti locati a Firenze e le cedole di un portafoglio titoli, reddito netto 2025 di € 41.600. Nessun finanziamento in corso, CRIF regolare.",
+   "creditTotal": "34.000",
+   "guaranteeTotal": "0",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9109 0017 00050057",
+     "description": "P. ENERGIA",
+     "due": "31/10/2036",
+     "amount": "34.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95806524",
+    "schedaId": "00088500029",
+    "name": "BARDUCCI FIAMMETTA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "13/11/2026 16:05 (10 giorni fa)",
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "BENESTANTE",
+     "dal": "GIUGNO 2012",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "41.600",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di prestito per l'efficientamento energetico dell'abitazione di € 34.000, durata 10 anni.\n\nLa cliente non ha un datore di lavoro: percepisce canoni di locazione di tre appartamenti dal 2012.\n\nReddito desunto dalla dichiarazione 2025: € 41.600 netti annui, tra canoni e redditi finanziari.\n\nCliente della scrivente Filiale dal 2002, con redditi canalizzati sul conto.\n\nLa cliente vive da sola nell'immobile di proprietà dal 2002.\n",
+     "ultima_validazione_scheda": "13/11/2026 16:05 (10 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2002"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-030",
+   "ndg": "95127438",
+   "name": "DE BERNARDINIS VALLEROSA FRANCESCO",
+   "number": "99104498",
+   "scenario": "Liquidità ipotecaria",
+   "branch": "9106",
+   "branchName": "PESCARA PORTANUOVA",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "DEL",
+   "date": "24/08/2026",
+   "created": "24/08/2026",
+   "assigned": "26/08/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95127438",
+     "name": "DE BERNARDINIS VALLEROSA FRANCESCO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "97586023",
+     "name": "DE BERNARDINIS VALLEROSA PIERLUIGI",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910276\n- Valore immobile presunto: 260.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 92.000,00 €\nFinanziamento ipotecario per liquidità di € 92.000, durata 15 anni, su abitazione di proprietà a Francavilla al Mare, per l'acquisto della quota del socio uscente nella società di famiglia e il riequilibrio del capitale circolante.\nRichiedente di 55 anni, lavoratore autonomo: titolare dal 1998 di un'attività di commercio all'ingrosso di materiale elettrico a Pescara, reddito netto medio 2024-2025 di € 63.500. Garante il fratello, socio dell'attività e proprietario di immobili liberi. CRIF: fido di cassa aziendale utilizzato al 40%, regolare. Fascicolo completo, proposta trasmessa per delibera.",
+   "creditTotal": "92.000",
+   "guaranteeTotal": "156.400",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9106 0017 00050059",
+     "description": "M. LIQUID.",
+     "due": "31/08/2041",
+     "amount": "92.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310707 - FINANZIAMENTO IPOTECARIO PER LIQUIDITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97586023 DE BERNARDINIS VALLEROSA PIERLUIGI",
+     "amount": "18.400",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "138.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95127438",
+    "schedaId": "00088500030",
+    "name": "DE BERNARDINIS VALLEROSA FRANCESCO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "03/11/2026 09:15 (20 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "COMMERCIANTE",
+     "dal": "APRILE 1998",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "63.500",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "2",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "18.200",
+     "note_scheda_privati": "\nRichiesta di mutuo per esigenze di liquidità con ipoteca sull'abitazione di € 92.000, durata 15 anni.\n\nIl cliente è titolare di un'attività commerciale a Pescara, avviata nel 1998.\n\nReddito desunto dalle dichiarazioni 2024 e 2025: € 63.500 netti annui.\n\nCliente della scrivente Filiale dal 1999, con redditi canalizzati sul conto.\n\nIl cliente risiede con il proprio nucleo familiare nell'immobile di proprietà dal 2001.\n",
+     "ultima_validazione_scheda": "03/11/2026 09:15 (20 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2001"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-031",
+   "ndg": "95318470",
+   "name": "GHIDINI PIERANGELO",
+   "number": "99108061",
+   "scenario": "Liquidità ipotecaria",
+   "branch": "9105",
+   "branchName": "BRESCIA OVEST",
+   "abi": "5387",
+   "assignee": "903024",
+   "assigneeName": "BPI MUTUI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Stefano Montelago",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "10/11/2026",
+   "created": "10/11/2026",
+   "assigned": "12/11/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95318470",
+     "name": "GHIDINI PIERANGELO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96269351",
+     "name": "BRAGA LUIGINA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910498\n- Valore immobile presunto: 230.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 63.000,00 €\nFinanziamento ipotecario per liquidità di € 63.000 in 10 anni su abitazione di proprietà a Gussago, cointestata con la moglie, per contribuire all'acquisto della prima casa della figlia.\nRichiedente di 64 anni, pensionato ex operaio metalmeccanico, pensione anticipata INPS di € 1.890 netti su 13 mensilità; la moglie cointestataria percepisce una pensione di € 1.020. Nessun finanziamento in corso. In corso la verifica preliminare della documentazione.",
+   "creditTotal": "63.000",
+   "guaranteeTotal": "94.500",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9105 0017 00050061",
+     "description": "M. LIQUID.",
+     "due": "30/11/2036",
+     "amount": "63.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310707 - FINANZIAMENTO IPOTECARIO PER LIQUIDITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "94.500",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": null,
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-032",
+   "ndg": "95649027",
+   "name": "CALTABIANO DAVIDE",
+   "number": "99101573",
+   "scenario": "Acquisto con lavori",
+   "branch": "9110",
+   "branchName": "CATANIA BORGO",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "DEL",
+   "date": "21/07/2026",
+   "created": "21/07/2026",
+   "assigned": "23/07/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95649027",
+     "name": "CALTABIANO DAVIDE",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96793418",
+     "name": "SPAMPINATO SERENA",
+     "role": "Cointestatario"
+    },
+    {
+     "ndg": "97153062",
+     "name": "CALTABIANO SALVATORE",
+     "role": "Garante"
+    },
+    {
+     "ndg": "97621874",
+     "name": "RAPISARDA AGATA",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910124\n- Valore immobile presunto: 340.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 242.800,00 €\nRichiesta di mutuo di € 232.000, durata 25 anni, per l'acquisto e la ristrutturazione di una casa indipendente su due livelli ad Aci Castello, frazione Cannizzaro, con piccolo giardino e posto auto scoperto, oltre a una linea separata di € 10.800 in 5 anni per progettazione, direzione dei lavori, coordinamento della sicurezza e oneri di urbanizzazione. L'immobile, costruito nel 1974 e mai ristrutturato, ha una superficie commerciale di 148 mq; il prezzo di acquisto è di € 178.000 e il computo metrico estimativo del progettista quantifica i lavori in € 112.000, tra consolidamento sismico, rifacimento della copertura, impianti, cappotto termico e finiture. Il valore di perizia a lavori ultimati è stimato in € 340.000: l'importo complessivo richiesto di € 242.800 corrisponde al 71% di tale valore. L'erogazione della quota lavori avverrà in quattro stati di avanzamento, ciascuno certificato dal perito della banca, con trattenuta del 10% fino alla presentazione della segnalazione certificata di agibilità.\nRichiedente di 29 anni, dipendente a tempo indeterminato presso MICROELETTRONICA SIMETO S.P.A. di Catania, stabilimento della zona industriale, come ingegnere di processo dal febbraio 2021, con netto mensile medio di € 2.380 su 14 mensilità desunto dalle ultime buste paga e dalla CU 2026; il datore di lavoro è cliente della banca con rating interno favorevole. La coniuge cointestataria è insegnante di ruolo nella scuola primaria dal settembre 2022, con netto di € 1.610 su 13 mensilità, anch'esso documentato da cedolini e CU. Il reddito netto annuo complessivo del nucleo è di circa € 54.200; la coppia, sposata dal 2024, non ha figli e vive oggi in un appartamento in locazione a Catania, quartiere Barriera, con canone di € 580 mensili che cesserà con il trasferimento nella nuova abitazione, previsto al termine dei lavori.\nDa CRIF risultano un prestito finalizzato per l'arredamento intestato alla cointestataria, con rata di € 145 e scadenza gennaio 2028, e una carta di credito a saldo del richiedente con utilizzo medio di € 600 mensili, entrambi regolari; nessuna segnalazione in Centrale Rischi. La rata del mutuo, calcolata al tasso fisso proposto, è di circa € 1.260 mensili, a cui si aggiunge per i primi cinque anni la rata della linea per le spese tecniche: l'incidenza degli impegni sul reddito netto familiare è del 35% nei primi cinque anni e del 31% in seguito, entro la policy. I mezzi propri, pari a circa € 58.000 tra anticipo, imposte e spese notarili, provengono dai risparmi della coppia e da una donazione dei genitori del richiedente già accreditata sul conto cointestato aperto presso la nostra filiale.\nPrestano fideiussione specifica entrambi i genitori del richiedente, ciascuno nella misura del 20% dell'importo del mutuo: il padre è titolare di una pensione di vecchiaia netta di € 1.950 mensili e la madre è dipendente pubblica a tempo indeterminato con netto di € 1.720; sono proprietari della propria abitazione a Gravina di Catania, libera da ipoteche, e di un locale commerciale locato. Il progetto ha ottenuto il permesso di costruire nel giugno 2026 e l'impresa esecutrice, iscritta alla cassa edile e con DURC regolare, ha sottoscritto un contratto d'appalto a corpo con penali per ritardo. Fascicolo completo, verifiche antiriciclaggio e urbanistiche concluse senza rilievi: proposta trasmessa per delibera con parere favorevole del gestore.",
+   "creditTotal": "242.800",
+   "guaranteeTotal": "440.800",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9110 0017 00050063",
+     "description": "M. ACQ. RISTR.",
+     "due": "31/07/2051",
+     "amount": "232.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310606 - ACQUISTO E RISTRUTTURAZIONE",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9110 0018 00050064",
+     "description": "P. SPESE",
+     "due": "31/07/2031",
+     "amount": "10.800",
+     "operation": "In Lavoraz.",
+     "tooltip": "315014 - PRESTITO PER SPESE TECNICHE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97153062 CALTABIANO SALVATORE",
+     "amount": "46.400",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "348.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G3",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97621874 RAPISARDA AGATA",
+     "amount": "46.400",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95649027",
+    "schedaId": "00088500032",
+    "name": "CALTABIANO DAVIDE",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "29/10/2026 10:48 (25 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9110-0000-0000 CATANIA BORGO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9110-0000-0000 CATANIA BORGO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (INDUSTRIA)",
+     "dal": "FEBBRAIO 2021",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "33.320",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "MICROELETTRONICA SIMETO S.P.A.",
+     "rating_ufficiale": "2",
+     "score_cgs": "1",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "20.930",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto e la ristrutturazione dell'immobile di € 232.000, durata 25 anni.\n\nIl cliente è assunto presso MICROELETTRONICA SIMETO S.P.A. dal febbraio 2021 con contratto a tempo indeterminato.\n\nLa cointestataria, coniuge del cliente, percepisce un reddito netto di € 1.610 mensili per 13 mensilità.\n\nIl nucleo vive in un immobile condotto in locazione dal 2024, con canone mensile di € 580.\n\nDa CRIF risulta un finanziamento della coniuge con rata mensile di € 145, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "29/10/2026 10:48 (25 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600127",
+     "employerFrom": "FEBBRAIO 2021",
+     "employerTo": "--------- ----",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "AFFITTO",
+     "housingFrom": "2024"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-033",
+   "ndg": "95742058",
+   "name": "ZACCHERINI SOFIA",
+   "number": "99100938",
+   "scenario": "Prima casa con garanzia pubblica",
+   "branch": "9102",
+   "branchName": "BOLOGNA SARAGOZZA",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "SOSP",
+   "phase": "IST",
+   "date": "17/03/2026",
+   "created": "17/03/2026",
+   "assigned": "19/03/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95742058",
+     "name": "ZACCHERINI SOFIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "99800000",
+     "name": "FONDO DI GARANZIA PER LA PRIMA CASA",
+     "role": "Nuovo Garante/nuovo Datore Di Pegno"
+    },
+    {
+     "ndg": "97839201",
+     "name": "LOLLI DANIELA",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910093\n- Valore immobile presunto: 135.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 118.000,00 €\nMutuo prima casa con garanzia del Fondo CONSAP all'80%, importo € 118.000, durata 30 anni, per l'acquisto di un monolocale con soppalco a Bologna, zona San Donato, prezzo € 134.000.\nRichiedente di 26 anni, dipendente a tempo determinato presso COOPERATIVA SOCIALE ALBEROTONDO come educatrice nei servizi per l'infanzia, contratto fino ad agosto 2027, netto € 1.380 su 14 mensilità. Garante la madre, impiegata a tempo indeterminato. In affitto con canone di € 560. Nessun finanziamento in corso.\nIstruttoria sospesa: la richiedente ha chiesto di attendere l'esito della selezione per l'assunzione a tempo indeterminato, attesa entro fine anno, prima di procedere con la delibera.",
+   "creditTotal": "118.000",
+   "guaranteeTotal": "295.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9102 0017 00050065",
+     "description": "M.CONSAP >=80%",
+     "due": "31/03/2056",
+     "amount": "118.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "340176 - MUTUO FOND PRIV CONSAP >=80%",
+     "tooltipField": "tooltip_descrizione_m_consap"
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "CONSAP DR BIS",
+     "ndgName": "99800000 FONDO DI GARANZIA PER LA PRIMA CASA",
+     "amount": "94.400",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "457-IMP. FID. F.DO 1 CASA DR SOSTEGNI BIS",
+     "tooltipField": "tooltip_descrizione_consap_dr_bis"
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "177.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    },
+    {
+     "id": "G3",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97839201 LOLLI DANIELA",
+     "amount": "23.600",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95742058",
+    "schedaId": "00088500033",
+    "name": "ZACCHERINI SOFIA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "11/11/2026 09:20 (12 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (SERVIZI)",
+     "dal": "SETTEMBRE 2025",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "19.320",
+     "tipo_contratto": "TEMPO DETERMINATO",
+     "datore_di_lavoro_anagrafica": "COOPERATIVA SOCIALE ALBEROTONDO",
+     "rating_ufficiale": "6",
+     "score_cgs": "3",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per l'acquisto della prima casa con garanzia del Fondo di € 118.000, durata 30 anni.\n\nLa cliente lavora presso COOPERATIVA SOCIALE ALBEROTONDO dal settembre 2025 con contratto a tempo determinato in scadenza ad agosto 2027.\n\nLa cliente vive da sola in un immobile in locazione dal 2024, canone mensile € 560.\n\nPosizione CRIF regolare; la cliente dichiara di non avere altri finanziamenti in corso.\n",
+     "ultima_validazione_scheda": "11/11/2026 09:20 (12 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600107",
+     "employerFrom": "SETTEMBRE 2025",
+     "employerTo": "AGOSTO 2027",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "AFFITTO",
+     "housingFrom": "2024"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-034",
+   "ndg": "95463821",
+   "name": "SCHIRRU IGNAZIO",
+   "number": "99106518",
+   "scenario": "Ristrutturazione",
+   "branch": "9107",
+   "branchName": "CAGLIARI CENTRO",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "05/10/2026",
+   "created": "05/10/2026",
+   "assigned": "07/10/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "subjects": [
+    {
+     "ndg": "95463821",
+     "name": "SCHIRRU IGNAZIO",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910412\n- Valore immobile presunto: 215.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 74.000,00 €\nMutuo di € 74.000 in 15 anni per la ristrutturazione dell'abitazione di proprietà a Sestu: ampliamento al piano primo autorizzato con permesso di costruire, rifacimento degli impianti e nuova copertura.\nRichiedente di 50 anni, lavoratore autonomo: titolare di un'impresa individuale di impianti elettrici dal 2003, reddito netto medio 2024-2025 di € 39.800. La moglie è impiegata part-time presso un ente pubblico. Da CRIF un finanziamento per il furgone aziendale con rata di € 330.",
+   "creditTotal": "74.000",
+   "guaranteeTotal": "111.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9107 0017 00050067",
+     "description": "M. RISTR.",
+     "due": "31/10/2041",
+     "amount": "74.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310303 - MUTUO RISTRUTTURAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "111.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95463821",
+    "schedaId": "00088500034",
+    "name": "SCHIRRU IGNAZIO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "16/11/2026 17:30 (7 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "ARTIGIANO",
+     "dal": "GIUGNO 2003",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "39.800",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "3",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "15.600",
+     "note_scheda_privati": "\nRichiesta di mutuo per la ristrutturazione dell'abitazione di proprietà di € 74.000, durata 15 anni.\n\nIl cliente è titolare di un'impresa artigiana di impianti elettrici dal 2003.\n\nReddito desunto dalle dichiarazioni 2024 e 2025: € 39.800 netti annui.\n\nIl cliente risiede con il proprio nucleo familiare nell'immobile di proprietà dal 2006.\n\nDa CRIF risulta un finanziamento per il furgone aziendale con rata mensile di € 330, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "16/11/2026 17:30 (7 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "NO",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2006"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-035",
+   "ndg": "95270916",
+   "name": "MONTEFORTINO DEGLI ESPOSTI CARLO ALBERTO",
+   "number": "99106974",
+   "scenario": "Acquisto prima casa",
+   "branch": "9109",
+   "branchName": "FIRENZE RIFREDI",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "15/10/2026",
+   "created": "15/10/2026",
+   "assigned": "16/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95270916",
+     "name": "MONTEFORTINO DEGLI ESPOSTI CARLO ALBERTO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96841025",
+     "name": "BALDASSINI MARTA",
+     "role": "Cointestatario"
+    },
+    {
+     "ndg": "97264310",
+     "name": "VIGNOZZI CLAUDIA",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910428\n- Valore immobile presunto: 195.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 145.000,00 €\nMutuo di € 145.000 in 30 anni per l'acquisto della prima casa a Firenze, zona Novoli, trilocale con balcone in condominio del 2005. Valore di perizia € 195.000, anticipo coperto da risparmi e da una donazione della madre del richiedente.\nRichiedente di 28 anni, senza datore di lavoro: dottorando di ricerca all'università con borsa di studio di € 1.350 netti mensili per 12 mensilità fino a ottobre 2027. Il reddito di riferimento è della cointestataria convivente, fisioterapista dipendente a tempo indeterminato con netto di € 1.890 su 14 mensilità. Garante la madre, dirigente scolastica.\nCoppia in affitto a Firenze con canone di € 900. CRIF: nessun finanziamento in corso.",
+   "creditTotal": "145.000",
+   "guaranteeTotal": "246.500",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9109 0017 00050069",
+     "description": "M. CASA",
+     "due": "31/10/2056",
+     "amount": "145.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310101 - MUTUO ACQUISTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97264310 VIGNOZZI CLAUDIA",
+     "amount": "29.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "217.500",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95270916",
+    "schedaId": "00088500035",
+    "name": "MONTEFORTINO DEGLI ESPOSTI CARLO ALBERTO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "20/11/2026 11:10 (3 giorni fa)",
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "01500 NORA BELLARIVA",
+     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "STUDENTE",
+     "dal": "NOVEMBRE 2024",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "16.200",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "1",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "26.460",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per l'acquisto della prima casa di € 145.000, durata 30 anni.\n\nIl cliente non ha un datore di lavoro: percepisce dal novembre 2024 una borsa di dottorato di ricerca.\n\nLa cointestataria, convivente del cliente, percepisce un reddito netto di € 1.890 mensili per 14 mensilità.\n\nIl nucleo vive in un immobile condotto in locazione dal 2023, con canone mensile di € 900.\n\nNuovo cliente della scrivente Filiale, redditi non ancora canalizzati presso la banca.\n",
+     "ultima_validazione_scheda": "20/11/2026 11:10 (3 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "NO",
+     "housing": "AFFITTO",
+     "housingFrom": "2023"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-036",
+   "ndg": "95534702",
+   "name": "BERNAZZOLI DARIO",
+   "number": "99105492",
+   "scenario": "Riqualificazione energetica",
+   "branch": "9111",
+   "branchName": "PARMA OLTRETORRENTE",
+   "abi": "5387",
+   "assignee": "903012",
+   "assigneeName": "BPI PRIVATI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Irene Vallescura",
+   "type": "BPI Privati",
+   "typeCode": "BPS",
+   "typeName": "BPI Privati Standard",
+   "state": "LAV",
+   "phase": "PRO",
+   "date": "17/09/2026",
+   "created": "17/09/2026",
+   "assigned": "21/09/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95534702",
+     "name": "BERNAZZOLI DARIO",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96172593",
+     "name": "FORNARI CRISTINA",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910351\n- Valore immobile presunto: 230.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 28.000,00 €\nPrestito cointestato di € 28.000 in 7 anni per cappotto termico, pompa di calore e impianto fotovoltaico della casa di proprietà a Fontevivo, acquistata nel 2020 con mutuo presso la nostra banca.\nRichiedente di 36 anni, dipendente a tempo indeterminato presso TESSITURA COLLEFIORITO S.P.A. come capoturno, netto € 1.820 su 13 mensilità; la moglie cointestataria è commessa con netto di € 1.450. Mutuo casa in corso con rata di € 640, regolare.",
+   "creditTotal": "28.000",
+   "guaranteeTotal": "0",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9111 0017 00050071",
+     "description": "P. ENERGIA",
+     "due": "30/09/2033",
+     "amount": "28.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95534702",
+    "schedaId": "00088500036",
+    "name": "BERNAZZOLI DARIO",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "03/11/2026 14:25 (20 giorni fa)",
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "OPERAIO IMPRESE PRIVATE (INDUSTRIA)",
+     "dal": "SETTEMBRE 2012",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "23.660",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "TESSITURA COLLEFIORITO S.P.A.",
+     "rating_ufficiale": "4",
+     "score_cgs": "2",
+     "nr_altri_componenti_nucleo": "2",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "18.850",
+     "note_scheda_privati": "\nRichiesta di prestito cointestato per l'efficientamento energetico dell'abitazione di € 28.000, durata 7 anni.\n\nIl cliente è assunto presso TESSITURA COLLEFIORITO S.P.A. dal settembre 2012 con contratto a tempo indeterminato.\n\nIl cliente risiede con il proprio nucleo familiare nell'immobile di proprietà dal 2020.\n\nDa CRIF risulta il mutuo casa presso la banca con rata mensile di € 640, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "03/11/2026 14:25 (20 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600027",
+     "employerFrom": "SETTEMBRE 2012",
+     "employerTo": "--------- ----",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2020"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-037",
+   "ndg": "06912384",
+   "name": "TRAVERSO ADRIANA",
+   "number": "99107938",
+   "scenario": "Surroga",
+   "branch": "9112",
+   "branchName": "GENOVA LEVANTE",
+   "abi": "5387",
+   "assignee": "903036",
+   "assigneeName": "BPI PRIVATI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Laura Costaferma",
+   "type": "BPI Mutui",
+   "typeCode": "BMS",
+   "typeName": "BPI Mutui Standard",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "04/11/2026",
+   "created": "04/11/2026",
+   "assigned": "05/11/2026",
+   "evidence": "",
+   "evidenceTooltip": "",
+   "subjects": [
+    {
+     "ndg": "06912384",
+     "name": "TRAVERSO ADRIANA",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910489\n- Valore immobile presunto: 172.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 66.215,90 €\nSurroga del mutuo in essere presso altro istituto, debito residuo di € 66.215,90, nuova durata 10 anni. Appartamento di proprietà a Genova Quarto, con vista mare.\nRichiedente di 61 anni, pensionata dal 2025 con pensione anticipata INPS di € 1.760 netti su 13 mensilità, ex impiegata di un'agenzia marittima. Vive sola. Nessun'altra rata in corso. In corso la verifica preliminare della documentazione.",
+   "creditTotal": "66.215,90",
+   "guaranteeTotal": "99.323,85",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9112 0017 00050073",
+     "description": "M. SURROGA",
+     "due": "30/11/2036",
+     "amount": "66.215,90",
+     "operation": "In Lavoraz.",
+     "tooltip": "310202 - MUTUO PER PORTABILITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "99.323,85",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": null,
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-038",
+   "ndg": "95187356",
+   "name": "RE UGO",
+   "number": "99108706",
+   "scenario": "Acquisto con lavori",
+   "branch": "9104",
+   "branchName": "MODENA CENTRO",
+   "abi": "5387",
+   "assignee": "901500",
+   "assigneeName": "BPI MUTUI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Nora Bellariva",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "VEP",
+   "date": "17/11/2026",
+   "created": "17/11/2026",
+   "assigned": "18/11/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95187356",
+     "name": "RE UGO",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910527\n- Valore immobile presunto: 255.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 174.900,00 €\nAcquisto e ristrutturazione di un appartamento al piano terra a Sassuolo da trasformare in abitazione con studio: mutuo di € 168.000 in 20 anni e linea di € 6.900 in 5 anni per le spese tecniche.\nRichiedente di 43 anni, lavoratore autonomo: geometra libero professionista dal 2009, reddito netto medio 2024-2025 di € 47.500. Vive in affitto a Fiorano Modenese. In corso la verifica preliminare della documentazione di reddito.",
+   "creditTotal": "174.900",
+   "guaranteeTotal": "252.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9104 0017 00050075",
+     "description": "M. ACQ. RISTR.",
+     "due": "30/11/2046",
+     "amount": "168.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310606 - ACQUISTO E RISTRUTTURAZIONE",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9104 0018 00050076",
+     "description": "P. SPESE",
+     "due": "30/11/2031",
+     "amount": "6.900",
+     "operation": "In Lavoraz.",
+     "tooltip": "315014 - PRESTITO PER SPESE TECNICHE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "252.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": null,
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-039",
+   "ndg": "95955148",
+   "name": "VIGLIONE ARIANNA",
+   "number": "99103897",
+   "scenario": "Acquisto prima casa",
+   "branch": "9108",
+   "branchName": "TORINO SAN PAOLO",
+   "abi": "5387",
+   "assignee": "903024",
+   "assigneeName": "BPI MUTUI NORD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Stefano Montelago",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "SOSP",
+   "phase": "IST",
+   "date": "26/05/2026",
+   "created": "26/05/2026",
+   "assigned": "28/05/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95955148",
+     "name": "VIGLIONE ARIANNA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "97735619",
+     "name": "VIGLIONE DARIO",
+     "role": "Garante"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910215\n- Valore immobile presunto: 172.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 132.000,00 €\nMutuo di € 132.000 in 30 anni per l'acquisto della prima casa a Collegno, bilocale con cantina in palazzina degli anni Sessanta, prezzo € 170.000.\nRichiedente di 26 anni, dipendente a tempo indeterminato presso STUDIO ASSOCIATO VERRANDI PALMIERO come impiegata amministrativa, netto € 1.590 su 14 mensilità. Garante il padre, artigiano con immobili di proprietà. In affitto con canone di € 520.\nIstruttoria sospesa in attesa della perizia integrativa: il perito ha rilevato difformità catastali da regolarizzare a cura del venditore.",
+   "creditTotal": "132.000",
+   "guaranteeTotal": "224.400",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9108 0017 00050077",
+     "description": "M. CASA",
+     "due": "31/05/2056",
+     "amount": "132.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310101 - MUTUO ACQUISTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "GAR. PERS.",
+     "ndgName": "97735619 VIGLIONE DARIO",
+     "amount": "26.400",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "901-FIDEIUSSIONE PERSONALE SPECIFICA",
+     "tooltipField": null
+    },
+    {
+     "id": "G2",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "198.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95955148",
+    "schedaId": "00088500039",
+    "name": "VIGLIONE ARIANNA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "10/11/2026 13:35 (13 giorni fa)",
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03024 STEFANO MONTELAGO",
+     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO IMPRESE PRIVATE (SERVIZI)",
+     "dal": "APRILE 2023",
+     "numero_mensilita": "14",
+     "retribuzione_annua_netta": "22.260",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "STUDIO ASSOCIATO VERRANDI PALMIERO",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per l'acquisto della prima casa di € 132.000, durata 30 anni.\n\nAssunta presso STUDIO ASSOCIATO VERRANDI PALMIERO a tempo determinato da aprile 2022, a tempo indeterminato da aprile 2023.\n\nNuovo cliente della scrivente Filiale, redditi non ancora canalizzati presso la banca.\n\nLa cliente vive da sola in un immobile in locazione dal 2024, canone mensile € 520.\n",
+     "ultima_validazione_scheda": "10/11/2026 13:35 (13 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "0",
+     "employerFrom": "APRILE 2022",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "NO",
+     "housing": "AFFITTO",
+     "housingFrom": "2024"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "gen-040",
+   "ndg": "95687203",
+   "name": "CAPRANICA STEFANIA",
+   "number": "99107650",
+   "scenario": "Ristrutturazione",
+   "branch": "9103",
+   "branchName": "ROMA NOMENTANA",
+   "abi": "5387",
+   "assignee": "903048",
+   "assigneeName": "BPI MUTUI SUD",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Davide Roccaluce",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "28/10/2026",
+   "created": "28/10/2026",
+   "assigned": "30/10/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "95687203",
+     "name": "CAPRANICA STEFANIA",
+     "role": "Richiedente"
+    },
+    {
+     "ndg": "96427815",
+     "name": "SALVATORI SANDRO",
+     "role": "Cointestatario"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9910476\n- Valore immobile presunto: 310.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 112.000,00 €\nRistrutturazione dell'appartamento di proprietà a Roma, zona Talenti: mutuo di € 88.000 in 15 anni per demolizioni, impianti e nuova distribuzione interna, e prestito di € 24.000 in 10 anni per cappotto, infissi e pompa di calore. Lavori affidati a impresa con contratto d'appalto, erogazione a stato avanzamento lavori.\nRichiedente di 40 anni, dipendente a tempo indeterminato presso l'ISTITUTO COMPRENSIVO MONTESERRA come docente di ruolo, netto € 1.840 su 13 mensilità; il marito cointestatario è tecnico informatico con netto di € 2.100 su 14 mensilità. Mutuo prima casa estinto nel 2025. CRIF: finanziamento auto con rata di € 260.",
+   "creditTotal": "112.000",
+   "guaranteeTotal": "132.000",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9103 0017 00050079",
+     "description": "M. RISTR.",
+     "due": "31/10/2041",
+     "amount": "88.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310303 - MUTUO RISTRUTTURAZIONE",
+     "tooltipField": null
+    },
+    {
+     "id": "F2",
+     "account": "034 9103 0018 00050080",
+     "description": "P. ENERGIA",
+     "due": "31/10/2036",
+     "amount": "24.000",
+     "operation": "In Lavoraz.",
+     "tooltip": "310808 - PRESTITO EFFICIENTAMENTO ABITAZIONE",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "132.000",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "95687203",
+    "schedaId": "00088500040",
+    "name": "CAPRANICA STEFANIA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "18/11/2026 16:50 (5 giorni fa)",
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03048 DAVIDE ROCCALUCE",
+     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "IMPIEGATO PUBBLICA AMMINISTRAZIONE",
+     "dal": "SETTEMBRE 2011",
+     "numero_mensilita": "13",
+     "retribuzione_annua_netta": "23.920",
+     "tipo_contratto": "TEMPO INDETERMINATO",
+     "datore_di_lavoro_anagrafica": "ISTITUTO COMPRENSIVO MONTESERRA",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "3",
+     "di_cui_percepiscono_reddito": "1",
+     "importo_totale_annuo_nucleo": "29.400",
+     "note_scheda_privati": "\nRichiesta di mutuo cointestato per la ristrutturazione dell'abitazione di € 88.000, durata 15 anni, e prestito energia di € 24.000.\n\nLa cliente è assunta presso l'ISTITUTO COMPRENSIVO MONTESERRA dal settembre 2011 con contratto a tempo indeterminato.\n\nIl cointestatario, coniuge della cliente, percepisce un reddito netto di € 2.100 mensili per 14 mensilità.\n\nIl nucleo risiede nell'immobile di proprietà dal 2014.\n\nDa CRIF risulta un finanziamento auto con rata mensile di € 260, regolarmente rimborsato.\n",
+     "ultima_validazione_scheda": "18/11/2026 16:50 (5 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "94600077",
+     "employerFrom": "SETTEMBRE 2011",
+     "employerTo": "--------- ----",
+     "employerRegistered": true,
+     "incomeChanneled": "SI",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2014"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "llm-generated",
+    "filler": [],
+    "stated": null
+   }
+  }
+ ]
+}

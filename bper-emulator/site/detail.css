@@ -18,12 +18,15 @@
 #detail-view button { appearance: none; margin: 0; font: inherit; color: inherit; cursor: pointer; }
 #detail-view :focus-visible { outline: 1px dotted #074d92; outline-offset: -1px; }
 
+/* The frame follows the window: an 11-of-12 column block one column in from the page margins
+   (left = 36 + (W - 72) / 12 CSS px), down to 39 px above the bottom. The page inside keeps its
+   width (990 CSS px) and scrolls; each scrollbar shows only while the page overflows that way. */
 .pd-window {
   position: absolute;
   top: 25px;
-  left: 92px;
-  width: 719px;
-  height: 451px;
+  left: calc(92px + (100% - 848px) / 12);
+  width: calc(719px + (100% - 848px) * 11 / 12);
+  height: calc(100% - 64px);
   overflow: scroll;
   scrollbar-width: none;
   background: var(--pd-paper);
@@ -33,24 +36,37 @@
 .pd-scroll input { appearance: none; margin: 0; background: transparent; cursor: default; }
 .pd-scroll input::-webkit-slider-thumb { appearance: none; border-radius: 6px; background: #8b8b8a; }
 .pd-scroll input::-moz-range-thumb { border: 0; border-radius: 6px; background: #8b8b8a; }
-.pd-vertical { top: 27px; left: 811px; width: 9px; height: 446px; flex-direction: column; }
-.pd-horizontal { top: 476px; left: 93px; width: 715px; height: 9px; }
+.pd-vertical { top: 27px; right: 28px; width: 9px; height: calc(100% - 69px); flex-direction: column; }
+.pd-horizontal { bottom: 30px; left: calc(93px + (100% - 848px) / 12); width: calc(715px + (100% - 848px) * 11 / 12); height: 9px; }
+.pd-window[data-hbar="off"] { height: calc(100% - 55px); }
+.pd-window[data-hbar="off"] ~ .pd-horizontal, .pd-window[data-vbar="off"] ~ .pd-vertical { display: none; }
+.pd-window[data-hbar="off"] ~ .pd-vertical { height: calc(100% - 60px); }
+.pd-window[data-vbar="off"] { width: calc(728px + (100% - 848px) * 11 / 12); }
+.pd-window[data-vbar="off"] ~ .pd-horizontal { width: calc(724px + (100% - 848px) * 11 / 12); }
+/* At 100% the full-resolution frames (spec 16.7, 1164-1598 px) put the page 26.7 + W / 12 CSS px from the left, the
+   frame's scrollbar thumb 43.2 px from the right (its column ends ~37 px in) and the frame 37 px above the bottom:
+   0.5 px further right, 1.8 px further left and 0.9 px lower than the capture scale's box, in reference px. */
+#frame[data-scale="native"] .pd-window { left: calc(21.85px + 100% / 12); height: calc(100% - 63.1px); }
+#frame[data-scale="native"] .pd-window[data-hbar="off"] { height: calc(100% - 54.1px); }
+#frame[data-scale="native"] .pd-horizontal { left: calc(22.85px + 100% / 12); bottom: 29.1px; }
+#frame[data-scale="native"] .pd-vertical { right: 29.8px; height: calc(100% - 68.1px); }
+#frame[data-scale="native"] .pd-window[data-hbar="off"] ~ .pd-vertical { height: calc(100% - 59.1px); }
 .pd-vertical::before, .pd-vertical::after, .pd-horizontal::before, .pd-horizontal::after { content: ""; width: 0; height: 0; border: 3px solid transparent; }
 .pd-vertical::before { border-bottom-color: currentColor; }
 .pd-vertical::after { border-top-color: currentColor; }
 .pd-horizontal::before { border-right-color: currentColor; }
 .pd-horizontal::after { border-left-color: currentColor; }
-.pd-vertical input { writing-mode: vertical-lr; height: 431px; width: 7px; --pd-thumb-height: 250px; }
-.pd-window[data-page="subjects"] ~ .pd-vertical input { --pd-thumb-height: 332px; }
-.pd-window[data-page="notes"] ~ .pd-vertical input { --pd-thumb-height: 295px; }
+/* Thumbs are as long as the visible share of the page (detail.js). */
+.pd-vertical input { writing-mode: vertical-lr; height: calc(100% - 15px); width: 7px; }
 .pd-vertical input::-webkit-slider-thumb { width: 6px; height: var(--pd-thumb-height); }
 .pd-vertical input::-moz-range-thumb { width: 6px; height: var(--pd-thumb-height); }
-.pd-horizontal input { width: 697px; height: 7px; }
-.pd-horizontal input::-webkit-slider-thumb { width: 692px; height: 6px; }
-.pd-horizontal input::-moz-range-thumb { width: 692px; height: 6px; }
-.pd-page { position: relative; width: 725px; min-height: 745px; }
-.pd-window[data-page="subjects"] .pd-page { min-height: 583px; }
-.pd-window[data-page="notes"] .pd-page { min-height: 648px; }
+.pd-horizontal input { width: calc(100% - 18px); height: 7px; }
+.pd-horizontal input::-webkit-slider-thumb { width: var(--pd-thumb-width); height: 6px; }
+.pd-horizontal input::-moz-range-thumb { width: var(--pd-thumb-width); height: 6px; }
+/* Page lengths as the reference scrollbars show them (thumbs of 250, 332 and 295 px on 431). */
+.pd-page { position: relative; width: 724px; min-height: 777px; }
+.pd-window[data-page="subjects"] .pd-page { min-height: 585px; }
+.pd-window[data-page="notes"] .pd-page { min-height: 659px; }
 
 .pd-mast { width: 719px; height: 31px; display: flex; align-items: flex-start; justify-content: space-between; background: linear-gradient(115deg, #fff 10%, var(--pd-paper) 65%); }
 .pd-mast > span { align-self: flex-start; padding: 1px 3px 0; color: #555; font: bold 7.4px Arial, sans-serif; }
@@ -77,21 +93,34 @@
 #detail-view .pd-group.pd-expanded { color: #fff; background: linear-gradient(#002f80, #001b49); }
 .pd-expanded::before { transform: rotate(180deg); background-image: var(--pd-chevron-white); }
 .pd-expanded::after { top: 5px; width: 12px; height: 12px; background-image: var(--pd-busy); }
+/* Other groups open too (MOL 05 20:59): grey with the chevron up; the current group closed keeps navy and badge. */
+.pd-open::before { transform: rotate(180deg); }
+.pd-expanded.pd-closed::before { transform: none; }
+/* Delibera with the deliberating body under it, bold uppercase on two lines (MOL 05 20:59, 37:59). */
+#detail-view .pd-group.pd-body { height: auto; padding-top: 3px; padding-bottom: 3.6px; }
+.pd-body small { display: block; margin-top: 2.5px; font-size: 6.2px; line-height: 9.6px; }
+.pd-body::before { top: 26.5px; }
+.pd-body::after, .pd-body.pd-done::after { top: 12.5px; }
 #detail-view .pd-subitem { padding: 3px 3px 0 4px; height: 14.75px; color: #4a4a4a; font-size: 7.25px; line-height: 9px; background: #dceafd; }
 #detail-view .pd-subitem.pd-current { margin: -.5px 0; padding: 3.5px 3px 0; width: 106px; height: 28px; background: white; border: 1px solid #c8c8c8; border-right: 0; box-shadow: 0 1px 1px #0000001a; }
 /* The current page points into the work area with an arrow as tall as the row. */
 .pd-current::before { content: ""; position: absolute; right: -13px; top: -1px; width: 14px; height: 28px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 28'%3E%3Cpath d='M0 .5h.5L13.3 14 .5 27.5H0' fill='white' stroke='%23c8c8c8'/%3E%3C/svg%3E"); }
 .pd-subitem.pd-current::after { right: -2px; top: 8px; width: 10px; height: 10px; background-image: var(--pd-open); opacity: 1; }
+/* The callout marks the page last opened, the badge the practice's step (spec 18.1): apart, each keeps its icon. */
+.pd-subitem.pd-now:not(.pd-current)::after { right: 3px; top: 2px; width: 10px; height: 10px; background-image: var(--pd-open); opacity: 1; }
+.pd-subitem.pd-current.pd-visited::after { right: -1px; top: 9px; width: 10px; height: 8px; background-image: var(--pd-check); }
+.pd-subitem.pd-current:not(.pd-now, .pd-visited)::after { right: 0; top: 9px; width: 8px; height: 8px; background-image: var(--pd-pencil); opacity: .85; }
 .pd-navtools { display: flex; height: 18px; background: linear-gradient(#fff, #ececec); }
 .pd-navtools i { flex: 1; border-left: 1px solid #f4f4f4; background: center / 9px 9px no-repeat; }
 .pd-navtools i:first-child { border: 0; background-color: #fff; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M4.6 1 .8 4.4l3.8 3.4V5.6c2.4 0 3.6.8 4.6 2.6C9 5 7.4 3.4 4.6 3.2z' fill='%232f66bb'/%3E%3C/svg%3E"); }
-[data-sidebar="subjects"] .pd-navtools i:first-child { opacity: .25; }
+.pd-navtools i[aria-disabled="true"] { opacity: .25; }
 .pd-navtools i:nth-child(2) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5h1.6v7H3zm2.4 0H7v7H5.4z' fill='%233a6fc4'/%3E%3C/svg%3E"); }
 .pd-navtools i:nth-child(3) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.8 1.6h6.4v1.2H1.8zM4 .8h2v1H4zM2.5 3.2h5L7 9.3H3z' fill='%233467c6'/%3E%3C/svg%3E"); }
 .pd-navtools i:nth-child(4) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1.4 1h4.4v5.6H1.4z' fill='%2393b4dd'/%3E%3Cpath d='M4 3.4h4.6v5.8H4z' fill='%235e93d6'/%3E%3C/svg%3E"); }
 .pd-navtools i:nth-child(5) { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2 2l6 6M8 2 2 8' stroke='%23264f94' stroke-width='1.9'/%3E%3C/svg%3E"); }
 .pd-quick { color: #125baa; padding: 1px 6px 0; font-size: 7.25px; line-height: 11px; }
 .pd-navbox:nth-child(2) .pd-quick { padding-top: 2px; line-height: 10.5px; }
+#detail-view .pd-doclink { color: inherit; text-decoration: none; }
 
 .pd-work { position: absolute; top: 62px; left: 126px; width: 592px; }
 .pd-bar { margin: 0; padding: 3px 8px; height: 18px; color: white; border-radius: 4px 4px 0 0; background: var(--pd-blue); font: bold 7.5px/12px Arial, sans-serif; }
@@ -105,6 +134,8 @@
 .pd-date { height: 21px; display: flex; align-items: center; justify-content: flex-end; padding-right: 1px; gap: 6px; color: #605e5b; font-size: 6.6px; }
 .pd-subjects .pd-bar { height: 17px; }
 .pd-bluebtn, #detail-view .pd-bluebtn { display: inline-flex; align-items: center; justify-content: center; height: 17px; padding: 1px 6px; border: 1px solid #537195; border-radius: 4px; background: linear-gradient(#0756a1, #00357d 65%, #003477); color: white; font: bold 8.6px/12px Arial, sans-serif; }
+/* Greyed in visualizzazione (MOL 05 06:53): light grey face and border, grey text. */
+#detail-view .pd-bluebtn[aria-disabled="true"] { border-color: #c9c9c9; background: linear-gradient(#f1f1f1, #dcdcdc); color: #a8a8a8; cursor: default; }
 .pd-table { border-collapse: collapse; table-layout: fixed; color: #25282a; font: 7.2px/10px Arial, sans-serif; }
 .pd-table th { padding: 2px; background: #999; color: white; font-size: 7.4px; text-align: center; vertical-align: middle; }
 .pd-table td { padding: 1px 2px; border-bottom: 1px solid #ddd; text-align: center; vertical-align: middle; background: white; }
@@ -149,6 +180,9 @@
 .pd-strategy strong, .pd-strategy p { display: block; margin: 8px 6px 0; }
 .pd-strategy strong { margin-top: 4px; text-decoration: underline; }
 .pd-strategy p { margin-top: 12px; }
+/* The capture window (842 x 617) shows the page down to 451 px: its lower blocks (pef-extra.css) never start above,
+   so the reference states keep their pixels. The finances start 161 px down the page, the blocks 15 px under this. */
+#frame[data-scale="capture"] .pd-credit-main { min-height: 276px; }
 /* Static top: right under the description, however many lines it wraps to. */
 .pd-tooltip { pointer-events: none; position: absolute; top: auto; left: 60%; z-index: 2; padding: 1px 5px; border: 1px solid #8e8d89; background: #fff; color: #444; font: 7.6px/10px Arial, sans-serif; white-space: nowrap; }
 

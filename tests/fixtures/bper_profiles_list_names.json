@@ -1,0 +1,244 @@
+{
+ "format": "bper-emulator-profiles/1",
+ "_comment": [
+  "Two invented practices around the width of the list's Denom. cell (127 px of 12 px Segoe UI): ROCCAFORTE ROSALBA",
+  "measures 126.06 px in Chrome and fits; BELLAVISTA BENEDETTA measures 127.24 px and is cut with an ellipsis.",
+  "Widths from bper-emulator/list_font_metrics.json (measure_list_font.cjs), confirmed by audit_truth.cjs."
+ ],
+ "profiles": [
+  {
+   "key": "fittizia-sotto",
+   "ndg": "97100001",
+   "name": "ROCCAFORTE ROSALBA",
+   "number": "97100001",
+   "scenario": "Surroga",
+   "branch": "9102",
+   "branchName": "BOLOGNA SARAGOZZA",
+   "abi": "5387",
+   "assignee": "903012",
+   "assigneeName": "BPI PRIVATI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Irene Vallescura",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "22/09/2026",
+   "created": "22/09/2026",
+   "assigned": "25/09/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "97100001",
+     "name": "ROCCAFORTE ROSALBA",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9900002\n- Valore immobile presunto: 193.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 109.734,63 €\nD'AMICO ANDREA — SURROGA. Portabilità del debito residuo. Acquisito il conteggio della banca originaria. Immobile nel comune di Bologna.\nRichiedente di 59 anni, attività professionale in proprio con due dichiarazioni dei redditi acquisite. Reddito netto mensile del richiedente di 4.500,00 €. Piano di rimborso della linea principale in 10 anni. Altra rata in corso di 155,00 € mensili.",
+   "creditTotal": "109.734,63",
+   "guaranteeTotal": "164.601,94",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9102 0017 00000003",
+     "description": "M. SURROGA",
+     "due": "30/09/2036",
+     "amount": "109.734,63",
+     "operation": "In Lavoraz.",
+     "tooltip": "310202 - MUTUO PER PORTABILITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "164.601,94",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "97100001",
+    "schedaId": "00088000002",
+    "name": "ROCCAFORTE ROSALBA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "05/11/2026 13:07 (18 giorni fa)",
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "LIBERO PROFESSIONISTA",
+     "dal": "MARZO 2004",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "54.000",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per la surroga del mutuo in essere presso altro istituto di € 109.734,63, durata 10 anni.\n\nNuovo cliente della scrivente Filiale, redditi non ancora canalizzati presso la banca.\n\nAggiornamento del 05/11: acquisita la situazione contabile aggiornata, confermati i dati reddituali indicati in scheda.\n",
+     "ultima_validazione_scheda": "05/11/2026 13:07 (18 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2013"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "sqlite",
+    "filler": [],
+    "stated": null
+   }
+  },
+  {
+   "key": "fittizia-sopra",
+   "ndg": "97100002",
+   "name": "BELLAVISTA BENEDETTA",
+   "number": "97100002",
+   "scenario": "Surroga",
+   "branch": "9102",
+   "branchName": "BOLOGNA SARAGOZZA",
+   "abi": "5387",
+   "assignee": "903012",
+   "assigneeName": "BPI PRIVATI",
+   "operatorId": "901500",
+   "operatorName": "Nora Bellariva",
+   "officeCode": "09001",
+   "noteAuthor": "Irene Vallescura",
+   "type": "BPI Mutui",
+   "typeCode": "BMB",
+   "typeName": "BPI Mutui Origination Bstore",
+   "state": "LAV",
+   "phase": "IST",
+   "date": "22/09/2026",
+   "created": "22/09/2026",
+   "assigned": "25/09/2026",
+   "evidence": "B",
+   "evidenceTooltip": "Origination BSTORE",
+   "subjects": [
+    {
+     "ndg": "97100002",
+     "name": "BELLAVISTA BENEDETTA",
+     "role": "Richiedente"
+    }
+   ],
+   "notes": "- Numero proposta DESK: 9900002\n- Valore immobile presunto: 193.000,00\n- Dettaglio importi mutuo:\n       IMPORTO RICHIESTO : 109.734,63 €\nD'AMICO ANDREA — SURROGA. Portabilità del debito residuo. Acquisito il conteggio della banca originaria. Immobile nel comune di Bologna.\nRichiedente di 59 anni, attività professionale in proprio con due dichiarazioni dei redditi acquisite. Reddito netto mensile del richiedente di 4.500,00 €. Piano di rimborso della linea principale in 10 anni. Altra rata in corso di 155,00 € mensili.",
+   "creditTotal": "109.734,63",
+   "guaranteeTotal": "164.601,94",
+   "fidi": [
+    {
+     "id": "F1",
+     "account": "034 9102 0017 00000003",
+     "description": "M. SURROGA",
+     "due": "30/09/2036",
+     "amount": "109.734,63",
+     "operation": "In Lavoraz.",
+     "tooltip": "310202 - MUTUO PER PORTABILITÀ",
+     "tooltipField": null
+    }
+   ],
+   "guarantees": [
+    {
+     "id": "G1",
+     "creditId": "F1",
+     "description": "IPOTECA I GR.",
+     "ndgName": "",
+     "amount": "164.601,94",
+     "operation": "Nuova / In Lavoraz.",
+     "tooltip": "55-IPOTECA DI PRIMO GRADO",
+     "tooltipField": "tooltip_descrizione_ipoteca"
+    }
+   ],
+   "role": "sintetica",
+   "scheda": {
+    "ndg": "97100002",
+    "schedaId": "00088000002",
+    "name": "BELLAVISTA BENEDETTA",
+    "operator": {
+     "code": "901500 - 09001",
+     "name": "Nora Bellariva"
+    },
+    "lastChange": {
+     "when": "05/11/2026 13:07 (18 giorni fa)",
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "lastValidation": {
+     "user": "03012 IRENE VALLESCURA",
+     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "bank": "05387 BPER Banca"
+    },
+    "fields": {
+     "professione_principale": "LIBERO PROFESSIONISTA",
+     "dal": "MARZO 2004",
+     "numero_mensilita": "12",
+     "retribuzione_annua_netta": "54.000",
+     "tipo_contratto": "",
+     "datore_di_lavoro_anagrafica": "",
+     "rating_ufficiale": "N/D",
+     "score_cgs": "N/D",
+     "nr_altri_componenti_nucleo": "0",
+     "di_cui_percepiscono_reddito": "0",
+     "importo_totale_annuo_nucleo": "0",
+     "note_scheda_privati": "\nRichiesta di mutuo per la surroga del mutuo in essere presso altro istituto di € 109.734,63, durata 10 anni.\n\nNuovo cliente della scrivente Filiale, redditi non ancora canalizzati presso la banca.\n\nAggiornamento del 05/11: acquisita la situazione contabile aggiornata, confermati i dati reddituali indicati in scheda.\n",
+     "ultima_validazione_scheda": "05/11/2026 13:07 (18 giorni fa)"
+    },
+    "details": {
+     "employerNdg": "",
+     "employerFrom": "--------- ----",
+     "employerTo": "--------- ----",
+     "employerRegistered": false,
+     "incomeChanneled": "NO",
+     "creditCardBalance": "SI",
+     "housing": "PROPRIETA'",
+     "housingFrom": "2013"
+    }
+   },
+   "pages": [
+    "elenco",
+    "soggetti",
+    "gestione-fidi",
+    "note"
+   ],
+   "provenance": {
+    "source": "sqlite",
+    "filler": [],
+    "stated": null
+   }
+  }
+ ]
+}

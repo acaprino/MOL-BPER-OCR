@@ -1,0 +1,178 @@
+/* Gestione Documentale and its embedded PDF viewer (docs.js). Lengths are reference px like detail.css: one video px
+   of the recording is 0.687 of them (spec 16.1), which is how the measurements below were converted. */
+#detail-view {
+  --gd-navy: #002561;
+  --gd-chevron-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 6'%3E%3Cpath d='M1 1l3.5 3.5L8 1' fill='none' stroke='%23222' stroke-width='2'/%3E%3C/svg%3E");
+}
+
+/* ---- PEF 2.0 wait: a red line under the mast and a navy ring over the frame ---- */
+.gd-wait { position: absolute; top: 16px; right: 4px; color: #e00; font: 7.2px/8px Arial, sans-serif; white-space: nowrap; }
+.gd-spinner {
+  position: absolute; z-index: 3; width: 24.7px; height: 24.7px; margin: -12.35px 0 0 -12.35px; border-radius: 50%;
+  background: radial-gradient(circle, transparent 7.3px, #fff 7.5px 8.3px, transparent 8.5px),
+    conic-gradient(from 200deg, #e6f0f9, #3a75ae 9%, #174a85 25%, #0f3a70 60%, #0c3163 92%, #e6f0f9);
+  -webkit-mask: radial-gradient(circle, transparent 7.2px, #000 7.4px);
+  mask: radial-gradient(circle, transparent 7.2px, #000 7.4px);
+  box-shadow: inset 0 0 0 .9px #fff;
+  animation: gd-spin .9s linear infinite;
+}
+@keyframes gd-spin { to { transform: rotate(1turn); } }
+
+/* ---- the list ---- */
+.gd-page { margin-top: .5px; color: #333; font: 7.2px/11px Arial, Helvetica, sans-serif; }
+.gd-print { display: flex; align-items: flex-start; justify-content: flex-end; gap: 3.4px; height: 21.3px; padding: 2.7px 2.6px 0 0; color: #555; font-size: 6.7px; }
+#detail-view .gd-print .pd-bluebtn { height: 17px; padding: 1px 0; }
+#detail-view .gd-print .pd-bluebtn:first-of-type { width: 120.2px; margin-left: 4px; }
+#detail-view .gd-print .pd-bluebtn:last-of-type { width: 68px; }
+.gd-box { border: 1px solid #dfdddb; padding: 5.5px 5.5px 6px 5.5px; }
+.gd-panel + .gd-panel { margin-top: 2px; }
+.gd-subject + .gd-subject { margin-top: 0; }
+.gd-panel:first-child { border: 1px solid #d9d7d8; }
+.gd-head { position: relative; margin: 0; font: inherit; }
+#detail-view .gd-head > button { display: block; width: 100%; border: 0; padding: 0; text-align: left; }
+#detail-view h3.gd-head > button {
+  position: relative; height: 17.35px; padding: 1px 0 0 22.7px; border-top: 1.4px solid #5571a3;
+  background: var(--gd-navy); color: #fff; font: bold 7.5px/13px Arial, sans-serif;
+}
+#detail-view .gd-panel:first-child h3.gd-head > button { height: 16.5px; border-top-color: #6b7690; }
+.gd-head > button::before {
+  content: ""; position: absolute; left: 9px; top: 5px; width: 9px; height: 6px; background: var(--pd-chevron-white) center / contain no-repeat;
+}
+.gd-head > button[aria-expanded="true"]::before { transform: rotate(180deg); }
+.gd-addlist {
+  position: absolute; right: 2px; top: 2.6px; width: 10.3px; height: 10.3px; pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 15 15'%3E%3Cpath d='M1.5 3.5h9v10h-9z' fill='none' stroke='white' stroke-width='1.2'/%3E%3Cpath d='M3.5 6.5h5M3.5 8.5h5M3.5 10.5h5' stroke='white'/%3E%3Cpath d='M11.5 0v6M8.5 3h6' stroke='white' stroke-width='1.6'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.gd-head > button[aria-expanded="false"] + .gd-addlist { display: none; }
+.gd-panel:first-child .gd-addlist { display: none; }
+
+/* Filter, placed as measured on the recording (02m59s). */
+.gd-filter { position: relative; height: 77.6px; color: #333; }
+.gd-filter > * { position: absolute; white-space: nowrap; }
+.gd-filter select {
+  appearance: none; height: 13px; margin-left: 1px; padding: 0 9px 0 4.5px; border: 1px solid #767676; border-radius: 1.5px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 6'%3E%3Cpath d='M1 1l3.5 3.5L8 1' fill='none' stroke='%23111' stroke-width='2'/%3E%3C/svg%3E") right 2.7px center / 6px 4px no-repeat;
+  color: #222; font: 7.3px Arial, sans-serif; vertical-align: middle;
+}
+.gd-category { left: 8.2px; top: 8.2px; }
+.gd-category select { width: 132.6px; }
+.gd-print-filter { left: 256.3px; top: 8.2px; }
+.gd-print-filter select, .gd-acquired select { width: 56px; }
+.gd-acquired { left: 382px; top: 8.2px; }
+.gd-mandatory { left: 8.2px; top: 29px; }
+.gd-checklabel { top: 43.5px; }
+.gd-checklabel:nth-of-type(4) { left: 8.2px; }
+.gd-checklabel:nth-of-type(5) { left: 134.7px; }
+.gd-checklabel:nth-of-type(6) { left: 261px; }
+.gd-checklabel:nth-of-type(7) { left: 387.5px; }
+#detail-view .gd-reset, #detail-view .gd-apply { top: 57.7px; height: 16.5px; }
+#detail-view .gd-reset {
+  left: 494.6px; width: 32.3px; padding: 0; border: 1px solid #c9c9c9; border-radius: 4px;
+  background: linear-gradient(#f2f2f2, #e3e3e3); color: #a9a9a9; font: bold 7.6px Arial, sans-serif; cursor: default;
+}
+#detail-view .gd-reset:not(:disabled) { color: #333; cursor: pointer; }
+#detail-view .gd-apply { left: 531px; width: 44px; }
+
+/* A subject's documents hang 6 px in from its bar. */
+.gd-subject > .gd-body { padding-left: 6.2px; }
+#detail-view .gd-group h4.gd-head > button {
+  position: relative; height: 17.9px; padding: 3px 0 0 22.7px; border-left: 1px solid #d6d4d2;
+  background: linear-gradient(#ebebeb, #fdfdfd); color: #222; font: bold 7.5px/11px Arial, sans-serif;
+}
+#detail-view .gd-group h4.gd-head > button::before { left: 9.6px; top: 6px; background-image: var(--gd-chevron-dark); }
+
+.gd-table { width: 572.2px; border-collapse: collapse; border: 1px solid #cbcbcb; border-top: 0; font: 7.2px/11px Arial, sans-serif; }
+.gd-table th { height: 20.6px; padding: 0 0 0 2.8px; background: #999; color: #fff; font-weight: bold; line-height: 9.6px; text-align: left; vertical-align: middle; }
+.gd-table th:nth-child(3) { padding-left: 4.1px; }
+.gd-table th:nth-child(4) { padding-left: 7.5px; }
+.gd-table th:nth-child(n+6) { padding: 0; text-align: center; }
+.gd-table td { padding: 3.5px 1px 3.5px 4.1px; border-bottom: 1px solid #dcdcdc; background: #fff; color: #333; vertical-align: middle; }
+.gd-table tbody tr:nth-child(even) td { background: #f5f5f5; }
+.gd-table td:nth-child(2) { padding-left: 6.2px; padding-right: 10px; }
+.gd-table td:nth-child(3) { padding-left: 6.9px; }
+/* Mandatory documents (O, OA) carry their code in bold. */
+.gd-table .gd-must { font-weight: bold; }
+.gd-table td:nth-child(n+4) { padding-left: 0; padding-right: 0; text-align: center; }
+.gd-table td:nth-child(10) { text-align: left; padding-left: 3.4px; white-space: nowrap; }
+.gd-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+#detail-view .gd-check {
+  appearance: none; display: inline-block; width: 10px; height: 10px; margin: 0; vertical-align: middle;
+  border: 1px solid #838383; border-radius: 1.5px; background: #fff;
+}
+#detail-view .gd-check:disabled { border-color: #cdcdcd; background: #ececec; }
+#detail-view .gd-check:checked {
+  background: #ececec url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M2.2 5.2 4 7.2 7.8 2.6' fill='none' stroke='%23a2a2a2' stroke-width='1'/%3E%3C/svg%3E") center / 8px no-repeat;
+}
+.gd-filter .gd-check { margin-left: 1px; vertical-align: -1px; }
+
+#detail-view .gd-info {
+  display: inline-block; width: 8.6px; height: 8.6px; padding: 0; border: 0; border-radius: 50%; vertical-align: middle;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Cdefs%3E%3CradialGradient id='g' cx='.42' cy='.4' r='.7'%3E%3Cstop offset='0' stop-color='%234a72c8'/%3E%3Cstop offset='1' stop-color='%23122a73'/%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='7' cy='7' r='6.8' fill='url(%23g)'/%3E%3Crect x='6.1' y='5.8' width='1.8' height='5.2' fill='white'/%3E%3Ccircle cx='7' cy='3.8' r='1.1' fill='white'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+/* Acquired: the document and an unlink (chain crossed in red); missing: a paperclip and the chain. */
+#detail-view .gd-file, .gd-unlink, .gd-clip, .gd-link {
+  display: inline-block; width: 8px; height: 9px; padding: 0; border: 0; vertical-align: middle; background: center / contain no-repeat;
+}
+#detail-view .gd-file { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 12'%3E%3Cpath d='M1 .6h5.8L10 3.8v7.6H1z' fill='white' stroke='%233b2328' stroke-width='1'/%3E%3Cpath d='M6.6.6v3.4H10M2.8 5.4h5.4M2.8 7.2h5.4M2.8 9h5.4' fill='none' stroke='%23333' stroke-width='.9'/%3E%3C/svg%3E"); }
+.gd-clip { height: 11px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 16'%3E%3Cpath d='M5.4 4.6v7.2a1.5 1.5 0 0 1-3 0V3.4a2.4 2.4 0 0 1 4.8 0v8.6a3.3 3.3 0 0 1-6.6 0V4.7' fill='none' stroke='%23555' stroke-width='1'/%3E%3C/svg%3E"); }
+.gd-unlink, .gd-link { width: 11.7px; height: 11.7px; margin-left: 10px; }
+.gd-link { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg transform='rotate(-45 10 10)' fill='none' stroke='%23858585' stroke-width='2.4'%3E%3Crect x='1.2' y='6.6' width='9.6' height='6.8' rx='3.4'/%3E%3Crect x='9.2' y='6.6' width='9.6' height='6.8' rx='3.4'/%3E%3C/g%3E%3C/svg%3E"); }
+.gd-unlink { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cg transform='rotate(-45 10 10)' fill='none' stroke='%23858585' stroke-width='2.4'%3E%3Crect x='1.2' y='6.6' width='9.6' height='6.8' rx='3.4'/%3E%3Crect x='9.2' y='6.6' width='9.6' height='6.8' rx='3.4'/%3E%3C/g%3E%3Cpath d='M4.5 2.5 16 17.5M3.5 17.5 15.5 2.5' stroke='%23f50f13' stroke-width='3'/%3E%3C/svg%3E"); }
+
+/* The page's own tooltip: pale yellow, black border, one line, under and left of the pointer. */
+.gd-tip { position: absolute; z-index: 4; padding: 1px 3.4px 1.4px; border: .7px solid #000; background: #ffffe1; color: #000; font: 8.7px/10px Arial, sans-serif; white-space: nowrap; pointer-events: none; }
+
+/* ---- the embedded Chrome PDF viewer (18m48s, 18m53s) ---- */
+.gd-page[data-phase^="viewer"] { margin-top: 11px; }
+.pv-frame {
+  position: relative; height: 364.5px; border: 1.4px solid; border-color: #9a9a9a #e4e4e4 #e4e4e4 #9a9a9a;
+  background: #282828; font-family: "Segoe UI", system-ui, sans-serif; overflow: hidden;
+}
+.pv-toolbar { position: relative; z-index: 1; height: 40.3px; background: #3c3c3c; color: #fff; box-shadow: 0 1.5px 2px #0007; }
+.pv-toolbar > * { position: absolute; top: 50%; transform: translateY(-50%); }
+#detail-view .pv-tool { display: inline-flex; align-items: center; justify-content: center; width: 23px; height: 23px; margin-left: -11.5px; padding: 0; border: 0; border-radius: 50%; background: none; color: #f1f1f1; }
+#detail-view .pv-tool[style*="right"] { margin-left: 0; }
+#detail-view .pv-tool:disabled { color: #7a7a7a; cursor: default; }
+.pv-tool svg { width: 13.7px; height: 13.7px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.pv-tool[aria-label="Altre azioni"] svg { fill: currentColor; stroke: none; }
+.pv-title { left: 46px; width: 88px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 10.3px; font-weight: 600; }
+.pv-pages { left: 151px; display: inline-flex; align-items: center; gap: 4px; font-size: 9.6px; }
+.pv-pages input { width: 16.5px; height: 17px; padding: 0; border: 0; border-radius: 1px; background: #191919; color: #fff; font: inherit; text-align: center; }
+.pv-sep { width: 1px; height: 15px; background: #666; }
+.pv-zoom { left: 232.9px; width: 31px; height: 17px; background: #191919; font-size: 9.6px; line-height: 17px; text-align: center; }
+
+.pv-view { position: absolute; top: 40.3px; left: 0; right: 9.6px; bottom: 0; overflow: auto; scrollbar-width: none; }
+.pv-view[data-empty] .pv-sheet { visibility: hidden; }
+/* An A4 page at 100%: 794 x 1123 CSS px; 10 pt text, 12 pt title. */
+.pv-sheet {
+  position: relative; width: 575.4px; height: 813.8px; margin: 2px 0 6px 4.5px; padding: 0 34.4px 0 35.4px; overflow: hidden;
+  background: #fff; box-shadow: 0 0 3px #000a; color: #111; font: 9.9px/13.6px Arial, Helvetica, sans-serif;
+}
+.pv-sheet > i { position: absolute; width: 1.2px; height: 1.2px; border-radius: 50%; background: #333; }
+.pv-sheet p { margin: 0; white-space: nowrap; }
+.pv-sheet u { text-decoration: underline dotted; text-underline-offset: 2px; }
+.pv-sheet .pv-title-line { font-size: 11.5px; font-weight: bold; text-align: center; }
+.pv-sheet .pv-sub { font-weight: bold; text-align: center; }
+.pv-sheet .pv-hint { font-size: 7.3px; font-weight: bold; }
+.pv-sheet .pv-just { white-space: normal; text-align: justify; }
+.pv-sheet .pv-center { text-align: center; }
+.pv-sheet .pv-item { padding-left: 17px; }
+.pv-sheet .pv-sign { display: flex; justify-content: space-between; }
+.pv-signature { margin-left: auto; font: italic 12px "Segoe Script", cursive; color: #233a7a; }
+
+.pv-scroll { position: absolute; top: 40.3px; right: 0; bottom: 0; width: 9.6px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; background: #fbfbfb; color: #a3a3a3; }
+.pv-scroll::before, .pv-scroll::after { content: ""; flex: none; width: 0; height: 0; margin: 3px 0; border: 3px solid transparent; }
+.pv-scroll::before { border-bottom-color: currentColor; }
+.pv-scroll::after { border-top-color: currentColor; }
+.pv-scroll input { appearance: none; writing-mode: vertical-lr; flex: 1; width: 7px; margin: 0; background: transparent; }
+.pv-scroll input::-webkit-slider-thumb { appearance: none; width: 6px; height: var(--pv-thumb, 120px); border-radius: 0; background: #8a8a8a; }
+.pv-scroll input::-moz-range-thumb { width: 6px; height: var(--pv-thumb, 120px); border: 0; border-radius: 0; background: #8a8a8a; }
+
+.pv-toast {
+  position: absolute; left: 17.9px; bottom: 17px; z-index: 2; display: flex; align-items: center; gap: 8px; width: 209.5px; height: 37.8px;
+  padding: 0 0 0 14px; border-radius: 5.5px; background: #e3e3e3; color: #515151; font-size: 9.6px;
+  box-shadow: 0 1px 3px #0004;
+}
+.pv-toast i { width: 11px; height: 11px; border: 1.5px solid transparent; border-top-color: #3b6ed6; border-left-color: #3b6ed6; border-radius: 50%; animation: gd-spin 1s linear infinite; }
+.gd-back { margin-top: 3.5px; }
