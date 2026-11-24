@@ -153,6 +153,8 @@ def browse_and_grab(url: str, scenario: Dict[str, Any], run: Path) -> List[Dict[
                 event = driver.queue.get(timeout=0.1)
             except queue.Empty:
                 continue
+            if event["event"] == "error" or (event["event"] == "exit" and not frames):
+                print(f"driver {event['event']}: {event}", flush=True)  # a walk that ends early must say why
             if event["event"] in ("done", "exit"):
                 break
             step = event if event["event"] == "action" and "index" in event else step
