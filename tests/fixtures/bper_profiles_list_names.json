@@ -13,7 +13,7 @@
    "number": "97100001",
    "scenario": "Surroga",
    "branch": "9102",
-   "branchName": "BOLOGNA SARAGOZZA",
+   "branchName": "SARAGOZZA",
    "abi": "5387",
    "assignee": "903012",
    "assigneeName": "BPI PRIVATI",
@@ -77,12 +77,12 @@
     "lastChange": {
      "when": "05/11/2026 13:07 (18 giorni fa)",
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -130,7 +130,7 @@
    "number": "97100002",
    "scenario": "Surroga",
    "branch": "9102",
-   "branchName": "BOLOGNA SARAGOZZA",
+   "branchName": "SARAGOZZA",
    "abi": "5387",
    "assignee": "903012",
    "assigneeName": "BPI PRIVATI",
@@ -194,12 +194,12 @@
     "lastChange": {
      "when": "05/11/2026 13:07 (18 giorni fa)",
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "fields": {

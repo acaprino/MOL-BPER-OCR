@@ -1,6 +1,6 @@
 PRAGMA foreign_keys = ON;
 PRAGMA application_id = 1112556883;
-PRAGMA user_version = 4;
+PRAGMA user_version = 5;
 
 CREATE TABLE branch (
     code TEXT PRIMARY KEY NOT NULL,

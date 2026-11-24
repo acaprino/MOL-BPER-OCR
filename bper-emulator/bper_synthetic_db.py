@@ -15,19 +15,22 @@ from typing import Any, NamedTuple
 SCHEMA = Path(__file__).with_name("bper_synthetic_schema.sql")
 APPLICATION_ID = 1112556883
 # 2 added the Scheda Privati tables and the practice role; 3 the practice types, operator offices and income
-# kinds; 4 the product table in place of the practice types. Any schema change bumps it, so an older file is
-# refused (or, the default one, set aside and rebuilt).
-SCHEMA_VERSION = 4
+# kinds; 4 the product table in place of the practice types; 5 the shorter branch names. Any schema or seed
+# change bumps it, so an older file is refused (or, the default one, set aside and rebuilt).
+SCHEMA_VERSION = 5
 ROLE = "sintetica"
 OFFICE_CODE = "09001"
+# Invented names, none of the archive's: as on the real pages, "<code> - <name>" has at most 19 characters, the
+# name at most 12, mostly one word (tests/test_bper_branch_names.py); letters, spaces and apostrophes only, as the
+# Scheda Privati staff line of the reference page shows them.
 BRANCHES = (
-    ("9001", "FILIALE DI PROVA", "Modena"),
-    ("9102", "BOLOGNA SARAGOZZA", "Bologna"), ("9103", "ROMA NOMENTANA", "Roma"),
-    ("9104", "MODENA CENTRO", "Modena"), ("9105", "BRESCIA OVEST", "Brescia"),
-    ("9106", "PESCARA PORTANUOVA", "Pescara"), ("9107", "CAGLIARI CENTRO", "Cagliari"),
-    ("9108", "TORINO SAN PAOLO", "Torino"), ("9109", "FIRENZE RIFREDI", "Firenze"),
-    ("9110", "CATANIA BORGO", "Catania"), ("9111", "PARMA OLTRETORRENTE", "Parma"),
-    ("9112", "GENOVA LEVANTE", "Genova"),
+    ("9001", "FIL DI PROVA", "Modena"),
+    ("9102", "SARAGOZZA", "Bologna"), ("9103", "NOMENTANA", "Roma"),
+    ("9104", "GHIRLANDINA", "Modena"), ("9105", "MOMPIANO", "Brescia"),
+    ("9106", "PORTANUOVA", "Pescara"), ("9107", "STAMPACE", "Cagliari"),
+    ("9108", "SAN PAOLO", "Torino"), ("9109", "RIFREDI", "Firenze"),
+    ("9110", "CATANIA NORD", "Catania"), ("9111", "PARMA OVEST", "Parma"),
+    ("9112", "ALBARO", "Genova"),
 )
 # id, name, office. The list shows an operator's id as the practice's Assegnata code, with the office it
 # names as tooltip; a recording shows 901500 = BPI MUTUI, the other offices are stand-ins. Practice i goes to

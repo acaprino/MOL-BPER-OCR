@@ -23,8 +23,9 @@ STYLESHEET = Path(__file__).resolve().parents[1] / "bper-emulator" / "site" / "s
 # audit (bper-emulator/audit_truth.cjs) proved the old rows wrong: screen 2 gains the Creazione row, shown there in
 # every practice (the reference's real truth lists it too); screens 1 and 2 lose DENOMINAZIONE for the 11
 # practices whose name the list cuts with an ellipsis; screen 3 gains the NDG or DENOMINAZIONE that the
-# content-sized list still shows at the end of its scroll, in 39 practices; and in 30 practices whose Evidenze marks
-# widen the list, screen 3 loses them again and one screen 1 its Creazione (see the fixture's _comment).
+# content-sized list still shows at the end of its scroll, in 39 practices; in 30 practices whose Evidenze marks
+# widen the list, screen 3 loses them again and one screen 1 its Creazione; and the shorter branch names change the
+# Filiale relazione row of all 64 (see the fixture's _comment).
 SNAPSHOT = Path(__file__).resolve().parent / "fixtures" / "bper_truth_snapshot.json"
 NOTE_ROW = ("screen 9", "Note della richiesta")
 APPLICANT = re.compile(r"Richiedente di \d+ anni, [^.]+\. ")

@@ -8,7 +8,7 @@
    "number": "99104217",
    "scenario": "Acquisto prima casa",
    "branch": "9104",
-   "branchName": "MODENA CENTRO",
+   "branchName": "GHIRLANDINA",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -77,12 +77,12 @@
     "lastChange": {
      "when": "10/11/2026 10:42 (13 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9104-0000-0000 MODENA CENTRO",
+     "branch": "9104-0000-0000 GHIRLANDINA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9104-0000-0000 MODENA CENTRO",
+     "branch": "9104-0000-0000 GHIRLANDINA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -130,7 +130,7 @@
    "number": "99106653",
    "scenario": "Riqualificazione energetica",
    "branch": "9108",
-   "branchName": "TORINO SAN PAOLO",
+   "branchName": "SAN PAOLO",
    "abi": "5387",
    "assignee": "903036",
    "assigneeName": "BPI PRIVATI NORD",
@@ -183,12 +183,12 @@
     "lastChange": {
      "when": "04/11/2026 15:18 (19 giorni fa)",
      "user": "03036 LAURA COSTAFERMA",
-     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "branch": "9108-0000-0000 SAN PAOLO",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03036 LAURA COSTAFERMA",
-     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "branch": "9108-0000-0000 SAN PAOLO",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -236,7 +236,7 @@
    "number": "99102874",
    "scenario": "Surroga",
    "branch": "9102",
-   "branchName": "BOLOGNA SARAGOZZA",
+   "branchName": "SARAGOZZA",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -300,12 +300,12 @@
     "lastChange": {
      "when": "12/11/2026 09:36 (11 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -353,7 +353,7 @@
    "number": "99107105",
    "scenario": "Prima casa con garanzia pubblica",
    "branch": "9103",
-   "branchName": "ROMA NOMENTANA",
+   "branchName": "NOMENTANA",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -432,12 +432,12 @@
     "lastChange": {
      "when": "17/11/2026 11:05 (6 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "branch": "9103-0000-0000 NOMENTANA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "branch": "9103-0000-0000 NOMENTANA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -485,7 +485,7 @@
    "number": "99108342",
    "scenario": "Acquisto con lavori",
    "branch": "9109",
-   "branchName": "FIRENZE RIFREDI",
+   "branchName": "RIFREDI",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -573,7 +573,7 @@
    "number": "99103519",
    "scenario": "Liquidità ipotecaria",
    "branch": "9106",
-   "branchName": "PESCARA PORTANUOVA",
+   "branchName": "PORTANUOVA",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -642,12 +642,12 @@
     "lastChange": {
      "when": "03/11/2026 16:20 (20 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "branch": "9106-0000-0000 PORTANUOVA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "branch": "9106-0000-0000 PORTANUOVA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -695,7 +695,7 @@
    "number": "99105788",
    "scenario": "Acquisto prima casa",
    "branch": "9111",
-   "branchName": "PARMA OLTRETORRENTE",
+   "branchName": "PARMA OVEST",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -779,12 +779,12 @@
     "lastChange": {
      "when": "05/11/2026 10:12 (18 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "branch": "9111-0000-0000 PARMA OVEST",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "branch": "9111-0000-0000 PARMA OVEST",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -832,7 +832,7 @@
    "number": "99106091",
    "scenario": "Acquisto seconda casa",
    "branch": "9105",
-   "branchName": "BRESCIA OVEST",
+   "branchName": "MOMPIANO",
    "abi": "5387",
    "assignee": "903024",
    "assigneeName": "BPI MUTUI NORD",
@@ -896,12 +896,12 @@
     "lastChange": {
      "when": "06/11/2026 14:47 (17 giorni fa)",
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9105-0000-0000 BRESCIA OVEST",
+     "branch": "9105-0000-0000 MOMPIANO",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9105-0000-0000 BRESCIA OVEST",
+     "branch": "9105-0000-0000 MOMPIANO",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -949,7 +949,7 @@
    "number": "99105236",
    "scenario": "Riqualificazione energetica",
    "branch": "9110",
-   "branchName": "CATANIA BORGO",
+   "branchName": "CATANIA NORD",
    "abi": "5387",
    "assignee": "903060",
    "assigneeName": "BPI PRIVATI SUD",
@@ -1002,12 +1002,12 @@
     "lastChange": {
      "when": "13/11/2026 09:58 (10 giorni fa)",
      "user": "03060 MARTA FONTELUNA",
-     "branch": "9110-0000-0000 CATANIA BORGO",
+     "branch": "9110-0000-0000 CATANIA NORD",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03060 MARTA FONTELUNA",
-     "branch": "9110-0000-0000 CATANIA BORGO",
+     "branch": "9110-0000-0000 CATANIA NORD",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -1055,7 +1055,7 @@
    "number": "99106727",
    "scenario": "Ristrutturazione",
    "branch": "9112",
-   "branchName": "GENOVA LEVANTE",
+   "branchName": "ALBARO",
    "abi": "5387",
    "assignee": "903024",
    "assigneeName": "BPI MUTUI NORD",
@@ -1129,12 +1129,12 @@
     "lastChange": {
      "when": "09/11/2026 11:30 (14 giorni fa)",
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "branch": "9112-0000-0000 ALBARO",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "branch": "9112-0000-0000 ALBARO",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -1182,7 +1182,7 @@
    "number": "99101946",
    "scenario": "Prima casa con garanzia pubblica",
    "branch": "9102",
-   "branchName": "BOLOGNA SARAGOZZA",
+   "branchName": "SARAGOZZA",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -1281,12 +1281,12 @@
     "lastChange": {
      "when": "30/10/2026 12:15 (24 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -1334,7 +1334,7 @@
    "number": "99107862",
    "scenario": "Acquisto prima casa",
    "branch": "9107",
-   "branchName": "CAGLIARI CENTRO",
+   "branchName": "STAMPACE",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -1413,12 +1413,12 @@
     "lastChange": {
      "when": "18/11/2026 15:40 (5 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "branch": "9107-0000-0000 STAMPACE",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "branch": "9107-0000-0000 STAMPACE",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -1466,7 +1466,7 @@
    "number": "99108415",
    "scenario": "Riqualificazione energetica",
    "branch": "9104",
-   "branchName": "MODENA CENTRO",
+   "branchName": "GHIRLANDINA",
    "abi": "5387",
    "assignee": "903012",
    "assigneeName": "BPI PRIVATI",
@@ -1528,7 +1528,7 @@
    "number": "99107254",
    "scenario": "Acquisto con lavori",
    "branch": "9108",
-   "branchName": "TORINO SAN PAOLO",
+   "branchName": "SAN PAOLO",
    "abi": "5387",
    "assignee": "903024",
    "assigneeName": "BPI MUTUI NORD",
@@ -1607,12 +1607,12 @@
     "lastChange": {
      "when": "11/11/2026 17:05 (12 giorni fa)",
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "branch": "9108-0000-0000 SAN PAOLO",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "branch": "9108-0000-0000 SAN PAOLO",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -1660,7 +1660,7 @@
    "number": "99104783",
    "scenario": "Surroga",
    "branch": "9109",
-   "branchName": "FIRENZE RIFREDI",
+   "branchName": "RIFREDI",
    "abi": "5387",
    "assignee": "903012",
    "assigneeName": "BPI PRIVATI",
@@ -1739,12 +1739,12 @@
     "lastChange": {
      "when": "02/11/2026 08:55 (21 giorni fa)",
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "branch": "9109-0000-0000 RIFREDI",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "branch": "9109-0000-0000 RIFREDI",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -1792,7 +1792,7 @@
    "number": "99102318",
    "scenario": "Liquidità ipotecaria",
    "branch": "9103",
-   "branchName": "ROMA NOMENTANA",
+   "branchName": "NOMENTANA",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -1856,12 +1856,12 @@
     "lastChange": {
      "when": "16/11/2026 10:20 (7 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "branch": "9103-0000-0000 NOMENTANA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "branch": "9103-0000-0000 NOMENTANA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -1909,7 +1909,7 @@
    "number": "99106380",
    "scenario": "Liquidità ipotecaria",
    "branch": "9111",
-   "branchName": "PARMA OLTRETORRENTE",
+   "branchName": "PARMA OVEST",
    "abi": "5387",
    "assignee": "903012",
    "assigneeName": "BPI PRIVATI",
@@ -1973,12 +1973,12 @@
     "lastChange": {
      "when": "18/11/2026 11:48 (5 giorni fa)",
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "branch": "9111-0000-0000 PARMA OVEST",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "branch": "9111-0000-0000 PARMA OVEST",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -2026,7 +2026,7 @@
    "number": "99108127",
    "scenario": "Acquisto prima casa",
    "branch": "9105",
-   "branchName": "BRESCIA OVEST",
+   "branchName": "MOMPIANO",
    "abi": "5387",
    "assignee": "903024",
    "assigneeName": "BPI MUTUI NORD",
@@ -2120,12 +2120,12 @@
     "lastChange": {
      "when": "19/11/2026 14:10 (4 giorni fa)",
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9105-0000-0000 BRESCIA OVEST",
+     "branch": "9105-0000-0000 MOMPIANO",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9105-0000-0000 BRESCIA OVEST",
+     "branch": "9105-0000-0000 MOMPIANO",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -2173,7 +2173,7 @@
    "number": "99105671",
    "scenario": "Prima casa con garanzia pubblica",
    "branch": "9106",
-   "branchName": "PESCARA PORTANUOVA",
+   "branchName": "PORTANUOVA",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -2257,12 +2257,12 @@
     "lastChange": {
      "when": "10/11/2026 16:33 (13 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "branch": "9106-0000-0000 PORTANUOVA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "branch": "9106-0000-0000 PORTANUOVA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -2310,7 +2310,7 @@
    "number": "99107419",
    "scenario": "Riqualificazione energetica",
    "branch": "9112",
-   "branchName": "GENOVA LEVANTE",
+   "branchName": "ALBARO",
    "abi": "5387",
    "assignee": "903036",
    "assigneeName": "BPI PRIVATI NORD",
@@ -2363,12 +2363,12 @@
     "lastChange": {
      "when": "12/11/2026 12:05 (11 giorni fa)",
      "user": "03036 LAURA COSTAFERMA",
-     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "branch": "9112-0000-0000 ALBARO",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03036 LAURA COSTAFERMA",
-     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "branch": "9112-0000-0000 ALBARO",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -2416,7 +2416,7 @@
    "number": "99106842",
    "scenario": "Surroga",
    "branch": "9102",
-   "branchName": "BOLOGNA SARAGOZZA",
+   "branchName": "SARAGOZZA",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -2480,12 +2480,12 @@
     "lastChange": {
      "when": "17/11/2026 09:40 (6 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -2533,7 +2533,7 @@
    "number": "99105913",
    "scenario": "Acquisto con lavori",
    "branch": "9104",
-   "branchName": "MODENA CENTRO",
+   "branchName": "GHIRLANDINA",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -2607,12 +2607,12 @@
     "lastChange": {
      "when": "06/11/2026 10:05 (17 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9104-0000-0000 MODENA CENTRO",
+     "branch": "9104-0000-0000 GHIRLANDINA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9104-0000-0000 MODENA CENTRO",
+     "branch": "9104-0000-0000 GHIRLANDINA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -2660,7 +2660,7 @@
    "number": "99105307",
    "scenario": "Riqualificazione energetica",
    "branch": "9107",
-   "branchName": "CAGLIARI CENTRO",
+   "branchName": "STAMPACE",
    "abi": "5387",
    "assignee": "903060",
    "assigneeName": "BPI PRIVATI SUD",
@@ -2718,12 +2718,12 @@
     "lastChange": {
      "when": "02/11/2026 11:22 (21 giorni fa)",
      "user": "03060 MARTA FONTELUNA",
-     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "branch": "9107-0000-0000 STAMPACE",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03060 MARTA FONTELUNA",
-     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "branch": "9107-0000-0000 STAMPACE",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -2771,7 +2771,7 @@
    "number": "99103045",
    "scenario": "Acquisto prima casa",
    "branch": "9110",
-   "branchName": "CATANIA BORGO",
+   "branchName": "CATANIA NORD",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -2855,12 +2855,12 @@
     "lastChange": {
      "when": "04/11/2026 12:40 (19 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9110-0000-0000 CATANIA BORGO",
+     "branch": "9110-0000-0000 CATANIA NORD",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9110-0000-0000 CATANIA BORGO",
+     "branch": "9110-0000-0000 CATANIA NORD",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -2908,7 +2908,7 @@
    "number": "99107316",
    "scenario": "Acquisto seconda casa",
    "branch": "9112",
-   "branchName": "GENOVA LEVANTE",
+   "branchName": "ALBARO",
    "abi": "5387",
    "assignee": "903024",
    "assigneeName": "BPI MUTUI NORD",
@@ -2977,12 +2977,12 @@
     "lastChange": {
      "when": "09/11/2026 15:15 (14 giorni fa)",
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "branch": "9112-0000-0000 ALBARO",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9112-0000-0000 GENOVA LEVANTE",
+     "branch": "9112-0000-0000 ALBARO",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -3030,7 +3030,7 @@
    "number": "99108574",
    "scenario": "Riqualificazione energetica",
    "branch": "9103",
-   "branchName": "ROMA NOMENTANA",
+   "branchName": "NOMENTANA",
    "abi": "5387",
    "assignee": "903060",
    "assigneeName": "BPI PRIVATI SUD",
@@ -3083,12 +3083,12 @@
     "lastChange": {
      "when": "19/11/2026 10:30 (4 giorni fa)",
      "user": "03060 MARTA FONTELUNA",
-     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "branch": "9103-0000-0000 NOMENTANA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03060 MARTA FONTELUNA",
-     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "branch": "9103-0000-0000 NOMENTANA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -3136,7 +3136,7 @@
    "number": "99106205",
    "scenario": "Ristrutturazione",
    "branch": "9111",
-   "branchName": "PARMA OLTRETORRENTE",
+   "branchName": "PARMA OVEST",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -3200,12 +3200,12 @@
     "lastChange": {
      "when": "05/11/2026 15:52 (18 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "branch": "9111-0000-0000 PARMA OVEST",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "branch": "9111-0000-0000 PARMA OVEST",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -3253,7 +3253,7 @@
    "number": "99108239",
    "scenario": "Prima casa con garanzia pubblica",
    "branch": "9108",
-   "branchName": "TORINO SAN PAOLO",
+   "branchName": "SAN PAOLO",
    "abi": "5387",
    "assignee": "903024",
    "assigneeName": "BPI MUTUI NORD",
@@ -3341,7 +3341,7 @@
    "number": "99107583",
    "scenario": "Riqualificazione energetica",
    "branch": "9109",
-   "branchName": "FIRENZE RIFREDI",
+   "branchName": "RIFREDI",
    "abi": "5387",
    "assignee": "903012",
    "assigneeName": "BPI PRIVATI",
@@ -3394,12 +3394,12 @@
     "lastChange": {
      "when": "13/11/2026 16:05 (10 giorni fa)",
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "branch": "9109-0000-0000 RIFREDI",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "branch": "9109-0000-0000 RIFREDI",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -3447,7 +3447,7 @@
    "number": "99104498",
    "scenario": "Liquidità ipotecaria",
    "branch": "9106",
-   "branchName": "PESCARA PORTANUOVA",
+   "branchName": "PORTANUOVA",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -3526,12 +3526,12 @@
     "lastChange": {
      "when": "03/11/2026 09:15 (20 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "branch": "9106-0000-0000 PORTANUOVA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9106-0000-0000 PESCARA PORTANUOVA",
+     "branch": "9106-0000-0000 PORTANUOVA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -3579,7 +3579,7 @@
    "number": "99108061",
    "scenario": "Liquidità ipotecaria",
    "branch": "9105",
-   "branchName": "BRESCIA OVEST",
+   "branchName": "MOMPIANO",
    "abi": "5387",
    "assignee": "903024",
    "assigneeName": "BPI MUTUI NORD",
@@ -3657,7 +3657,7 @@
    "number": "99101573",
    "scenario": "Acquisto con lavori",
    "branch": "9110",
-   "branchName": "CATANIA BORGO",
+   "branchName": "CATANIA NORD",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -3766,12 +3766,12 @@
     "lastChange": {
      "when": "29/10/2026 10:48 (25 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9110-0000-0000 CATANIA BORGO",
+     "branch": "9110-0000-0000 CATANIA NORD",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9110-0000-0000 CATANIA BORGO",
+     "branch": "9110-0000-0000 CATANIA NORD",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -3819,7 +3819,7 @@
    "number": "99100938",
    "scenario": "Prima casa con garanzia pubblica",
    "branch": "9102",
-   "branchName": "BOLOGNA SARAGOZZA",
+   "branchName": "SARAGOZZA",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -3913,12 +3913,12 @@
     "lastChange": {
      "when": "11/11/2026 09:20 (12 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9102-0000-0000 BOLOGNA SARAGOZZA",
+     "branch": "9102-0000-0000 SARAGOZZA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -3966,7 +3966,7 @@
    "number": "99106518",
    "scenario": "Ristrutturazione",
    "branch": "9107",
-   "branchName": "CAGLIARI CENTRO",
+   "branchName": "STAMPACE",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -4030,12 +4030,12 @@
     "lastChange": {
      "when": "16/11/2026 17:30 (7 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "branch": "9107-0000-0000 STAMPACE",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9107-0000-0000 CAGLIARI CENTRO",
+     "branch": "9107-0000-0000 STAMPACE",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -4083,7 +4083,7 @@
    "number": "99106974",
    "scenario": "Acquisto prima casa",
    "branch": "9109",
-   "branchName": "FIRENZE RIFREDI",
+   "branchName": "RIFREDI",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -4167,12 +4167,12 @@
     "lastChange": {
      "when": "20/11/2026 11:10 (3 giorni fa)",
      "user": "01500 NORA BELLARIVA",
-     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "branch": "9109-0000-0000 RIFREDI",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "01500 NORA BELLARIVA",
-     "branch": "9109-0000-0000 FIRENZE RIFREDI",
+     "branch": "9109-0000-0000 RIFREDI",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -4220,7 +4220,7 @@
    "number": "99105492",
    "scenario": "Riqualificazione energetica",
    "branch": "9111",
-   "branchName": "PARMA OLTRETORRENTE",
+   "branchName": "PARMA OVEST",
    "abi": "5387",
    "assignee": "903012",
    "assigneeName": "BPI PRIVATI",
@@ -4278,12 +4278,12 @@
     "lastChange": {
      "when": "03/11/2026 14:25 (20 giorni fa)",
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "branch": "9111-0000-0000 PARMA OVEST",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03012 IRENE VALLESCURA",
-     "branch": "9111-0000-0000 PARMA OLTRETORRENTE",
+     "branch": "9111-0000-0000 PARMA OVEST",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -4331,7 +4331,7 @@
    "number": "99107938",
    "scenario": "Surroga",
    "branch": "9112",
-   "branchName": "GENOVA LEVANTE",
+   "branchName": "ALBARO",
    "abi": "5387",
    "assignee": "903036",
    "assigneeName": "BPI PRIVATI NORD",
@@ -4404,7 +4404,7 @@
    "number": "99108706",
    "scenario": "Acquisto con lavori",
    "branch": "9104",
-   "branchName": "MODENA CENTRO",
+   "branchName": "GHIRLANDINA",
    "abi": "5387",
    "assignee": "901500",
    "assigneeName": "BPI MUTUI",
@@ -4487,7 +4487,7 @@
    "number": "99103897",
    "scenario": "Acquisto prima casa",
    "branch": "9108",
-   "branchName": "TORINO SAN PAOLO",
+   "branchName": "SAN PAOLO",
    "abi": "5387",
    "assignee": "903024",
    "assigneeName": "BPI MUTUI NORD",
@@ -4566,12 +4566,12 @@
     "lastChange": {
      "when": "10/11/2026 13:35 (13 giorni fa)",
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "branch": "9108-0000-0000 SAN PAOLO",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03024 STEFANO MONTELAGO",
-     "branch": "9108-0000-0000 TORINO SAN PAOLO",
+     "branch": "9108-0000-0000 SAN PAOLO",
      "bank": "05387 BPER Banca"
     },
     "fields": {
@@ -4619,7 +4619,7 @@
    "number": "99107650",
    "scenario": "Ristrutturazione",
    "branch": "9103",
-   "branchName": "ROMA NOMENTANA",
+   "branchName": "NOMENTANA",
    "abi": "5387",
    "assignee": "903048",
    "assigneeName": "BPI MUTUI SUD",
@@ -4698,12 +4698,12 @@
     "lastChange": {
      "when": "18/11/2026 16:50 (5 giorni fa)",
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "branch": "9103-0000-0000 NOMENTANA",
      "bank": "05387 BPER Banca"
     },
     "lastValidation": {
      "user": "03048 DAVIDE ROCCALUCE",
-     "branch": "9103-0000-0000 ROMA NOMENTANA",
+     "branch": "9103-0000-0000 NOMENTANA",
      "bank": "05387 BPER Banca"
     },
     "fields": {
