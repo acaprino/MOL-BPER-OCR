@@ -3,6 +3,7 @@
 from calendar import monthrange
 from contextlib import closing
 from datetime import date, datetime, timedelta
+import hashlib
 from itertools import count
 import os
 from pathlib import Path
@@ -15,9 +16,10 @@ from typing import Any, NamedTuple
 SCHEMA = Path(__file__).with_name("bper_synthetic_schema.sql")
 APPLICATION_ID = 1112556883
 # 2 added the Scheda Privati tables and the practice role; 3 the practice types, operator offices and income
-# kinds; 4 the product table in place of the practice types; 5 the shorter branch names. Any schema or seed
-# change bumps it, so an older file is refused (or, the default one, set aside and rebuilt).
-SCHEMA_VERSION = 5
+# kinds; 4 the product table in place of the practice types; 5 the shorter branch names; 6 account numbers with
+# real-looking tails. Any schema or seed change bumps it, so an older file is refused (or, the default one, set
+# aside and rebuilt).
+SCHEMA_VERSION = 6
 ROLE = "sintetica"
 OFFICE_CODE = "09001"
 # Invented names, none of the archive's: as on the real pages, "<code> - <name>" has at most 19 characters, the
@@ -199,6 +201,35 @@ PURPOSES = {
 RENTERS = ("Acquisto prima casa", "Prima casa con garanzia pubblica", "Acquisto con lavori")
 
 
+def _longest_run(digits: str) -> int:
+    run = longest = 1
+    for a, b in zip(digits, digits[1:]):
+        run = run + 1 if a == b else 1
+        longest = max(longest, run)
+    return longest
+
+
+# The 12 real tails of the calibration fold: 5 distinct digits in 5, 6 in 6, 7 in 1; a digit twice in a row in 9.
+TAIL_DISTINCT_DIGITS = (5,) * 5 + (6,) * 6 + (7,)
+
+
+def _account_tail(key: str, credit_id: str) -> str:
+    """The last block of an invented Rapporto, fixed by the practice key and the credit line (no random state).
+
+    Like the real ones: one leading zero, then digits whose count of distinct values and longest run of one digit
+    are drawn with the real shares (tests/test_bper_account_numbers.py). Seven zeros and a digit were misread by
+    the live OCR.
+    """
+    pick = int(hashlib.sha256(f"{key}|{credit_id}".encode()).hexdigest(), 16)
+    wanted = TAIL_DISTINCT_DIGITS[pick % 12], 2 if pick // 12 % 4 else 1
+    for attempt in count():
+        digest = hashlib.sha256(f"{key}|{credit_id}|{attempt}".encode()).hexdigest()
+        tail = f"0{int(digest, 16) % 9_000_000 + 1_000_000}"
+        if (len(set(tail)), _longest_run(tail)) == wanted:
+            return tail
+    raise AssertionError("unreachable")
+
+
 def _money(cents: int, *, decimals: bool = False) -> str:
     whole, fraction = divmod(cents, 100)
     value = f"{whole:,}".replace(",", ".")
@@ -344,7 +375,7 @@ def _seed_case(con: sqlite3.Connection, i: int) -> None:
             con.execute("INSERT INTO subject VALUES (?, ?)", (ndg, full_name))
         con.execute("INSERT INTO participation VALUES (?, ?, ?, ?)", (key, pos, ndg, role))
 
-    account = f"034 {branch} 0017 {i * 2 + 1:08d}"
+    account = f"034 {branch} 0017 {_account_tail(key, 'F1')}"
     con.execute("INSERT INTO credit VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (
         key, "F1", account, scenario.product, due.isoformat(), principal, "In Lavoraz.",
         "900001 - MUTUO ABITAZIONE DI PROVA" if demo else scenario.tooltip,
@@ -353,7 +384,7 @@ def _seed_case(con: sqlite3.Connection, i: int) -> None:
     if ancillary:
         short_due = date(created.year + 5, created.month, monthrange(created.year + 5, created.month)[1])
         con.execute("INSERT INTO credit VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", (
-            key, "F2", f"034 {branch} 0018 {i * 2 + 2:08d}", "P. SPESE", short_due.isoformat(),
+            key, "F2", f"034 {branch} 0018 {_account_tail(key, 'F2')}", "P. SPESE", short_due.isoformat(),
             ancillary, "In Lavoraz.", "315014 - PRESTITO PER SPESE TECNICHE", None,
         ))
     guarantees = []

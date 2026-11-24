@@ -94,7 +94,9 @@ def test_demo_deep_link_preserves_its_original_dossier() -> None:
         "demo", "90000001", "ALBA MARTINA", "99000001"
     )
     assert [s["ndg"] for s in first["subjects"]] == ["90000001", "90000002"]
-    assert first["fidi"][0]["account"] == "034 9001 0017 00000001"
+    # The last block changed on purpose: one leading zero and varied digits, as real accounts show (the old
+    # "00000001" was misread by the live OCR; tests/test_bper_account_numbers.py).
+    assert first["fidi"][0]["account"] == "034 9001 0017 02868929"
     assert first["creditTotal"] == "120.000"
     assert first["guaranteeTotal"] == "204.000"
 
