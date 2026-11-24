@@ -23,6 +23,7 @@ const emit = (event, data = {}) => process.stdout.write(JSON.stringify({ event, 
 
 const HOVER = {
     evidence: '#list-view .bl-evidence',
+    tipo: '#list-view .bl-results tbody [data-field="tipo"]',
     fido: '#detail-view [data-tooltip-step="6"]',
     'guarantee-1': '#detail-view [data-tooltip-step="7"]',
     'guarantee-2': '#detail-view [data-tooltip-step="8"]',
@@ -62,6 +63,7 @@ const PROBE = `(() => {
     s.viewOnly = !!q('#detail-view [data-action="next"][aria-disabled="true"]');
     s.alert = !!q('#detail-view .pd-alert');
     s.scrollTop = w ? Math.round(w.scrollTop) : 0;
+    s.scrollTopMax = w ? Math.max(0, Math.round(w.scrollHeight - w.clientHeight)) : 0;
   }
   s.title = document.title;
   return s;
@@ -377,13 +379,30 @@ class Operator {
         const at = await this.center(HOVER[target]);
         if (!at) return false;
         await this.mouse('mouseMoved', at[0], at[1]);
-        await this.settle(s => s.tooltip, 5000, 'tooltip ' + target);
+        // Tipo shows its full name in the hint that follows the pointer; the others open a tooltip.
+        await this.settle(s => (target === 'tipo' ? s.hint : s.tooltip), 5000, 'tooltip ' + target);
         return true;
     }
 
     async unhover() {
         await this.park();
-        await this.settle(s => !s.tooltip, 5000, 'no tooltip');
+        await this.settle(s => !s.tooltip && !s.hint, 5000, 'no tooltip');
+    }
+
+    // An operator reading a long note scrolls the PEF 2.0 frame: one viewport at a time (a little overlap, so a line
+    // cut at the bottom shows whole in the next one), dwelling at each position, until the end of the page.
+    async scrollPage(dwell) {
+        for (let n = 0; n < 15; n++) {
+            const before = this.state;
+            if (!before || before.view !== 'detail' || before.scrollTop >= before.scrollTopMax - 1) return;
+            const box = await evaluate(this.page, `(() => { const r = document.querySelector('#detail-view .pd-window')
+                .getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2, r.height]; })()`);
+            await this.page.send('Input.dispatchMouseEvent', { type: 'mouseWheel', x: box[0] / this.factor,
+                y: box[1] / this.factor, deltaX: 0, deltaY: Math.round(box[2] * 0.85), button: 'none' });
+            await this.park();
+            await this.settle(s => s.view === 'detail' && s.scrollTop !== before.scrollTop, 5000, 'page scrolled');
+            await sleep(dwell);
+        }
     }
 
     async resize(step) {
@@ -418,13 +437,15 @@ class Operator {
                 else if (step.do === 'scroll-list') await this.scrollList(step.to);
                 else if (step.do === 'hover') shown = await this.hover(step.target);
                 else if (step.do === 'unhover') await this.unhover();
+                else if (step.do === 'scroll-page') await this.scrollPage(step.dwell_ms ?? this.scenario.dwell_ms);
                 else if (step.do === 'resize') await this.resize(step);
                 else if (step.do === 'wait') await sleep(step.ms);
                 if (!shown) {
                     emit('skip', { index, reason: 'not on this practice: ' + step.target });
                     continue;
                 }
-                const dwell = step.do === 'wait' ? 0 : (step.dwell_ms ?? this.scenario.dwell_ms);
+                // A scroll dwells at each of its positions itself.
+                const dwell = step.do === 'wait' || step.do === 'scroll-page' ? 0 : (step.dwell_ms ?? this.scenario.dwell_ms);
                 if (dwell) await sleep(dwell);
             } catch (error) {
                 emit('error', { index, message: String(error.message || error) });

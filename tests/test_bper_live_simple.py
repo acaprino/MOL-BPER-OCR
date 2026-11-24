@@ -36,7 +36,60 @@ def test_an_empty_truth_value_is_not_counted(tmp_path) -> None:
 def test_a_practice_the_agent_never_captured_finds_nothing(tmp_path) -> None:
     rows = live_simple.found_table({"sim-006": [("ndg", "NDG", "91000050")]}, [], tmp_path)
 
-    assert rows == [{"practice": "sim-006", "field": "ndg", "expected": "91000050", "found": "no"}]
+    assert rows == [{"practice": "sim-006", "field": "ndg", "expected": "91000050", "found": "no", "lines": ""}]
+
+
+# ------------------------------------------------- the note, line by line
+
+NOTE_LINES = ["- Numero proposta DESK: 9900018", "- Valore immobile presunto: 99.000,00",
+              "Richiedente di 62 anni, pensionato."]
+NOTE = "\n".join(NOTE_LINES)
+NOTE_TRUTH = [("ndg", "NDG", "91000170"), ("note_della_richiesta", "Note della richiesta", NOTE)]
+
+
+def _note_frame(tmp_path: Path, read: List[str]) -> List[Dict[str, Any]]:
+    """A Note da Richiesta frame whose OCR read these lines of the note, one OCR line each."""
+    Image.new("RGB", (1600, 1200), "white").save(tmp_path / "00001.png")
+    items = [[text, 0.99, [[300, 300 + 30 * i], [1100, 300 + 30 * i], [1100, 320 + 30 * i], [300, 320 + 30 * i]]]
+             for i, text in enumerate(read)]
+    return [{"file": "00001.png", "ndg": "91000170", "page": "screen 9", "items": items}]
+
+
+def _note_row(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    return next(r for r in rows if r["field"] == "note_della_richiesta")
+
+
+def test_a_note_partly_read_reports_the_share_of_its_lines_found(tmp_path) -> None:
+    frames = _note_frame(tmp_path, NOTE_LINES[:2])
+
+    note = _note_row(live_simple.found_table({"pratica-a": NOTE_TRUTH}, frames, tmp_path))
+
+    assert (note["found"], note["lines"]) == ("no", "2/3")
+
+
+def test_a_note_whose_every_line_was_read_is_found(tmp_path) -> None:
+    frames = _note_frame(tmp_path, NOTE_LINES)
+
+    note = _note_row(live_simple.found_table({"pratica-a": NOTE_TRUTH}, frames, tmp_path))
+
+    assert (note["found"], note["lines"]) == ("yes", "3/3")
+
+
+def test_note_lines_read_on_different_scrolled_frames_add_up(tmp_path) -> None:
+    first = _note_frame(tmp_path, NOTE_LINES[:2])
+    Image.new("RGB", (1600, 1200), "white").save(tmp_path / "00002.png")
+    box = [[300, 300], [1100, 300], [1100, 320], [300, 320]]
+    second = [{**first[0], "file": "00002.png", "items": [[NOTE_LINES[2], 0.99, box]]}]
+
+    note = _note_row(live_simple.found_table({"pratica-a": NOTE_TRUTH}, first + second, tmp_path))
+
+    assert note["lines"] == "3/3"
+
+
+def test_each_practice_shows_the_tipo_tooltip_and_the_note_to_its_end() -> None:
+    steps = [(s["do"], s.get("target") or s.get("to")) for s in live_simple.walk(["k"])["steps"]]
+
+    assert ("hover", "tipo") in steps and steps[-2:] == [("tab", "note"), ("scroll-page", None)]
 
 
 def test_percentages_are_per_practice_and_overall() -> None:

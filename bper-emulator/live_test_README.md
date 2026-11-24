@@ -45,7 +45,9 @@ note del report dal vivo riportano `GetWindowRect`, i limiti DWM e le dimensioni
 operatore veloce a 1 s per stato, che non deve produrre catture, poi la finestra allargata a metà sessione),
 `generated-wide` (due pratiche del set da 40), `matrix`, `generated-set` e `modes` (solo per `replay`; `modes` apre
 una pratica in visualizzazione e una in lavorazione). Il formato è validato da `load_scenario()`: azioni `start`,
-`search`, `open`, `next`, `tab`, `list`, `scroll-list`, `hover`, `unhover`, `resize`, `wait`, ognuna con `dwell_ms`
+`search`, `open`, `next`, `tab`, `list`, `scroll-list`, `hover` (`evidence`, `tipo`: la descrizione del Tipo che
+segue il puntatore, `fido`, `guarantee-1`, `guarantee-2`), `unhover`, `scroll-page` (scorre la pagina PEF 2.0 di una
+vista alla volta fino in fondo, con una sosta a ogni posizione), `resize`, `wait`, ognuna con `dwell_ms`
 facoltativo. In `practices` ogni pratica è una chiave o un oggetto `{"key": "sim-018", "mode": "visualizzazione"}`
 (predefinito `lavorazione`). Nell'emulatore il modo vale per tutta la pagina (`?visualizzazione=1`), quindi
 l'operatore ricarica la pagina quando la pratica successiva è nell'altro modo. In visualizzazione «Avvia Step Succ.»

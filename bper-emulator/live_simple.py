@@ -23,6 +23,7 @@ OCR = ("import sys\nfrom pathlib import Path\nfrom training.ocr_runner import Sc
        "frames = sorted(Path(sys.argv[1]).glob('*.png'))\n"
        "run_ocr(sys.argv[3], 'pc4', [Screen(p.stem, p, _sha256(p)) for p in frames], Path(sys.argv[2]))\n")
 DWELL_MS = 5000
+NOTE = "note_della_richiesta"
 # The page kind the aligner reads its regions from (training.dataset.alignment_name), by the page on screen.
 KIND = {"screen 1": "elenco", "screen 2": "elenco_dx", "screen 3": "elenco_tooltip", "screen 4": "soggetti",
         "screen 5": "gestionefidi", **dict.fromkeys(("screen 6", "screen 7", "screen 8"), "gestionefidi_tooltip"), "screen 9": "note"}
@@ -31,10 +32,13 @@ KIND = {"screen 1": "elenco", "screen 2": "elenco_dx", "screen 3": "elenco_toolt
 def walk(keys: Sequence[str]) -> Dict[str, Any]:
     steps: List[Dict[str, Any]] = [{"do": "start", "dwell_ms": 2000}]
     for key in keys:
-        steps += [{"do": "search", "practice": key}, {"do": "hover", "target": "evidence"},
-                  {"do": "unhover", "dwell_ms": 0}, {"do": "open", "practice": key}, {"do": "next"},
+        # The Tipo hover shows tooltip_descrizione_bmb; the note is scrolled a viewport at a time to its end.
+        # A practice with one guarantee has no screen 8: its guarantee-2 hover is skipped by the driver.
+        steps += [{"do": "search", "practice": key}, {"do": "hover", "target": "tipo"},
+                  {"do": "hover", "target": "evidence"}, {"do": "unhover", "dwell_ms": 0},
+                  {"do": "open", "practice": key}, {"do": "next"},
                   *({"do": "hover", "target": t} for t in ("fido", "guarantee-1", "guarantee-2")),
-                  {"do": "unhover", "dwell_ms": 0}, {"do": "tab", "to": "note"}]
+                  {"do": "unhover", "dwell_ms": 0}, {"do": "tab", "to": "note"}, {"do": "scroll-page"}]
     return lt.load_scenario({"name": "simple", "geometry": "wide", "dwell_ms": DWELL_MS, "practices": list(keys),
                              "steps": steps})
 
@@ -62,26 +66,41 @@ def capture(worker: Any, state: Dict[str, Any], folder: Path, number: int, recor
 
 
 def found_table(truths: Dict[str, List[tuple]], frames: Sequence[Dict[str, Any]], folder: Path) -> List[Dict[str, Any]]:
-    """Per practice and field with a value: is it in the OCR of a kept frame of that practice (yes/no)."""
+    """Per practice and field with a value: is it in the OCR of a kept frame of that practice (yes/no).
+
+    The note is looked for line by line (the page shows part of it at a time): `lines` is the share of its lines
+    found on the note frames, and the note counts as found when every line is."""
     from PIL import Image
     from extraction.field_definitions import CANONICAL_FIELD_DEFINITIONS
     from extraction.normalization import normalize_ndg
-    from training.alignment import align_screen
-    from training.evaluation import _available
+    from training.alignment import _note_frame, align_screen
+    from training.evaluation import _available, normalize_value
 
     scheda = {k for k, d in CANONICAL_FIELD_DEFINITIONS.items() if d.get("page_key") == "scheda_privati"}
     rows: List[Dict[str, Any]] = []
     for practice, truth in truths.items():
         wanted = [(f, label, v) for f, label, v in truth if v and f not in scheda]
         ndg = normalize_ndg(next((v for f, _l, v in truth if f == "ndg"), None))
-        found = set()
+        note_lines = [ln for f, _l, v in wanted if f == NOTE for ln in v.splitlines() if ln.strip()]
+        found, lines_found = set(), set()
         for frame in (fr for fr in frames if normalize_ndg(fr["ndg"]) == ndg and fr["page"] in KIND):
             lines = [{"text": t, "score": s, "box": b} for t, s, b in frame["items"]]
             with Image.open(folder / frame["file"]) as image:
                 located = align_screen(KIND[frame["page"]], [(l, v) for _f, l, v in wanted], lines, image.convert("RGB"))
+            if note_lines and KIND[frame["page"]] == "note":
+                # The OCR lines of the note block (the aligner's own frame of it), read top to bottom: a note line
+                # is found when its normalized text is in theirs, even wrapped over several lines.
+                box = _note_frame(lines, "\n".join(note_lines))
+                inside = sorted((ln for ln in lines if box and box[0] <= sum(p[0] for p in ln["box"]) / 4 <= box[2]
+                                 and box[1] <= sum(p[1] for p in ln["box"]) / 4 <= box[3]),
+                                key=lambda ln: sum(p[1] for p in ln["box"]))
+                read = normalize_value(NOTE, " ".join(ln["text"] for ln in inside))
+                lines_found |= {n for n, text in enumerate(note_lines) if read and normalize_value(NOTE, text) in read}
             found |= {f for f, l, v in wanted if _available({"field_alignment": {f: located["fields"][l]}}, f, v, {})}
-        rows += [{"practice": practice, "field": f, "expected": v, "found": "yes" if f in found else "no"}
-                 for f, _l, v in wanted]
+        if note_lines and len(lines_found) == len(note_lines):
+            found.add(NOTE)
+        rows += [{"practice": practice, "field": f, "expected": v, "found": "yes" if f in found else "no",
+                  "lines": f"{len(lines_found)}/{len(note_lines)}" if f == NOTE else ""} for f, _l, v in wanted]
     return rows
 
 
@@ -186,12 +205,13 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         print(f"frame {f['file']} {f['step']:<6} shown {f['page'] or '-':<9} classifier {f['classifier'] or '-'} "
               f"(best {f['best'] or '-'} {f['score']})")
     for r in rows:
-        print(f"{r['practice']:<10} {r['field']:<30} {str(r['expected'])[:50]:<52} {r['found']}")
+        print(f"{r['practice']:<10} {r['field']:<30} {str(r['expected'])[:50]:<52} {r['found']} {r['lines']}")
     print(f"Frames kept per page: {dict(Counter(f['page'] or '-' for f in frames))}")
     print(" ".join(f"{p}: {s}%" for p, s in percentages(rows).items()) + f". Walk {walked:.0f} s, OCR {time.time() - started:.0f} s. "
           "LiLT: not part of this version (its weights are on the Modal volume).")
     with (run / "found.csv").open("w", newline="", encoding="utf-8-sig") as handle:
-        csv.writer(handle, delimiter=";").writerows([["practice", "field", "expected", "found"], *map(dict.values, rows)])
+        csv.writer(handle, delimiter=";").writerows([["practice", "field", "expected", "found", "lines"],
+                                                     *map(dict.values, rows)])
     print(f"Table: {run / 'found.csv'}; frames kept: {run / 'frames'}")
     return 0
 

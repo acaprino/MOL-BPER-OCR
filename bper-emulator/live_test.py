@@ -89,13 +89,14 @@ PAGE_FAMILY = {
 # per screen are expected.
 PAGE_ONLY_FAMILIES = {"elenco"}
 PRACTICE_MODES = {"lavorazione", "visualizzazione"}
-HOVER_TARGETS = {"evidence", "fido", "guarantee-1", "guarantee-2"}
+HOVER_TARGETS = {"evidence", "tipo", "fido", "guarantee-1", "guarantee-2"}
 SCROLL_TARGETS = {"start", "middle", "end"}
 TAB_TARGETS = {"fidi", "note"}
 # Seconds each action takes before its page settles, with the emulator's native waits (loading.js, pef-extra.js).
 ACTION_SECONDS = {
     "start": 2.5, "search": 2.5, "open": 8.8, "next": 9.0, "tab": 2.0, "list": 0.6, "scroll-list": 0.6,
     "hover": 0.4, "unhover": 0.4, "resize": 1.0, "wait": 0.0,
+    "scroll-page": 10.0,  # a long note: about two more viewports, each with its own dwell
 }
 # Cost model of one screen, calibrated on the recorded gemini-3.8-flash baseline (~$0.04/screen, CLAUDE.md).
 # shortcut: assumed tokens and calls per screen, replace with the _meta of the first paid run
@@ -1863,7 +1864,11 @@ def _vlm_pipeline(cap: int) -> Any:
 
 
 def _default_db() -> Path:
-    return Path(os.environ.get("BPER_LIVE_DB", REPO / ".tritech" / "local" / "bper-live-test.sqlite3"))
+    """The harness's own database, one file per emulator schema: the server refuses a file of an older schema."""
+    from bper_synthetic_db import SCHEMA_VERSION
+
+    name = f"bper-live-test.v{SCHEMA_VERSION}.sqlite3"
+    return Path(os.environ.get("BPER_LIVE_DB", REPO / ".tritech" / "local" / name))
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
