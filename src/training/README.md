@@ -22,7 +22,7 @@ cd src
 ../.venv/Scripts/python.exe -m training.ocr_runner report --run CARTELLA-NUOVA --archive ../data/dataset
 ```
 
-Le schermate lette sono quelle delle pratiche di addestramento e di controllo con almeno un valore da misurare. **Le pratiche di test non si leggono** (`--include-test` le aggiunge): si leggono una volta, quando il candidato è congelato.
+Le schermate lette sono quelle delle pratiche di addestramento e di controllo con almeno un valore da misurare. Le pratiche di test si aggiungono con `--include-test` (la lettura OCR è permessa, ADR 0035); i loro valori non servono a scegliere o regolare un modello, e si misurano una volta, quando il candidato è congelato.
 
 Ogni schermata viene salvata appena letta: una prova interrotta riprende dalle schermate mancanti, e una schermata in errore non ferma le altre. `cache.json` nasce solo quando tutte le schermate hanno un risultato, con l'impronta registrata nel manifest insieme a modelli, versioni, thread e tempi. Una cartella non accetta un'altra configurazione o altri modelli. `report` costruisce il dataset derivato e scrive in `ocr_selection.json` disponibilità OCR, NDG dei soggetti, rapporti e letture 6→8 per pratica, per addestramento e controllo.
 

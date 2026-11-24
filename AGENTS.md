@@ -496,7 +496,7 @@ the archive; OCR, datasets and models are rebuilt, never kept as sources:
   (`alignment_name()`), applies role supervision (`apply_supervision()`), audits practice/NDG/image isolation
   across splits (`audit_splits()`, refused outright) and seals the bundle (`build_dataset()`, `seal_dataset()`).
   The role of a practice in `pratiche.csv` is its split (ADR 0027): `addestramento` is `train`, `controllo` is
-  `val`, `test` is `test`; the test practices are read only with `include_test`, for a frozen candidate.
+  `val`, `test` is `test`; the test practices are read only with `include_test` (an explicit opt-in; OCR on them is allowed, ADR 0035), and their values never choose or tune a model: they are measured once, on a frozen candidate.
   `INSTITUTIONAL_NDGS` lists the NDGs of institutions, today the Fondo di garanzia per la prima casa
   (`11153238`): it is a guarantor in a large share of the practices, so it is not an identity in any check
   (ADR 0024). A new institution goes in that list, without moving a practice.

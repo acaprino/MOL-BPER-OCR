@@ -38,7 +38,7 @@ data/dataset/
 
 ## Ruoli
 
-`Ruolo` in `pratiche.csv`: **addestramento** 18, **controllo** 2, **test** 13 (ADR 0027). Le pratiche di test non si usano per scegliere o regolare nulla e non si leggono con l'OCR né si aprono finché non c'è la misura finale: si leggono una volta, a fine sviluppo.
+`Ruolo` in `pratiche.csv`: **addestramento** 18, **controllo** 2, **test** 13 (ADR 0027). Le pratiche di test non si usano per scegliere o regolare nulla: i loro valori restano la prova cieca, e si misurano una volta, a fine sviluppo. Le loro schermate si possono leggere con l'OCR, con qualsiasi motore e in qualsiasi luogo, Modal compreso (ADR 0035); `include_test` resta l'opzione esplicita che le aggiunge a una lettura.
 
 Sei pratiche di test (`51027430`, `51886329`, `52102964`, `52136040`, `52186431`, `52196577`) hanno i valori di ogni pagina tutti sulla sua prima schermata (`<pagina>-01`): la suddivisione per schermata si farà quando si potranno guardare.
 

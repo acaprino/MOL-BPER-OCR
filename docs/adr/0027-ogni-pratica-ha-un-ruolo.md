@@ -1,7 +1,7 @@
 # 0027 — Ogni pratica ha un ruolo: addestramento, controllo o test
 
 - Data: 2026-11-07
-- Stato: Accettato
+- Stato: Accettato. Superato in parte dall'ADR 0035 per la lettura OCR delle pratiche di test.
 
 ## Contesto
 
