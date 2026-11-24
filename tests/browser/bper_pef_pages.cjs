@@ -806,6 +806,32 @@ test('the new pages and blocks mark no extracted field', async t => {
     assert.equal(await page.getByRole('alertdialog').locator('[data-field]').count(), 0);
 });
 
+// ---- the id links of FIDI and GARANZIE (N° Fido, N° Gar.) ----
+// Calibration screenshots at 90%: their underline is a fringe-free grey (102, 102, 102) under text whose bar interiors
+// are blue (0, 112, 192), on 7 of 7 F1 and 3 of 3 G1. Underlined in the text's own dark blue, F1 reads E1 under the
+// worker's OCR (A0) in 7 of 9 live frames; only the underline turned to that grey, 4 of 4 read F1.
+
+const linkStyle = page => page.evaluate(() => ['[data-field="n_fido"]', '.pd-guarantees table:first-child td:first-child']
+    .map(selector => { const style = getComputedStyle(document.querySelector(selector));
+                       return [style.textDecorationLine, style.textDecorationColor, style.color]; }));
+
+test('at native scale the id links of FIDI and GARANZIE are underlined in grey under their own colour', async t => {
+    const page = await open(t, '?practice=demo&loading=off#5');
+    for (const [line, underline, text] of await linkStyle(page)) {
+        assert.equal(line, 'underline');
+        assert.equal(underline, 'rgb(102, 102, 102)');
+        assert.notEqual(text, underline);
+    }
+});
+
+test('at capture scale the id links keep the underline of the reference screenshots', async t => {
+    const page = await open(t, '?practice=demo&capture=1#5', { width: 842, height: 617 });
+    for (const [line, underline, text] of await linkStyle(page)) {
+        assert.equal(line, 'underline');
+        assert.equal(underline, text);
+    }
+});
+
 // ---- native geometry of the PEF 2.0 frame (spec 16.7) ----
 
 const WIDTHS = [[1164, 852], [1280, 897], [1422, 1041], [1600, 772]];

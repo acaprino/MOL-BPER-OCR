@@ -180,6 +180,10 @@
 .pd-double th { height: 14px; padding: 1px; }
 .pd-double td { position: relative; height: 25px; color: #2b5d8e; padding: 2px 2px 0; }
 .pd-double td:first-child { text-decoration: underline; }
+/* At native scale the id links are underlined in grey (102, 102, 102) under their blue text, as the calibration
+   screenshots at 90% show (7 of 7 F1, 3 of 3 G1); in the text's dark blue the underline joins the F into an E for the
+   OCR. The capture window keeps the reference screenshots' pixels. */
+#frame[data-scale="native"] .pd-double td:first-child { text-decoration-color: #666; }
 .pd-credit-table td:first-child, .pd-credit-table th:first-child { text-align: left; padding-left: 7px; }
 .pd-credit-table :is(td, th):nth-child(5) { text-align: right; }
 .pd-double + .pd-totals { margin-top: 10px; }
