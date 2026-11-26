@@ -82,6 +82,13 @@ h1, h2, h3, p { margin: 0; font: inherit; }
 #altre-entrate > .sp-section { height: 51px; padding-top: 30px; }
 .sp-hint { display: inline-block; width: 14px; height: 14px; margin: 0 0 -2px 3px; background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 14'%3E%3Ccircle cx='7' cy='7' r='6.2' fill='none' stroke='%23b8b8b8'/%3E%3Cpath d='M7 6v4.2M7 3.8v.1' stroke='%23b8b8b8' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E"); }
 #uscite { padding-bottom: 24px; }
+/* USCITE CONTINUATIVE rows: a title, then one line of four fields; each row lengthens the page by its height
+   (bper_simulator_truth.OUTGOING_ROW_PX).
+   shortcut: row pitch (89-92 px) and column proportions come from recordings of narrower, fluid windows; this changes fidelity only, the truth follows OUTGOING_ROW_PX; re-measure when a 1903 px screenshot shows rows */
+.sp-outgoings { margin: 0; padding: 0; }
+.sp-outgoing { box-sizing: border-box; height: 90px; overflow: hidden; }
+.sp-outgoing > h4 { height: 26px; margin: 0; padding-top: 10px; color: #979797; font: bold 13.4px/16px "Segoe UI", sans-serif; }
+.sp-outgoing > .sp-grid { grid-template-columns: 4fr 3fr 3fr 3fr; grid-auto-rows: 64px; }
 
 .sp-box { position: relative; border: 1px solid var(--sp-line); }
 .sp-box > h3 { color: #979797; font: bold 14.3px/16px "Segoe UI", sans-serif; }

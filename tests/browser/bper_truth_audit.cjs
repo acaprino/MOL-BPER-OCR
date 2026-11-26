@@ -11,8 +11,8 @@ const path = require('node:path');
 const repo = path.resolve(__dirname, '../..');
 const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'bper-audit-test-'));
 const html = path.join(scratch, 'simulatore.html');
-// The demo, a two-credit dossier, a dossier without the B evidence, and the first pensioner (chosen from the data:
-// no test names a pensioner, test_bper_synthetic_db.py).
+// The demo, a two-credit dossier, a dossier without the B evidence, and, chosen from the data, the first pensioner (no
+// test names a pensioner, test_bper_synthetic_db.py), the first Scheda with two outgoing rows and the first self-employed.
 let practices;
 
 function audit(page, ...args) {
@@ -41,10 +41,14 @@ before(() => {
     assert.equal(result.status, 0, result.stderr);
     const text = fs.readFileSync(html, 'utf8');
     const start = text.indexOf('window.BperOffline = ') + 'window.BperOffline = '.length;
-    const pensioner = JSON.parse(text.slice(start, text.indexOf(';</script>', start))).practices
-        .find(p => p.scheda?.fields.professione_principale === 'PENSIONATO');
-    // With the two invented names just under and over the width of the list's Denom. cell.
-    practices = ['demo', 'sim-006', 'sim-007', pensioner.key, 'fittizia-sotto', 'fittizia-sopra'].join(',');
+    const all = JSON.parse(text.slice(start, text.indexOf(';</script>', start))).practices;
+    const pensioner = all.find(p => p.scheda?.fields.professione_principale === 'PENSIONATO');
+    const twoRows = all.find(p => p.scheda?.details.outgoings.length === 2);
+    const selfEmployed = all.find(p => p.scheda?.fields.tipo_contratto === 'LAVORATORE AUTONOMO');
+    // With the two invented names just under and over the width of the list's Denom. cell. The first with two rows is
+    // the demo today: a key is audited once.
+    practices = [...new Set(['demo', 'sim-006', 'sim-007', pensioner.key, twoRows.key, selfEmployed.key,
+        'fittizia-sotto', 'fittizia-sopra'])].join(',');
 });
 
 after(() => {

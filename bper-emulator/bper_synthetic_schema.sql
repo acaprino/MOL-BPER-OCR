@@ -1,6 +1,6 @@
 PRAGMA foreign_keys = ON;
 PRAGMA application_id = 1112556883;
-PRAGMA user_version = 7;
+PRAGMA user_version = 8;
 
 CREATE TABLE branch (
     code TEXT PRIMARY KEY NOT NULL,
@@ -130,4 +130,16 @@ CREATE TABLE scheda (
     -- other kinds stay open.
     CHECK(income_kind != 'AUTONOMO' OR (employer_id IS NULL AND contract = 'LAVORATORE AUTONOMO')),
     CHECK(income_kind != 'PENSIONE' OR (employer_id IS NULL AND contract = ''))
+);
+-- The rows of USCITE CONTINUATIVE in a Scheda Privati, in page order (n). AFFITTO has an annual amount only; a loan
+-- has its due month (YYYY-MM) and residual debt too. Amounts in cents, in whole thousands of euro as the page shows them.
+CREATE TABLE scheda_outgoing (
+    ndg TEXT NOT NULL REFERENCES scheda(ndg),
+    n INTEGER NOT NULL CHECK(n BETWEEN 1 AND 2),
+    description TEXT NOT NULL CHECK(description IN ('AFFITTO', 'PRESTITO AL CONSUMO', 'CESSIONE DEL QUINTO')),
+    annual_cents INTEGER NOT NULL CHECK(annual_cents > 0 AND annual_cents % 100000 = 0),
+    due TEXT CHECK(due IS NULL OR due GLOB '[12][0-9][0-9][0-9]-[01][0-9]'),
+    residual_cents INTEGER CHECK(residual_cents IS NULL OR residual_cents % 100000 = 0),
+    CHECK((description = 'AFFITTO') = (due IS NULL AND residual_cents IS NULL)),
+    PRIMARY KEY (ndg, n)
 );

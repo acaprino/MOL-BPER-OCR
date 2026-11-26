@@ -45,6 +45,7 @@
     "incomeChanneled": "NO",
     "creditCardBalance": "NON SO",
     "housing": "PROPRIETA'",
-    "housingFrom": "2026"
+    "housingFrom": "2026",
+    "outgoings": []
   }
 }

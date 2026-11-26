@@ -108,7 +108,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "AFFITTO",
-     "housingFrom": "2021"
+     "housingFrom": "2021",
+     "outgoings": []
     }
    },
    "pages": [
@@ -214,7 +215,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "1991"
+     "housingFrom": "1991",
+     "outgoings": []
     }
    },
    "pages": [
@@ -331,7 +333,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2009"
+     "housingFrom": "2009",
+     "outgoings": []
     }
    },
    "pages": [
@@ -463,7 +466,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "NON SO",
      "housing": "AFFITTO",
-     "housingFrom": "2022"
+     "housingFrom": "2022",
+     "outgoings": []
     }
    },
    "pages": [
@@ -673,7 +677,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "PROPRIETA'",
-     "housingFrom": "1996"
+     "housingFrom": "1996",
+     "outgoings": []
     }
    },
    "pages": [
@@ -810,7 +815,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "AFFITTO",
-     "housingFrom": "2014"
+     "housingFrom": "2014",
+     "outgoings": []
     }
    },
    "pages": [
@@ -927,7 +933,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2011"
+     "housingFrom": "2011",
+     "outgoings": []
     }
    },
    "pages": [
@@ -1033,7 +1040,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "PROPRIETA'",
-     "housingFrom": "2016"
+     "housingFrom": "2016",
+     "outgoings": []
     }
    },
    "pages": [
@@ -1160,7 +1168,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "1993"
+     "housingFrom": "1993",
+     "outgoings": []
     }
    },
    "pages": [
@@ -1312,7 +1321,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "AFFITTO",
-     "housingFrom": "2022"
+     "housingFrom": "2022",
+     "outgoings": []
     }
    },
    "pages": [
@@ -1444,7 +1454,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "PROPRIETA'",
-     "housingFrom": "2018"
+     "housingFrom": "2018",
+     "outgoings": []
     }
    },
    "pages": [
@@ -1638,7 +1649,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "SI",
      "housing": "AFFITTO",
-     "housingFrom": "2018"
+     "housingFrom": "2018",
+     "outgoings": []
     }
    },
    "pages": [
@@ -1770,7 +1782,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "NON SO",
      "housing": "PROPRIETA'",
-     "housingFrom": "2010"
+     "housingFrom": "2010",
+     "outgoings": []
     }
    },
    "pages": [
@@ -1887,7 +1900,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "1988"
+     "housingFrom": "1988",
+     "outgoings": []
     }
    },
    "pages": [
@@ -2004,7 +2018,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "1999"
+     "housingFrom": "1999",
+     "outgoings": []
     }
    },
    "pages": [
@@ -2151,7 +2166,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "AFFITTO",
-     "housingFrom": "2023"
+     "housingFrom": "2023",
+     "outgoings": []
     }
    },
    "pages": [
@@ -2288,7 +2304,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "AFFITTO",
-     "housingFrom": "2020"
+     "housingFrom": "2020",
+     "outgoings": []
     }
    },
    "pages": [
@@ -2394,7 +2411,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2019"
+     "housingFrom": "2019",
+     "outgoings": []
     }
    },
    "pages": [
@@ -2511,7 +2529,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "NO",
      "housing": "PROPRIETA'",
-     "housingFrom": "2011"
+     "housingFrom": "2011",
+     "outgoings": []
     }
    },
    "pages": [
@@ -2638,7 +2657,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "AFFITTO",
-     "housingFrom": "2023"
+     "housingFrom": "2023",
+     "outgoings": []
     }
    },
    "pages": [
@@ -2749,7 +2769,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "PROPRIETA'",
-     "housingFrom": "1987"
+     "housingFrom": "1987",
+     "outgoings": []
     }
    },
    "pages": [
@@ -2886,7 +2907,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "SI",
      "housing": "AFFITTO",
-     "housingFrom": "2017"
+     "housingFrom": "2017",
+     "outgoings": []
     }
    },
    "pages": [
@@ -3008,7 +3030,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2013"
+     "housingFrom": "2013",
+     "outgoings": []
     }
    },
    "pages": [
@@ -3114,7 +3137,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "PROPRIETA'",
-     "housingFrom": "2023"
+     "housingFrom": "2023",
+     "outgoings": []
     }
    },
    "pages": [
@@ -3231,7 +3255,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "PROPRIETA'",
-     "housingFrom": "1990"
+     "housingFrom": "1990",
+     "outgoings": []
     }
    },
    "pages": [
@@ -3425,7 +3450,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2002"
+     "housingFrom": "2002",
+     "outgoings": []
     }
    },
    "pages": [
@@ -3557,7 +3583,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2001"
+     "housingFrom": "2001",
+     "outgoings": []
     }
    },
    "pages": [
@@ -3797,7 +3824,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "AFFITTO",
-     "housingFrom": "2024"
+     "housingFrom": "2024",
+     "outgoings": []
     }
    },
    "pages": [
@@ -3944,7 +3972,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "AFFITTO",
-     "housingFrom": "2024"
+     "housingFrom": "2024",
+     "outgoings": []
     }
    },
    "pages": [
@@ -4061,7 +4090,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "NO",
      "housing": "PROPRIETA'",
-     "housingFrom": "2006"
+     "housingFrom": "2006",
+     "outgoings": []
     }
    },
    "pages": [
@@ -4198,7 +4228,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "NO",
      "housing": "AFFITTO",
-     "housingFrom": "2023"
+     "housingFrom": "2023",
+     "outgoings": []
     }
    },
    "pages": [
@@ -4309,7 +4340,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2020"
+     "housingFrom": "2020",
+     "outgoings": []
     }
    },
    "pages": [
@@ -4597,7 +4629,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "NO",
      "housing": "AFFITTO",
-     "housingFrom": "2024"
+     "housingFrom": "2024",
+     "outgoings": []
     }
    },
    "pages": [
@@ -4729,7 +4762,8 @@
      "incomeChanneled": "SI",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2014"
+     "housingFrom": "2014",
+     "outgoings": []
     }
    },
    "pages": [

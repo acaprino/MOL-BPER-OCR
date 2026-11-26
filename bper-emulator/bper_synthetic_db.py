@@ -17,9 +17,9 @@ SCHEMA = Path(__file__).with_name("bper_synthetic_schema.sql")
 APPLICATION_ID = 1112556883
 # 2 added the Scheda Privati tables and the practice role; 3 the practice types, operator offices and income
 # kinds; 4 the product table in place of the practice types; 5 the shorter branch names; 6 account numbers with
-# real-looking tails; 7 the autonomous contract and one payment for the self-employed. Any schema or seed change
-# bumps it, so an older file is refused (or, the default one, set aside and rebuilt).
-SCHEMA_VERSION = 7
+# real-looking tails; 7 the autonomous contract and one payment for the self-employed; 8 the outgoing rows of the
+# Scheda. Any schema or seed change bumps it, so an older file is refused (or, the default one, set aside and rebuilt).
+SCHEMA_VERSION = 8
 ROLE = "sintetica"
 OFFICE_CODE = "09001"
 # Invented names, none of the archive's: as on the real pages, "<code> - <name>" has at most 19 characters, the
@@ -252,6 +252,12 @@ def _money(cents: int, *, decimals: bool = False) -> str:
     whole, fraction = divmod(cents, 100)
     value = f"{whole:,}".replace(",", ".")
     return f"{value},{fraction:02d}" if decimals or fraction else value
+
+
+def _thousand_cents(euro: int) -> int:
+    """The cents of an amount in euro rounded to the nearest thousand: the USCITE CONTINUATIVE rows show whole
+    thousands."""
+    return (euro + 500) // 1000 * 100_000
 
 
 def _date(iso_date: str) -> str:
@@ -543,6 +549,25 @@ def _seed_scheda(con: sqlite3.Connection, i: int, job: int, *, ndg: str, created
         operator_id, branch, notes,
     ))
 
+    # USCITE CONTINUATIVE: a row per fact of the dossier, the rented home and the CRIF instalment of the PEF note,
+    # each shown two times in three (the rows appear in 9 of the about 16 recordings of the page, a lower bound).
+    # AFFITTO comes first, as in a recording (the real order varies).
+    rows = Random(80261122 + i)  # its own stream; always these four draws in this order, facts or not
+    show_rent, show_instalment = rows.random() < 2 / 3, rows.random() < 2 / 3
+    months_left, assignment = rows.randrange(12, 61), rows.random() < 1 / 2
+    outgoings = [("AFFITTO", _thousand_cents(rent * 12), None, None)] if renting and show_rent else []
+    if other_installment and show_instalment:
+        # The PEF note does not name the loan; a salary-backed one (cessione del quinto) exists only for employees
+        # and pensioners.
+        loan = ("CESSIONE DEL QUINTO" if assignment and income_kind in ("DIPENDENTE", "PENSIONE")
+                else "PRESTITO AL CONSUMO")
+        due = _iso_month(_month_index(validated) + months_left)
+        # shortcut: the residual is the instalment times the months left, while a recording (V32) shows about 15% less, the principal; use the remaining principal when a row value becomes an extracted field
+        residual = _thousand_cents(other_installment * months_left)
+        outgoings.append((loan, _thousand_cents(other_installment * 12), due, residual))
+    con.executemany("INSERT INTO scheda_outgoing VALUES (?, ?, ?, ?, ?, ?)",
+                    [(ndg, n, *row) for n, row in enumerate(outgoings, 1)])
+
 
 def _open_readonly(path: Path) -> sqlite3.Connection:
     return sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True)
@@ -690,6 +715,9 @@ def _scheda(con: sqlite3.Connection, ndg: str, name: str) -> dict[str, Any] | No
     staff = {"user": f"{s['validator_id'][-5:]} {s['validator_name'].upper()}",
              "branch": f"{s['validator_branch']}-0000-0000 {s['branch_name']}", "bank": BANK}
     employed = s["employer_id"] is not None
+    outgoings = [{"description": r["description"], "annualAmount": _money(r["annual_cents"]), "due": _month(r["due"]),
+                  "residual": "" if r["residual_cents"] is None else _money(r["residual_cents"])}
+                 for r in con.execute("SELECT * FROM scheda_outgoing WHERE ndg = ? ORDER BY n", (ndg,))]
     return {
         "ndg": ndg, "schedaId": s["scheda_id"], "name": name,
         "operator": {"code": f"{OPERATORS[0][0]} - {OFFICE_CODE}", "name": OPERATORS[0][1]},
@@ -710,6 +738,6 @@ def _scheda(con: sqlite3.Connection, ndg: str, name: str) -> dict[str, Any] | No
             "employerFrom": _month(s["employer_from"]), "employerTo": _month(s["employer_to"]),
             "employerRegistered": s["employer_ndg"] is not None,
             "incomeChanneled": s["income_channeled"], "creditCardBalance": s["card_balance"],
-            "housing": s["housing"], "housingFrom": str(s["housing_from"]),
+            "housing": s["housing"], "housingFrom": str(s["housing_from"]), "outgoings": outgoings,
         },
     }

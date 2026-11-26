@@ -34,6 +34,12 @@ def test_a_profile_with_a_value_of_the_wrong_type_is_refused() -> None:
     assert any("scheda.details.employerRegistered" in problem for problem in validate_profile(profile))
 
 
+def test_profiles_without_outgoings_are_rejected() -> None:
+    profile = fictitious()
+    del profile["scheda"]["details"]["outgoings"]
+    assert "scheda.details.outgoings: mancante" in validate_profile(profile)
+
+
 def test_a_profile_with_an_unknown_field_is_refused() -> None:
     profile = fictitious()
     profile["importoTotale"] = "1"

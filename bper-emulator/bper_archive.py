@@ -183,7 +183,7 @@ def _scheda(practice: _Practice, number: str) -> tuple[dict, list[str]]:
         "fields": fields,
         "details": {"employerNdg": "", "employerFrom": EMPTY_MONTH, "employerTo": EMPTY_MONTH,
                     "employerRegistered": True, "incomeChanneled": "", "creditCardBalance": "", "housing": "",
-                    "housingFrom": ""},
+                    "housingFrom": "", "outgoings": []},
     }
     return scheda, ["scheda.schedaId", "scheda.operator", "scheda.lastChange", "scheda.lastValidation",
                     "scheda.details"]

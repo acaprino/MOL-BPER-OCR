@@ -61,7 +61,8 @@ _SCHEDA = {
     "lastChange": {"when": str, **_STAFF}, "lastValidation": _STAFF,
     "fields": {key: str for key in SCHEDA_FIELDS},
     "details": {"employerNdg": str, "employerFrom": str, "employerTo": str, "employerRegistered": bool,
-                "incomeChanneled": str, "creditCardBalance": str, "housing": str, "housingFrom": str},
+                "incomeChanneled": str, "creditCardBalance": str, "housing": str, "housingFrom": str,
+                "outgoings": [{"description": str, "annualAmount": str, "due": str, "residual": str}]},
 }
 SHAPE = {
     "key": str, "role": str, "number": str, "ndg": str, "name": str,

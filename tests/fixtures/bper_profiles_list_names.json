@@ -108,7 +108,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2013"
+     "housingFrom": "2013",
+     "outgoings": []
     }
    },
    "pages": [
@@ -225,7 +226,8 @@
      "incomeChanneled": "NO",
      "creditCardBalance": "SI",
      "housing": "PROPRIETA'",
-     "housingFrom": "2013"
+     "housingFrom": "2013",
+     "outgoings": []
     }
    },
    "pages": [

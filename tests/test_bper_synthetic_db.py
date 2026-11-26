@@ -12,7 +12,7 @@ import sqlite3
 import pytest
 
 from bper_synthetic_db import (
-    APPLICATION_ID, EMPLOYMENTS, FUND_NAME, JOBS, PENSIONERS, SCHEDA_TODAY, build_database, set_aside_older,
+    APPLICATION_ID, EMPLOYMENTS, FUND_NAME, JOBS, PENSIONERS, SCHEDA_TODAY, _money, build_database, set_aside_older,
     synthetic_practices, validation_age,
 )
 from bper_simulator_truth import NOTE_LINE_CHARS
@@ -339,6 +339,88 @@ def test_employer_box_follows_the_employment_in_the_practice_note() -> None:
         "TEMPO INDETERMINATO", "TEMPO DETERMINATO", "LAVORATORE AUTONOMO", ""}
 
 
+# The USCITE CONTINUATIVE rows come from two facts of the practice: the rent the Scheda note may quote, and the CRIF
+# instalment the request note states.
+RENT = re.compile(r"canone mensile (?:di )?€ (\d+)")
+INSTALMENT = re.compile(r"Altra rata in corso di (\d+),00 € mensili")
+ROW_KINDS = {"AFFITTO": "rent", "PRESTITO AL CONSUMO": "instalment", "CESSIONE DEL QUINTO": "instalment"}
+
+
+def nearest_thousand(euro: int) -> int:
+    return (euro + 500) // 1000 * 1000
+
+
+def outgoings(profile: dict) -> list[dict]:
+    return profile["scheda"]["details"]["outgoings"]
+
+
+def unlisted_fact(profile: dict) -> bool:
+    """Whether a fact of the practice has no row: a rented home without AFFITTO, or an instalment without its row."""
+    descriptions = [row["description"] for row in outgoings(profile)]
+    rent = profile["scheda"]["details"]["housing"] == "AFFITTO" and "AFFITTO" not in descriptions
+    instalment = bool(INSTALMENT.search(profile["notes"])) and descriptions in ([], ["AFFITTO"])
+    return rent or instalment
+
+
+def test_rent_rows_follow_the_rent_of_the_scheda() -> None:
+    for p in synthetic_practices():
+        scheda = p["scheda"]
+        rent = RENT.search(scheda["fields"]["note_scheda_privati"])
+        for row in outgoings(p):
+            if row["description"] != "AFFITTO":
+                continue
+            assert scheda["details"]["housing"] == "AFFITTO", p["key"]
+            assert re.fullmatch(r"\d{1,3}(\.000)+", row["annualAmount"]), p["key"]
+            assert (row["due"], row["residual"]) == (EMPTY_MONTH, ""), p["key"]
+            if rent:
+                assert row["annualAmount"] == _money(nearest_thousand(int(rent[1]) * 12) * 100), p["key"]
+
+
+def test_instalment_rows_follow_the_crif_instalment_of_the_practice() -> None:
+    for p in synthetic_practices():
+        f = p["scheda"]["fields"]
+        stamp = day(f["ultima_validazione_scheda"].split()[0])
+        anchor = stamp.year * 12 + stamp.month
+        for row in outgoings(p):
+            if row["description"] == "AFFITTO":
+                continue
+            instalment = INSTALMENT.search(p["notes"])
+            assert instalment, p["key"]
+            monthly = int(instalment[1])
+            due_year, due_month = month(row["due"])
+            months = due_year * 12 + due_month - anchor
+            assert 12 <= months <= 60, p["key"]
+            assert row["annualAmount"] == _money(nearest_thousand(monthly * 12) * 100), p["key"]
+            assert row["residual"] == _money(nearest_thousand(monthly * months) * 100), p["key"]
+            # The request note does not name the loan; a salary-backed one exists only for employees and pensioners.
+            assert row["description"] in ("PRESTITO AL CONSUMO", "CESSIONE DEL QUINTO"), p["key"]
+            if row["description"] == "CESSIONE DEL QUINTO":
+                assert f["tipo_contratto"] != "LAVORATORE AUTONOMO", p["key"]
+
+
+def test_outgoing_rows_come_only_from_the_rent_then_the_instalment() -> None:
+    for p in synthetic_practices():
+        kinds = [ROW_KINDS.get(row["description"], row["description"]) for row in outgoings(p)]
+        assert kinds in ([], ["rent"], ["instalment"], ["rent", "instalment"]), p["key"]
+
+
+def test_no_outgoing_amount_equals_an_income_of_the_scheda() -> None:
+    for p in synthetic_practices():
+        f = p["scheda"]["fields"]
+        amounts = {row[key] for row in outgoings(p) for key in ("annualAmount", "residual")}
+        assert not amounts & {f["importo_totale_annuo_nucleo"], f["retribuzione_annua_netta"]}, p["key"]
+
+
+def test_the_seed_shows_every_kind_of_outgoing_row() -> None:
+    profiles = synthetic_practices()
+    rows = [(p, row) for p in profiles for row in outgoings(p)]
+    assert {len(outgoings(p)) for p in profiles} >= {1, 2}
+    assert any(unlisted_fact(p) for p in profiles)
+    assert any(row["description"] == "AFFITTO" and RENT.search(p["scheda"]["fields"]["note_scheda_privati"])
+               for p, row in rows)
+    assert {row["description"] for _, row in rows} >= {"PRESTITO AL CONSUMO", "CESSIONE DEL QUINTO"}
+
+
 def test_pensioners_are_a_few_practices_that_no_document_or_test_names() -> None:
     keys = [p["key"] for p in synthetic_practices()]
     assert len(keys) == 64
@@ -469,8 +551,8 @@ def test_synthetic_identities_never_equal_one_of_the_real_archive() -> None:
 
 
 # 1: before the Scheda Privati. 2: without practice types, offices and income kinds. 3: without the product table.
-# 6: without the autonomous contract and the one-payment self-employed.
-OLDER_VERSIONS = (1, 2, 3, 6)
+# 6: without the autonomous contract and the one-payment self-employed. 7: without the outgoing rows.
+OLDER_VERSIONS = (1, 2, 3, 6, 7)
 
 
 @pytest.mark.parametrize("version", OLDER_VERSIONS)

@@ -31,6 +31,13 @@ SCHEDA_BOTTOM_FIELDS = (
     "di_cui_percepiscono_reddito", "importo_totale_annuo_nucleo",
 )
 SCHEDA_PAGE_SCROLL = 662  # page scroll of the real screenshots 02-05 (measure_scheda.SHOTS)
+# A USCITE CONTINUATIVE row of scheda.css (.sp-outgoing): each one lengthens the page by this height.
+OUTGOING_ROW_PX = 90
+# Top of each employer field's value box below the top of the viewport, at SCHEDA_PAGE_SCROLL on a page without
+# outgoing rows; each row moves it OUTGOING_ROW_PX higher, and a box no longer wholly in the viewport leaves the truth.
+# Measured in headless Chrome (1920 x 945 viewport) on sim-002 at ?scroll=662: the input's top minus the top of
+# .sp-main, rounded; the heights in scheda.css give the same 18, 150 and 147.
+EMPLOYER_TOP_PX = {"datore_di_lavoro_anagrafica": 18, "rating_ufficiale": 150, "score_cgs": 147}
 # The note textarea of scheda.css: border-box height with a 1 px bottom border, top padding, line box.
 NOTE_BOX_PX, NOTE_PADDING_PX, NOTE_LINE_PX = 95, 3, 21
 # shortcut: assumes each note line renders as one line box; at ~1590 px of text 170 characters fit with a
@@ -185,9 +192,13 @@ def _note_views(note: str) -> list[tuple[int, str]]:
 def _scheda_captures(scheda: dict) -> list[tuple[dict, dict[str, str]]]:
     values = {"ndg": scheda["ndg"], "denominazione": scheda["name"], **scheda["fields"]}
     positions = [((0, 0), {key: values[key] for key in SCHEDA_TOP_FIELDS})]
-    bottom = {key: values[key] for key in SCHEDA_BOTTOM_FIELDS}
+    # The outgoing rows lengthen the page: the bottom states scroll past them, and the employer value boxes they push
+    # above the viewport leave the truth.
+    shift = len(scheda["details"]["outgoings"]) * OUTGOING_ROW_PX
+    bottom = {key: values[key] for key in SCHEDA_BOTTOM_FIELDS
+              if key not in EMPLOYER_TOP_PX or EMPLOYER_TOP_PX[key] >= shift}
     for note_scroll, text in _note_views(values["note_scheda_privati"]):
-        positions.append(((SCHEDA_PAGE_SCROLL, note_scroll), {**bottom, "note_scheda_privati": text}))
+        positions.append(((SCHEDA_PAGE_SCROLL + shift, note_scroll), {**bottom, "note_scheda_privati": text}))
     return [({"name": f"scheda-privati-{n:02d}", "scroll": page, "noteScroll": note}, shown)
             for n, ((page, note), shown) in enumerate(positions, 1)]
 
@@ -195,9 +206,11 @@ def _scheda_captures(scheda: dict) -> list[tuple[dict, dict[str, str]]]:
 def scheda_states(scheda: dict) -> list[dict]:
     """Capture states of a Scheda Privati page, named like the screenshots of the real archive.
 
-    scheda-privati-01 is the top of the page. Every later state is the page at SCHEDA_PAGE_SCROLL with the
-    note box scrolled by one paragraph (see _note_views), so a note of n one-line paragraphs gives
-    max(1, n - 1) of them. The page's ?scroll= and ?noteScroll= reproduce each state.
+    scheda-privati-01 is the top of the page. Every later state is the page at its end, SCHEDA_PAGE_SCROLL plus
+    OUTGOING_ROW_PX per outgoing row (so the family block and the note box stay where they are), with the note box
+    scrolled by one paragraph (see _note_views), so a note of n one-line paragraphs gives max(1, n - 1) of them.
+    An employer field stays in their truth only while its value box is wholly in the viewport: EMPLOYER_TOP_PX minus
+    the rows' height is not negative. The page's ?scroll= and ?noteScroll= reproduce each state.
     """
     return [state for state, _ in _scheda_captures(scheda)]
 

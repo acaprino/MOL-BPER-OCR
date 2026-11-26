@@ -84,7 +84,18 @@
       </section>
 
       <section id="altre-entrate"><h2 class="sp-section">ALTRE ENTRATE CONTINUATIVE</h2></section>
-      <section id="uscite"><h2 class="sp-section">USCITE CONTINUATIVE <i class="sp-hint" aria-label="Informazioni"></i></h2></section>
+      <section id="uscite">
+        <h2 class="sp-section">USCITE CONTINUATIVE <i class="sp-hint" aria-label="Informazioni"></i></h2>
+        <div class="sp-outgoings"></div>
+        <template id="sp-outgoing">
+          <div class="sp-outgoing"><h4></h4><div class="sp-grid">
+            <label class="sp-field sp-choice"><span>DESCRIZIONE</span><input readonly></label>
+            <label class="sp-field"><span>IMPORTO ANNUO</span><input readonly></label>
+            <label class="sp-field"><span>SCADENZA</span><input readonly></label>
+            <label class="sp-field"><span>DEBITO RESIDUO</span><input readonly></label>
+          </div></div>
+        </template>
+      </section>
 
       <section id="situazione">
         <h2 class="sp-section">SITUAZIONE FAMILIARE</h2>

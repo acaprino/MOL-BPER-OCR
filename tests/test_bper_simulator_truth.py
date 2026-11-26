@@ -13,8 +13,8 @@ from extraction.fields import CSV_TO_SCHEMA
 from extraction.imaging import screen_id_from_path
 from bper_profiles import SCHEDA_FIELDS
 from bper_simulator_truth import (
-    CSV_LABELS, NOTE_BOX_PX, NOTE_LINE_PX, NOTE_PADDING_PX, available_steps, evidence_slots, practice_truth_csv,
-    practice_truth_record_csv, scheda_states,
+    CSV_LABELS, NOTE_BOX_PX, NOTE_LINE_PX, NOTE_PADDING_PX, OUTGOING_ROW_PX, available_steps, evidence_slots,
+    practice_truth_csv, practice_truth_record_csv, scheda_states,
 )
 from bper_synthetic_db import PENSIONERS, synthetic_practices
 
@@ -39,7 +39,7 @@ BOTTOM_FIELDS = {
 }
 
 
-def scheda_with(note: str) -> dict:
+def scheda_with(note: str, outgoings: tuple[dict, ...] = ()) -> dict:
     return {
         "ndg": "09000001", "schedaId": "00000000001", "name": "D'ARCO MARTINA",
         "fields": {
@@ -50,6 +50,7 @@ def scheda_with(note: str) -> dict:
             "importo_totale_annuo_nucleo": "18.000", "note_scheda_privati": note,
             "ultima_validazione_scheda": "12/02/2025 10:15 (6 giorni fa)",
         },
+        "details": {"outgoings": list(outgoings)},
     }
 
 
@@ -273,6 +274,29 @@ def test_the_note_box_scrolls_past_leading_blank_lines(practice: dict, tmp_path:
     assert truth["scheda-privati-03"]["note_scheda_privati"] == "Secondo.\n\nTerzo."
 
 
+# Only the number of rows moves the states; the values of a row never do.
+OUTGOING = {"description": "PRESTITO AL CONSUMO", "annualAmount": "2.000", "due": "MARZO 2028", "residual": "5.000"}
+
+
+@pytest.mark.parametrize(("rows", "scroll", "employer"), [
+    (0, 662, {"datore_di_lavoro_anagrafica", "rating_ufficiale", "score_cgs"}),
+    (1, 752, {"rating_ufficiale", "score_cgs"}),
+    (2, 842, set()),
+])
+def test_bottom_states_drop_the_employer_fields_the_rows_push_out(practice: dict, tmp_path: Path, rows: int,
+                                                                   scroll: int, employer: set[str]) -> None:
+    # Each row lengthens the page by 90 px and the bottom states scroll as much further, so the family block and the
+    # note box stay where they were; an employer value box pushed above the viewport leaves the truth. No rows: the
+    # states and truth of before the rows existed.
+    practice["scheda"] = scheda_with("Primo.\n\nSecondo.\n\nTerzo.\n", (OUTGOING,) * rows)
+    assert [(s["name"], s["scroll"], s["noteScroll"]) for s in scheda_states(practice["scheda"])] == [
+        ("scheda-privati-01", 0, 0), ("scheda-privati-02", scroll, 0), ("scheda-privati-03", scroll, 35)]
+    truth = loaded(practice, tmp_path)
+    household_and_note = {"nr_altri_componenti_nucleo", "di_cui_percepiscono_reddito", "importo_totale_annuo_nucleo",
+                          "note_scheda_privati"}
+    assert set(truth["scheda-privati-02"]) == set(truth["scheda-privati-03"]) == employer | household_and_note
+
+
 def test_adding_a_scheda_leaves_the_screen_rows_unchanged(practice: dict) -> None:
     screens = practice_truth_csv(practice)
     practice["scheda"] = scheda_with("Primo.\n")
@@ -370,3 +394,16 @@ def test_note_box_geometry_matches_the_frozen_stylesheet() -> None:
     assert f"padding: {NOTE_PADDING_PX}px 0 0 5px;" in rule
     assert "border-bottom: 1px solid" in rule
     assert re.search(rf"font: [\d.]+px/{NOTE_LINE_PX}px", rule)
+
+
+def test_outgoing_row_geometry_matches_the_frozen_stylesheet() -> None:
+    css = STYLESHEET.read_text(encoding="utf-8")
+    row, rows = re.search(r"\.sp-outgoing \{([^}]*)\}", css), re.search(r"\.sp-outgoings \{([^}]*)\}", css)
+    assert row and rows, "the .sp-outgoing and .sp-outgoings rules"
+    assert f"height: {OUTGOING_ROW_PX}px;" in row.group(1)
+    # A margin or padding would lengthen the page by more than OUTGOING_ROW_PX a row.
+    for rule in (row.group(1), rows.group(1)):
+        for declaration in filter(str.strip, rule.split(";")):
+            name, _, value = declaration.partition(":")
+            if name.strip().startswith(("margin", "padding")):
+                assert re.fullmatch(r"0(px)?( 0(px)?)*", value.strip()), declaration
