@@ -1,20 +1,20 @@
 {
   "validation": {
-    "precision": 0.9964912280701754,
+    "precision": 0.9965986394557823,
     "recall": 1.0,
-    "f1": 0.9982425307557118,
-    "non_note_f1": 0.9956521739130435,
-    "field_accuracy": 0.9452054794520548,
+    "f1": 0.9982964224872232,
+    "non_note_f1": 0.9955555555555555,
+    "field_accuracy": 0.9383561643835616,
     "credit_field_accuracy": 1.0,
-    "word_accuracy": 0.999522,
-    "evaluated_words": 4187,
-    "ignored_words": 144,
+    "word_accuracy": 0.999495,
+    "evaluated_words": 3959,
+    "ignored_words": 375,
     "per_role": {
       "ndg": {
-        "tp": 15,
+        "tp": 16,
         "fp": 0,
         "fn": 0,
-        "support": 15,
+        "support": 16,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0
@@ -29,19 +29,19 @@
         "f1": 1.0
       },
       "tipo": {
-        "tp": 39,
+        "tp": 34,
         "fp": 0,
         "fn": 0,
-        "support": 39,
+        "support": 34,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0
       },
       "stato": {
-        "tp": 6,
+        "tp": 5,
         "fp": 0,
         "fn": 0,
-        "support": 6,
+        "support": 5,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0
@@ -137,10 +137,10 @@
         "f1": 1.0
       },
       "note_della_richiesta": {
-        "tp": 339,
+        "tp": 362,
         "fp": 0,
         "fn": 0,
-        "support": 339,
+        "support": 362,
         "precision": 1.0,
         "recall": 1.0,
         "f1": 1.0

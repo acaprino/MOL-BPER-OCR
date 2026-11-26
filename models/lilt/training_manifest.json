@@ -1,9 +1,9 @@
 {
-  "created_utc": "2026-11-26T10:56:08.722454+00:00",
+  "created_utc": "2026-11-26T14:18:28.373660+00:00",
   "base_model": "nielsr/lilt-xlm-roberta-base",
   "base_revision": "39325597c4aa6698a50323f444013287bae52e67",
   "initialization": "fresh pretrained; no BPER checkpoint",
-  "dataset_sha256": "e357d50bd8e9661b490db08c6c4f522e4defe957778a6ce2601504d7bb21a1c3",
+  "dataset_sha256": "8c2c8e6c2aba01e3e1df6282ec6fcc4e8a85f5d88cf412a32bd89aee0f1213d4",
   "dataset_manifest": {
     "schema_version": 1,
     "dataset_version": "dataset",
@@ -70,8 +70,8 @@
       }
     },
     "ocr": {
-      "path": "D:\\Projects\\poc-data-extraction\\outputs\\ocria-nano-bench\\pair-f\\cache-f-x1.5-s0.json",
-      "sha256": "6bd711c9666725e6001859db2b20fe7d10bacaca1cc82174e21419d30e243d9c",
+      "path": "D:\\Projects\\poc-data-extraction\\outputs\\ocria-nano-bench\\pair-g\\cache-g-x1.5-w1-s0.json",
+      "sha256": "77260cfe8a2c1dbd4f957261b10c0eaa88282d15b3745bfe0f0b44f7d9561d31",
       "scale": "1x",
       "words_rewritten": false
     },
@@ -135,37 +135,38 @@
       "11153238"
     ],
     "supervision_counts": {
-      "supervised": 1018,
-      "ignored_ocr_mismatch": 55,
+      "supervised": 1045,
+      "ignored_ocr_mismatch": 29,
       "empty": 134,
-      "ignored_alignment": 25,
-      "partial_supervision": 21
+      "partial_supervision": 23,
+      "ignored_alignment": 22
     },
     "training_role_words": {
-      "O": 27767,
-      "ndg": 114,
-      "IGNORE": 3900,
-      "tipo": 205,
+      "O": 28505,
+      "ndg": 119,
+      "IGNORE": 2998,
+      "tipo": 210,
       "stato": 37,
       "creazione": 38,
-      "denominazione": 245,
-      "filiale_relazione": 268,
-      "rapporto": 180,
-      "tipo_op": 100,
+      "denominazione": 280,
+      "filiale_relazione": 280,
+      "rapporto": 184,
+      "tipo_op": 98,
       "n_fido": 50,
-      "descrizione": 76,
+      "descrizione": 84,
       "scadenza": 85,
       "importo_euro": 54,
       "tooltip_descrizione_ipoteca": 60,
-      "note_della_richiesta": 3549,
-      "sogg_ndg": 39,
-      "sogg_denominazione": 122,
-      "sogg_ruolo": 112,
+      "note_della_richiesta": 3799,
+      "sogg_ndg": 41,
+      "sogg_denominazione": 135,
+      "sogg_ruolo": 126,
       "fase": 27,
       "evidenze": 35,
       "tooltip_evidenze_b": 6,
       "tooltip_descrizione_consap_dr_bis": 32,
-      "tooltip_descrizione_bmb": 8,
+      "tooltip_descrizione_m_consap": 28,
+      "tooltip_descrizione_bmb": 16,
       "ultima_validazione_scheda": 4,
       "professione_principale": 4,
       "dal": 2,
@@ -177,8 +178,7 @@
       "nr_altri_componenti_nucleo": 4,
       "di_cui_percepiscono_reddito": 4,
       "importo_totale_annuo_nucleo": 4,
-      "note_scheda_privati": 147,
-      "tooltip_descrizione_m_consap": 21
+      "note_scheda_privati": 152
     },
     "fields_without_heldout_positive_examples": [
       "tooltip_descrizione_m_consap",
@@ -212,7 +212,7 @@
       "ocr_runner.py": "50927e0875ec0d833e5cc0f90cfbe2a88be20203c59771584c375bf67687f744",
       "schema.py": "14612d854e36aeed342a988f8134876c290d51011ac206ecf109fd1b2228c5e3"
     },
-    "dataset_content_sha256": "e357d50bd8e9661b490db08c6c4f522e4defe957778a6ce2601504d7bb21a1c3"
+    "dataset_content_sha256": "8c2c8e6c2aba01e3e1df6282ec6fcc4e8a85f5d88cf412a32bd89aee0f1213d4"
   },
   "settings": {
     "epochs_max": 8,
@@ -227,9 +227,9 @@
   },
   "checkpoint_selection": "validation whole-field accuracy, then non-note word F1, then word micro F1",
   "test_evaluations": 0,
-  "best_epoch": 7,
-  "train_sequences_including_augmentation": 634,
-  "train_seconds": 569.968,
+  "best_epoch": 6,
+  "train_sequences_including_augmentation": 633,
+  "train_seconds": 546.534,
   "packages": {
     "torch": "2.12.0+cu130",
     "transformers": "5.15.0"
