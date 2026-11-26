@@ -12,7 +12,7 @@ import sqlite3
 import pytest
 
 from bper_synthetic_db import (
-    APPLICATION_ID, EMPLOYMENTS, FUND_NAME, PENSIONERS, SCHEDA_TODAY, build_database, set_aside_older,
+    APPLICATION_ID, EMPLOYMENTS, FUND_NAME, JOBS, PENSIONERS, SCHEDA_TODAY, build_database, set_aside_older,
     synthetic_practices, validation_age,
 )
 from bper_simulator_truth import NOTE_LINE_CHARS
@@ -194,7 +194,9 @@ def test_scheda_follows_the_structure_and_formats_of_the_reference_page() -> Non
         month(f["dal"])
         for value in (d["employerFrom"], d["employerTo"]):
             assert value == EMPTY_MONTH or month(value)
-        assert f["numero_mensilita"] in {"12", "13", "14"}
+        # One payment for the self-employed, who have no payslips.
+        payments = {"12", "13", "14"} | ({"1"} if f["professione_principale"] in SELF_EMPLOYED_PROFESSIONS else set())
+        assert f["numero_mensilita"] in payments
         assert re.fullmatch(r"\d{4}", d["housingFrom"])
         assert isinstance(d["employerRegistered"], bool)
 
@@ -204,15 +206,39 @@ def test_scheda_income_matches_the_monthly_income_quoted_in_the_practice_note() 
         basis, monthly = re.search(r"Reddito netto mensile (del richiedente|complessivo dei cointestatari) "
                                    r"di ([\d.]+),00 €", p["notes"]).groups()
         f = p["scheda"]["fields"]
-        payments = int(f["numero_mensilita"])
+        # The self-employed show one payment but a full year of income: the note's monthly figure is a twelfth.
+        divisor = 12 if f["numero_mensilita"] == "1" else int(f["numero_mensilita"])
         annual = euros(f["retribuzione_annua_netta"])
-        assert annual % payments == 0, p["key"]
+        assert annual % divisor == 0, p["key"]
         if basis == "del richiedente":
-            assert annual // payments == euros(monthly), p["key"]
+            assert annual // divisor == euros(monthly), p["key"]
         else:
             # The co-holder lives with the applicant and earns on 13 payments.
             assert int(f["di_cui_percepiscono_reddito"]) >= 1, p["key"]
-            assert annual // payments + euros(f["importo_totale_annuo_nucleo"]) / 13 == euros(monthly), p["key"]
+            assert annual // divisor + euros(f["importo_totale_annuo_nucleo"]) / 13 == euros(monthly), p["key"]
+
+
+SELF_EMPLOYED_PROFESSIONS = {job[1] for job in JOBS if job[0] == "AUTONOMO"}
+
+
+def self_employed_schede() -> list[tuple[dict, dict]]:
+    return [(p, p["scheda"]["fields"]) for p in synthetic_practices()
+            if p["scheda"]["fields"]["professione_principale"] in SELF_EMPLOYED_PROFESSIONS]
+
+
+def test_self_employed_schede_carry_the_autonomous_contract_and_one_payment() -> None:
+    schede = self_employed_schede()
+    assert schede
+    assert [p["key"] for p, f in schede
+            if (f["tipo_contratto"], f["numero_mensilita"]) != ("LAVORATORE AUTONOMO", "1")] == []
+
+
+def test_self_employed_annual_income_is_the_note_income() -> None:
+    quoted = [(p, re.search(r"€ ([\d.]+) netti annui", f["note_scheda_privati"])) for p, f in self_employed_schede()]
+    quoted = [(p, m[1]) for p, m in quoted if m]
+    assert quoted
+    assert [p["key"] for p, amount in quoted
+            if amount != p["scheda"]["fields"]["retribuzione_annua_netta"]] == []
 
 
 def test_household_earners_never_exceed_the_other_members() -> None:
@@ -282,11 +308,13 @@ def test_employer_box_follows_the_employment_in_the_practice_note() -> None:
         f, d = p["scheda"]["fields"], p["scheda"]["details"]
         text = employment(p)
         if text.startswith(("attività", "pensionato")):
-            # Self-employed and pensioners: no employer, no contract; a pension is paid on 13 instalments.
+            # Self-employed and pensioners: no employer. The self-employed have the autonomous contract and one
+            # payment; a pension has no contract and is paid on 13 instalments.
             state = "pension" if text.startswith("pensionato") else "empty"
-            assert (f["datore_di_lavoro_anagrafica"], d["employerNdg"], f["tipo_contratto"]) == ("", "", ""), p["key"]
+            contract = "" if state == "pension" else "LAVORATORE AUTONOMO"
+            assert (f["datore_di_lavoro_anagrafica"], d["employerNdg"], f["tipo_contratto"]) == ("", "", contract), p["key"]
             assert (d["employerFrom"], d["employerTo"]) == (EMPTY_MONTH, EMPTY_MONTH), p["key"]
-            assert f["numero_mensilita"] == ("13" if state == "pension" else "12"), p["key"]
+            assert f["numero_mensilita"] == ("13" if state == "pension" else "1"), p["key"]
         else:
             assert f["datore_di_lavoro_anagrafica"], p["key"]
             assert f["tipo_contratto"] in {"TEMPO INDETERMINATO", "TEMPO DETERMINATO"}, p["key"]
@@ -302,7 +330,8 @@ def test_employer_box_follows_the_employment_in_the_practice_note() -> None:
             assert (f["rating_ufficiale"], f["score_cgs"]) == ("N/D", "N/D"), p["key"]
         states.add(state)
     assert states == {"empty", "pension", "registered", "not registered"}
-    assert {p["scheda"]["fields"]["tipo_contratto"] for p in profiles} == {"TEMPO INDETERMINATO", "TEMPO DETERMINATO", ""}
+    assert {p["scheda"]["fields"]["tipo_contratto"] for p in profiles} == {
+        "TEMPO INDETERMINATO", "TEMPO DETERMINATO", "LAVORATORE AUTONOMO", ""}
 
 
 def test_pensioners_are_a_few_practices_that_no_document_or_test_names() -> None:
@@ -435,7 +464,8 @@ def test_synthetic_identities_never_equal_one_of_the_real_archive() -> None:
 
 
 # 1: before the Scheda Privati. 2: without practice types, offices and income kinds. 3: without the product table.
-OLDER_VERSIONS = (1, 2, 3)
+# 6: without the autonomous contract and the one-payment self-employed.
+OLDER_VERSIONS = (1, 2, 3, 6)
 
 
 @pytest.mark.parametrize("version", OLDER_VERSIONS)

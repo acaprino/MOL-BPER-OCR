@@ -447,12 +447,14 @@ def test_the_scheda_fields_agree_with_the_applicant_employment(profiles: list[di
     for p, s in _schede(profiles):
         f, d = s["fields"], s["details"]
         boxless = f["datore_di_lavoro_anagrafica"] == d["employerNdg"] == "" and not d["employerRegistered"] \
-            and f["tipo_contratto"] == "" and d["employerFrom"] == d["employerTo"] == EMPTY_MONTH
+            and d["employerFrom"] == d["employerTo"] == EMPTY_MONTH
         employed = f["datore_di_lavoro_anagrafica"] != "" and d["employerNdg"] != "" and d["employerFrom"] != EMPTY_MONTH
         ok = {
-            "pensionato": boxless and f["professione_principale"] == "PENSIONATO" and f["numero_mensilita"] == "13",
-            "lavoratore autonomo": boxless and f["professione_principale"] in SELF_EMPLOYED and f["numero_mensilita"] == "12",
-            "senza datore di lavoro": boxless and f["professione_principale"] in WITHOUT_EMPLOYER,
+            "pensionato": boxless and f["tipo_contratto"] == "" and f["professione_principale"] == "PENSIONATO"
+                          and f["numero_mensilita"] == "13",
+            "lavoratore autonomo": boxless and f["tipo_contratto"] == "LAVORATORE AUTONOMO"
+                                   and f["professione_principale"] in SELF_EMPLOYED and f["numero_mensilita"] == "1",
+            "senza datore di lavoro": boxless and f["tipo_contratto"] == "" and f["professione_principale"] in WITHOUT_EMPLOYER,
             "dipendente a tempo indeterminato": employed and f["tipo_contratto"] == "TEMPO INDETERMINATO"
                                                 and d["employerTo"] == EMPTY_MONTH,
             "dipendente a tempo determinato": employed and f["tipo_contratto"] == "TEMPO DETERMINATO"
@@ -463,8 +465,11 @@ def test_the_scheda_fields_agree_with_the_applicant_employment(profiles: list[di
     assert wrong == []
 
 
-def test_scheda_payments_are_twelve_to_fourteen(profiles: list[dict]) -> None:
-    assert [p["key"] for p, s in _schede(profiles) if s["fields"]["numero_mensilita"] not in ("12", "13", "14")] == []
+def test_scheda_payments_are_one_for_the_self_employed_else_twelve_to_fourteen(profiles: list[dict]) -> None:
+    def allowed(p: dict) -> tuple[str, ...]:
+        return ("1",) if _employment(p)[1] == "lavoratore autonomo" else ("12", "13", "14")
+
+    assert [p["key"] for p, s in _schede(profiles) if s["fields"]["numero_mensilita"] not in allowed(p)] == []
 
 
 def test_scheda_net_pay_is_a_plausible_amount_in_the_seed_format(profiles: list[dict]) -> None:

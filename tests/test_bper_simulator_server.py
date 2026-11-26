@@ -292,7 +292,8 @@ def test_practice_truth_download_matches_selected_dossier(server: ThreadingHTTPS
 
 
 # 1: before the Scheda Privati. 2: without practice types, offices and income kinds. 3: without the product table.
-OLDER_VERSIONS = (1, 2, 3)
+# 6: without the autonomous contract and the one-payment self-employed.
+OLDER_VERSIONS = (1, 2, 3, 6)
 
 
 def served_text(server: ThreadingHTTPServer) -> str:

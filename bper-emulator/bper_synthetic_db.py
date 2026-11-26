@@ -17,9 +17,9 @@ SCHEMA = Path(__file__).with_name("bper_synthetic_schema.sql")
 APPLICATION_ID = 1112556883
 # 2 added the Scheda Privati tables and the practice role; 3 the practice types, operator offices and income
 # kinds; 4 the product table in place of the practice types; 5 the shorter branch names; 6 account numbers with
-# real-looking tails. Any schema or seed change bumps it, so an older file is refused (or, the default one, set
-# aside and rebuilt).
-SCHEMA_VERSION = 6
+# real-looking tails; 7 the autonomous contract and one payment for the self-employed. Any schema or seed change
+# bumps it, so an older file is refused (or, the default one, set aside and rebuilt).
+SCHEMA_VERSION = 7
 ROLE = "sintetica"
 OFFICE_CODE = "09001"
 # Invented names, none of the archive's: as on the real pages, "<code> - <name>" has at most 19 characters, the
@@ -161,19 +161,20 @@ MONTHS = ("gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio"
 # income entry of any kind; a further kind needs only its row.
 INCOME_KINDS = (("DIPENDENTE", "Lavoro dipendente"), ("AUTONOMO", "Lavoro autonomo"), ("PENSIONE", "Pensione"))
 # Per EMPLOYMENTS entry, in its order: income kind, profession, payments per year, employer kind (None: the
-# employer box stays empty).
+# employer box stays empty, with no NON CENSITO mark: that needs a named employer).
+# shortcut: every self-employed trade has one payment, as the sole owners in the recordings show; revisit when a business-partner trade enters JOBS (a recorded partner shows 12).
 JOBS = (
     ("DIPENDENTE", "OPERAIO IMPRESE PRIVATE (INDUSTRIA)", (13, 14), "industria"),
-    ("AUTONOMO", "LIBERO PROFESSIONISTA", (12,), None),
+    ("AUTONOMO", "LIBERO PROFESSIONISTA", (1,), None),
     ("DIPENDENTE", "IMPIEGATO PUBBLICA AMMINISTRAZIONE", (13,), "comune"),
-    ("AUTONOMO", "ARTIGIANO", (12,), None),
+    ("AUTONOMO", "ARTIGIANO", (1,), None),
     ("DIPENDENTE", "IMPIEGATO IMPRESE PRIVATE (SERVIZI)", (14, 13), "logistica"),
     ("DIPENDENTE", "IMPIEGATO PUBBLICA AMMINISTRAZIONE", (13,), "sanita"),
-    ("AUTONOMO", "COMMERCIANTE", (12,), None),
+    ("AUTONOMO", "COMMERCIANTE", (1,), None),
     ("DIPENDENTE", "IMPIEGATO IMPRESE PRIVATE (SERVIZI)", (13, 14), "informatica"),
     # Assumption: no screenshot shows a pensioner's page. It is taken to fill the same box: the pension
     # category as profession, DAL the start of the pension, the 13 INPS instalments and the annual pension as
-    # net pay, no contract and no employer (empty box, NON CENSITO).
+    # net pay, no contract and no employer (empty box).
     ("PENSIONE", "PENSIONATO", (13,), None),
 )
 # The document a note's update paragraph cites, per kind of income.
@@ -449,6 +450,7 @@ def _seed_scheda(con: sqlite3.Connection, i: int, job: int, *, ndg: str, created
         work = f"Il cliente percepisce {_since(start)} una pensione {pension} erogata dall'INPS."
     elif kind is None:
         sentence, min_years = ACTIVITIES[job]
+        contract = "LAVORATORE AUTONOMO"
         start = now - rng.randrange(min_years * 12 + 1, max(min_years * 12 + 2, now - adult))
         work = sentence.format(year=start // 12, city=city)
     else:
@@ -531,7 +533,9 @@ def _seed_scheda(con: sqlite3.Connection, i: int, job: int, *, ndg: str, created
     notes = "\n" + "\n\n".join([request, *(optional[n] for n in chosen)]) + "\n"
 
     con.execute(f"INSERT INTO scheda VALUES ({', '.join('?' * 22)})", (
-        ndg, f"{88000001 + i:011d}", income_kind, profession, _iso_month(start), payments, applicant * payments * 100,
+        ndg, f"{88000001 + i:011d}", income_kind, profession, _iso_month(start), payments,
+        # The note quotes the annual income of the self-employed: twelve months of the monthly one.
+        applicant * (12 if income_kind == "AUTONOMO" else payments) * 100,
         contract,
         employer, _iso_month(employer_from), _iso_month(employer_to), "NO" if new_customer else "SI",
         rng.choice(("SI", "NO", "NON SO")), "AFFITTO" if renting else "PROPRIETA'", housing_from,

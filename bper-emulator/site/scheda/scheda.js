@@ -1,7 +1,8 @@
 /* BPER Scheda Privati: one JSON object per customer fills every value on the page.
  *
  * Route: /schede/SchedaPrivati/#/schede/<ndg>/<schedaId>. Data: GET /api/scheda/<ndg>.json, or
- * window.BperOffline.schede[<ndg>] in the offline export. Schema (all values are display strings):
+ * window.BperOffline.schede[<ndg>] in the offline export. Schema (the values are display strings, and
+ * booleans in details):
  *   ndg, schedaId, name                     customer shown in the top bar
  *   operator: {code, name}                  user logged in, top of the sidebar
  *   lastChange: {when, user, branch, bank}  "Ultima modifica" block
@@ -12,8 +13,8 @@
  *     di_cui_percepiscono_reddito, importo_totale_annuo_nucleo,
  *     note_scheda_privati (paragraphs separated by blank lines), ultima_validazione_scheda
  *   details: shown but not extracted:
- *     employerNdg, employerFrom, employerTo, employerRegistered (false shows "NON CENSITO"),
- *     incomeChanneled, creditCardBalance, housing, housingFrom
+ *     employerNdg, employerFrom, employerTo, employerRegistered (NON CENSITO needs a named employer
+ *     that is not registered), incomeChanneled, creditCardBalance, housing, housingFrom
  * Capture hooks: ?scroll=<px> scrolls the main column, ?noteScroll=<px> scrolls the note box.
  */
 (() => {
@@ -36,10 +37,13 @@
       if ("value" in node) node.value = value;
       else node.textContent = value;
     }
+    // data-show lists conditions separated by spaces, all of which must hold: "path" is truthy, "!path" is false.
     for (const node of document.querySelectorAll("[data-show]")) {
-      const path = node.dataset.show;
-      const shown = path.startsWith("!") ? valueAt(data, path.slice(1)) === false : Boolean(valueAt(data, path));
-      node.hidden = !shown;
+      node.hidden = !node.dataset.show.trim().split(/\s+/).every((condition) => {
+        const negated = condition.startsWith("!");
+        const value = valueAt(data, negated ? condition.slice(1) : condition);
+        return negated ? value === false : Boolean(value);
+      });
     }
   }
 

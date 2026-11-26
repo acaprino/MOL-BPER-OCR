@@ -88,9 +88,9 @@
     "fields": {
      "professione_principale": "LIBERO PROFESSIONISTA",
      "dal": "MARZO 2004",
-     "numero_mensilita": "12",
+     "numero_mensilita": "1",
      "retribuzione_annua_netta": "54.000",
-     "tipo_contratto": "",
+     "tipo_contratto": "LAVORATORE AUTONOMO",
      "datore_di_lavoro_anagrafica": "",
      "rating_ufficiale": "N/D",
      "score_cgs": "N/D",
@@ -205,9 +205,9 @@
     "fields": {
      "professione_principale": "LIBERO PROFESSIONISTA",
      "dal": "MARZO 2004",
-     "numero_mensilita": "12",
+     "numero_mensilita": "1",
      "retribuzione_annua_netta": "54.000",
-     "tipo_contratto": "",
+     "tipo_contratto": "LAVORATORE AUTONOMO",
      "datore_di_lavoro_anagrafica": "",
      "rating_ufficiale": "N/D",
      "score_cgs": "N/D",

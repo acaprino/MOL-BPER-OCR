@@ -1,6 +1,6 @@
 PRAGMA foreign_keys = ON;
 PRAGMA application_id = 1112556883;
-PRAGMA user_version = 6;
+PRAGMA user_version = 7;
 
 CREATE TABLE branch (
     code TEXT PRIMARY KEY NOT NULL,
@@ -106,7 +106,7 @@ CREATE TABLE scheda (
     income_kind TEXT NOT NULL REFERENCES income_kind(code),
     profession TEXT NOT NULL,
     job_from TEXT NOT NULL CHECK(job_from GLOB '[12][0-9][0-9][0-9]-[01][0-9]'),
-    payments INTEGER NOT NULL CHECK(payments BETWEEN 12 AND 14),
+    payments INTEGER NOT NULL CHECK(payments BETWEEN 12 AND 14 OR (payments = 1 AND income_kind = 'AUTONOMO')),
     net_annual_cents INTEGER NOT NULL CHECK(net_annual_cents > 0),
     contract TEXT NOT NULL,
     employer_id INTEGER REFERENCES employer(id),
@@ -126,6 +126,8 @@ CREATE TABLE scheda (
     notes TEXT NOT NULL,
     CHECK((employer_id IS NULL) = (employer_from IS NULL)),
     CHECK(employer_id IS NOT NULL OR employer_to IS NULL),
-    -- The self-employed and pensioners have neither employer nor contract; other kinds stay open.
-    CHECK(income_kind NOT IN ('AUTONOMO', 'PENSIONE') OR (employer_id IS NULL AND contract = ''))
+    -- The self-employed have no employer and the autonomous contract, pensioners neither employer nor contract;
+    -- other kinds stay open.
+    CHECK(income_kind != 'AUTONOMO' OR (employer_id IS NULL AND contract = 'LAVORATORE AUTONOMO')),
+    CHECK(income_kind != 'PENSIONE' OR (employer_id IS NULL AND contract = ''))
 );
