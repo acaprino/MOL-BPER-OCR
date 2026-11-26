@@ -1,6 +1,6 @@
 # Come l’edge-agent segue la pratica
 
-La scheda **Cattura → Guida alla pratica** risponde a tre domande. Quale vista è sul monitor? Quale gesto conviene fare adesso? Quali viste mancano a questo NDG? La guida segue l’operatore anche quando passa direttamente alle note o riapre una pratica precedente. Per i gesti nel gestionale e i valori da copiare vedi la [guida al data entry](flusso-data-entry.md).
+La scheda **Cattura → Guida alla pratica** risponde a tre domande. Quale vista è sul monitor? Quale gesto conviene fare adesso? Quali viste mancano a questo fascicolo? La guida segue l’operatore anche quando passa direttamente alle note o riapre una pratica precedente. Per i gesti nel gestionale e i valori da copiare vedi la [guida al data entry](flusso-data-entry.md).
 
 ## Vista sul monitor e copertura della pratica
 
@@ -9,11 +9,22 @@ La scheda **Cattura → Guida alla pratica** risponde a tre domande. Quale vista
 | Cambiano i pixel | Riconoscimento in corso. Il vecchio NDG può figurare accanto all’elenco come **ultimo NDG**. | L’elenco resta consultabile con la propria identità. |
 | Il router riconosce una vista | Nome della vista e attesa di stabilità. | La sola presenza a video lascia la vista da acquisire. |
 | Il fotogramma stabile entra nella coda | Estrazione in corso. L’operatore può proseguire. | La visita rimane pendente. |
-| L’estrazione termina e sono disponibili i risultati precedenti | Vista acquisita, identità e prossima azione. | La vista passa tra le acquisite per quel NDG. |
+| L’estrazione termina e sono disponibili i risultati precedenti | Vista acquisita, identità e prossima azione. | La vista passa tra le acquisite dopo l’associazione al numero pratica. |
 | La pagina è estranea, illeggibile o l’estrazione fallisce | Richiesta di mostrare PEF o di riprovare. | La copertura già confermata resta disponibile. |
-| Si apre un secondo NDG e poi si torna al primo | Copertura del NDG identificato nella cattura. | Ciascuna pratica conserva le proprie viste acquisite e non applicabili nella sessione. |
+| Si apre un secondo fascicolo e poi si torna al primo | Copertura del numero pratica nella testata del dettaglio. | Ciascuna pratica conserva le proprie viste acquisite e non applicabili nella sessione. |
 
-Una visita completata informa sull’esito della cattura. La correttezza del testo, l’eventuale troncamento di una nota e le righe dei soggetti si verificano in **Dati estratti**. Un NDG assente eredita l’ultimo identificato nell’ordine delle catture. La GUI segnala questa attribuzione. Le catture iniziali senza NDG attendono il primo identificativo. Due fascicoli con lo stesso NDG vengono raggruppati nella stessa riga della sessione. [Identità e consolidamento](adr/0017-identita-ndg-condivisa-tra-valutazione-e-consolidamento.md)
+## Quando cambia la pratica
+
+| Cosa fa l’operatore | Cosa succede ai dati |
+|---|---|
+| Torna in ricerca, scorre i risultati o apre un tooltip dell’elenco | Il fascicolo precedente resta disponibile. Una riga di elenco con numero pratica leggibile può contribuire a quel fascicolo quando il suo dettaglio viene aperto. |
+| Seleziona una riga e apre il dettaglio PEF | La guida attende il numero pratica della testata. Un numero nuovo apre una nuova riga e una checklist propria, anche per lo stesso NDG. Riaprire un numero già lavorato recupera la sua checklist. |
+| Acquisisce le Note mentre il numero pratica è illeggibile | La lettura resta salvata. In **Coda** compare **Letta · pratica da associare**. Mostrare di nuovo la testata prima di cambiare pratica permette di associare le note alla visita. |
+| Si passa a un altro risultato prima di identificare la visita | La nota incerta rimane nell’archivio della sessione e fuori dall’Excel. Riaprire il fascicolo corretto e riacquisire la nota. |
+
+**Esempio.** La pratica 31 e la 42 hanno entrambe NDG 100. Aprendo la 42, la vista Note acquisita nella 31 resta da acquisire nella 42. Se arriva in ritardo una lettura della 31, conserva la posizione originale nella sequenza. In **Dati estratti** il suggerimento sulla cella NDG mostra il numero pratica. In Excel lo trovi nel commento della stessa cella.
+
+L’agent osserva le schermate. Il passaggio dall’elenco al dettaglio segnala l’apertura di un risultato. Se l’elenco passa troppo velocemente, due numeri pratica diversi nelle testate permettono comunque di distinguere i fascicoli. Una lettura senza numero interposta tra due fascicoli diversi rimane da associare. Nell’elenco con più righe, apri quella corretta e mostra il dettaglio. Le sessioni storiche che registravano soltanto l’NDG conservano il raggruppamento originario.
 
 ## Come sceglie il passo successivo
 
@@ -26,17 +37,17 @@ Il catalogo PEF distingue le viste base **1, 2, 4, 5, 9** e quattro viste condiz
 | Stessa scheda applicativa, altro passo del Navigatore | Da Elenco Soggetti a Gestione Fidi e Garanzie |
 | Altra scheda applicativa | Dal dettaglio a Elenco Pratiche per recuperare Creazione |
 
-A parità di distanza, una vista base precede un tooltip. L’ordine di catalogo risolve l’ulteriore parità. **Non applicabile** esclude un tooltip per il solo NDG selezionato. **Ripristina** lo rende nuovamente disponibile. Riaprire davvero quel tooltip e acquisirlo ne conferma la presenza anche dopo un’esclusione. Il suggerimento è un aiuto per l’operatore. La classificazione del frame usa ciò che è visibile. [Registro del processo](../processes/README.md)
+A parità di distanza, una vista base precede un tooltip. L’ordine di catalogo risolve l’ulteriore parità. **Non applicabile** esclude un tooltip per il solo fascicolo selezionato. **Ripristina** lo rende nuovamente disponibile. Riaprire davvero quel tooltip e acquisirlo ne conferma la presenza anche dopo un’esclusione. Il suggerimento è un aiuto per l’operatore. La classificazione del frame usa ciò che è visibile. [Registro del processo](../processes/README.md)
 
 ## Risposte tardive, arresto e tabella
 
-- Se una pagina figura acquisita per errore, selezionala e premi **Da riacquisire**. La guida riapre la vista per quell'NDG fino alla prima cattura successiva confermata. I risultati già in coda al momento della scelta lasciano la vista aperta. Le celle estratte si verificano e correggono in **Dati estratti**.
+- Se una pagina figura acquisita per errore, selezionala e premi **Da riacquisire**. La guida riapre la vista per quella pratica fino alla prima cattura successiva confermata. I risultati già in coda al momento della scelta lasciano la vista aperta. Le celle estratte si verificano e correggono in **Dati estratti**.
 - Il worker associa ogni invio a sessione, numero progressivo e visita. Una risposta tardiva aggiorna la copertura nella sequenza originale. Solo la risposta della visita attuale può cambiarne lo stato sul monitor. [Ordine di acquisizione](adr/0013-risultati-nell-ordine-di-acquisizione.md) · [Esito per visita](adr/0014-acquisizione-per-visita-con-esito.md)
 - **Ferma** disabilita i comandi di cattura mentre la finestra continua a rispondere. Una chiamata al router già iniziata può durare fino alla risposta o al timeout. Alla fine del worker la GUI riabilita **Avvia** e conserva la lista delle viste aggiornata fino all'arresto. Le estrazioni già accodate possono ancora aggiornare **Dati estratti**. Alla chiusura l'operatore decide cosa fare delle sessioni da esportare.
 - La tabella riceve i risultati pubblicati in ordine. Se è nascosta, prepara l’aggiornamento per quando viene aperta. Se è visibile, riunisce i risultati arrivati insieme e aggiorna le righe cambiate. Un editor di cella aperto mantiene la precedenza sul ridisegno.
 - Con **Acquisisci ora** sullo stesso monitor, l'agent si riduce a icona e attende tre secondi. Porta PEF in primo piano, mostra la vista scelta e mantienila visibile fino allo scatto. Puoi riaprire l'agent dalla barra delle applicazioni. Il **Registro attività** conserva le ultime 1.000 righe nella GUI.
 
-La Scheda Privati contribuisce ai 45 campi ma ha un proprio applicativo e resta fuori dalle nove viste del router. Alla riapertura la guida recupera le visite e le decisioni per NDG. Attende una nuova immagine per identificare la pagina attualmente sul monitor. [Ripresa della sessione](recupero-sessioni.md) Il riconoscimento su video e desktop reali si misura separatamente dal comportamento della guida. [Prove di cattura e replay](../bper-emulator/live_test_README.md)
+La Scheda Privati contribuisce ai 45 campi ma ha un proprio applicativo e resta fuori dalle nove viste del router. Alla riapertura la guida recupera le visite e le decisioni per fascicolo. Attende una nuova immagine per identificare la pagina attualmente sul monitor. [Ripresa della sessione](recupero-sessioni.md) Il riconoscimento su video e desktop reali si misura separatamente dal comportamento della guida. [Prove di cattura e replay](../bper-emulator/live_test_README.md)
 
 ## Ripetere il cambio di pratica
 

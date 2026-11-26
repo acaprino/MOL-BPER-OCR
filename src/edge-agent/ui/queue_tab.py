@@ -19,6 +19,7 @@ _STATES = {
     "waiting": "In attesa delle precedenti",
     "failed_waiting": "Lettura fallita · in attesa delle precedenti",
     "done": "Elaborata",
+    "unassigned": "Letta · pratica da associare",
     "uncertain": "Elaborata · identificazione incerta",
     "failed": "Lettura fallita",
     "timed_out": "Tempo di lettura scaduto",

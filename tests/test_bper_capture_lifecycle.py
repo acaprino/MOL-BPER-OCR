@@ -51,6 +51,10 @@ class CaptureClient(QtCore.QObject):
         return published
 
 
+class PracticeCaptureClient(CaptureClient):
+    tracks_practice_selection = True
+
+
 class RecoverableCaptureClient(CaptureClient):
     def __init__(self) -> None:
         super().__init__()
@@ -298,6 +302,20 @@ def finish(capture: SimpleNamespace, sequence: int, ndg: str | None = None) -> d
     capture.client.complete(sequence, ndg=ndg)
     capture.worker._capture_once()
     return capture.events[-1][1]
+
+
+@pytest.mark.parametrize("capture", [PracticeCaptureClient], indirect=True)
+def test_search_observed_between_details_starts_a_selection_even_before_a_list_capture(
+    guided: SimpleNamespace,
+) -> None:
+    visit(guided, 5)
+    visit(guided, 9)
+    guided.router.page = "screen 1"
+    guided.camera.image.paste("pink", (30, 40, 180, 110))
+    guided.worker._capture_once()  # The operator opens the result before the list stabilizes.
+    visit(guided, 4)
+    visit(guided, 6)
+    assert [f["practice_view"] for f in guided.client.frames] == ["selection", "detail", "selection", "detail"]
 
 
 def test_guidance_follows_a_backwards_jump_to_the_current_content_tab(guided: SimpleNamespace) -> None:

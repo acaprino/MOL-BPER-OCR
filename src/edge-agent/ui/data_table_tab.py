@@ -441,7 +441,7 @@ class DataTableTab(QWidget):
     def _filter_row(self, row: int, record: PracticeRecord, needle: str) -> None:
         # Search the displayed identifiers and the normalized NDG.
         shown_ndg = record.fields["ndg"]["value"] or ""
-        searchable = f"{shown_ndg} {record.denominazione or ''} {record.ndg or ''}".casefold()
+        searchable = f"{shown_ndg} {record.denominazione or ''} {record.ndg or ''} {record.practice_number or ''}".casefold()
         self.table.setRowHidden(row, bool(needle) and needle not in searchable)
 
     # ------------------------------------------------------------------ Table population
@@ -484,7 +484,7 @@ class DataTableTab(QWidget):
             for row_offset, record in enumerate(self._records):
                 if row_offset < len(previous):
                     old = previous[row_offset]
-                    if old is record or (old.ndg == record.ndg and old.fields == record.fields):
+                    if old is record or (old.edit_key == record.edit_key and old.fields == record.fields):
                         continue
                 row = _FIRST_DATA_ROW + row_offset
                 for col_idx, column in enumerate(self._columns):
@@ -555,6 +555,8 @@ class DataTableTab(QWidget):
             item.setForeground(QBrush(QColor(tokens.text)))
             item.setIcon(icons.icon("pencil", tokens.corrected_icon, 14))
             item.setToolTip(f"Valore originale: {shown}")
+        if column.schema_key == "ndg" and record.practice_number:
+            item.setToolTip(f"Numero pratica {record.practice_number}")
         self.table.setItem(row, col, item)
 
     # ------------------------------------------------------------------ Correzioni
@@ -630,11 +632,13 @@ class DataTableTab(QWidget):
             return
         column = next((c for c in self._columns if c.schema_key == draft["key"]), None)
         label = column.label if column else draft["key"]
+        target = draft["ndg"]
+        identity = f"pratica {target[4:]}" if target.startswith("pef:") else f"NDG {target}"
         self.draft_label.setText(
-            f"Bozza per {label} · NDG {draft['ndg']}. Conferma la modifica per includerla nell’esportazione."
+            f"Bozza per {label} · {identity}. Conferma la modifica per includerla nell’esportazione."
         )
         self.resume_draft_button.setEnabled(
-            column is not None and any(record.ndg == draft["ndg"] for record in self._records)
+            column is not None and any(record.edit_key == draft["ndg"] for record in self._records)
         )
         self.draft_bar.show()
 
@@ -645,7 +649,7 @@ class DataTableTab(QWidget):
         if draft:
             col = next(i for i, c in enumerate(self._columns) if c.schema_key == draft["key"])
             for row, record in enumerate(self._records, _FIRST_DATA_ROW):
-                if record.ndg == draft["ndg"]:
+                if record.edit_key == draft["ndg"]:
                     if self.table.isRowHidden(row):
                         self.search_box.clear()
                     item = self.table.item(row, col)
@@ -668,7 +672,7 @@ class DataTableTab(QWidget):
             return None
         field = record.fields[key]
         original = field["original_value"] if field.get("corrected") else field["value"]
-        return job_id, record.ndg, key, None if original is None else str(original)
+        return job_id, record.edit_key, key, None if original is None else str(original)
 
     def _commit_text(self, job_id: str, ndg: str, key: str, original: Optional[str], text: str) -> None:
         typed = clean_correction(text)
@@ -704,7 +708,7 @@ class DataTableTab(QWidget):
         job_id = self._current_job_id
         if not job_id or not 0 <= index < len(self._records) or not 0 <= col < len(self._columns):
             return
-        clear = partial(self._client.clear_correction, job_id, self._records[index].ndg, self._columns[col].schema_key)
+        clear = partial(self._client.clear_correction, job_id, self._records[index].edit_key, self._columns[col].schema_key)
         if self._client.has_recovery:
             self._queue_write(_EditWrite("confirm", job_id, clear))
             return

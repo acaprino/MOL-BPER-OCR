@@ -14,6 +14,7 @@ from tempfile import NamedTemporaryFile
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from openpyxl import Workbook
+from openpyxl.comments import Comment
 from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 from openpyxl.styles import Alignment, Border, Font, PatternFill, Side
 from openpyxl.utils import get_column_letter
@@ -204,6 +205,8 @@ def write_workbook(
         for col_index, column in enumerate(columns, start=1):
             value = (record.fields.get(column.schema_key) or {}).get("value")
             cell = _set_text(ws, row, col_index, value)
+            if column.schema_key == "ndg" and record.practice_number:
+                cell.comment = Comment(f"Numero pratica {record.practice_number}", "Edge Agent")
             cell.border = _BORDER
             cell.alignment = Alignment(
                 vertical="top", wrap_text=column.schema_key in WRAP_KEYS

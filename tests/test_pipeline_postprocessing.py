@@ -83,6 +83,17 @@ def test_an_uncertain_anchor_does_not_enter_the_main_prompt(
     assert "999887766" not in main_call["prompt"]
 
 
+@pytest.mark.parametrize(("confidence", "expected"), [(0.94, None), (0.98, "0042")])
+def test_practice_number_for_navigation_uses_the_anchor_gate(
+    monkeypatch: pytest.MonkeyPatch, confidence: float, expected: str | None,
+) -> None:
+    result, _ = _run(monkeypatch, {
+        "ANCHOR_HEADER": _reply({"numero_pratica": _field("0042", confidence)}),
+    })
+    assert result["_practice_number"] == expected
+    assert "numero_pratica" not in result["fields"]
+
+
 def test_an_uncertain_anchor_does_not_replace_the_main_value(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:

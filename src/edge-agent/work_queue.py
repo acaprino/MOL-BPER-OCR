@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections import deque
+from collections import OrderedDict
 from dataclasses import dataclass, replace
 
 
@@ -29,7 +29,7 @@ class WorkQueue:
     def __init__(self) -> None:
         self.revision = 0
         self._active: dict[tuple[str, int], QueueRow] = {}
-        self._recent: deque[QueueRow] = deque(maxlen=RECENT_LIMIT)
+        self._recent: OrderedDict[tuple[str, int], QueueRow] = OrderedDict()
 
     def accept(self, job: str, sequence: int, label: str, page: str) -> None:
         self._active[job, sequence] = QueueRow(label, sequence, page, "queued")
@@ -38,12 +38,20 @@ class WorkQueue:
     def update(self, job: str, sequence: int, state: str) -> None:
         key = job, sequence
         row = replace(self._active[key], state=state)
-        if state in {"done", "failed", "uncertain", "timed_out"}:
+        if state in {"done", "failed", "uncertain", "timed_out", "unassigned"}:
             del self._active[key]
-            self._recent.appendleft(row)
+            self._recent[key] = row
+            if len(self._recent) > RECENT_LIMIT:
+                self._recent.popitem(last=False)
         else:
             self._active[key] = row
         self.revision += 1
 
+    def mark_assigned(self, job: str, sequence: int, state: str) -> None:
+        key = job, sequence
+        if key in self._recent:
+            self._recent[key] = replace(self._recent[key], state=state)
+            self.revision += 1
+
     def rows(self) -> tuple[QueueRow, ...]:
-        return (*self._active.values(), *self._recent)
+        return (*self._active.values(), *reversed(self._recent.values()))

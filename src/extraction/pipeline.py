@@ -105,6 +105,8 @@ class ExtractionPipeline:
         fields = out.get("fields", {})
         ndg = safe_field(fields, "ndg")
         den = safe_field(fields, "denominazione")
+        practice = safe_field(fields, "numero_pratica")
+        number = str(practice["value"] or "").strip()
 
         # Gate: zero-out low-confidence anchors on the returned copies.
         # (Must mutate ndg/den directly — they are the values returned below.)
@@ -116,6 +118,9 @@ class ExtractionPipeline:
         return {
             "ndg": ndg,
             "denominazione": den,
+            "_practice_number": (number if practice["confidence"] >= ANCHOR_CONF_MIN
+                                 and number.isascii() and number.isdigit() else None),
+            "_practice_number_source": practice.get("section"),
             "_meta": out["_meta"],
         }
 
@@ -156,6 +161,8 @@ class ExtractionPipeline:
                     "fidi": [],
                     "garanzie": [],
                     "_status": "ANCHOR_UNCERTAIN",
+                    "_practice_number": anchors.get("_practice_number"),
+                    "_practice_number_source": anchors.get("_practice_number_source"),
                     "_content_crop": "calibrated" if calibrated else "full-frame",
                     "_attempts": [anchors["_meta"]],
                     "_meta_agg": self._aggregate_meta([anchors["_meta"]]),
@@ -180,6 +187,8 @@ class ExtractionPipeline:
         field_sources: Dict[str, str] = {k: "CONTENT_MAIN" for k in FIELD_KEYS}
         table_sources: Dict[str, str] = {k: "CONTENT_MAIN" for k in ("soggetti", "fidi", "garanzie")}
         result = main_out
+        result["_practice_number"] = anchors.get("_practice_number")
+        result["_practice_number_source"] = anchors.get("_practice_number_source")
 
         # 3) Merge anchors & post-process
         self._merge_anchors(result, anchors, field_sources)

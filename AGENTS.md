@@ -322,11 +322,13 @@ downstream effects.
       five source pages; `PAGE_SHEET_ORDER` defines four export groups for the 45 columns. The
       13 Scheda Privati fields have `page_key=scheda_privati` and `export_group_key=note_da_richiesta`;
       `resolve_field_export_group_key()` owns this layout mapping. A scrolled table or an open tooltip
-      carries 1-6 useful fields. `consolidate()` groups frames by normalized NDG (a frame whose NDG
-      was not read attaches to the most recent practice; frames before the first readable NDG wait
-      in a buffer) and merges fields with `pick_best()` -- do not write a second merge semantics.
+      carries 1-6 useful fields. Tagged live captures follow the opened PEF practice number.
+      Search/list/scroll does not open a file. A detail after the list (or after capture resumes)
+      verifies the selected file before attaching anonymous notes. Distinct practice numbers
+      remain separate even with the same NDG. Old archives keep their NDG grouping.
+      Both paths use `pick_best()` for field values.
     - **Operator corrections are a durable overlay.** `consolidate(results, corrections)`
-      applies `{normalized NDG: {field: value}}` after the frame merge (the operator wins and a later
+      applies edits keyed by `pef:<practice number>` (legacy records use the normalized NDG) after the frame merge (the operator wins and a later
       frame cannot undo it; `pick_best()` stays the only frame-merge rule). `LocalExtractionClient`
       owns them, the shared column labels and `export_workbook()`, the single export path of both
       tabs. The NDG and records without one are not correctable. The GUI commits accepted captures, results, edits, drafts and navigation decisions to an encrypted local recovery store with a transactional replica. Successful extraction replaces the saved pixels. Resume pending slots with their original sequence numbers. See [ADR 0039](docs/adr/0039-recupero-sessioni.md).
@@ -463,7 +465,7 @@ The capture chain, in order: `bper_capture_worker.py` grabs → `frame_normalize
 `image_ops.py` preprocesses → `llm_router.py` / `page_classifier.py` identify the page →
 `stability.py` gates it → `page_registry.py` names it → `local_extraction_client.py` queues it onto
 `extraction_pool.py`. Results reach `ui/data_table_tab.py`, where `practice_consolidation.py` groups
-frames by normalized NDG (merging with `pick_best()`) and `excel_export.py` writes the workbook
+frames by selected PEF number (legacy frames by normalized NDG), merging with `pick_best()`, and `excel_export.py` writes the workbook
 (two-level header, one row per practice).
 
 Called out individually, because the filename alone does not tell you:

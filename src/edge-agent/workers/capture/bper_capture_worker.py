@@ -16,7 +16,7 @@ from PyQt6 import QtCore
 from llm_router import PageRouter, MLPageRouter, LLMPageRouter, RouterResult  # type: ignore
 
 from .base_capture_worker import BaseCaptureWorker
-from capture_navigation import CaptureNavigation
+from capture_navigation import CaptureNavigation, practice_view
 from frame_normalize import UNCHANGED, find_window_rect, normalize_frame
 from image_ops import preprocess_for_ocr
 import app_paths
@@ -61,6 +61,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._completed_sequence: Optional[int] = None
         self._active_job: Optional[str] = None
         self._last_submitted_sequence = -1
+        self._requires_selection = True
+        self._selection_sequence = -1
+        self._tracks_selection = getattr(api_client, "tracks_practice_selection", False) is True
         self._navigation = CaptureNavigation([])
         self._last_navigation: Optional[dict] = None
         self._camera_unavailable = False
@@ -243,6 +246,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
             page.name if page else None,
             "error" if self._camera_unavailable else self._visit_status,
             self._completed_sequence,
+            awaiting_selection=(self._selection_sequence >= self._navigation.published
+                                or bool(self._tracks_selection and self._requires_selection and page
+                                        and practice_view(page) == "detail")),
         )
         if state != self._last_navigation:
             self._last_navigation = state
@@ -363,6 +369,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
             if sequence >= 0:
                 navigation.update(self.api_client.get_results(job_id), self.api_client.navigation_decisions(job_id))
         self._active_job = job_id
+        self._requires_selection = True
+        self._selection_sequence = sequence if self._tracks_selection and sequence >= navigation.published else -1
         self._last_submitted_sequence = sequence
         self._navigation = navigation
         self._last_navigation = None
@@ -440,6 +448,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
         if self._stop_requested:
             return
         page = self.registry.resolve(label)
+        if page is None or practice_view(page) in {"list", "unknown"}:
+            self._requires_selection = True
         self._last_routed_page = page
         self._last_route_score = score
         self._last_route_fields = fields
@@ -473,12 +483,20 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # pixels. Even if this submission fails, its predecessor cannot confirm it.
         self._visit_pending = None
         self._completed_sequence = None
-        sequence = self._upload_page(job_id, img, page, score, fields)
+        view = practice_view(page) if self._tracks_selection else ""
+        if view == "list":
+            self._requires_selection = True
+        elif view == "detail" and self._requires_selection:
+            view = "selection"
+        sequence = self._upload_page(job_id, img, page, score, fields, view)
         if sequence is None:
             self._visit_status = "error"
             self._restart_stability(page)
             self._emit_navigation()
             return
+        if view == "selection":
+            self._selection_sequence = sequence
+            self._requires_selection = False
         self._pending_captures[(job_id, sequence)] = (self._visit_sequence, page)
         self._last_submitted_sequence = sequence
         self._visit_pending = sequence
@@ -728,6 +746,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
         page: PageDef,
         confidence: float = 0.0,
         fields: Optional[dict] = None,
+        view: str = "",
     ) -> Optional[int]:
         """Return the accepted capture sequence, or None when enqueue failed."""
         if page.order > 0:
@@ -744,6 +763,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
                     page_type=page.name,
                     confidence=confidence,
                     fields_json=json.dumps(fields or {}),
+                    **({"practice_view": view} if view else {}),
                 )
                 self.tick.emit(f"📤 In coda per estrazione: {filename}")
                 return sequence

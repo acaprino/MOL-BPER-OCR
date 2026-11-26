@@ -33,13 +33,13 @@ except Exception:
 
 from extraction.config import PARALLEL_WORKERS
 from extraction.fields import FIELD_KEYS
-from extraction.normalization import normalize_ndg, safe_field
+from extraction.normalization import safe_field
 from prompt_store import catalog_source
 
 from excel_export import build_columns, write_workbook
 from extraction_pool import DaemonThreadPool
 from extraction_service import ExtractionService, ImageReader, worker_limit
-from practice_consolidation import CORRECTABLE_KEYS, PracticeEngine, PracticeRecord, has_content
+from practice_consolidation import CORRECTABLE_KEYS, PracticeEngine, PracticeRecord, correction_key, has_content
 from session_frames import json_bytes, pack_pending, pending_metadata, unpack_pending
 from work_queue import QueueSnapshot, WorkQueue
 
@@ -121,7 +121,7 @@ def _fingerprint(records: Sequence[PracticeRecord], labels: Dict[str, str]) -> O
     closing the app must not ask the operator to export it.
     """
     rows = [
-        (record.ndg, [(key, record.fields[key]["value"]) for key in FIELD_KEYS])
+        (record.edit_key, [(key, record.fields[key]["value"]) for key in FIELD_KEYS])
         for record in records
     ]
     if not any(has_content(record) for record in records):
@@ -140,6 +140,7 @@ class LocalExtractionClient(QtCore.QObject):
     get_results(), frame_queued (signal), shutdown(), pending_extractions().
     """
 
+    tracks_practice_selection = True
     result_ready = QtCore.pyqtSignal(str, dict)   # (job_id, result)
     practices_updated = QtCore.pyqtSignal(str)    # consolidated snapshot available
     frame_finished = QtCore.pyqtSignal(str, str, str)  # session, page, status
@@ -250,7 +251,7 @@ class LocalExtractionClient(QtCore.QObject):
                 slots[job].add(sequence)
                 if data.startswith(b"P1\n"):
                     pending.append((job, sequence))
-                    number, page, _ = pending_metadata(data)
+                    number, page, _, _ = pending_metadata(data)
                     pages[job, sequence] = page or f"pagina {number}"
                 elif data.startswith(b"R1\n"):
                     result = json.loads(data[3:])
@@ -291,12 +292,12 @@ class LocalExtractionClient(QtCore.QObject):
                 if self._closed:
                     return
                 data = self._store.read(f"frame/{job}/{sequence}")
-            image, page_no, page, confidence = unpack_pending(data)
+            image, page_no, page, confidence, view = unpack_pending(data)
         except Exception as exc:
             self._queue_state(job, sequence, "storage_error")
             self._report_recovery_failure(exc)
             return
-        self._process_frame(job, image, page_no, page, confidence, "{}", sequence)
+        self._process_frame(job, image, page_no, page, confidence, "{}", sequence, view)
 
     def _report_recovery_failure(self, exc: Exception) -> None:
         with self._writer:
@@ -355,6 +356,7 @@ class LocalExtractionClient(QtCore.QObject):
         page_type: str = "",
         confidence: float = 0.0,
         fields_json: str = "{}",
+        practice_view: str = "",
     ) -> int:
         """Enqueue a frame and return its zero-based capture sequence for the job.
 
@@ -366,7 +368,9 @@ class LocalExtractionClient(QtCore.QObject):
         # so it cannot publish before the sequence has been committed.
         if self.has_recovery and (not job_id or "/" in job_id):
             raise ValueError("Identificativo di sessione non valido.")
-        payload = pack_pending(img, page_no, page_type, confidence) if self.has_recovery else None
+        if practice_view not in ("", "list", "detail", "selection", "unknown"):
+            raise ValueError("Contesto di navigazione non valido.")
+        payload = pack_pending(img, page_no, page_type, confidence, practice_view) if self.has_recovery else None
         with self._writer:
             if self._closed or self._pool is None:
                 raise RuntimeError("Extraction pool has stopped accepting frames")
@@ -381,7 +385,7 @@ class LocalExtractionClient(QtCore.QObject):
                 else:
                     accepted = self._pool.submit(
                         self._process_frame, job_id, img, page_no, page_type,
-                        confidence, fields_json, sequence,
+                        confidence, fields_json, sequence, practice_view,
                     )
                 if not accepted:
                     raise RuntimeError("Extraction pool has stopped accepting frames")
@@ -400,6 +404,7 @@ class LocalExtractionClient(QtCore.QObject):
         confidence: float,
         fields_json: str,
         capture_sequence: int,
+        practice_view: str = "",
     ) -> None:
         """Pool worker: run the pipeline and publish the result."""
         screen_id = page_type if page_type else f"pagina {page_no}"
@@ -424,6 +429,14 @@ class LocalExtractionClient(QtCore.QObject):
             if isinstance(e, TimeoutError):
                 result["_timed_out"] = True
 
+        if practice_view:
+            source = result.get("_practice_number_source")
+            expected = "elenco" if practice_view == "list" else "dettaglio"
+            if result.get("_practice_number") and source != expected:
+                # The router and the identity reader must agree that a file was opened.
+                result["_practice_number"] = None
+                result["_practice_context_conflict"] = True
+            result["_practice_view"] = practice_view
         result["_page_type"] = page_type
         result["_page_no"] = page_no
         result["_page_confidence"] = confidence
@@ -477,12 +490,18 @@ class LocalExtractionClient(QtCore.QObject):
             return False
         frames = [completed[i] for i in range(start, end)]
         engine = self._engines[job]
-        engine.merge(frames, self._corrections.get(job, {}))
+        assigned = engine.merge(frames, self._corrections.get(job, {}))
         records = engine.records(exportable_only=True)
         with self._lock:
+            for seq in assigned:
+                if seq < start:
+                    state = "uncertain" if published[seq].get("_status") == "ANCHOR_UNCERTAIN" else "done"
+                    self._queue.mark_assigned(job, seq, state)
             for i in range(start, end):
                 result = completed.pop(i)
                 state = {"ERROR": "failed", "ANCHOR_UNCERTAIN": "uncertain"}.get(result.get("_status"), "done")
+                if result.get("_practice_view") and i not in assigned and state != "failed":
+                    state = "unassigned"
                 self._queue.update(job, i, "timed_out" if result.get("_timed_out") else state)
             published.extend(frames)
             self._records[job] = records
@@ -575,7 +594,7 @@ class LocalExtractionClient(QtCore.QObject):
 
     def set_correction(self, job_id: str, ndg: str, schema_key: str, value: Optional[str]) -> None:
         """Record the operator's value for one field of one practice (None = cleared)."""
-        key = normalize_ndg(ndg)
+        key = correction_key(ndg)
         if key is None:
             raise ValueError(f"NDG non leggibile: {ndg!r}")
         if schema_key not in CORRECTABLE_KEYS:
@@ -589,7 +608,7 @@ class LocalExtractionClient(QtCore.QObject):
 
     def clear_correction(self, job_id: str, ndg: str, schema_key: str) -> None:
         """Drop one correction, restoring the extracted value."""
-        key = normalize_ndg(ndg)
+        key = correction_key(ndg)
         with self._writer:
             by_ndg = self.get_corrections(job_id)
             fields = by_ndg.get(key or "", {})
@@ -621,7 +640,7 @@ class LocalExtractionClient(QtCore.QObject):
                 self._drafts[job] = draft
 
     def set_cell_draft(self, job: str, ndg: str, key: str, text: str) -> None:
-        normalized = normalize_ndg(ndg)
+        normalized = correction_key(ndg)
         if normalized is None or key not in CORRECTABLE_KEYS:
             raise ValueError("La cella non è modificabile.")
         draft = {"ndg": normalized, "key": key, "text": text}

@@ -70,7 +70,7 @@ Le nove viste PEF del riconoscitore coprono quattro pagine sorgenti. Scheda Priv
 
 ## Quale pagina aprire adesso
 
-In **Cattura → Guida alla pratica** controlla l’NDG, il nome della vista e il suo stato. **Prossima vista** suggerisce un gesto a partire dalla posizione riconosciuta. Apri l’elenco delle viste per vedere insieme quelle **Da acquisire**, quelle da mostrare **Se presente**, quelle dichiarate **Non applicabile** e quelle già **Acquisite**. Se l’NDG proviene dalla cattura precedente, leggilo sulla pratica prima di decidere che un tooltip manca.
+In **Cattura → Guida alla pratica** controlla l’NDG, il nome della vista e il suo stato. **Prossima vista** suggerisce un gesto a partire dalla posizione riconosciuta. Apri l’elenco delle viste per vedere insieme quelle **Da acquisire**, quelle da mostrare **Se presente**, quelle dichiarate **Non applicabile** e quelle già **Acquisite**. Controlla il numero pratica della testata prima di indicare che un tooltip manca.
 
 | Situazione | Azione successiva |
 |---|---|
@@ -79,7 +79,7 @@ In **Cattura → Guida alla pratica** controlla l’NDG, il nome della vista e i
 | Fidi risulta acquisita, ma manca il testo dell’ipoteca. | Torna a **Istruttoria → Gestione Fidi e Garanzie**. Cerca la descrizione IPOTECA nella tabella Garanzie e apri il suo tooltip. Chiudilo per una nuova lettura della tabella di base. |
 | La pratica ha una sola garanzia. | Verifica quale descrizione è presente. Con la sola ipoteca apri il suo popup anche se è **in prima riga**. Con la cattura attiva e l’NDG identificato, seleziona il tooltip CONSAP sotto **Se presente**, scegli **Non applicabile** e prosegui. **Ripristina** lo rimette tra le viste da valutare per quella pratica. |
 | La schermata è in caricamento, appartiene a un altro applicativo oppure è stata identificata male. | Seleziona il nome corretto in **Cattura** e usa **Acquisisci ora**. Se l’agent è sul monitor da acquisire, si riduce a icona. Hai tre secondi per mostrare la pagina PEF o aprire il tooltip. Lasciala visibile durante lo scatto. Se usi un secondo monitor per l’agent, lo scatto viene richiesto subito. |
-| Passi a un’altra pratica. | Riparti dalla sua riga in elenco, conferma numero e NDG, poi verifica la testata. In **Dati estratti** scegli la sessione e confronta la riga dell’NDG corretto. I risultati con lo stesso NDG normalizzato si consolidano sulla stessa riga della sessione. |
+| Torni alla ricerca e selezioni un altro risultato. | Scorri l’elenco, scegli la riga e apri il dettaglio PEF. Mostra la testata con il numero pratica. La guida avvia la checklist del fascicolo aperto. Se le Note sono già in coda e la testata è illeggibile, rendila nuovamente visibile prima di aprire un terzo risultato. Per verificare due righe con lo stesso NDG, porta il puntatore sulla rispettiva cella NDG. |
 
 Prima di **Esporta Excel**, verifica che le elaborazioni attese siano terminate. Una vista elaborata indica che l’edge-agent ha ricevuto un esito per quella lettura. Per stabilire che i valori sono corretti, confrontali con le celle, le righe e i tooltip del gestionale. In **Dati estratti** puoi correggere le celle di una pratica con NDG identificato e usare **Ripristina originale** dal menu della cella. L’NDG è protetto dalle modifiche. Le correzioni confermate si recuperano anche dopo la chiusura e confluiscono nell’Excel. Il testo di una cella ancora in modifica riappare come bozza. [Ripresa dopo un arresto](recupero-sessioni.md)
 

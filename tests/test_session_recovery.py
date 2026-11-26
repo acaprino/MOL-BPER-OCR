@@ -120,6 +120,64 @@ def test_unfinished_typing_survives_restart_until_the_cell_is_confirmed(tmp_path
         final.shutdown()
 
 
+def test_replay_keeps_late_results_with_the_selected_practice(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("EDGE_AGENT_MAX_JOBS", "2")
+    released = threading.Event()
+    note_finished = threading.Event()
+
+    class Reader:
+        def extract_from_image(self, image: Image.Image, screen_id: str) -> dict:
+            if screen_id == "Testata B":
+                assert released.wait(10)
+            if screen_id == "Note B":
+                return {"fields": {"note_della_richiesta": {"value": "Solo B", "confidence": 1.0}}}
+            number = "31" if screen_id == "Fidi A" else "42"
+            source = "elenco" if screen_id == "Ricerca B" else "dettaglio"
+            return {"_practice_number": number, "_practice_number_source": source,
+                    "fields": {"ndg": {"value": "100", "confidence": 1.0}}}
+
+    from PyQt6.QtCore import Qt
+    directory = tmp_path / "recovery"
+    client = LocalExtractionClient(pipeline=Reader(), recovery_dir=directory)
+    try:
+        client.result_ready.connect(
+            lambda job, result: note_finished.set() if result["_page_type"] == "Note B" else None,
+            Qt.ConnectionType.DirectConnection,
+        )
+        for name, view in [("Fidi A", "selection"), ("Ricerca B", "list"),
+                           ("Testata B", "selection"), ("Note B", "detail")]:
+            client.ingest_frame("p1", Image.new("L", (3, 3)), page_type=name, practice_view=view)
+        assert note_finished.wait(10)
+        assert [row.practice_number for row in client.get_practices("p1")] == ["31"]
+        # The earlier in-flight header stays as pixels when the process stops.
+    finally:
+        client.shutdown()
+        released.set()
+    resumed = LocalExtractionClient(pipeline=Reader(), recovery_dir=directory)
+    try:
+        results = wait_results(resumed, "p1", 4)
+        assert [f["_practice_view"] for f in results] == ["selection", "list", "selection", "detail"]
+        assert next(r.state for r in resumed.queue_snapshot().rows if r.sequence == 3) == "unassigned"
+        resumed.ingest_frame("p1", Image.new("L", (3, 3)), page_type="Conferma B", practice_view="detail")
+        wait_results(resumed, "p1", 5)
+        assert [(r.practice_number, r.fields["note_della_richiesta"]["value"])
+                for r in resumed.get_practices("p1")] == [("31", None), ("42", "Solo B")]
+        assert next(r.state for r in resumed.queue_snapshot().rows if r.sequence == 3) == "done"
+        resumed.set_correction("p1", "pef:42", "tipo", "Corretto B")
+        resumed.set_cell_draft("p1", "pef:31", "tipo", "Bozza A")
+    finally:
+        resumed.shutdown()
+    offline = LocalExtractionClient(export_only=True, recovery_dir=directory)
+    try:
+        assert offline.get_cell_draft("p1")["ndg"] == "pef:31"
+        assert [row.fields["tipo"]["value"] for row in offline.get_practices("p1")] == [None, "Corretto B"]
+        assert offline.export_workbook("p1", str(tmp_path / "pratiche.xlsx")) == 2
+    finally:
+        offline.shutdown()
+
+
 def test_failed_checkpoint_does_not_acknowledge_frame(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     from recovery_store import RecoveryStore
 

@@ -144,3 +144,19 @@ def test_stopped_guide_labels_the_last_checklist_when_extraction_is_still_pendin
     assert "Cattura terminata" in guide.current.text() and "100" in guide.current.text()
     assert "Dati estratti" in guide.next_step.text()
     assert guide.views.findText("Da acquisire · Note") >= 0
+
+
+def test_new_selection_retires_the_previous_checklist_even_for_the_same_customer(tab: capture_tab.CaptureTab) -> None:
+    first = dict(snapshot("100"), practice_number="31", decision_key="pef:31")
+    tab.worker.navigation_changed.emit("current", first)
+    guide = tab.navigation_card
+    guide.views.setCurrentIndex(1)
+    guide.availability_button.click()
+    assert tab.worker.choices[-1] == ("pef:31", "Tooltip garanzia", False)
+    tab.worker.navigation_changed.emit("current", dict(new_selection=True, status="pending",
+                                                      missing=["Fidi"], captured=[], optional=[]))
+    assert guide.views.count() == 1 and "Da acquisire" in guide.views.itemText(0)
+    assert not guide.availability_button.isEnabled()
+    assert "31" not in guide.current.text()
+    tab.worker.navigation_changed.emit("current", dict(snapshot("100"), practice_number="42", decision_key="pef:42"))
+    assert "42" in guide.current.text()

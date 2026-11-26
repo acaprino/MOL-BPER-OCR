@@ -135,8 +135,7 @@ BPERCaptureWorker (QThread)
   `RuntimeError`; it emits no `frame_queued` event and does not consume a capture sequence.
 - **Capture order:** accepted frames get a zero-based sequence per job. Results carry
   `_capture_sequence`, including errors. `result_ready` reports each completion as it happens;
-  `get_results()` exposes only the contiguous completed prefix in capture order. The engine incrementally merges that prefix and publishes the same rows to the table and Excel so a late anonymous frame stays with the preceding captured
-  practice. A slow earlier result can delay later rows even when the completion counter has advanced.
+  `get_results()` exposes only the contiguous completed prefix in capture order. The engine incrementally merges that prefix and publishes the same rows to the table and Excel in capture order. A numbered list row waits for selection. Detail frames without a practice number wait for confirmation within that visit. A slow earlier result can delay later rows even when the completion counter has advanced.
   An error occupies its sequence and releases following results; jobs progress independently.
   See [ADR 0013](adr/0013-risultati-nell-ordine-di-acquisizione.md).
 - **Visits and acknowledgements:** the worker compares size, color mode and a BLAKE2b digest of
@@ -145,7 +144,7 @@ BPERCaptureWorker (QThread)
   while the image stays unchanged. Only the matching job/sequence acknowledgement can complete or
   release the current pending capture. `ERROR` restarts the stability interval before retry;
   non-error results, including `ANCHOR_UNCERTAIN`, complete the visit because headerless pages can
-  still contain useful fields. The [navigation guide](navigazione-edge.md) tracks processed views per normalized NDG. The operator may revisit any view. Pixel identity detects small identifier changes that pHash
+  still contain useful fields. The [navigation guide](navigazione-edge.md) tracks processed views by the number of the selected PEF. Older archives retain NDG-based coverage. The operator may revisit any view. Pixel identity detects small identifier changes that pHash
   can miss, but animation can keep restarting stability and cause further routing calls.
   See [ADR 0014](adr/0014-acquisizione-per-visita-con-esito.md), which integrates ADR 0007.
 - **Manual capture and stop:** `force_capture()` only enqueues a command. The capture loop performs

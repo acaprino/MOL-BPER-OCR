@@ -80,6 +80,10 @@ class ExtractionResponse(BaseModel):
     garanzie: List[Garanzia] = Field(default_factory=list)
 
 class AnchorFields(BaseModel):
+    numero_pratica: Optional[FieldResult] = Field(default=None, description=(
+        "Complete PEF file number. Set section to elenco for a unique result row, "
+        "or dettaglio for the active file header. Otherwise leave the value null."
+    ))
     ndg: Optional[FieldResult] = None
     denominazione: Optional[FieldResult] = None
 

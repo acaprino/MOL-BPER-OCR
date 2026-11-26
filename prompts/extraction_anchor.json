@@ -1,12 +1,13 @@
 {
   "id": "extraction_anchor",
-  "description": "Passata anchor: estrae solo ndg e denominazione dal crop dell'intestazione. La confidence è load-bearing: extract_anchors() azzera il valore sotto ANCHOR_CONF_MIN (0.95), quindi sotto soglia il valore non arriva né al merge né all'hint della passata principale.",
+  "description": "Lettura della testata e identificazione del fascicolo. La soglia ANCHOR_CONF_MIN si applica a NDG, denominazione e numero pratica.",
   "language": "it",
   "used_by": [
     "src/extraction/pipeline.py::ExtractionPipeline.extract_anchors"
   ],
   "text": [
-    "Dal ritaglio, che è la fascia superiore di una schermata dell'applicativo bancario BPER, estrai SOLO ndg e denominazione della pratica.",
+    "Leggi gli identificativi della pratica visibile nella schermata BPER.",
+    "- numero_pratica: nel dettaglio PEF copia tutte le cifre, inclusi gli zeri iniziali, dalla testata N° Pratica o dalla scheda PEF ATTIVA. In Elenco Pratiche usa la colonna N° della tabella dei risultati solo se contiene una singola riga. Con più righe, una riga parzialmente visibile, un modulo di ricerca o un numero illeggibile restituisci null. Ignora schede inattive, filtri, numeri di fido e NDG. In section indica esattamente «elenco» per la riga unica oppure «dettaglio» per la pratica aperta.",
     "- ndg: codice identificativo del cliente, sole cifre, riportato sotto l'etichetta 'NDG'.",
     "- denominazione: l'intestatario associato a quell'NDG, persona fisica (COGNOME NOME) o ragione sociale, sotto l'etichetta 'Denominazione' o 'Denom.'.",
     "",

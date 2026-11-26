@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Any, Callable, Sequence
 
 from page_registry import PageDef
-from practice_consolidation import frame_ndg
+from practice_consolidation import SelectedPracticeFlow, frame_ndg
 
 
 @dataclass(frozen=True)
@@ -47,6 +47,13 @@ _VIEWS = {
 
 def _view(page: PageDef) -> _View | None:
     return _VIEWS.get((page.template or "").lower())
+
+
+def practice_view(page: PageDef) -> str:
+    view = _view(page)
+    if not view:
+        return "unknown"
+    return "list" if view.location == _LIST else "detail"
 
 
 def _distance(origin: _View | None, target: _View | None) -> int:
@@ -90,13 +97,17 @@ class CaptureNavigation:
         self.published = 0
         self.ndg: str | None = None
         self.identity_source = "unidentified"
+        self._flow = SelectedPracticeFlow()
+        self._scoped = False
+        self._key: str | None = None
+        self._case_ndgs: dict[str, str] = {}
         self._seen: dict[str | None, set[str]] = {}
         self._unavailable: dict[str, set[str]] = {}
         self._reopened_after: dict[tuple[str, str], int] = {}
 
     @property
     def captured(self) -> set[str]:
-        return self._seen.get(self.ndg, set()).copy()
+        return self._seen.get(self._key, set()).copy()
 
     def update(self, results: Sequence[dict], decisions: Sequence[dict] = ()) -> None:
         # On resume a correction may predate a subsequent successful recapture.
@@ -112,6 +123,18 @@ class CaptureNavigation:
         # occupy a slot. A signal payload alone does not have this property.
         for sequence in range(self.published, stop):
             result = results[sequence]
+            if result.get("_practice_view"):
+                self._scoped = True
+                for number, seq, row in self._flow.accept(result, sequence):
+                    key = f"pef:{number}"
+                    identifier = frame_ndg(row)
+                    if identifier:
+                        self._case_ndgs[key] = identifier
+                    self._mark_seen(key, row.get("_page_type"), seq)
+                self._key = f"pef:{self._flow.number}" if self._flow.number else None
+                self.ndg = self._case_ndgs.get(self._key) if self._key else None
+                self.identity_source = "extracted" if frame_ndg(result) else "preceding"
+                continue
             if result.get("_status") == "ERROR":
                 continue
             ndg = frame_ndg(result)
@@ -120,20 +143,23 @@ class CaptureNavigation:
                 self.identity_source = "extracted"
             else:
                 self.identity_source = "preceding" if self.ndg else "unidentified"
-            seen = self._seen.setdefault(self.ndg, set())
+            self._key = self.ndg
+            seen = self._seen.setdefault(self._key, set())
             if ndg and None in self._seen:
                 seen.update(self._seen.pop(None))
-            page = result.get("_page_type")
-            if page:
-                if self.ndg:
-                    key = (self.ndg, page)
-                    if sequence <= self._reopened_after.get(key, -1):
-                        continue
-                    self._reopened_after.pop(key, None)
-                seen.add(page)
-                if self.ndg in self._unavailable:
-                    self._unavailable[self.ndg].discard(page)
+            self._mark_seen(self._key, result.get("_page_type"), sequence)
         self.published = stop
+
+    def _mark_seen(self, key: str | None, page: str | None, sequence: int) -> None:
+        if not page:
+            return
+        if key:
+            if sequence <= self._reopened_after.get((key, page), -1):
+                return
+            self._reopened_after.pop((key, page), None)
+            if key in self._unavailable:
+                self._unavailable[key].discard(page)
+        self._seen.setdefault(key, set()).add(page)
 
     def apply_decision(
         self, ndg: str, name: str, action: str, sequence: int,
@@ -173,7 +199,8 @@ class CaptureNavigation:
         self._seen[ndg].remove(name)
         self._reopened_after[ndg, name] = last_submitted
 
-    def snapshot(self, page_name: str | None, status: str, completed_sequence: int | None) -> dict[str, Any]:
+    def snapshot(self, page_name: str | None, status: str, completed_sequence: int | None,
+                 *, awaiting_selection: bool = False) -> dict[str, Any]:
         # The worker owns a single capture job. Its current visit, once accepted,
         # is the last capture. Older acknowledgements may only advance the prefix.
         if status == "captured" and completed_sequence != self.published - 1:
@@ -184,6 +211,17 @@ class CaptureNavigation:
             "identity_source": "unidentified", "next_page": None,
             "missing": [], "optional": [], "unavailable": [], "captured": [],
         }
+        if awaiting_selection or (self._scoped and self._flow.awaiting_identity):
+            for page in self.pages:
+                view = _view(page)
+                state["optional" if view and view.optional else "missing"].append(page.name)
+            state.update(coverage_ndg=None, new_selection=True,
+                         verifying_previous=bool(not awaiting_selection and self._flow.number),
+                         action="Mostra la testata con il numero pratica. Le letture attendono l’identificazione.")
+            return state
+        if self._scoped:
+            state.update(practice_number=self._flow.number, decision_key=self._key,
+                         browsing=self._flow.browsing)
         if status != "captured":
             state["action"] = {
                 "recognizing": "Riconoscimento della schermata in corso.",
@@ -198,7 +236,7 @@ class CaptureNavigation:
         else:
             state.update(practice_ndg=self.ndg, identity_source=self.identity_source)
         seen = self.captured
-        skipped = self._unavailable.get(self.ndg, set())
+        skipped = self._unavailable.get(self._key, set())
         candidates = []
         current = next((p for p in self.pages if p.name == page_name), None)
         origin = _view(current) if current else None
@@ -212,6 +250,10 @@ class CaptureNavigation:
                 optional = bool(view and view.optional)
                 state["optional" if optional else "missing"].append(page.name)
                 candidates.append((_distance(origin, view), optional, page.order, page))
+        if self._scoped and self._flow.browsing:
+            state.update(practice_ndg=None, next_page=None,
+                         action="Seleziona un risultato e apri il dettaglio della pratica.")
+            return state
         if status != "captured":
             return state
         if page_name and page_name not in seen:

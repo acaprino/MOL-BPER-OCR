@@ -23,6 +23,7 @@ class NavigationCard(Card):
     def __init__(self, parent: QtWidgets.QWidget) -> None:
         super().__init__("Guida alla pratica", parent)
         self._ndg: str | None = None
+        self._decision_key: str | None = None
         self._choices: list[tuple[str, str]] = []
         self._live = False
         self.current = QtWidgets.QLabel(self)
@@ -51,7 +52,14 @@ class NavigationCard(Card):
         ndg = progress.get("practice_ndg")
         page = progress.get("current_page")
         identity = f"NDG {ndg}" if ndg else "NDG da identificare"
-        if progress.get("identity_source") == "preceding":
+        if progress.get("new_selection"):
+            identity = ("Numero pratica da verificare" if progress.get("verifying_previous")
+                        else "Nuova selezione · pratica da identificare")
+        elif progress.get("browsing"):
+            identity = "Elenco Pratiche"
+        elif progress.get("practice_number"):
+            identity = f"Pratica {progress['practice_number']} · {identity}"
+        if ndg and progress.get("identity_source") == "preceding":
             identity += " (dalla cattura precedente)"
         status = {
             "recognizing": "riconoscimento in corso",
@@ -65,17 +73,23 @@ class NavigationCard(Card):
         self.next_step.setText(f"Prossima vista · {target}\n{action}".rstrip() if target else action)
         self.next_step.setVisible(bool(self.next_step.text()))
         coverage_ndg = progress.get("coverage_ndg") or ndg
-        if progress and not coverage_ndg and self._ndg:
+        if progress and not coverage_ndg and self._ndg and not (
+            progress.get("new_selection") or "decision_key" in progress
+        ):
             self.view_count.setText(f"Viste ultimo NDG {self._ndg}")
             return
-        same_practice = coverage_ndg == self._ndg
+        decision_key = progress.get("decision_key", coverage_ndg)
+        same_practice = decision_key == self._decision_key
+        self._decision_key = decision_key
         previous = self.views.currentData() if same_practice else None
         self._ndg = coverage_ndg
         missing = progress.get("missing", [])
-        if coverage_ndg and not ndg:
+        if progress.get("browsing") and progress.get("practice_number"):
+            self.view_count.setText(f"Viste pratica {progress['practice_number']}")
+        elif coverage_ndg and not ndg:
             self.view_count.setText(f"Viste ultimo NDG {coverage_ndg}")
         else:
-            self.view_count.setText(f"Da acquisire ({len(missing)})" if ndg else "Viste")
+            self.view_count.setText(f"Da acquisire ({len(missing)})" if ndg or progress.get("new_selection") else "Viste")
         choices = [(key, name) for key in _VIEW_GROUPS for name in progress.get(key, [])]
         if not same_practice or choices != self._choices:
             with QtCore.QSignalBlocker(self.views):
@@ -102,7 +116,7 @@ class NavigationCard(Card):
     def _update_choice(self) -> None:
         choice = self.views.currentData()
         action = _ACTIONS.get(choice[0], "") if choice else ""
-        editable = bool(self._live and self._ndg and action)
+        editable = bool(self._live and self._decision_key and action)
         self.availability_button.setVisible(editable)
         self.availability_button.setEnabled(editable)
         self.availability_button.setText(action)
@@ -110,8 +124,8 @@ class NavigationCard(Card):
 
     def _change_availability(self) -> None:
         choice = self.views.currentData()
-        if self.availability_button.isEnabled() and self._ndg and choice:
+        if self.availability_button.isEnabled() and self._decision_key and choice:
             if choice[0] == "captured":
-                self.reopen_requested.emit(self._ndg, choice[1])
+                self.reopen_requested.emit(self._decision_key, choice[1])
             else:
-                self.availability_requested.emit(self._ndg, choice[1], choice[0] == "unavailable")
+                self.availability_requested.emit(self._decision_key, choice[1], choice[0] == "unavailable")
