@@ -226,11 +226,16 @@ def self_employed_schede() -> list[tuple[dict, dict]]:
             if p["scheda"]["fields"]["professione_principale"] in SELF_EMPLOYED_PROFESSIONS]
 
 
-def test_self_employed_schede_carry_the_autonomous_contract_and_one_payment() -> None:
+def test_self_employed_schede_carry_the_autonomous_contract() -> None:
     schede = self_employed_schede()
     assert schede
-    assert [p["key"] for p, f in schede
-            if (f["tipo_contratto"], f["numero_mensilita"]) != ("LAVORATORE AUTONOMO", "1")] == []
+    assert [p["key"] for p, f in schede if f["tipo_contratto"] != "LAVORATORE AUTONOMO"] == []
+
+
+def test_self_employed_schede_carry_one_payment() -> None:
+    schede = self_employed_schede()
+    assert schede
+    assert [p["key"] for p, f in schede if f["numero_mensilita"] != "1"] == []
 
 
 def test_self_employed_annual_income_is_the_note_income() -> None:
