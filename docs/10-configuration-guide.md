@@ -177,6 +177,8 @@ Per il desktop, imposta `EDGE_AGENT_MAX_JOBS=2` nel file `.env` accanto a `EdgeA
 
 I nuovi pacchetti usano `EDGE_AGENT_MAX_JOBS=auto`. Il calcolo usa il numero di CPU logiche disponibili meno una, con un minimo di un lavoro e un massimo di quattro. Con quattro CPU logiche partono fino a tre lavori. Una configurazione esistente che omette la variabile continua a usare `PARALLEL_WORKERS`.
 
+Il timeout desktop `EDGE_AGENT_JOB_TIMEOUT_SECONDS` vale **600 secondi per tentativo**. Comprende l'invio dei pixel e l'attesa del risultato. Se scade, il dispatcher riavvia il lettore condiviso. Le letture interrotte possono riprovare una volta ciascuna. Un secondo tentativo può ripetere chiamate già arrivate al provider. I risultati già salvati e le schermate ancora in coda mantengono il loro progressivo. [Stati visibili in Coda](02-features.md#risultati-dal-vivo-ed-esportazione-excel)
+
 ### Far fermare una schermata sull'incertezza degli anchor
 
 In `.env`:

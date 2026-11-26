@@ -23,10 +23,20 @@ def pack_pending(image: Image.Image, page_no: int, page_type: str, confidence: f
     return buffer.getvalue()
 
 
+def _read_header(source: io.BytesIO) -> tuple[int, str, float]:
+    if source.readline() != b"P1\n":
+        raise ValueError("Formato della cattura in attesa sconosciuto.")
+    page_no, page_type, confidence = json.loads(source.readline())
+    return page_no, page_type, confidence
+
+
+def pending_metadata(data: bytes) -> tuple[int, str, float]:
+    with io.BytesIO(data) as source:
+        return _read_header(source)
+
+
 def unpack_pending(data: bytes) -> tuple[Image.Image, int, str, float]:
     with io.BytesIO(data) as source:
-        if source.readline() != b"P1\n":
-            raise ValueError("Formato della cattura in attesa sconosciuto.")
-        page_no, page_type, confidence = json.loads(source.readline())
+        page_no, page_type, confidence = _read_header(source)
         with Image.open(io.BytesIO(source.read())) as image:
             return image.copy(), page_no, page_type, confidence

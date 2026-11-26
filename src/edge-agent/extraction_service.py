@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import multiprocessing as mp
+import math
 import os
 import threading
 from collections.abc import Callable
@@ -45,14 +46,15 @@ def _serve(channel: Connection, pipeline: ImageReader | None, startup_error: str
         try:
             while True:
                 image, screen_id = channel.recv()
+                if pipeline is None:
+                    channel.send(("startup_error", startup_error))
+                    return
                 try:
-                    if pipeline is None:
-                        raise RuntimeError(startup_error)
                     result = pipeline.extract_from_image(image, screen_id)
                 except Exception as exc:
-                    channel.send((False, str(exc)))
+                    channel.send(("error", str(exc)))
                 else:
-                    channel.send((True, result))
+                    channel.send(("ok", result))
                 finally:
                     del image
         except (EOFError, OSError):
@@ -118,20 +120,41 @@ class _ProcessInterrupted(RuntimeError):
 class ExtractionService:
     """One shared model, one exclusive pipe per simultaneous screenshot."""
 
-    def __init__(self, max_jobs: int, factory: Callable[[], ImageReader] = live_pipeline) -> None:
+    def __init__(
+        self, max_jobs: int, factory: Callable[[], ImageReader] = live_pipeline, *, timeout: float | None = None,
+    ) -> None:
         self._limit = max_jobs
         self._factory = factory
         self._slots = threading.BoundedSemaphore(max_jobs)
         self._lock = threading.Lock()
         self._active: _ModelProcess | None = None
         self._closed = False
+        self._timeout = float(os.getenv("EDGE_AGENT_JOB_TIMEOUT_SECONDS", "600")) if timeout is None else timeout
+        if not math.isfinite(self._timeout) or not 0 < self._timeout <= threading.TIMEOUT_MAX:
+            raise ValueError("EDGE_AGENT_JOB_TIMEOUT_SECONDS richiede una durata positiva valida.")
+
+    @property
+    def pid(self) -> int | None:
+        # Do not take the startup lock from the Qt thread.
+        service = self._active
+        return service.process.pid if service is not None and service.process.is_alive() else None
 
     def extract_from_image(self, img: Image.Image, screen_id: str) -> dict:
+        return self.read(img, screen_id)
+
+    def read(self, img: Image.Image, screen_id: str, *, on_retry: Callable[[], None] | None = None) -> dict:
         try:
             return self._extract_once(img, screen_id)
-        except _ProcessInterrupted:
+        except (_ProcessInterrupted, TimeoutError):
             # Retry the original capture once, without accepting another slot.
+            if on_retry is not None:
+                on_retry()
             return self._extract_once(img, screen_id)
+
+    def _retire_locked(self, service: _ModelProcess) -> None:
+        if self._active is service:
+            service.stop()
+            self._active = None
 
     def _extract_once(self, img: Image.Image, screen_id: str) -> dict:
         with self._slots:
@@ -145,20 +168,41 @@ class ExtractionService:
                     self._active = _ModelProcess(self._limit, self._factory)
                 service = self._active
                 channel = service.idle.pop()
+            finished = False
+            expired = False
+
+            def expire() -> None:
+                nonlocal expired
+                with self._lock:
+                    if not finished and self._active is service:
+                        expired = True
+                        self._retire_locked(service)
+
+            # Cover both the pixel transfer and the model call. A frozen child may
+            # never drain a large pipe write, even before recv() begins.
+            timer = threading.Timer(self._timeout, expire)
+            timer.daemon = True
+            timer.start()
             try:
                 channel.send((img, screen_id))
-                success, result = channel.recv()
-                if not success:
+                outcome, result = channel.recv()
+                if outcome == "startup_error":
+                    with self._lock:
+                        self._retire_locked(service)
+                    raise RuntimeError(result)
+                if outcome != "ok":
                     raise RuntimeError(result)
                 return result
             except (EOFError, OSError) as exc:
                 with self._lock:
-                    if self._active is service:
-                        service.stop()
-                        self._active = None
+                    self._retire_locked(service)
+                if expired:
+                    raise TimeoutError("Tempo massimo di lettura superato.") from exc
                 raise _ProcessInterrupted("Il processo di estrazione si è interrotto.") from exc
             finally:
                 with self._lock:
+                    finished = True
+                    timer.cancel()
                     if self._active is service:
                         service.idle.append(channel)
                     else:

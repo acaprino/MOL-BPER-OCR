@@ -40,7 +40,8 @@ from excel_export import build_columns, write_workbook
 from extraction_pool import DaemonThreadPool
 from extraction_service import ExtractionService, ImageReader, worker_limit
 from practice_consolidation import CORRECTABLE_KEYS, PracticeEngine, PracticeRecord, has_content
-from session_frames import json_bytes, pack_pending, unpack_pending
+from session_frames import json_bytes, pack_pending, pending_metadata, unpack_pending
+from work_queue import QueueSnapshot, WorkQueue
 
 # Excel refuses cells longer than this, so a pasted text is cut here.
 MAX_CORRECTION_LENGTH = 32767
@@ -166,8 +167,11 @@ class LocalExtractionClient(QtCore.QObject):
 
         self._service = None
         self._pool = None
+        self._queue = WorkQueue()
+        self._worker_limit = 0
         if not export_only:
             limit = worker_limit(PARALLEL_WORKERS)
+            self._worker_limit = limit
             if pipeline is None:
                 self._service = ExtractionService(limit)
                 pipeline = self._service
@@ -222,6 +226,7 @@ class LocalExtractionClient(QtCore.QObject):
         pending = []
         slots: dict[str, set[int]] = defaultdict(set)
         recovered: dict[str, dict[int, dict]] = defaultdict(dict)
+        pages: dict[tuple[str, int], str] = {}
         for key in self._store.keys():
             data = self._store.read(key)
             if key == "labels":
@@ -245,19 +250,26 @@ class LocalExtractionClient(QtCore.QObject):
                 slots[job].add(sequence)
                 if data.startswith(b"P1\n"):
                     pending.append((job, sequence))
+                    number, page, _ = pending_metadata(data)
+                    pages[job, sequence] = page or f"pagina {number}"
                 elif data.startswith(b"R1\n"):
                     result = json.loads(data[3:])
                     if result["_capture_sequence"] != sequence:
                         raise ValueError("Progressivo del risultato incoerente.")
                     recovered[job][sequence] = _checked_result(result)
+                    pages[job, sequence] = result.get("_page_type") or result.get("screen_id") or "Schermata"
                 else:
                     raise ValueError("Formato del fotogramma non riconosciuto.")
             else:
                 raise ValueError("Versione dell'archivio delle sessioni non riconosciuta.")
-        for job, sequences in slots.items():
+        for job in sorted(slots, key=lambda item: self._started.get(item, (0,))[0]):
+            sequences = slots[job]
             if job not in self._started or sequences != set(range(len(sequences))):
                 raise ValueError("Sequenza di catture incompleta.")
             self._next_capture_sequence[job] = len(sequences)
+            label = self.session_label(job)
+            for sequence in range(len(sequences)):
+                self._queue.accept(job, sequence, label, pages[job, sequence])
             self._publish_completed(job, recovered[job])
         self.recovered_jobs = tuple(job for job in sorted(slots, key=self._started.__getitem__))
         if self._pool is not None:
@@ -273,6 +285,7 @@ class LocalExtractionClient(QtCore.QObject):
                          if slot not in completed)
 
     def _resume_frame(self, job: str, sequence: int) -> None:
+        self._queue_state(job, sequence, "preparing")
         try:
             with self._writer:
                 if self._closed:
@@ -280,6 +293,7 @@ class LocalExtractionClient(QtCore.QObject):
                 data = self._store.read(f"frame/{job}/{sequence}")
             image, page_no, page, confidence = unpack_pending(data)
         except Exception as exc:
+            self._queue_state(job, sequence, "storage_error")
             self._report_recovery_failure(exc)
             return
         self._process_frame(job, image, page_no, page, confidence, "{}", sequence)
@@ -357,6 +371,7 @@ class LocalExtractionClient(QtCore.QObject):
             if self._closed or self._pool is None:
                 raise RuntimeError("Extraction pool has stopped accepting frames")
             self._register_job_locked(job_id)
+            label = self.session_label(job_id)
             sequence = self._next_capture_sequence.get(job_id, 0)
             if payload is not None:
                 self._write(f"frame/{job_id}/{sequence}", payload)
@@ -370,6 +385,7 @@ class LocalExtractionClient(QtCore.QObject):
                     )
                 if not accepted:
                     raise RuntimeError("Extraction pool has stopped accepting frames")
+                self._queue.accept(job_id, sequence, label, page_type or f"pagina {page_no}")
                 self._next_capture_sequence[job_id] = sequence + 1
 
         self.frame_queued.emit(job_id, page_type)
@@ -388,10 +404,16 @@ class LocalExtractionClient(QtCore.QObject):
         """Pool worker: run the pipeline and publish the result."""
         screen_id = page_type if page_type else f"pagina {page_no}"
 
+        self._queue_state(job_id, capture_sequence, "reading")
         try:
             # extract_from_image (not extract_from_screen): the Edge Agent has
             # already pre-processed the image, normalize_image would be redundant.
-            result = _checked_result(self._pipeline.extract_from_image(img, screen_id))
+            if self._service is None:
+                response = self._pipeline.extract_from_image(img, screen_id)
+            else:
+                response = self._service.read(img, screen_id, on_retry=lambda: self._queue_state(
+                    job_id, capture_sequence, "retrying"))
+            result = _checked_result(response)
         except Exception as e:  # noqa: BLE001
             result = {
                 "screen_id": screen_id,
@@ -399,6 +421,8 @@ class LocalExtractionClient(QtCore.QObject):
                 "_status": "ERROR",
                 "_error": str(e),
             }
+            if isinstance(e, TimeoutError):
+                result["_timed_out"] = True
 
         result["_page_type"] = page_type
         result["_page_no"] = page_no
@@ -413,6 +437,7 @@ class LocalExtractionClient(QtCore.QObject):
 
         payload = None
         if self.has_recovery and result.get("_status") != "ERROR":
+            self._queue_state(job_id, capture_sequence, "saving")
             try:
                 payload = b"R1\n" + json_bytes(result)
             except (TypeError, ValueError, OverflowError) as exc:
@@ -424,6 +449,7 @@ class LocalExtractionClient(QtCore.QObject):
                 try:
                     self._write(f"frame/{job_id}/{capture_sequence}", payload)
                 except Exception as exc:
+                    self._queue_state(job_id, capture_sequence, "storage_error")
                     self._report_recovery_failure(exc)
                     return
             # When the provider failed, keep the original pixels on disk for retry on restart.
@@ -441,6 +467,9 @@ class LocalExtractionClient(QtCore.QObject):
             completed.update(incoming)
             published = self._results.setdefault(job, [])
             start = len(published)
+            for sequence, result in incoming.items():
+                state = "failed_waiting" if result.get("_status") == "ERROR" else "waiting"
+                self._queue.update(job, sequence, state)
         end = start
         while end in completed:
             end += 1
@@ -452,10 +481,24 @@ class LocalExtractionClient(QtCore.QObject):
         records = engine.records(exportable_only=True)
         with self._lock:
             for i in range(start, end):
-                del completed[i]
+                result = completed.pop(i)
+                state = {"ERROR": "failed", "ANCHOR_UNCERTAIN": "uncertain"}.get(result.get("_status"), "done")
+                self._queue.update(job, i, "timed_out" if result.get("_timed_out") else state)
             published.extend(frames)
             self._records[job] = records
         return True
+
+    def _queue_state(self, job: str, sequence: int, state: str) -> None:
+        with self._lock:
+            self._queue.update(job, sequence, state)
+
+    def queue_snapshot(self, previous: QueueSnapshot | None = None) -> QueueSnapshot:
+        """Return display metadata only. Idle refreshes reuse the last snapshot."""
+        pid = self._service.pid if self._service is not None else None
+        with self._lock:
+            if previous is not None and previous.revision == self._queue.revision and previous.pid == pid:
+                return previous
+            return QueueSnapshot(self._queue.revision, self._worker_limit, pid, self._queue.rows())
 
     def requeue_job(self, job_id: str) -> bool:
         """No-op stub for local mode."""

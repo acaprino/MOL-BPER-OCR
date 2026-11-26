@@ -13,6 +13,7 @@ from local_extraction_client import LocalExtractionClient
 from .capture_tab import CaptureTab
 from .data_table_tab import DataTableTab
 from .debug_tab import DebugTab
+from .queue_tab import QueueTab
 from .shell import NavRail, StatusHeader
 from .workbook_export import WorkbookExport
 from . import win_effects
@@ -121,7 +122,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.header = StatusHeader(self)
         self.stack = QtWidgets.QStackedWidget(self)
 
-        # Capture = 0, Extracted data = 1, Debug LLM = 2 (only with --debug).
         self.stack.addWidget(self.capture_tab)
         self.nav.add_page("Cattura", "scan")
         self.stack.addWidget(self.data_tab)
@@ -129,6 +129,8 @@ class MainWindow(QtWidgets.QMainWindow):
         if self.debug_tab is not None:
             self.stack.addWidget(self.debug_tab)
             self.nav.add_page("Debug LLM", "bug")
+        self.stack.addWidget(QueueTab(self.extraction_client, self))
+        self.nav.add_page("Coda", "refresh-cw")
 
         right = QtWidgets.QVBoxLayout()
         right.setContentsMargins(0, 0, 0, 0)

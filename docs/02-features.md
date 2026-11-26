@@ -105,6 +105,18 @@ La [guida alla pratica](navigazione-edge.md) mostra la prossima vista raggiungib
 
 ### Risultati dal vivo ed esportazione Excel
 
+Apri **Coda** nella barra laterale per seguire le catture di tutte le sessioni, anche dopo aver fermato la cattura. Ogni riga identifica la sessione, il numero della cattura e la schermata. In alto trovi il PID del processo di lettura quando è attivo, il numero di letture simultanee e il limite configurato. La vista conserva tutti i lavori aperti e gli ultimi 100 esiti.
+
+| Stato in Coda | Cosa sta succedendo |
+|---|---|
+| In coda / Apertura cattura | La schermata attende un posto oppure il worker sta riaprendo i pixel salvati. |
+| In lettura / Secondo tentativo | Il processo elabora lo screenshot. Dopo un arresto o un timeout riprova una volta sullo stesso progressivo. |
+| Salvataggio | L'agent sta registrando l'esito nell'archivio e nella replica. |
+| In attesa delle precedenti | La lettura è finita. Il motore aspetta una cattura precedente della stessa sessione per attribuire i dati alla pratica corretta. |
+| Elaborata / Elaborata · identificazione incerta | Il risultato è stato integrato. L'identificazione incerta indica che il lettore non ha confermato entrambi i campi di intestazione. |
+| Lettura fallita / Tempo di lettura scaduto | La schermata salvata resta disponibile per un nuovo tentativo alla riapertura. |
+| Archivio non disponibile | La lettura o il salvataggio locale si sono interrotti. Segui l'avviso mostrato nella finestra prima di riprendere. |
+
 L’agent salva catture, esiti e correzioni durante il lavoro. La riapertura riprende le sessioni dal disco. Per bozze e backup vedi [Recupero delle sessioni](recupero-sessioni.md).
 
 Le catture vengono elaborate in parallelo in un processo dedicato. Quando un esito arriva prima di uno screenshot precedente, il motore lo conserva nella sua posizione. Appena può avanzare, aggiorna le righe interessate e avvisa la tabella. Il file Excel usa le stesse righe con le correzioni confermate. [Limite dei lavori simultanei](10-configuration-guide.md#regolare-il-parallelismo)

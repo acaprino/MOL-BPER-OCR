@@ -71,6 +71,7 @@ The batch defaults are in `src/extraction/config.py`. The desktop job limit is r
 | `OUTPUT_DIR` | `outputs/<INPUT_DIR folder name>` | CLI results (`poc_outputs_improved.json`, `poc_debug_improved.csv`) and `debug_crops/`, kept out of the archive |
 | `PARALLEL_WORKERS` | `4` | Batch concurrency and fallback for existing desktop configurations |
 | `EDGE_AGENT_MAX_JOBS` | `auto` in new desktop configurations | Maximum simultaneous screenshot jobs. A positive integer fixes the limit. `auto` reserves one logical CPU with a minimum of one job and a maximum of four. |
+| `EDGE_AGENT_JOB_TIMEOUT_SECONDS` | `600` | Deadline per live screenshot attempt, including IPC. On expiry the dispatcher restarts the shared reader and interrupted jobs can retry once. |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
 | `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Max VLM calls per screen (1 anchor + 1 main + 1 retry per retry area). Lowering it starves the trailing areas of `AREA_TO_FIELDS` |
 | `ANCHOR_CONF_MIN` | `0.95` | Anchor confidence gate; below it the anchor value is nulled and never reaches the merge or the main-pass hint |
