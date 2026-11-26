@@ -29,8 +29,9 @@ sostituiscono i file e si aggiorna questa pagina. Lo storico delle corse e tutte
 Il modello LiLT addestrato sulla lettura «rilevatore di RapidOCR + `ocria-nano-rec`», corsa
 `model_9042c85d680c6e41` del volume Modal `bper-lilt-spike` (`training.modal_train`, seme 7).
 
-`model.safetensors` pesa 1,1 GB: sta nella cartella ma git lo ignora (`*.safetensors` in `.gitignore`, GitHub
-rifiuta i file oltre 100 MB). Per riaverlo:
+`model.safetensors` pesa 1,1 GB ed è versionato con Git LFS (`.gitattributes`: `models/**/*.safetensors`): dopo
+un clone serve `git lfs install` una volta, poi `git lfs pull`. Ogni versione nuova occupa altri 1,1 GB della quota
+LFS del repository remoto. La copia originale resta sul volume Modal:
 
 ```
 python -m modal volume get bper-lilt-spike model_9042c85d680c6e41/model.safetensors models/lilt/model.safetensors

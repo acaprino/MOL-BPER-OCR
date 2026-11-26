@@ -43,3 +43,5 @@ __pycache__/
 .ruff_cache/
 .tritech/local/
 .jcode/local/
+# Retrained model weights under models/ are versioned through Git LFS (.gitattributes)
+!/models/**/*.safetensors
