@@ -161,7 +161,7 @@
       "Verifica Preliminare",
       i === 0 ? dot : "", "", ...(istruttoria ? [/^cointestat/i.test(s.role) ? "" : "SI", dot] : []), dot, ""
     ]);
-    const headers = ["NDG", "Denominazione", "Ruolo", "Fase di recupero/inserimento", "Privacy", "Titolare effettivo",
+    const headers = ["NDG", "Denominazione", "Ruolo", "Fase di recupero/Inserimento", "Privacy", "Titolare effettivo",
       ...(istruttoria ? ["CR Obbligatoria", "CR Presente"] : []), "Q.A.V.", "Azioni"];
     return `<section class="pd-subjects" data-panel="subjects" data-under="${istruttoria ? "IST" : "VEP"}">
       <div class="pd-date">Situazione al　 ${escapeText(p.created)}<span class="pd-bluebtn" role="button" aria-disabled="${viewOnly}">Refresh</span></div>

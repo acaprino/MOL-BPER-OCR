@@ -261,7 +261,7 @@ test('Avvia Step Succ. of Recupero Segnalazioni moves on to Elenco Soggetti of I
 // Elenco Soggetti opened from Istruttoria has CR Obbligatoria and CR Presente after Titolare effettivo (MOL video 02:04,
 // training archive practice 52032077, a page saved on 26/11/2026); reference screen 4 and the archive screenshots opened
 // from Verifica Preliminare have eight columns.
-const EIGHT = ['NDG', 'Denominazione', 'Ruolo', 'Fase di recupero/inserimento', 'Privacy', 'Titolare effettivo', 'Q.A.V.',
+const EIGHT = ['NDG', 'Denominazione', 'Ruolo', 'Fase di recupero/Inserimento', 'Privacy', 'Titolare effettivo', 'Q.A.V.',
                'Azioni'];
 const TEN = [...EIGHT.slice(0, 6), 'CR Obbligatoria', 'CR Presente', ...EIGHT.slice(6)];
 const subjectHeaders = page => page.locator('[data-panel="subjects"] th').allInnerTexts();
