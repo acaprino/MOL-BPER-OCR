@@ -13,7 +13,7 @@ import pytest
 
 from bper_synthetic_db import (
     APPLICATION_ID, EMPLOYMENTS, FUND_NAME, PENSIONERS, SCHEDA_TODAY, build_database, set_aside_older,
-    synthetic_practices,
+    synthetic_practices, validation_age,
 )
 from bper_simulator_truth import NOTE_LINE_CHARS
 from extraction.normalization import normalize_ndg
@@ -187,7 +187,8 @@ def test_scheda_follows_the_structure_and_formats_of_the_reference_page() -> Non
         assert re.fullmatch(r"\d{5} [A-Z' ]+", scheda["lastChange"]["user"])
         assert re.fullmatch(r"\d{4}-0000-0000 [A-Z' ]+", scheda["lastChange"]["branch"])
         assert scheda["lastChange"]["bank"] == reference["lastChange"]["bank"]
-        assert re.fullmatch(r"\d\d/\d\d/\d{4} \d\d:\d\d \(\d+ giorni fa\)", f["ultima_validazione_scheda"])
+        stamp = re.fullmatch(r"(\d\d/\d\d/\d{4}) \d\d:\d\d \((.+ fa)\)", f["ultima_validazione_scheda"])
+        assert stamp and stamp[2] == validation_age((SCHEDA_TODAY - day(stamp[1])).days)
         for key in ("retribuzione_annua_netta", "importo_totale_annuo_nucleo"):
             euros(f[key])
         month(f["dal"])
@@ -245,15 +246,26 @@ def test_scheda_notes_have_one_to_four_paragraphs_of_one_line_each() -> None:
             assert paragraph and "\n" not in paragraph and len(paragraph) <= NOTE_LINE_CHARS, paragraph
 
 
+def test_validation_age_counts_days_then_weeks_then_months() -> None:
+    observed = {1: "un giorno fa", 5: "5 giorni fa", 6: "6 giorni fa", 8: "una settimana fa", 13: "2 settimane fa",
+                27: "4 settimane fa"}
+    inferred = {2: "2 giorni fa", 7: "una settimana fa", 10: "una settimana fa", 11: "2 settimane fa",
+                25: "4 settimane fa", 31: "4 settimane fa", 32: "un mese fa", 61: "2 mesi fa"}
+    assert {d: validation_age(d) for d in {**observed, **inferred}} == {**observed, **inferred}
+    for days in (0, 335):
+        with pytest.raises(ValueError):
+            validation_age(days)
+
+
 def test_scheda_dates_are_ordered_inside_the_practice_life() -> None:
     for p in synthetic_practices():
         scheda, f, d = p["scheda"], p["scheda"]["fields"], p["scheda"]["details"]
         created, assigned = day(p["created"]), day(p["assigned"])
-        stamp, age = re.fullmatch(r"(\d\d/\d\d/\d{4}) \d\d:\d\d \((\d+) giorni fa\)",
+        stamp, age = re.fullmatch(r"(\d\d/\d\d/\d{4}) \d\d:\d\d \((.+ fa)\)",
                                   f["ultima_validazione_scheda"]).groups()
         validated = day(stamp)
         assert assigned <= validated < SCHEDA_TODAY and validated.weekday() < 5, p["key"]
-        assert int(age) == (SCHEDA_TODAY - validated).days and 2 <= int(age) <= 25, p["key"]
+        assert 2 <= (SCHEDA_TODAY - validated).days <= 25 and age == validation_age((SCHEDA_TODAY - validated).days),             p["key"]
         assert scheda["lastChange"]["when"] == f["ultima_validazione_scheda"]
         assert month(f["dal"]) < (created.year, created.month), p["key"]
         if d["employerFrom"] != EMPTY_MONTH:

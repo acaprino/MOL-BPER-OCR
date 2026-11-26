@@ -134,8 +134,25 @@ PENSIONERS = frozenset({"sim-008", "sim-015", "sim-018", "sim-019", "sim-032", "
 # hand (NDG 0, NON CENSITO), an empty employer box and N/D ratings. The other professions, the fixed-term
 # contract, registered employers with a rating and the housing labels are plausible stand-ins.
 # ============================================================
-# The day the pages are seen from: "(N giorni fa)" counts from it.
+# The day the pages are seen from: the relative suffix of the validation stamp counts from it.
 SCHEDA_TODAY = date(2026, 11, 23)
+
+
+def validation_age(days: int) -> str:
+    """The relative suffix of a validation stamp, as moment.js writes it in Italian: days below 7, then weeks
+    up to 4, then months."""
+    # shortcut: counts calendar days from SCHEDA_TODAY while the real page counts elapsed time, and has no hours or years; extend when a recording shows a stamp under a day or over ten months
+    if days < 1:
+        raise ValueError(f"a validation stamp under a day old is not modelled: {days}")
+    if days < 7:
+        return "un giorno fa" if days == 1 else f"{days} giorni fa"
+    weeks = round(days / 7)
+    if weeks <= 4:
+        return "una settimana fa" if weeks == 1 else f"{weeks} settimane fa"
+    months = round(days / 30.44)
+    if months >= 11:
+        raise ValueError(f"a validation stamp from eleven months or more ago is not modelled: {days}")
+    return "un mese fa" if months == 1 else f"{months} mesi fa"
 BANK = "05387 BPER Banca"
 EMPTY_MONTH = "--------- ----"
 MONTHS = ("gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto",
@@ -664,7 +681,8 @@ def _scheda(con: sqlite3.Connection, ndg: str, name: str) -> dict[str, Any] | No
     if s is None:
         return None
     validated = datetime.strptime(s["validated"], "%Y-%m-%d %H:%M")
-    stamp = f"{validated:%d/%m/%Y %H:%M} ({(SCHEDA_TODAY - validated.date()).days} giorni fa)"
+    days = (SCHEDA_TODAY - validated.date()).days
+    stamp = f"{validated:%d/%m/%Y %H:%M} ({validation_age(days)})"
     staff = {"user": f"{s['validator_id'][-5:]} {s['validator_name'].upper()}",
              "branch": f"{s['validator_branch']}-0000-0000 {s['branch_name']}", "bank": BANK}
     employed = s["employer_id"] is not None

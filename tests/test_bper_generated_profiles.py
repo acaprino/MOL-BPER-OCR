@@ -19,6 +19,7 @@ from bper_simulator_truth import LIST_FONT, REQUEST_NOTE_LINES
 from bper_synthetic_db import (
     BANK, BRANCHES, CONS_KEY, CONS_PRODUCT, EMPTY_MONTH, FUND_KEY, FUND_NAME, FUND_NDG, MONTHS, MORTGAGE_KEY,
     OFFICE_CODE, OPERATORS, SCENARIOS, SCHEDA_TODAY, STAGES, _money, product_for, synthetic_practices,
+    validation_age,
 )
 
 REPO = Path(__file__).resolve().parents[1]
@@ -45,7 +46,7 @@ HEADER = re.compile(r"- Numero proposta DESK: (\d{7})\n- Valore immobile presunt
                     r"- Dettaglio importi mutuo:\n {7}IMPORTO RICHIESTO : ([\d.]+,\d\d) €\n")
 SELF_EMPLOYED = ("LIBERO PROFESSIONISTA", "ARTIGIANO", "COMMERCIANTE", "AGENTE DI COMMERCIO")
 WITHOUT_EMPLOYER = ("BENESTANTE", "CASALINGA", "STUDENTE")
-STAMP = re.compile(r"(\d\d/\d\d/\d{4}) (\d\d):(\d\d) \((\d+) giorni fa\)")
+STAMP = re.compile(r"(\d\d/\d\d/\d{4}) (\d\d):(\d\d) \((.+ fa)\)")
 
 
 @pytest.fixture(scope="module")
@@ -537,7 +538,8 @@ def test_the_validation_stamp_counts_the_days_to_the_viewing_day(profiles: list[
     def stamp(s: dict) -> re.Match:
         return STAMP.fullmatch(s["fields"]["ultima_validazione_scheda"])
 
-    assert [p["key"] for p, s in _schede(profiles) if int(stamp(s)[4]) != (SCHEDA_TODAY - _day(stamp(s)[1])).days] == []
+    assert [p["key"] for p, s in _schede(profiles)
+            if stamp(s)[4] != validation_age((SCHEDA_TODAY - _day(stamp(s)[1])).days)] == []
 
 
 def test_the_last_change_is_the_last_validation(profiles: list[dict]) -> None:
