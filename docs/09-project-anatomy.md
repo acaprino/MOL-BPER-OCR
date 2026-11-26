@@ -156,7 +156,8 @@ Tutte le variabili della pipeline sono lette via `os.getenv()` **al momento dell
 | `INPUT_DIR` | `data/dataset/pratiche/51350695` | no | Cartella degli screenshot; verità da `dati.csv` o da `valori.csv` (ADR 0032) | `src/extraction/config.py` |
 | `OUTPUT_DIR` | `outputs/<cartella di INPUT_DIR>` | no | Risultati della CLI e `debug_crops/` | `src/extraction/config.py` |
 | `PARALLEL_ENABLED` | `1` | no | `0` disabilita il thread pool del batch | `src/extraction/config.py:12` |
-| `PARALLEL_WORKERS` | `4` | no | Worker del batch e del pool asincrono dell’edge-agent | `src/extraction/config.py`, `src/edge-agent/local_extraction_client.py` |
+| `EDGE_AGENT_MAX_JOBS` | `auto` nei nuovi pacchetti | no | Numero massimo di screenshot simultanei per il desktop | `src/edge-agent/extraction_service.py` |
+| `PARALLEL_WORKERS` | `4` | no | Worker del batch e limite desktop quando manca `EDGE_AGENT_MAX_JOBS` | `src/extraction/config.py`, `src/edge-agent/local_extraction_client.py` |
 | `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | no | Budget di passaggi: massimo `N - 2` retry per area. Non limita le richieste di rete ritentate dal client; sotto 2 restano anchor e main salvo uscita anticipata | `src/extraction/config.py`, `src/extraction/pipeline.py` |
 | `ANCHOR_CONF_MIN` | `0.95` | no | Annulla gli anchor sotto soglia prima di hint, merge ed eventuale uscita anticipata | `src/extraction/config.py`, `src/extraction/pipeline.py` |
 | `RETRY_CONF_MIN` | `0.60` | no | Soglia sotto cui un campo seleziona la propria area per retry | `src/extraction/config.py`, `src/extraction/pipeline.py` |

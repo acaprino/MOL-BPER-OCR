@@ -173,6 +173,10 @@ PARALLEL_ENABLED=1
 
 Risultato: il batch runner usa un `ThreadPoolExecutor` a 8 thread quando c'è più di una schermata (`src/extraction/cli.py::BatchRunner.run`). Default: `4` e `1` (`src/extraction/config.py:11-12`) -- il default nel codice e quello in `.env.example` oggi coincidono. Imposta `PARALLEL_ENABLED=0` per forzare l'elaborazione sequenziale -- utile per leggere l'output per schermata o isolare un guasto.
 
+Per il desktop, imposta `EDGE_AGENT_MAX_JOBS=2` nel file `.env` accanto a `EdgeAgent.exe` e riavvia l’applicazione per elaborare al massimo due screenshot alla volta. Il limite si applica a tutte le sessioni insieme. Gli screenshot in attesa restano nell’archivio locale.
+
+I nuovi pacchetti usano `EDGE_AGENT_MAX_JOBS=auto`. Il calcolo usa il numero di CPU logiche disponibili meno una, con un minimo di un lavoro e un massimo di quattro. Con quattro CPU logiche partono fino a tre lavori. Una configurazione esistente che omette la variabile continua a usare `PARALLEL_WORKERS`.
+
 ### Far fermare una schermata sull'incertezza degli anchor
 
 In `.env`:

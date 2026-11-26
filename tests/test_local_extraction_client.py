@@ -4,6 +4,7 @@ import os
 import re
 import threading
 import time
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -114,6 +115,83 @@ class ControlledPipeline:
 
 def _field(value: str) -> dict[str, Any]:
     return {"value": value, "confidence": 1.0}
+
+
+def test_unusable_reader_fields_leave_the_slot_recoverable_without_blocking_the_next_page(
+    tmp_path: Path, isolated_edge_backup: Path, qapp: QCoreApplication,
+) -> None:
+    pipeline = ScriptedPipeline({
+        "bad": {"ndg": {"value": "123", "confidence": "unreadable"}},
+        "next": {"ndg": _field("456")},
+    })
+    directory = tmp_path / "session"
+    client = lec.LocalExtractionClient(pipeline=pipeline, recovery_dir=directory)
+    try:
+        for name in ("bad", "next"):
+            client.ingest_frame("job", Image.new("L", (2, 2)), page_type=name)
+        _wait_for(lambda: client.frames_in_progress() == 0, qapp)
+        assert [r["_status"] for r in client.get_results("job")] == ["ERROR", "OK"]
+        assert client.get_practices("job")[0].ndg == "456"
+    finally:
+        client.shutdown()
+    restored = lec.LocalExtractionClient(pipeline=FakePipeline(), recovery_dir=directory)
+    try:
+        _wait_for(lambda: restored.frames_in_progress() == 0, qapp)
+        assert [r.ndg for r in restored.get_practices("job")] == ["123", "456"]
+    finally:
+        restored.shutdown()
+
+
+def test_edge_job_limit_leaves_later_captures_queued(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(lec, "PARALLEL_WORKERS", 2)
+    monkeypatch.setenv("EDGE_AGENT_MAX_JOBS", "1")
+    pipeline = ControlledPipeline({"first": {}, "next": {}})
+    client = lec.LocalExtractionClient(pipeline=pipeline)
+    try:
+        for page in pipeline.replies:
+            client.ingest_frame("job", Image.new("L", (2, 2)), page_type=page)
+        assert pipeline.started["first"].wait(2)
+        assert not pipeline.started["next"].wait(0.25)
+        assert client.pending_extractions() == 1
+        pipeline.release["first"].set()
+        assert pipeline.started["next"].wait(2)
+    finally:
+        pipeline.release_all()
+        client.shutdown()
+
+
+def test_merge_notifications_publish_stable_rows_after_a_gap_closes(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(lec, "PARALLEL_WORKERS", 3)
+    pipeline = ControlledPipeline({
+        "first": {"ndg": _field("111")}, "second": {"ndg": _field("222")},
+        "note": {"note_della_richiesta": _field("signed")},
+    })
+    client = lec.LocalExtractionClient(pipeline=pipeline)
+    app = _app()
+    snapshots = []
+    done = []
+    try:
+        client.practices_updated.connect(lambda job: snapshots.append(client.get_practices(job)))
+        client.result_ready.connect(lambda job, result: done.append(result["screen_id"]))
+        for page in pipeline.replies:
+            client.ingest_frame("job", Image.new("L", (2, 2)), page_type=page)
+        for page in ("first", "note", "second"):
+            pipeline.release[page].set()
+            _wait_for(lambda: page in done, app)
+            assert page in done
+            if page == "note":
+                assert len(snapshots) == 1
+        assert len(snapshots) == 2
+        first, second = snapshots[-1]
+        assert first is snapshots[0][0]
+        assert second.source_pages == ("second", "note")
+        assert second.fields["note_della_richiesta"]["value"] == "signed"
+        client.set_correction("job", "222", "note_della_richiesta", "verified")
+        assert client.get_practices("job")[1].fields["note_della_richiesta"]["value"] == "verified"
+        assert second.fields["note_della_richiesta"]["value"] == "signed"
+    finally:
+        pipeline.release_all()
+        client.shutdown()
 
 
 @pytest.mark.parametrize("delayed_page", ["second-practice", "anonymous-note"])

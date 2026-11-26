@@ -127,7 +127,7 @@ acquisizione: se sono pronti 0 e 2, restituisce solo 0; quando termina 1, rende
 visibili 0, 1 e 2. Un errore occupa il proprio posto e consente ai successivi di
 avanzare. Il segnale `result_ready` annuncia invece ogni completamento appena
 pronto, anche fuori ordine e prima del ritorno di `ingest_frame()` o del segnale
-`frame_queued`. La tabella rilegge quindi `get_results()` a ogni notifica.
+`frame_queued`. Il motore consolida i nuovi frame nell’ordine di acquisizione. Il segnale `practices_updated` indica alla tabella che le righe sono disponibili tramite `get_practices()`.
 <!-- Source: src/edge-agent/local_extraction_client.py:145; src/edge-agent/local_extraction_client.py:194; src/edge-agent/local_extraction_client.py:222; src/edge-agent/ui/data_table_tab.py:128; tests/test_local_extraction_client.py:117; tests/test_local_extraction_client.py:183; tests/test_local_extraction_client.py:220 -->
 
 Questo ordinamento conserva il legame fra una schermata senza NDG e la pratica

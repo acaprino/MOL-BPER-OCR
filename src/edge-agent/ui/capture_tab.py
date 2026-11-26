@@ -94,11 +94,10 @@ class CaptureTab(QWidget):
 
         # Connessioni uniche al client (vive quanto la finestra): i contatori
         # filtrano per job_id, quindi nessun connect/disconnect per sessione.
-        try:
-            self.api_client.result_ready.connect(self._on_result_ready_count)
+        if hasattr(self.api_client, "frame_finished"):
+            self.api_client.frame_finished.connect(self._on_result_ready_count)
+        if hasattr(self.api_client, "frame_queued"):
             self.api_client.frame_queued.connect(self._on_frame_queued)
-        except Exception:
-            pass
 
     # ------------------------------------------------------------------ UI setup
 
@@ -447,11 +446,9 @@ class CaptureTab(QWidget):
                 self.resume_selected.emit(True)
             self.refresh_counters()
 
-    def _on_result_ready_count(self, job_id: str, result: dict) -> None:
+    def _on_result_ready_count(self, job_id: str, page: str, status: str) -> None:
         if job_id == self.job_id:
             self.refresh_counters()
-            page = str(result.get("_page_type") or result.get("screen_id") or "?")
-            status = str(result.get("_status") or "OK")
             self._log(f"Elaborazione terminata: «{page}» (stato: {status})")
 
     # ------------------------------------------------------------------ API pubblica

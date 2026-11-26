@@ -22,7 +22,7 @@ flowchart TB
         CAP["BPERCaptureWorker"]
         ROUTER["PageRouter · ML o LLM"]
         CLIENT["LocalExtractionClient"]
-        POOL["DaemonThreadPool"]
+        POOL["Smistatore di screenshot"]
         OUTPUT["Consolidamento e Excel"]
     end
     subgraph Motore["extraction"]
@@ -39,9 +39,9 @@ flowchart TB
     TK -->|"CSV facoltativo"| EVAL
     QT --> CAP --> ROUTER
     ROUTER -->|"solo router LLM"| PROVIDER
-    CAP -->|"accoda"| CLIENT --> POOL --> PIPE
-    CLIENT -.->|"completamento"| QT
+    CAP -->|"accoda"| CLIENT --> POOL -->|"processo di estrazione"| PIPE
     CLIENT -->|"risultati ordinati"| OUTPUT
+    OUTPUT -.->|"righe aggiornate"| QT
     PROMPTS --> PIPE
     PROMPTS --> ROUTER
 ```
@@ -170,7 +170,7 @@ L'appiattimento dei primi quattro soggetti usa lo stesso `pick_best()` dei retry
 Il worker BPER possiede camera e stato delle visite. Una visita identifica un'immagine normalizzata invariata tramite dimensioni, modalità colore e digest dei pixel; il pHash serve a limitare lavoro di routing, senza decidere se una pratica è nuova. `PageRegistry` risolve nomi del router e template, `StabilityTracker` richiede conferme e permanenza. Il set dei nomi già elaborati guida l'operatore: non impedisce di acquisire ancora la stessa pagina in una visita diversa.
 <!-- Source: src/edge-agent/workers/capture/bper_capture_worker.py:55; src/edge-agent/workers/capture/bper_capture_worker.py:267; src/edge-agent/workers/capture/bper_capture_worker.py:329; src/edge-agent/page_registry.py:69; src/edge-agent/stability.py:10 -->
 
-`ingest_frame()` restituisce subito la sequenza accettata per il job. `DaemonThreadPool` esegue l'estrazione in background, mentre la cattura continua. Il client conserva sotto lock i completamenti fuori ordine e pubblica soltanto il prefisso contiguo in ordine di cattura. `result_ready` segnala ogni completamento e non costituisce una lista ordinata: la tabella rilegge `get_results()`. Il dettaglio e l'esempio 0–2–1 sono nel [contratto di pubblicazione](05-workflows.md#pubblicazione-ordinata-e-consolidamento).
+Il thread di cattura assegna un progressivo a ogni screenshot e attende il salvataggio su archivio e replica. Lo smistatore invia fino a `EDGE_AGENT_MAX_JOBS` immagini a un processo locale, che inizializza una sola pipeline condivisa. Il motore integra i nuovi risultati nell’ordine di cattura. A ogni pubblicazione, la tabella riceve `practices_updated` e legge le righe già pronte. [Esempio di completamento fuori ordine](05-workflows.md#pubblicazione-ordinata-e-consolidamento)
 <!-- Source: src/edge-agent/local_extraction_client.py:127; src/edge-agent/local_extraction_client.py:194; src/edge-agent/local_extraction_client.py:222; src/edge-agent/ui/data_table_tab.py:128 -->
 
 Le conferme sono associate a `(job_id, sequenza)` e quindi a visita e pagina. Solo la conferma corrente può completare o liberare la cattura pendente. `force_capture()` inserisce un comando; il loop lo esegue nel thread che usa e chiude mss. Una chiamata router in corso può ritardare il comando. Vedi [ADR 0013](adr/0013-risultati-nell-ordine-di-acquisizione.md), [0014](adr/0014-acquisizione-per-visita-con-esito.md), [0015](adr/0015-scatto-manuale-nel-thread-di-cattura.md).
@@ -184,7 +184,7 @@ Le strategie ML, LLM, hybrid e il comportamento effettivo di local-first sono de
 Il contratto centrale è un risultato per immagine: campi, liste tabellari, `canonical_fields`, `_attempts`, `_meta_agg`, `_field_sources`, `_content_crop` e `_status`. L'uscita anticipata senza anchor omette `canonical_fields`. Il client aggiunge pagina, numero, confidenza del routing e `_capture_sequence`; un'eccezione del motore diventa un risultato ridotto `ERROR` con campi vuoti. Un errore diagnostico aggiunge `_diagnostic_error` conservando il risultato.
 <!-- Source: src/extraction/pipeline.py:151; src/extraction/pipeline.py:196; src/edge-agent/local_extraction_client.py:170; src/edge-agent/local_extraction_client.py:182 -->
 
-Nel batch gli output sono indicizzati dallo stem del file e salvati prima della valutazione. Dal vivo ogni cattura ha un progressivo e una copia persistente. Quando l’estrazione riesce il risultato sostituisce i pixel salvati. `consolidate()` li raggruppa per NDG normalizzato, applica `pick_best()` e produce `PracticeRecord`. La tabella e l'export Excel riusano questa fusione. Excel contiene 45 colonne, NDG e denominazione all'inizio, due righe di intestazione e una riga per pratica; i valori sono testo anche quando iniziano con `=` o hanno segno negativo.
+Nel batch gli output sono indicizzati dallo stem del file e salvati prima della valutazione. Dal vivo ogni cattura ha un progressivo e una copia persistente. Quando l’estrazione riesce il risultato sostituisce i pixel salvati. Il motore incrementale `PracticeEngine` li raggruppa per NDG normalizzato, applica `pick_best()` e produce `PracticeRecord`. La tabella e l'export Excel riusano questa fusione. Excel contiene 45 colonne, NDG e denominazione all'inizio, due righe di intestazione e una riga per pratica; i valori sono testo anche quando iniziano con `=` o hanno segno negativo.
 <!-- Source: src/extraction/imaging.py:29; src/extraction/cli.py::main; src/extraction/normalization.py:40; src/edge-agent/practice_consolidation.py:67; src/edge-agent/practice_consolidation.py:87; src/edge-agent/ui/data_table_tab.py:194; src/edge-agent/excel_export.py:92; src/edge-agent/excel_export.py:124; src/edge-agent/excel_export.py:177 -->
 
 ## Configurazione

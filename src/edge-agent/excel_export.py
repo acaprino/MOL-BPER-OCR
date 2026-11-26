@@ -243,9 +243,9 @@ def export_results(
 ) -> int:
     """Consolidate raw pipeline results and write the workbook.
 
-    Single entry point shared by the Cattura and Dati Estratti tabs so the two
-    buttons cannot drift apart. `corrections` are the operator's edits, applied
-    over the merged values. Returns the number of practices written.
+    Batch callers supply raw frames. The desktop already has ordered practice
+    rows and uses the same workbook writer. Operator edits override extracted
+    values. Returns the number of practices written.
     """
     # A session of errors only consolidates to one blank record: it is not a practice.
     records = [record for record in consolidate(results, corrections) if has_content(record)]

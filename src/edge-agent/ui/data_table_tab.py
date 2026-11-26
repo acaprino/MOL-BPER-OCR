@@ -39,7 +39,7 @@ if not app_paths.is_frozen() and str(_EXTRACTION_ROOT) not in sys.path:
 
 from excel_export import ColumnSpec, PAGE_BAND_COLORS, build_columns
 from local_extraction_client import clean_correction
-from practice_consolidation import PracticeRecord, consolidate, has_content, is_correctable
+from practice_consolidation import PracticeRecord, is_correctable
 
 from . import icons
 from .frozen_table import FrozenColumnsTable
@@ -196,7 +196,7 @@ class DataTableTab(QWidget):
         self._client = extraction_client
         self._export = workbook_export or WorkbookExport(extraction_client, self)
         self._current_job_id: Optional[str] = None
-        self._records: List[PracticeRecord] = []
+        self._records: tuple[PracticeRecord, ...] = ()
         self._columns: List[ColumnSpec] = build_columns(self._client.get_column_labels())
         self._loading = False         # filling the table is not an edit
         self._reload_pending = False
@@ -213,10 +213,7 @@ class DataTableTab(QWidget):
         # Corrected cells use theme colours: redraw them when the theme changes.
         theme.notifier().changed.connect(self._reload_current)
 
-        try:
-            self._client.result_ready.connect(self._on_result_ready)
-        except Exception:
-            pass
+        self._client.practices_updated.connect(self._on_practices_updated)
         if self._client.recovered_jobs:
             with QtCore.QSignalBlocker(self.job_combo):
                 for job_id in self._client.recovered_jobs:
@@ -361,7 +358,7 @@ class DataTableTab(QWidget):
         self._ensure_job_item(job_id)
         self.job_combo.setCurrentIndex(self.job_combo.findData(job_id))
 
-    def _on_result_ready(self, job_id: str, _result: dict) -> None:
+    def _on_practices_updated(self, job_id: str) -> None:
         # Adding the first combo item also selects it. Defer that first render
         # just like subsequent results so one burst only needs one snapshot.
         if self._current_job_id is None:
@@ -439,17 +436,18 @@ class DataTableTab(QWidget):
     def _apply_filter(self, *_args: object) -> None:
         needle = self.search_box.text().strip().casefold()
         for offset, record in enumerate(self._records):
-            # What the operator sees in the cells, plus the normalized NDG key.
-            shown = " ".join(
-                str((record.fields.get(key) or {}).get("value") or "") for key in ("ndg", "denominazione")
-            )
-            haystack = f"{shown} {record.ndg or ''}".casefold()
-            self.table.setRowHidden(_FIRST_DATA_ROW + offset, bool(needle) and needle not in haystack)
+            self._filter_row(_FIRST_DATA_ROW + offset, record, needle)
+
+    def _filter_row(self, row: int, record: PracticeRecord, needle: str) -> None:
+        # Search the displayed identifiers and the normalized NDG.
+        shown_ndg = record.fields["ndg"]["value"] or ""
+        searchable = f"{shown_ndg} {record.denominazione or ''} {record.ndg or ''}".casefold()
+        self.table.setRowHidden(row, bool(needle) and needle not in searchable)
 
     # ------------------------------------------------------------------ Table population
 
     def _clear_table(self) -> None:
-        self._records = []
+        self._records = ()
         self._refresh_draft()
         self.table.clearContents()
         self.table.setRowCount(0)
@@ -465,13 +463,8 @@ class DataTableTab(QWidget):
             return
         self._reload_pending = False
 
-        # A session of errors only consolidates to one blank record: not a practice.
-        previous = self._records if results_only else []
-        self._records = [
-            record
-            for record in consolidate(self._client.get_results(job_id), self._client.get_corrections(job_id))
-            if has_content(record)
-        ]
+        previous = self._records if results_only else ()
+        self._records = self._client.get_practices(job_id)
         if not self._records:
             self._clear_table()
             return
@@ -487,21 +480,22 @@ class DataTableTab(QWidget):
                 self._refresh_headers()
                 self._paint_band_row()
 
+            needle = self.search_box.text().strip().casefold()
             for row_offset, record in enumerate(self._records):
                 if row_offset < len(previous):
                     old = previous[row_offset]
-                    if old.ndg == record.ndg and old.fields == record.fields:
+                    if old is record or (old.ndg == record.ndg and old.fields == record.fields):
                         continue
                 row = _FIRST_DATA_ROW + row_offset
                 for col_idx, column in enumerate(self._columns):
                     self._set_cell(row, col_idx, record, column)
+                self._filter_row(row, record, needle)
             if first_load:
                 self.table.sync_frozen_columns()
         finally:
             self._loading = False
 
         self.stack.setCurrentWidget(self.table)
-        self._apply_filter()
         self._refresh_draft()
 
     def _reload_current(self) -> None:

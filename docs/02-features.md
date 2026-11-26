@@ -107,7 +107,7 @@ La [guida alla pratica](navigazione-edge.md) mostra la prossima vista raggiungib
 
 L’agent salva catture, esiti e correzioni durante il lavoro. La riapertura riprende le sessioni dal disco. Per bozze e backup vedi [Recupero delle sessioni](recupero-sessioni.md).
 
-Ogni completamento emette `result_ready(job_id, result)` con `_capture_sequence`; il segnale può arrivare fuori ordine. La UI rilegge `get_results(job_id)`, che espone solo il prefisso completato in ordine di acquisizione. `practice_consolidation.consolidate()` unisce poi i frame per NDG e `excel_export.export_results()` scrive una riga per pratica. I contatori di Cattura distinguono gli invii dai completamenti, inclusi gli errori; non misurano il numero di pratiche visibili.
+Le catture vengono elaborate in parallelo in un processo dedicato. Quando un esito arriva prima di uno screenshot precedente, il motore lo conserva nella sua posizione. Appena può avanzare, aggiorna le righe interessate e avvisa la tabella. Il file Excel usa le stesse righe con le correzioni confermate. [Limite dei lavori simultanei](10-configuration-guide.md#regolare-il-parallelismo)
 
 ### Modalità di cattura generica (legacy)
 

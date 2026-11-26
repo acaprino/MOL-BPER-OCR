@@ -59,7 +59,7 @@ effective configuration and keeps a configured custom model available. The edge-
 
 ## Configuration (Environment Variables)
 
-All defaults verified against `src/extraction/config.py`.
+The batch defaults are in `src/extraction/config.py`. The desktop job limit is resolved in `src/edge-agent/extraction_service.py`.
 
 | Variable | Default | Description |
 |---|---|---|
@@ -69,7 +69,8 @@ All defaults verified against `src/extraction/config.py`.
 | `LLM_MODEL_ANCHOR` | same as `LLM_MODEL` | Model for the anchor pass |
 | `INPUT_DIR` | `data/dataset/pratiche/51350695` | Screenshot folder. Its truth is a `dati.csv` in it, else its rows of `data/dataset/valori.csv` (ADR 0032) |
 | `OUTPUT_DIR` | `outputs/<INPUT_DIR folder name>` | CLI results (`poc_outputs_improved.json`, `poc_debug_improved.csv`) and `debug_crops/`, kept out of the archive |
-| `PARALLEL_WORKERS` | `4` | Thread pool size |
+| `PARALLEL_WORKERS` | `4` | Batch concurrency and fallback for existing desktop configurations |
+| `EDGE_AGENT_MAX_JOBS` | `auto` in new desktop configurations | Maximum simultaneous screenshot jobs. A positive integer fixes the limit. `auto` reserves one logical CPU with a minimum of one job and a maximum of four. |
 | `PARALLEL_ENABLED` | `1` | Enable parallel processing (`0` to disable) |
 | `MAX_CALLS_PER_SCREEN` | `2 + len(AREA_TO_FIELDS)` (= `5`) | Max VLM calls per screen (1 anchor + 1 main + 1 retry per retry area). Lowering it starves the trailing areas of `AREA_TO_FIELDS` |
 | `ANCHOR_CONF_MIN` | `0.95` | Anchor confidence gate; below it the anchor value is nulled and never reaches the merge or the main-pass hint |
@@ -276,8 +277,8 @@ downstream effects.
 12. **Edge-agent preprocessing** -- `BPERCaptureWorker` preprocesses via
     `image_ops.preprocess_for_ocr()` before calling `ingest_frame()`, so `LocalExtractionClient` calls
     `extract_from_image()` (not `extract_from_screen()`), bypassing `normalize_image()`. Capture and
-    extraction are decoupled: `ingest_frame()` queues and returns, extraction runs on
-    `PARALLEL_WORKERS` daemon threads sharing one pipeline (same pattern as `BatchRunner`).
+    extraction are decoupled: `ingest_frame()` queues and returns, the dispatcher forwards accepted slots to a separate local process. Its bounded workers share one pipeline.
+    `PracticeEngine` merges the ordered results off the GUI thread during live capture. The table and Excel use the same published rows.
 13. **Every relative crop assumes window framing** -- the classifier ROI and the pipeline's
     `RETRY_AREAS` bands are fractions calibrated on the 848x679 window screenshots of the reference practice `data/dataset/pratiche/51350695`
     (`CONTENT_CROP`/`HEADER_IN_CONTENT` now apply only on the file path over the calibrated

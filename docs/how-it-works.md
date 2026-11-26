@@ -120,27 +120,22 @@ BPERCaptureWorker (QThread)
   ├── Detects page type via router (LLM or ML)
   ├── Stability check (StabilityTracker: >= 2 concordant matches AND >= 2.0s presence, 1 miss tolerated)
   └── _upload_page() → LocalExtractionClient.ingest_frame() -- returns accepted capture sequence
-                           └── DaemonThreadPool (PARALLEL_WORKERS daemon threads, shared ExtractionPipeline)
-                                   └── ExtractionPipeline.extract_from_image()
-                                           ├── Anchor pass (whole live image → NDG + DENOMINAZIONE)
-                                           ├── Main pass (full content → all fields)
-                                           └── Retry pass (low-confidence fields only)
-                                       → logs diagnostics → stores result by capture sequence
-                                       → publishes the contiguous completed prefix to get_results()
-                                       → emits result_ready(job_id, result)
-                                             ├── queues acknowledgement for the capture worker
-                                             └── DataTableTab (Dati Estratti)
-                                                     └── get_results() → consolidate() → one row per practice
+                           Save pixels and page metadata in the recovery archive and replica.
+                           Dispatch up to EDGE_AGENT_MAX_JOBS stored slots to one local child process.
+                           Its workers share ExtractionPipeline (anchor, main, conditional retry).
+                           Store successful results with their capture sequence.
+                           Release the contiguous prefix to PracticeEngine.
+                           Notify the table that consolidated rows are ready via practices_updated.
+                           Send a separate completion acknowledgement to the capture worker.
 ```
 
 - **Detection hook:** `BPERCaptureWorker._upload_page()` detects `LocalExtractionClient` via
   `hasattr(api_client, "ingest_frame")` and calls it directly (asynchronously: the frame is queued and
-  extracted on `LocalExtractionClient`'s internal daemon pool). A rejected enqueue raises
+  dispatched to the model process by a background worker). A rejected enqueue raises
   `RuntimeError`; it emits no `frame_queued` event and does not consume a capture sequence.
 - **Capture order:** accepted frames get a zero-based sequence per job. Results carry
   `_capture_sequence`, including errors. `result_ready` reports each completion as it happens;
-  `get_results()` exposes only the contiguous completed prefix in capture order. The table and
-  exports consolidate that prefix so a late anonymous frame stays with the preceding captured
+  `get_results()` exposes only the contiguous completed prefix in capture order. The engine incrementally merges that prefix and publishes the same rows to the table and Excel so a late anonymous frame stays with the preceding captured
   practice. A slow earlier result can delay later rows even when the completion counter has advanced.
   An error occupies its sequence and releases following results; jobs progress independently.
   See [ADR 0013](adr/0013-risultati-nell-ordine-di-acquisizione.md).

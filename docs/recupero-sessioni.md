@@ -2,6 +2,10 @@
 
 Una cattura diventa recuperabile quando l’agent ne conferma l’ingresso in coda. Da quel momento puoi passare alla pagina successiva anche se l’estrazione è ancora in corso. Se il processo cade prima della conferma, torna alla schermata in banca e acquisiscila di nuovo.
 
+## Se si interrompe il processo di estrazione
+
+Ogni screenshot accettato ha già una copia cifrata con pagina e progressivo. Se il processo che legge le immagini termina inaspettatamente, lo smistatore ritenta una volta ogni lettura interrotta nella posizione originale. La finestra resta utilizzabile. Se fallisce anche il secondo tentativo, la tabella Cattura segnala l’errore e l’archivio conserva i pixel per il riavvio. Gli esiti già salvati mantengono la loro posizione. La lettura dal vivo usa il VLM configurato. Le misure offline di RapidOCR e OCRia-nano con LiLT sono descritte nella [guida ai due percorsi](ocr-lilt.md).
+
 ## Alla riapertura
 
 1. Apri l’agent con lo stesso account Windows. In **Dati estratti** seleziona la sessione interrotta e verifica la riga dell’NDG. Mantieni disponibile il provider per le letture rimaste in sospeso.

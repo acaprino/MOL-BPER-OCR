@@ -71,11 +71,16 @@ descritta nei [flussi di estrazione](05-workflows.md). Errori di apertura immagi
 ```python
 result_ready = QtCore.pyqtSignal(str, dict)   # (job_id, result)
 frame_queued = QtCore.pyqtSignal(str, str)    # (job_id, page_type)
+frame_finished = QtCore.pyqtSignal(str, str, str)  # session, page, status
+practices_updated = QtCore.pyqtSignal(str)    # session with new consolidated rows
 
 def __init__(
     self,
     parent: Optional[QtCore.QObject] = None,
-    pipeline: Optional[ExtractionPipeline] = None,
+    pipeline: Optional[ImageReader] = None,
+    *,
+    recovery_dir: Optional[Path] = None,
+    export_only: bool = False,
 ) -> None:
 
 def start_job(self) -> str:
@@ -91,6 +96,8 @@ def ingest_frame(
 ) -> int:
 
 def get_results(self, job_id: str) -> List[Dict[str, Any]]:
+
+def get_practices(self, job_id: str) -> tuple[PracticeRecord, ...]:
 
 def pending_extractions(self) -> int:
 
@@ -144,8 +151,7 @@ salvataggio non sono intercettati dall'API di esportazione.
 - Il client assegna `_capture_sequence` solo ai frame accettati. `result_ready`
   notifica ogni completamento e può precedere il ritorno di `ingest_frame()`;
   `get_results()` espone invece il prefisso contiguo completato, errori compresi.
-- Tabella ed export leggono quel prefisso prima di consolidare. Un risultato lento
-  può ritardare i successivi; gli errori diagnostici non devono lasciare buchi.
+- Il motore consolida il prefisso appena avanza. Tabella ed export leggono le stesse righe già calcolate con le correzioni confermate.
 - `shutdown()` ferma il pool senza attendere il provider. Nella GUI, i fotogrammi confermati hanno già una copia su disco. Il rilancio riprende gli slot pendenti e mantiene ogni risultato completato nella posizione corretta. [Recupero](recupero-sessioni.md)
 
 <!-- Source: src/extraction/cli.py::BatchRunner.run; src/edge-agent/local_extraction_client.py:127; src/edge-agent/local_extraction_client.py:157; src/edge-agent/local_extraction_client.py:214; src/edge-agent/local_extraction_client.py:222; src/edge-agent/extraction_pool.py:45 -->

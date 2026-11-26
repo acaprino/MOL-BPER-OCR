@@ -134,11 +134,11 @@ class _Group:
         self.frame_count += 1
 
     def to_record(self, corrections: Optional[Mapping[str, Optional[str]]] = None) -> PracticeRecord:
-        fields = self.fields
+        # Each published row keeps its own field choices across later captures.
+        fields = dict(self.fields)
         if corrections and self.ndg is not None:
             # The operator wins over any extracted value, applied after the frame merge
             # so a later frame cannot undo it. Copy: never alias the accumulator.
-            fields = dict(self.fields)
             for key, value in corrections.items():
                 if key not in CORRECTABLE_KEYS:
                     continue
@@ -158,6 +158,45 @@ class _Group:
         )
 
 
+class PracticeEngine:
+    """Fold newly published frames in capture order, keeping one row per NDG."""
+
+    def __init__(self) -> None:
+        self._groups: dict[Optional[str], _Group] = {}
+        self._rows: dict[Optional[str], PracticeRecord] = {}
+        self._last_ndg: Optional[str] = None
+
+    def merge(self, frames: Iterable[dict], corrections: Corrections) -> None:
+        touched: set[Optional[str]] = set()
+        for frame in frames:
+            ndg = frame_ndg(frame)
+            if ndg is not None:
+                if None in self._groups:
+                    prefix = self._groups.pop(None)
+                    prefix.ndg = ndg
+                    self._groups[ndg] = prefix
+                    self._rows.pop(None, None)
+                    touched.discard(None)
+                self._last_ndg = ndg
+            key = self._last_ndg
+            if key not in self._groups:
+                self._groups[key] = _Group(key)
+            self._groups[key].absorb(frame)
+            touched.add(key)
+        for key in touched:
+            self.refresh(key, corrections)
+
+    def refresh(self, key: Optional[str], corrections: Corrections) -> None:
+        if key in self._groups:
+            edits = corrections.get(key) if key is not None else None
+            self._rows[key] = self._groups[key].to_record(edits)
+
+    def records(self, *, exportable_only: bool = False) -> tuple[PracticeRecord, ...]:
+        if exportable_only and None in self._rows and not has_content(self._rows[None]):
+            return ()
+        return tuple(self._rows[key] for key in self._groups)
+
+
 def consolidate(
     results: Sequence[Dict[str, Any]],
     corrections: Optional[Corrections] = None,
@@ -172,38 +211,6 @@ def consolidate(
     `corrections` ({normalized NDG: {schema_key: value}}) overrides the merged
     value of a field; the extracted one stays in `original_value`.
     """
-    corrections = corrections or {}
-    groups: Dict[str, _Group] = {}
-    order: List[str] = []
-    pending: List[Dict[str, Any]] = []
-    last_key: Optional[str] = None
-
-    for result in results:
-        key = frame_ndg(result)
-
-        if key is None:
-            if last_key is None:
-                pending.append(result)
-                continue
-            groups[last_key].absorb(result)
-            continue
-
-        if key not in groups:
-            groups[key] = _Group(key)
-            order.append(key)
-
-        # The first identified practice adopts everything seen before it.
-        for buffered in pending:
-            groups[key].absorb(buffered)
-        pending.clear()
-
-        groups[key].absorb(result)
-        last_key = key
-
-    if pending:
-        anonymous = _Group(None)
-        for buffered in pending:
-            anonymous.absorb(buffered)
-        return [anonymous.to_record()]
-
-    return [groups[key].to_record(corrections.get(key)) for key in order]
+    engine = PracticeEngine()
+    engine.merge(results, corrections or {})
+    return list(engine.records())

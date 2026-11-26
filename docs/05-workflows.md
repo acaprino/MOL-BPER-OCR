@@ -159,7 +159,7 @@ Dopo `ERROR` o rifiuto di ingest serve un nuovo intervallo stabile prima del ret
 Le estrazioni possono finire fuori ordine. `get_results()` espone soltanto il **prefisso completato senza buchi**: se sono pronti 0 e 2, espone 0; quando termina 1, espone 0, 1 e 2. Un risultato `ERROR` occupa il suo posto, mentre un errore nella scrittura diagnostica aggiunge `_diagnostic_error` senza perdere il risultato o bloccare il prefisso.
 <!-- Source: src/edge-agent/local_extraction_client.py:170; src/edge-agent/local_extraction_client.py:188; src/edge-agent/local_extraction_client.py:194; src/edge-agent/local_extraction_client.py:222 -->
 
-`result_ready` notifica invece ciascun completamento appena disponibile: può arrivare prima del ritorno di `ingest_frame()` e prima di `frame_queued`. La UI non deve costruire una seconda lista dall'ordine dei segnali. Dati Estratti rilegge il client e consolida il prefisso pubblicato. Il segnale immediato permette intanto al worker di confermare l'esito senza attendere i frame precedenti.
+Il segnale `result_ready` conferma al thread di cattura l’esito del singolo screenshot. Quando il prefisso avanza, il motore aggiorna le pratiche coinvolte e invia `practices_updated(job_id)`. La tabella legge le righe da `get_practices()`, raggruppa gli avvisi ravvicinati e aspetta che l’operatore chiuda la cella in modifica prima di ridisegnarla.
 <!-- Source: src/edge-agent/local_extraction_client.py:154; src/edge-agent/local_extraction_client.py:204; src/edge-agent/ui/data_table_tab.py:128; src/edge-agent/ui/data_table_tab.py:194; src/edge-agent/workers/capture/bper_capture_worker.py:278 -->
 
 ```mermaid
@@ -176,10 +176,12 @@ sequenceDiagram
     Pool->>Client: risultato o ERROR con sequenza
     Note over Client: Memorizza sotto lock e avanza il prefisso contiguo
     Client-->>Capture: result_ready → coda ack
-    Client-->>UI: result_ready → aggiorna vista
-    UI->>Client: get_results(job_id)
-    Client-->>UI: prefisso in ordine di cattura
-    UI->>UI: consolidate() → una riga per pratica
+    opt Nuovi risultati consecutivi
+        Client->>Client: Aggiorna le pratiche per NDG
+        Client-->>UI: practices_updated(job_id)
+        UI->>Client: get_practices(job_id)
+        Client-->>UI: Righe consolidate
+    end
     Note over Capture,Pool: Un completamento molto rapido può precedere il ritorno di ingest
 ```
 
@@ -250,7 +252,7 @@ In `local-first`, un prototipo di scarto termina la decisione senza rete; una pa
 | Unità | Compito e durata |
 |---|---|
 | `BPERCaptureWorker` | Loop QThread di camera, routing, stabilità e comandi fino allo stop. |
-| `DaemonThreadPool` | Coda di estrazione live con almeno un worker, normalmente `PARALLEL_WORKERS`; `pending()` conta approssimativamente i lavori non ancora iniziati. |
+| `DaemonThreadPool` | Tiene in coda i riferimenti agli screenshot salvati. Il limite dei lavori attivi è condiviso da tutte le sessioni. `pending()` conta quelli in attesa. |
 | Pool batch | Executor temporaneo per i file, condividendo una pipeline e due modelli. |
 | Executor dei retry | Pool temporaneo per le aree deboli di ogni immagine, annidato al livello batch o live. |
 | Preflight Qt | Preparazione di pesi e classificatore prima della UI principale, con worker dedicato al download. |

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import sys
 import threading
 import uuid
@@ -30,20 +31,33 @@ try:
 except Exception:
     pass
 
-from extraction.llm_factory import create_chat_model
-from extraction.pipeline import ExtractionPipeline
-from extraction.config import LLM_PROVIDER, LLM_MODEL, LLM_MODEL_ANCHOR, PARALLEL_WORKERS
+from extraction.config import PARALLEL_WORKERS
 from extraction.fields import FIELD_KEYS
-from extraction.normalization import normalize_ndg
+from extraction.normalization import normalize_ndg, safe_field
 from prompt_store import catalog_source
 
-from excel_export import export_results
+from excel_export import build_columns, write_workbook
 from extraction_pool import DaemonThreadPool
-from practice_consolidation import CORRECTABLE_KEYS, PracticeCounter, PracticeRecord, consolidate, has_content
+from extraction_service import ExtractionService, ImageReader, worker_limit
+from practice_consolidation import CORRECTABLE_KEYS, PracticeEngine, PracticeRecord, has_content
 from session_frames import json_bytes, pack_pending, unpack_pending
 
 # Excel refuses cells longer than this, so a pasted text is cut here.
 MAX_CORRECTION_LENGTH = 32767
+
+
+def _checked_result(result: dict) -> dict:
+    """Reject unusable field payloads before they can enter the ordered merge."""
+    fields = result.get("fields") or {}
+    try:
+        if not isinstance(fields, dict):
+            raise ValueError("Formato dei campi non valido.")
+        for key in fields.keys() & FIELD_KEYS:
+            if not math.isfinite(safe_field(fields, key)["confidence"]):
+                raise ValueError("Confidenza del campo non valida.")
+    except (TypeError, ValueError, OverflowError) as exc:
+        return {**result, "fields": {}, "_status": "ERROR", "_error": str(exc)}
+    return result
 
 
 # ============================================================
@@ -126,6 +140,8 @@ class LocalExtractionClient(QtCore.QObject):
     """
 
     result_ready = QtCore.pyqtSignal(str, dict)   # (job_id, result)
+    practices_updated = QtCore.pyqtSignal(str)    # consolidated snapshot available
+    frame_finished = QtCore.pyqtSignal(str, str, str)  # session, page, status
     frame_queued = QtCore.pyqtSignal(str, str)    # (job_id, page_type)
     recovery_error = QtCore.pyqtSignal(str)
     history_warning = QtCore.pyqtSignal(str)
@@ -133,7 +149,7 @@ class LocalExtractionClient(QtCore.QObject):
     def __init__(
         self,
         parent: Optional[QtCore.QObject] = None,
-        pipeline: Optional[ExtractionPipeline] = None,
+        pipeline: Optional[ImageReader] = None,
         *,
         recovery_dir: Optional[Path] = None,
         export_only: bool = False,
@@ -148,23 +164,19 @@ class LocalExtractionClient(QtCore.QObject):
         if not export_only:
             print(f"[PROMPTS] catalog loaded from {catalog_source()}")
 
-        if pipeline is None and not export_only:
-            main_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL)
-            anchor_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL_ANCHOR)
-            pipeline = ExtractionPipeline(
-                main_model=main_model,
-                anchor_model=anchor_model,
-                main_model_name=LLM_MODEL,
-                anchor_model_name=LLM_MODEL_ANCHOR,
-            )
+        self._service = None
+        self._pool = None
+        if not export_only:
+            limit = worker_limit(PARALLEL_WORKERS)
+            if pipeline is None:
+                self._service = ExtractionService(limit)
+                pipeline = self._service
+            self._pool = DaemonThreadPool(max_workers=limit)
         self._pipeline = pipeline
 
-        # Extraction runs on a daemon pool; the shared-pipeline pattern matches
-        # BatchRunner (src/extraction/cli.py): one pipeline, N worker threads.
-        self._pool = None if export_only else DaemonThreadPool(max_workers=max(1, int(PARALLEL_WORKERS)))
-
         self._results: Dict[str, List[Dict[str, Any]]] = {}
-        self._practice_counts: Dict[str, PracticeCounter] = defaultdict(PracticeCounter)
+        self._engines: dict[str, PracticeEngine] = defaultdict(PracticeEngine)
+        self._records: dict[str, tuple[PracticeRecord, ...]] = {}
         self._completed: Dict[str, Dict[int, Dict[str, Any]]] = {}
         self._next_capture_sequence: Dict[str, int] = {}
         self._lock = threading.Lock()
@@ -209,6 +221,7 @@ class LocalExtractionClient(QtCore.QObject):
         """Load ordered results and defer pending image decoding to the pool."""
         pending = []
         slots: dict[str, set[int]] = defaultdict(set)
+        recovered: dict[str, dict[int, dict]] = defaultdict(dict)
         for key in self._store.keys():
             data = self._store.read(key)
             if key == "labels":
@@ -236,7 +249,7 @@ class LocalExtractionClient(QtCore.QObject):
                     result = json.loads(data[3:])
                     if result["_capture_sequence"] != sequence:
                         raise ValueError("Progressivo del risultato incoerente.")
-                    self._publish_locked(job, sequence, result)
+                    recovered[job][sequence] = _checked_result(result)
                 else:
                     raise ValueError("Formato del fotogramma non riconosciuto.")
             else:
@@ -245,6 +258,7 @@ class LocalExtractionClient(QtCore.QObject):
             if job not in self._started or sequences != set(range(len(sequences))):
                 raise ValueError("Sequenza di catture incompleta.")
             self._next_capture_sequence[job] = len(sequences)
+            self._publish_completed(job, recovered[job])
         self.recovered_jobs = tuple(job for job in sorted(slots, key=self._started.__getitem__))
         if self._pool is not None:
             for job, sequence in sorted(pending):
@@ -340,7 +354,7 @@ class LocalExtractionClient(QtCore.QObject):
             raise ValueError("Identificativo di sessione non valido.")
         payload = pack_pending(img, page_no, page_type, confidence) if self.has_recovery else None
         with self._writer:
-            if self._closed:
+            if self._closed or self._pool is None:
                 raise RuntimeError("Extraction pool has stopped accepting frames")
             self._register_job_locked(job_id)
             sequence = self._next_capture_sequence.get(job_id, 0)
@@ -377,7 +391,7 @@ class LocalExtractionClient(QtCore.QObject):
         try:
             # extract_from_image (not extract_from_screen): the Edge Agent has
             # already pre-processed the image, normalize_image would be redundant.
-            result = self._pipeline.extract_from_image(img, screen_id)
+            result = _checked_result(self._pipeline.extract_from_image(img, screen_id))
         except Exception as e:  # noqa: BLE001
             result = {
                 "screen_id": screen_id,
@@ -397,30 +411,51 @@ class LocalExtractionClient(QtCore.QObject):
             # Diagnostics must not leave a missing slot that blocks later results.
             result["_diagnostic_error"] = str(exc)
 
+        payload = None
+        if self.has_recovery and result.get("_status") != "ERROR":
+            try:
+                payload = b"R1\n" + json_bytes(result)
+            except (TypeError, ValueError, OverflowError) as exc:
+                result.update(fields={}, _status="ERROR", _error=str(exc))
         with self._writer:
             if self._closed and self.has_recovery:
                 return  # Pending slots are replayed by the next owner.
-            if self.has_recovery and result.get("_status") != "ERROR":
+            if payload is not None:
                 try:
-                    self._write(f"frame/{job_id}/{capture_sequence}", b"R1\n" + json_bytes(result))
+                    self._write(f"frame/{job_id}/{capture_sequence}", payload)
                 except Exception as exc:
                     self._report_recovery_failure(exc)
                     return
             # When the provider failed, keep the original pixels on disk for retry on restart.
-            with self._lock:
-                self._publish_locked(job_id, capture_sequence, result)
+            merged = self._publish_completed(job_id, {capture_sequence: result})
 
-        # Qt signal is thread-safe across thread boundaries
+        if merged:
+            self.practices_updated.emit(job_id)
+        self.frame_finished.emit(job_id, screen_id, str(result.get("_status") or "OK"))
         self.result_ready.emit(job_id, dict(result))
 
-    def _publish_locked(self, job: str, sequence: int, result: dict) -> None:
-        completed = self._completed.setdefault(job, {})
-        completed[sequence] = result
-        published = self._results.setdefault(job, [])
-        while len(published) in completed:
-            frame = completed.pop(len(published))
-            published.append(frame)
-            self._practice_counts[job].add(frame)
+    def _publish_completed(self, job: str, incoming: dict[int, dict]) -> bool:
+        """The single writer merges off the UI lock and publishes the prefix atomically."""
+        with self._lock:
+            completed = self._completed.setdefault(job, {})
+            completed.update(incoming)
+            published = self._results.setdefault(job, [])
+            start = len(published)
+        end = start
+        while end in completed:
+            end += 1
+        if end == start:
+            return False
+        frames = [completed[i] for i in range(start, end)]
+        engine = self._engines[job]
+        engine.merge(frames, self._corrections.get(job, {}))
+        records = engine.records(exportable_only=True)
+        with self._lock:
+            for i in range(start, end):
+                del completed[i]
+            published.extend(frames)
+            self._records[job] = records
+        return True
 
     def requeue_job(self, job_id: str) -> bool:
         """No-op stub for local mode."""
@@ -452,6 +487,8 @@ class LocalExtractionClient(QtCore.QObject):
                 self._history.close()
             if self._pool is not None:
                 self._pool.stop()
+            if self._service is not None:
+                self._service.close()
             if self._store is not None:
                 self._store.close()
 
@@ -464,9 +501,12 @@ class LocalExtractionClient(QtCore.QObject):
 
     def practice_count(self, job_id: str) -> int:
         """Practices with at least one value, corrections included: what an export would write."""
+        return len(self.get_practices(job_id))
+
+    def get_practices(self, job_id: str) -> tuple[PracticeRecord, ...]:
+        """Ready-to-display rows from the last completed merge."""
         with self._lock:
-            counter = self._practice_counts.get(job_id)
-            return counter.count if counter else 0
+            return self._records.get(job_id, ())
 
     def get_all_job_ids(self) -> List[str]:
         with self._lock:
@@ -502,6 +542,7 @@ class LocalExtractionClient(QtCore.QObject):
             corrections = self.get_corrections(job_id)
             corrections.setdefault(key, {})[schema_key] = cleaned
             self._save_confirmed_edits(job_id, key, schema_key, corrections)
+        self.practices_updated.emit(job_id)
 
     def clear_correction(self, job_id: str, ndg: str, schema_key: str) -> None:
         """Drop one correction, restoring the extracted value."""
@@ -513,12 +554,19 @@ class LocalExtractionClient(QtCore.QObject):
             if not fields:
                 by_ndg.pop(key or "", None)
             self._save_confirmed_edits(job_id, key or "", schema_key, by_ndg)
+        self.practices_updated.emit(job_id)
 
     def _save_confirmed_edits(self, job: str, ndg: str, key: str, corrections: dict) -> None:
         draft = self.get_cell_draft(job)
         if draft and (draft["ndg"], draft["key"]) == (ndg, key):
             draft = None
         self._save_edits(job, corrections, draft)
+        engine = self._engines.get(job)
+        if engine is not None:
+            engine.refresh(ndg, corrections)
+            records = engine.records(exportable_only=True)
+            with self._lock:
+                self._records[job] = records
 
     def _save_edits(self, job: str, corrections: dict, draft: Optional[dict]) -> None:
         self._write(f"edits/{job}", json_bytes({"corrections": corrections, "draft": draft}))
@@ -593,13 +641,13 @@ class LocalExtractionClient(QtCore.QObject):
         lands mid-export keeps the session marked as not exported.
         """
         with self._lock:
-            results = list(self._results.get(job_id, []))
-            corrections = self._corrections_locked(job_id)
+            records = self._records.get(job_id, ())
             labels = dict(self._column_labels)
-        written = export_results(results, path, labels=labels, corrections=corrections)
+        write_workbook(records, build_columns(labels), path)
+        written = len(records)
         if self._export_only:
             return written
-        fingerprint = _fingerprint(consolidate(results, corrections), labels)
+        fingerprint = _fingerprint(records, labels)
         with self._writer:
             try:
                 self._write(f"export/{job_id}", json_bytes(fingerprint))
@@ -616,12 +664,12 @@ class LocalExtractionClient(QtCore.QObject):
         with self._lock:
             labels = dict(self._column_labels)
             snapshot = [
-                (job_id, list(results), self._corrections_locked(job_id), self._exported.get(job_id))
-                for job_id, results in self._results.items()
+                (job_id, records, self._exported.get(job_id))
+                for job_id, records in self._records.items()
             ]
         pending = []
-        for job_id, results, corrections, exported in snapshot:
-            fingerprint = _fingerprint(consolidate(results, corrections), labels)
+        for job_id, records, exported in snapshot:
+            fingerprint = _fingerprint(records, labels)
             if fingerprint is not None and fingerprint != exported:
                 pending.append(job_id)
         return pending
