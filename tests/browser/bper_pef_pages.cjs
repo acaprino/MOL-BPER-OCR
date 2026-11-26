@@ -258,6 +258,45 @@ test('Avvia Step Succ. of Recupero Segnalazioni moves on to Elenco Soggetti of I
     assert.equal(await navItem(page, 'Verifica Preliminare').getAttribute('data-status'), 'done');
 });
 
+// Elenco Soggetti opened from Istruttoria has CR Obbligatoria and CR Presente after Titolare effettivo (MOL video 02:04,
+// training archive practice 52032077, a page saved on 26/11/2026); reference screen 4 and the archive screenshots opened
+// from Verifica Preliminare have eight columns.
+const EIGHT = ['NDG', 'Denominazione', 'Ruolo', 'Fase di recupero/inserimento', 'Privacy', 'Titolare effettivo', 'Q.A.V.',
+               'Azioni'];
+const TEN = [...EIGHT.slice(0, 6), 'CR Obbligatoria', 'CR Presente', ...EIGHT.slice(6)];
+const subjectHeaders = page => page.locator('[data-panel="subjects"] th').allInnerTexts();
+
+test('Elenco Soggetti opened from Istruttoria adds CR Obbligatoria and CR Presente after Titolare effettivo', async t => {
+    const page = await open(t, '?practice=demo&loading=off#4');
+    await navItem(page, 'Recupero Segnalazioni').click();
+    await alerts(page).getByRole('button', { name: 'Avvia Step Succ. >', exact: true }).click();
+    assert.equal(await callout(page).getAttribute('data-nav'), 'IST.soggetti');
+    assert.deepEqual(await subjectHeaders(page), TEN);
+});
+
+test('Elenco Soggetti opened again from Verifica Preliminare has the eight columns of reference screen 4', async t => {
+    const page = await open(t, '?practice=demo&loading=off#4');
+    await navItem(page, 'Recupero Segnalazioni').click();
+    await alerts(page).getByRole('button', { name: 'Avvia Step Succ. >', exact: true }).click();
+    await navItem(page, 'Verifica Preliminare').click();
+    await sidebar(page).locator('[data-nav="VEP.soggetti"]').click();
+    assert.equal(await callout(page).getAttribute('data-nav'), 'VEP.soggetti');
+    assert.deepEqual(await subjectHeaders(page), EIGHT);
+});
+
+test('under Istruttoria CR Obbligatoria reads SI on every subject but a cointestatario, CR Presente a dot', async t => {
+    const page = await openAlone(t, { subjects: [
+        { ndg: '80000000', name: 'TITOLARE REALE,SECONDA REALE', role: 'Richiedente' },
+        { ndg: '80000001', name: 'GARANTE REALE', role: 'Nuovo Garante/nuovo Datore Di Pegno' },
+        { ndg: '80000002', name: 'SECONDA REALE', role: 'Cointestato' }] });
+    await navItem(page, 'Istruttoria').click();
+    await sidebar(page).locator('[data-nav="IST.soggetti"]').click();
+    const [required, present] = [TEN.indexOf('CR Obbligatoria'), TEN.indexOf('CR Presente')];
+    const cells = await page.locator('[data-panel="subjects"] tbody tr').evaluateAll((rows, [r, p]) => rows.map(row =>
+        [row.cells[r].innerText.trim(), row.cells[p].querySelectorAll('.pd-status').length]), [required, present]);
+    assert.deepEqual(cells, [['SI', 1], ['SI', 1], ['', 1]]);
+});
+
 // ---- Note Delibere Precedenti ----
 
 test('Avvia Step Succ. passes through Note Delibere Precedenti and its overlay before Gestione Fidi e Garanzie', async t => {

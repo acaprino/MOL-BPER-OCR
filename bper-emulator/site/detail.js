@@ -150,19 +150,24 @@
   }
 
   // In visualizzazione the buttons of this page and of Note da Richiesta are greyed too (calibration screenshots).
-  function subjectsPanel(p) {
+  // Opened from Istruttoria the list adds CR Obbligatoria (SI but for a cointestatario) and CR Presente after Titolare
+  // effettivo (MOL video 02:04; training archive practice 52032077, whose columns give the widths); opened from Verifica
+  // Preliminare it has the eight columns of reference screen 4 and of the other archive screenshots.
+  function subjectsPanel(p, istruttoria = false) {
     const dot = '<i class="pd-status" aria-label="Confermato"></i>';
     const rows = p.subjects.map((s, i) => [
       ...(i < 4 ? [field(escapeText(s.ndg), `ndg_${i + 1}`), field(escapeText(s.name), `denominazione_${i + 1}`),
         field(escapeText(s.role), `ruolo_${i + 1}`)] : [escapeText(s.ndg), escapeText(s.name), escapeText(s.role)]),
       "Verifica Preliminare",
-      i === 0 ? dot : "", "", dot, ""
+      i === 0 ? dot : "", "", ...(istruttoria ? [/^cointestat/i.test(s.role) ? "" : "SI", dot] : []), dot, ""
     ]);
-    return `<section class="pd-subjects" data-panel="subjects">
+    const headers = ["NDG", "Denominazione", "Ruolo", "Fase di recupero/inserimento", "Privacy", "Titolare effettivo",
+      ...(istruttoria ? ["CR Obbligatoria", "CR Presente"] : []), "Q.A.V.", "Azioni"];
+    return `<section class="pd-subjects" data-panel="subjects" data-under="${istruttoria ? "IST" : "VEP"}">
       <div class="pd-date">Situazione al　 ${escapeText(p.created)}<span class="pd-bluebtn" role="button" aria-disabled="${viewOnly}">Refresh</span></div>
       <h2 class="pd-bar">Elenco Soggetti</h2>
-      ${table("Elenco Soggetti", [62,143,102,122,33,41,51,38],
-        ["NDG", "Denominazione", "Ruolo", "Fase di recupero/inserimento", "Privacy", "Titolare effettivo", "Q.A.V.", "Azioni"], rows, "pd-subject-table")}
+      ${table("Elenco Soggetti", istruttoria ? [54,116,91,109,33,36,62,36,28,27] : [62,143,102,122,33,41,51,38],
+        headers, rows, "pd-subject-table")}
       <div class="pd-actions"><button type="button" class="pd-bluebtn" data-action="next" aria-disabled="${viewOnly}">Avvia Step Succ. &gt;</button></div>
     </section>`;
   }
@@ -560,6 +565,10 @@
   // Screen 4, 5-8 (a description's tooltip), or 9 in the work area; the navigator stays as it is.
   function display(step, description = null, pointer = null) {
     const page = step === 4 ? "subjects" : step === 9 ? "notes" : "credit";
+    // Elenco Soggetti takes the columns of the group the navigator opened it from (subjectsPanel).
+    const under = nav.callout === "IST.soggetti" ? "IST" : "VEP";
+    const subjects = root.querySelector('[data-panel="subjects"]');
+    if (step === 4 && subjects.dataset.under !== under) subjects.outerHTML = subjectsPanel(practice, under === "IST");
     setPage(page);
     activeStep = step;
     root.querySelectorAll(".pd-worktabs button").forEach(node => {
