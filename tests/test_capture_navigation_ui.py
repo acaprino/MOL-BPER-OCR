@@ -160,3 +160,17 @@ def test_new_selection_retires_the_previous_checklist_even_for_the_same_customer
     assert "31" not in guide.current.text()
     tab.worker.navigation_changed.emit("current", dict(snapshot("100"), practice_number="42", decision_key="pef:42"))
     assert "42" in guide.current.text()
+
+
+def test_capture_border_leaves_the_banking_window_visible_to_native_hit_testing(qapp: QtWidgets.QApplication) -> None:
+    from ui.overlay import CaptureBorderOverlay
+
+    overlay = CaptureBorderOverlay(QtCore.QRect(0, 0, 400, 300))
+    try:
+        overlay.set_screen_geometry(QtCore.QRect(100, 0, 600, 400))
+        assert overlay.windowFlags() & QtCore.Qt.WindowType.WindowDoesNotAcceptFocus
+        assert not overlay.mask().isEmpty()
+        assert not overlay.mask().contains(overlay.rect().center())
+        assert overlay.mask().contains(QtCore.QPoint(3, 3))
+    finally:
+        overlay.close()

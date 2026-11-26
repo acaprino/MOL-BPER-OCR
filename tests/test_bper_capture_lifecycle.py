@@ -117,6 +117,9 @@ def capture(app: QtCore.QCoreApplication, monkeypatch: pytest.MonkeyPatch, reque
         route_retry_seconds=1.0, show_llm_debug_tab=False,
     )
     client, camera, router = getattr(request, "param", CaptureClient)(), Camera(), Router()
+    # The synthetic camera has its own desktop, independent of the operator's focus.
+    monkeypatch.setattr("workers.capture.bper_capture_worker.capture_window", lambda monitor: None)
+    monkeypatch.setattr("workers.capture.bper_capture_worker.find_window_rect", lambda title: None)
     worker = BPERCaptureWorker(config, lambda: "job", api_client=client)
     worker._mss_ctx = camera
     worker.router = router
@@ -328,6 +331,158 @@ def test_guidance_follows_a_backwards_jump_to_the_current_content_tab(guided: Si
     assert state["current_page"] == guided.names[5]
     assert state["next_page"] == guided.names[6]
     assert "descrizione" in state["action"].lower()
+
+
+@pytest.mark.parametrize("capture", [PracticeCaptureClient], indirect=True)
+@pytest.mark.parametrize("new_source", [(18, 2, "VDI 1"), (17, 2, "VDI 2")])
+def test_switching_windows_rechecks_identical_pixels_before_a_late_completion(
+    guided: SimpleNamespace, monkeypatch: pytest.MonkeyPatch, new_source: tuple,
+) -> None:
+    from frame_normalize import CaptureWindow
+    source = [CaptureWindow(17, 2, "VDI 1", (0, 0, 400, 300))]
+    monkeypatch.setattr("workers.capture.bper_capture_worker.capture_window", lambda monitor: source[0])
+    visit(guided, 5)
+    source[0] = CaptureWindow(*new_source, (0, 0, 400, 300))
+    guided.worker._capture_once()
+    assert guided.events[-1][1]["context_changed"]
+    state = finish(guided, 0, "100")
+    assert state["coverage_ndg"] is None and state["captured"] == []
+    acquire(guided)
+    assert [f["practice_view"] for f in guided.client.frames] == ["selection", "selection"]
+
+
+@pytest.mark.parametrize("capture", [PracticeCaptureClient], indirect=True)
+def test_switch_during_pixel_grab_discards_the_mixed_frame(
+    guided: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from frame_normalize import CaptureWindow
+    first = CaptureWindow(17, 2, "VDI 1", (0, 0, 400, 300))
+    second = CaptureWindow(18, 2, "VDI 2", first.rect)
+    source = iter([first, first, first, second])
+    monkeypatch.setattr("workers.capture.bper_capture_worker.capture_window", lambda monitor: next(source, second))
+    guided.router.page = "screen 5"
+    acquire(guided)
+    assert not guided.client.frames
+    acquire(guided)
+    assert [f["practice_view"] for f in guided.client.frames] == ["selection"]
+
+
+@pytest.mark.parametrize("capture", [PracticeCaptureClient], indirect=True)
+def test_capture_resumes_after_a_gap_even_on_the_same_page(
+    guided: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    clock = [100.0]
+    monkeypatch.setattr("workers.capture.bper_capture_worker.monotonic", lambda: clock[0])
+    visit(guided, 5)
+    finish(guided, 0, "100")
+    clock[0] += 120
+    acquire(guided)
+    assert [f["practice_view"] for f in guided.client.frames] == ["selection", "selection"]
+
+
+@pytest.mark.parametrize("capture", [PracticeCaptureClient], indirect=True)
+def test_a_slow_route_can_still_submit_the_verified_pixels_after_a_gap(
+    guided: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    clock = [100.0]
+    monkeypatch.setattr("workers.capture.bper_capture_worker.monotonic", lambda: clock[0])
+    guided.router.page = "screen 4"
+    guided.worker._capture_once()
+    clock[0] += 90
+    guided.clock.now += 90
+    guided.worker._capture_once()
+    assert [f["practice_view"] for f in guided.client.frames] == ["selection"]
+
+
+def test_late_note_from_another_vdi_cannot_follow_the_operator_back_to_the_first_file(
+    guided: SimpleNamespace, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from frame_normalize import CaptureWindow
+    from local_extraction_client import LocalExtractionClient
+
+    monkeypatch.setenv("EDGE_AGENT_MAX_JOBS", "2")
+    release = threading.Event()
+    complete = [threading.Event() for _ in range(4)]
+    numbers = {guided.names[4]: "31", guided.names[5]: "42"}
+
+    class Reader:
+        def extract_from_image(self, image: Image.Image, screen_id: str) -> dict:
+            if screen_id == guided.names[9]:
+                assert release.wait(10)
+                return {"fields": {"note_della_richiesta": {"value": "Solo B"}}}
+            return {"_practice_number": numbers[screen_id], "_practice_number_source": "dettaglio",
+                    "fields": {"ndg": {"value": "100", "confidence": 1}}}
+
+    client = LocalExtractionClient(pipeline=Reader())
+    worker = BPERCaptureWorker(guided.worker.config, lambda: "job", api_client=client)
+    worker._load_registry()
+    worker._mss_ctx, worker.router, worker._router_ready = guided.camera, guided.router, True
+    guided.worker = worker
+    source = [CaptureWindow(17, 2, "VDI 1", (0, 0, 400, 300))]
+    monkeypatch.setattr("workers.capture.bper_capture_worker.capture_window", lambda monitor: source[0])
+    worker.navigation_changed.connect(lambda job, state: guided.events.append((job, state)))
+    client.result_ready.connect(lambda job, row: complete[row["_capture_sequence"]].set(),
+                                QtCore.Qt.ConnectionType.DirectConnection)
+    try:
+        visit(guided, 4)
+        assert complete[0].wait(10)
+        source[0] = CaptureWindow(18, 2, "VDI 2", source[0].rect)
+        visit(guided, 5)
+        assert complete[1].wait(10)
+        visit(guided, 9)
+        source[0] = CaptureWindow(17, 2, "VDI 1", source[0].rect)
+        visit(guided, 4)
+        assert complete[3].wait(10)
+        release.set()
+        assert complete[2].wait(10)
+        worker._capture_once()
+        state = guided.events[-1][1]
+        assert (state["resumed_practice"], state["previous_practice"]) == ("31", "42")
+        assert guided.names[9] in state["missing"]
+        assert [(r.practice_number, r.fields["note_della_richiesta"]["value"])
+                for r in client.get_practices("job")] == [("31", None), ("42", None)]
+        assert next(r.state for r in client.queue_snapshot().rows if r.sequence == 2) == "unassigned"
+    finally:
+        release.set()
+        client.shutdown()
+
+
+def test_new_header_inside_the_same_vdi_reacquires_the_page_in_its_own_practice(
+    guided: SimpleNamespace,
+) -> None:
+    from local_extraction_client import LocalExtractionClient
+
+    complete = [threading.Event() for _ in range(3)]
+
+    class Reader:
+        def extract_from_image(self, image: Image.Image, screen_id: str) -> dict:
+            number = "31" if screen_id == guided.names[4] else "42"
+            fields = {"ndg": {"value": "100"}}
+            if number == "42":
+                fields["note_della_richiesta"] = {"value": "Solo B"}
+            return {"_practice_number": number, "_practice_number_source": "dettaglio", "fields": fields}
+
+    client = LocalExtractionClient(pipeline=Reader())
+    worker = BPERCaptureWorker(guided.worker.config, lambda: "job", api_client=client)
+    worker._load_registry()
+    worker._mss_ctx, worker.router, worker._router_ready = guided.camera, guided.router, True
+    guided.worker = worker
+    client.result_ready.connect(lambda job, row: complete[row["_capture_sequence"]].set(),
+                                QtCore.Qt.ConnectionType.DirectConnection)
+    try:
+        visit(guided, 4)
+        assert complete[0].wait(8)
+        visit(guided, 9)
+        assert complete[1].wait(8)
+        assert [(r.practice_number, r.fields["note_della_richiesta"]["value"])
+                for r in client.get_practices("job")] == [("31", None)]
+        acquire(guided)
+        assert complete[2].wait(8)
+        assert [(r.practice_number, r.fields["note_della_richiesta"]["value"])
+                for r in client.get_practices("job")] == [("31", None), ("42", "Solo B")]
+        assert {row.sequence: row.state for row in client.queue_snapshot().rows} == {0: "done", 1: "conflict", 2: "done"}
+    finally:
+        client.shutdown()
 
 
 def test_revisit_restores_only_that_practices_successful_pages(guided: SimpleNamespace) -> None:

@@ -178,6 +178,55 @@ def test_replay_keeps_late_results_with_the_selected_practice(
         offline.shutdown()
 
 
+def test_capture_ownership_survives_restart_while_another_practice_is_open(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    from PyQt6.QtCore import Qt
+
+    monkeypatch.setenv("EDGE_AGENT_MAX_JOBS", "2")
+    release, later_read = threading.Event(), threading.Event()
+
+    class Reader:
+        def extract_from_image(self, image: Image.Image, screen_id: str) -> dict:
+            fields = {"ndg": {"value": "100"}}
+            if screen_id == "Nota A":
+                assert release.wait(15)
+                fields["note_della_richiesta"] = {"value": "Solo A"}
+            return {"_practice_number": "42" if screen_id.endswith(" B") else "31",
+                    "_practice_number_source": "dettaglio", "fields": fields}
+
+    directory = tmp_path / "recovery"
+    client = LocalExtractionClient(pipeline=Reader(), recovery_dir=directory)
+    picture = Image.new("L", (4, 4))
+    try:
+        client.result_ready.connect(lambda job, row: later_read.set() if row["_page_type"] == "Testata B" else None,
+                                    Qt.ConnectionType.DirectConnection)
+        client.ingest_frame("session", picture, page_type="Testata A", practice_view="selection")
+        wait_results(client, "session", 1)
+        client.ingest_frame("session", picture, page_type="Nota A", practice_view="detail")
+        client.ingest_frame("session", picture, page_type="Testata B", practice_view="selection")
+        assert later_read.wait(10)
+        client.ingest_frame("session", picture, page_type="Fidi B", practice_view="detail")
+        queue = {r.page: r for r in client.queue_snapshot().rows}
+        assert queue["Nota A"].practice == "31"
+        assert queue["Fidi B"].practice == "42"
+        assert queue["Nota A"].context != queue["Testata B"].context
+        original_context = queue["Nota A"].context
+    finally:
+        client.shutdown()
+        release.set()
+    resumed = LocalExtractionClient(pipeline=Reader(), recovery_dir=directory)
+    try:
+        results = wait_results(resumed, "session", 4)
+        assert results[1]["_capture_context"] == original_context == results[0]["_capture_context"]
+        assert results[1]["_capture_practice"] == "31"
+        assert results[2]["_capture_context"] != original_context
+        assert [(r.practice_number, r.fields["note_della_richiesta"]["value"])
+                for r in resumed.get_practices("session")] == [("31", "Solo A"), ("42", None)]
+    finally:
+        resumed.shutdown()
+
+
 def test_failed_checkpoint_does_not_acknowledge_frame(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     from recovery_store import RecoveryStore
 

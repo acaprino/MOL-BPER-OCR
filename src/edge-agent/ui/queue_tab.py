@@ -20,6 +20,7 @@ _STATES = {
     "failed_waiting": "Lettura fallita · in attesa delle precedenti",
     "done": "Elaborata",
     "unassigned": "Letta · pratica da associare",
+    "conflict": "Esclusa · pratica diversa allo scatto",
     "uncertain": "Elaborata · identificazione incerta",
     "failed": "Lettura fallita",
     "timed_out": "Tempo di lettura scaduto",
@@ -28,7 +29,7 @@ _STATES = {
 
 
 class _QueueModel(QtCore.QAbstractTableModel):
-    headers = ("Sessione", "Cattura", "Schermata", "Stato")
+    headers = ("Sessione", "Cattura", "Schermata", "Stato", "Pratica")
 
     def __init__(self, parent: QtCore.QObject) -> None:
         super().__init__(parent)
@@ -42,7 +43,7 @@ class _QueueModel(QtCore.QAbstractTableModel):
             for index, (old, new) in enumerate(zip(old_rows, rows)):
                 if old is not new:
                     cell = self.index(index, 3)
-                    self.dataChanged.emit(cell, cell, [QtCore.Qt.ItemDataRole.DisplayRole])
+                    self.dataChanged.emit(cell, self.index(index, 4), [QtCore.Qt.ItemDataRole.DisplayRole])
             return
         self.beginResetModel()
         self.rows = rows
@@ -63,7 +64,8 @@ class _QueueModel(QtCore.QAbstractTableModel):
         if not index.isValid() or role != QtCore.Qt.ItemDataRole.DisplayRole:
             return None
         row = self.rows[index.row()]
-        return (row.session, str(row.sequence + 1), row.page, _STATES[row.state])[index.column()]
+        practice = row.practice or (f"Da verificare · contesto {row.context + 1}" if row.context is not None else "—")
+        return (row.session, str(row.sequence + 1), row.page, _STATES[row.state], practice)[index.column()]
 
 
 class QueueTab(QtWidgets.QWidget):
@@ -89,6 +91,7 @@ class QueueTab(QtWidgets.QWidget):
         header = self.table.horizontalHeader()
         header.resizeSection(0, 165)
         header.resizeSection(1, 70)
+        header.resizeSection(4, 155)
         for column in (2, 3):
             header.setSectionResizeMode(column, QtWidgets.QHeaderView.ResizeMode.Stretch)
         layout.addWidget(self.table)

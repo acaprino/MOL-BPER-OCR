@@ -1,6 +1,7 @@
 """The BPER worker must hand a window-framed image to routing and extraction."""
 
 from typing import Any, Dict
+from types import SimpleNamespace
 
 from PIL import Image
 from PyQt6.QtCore import QCoreApplication
@@ -146,10 +147,10 @@ def _routing_worker(frame: Image.Image, monkeypatch) -> Any:
 
     monkeypatch.setattr(worker, "_detect_page", fake_detect)
     worker.queued = []
-    monkeypatch.setattr(
-        worker, "_upload_page",
-        lambda job_id, img, page, score, fields: worker.queued.append(page.name),
-    )
+    def enqueue(**frame: Any) -> int:
+        worker.queued.append(frame["page_type"])
+        return len(worker.queued) - 1
+    worker.api_client = SimpleNamespace(ingest_frame=enqueue)
     return worker
 
 

@@ -15,6 +15,10 @@ La scheda **Cattura → Guida alla pratica** risponde a tre domande. Quale vista
 
 ## Quando cambia la pratica
 
+Se passi direttamente da una finestra PEF a un’altra, controlla il **numero pratica** nella guida. Quando il numero corrisponde a un fascicolo già aperto, la guida indica **Pratica ripresa** e suggerisce la prima vista utile tra quelle ancora da acquisire. Le elaborazioni avviate nell’altra finestra proseguono con il loro progressivo originale.
+
+Su Windows il worker controlla la finestra sul monitor scelto prima e dopo lo scatto. Un cambio di finestra o del titolo della sessione VDI, un’interruzione della cattura o una pausa di almeno un minuto richiedono una nuova verifica. Uno scatto durante il passaggio viene ripetuto. Il titolo rimane in memoria. Se la VDI cambia contenuto dentro la stessa finestra, l’identificazione si basa sulla testata PEF leggibile. Quando il numero già salvato compare con un NDG diverso, la guida chiede di verificare entrambi e i dati in conflitto rimangono fuori dall’Excel.
+
 | Cosa fa l’operatore | Cosa succede ai dati |
 |---|---|
 | Torna in ricerca, scorre i risultati o apre un tooltip dell’elenco | Il fascicolo precedente resta disponibile. Una riga di elenco con numero pratica leggibile può contribuire a quel fascicolo quando il suo dettaglio viene aperto. |
@@ -22,7 +26,9 @@ La scheda **Cattura → Guida alla pratica** risponde a tre domande. Quale vista
 | Acquisisce le Note mentre il numero pratica è illeggibile | La lettura resta salvata. In **Coda** compare **Letta · pratica da associare**. Mostrare di nuovo la testata prima di cambiare pratica permette di associare le note alla visita. |
 | Si passa a un altro risultato prima di identificare la visita | La nota incerta rimane nell’archivio della sessione e fuori dall’Excel. Riaprire il fascicolo corretto e riacquisire la nota. |
 
-**Esempio.** La pratica 31 e la 42 hanno entrambe NDG 100. Aprendo la 42, la vista Note acquisita nella 31 resta da acquisire nella 42. Se arriva in ritardo una lettura della 31, conserva la posizione originale nella sequenza. In **Dati estratti** il suggerimento sulla cella NDG mostra il numero pratica. In Excel lo trovi nel commento della stessa cella.
+**Esempio.** La pratica 31 e la 42 hanno entrambe NDG 100. Accodi le Note della 31 e passi alla 42. In **Coda → Pratica** le Note conservano il numero 31. Anche se la 42 termina prima, il risultato verificato delle Note aggiorna la 31. Riaprendo la 31 ritrovi le sue viste mancanti. In **Dati estratti** il suggerimento sulla cella NDG mostra il numero pratica. In Excel lo trovi nel commento della stessa cella.
+
+Per ogni scatto l’agent salva subito la sessione, il progressivo e il contesto di acquisizione. Se conosce già il numero pratica lo salva insieme ai pixel. Al primo scatto di una nuova selezione la coda mostra **Da verificare · contesto N**. La prima testata valida identifica il fascicolo per quel contesto. Se una testata successiva indica un altro numero dentro la stessa VDI, l’esito compare come **Esclusa · pratica diversa allo scatto**. Lascia visibile la nuova pagina perché venga riacquisita nel proprio contesto. Le letture anonime rimaste nel vecchio contesto non seguono la nuova pratica. Il recupero dopo un arresto applica le stesse regole.
 
 L’agent osserva le schermate. Il passaggio dall’elenco al dettaglio segnala l’apertura di un risultato. Se l’elenco passa troppo velocemente, due numeri pratica diversi nelle testate permettono comunque di distinguere i fascicoli. Una lettura senza numero interposta tra due fascicoli diversi rimane da associare. Nell’elenco con più righe, apri quella corretta e mostra il dettaglio. Le sessioni storiche che registravano soltanto l’NDG conservano il raggruppamento originario.
 

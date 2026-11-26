@@ -96,3 +96,58 @@ def test_an_unmapped_live_template_cannot_fall_back_to_an_old_ndg() -> None:
     engine.merge([{"fields": {"ndg": {"value": "100"}}},
                   shot("unknown", None, "Pagina personalizzata", note_della_richiesta="Incerta")], {})
     assert engine.records()[0].fields["note_della_richiesta"]["value"] is None
+
+
+def test_reopening_a_file_in_progress_restores_only_its_own_next_step() -> None:
+    pages = [PageDef(name, i, f"screen {i}", name) for i, name in [(4, "Soggetti"), (5, "Fidi"), (9, "Note")]]
+    nav = CaptureNavigation(pages)
+    frames = [shot("selection", "31", "Soggetti", ndg="100"),
+              shot("detail", "42", "Note", ndg="100"),
+              shot("selection", "31", "Fidi", ndg="100")]
+    nav.update(frames)
+    state = nav.snapshot("Fidi", "captured", 2)
+    assert state["resumed_practice"] == "31" and state["next_page"] == "Note"
+    assert state["captured"] == ["Soggetti", "Fidi"]
+
+
+def test_a_conflicting_customer_in_another_window_cannot_overwrite_a_known_file() -> None:
+    engine = PracticeEngine()
+    engine.merge([shot("selection", "31", "Soggetti", ndg="100"),
+                  shot("selection", "31", "Note", ndg="200", note_della_richiesta="Incerta"),
+                  shot("detail", "31", "Note", note_della_richiesta="Ancora incerta")], {})
+    assert [(r.ndg, r.fields["note_della_richiesta"]["value"]) for r in engine.records()] == [("100", None)]
+
+
+def test_partial_headers_from_incompatible_customers_cannot_validate_each_other() -> None:
+    engine = PracticeEngine()
+    engine.merge([shot("selection", "31", "Fidi", ndg="100"),
+                  shot("selection", None, "Soggetti", ndg="200"),
+                  shot("detail", None, "Note", note_della_richiesta="Solo B"),
+                  shot("detail", "31", "Fidi")], {})
+    assert engine.records()[0].fields["note_della_richiesta"]["value"] is None
+
+
+def test_anonymous_data_cannot_cross_its_capture_context_even_when_the_same_file_reopens() -> None:
+    engine = PracticeEngine()
+    engine.merge([dict(shot("selection", "31", "Fidi", ndg="100"), _capture_context=0),
+                  dict(shot("detail", None, "Note", note_della_richiesta="Incerta"), _capture_context=0),
+                  dict(shot("detail", "31", "Fidi", ndg="100"), _capture_context=2)], {})
+    assert engine.records()[0].fields["note_della_richiesta"]["value"] is None
+
+
+def test_a_screenshot_bound_to_another_practice_cannot_write_business_fields() -> None:
+    engine = PracticeEngine()
+    engine.merge([dict(shot("selection", "31", "Fidi", ndg="100"), _capture_context=0),
+                  dict(shot("detail", "42", "Note", note_della_richiesta="Dubbia"),
+                       _capture_context=0, _capture_practice="31"),
+                  dict(shot("selection", "42", "Fidi", ndg="200"), _capture_context=2)], {})
+    assert [r.fields["note_della_richiesta"]["value"] for r in engine.records()] == [None, None]
+
+
+def test_a_provisional_context_cannot_be_claimed_by_two_headers_from_the_same_vdi() -> None:
+    engine = PracticeEngine()
+    engine.merge([dict(shot("selection", "31", "Fidi", ndg="100"), _capture_context=0),
+                  dict(shot("detail", "42", "Note", note_della_richiesta="Dubbia"), _capture_context=0),
+                  dict(shot("detail", None, "Note", note_della_richiesta="Da verificare"), _capture_context=0),
+                  dict(shot("detail", "42", "Soggetti", ndg="200"), _capture_context=0)], {})
+    assert [(r.practice_number, r.fields["note_della_richiesta"]["value"]) for r in engine.records()] == [("31", None)]

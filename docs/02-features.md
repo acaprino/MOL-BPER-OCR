@@ -105,10 +105,11 @@ La [guida alla pratica](navigazione-edge.md) mostra la prossima vista raggiungib
 
 ### Risultati dal vivo ed esportazione Excel
 
-Apri **Coda** nella barra laterale per seguire le catture di tutte le sessioni, anche dopo aver fermato la cattura. Ogni riga identifica la sessione, il numero della cattura e la schermata. In alto trovi il PID del processo di lettura quando è attivo, il numero di letture simultanee e il limite configurato. La vista conserva tutti i lavori aperti e gli ultimi 100 esiti.
+Apri **Coda** nella barra laterale per seguire le catture di tutte le sessioni, anche dopo aver fermato la cattura. Ogni riga identifica la sessione, il numero della cattura, la schermata e la pratica. Se l’identità è ancora in verifica, la colonna Pratica mostra il progressivo del contesto di acquisizione. In alto trovi il PID del processo di lettura quando è attivo, il numero di letture simultanee e il limite configurato. La vista conserva tutti i lavori aperti e gli ultimi 100 esiti.
 
 | Stato in Coda | Cosa sta succedendo |
 |---|---|
+| Esclusa · pratica diversa allo scatto | La testata indica un altro fascicolo. L’agent conserva l’esito fuori dal consolidato e acquisisce di nuovo la vista se è ancora visibile. |
 | In coda / Apertura cattura | La schermata attende un posto oppure il worker sta riaprendo i pixel salvati. |
 | In lettura / Secondo tentativo | Il processo elabora lo screenshot. Dopo un arresto o un timeout riprova una volta sullo stesso progressivo. |
 | Salvataggio | L'agent sta registrando l'esito nell'archivio e nella replica. |

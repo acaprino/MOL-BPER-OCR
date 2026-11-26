@@ -19,12 +19,78 @@ from __future__ import annotations
 
 import os
 import sys
+from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
 
 from PIL import Image, ImageChops
 
 # Rect in coordinate dello schermo virtuale, come le restituisce GetWindowRect.
 Rect = Tuple[int, int, int, int]
+
+
+@dataclass(frozen=True)
+class CaptureWindow:
+    hwnd: int
+    pid: int
+    title: str = field(repr=False)
+    rect: Rect
+
+    @property
+    def identity(self) -> tuple[int, int, str]:
+        return self.hwnd, self.pid, self.title
+
+
+@lru_cache(maxsize=1)
+def _capture_window_api() -> Any:
+    import ctypes
+    from ctypes import wintypes as w
+
+    api = ctypes.WinDLL("user32", use_last_error=True)
+    signatures = (
+        ("GetForegroundWindow", [], w.HWND),
+        ("WindowFromPoint", [w.POINT], w.HWND),
+        ("GetAncestor", [w.HWND, w.UINT], w.HWND),
+        ("GetWindowRect", [w.HWND, ctypes.POINTER(w.RECT)], w.BOOL),
+        ("GetWindowThreadProcessId", [w.HWND, ctypes.POINTER(w.DWORD)], w.DWORD),
+        ("GetWindowTextW", [w.HWND, w.LPWSTR, ctypes.c_int], ctypes.c_int),
+    )
+    for name, args, result in signatures:
+        fn = getattr(api, name)
+        fn.argtypes, fn.restype = args, result
+    return api
+
+
+def capture_window(monitor: Dict[str, int]) -> CaptureWindow | None:
+    """Sample the active window on this monitor, even when its title is a VDI host."""
+    if sys.platform != "win32":
+        return None
+    import ctypes
+    from ctypes import wintypes as w
+
+    try:
+        api = _capture_window_api()
+        hwnd = api.GetForegroundWindow()
+        rect = w.RECT()
+        left, top = monitor["left"], monitor["top"]
+        width, height = monitor["width"], monitor["height"]
+        if (not hwnd or not api.GetWindowRect(hwnd, ctypes.byref(rect))
+                or max(left, rect.left) >= min(left + width, rect.right)
+                or max(top, rect.top) >= min(top + height, rect.bottom)):
+            # Focus may be on the agent on a second monitor.
+            point = w.POINT(left + width // 2, top + height // 2)
+            hwnd = api.GetAncestor(api.WindowFromPoint(point), 2)  # GA_ROOT
+            if not hwnd or not api.GetWindowRect(hwnd, ctypes.byref(rect)):
+                return None
+        pid = w.DWORD()
+        if not api.GetWindowThreadProcessId(hwnd, ctypes.byref(pid)):
+            return None
+        title = ctypes.create_unicode_buffer(1024)
+        if pid.value != os.getpid():
+            api.GetWindowTextW(hwnd, title, len(title))
+        return CaptureWindow(hwnd, pid.value, title.value, (rect.left, rect.top, rect.right, rect.bottom))
+    except OSError:
+        return None
 
 # Strategia che ha prodotto l'inquadratura, riportata da normalize_frame().
 # UNCHANGED non e' un dettaglio: significa che al classificatore arriva un frame

@@ -326,6 +326,10 @@ downstream effects.
       Search/list/scroll does not open a file. A detail after the list (or after capture resumes)
       verifies the selected file before attaching anonymous notes. Distinct practice numbers
       remain separate even with the same NDG. Old archives keep their NDG grouping.
+      Persist the acquisition context and its already verified PEF number with the pixels
+      before dispatch. A context can bind to one practice only. A conflicting number closes
+      the context and requires a fresh capture. Delayed results and replay use the original
+      capture metadata regardless of the currently displayed window.
       Both paths use `pick_best()` for field values.
     - **Operator corrections are a durable overlay.** `consolidate(results, corrections)`
       applies edits keyed by `pef:<practice number>` (legacy records use the normalized NDG) after the frame merge (the operator wins and a later

@@ -504,6 +504,23 @@ def test_an_unchanged_frame_never_reaches_the_page_router(qapp) -> None:
     assert routed == []
 
 
+def test_recorded_desktop_uses_its_own_window_even_if_local_focus_changes(qapp: Any, monkeypatch: pytest.MonkeyPatch) -> None:
+    from frame_normalize import CaptureWindow
+
+    class Client:
+        tracks_practice_selection = True
+
+    recorded = (200, 150, 800, 630)
+    other = iter([CaptureWindow(i, 99, "Other VDI", recorded) for i in (1, 2)])
+    monkeypatch.setattr("workers.capture.bper_capture_worker.capture_window", lambda monitor: next(other))
+    worker = lt.make_harness_worker(_Config(), lambda: "job", Client(), recorder=lt.Recorder(),
+                                    rect_provider=lambda title: recorded, exposure=lambda: True,
+                                    own_rect=lambda: recorded, guard=lt.PrivacyGuard(), live=False)
+    worker._mss_ctx = _FakeMss(_maximized_desktop())
+    frame = worker._grab_raw()
+    assert frame is not None and frame.size == (600, 480)
+
+
 def test_an_unchanged_frame_is_never_saved(qapp) -> None:
     saved: List[Any] = []
     worker = lt.make_harness_worker(_Config(), lambda: "job", None, recorder=lt.Recorder(),

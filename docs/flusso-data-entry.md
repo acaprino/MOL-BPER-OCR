@@ -70,6 +70,8 @@ Le nove viste PEF del riconoscitore coprono quattro pagine sorgenti. Scheda Priv
 
 ## Quale pagina aprire adesso
 
+**Se si apre per errore un altro fascicolo**, leggi il numero pratica nella guida. Puoi lavorare sul fascicolo appena riconosciuto oppure tornare alla finestra precedente. Mostra la testata dopo un cambio di VDI. Alla ripresa di un fascicolo già identificato ritrovi le sue viste acquisite, le esclusioni e il prossimo passo. Se la guida segnala un NDG in conflitto, confronta numero pratica e NDG sulla stessa testata prima di proseguire.
+
 In **Cattura → Guida alla pratica** controlla l’NDG, il nome della vista e il suo stato. **Prossima vista** suggerisce un gesto a partire dalla posizione riconosciuta. Apri l’elenco delle viste per vedere insieme quelle **Da acquisire**, quelle da mostrare **Se presente**, quelle dichiarate **Non applicabile** e quelle già **Acquisite**. Controlla il numero pratica della testata prima di indicare che un tooltip manca.
 
 | Situazione | Azione successiva |

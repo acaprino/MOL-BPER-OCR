@@ -4,10 +4,12 @@ from __future__ import annotations
 
 import json
 import hashlib
+import os
 import queue
 import time
 import uuid
 from functools import partial
+from time import monotonic
 from typing import Optional, Tuple, Any, Callable
 
 import imagehash
@@ -17,10 +19,11 @@ from llm_router import PageRouter, MLPageRouter, LLMPageRouter, RouterResult  # 
 
 from .base_capture_worker import BaseCaptureWorker
 from capture_navigation import CaptureNavigation, practice_view
-from frame_normalize import UNCHANGED, find_window_rect, normalize_frame
+from frame_normalize import CaptureWindow, UNCHANGED, capture_window, find_window_rect, normalize_frame
 from image_ops import preprocess_for_ocr
 import app_paths
 from page_registry import PageDef, PageRegistry
+from practice_consolidation import capture_owner_conflicts
 from stability import StabilityTracker
 
 
@@ -39,6 +42,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
     # soglia di “uguale” per dedup frame (distanza Hamming su pHash)
     DEDUP_HASH_THRESHOLD = 3
+    CONTEXT_GAP_SECONDS = 60.0
     navigation_changed = QtCore.pyqtSignal(str, dict)
 
     def __init__(
@@ -63,6 +67,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._last_submitted_sequence = -1
         self._requires_selection = True
         self._selection_sequence = -1
+        self._source_context: tuple | None = None
+        self._last_grab_at: float | None = None
+        self._context_interrupted = False
         self._tracks_selection = getattr(api_client, "tracks_practice_selection", False) is True
         self._navigation = CaptureNavigation([])
         self._last_navigation: Optional[dict] = None
@@ -246,10 +253,12 @@ class BPERCaptureWorker(BaseCaptureWorker):
             page.name if page else None,
             "error" if self._camera_unavailable else self._visit_status,
             self._completed_sequence,
-            awaiting_selection=(self._selection_sequence >= self._navigation.published
+            awaiting_selection=(self._context_interrupted or self._selection_sequence >= self._navigation.published
                                 or bool(self._tracks_selection and self._requires_selection and page
                                         and practice_view(page) == "detail")),
         )
+        if self._context_interrupted:
+            state.update(context_changed=True, action="Contesto cambiato. Mostra la testata della pratica aperta per riprendere.")
         if state != self._last_navigation:
             self._last_navigation = state
             self.navigation_changed.emit(self._active_job, state)
@@ -271,7 +280,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
     def _queue_extraction_result(self, job_id: str, result: dict) -> None:
         """Cross-thread entry point: enqueue only, including very fast completions."""
         self._commands.put(("result", (
-            job_id, result.get("_capture_sequence"), result.get("_status"),
+            job_id, result.get("_capture_sequence"), result.get("_status"), capture_owner_conflicts(result),
         )))
 
     def _drain_commands(self) -> bool:
@@ -305,7 +314,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 self._complete_capture(*payload)
         return manual
 
-    def _complete_capture(self, job_id: str, sequence: Optional[int], status: Optional[str]) -> None:
+    def _complete_capture(self, job_id: str, sequence: Optional[int], status: Optional[str], owner_changed: bool) -> None:
         """An old completion cannot change the pending state of a newer visit."""
         if sequence is None or job_id != self._active_job:
             return
@@ -313,12 +322,21 @@ class BPERCaptureWorker(BaseCaptureWorker):
         if pending is None and not self._recovers_navigation:
             return
         self._navigation.update(self.api_client.get_results(job_id))
+        if (self._navigation.context_closed and self._last_submitted_sequence == self._navigation.published - 1
+                and self._last_submitted_sequence in (self._visit_pending, self._completed_sequence)):
+            self._interrupt_context()
+            self._emit_navigation()
+            return
         if pending is None:
             # A pre-crash frame can advance the prefix but cannot confirm this monitor visit.
             self._emit_navigation()
             return
         visit, page = pending
         current = visit == self._visit_sequence and sequence == self._visit_pending
+        if current and owner_changed:
+            self._interrupt_context()
+            self._emit_navigation()
+            return
         if status == "ERROR":
             if current:
                 self._visit_pending = None
@@ -369,6 +387,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
             if sequence >= 0:
                 navigation.update(self.api_client.get_results(job_id), self.api_client.navigation_decisions(job_id))
         self._active_job = job_id
+        self._source_context = None
+        self._last_grab_at = None
+        self._context_interrupted = False
         self._requires_selection = True
         self._selection_sequence = sequence if self._tracks_selection and sequence >= navigation.published else -1
         self._last_submitted_sequence = sequence
@@ -381,6 +402,17 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._visit_status = "unrecognized"
         self._last_routed_page = None
         self._camera_unavailable = False
+
+    def _interrupt_context(self) -> None:
+        """Rearm even on identical pixels. Old OCR may only finish its original slot."""
+        if not self._tracks_selection:
+            return
+        self._context_interrupted = self._requires_selection = True
+        self._frame_identity = self._last_frame_hash = None
+        self._visit_pending = self._completed_sequence = None
+        self._last_routed_page = self._last_route_attempt_ts = None
+        self._visit_status = "recognizing"
+        self._tracker.reset()
 
     def _capture_once(self) -> None:
         """
@@ -407,6 +439,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
         raw = self._grab_raw()
         self._camera_unavailable = raw is None
         if raw is None:
+            self._interrupt_context()
             self._emit_navigation()
             return
         if self._stop_requested:
@@ -448,7 +481,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
         if self._stop_requested:
             return
         page = self.registry.resolve(label)
-        if page is None or practice_view(page) in {"list", "unknown"}:
+        if self._tracks_selection and (page is None or practice_view(page) in {"list", "unknown"}):
             self._requires_selection = True
         self._last_routed_page = page
         self._last_route_score = score
@@ -497,6 +530,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
         if view == "selection":
             self._selection_sequence = sequence
             self._requires_selection = False
+            self._context_interrupted = False
         self._pending_captures[(job_id, sequence)] = (self._visit_sequence, page)
         self._last_submitted_sequence = sequence
         self._visit_pending = sequence
@@ -505,6 +539,37 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._emit_navigation()
 
     # ------------------------------------------------------------------ screenshot & dedup
+
+    def _capture_window(self, monitor: dict[str, int]) -> CaptureWindow | None:
+        return capture_window(monitor) if self._tracks_selection else None
+
+    def _window_rect(self, window: CaptureWindow | None) -> tuple[int, int, int, int] | None:
+        title = getattr(self.config, "window_title_contains", "")
+        if window is None:
+            return find_window_rect(title)
+        return window.rect if title and title.casefold() in window.title.casefold() else None
+
+    def _check_capture_source(
+        self, index: int, monitor: dict[str, int], before: CaptureWindow | None, after: CaptureWindow | None,
+    ) -> bool:
+        bounds = (monitor["left"], monitor["top"], monitor["width"], monitor["height"])
+        context = (index, bounds, after.identity if after else None)
+        now = monotonic()
+        previous, last_grab = self._source_context, self._last_grab_at
+        self._source_context, self._last_grab_at = context, now
+        if before != after or (after and after.pid == os.getpid()):
+            self._interrupt_context()
+            return False
+        if previous is not None and context != previous:
+            self._interrupt_context()
+        elif last_grab is not None and now - last_grab >= self.CONTEXT_GAP_SECONDS:
+            if self._visit_status == "observed":
+                # A slow router may itself cause this gap. Fresh identical pixels
+                # can confirm that candidate, with a new identity check at merge.
+                self._context_interrupted = self._requires_selection = True
+            else:
+                self._interrupt_context()
+        return True
 
     def _grab_raw(self) -> Optional[Image.Image]:
         """
@@ -530,7 +595,11 @@ class BPERCaptureWorker(BaseCaptureWorker):
             if idx < 1 or idx >= len(monitors):
                 idx = 1
             mon = monitors[idx]
+            before = self._capture_window(mon)
             shot = sct.grab(mon)
+            after = self._capture_window(mon)
+            if self._tracks_selection and not self._check_capture_source(idx, mon, before, after):
+                return None
             img = Image.frombytes('RGB', shot.size, shot.rgb)
             # Riporta l'inquadratura sulla finestra applicativa: i prototipi del
             # router, la ROI del classificatore e le bande RETRY_AREAS della
@@ -539,11 +608,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
             # diverso. (CONTENT_CROP invece non si applica piu' al percorso
             # live: ADR 0010.)
             full_size = img.size
-            img, strategy = normalize_frame(
-                img,
-                mon,
-                lambda: find_window_rect(getattr(self.config, "window_title_contains", "")),
-            )
+            img, strategy = normalize_frame(img, mon, lambda: self._window_rect(after))
             self._announce_framing(strategy, full_size, img.size)
             self._consecutive_capture_errors = 0
             return img
@@ -801,6 +866,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
             raw = self._grab_raw()
             self._camera_unavailable = raw is None
             if raw is None or self._stop_requested:
+                if raw is None:
+                    self._interrupt_context()
                 self._emit_navigation()
                 self.tick.emit("[BPER] Forza scatto: nessuno screenshot disponibile.")
                 return

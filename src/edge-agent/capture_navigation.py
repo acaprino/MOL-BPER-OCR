@@ -109,6 +109,10 @@ class CaptureNavigation:
     def captured(self) -> set[str]:
         return self._seen.get(self._key, set()).copy()
 
+    @property
+    def context_closed(self) -> bool:
+        return self._flow.context_closed
+
     def update(self, results: Sequence[dict], decisions: Sequence[dict] = ()) -> None:
         # On resume a correction may predate a subsequent successful recapture.
         # Its watermark includes frames that were accepted but still in flight.
@@ -218,10 +222,13 @@ class CaptureNavigation:
             state.update(coverage_ndg=None, new_selection=True,
                          verifying_previous=bool(not awaiting_selection and self._flow.number),
                          action="Mostra la testata con il numero pratica. Le letture attendono l’identificazione.")
+            if self._flow.identity_conflict and not awaiting_selection:
+                state["action"] = "Il numero pratica ha un NDG diverso da quello salvato. Verifica entrambi nella testata."
             return state
         if self._scoped:
-            state.update(practice_number=self._flow.number, decision_key=self._key,
-                         browsing=self._flow.browsing)
+            state.update(practice_number=self._flow.number, decision_key=self._key, browsing=self._flow.browsing)
+            if status == "captured" and not self._flow.browsing:
+                state.update(resumed_practice=self._flow.resumed, previous_practice=self._flow.switched_from)
         if status != "captured":
             state["action"] = {
                 "recognizing": "Riconoscimento della schermata in corso.",

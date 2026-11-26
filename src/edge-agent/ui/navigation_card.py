@@ -52,13 +52,19 @@ class NavigationCard(Card):
         ndg = progress.get("practice_ndg")
         page = progress.get("current_page")
         identity = f"NDG {ndg}" if ndg else "NDG da identificare"
-        if progress.get("new_selection"):
+        if progress.get("context_changed"):
+            identity = "Cambio di contesto · verifica della pratica"
+        elif progress.get("new_selection"):
             identity = ("Numero pratica da verificare" if progress.get("verifying_previous")
                         else "Nuova selezione · pratica da identificare")
         elif progress.get("browsing"):
             identity = "Elenco Pratiche"
+        elif progress.get("resumed_practice"):
+            identity = f"Pratica {progress['resumed_practice']} ripresa · {identity}"
         elif progress.get("practice_number"):
             identity = f"Pratica {progress['practice_number']} · {identity}"
+        if progress.get("previous_practice"):
+            identity += f" · precedente {progress['previous_practice']}"
         if ndg and progress.get("identity_source") == "preceding":
             identity += " (dalla cattura precedente)"
         status = {

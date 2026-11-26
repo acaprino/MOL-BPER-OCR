@@ -13,18 +13,21 @@ class CaptureBorderOverlay(QtWidgets.QWidget):
         super().__init__(parent)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
         self.setAttribute(QtCore.Qt.WidgetAttribute.WA_TranslucentBackground, True)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_ShowWithoutActivating, True)
+        self.setWindowFlag(QtCore.Qt.WindowType.WindowDoesNotAcceptFocus, True)
+        self.setWindowFlag(QtCore.Qt.WindowType.WindowTransparentForInput, True)
         self.setWindowFlag(QtCore.Qt.WindowType.FramelessWindowHint, True)
         self.setWindowFlag(QtCore.Qt.WindowType.WindowStaysOnTopHint, True)
         self.setWindowFlag(QtCore.Qt.WindowType.Tool, True)
         # Evita taskbar
         self.setWindowFlag(QtCore.Qt.WindowType.BypassWindowManagerHint, True)
 
-        self._geometry = QtCore.QRect(geometry)
-        self.setGeometry(self._geometry)
+        self.set_screen_geometry(geometry)
 
     def set_screen_geometry(self, geometry: QtCore.QRect) -> None:
-        self._geometry = QtCore.QRect(geometry)
-        self.setGeometry(self._geometry)
+        self.setGeometry(geometry)
+        outer = QtGui.QRegion(self.rect())
+        self.setMask(outer.subtracted(QtGui.QRegion(self.rect().adjusted(7, 7, -7, -7))))
         self.update()
 
     def paintEvent(self, event: QtGui.QPaintEvent) -> None:  # noqa: N802

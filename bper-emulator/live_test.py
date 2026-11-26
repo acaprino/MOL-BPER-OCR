@@ -736,8 +736,8 @@ def make_harness_worker(
     """The production BPERCaptureWorker with a recorder around its steps and the privacy guard after _grab_raw.
 
     The guard sits between the grab and everything downstream, so a frame it refuses never reaches dedup,
-    routing, ingest_frame or the disk. The window-rectangle lookup is swapped only for the duration of the
-    production _grab_raw, so its strategy and the rectangle it used are known.
+    routing, ingest_frame or the disk. Record the rectangle actually used for framing. A replay gets
+    its desktop geometry and window from the recording without sampling the host's foreground window.
     """
     from PyQt6 import QtCore
     from workers.capture import bper_capture_worker as bcw
@@ -765,20 +765,17 @@ def make_harness_worker(
                 classifier._compute_embedding = compute_embedding
                 classifier.classify = classify
 
+        def _capture_window(self, monitor: dict[str, int]) -> bcw.CaptureWindow | None:
+            return super()._capture_window(monitor) if live else None
+
+        def _window_rect(self, window: bcw.CaptureWindow | None) -> Optional[Rect]:
+            rect = super()._window_rect(window) if window else rect_provider(self.config.window_title_contains)
+            recorder.current["rect"] = list(rect) if rect else None
+            return rect
+
         def _grab_raw(self) -> Any:
             frame = recorder.begin()
-
-            def provider(title: str) -> Optional[Rect]:
-                rect = rect_provider(title)
-                frame["rect"] = list(rect) if rect else None
-                return rect
-
-            production = bcw.find_window_rect
-            bcw.find_window_rect = provider
-            try:
-                img = super()._grab_raw()
-            finally:
-                bcw.find_window_rect = production
+            img = super()._grab_raw()
             if img is None:
                 frame.update(kept=False, reason="no-image")
                 return None

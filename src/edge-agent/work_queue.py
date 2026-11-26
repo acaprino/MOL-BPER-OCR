@@ -15,6 +15,8 @@ class QueueRow:
     sequence: int
     page: str
     state: str
+    context: int | None
+    practice: str | None
 
 
 @dataclass(frozen=True, slots=True)
@@ -31,14 +33,16 @@ class WorkQueue:
         self._active: dict[tuple[str, int], QueueRow] = {}
         self._recent: OrderedDict[tuple[str, int], QueueRow] = OrderedDict()
 
-    def accept(self, job: str, sequence: int, label: str, page: str) -> None:
-        self._active[job, sequence] = QueueRow(label, sequence, page, "queued")
+    def accept(self, job: str, sequence: int, label: str, page: str,
+               context: int | None, practice: str | None) -> None:
+        self._active[job, sequence] = QueueRow(label, sequence, page, "queued", context, practice)
         self.revision += 1
 
-    def update(self, job: str, sequence: int, state: str) -> None:
+    def update(self, job: str, sequence: int, state: str, practice: str | None = None) -> None:
         key = job, sequence
-        row = replace(self._active[key], state=state)
-        if state in {"done", "failed", "uncertain", "timed_out", "unassigned"}:
+        original = self._active[key]
+        row = replace(original, state=state, practice=practice or original.practice)
+        if state in {"done", "failed", "uncertain", "timed_out", "unassigned", "conflict"}:
             del self._active[key]
             self._recent[key] = row
             if len(self._recent) > RECENT_LIMIT:
@@ -47,10 +51,10 @@ class WorkQueue:
             self._active[key] = row
         self.revision += 1
 
-    def mark_assigned(self, job: str, sequence: int, state: str) -> None:
+    def mark_assigned(self, job: str, sequence: int, state: str, practice: str) -> None:
         key = job, sequence
         if key in self._recent:
-            self._recent[key] = replace(self._recent[key], state=state)
+            self._recent[key] = replace(self._recent[key], state=state, practice=practice)
             self.revision += 1
 
     def rows(self) -> tuple[QueueRow, ...]:
