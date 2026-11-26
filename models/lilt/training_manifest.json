@@ -1,0 +1,237 @@
+{
+  "created_utc": "2026-11-26T10:56:08.722454+00:00",
+  "base_model": "nielsr/lilt-xlm-roberta-base",
+  "base_revision": "39325597c4aa6698a50323f444013287bae52e67",
+  "initialization": "fresh pretrained; no BPER checkpoint",
+  "dataset_sha256": "e357d50bd8e9661b490db08c6c4f522e4defe957778a6ce2601504d7bb21a1c3",
+  "dataset_manifest": {
+    "schema_version": 1,
+    "dataset_version": "dataset",
+    "reviewed_rows": 1253,
+    "screens": 149,
+    "practices": 20,
+    "truth_counts": {
+      "rows": 1895,
+      "screens": 240,
+      "practices": 33
+    },
+    "roles": [
+      "O",
+      "ndg",
+      "denominazione",
+      "tipo",
+      "stato",
+      "fase",
+      "creazione",
+      "evidenze",
+      "filiale_relazione",
+      "n_fido",
+      "rapporto",
+      "descrizione",
+      "scadenza",
+      "importo_euro",
+      "tipo_op",
+      "note_della_richiesta",
+      "tooltip_descrizione_bmb",
+      "tooltip_evidenze_b",
+      "tooltip_descrizione_m_consap",
+      "tooltip_descrizione_consap_dr_bis",
+      "tooltip_descrizione_ipoteca",
+      "sogg_ndg",
+      "sogg_denominazione",
+      "sogg_ruolo",
+      "dal",
+      "datore_di_lavoro_anagrafica",
+      "di_cui_percepiscono_reddito",
+      "importo_totale_annuo_nucleo",
+      "note_scheda_privati",
+      "nr_altri_componenti_nucleo",
+      "numero_mensilita",
+      "professione_principale",
+      "rating_ufficiale",
+      "retribuzione_annua_netta",
+      "score_cgs",
+      "tipo_contratto",
+      "ultima_validazione_scheda"
+    ],
+    "include_test": false,
+    "archive": {
+      "pratiche.csv": {
+        "path": "D:\\Projects\\poc-data-extraction\\data\\dataset\\pratiche.csv",
+        "sha256": "25e06f0f5972b8338c87ec31377ea6bf17caf14fed35ad371bc70e8f517acf86"
+      },
+      "schermate.csv": {
+        "path": "D:\\Projects\\poc-data-extraction\\data\\dataset\\schermate.csv",
+        "sha256": "3c6dea8b3acf74f40a06a432516c2da5d3c57b6d2bb4f458812ebfdff1186e4c"
+      },
+      "valori.csv": {
+        "path": "D:\\Projects\\poc-data-extraction\\data\\dataset\\valori.csv",
+        "sha256": "4440ac054cd749dea6b40497c90d77fdb4eea43fd477c382d1e35afeda843cb4"
+      }
+    },
+    "ocr": {
+      "path": "D:\\Projects\\poc-data-extraction\\outputs\\ocria-nano-bench\\pair-f\\cache-f-x1.5-s0.json",
+      "sha256": "6bd711c9666725e6001859db2b20fe7d10bacaca1cc82174e21419d30e243d9c",
+      "scale": "1x",
+      "words_rewritten": false
+    },
+    "practice_splits": {
+      "train": [
+        "51185037",
+        "51350695",
+        "51788077",
+        "51798191",
+        "51849993",
+        "51859514",
+        "52013664",
+        "52032077",
+        "52062600",
+        "52067184",
+        "52068422",
+        "52080223",
+        "52080736",
+        "52102599",
+        "52125946",
+        "52130861",
+        "52135039",
+        "52137073"
+      ],
+      "val": [
+        "51659595",
+        "52126316"
+      ],
+      "test": [
+        "51027430",
+        "51531667",
+        "51772928",
+        "51792073",
+        "51800301",
+        "51886329",
+        "51997531",
+        "52022324",
+        "52060489",
+        "52102964",
+        "52136040",
+        "52186431",
+        "52196577"
+      ]
+    },
+    "leakage_audit": {
+      "status": "passed",
+      "screens_by_split": {
+        "train": 133,
+        "val": 16
+      },
+      "unique_practices": 20,
+      "unique_ndgs": 43,
+      "checks": [
+        "whole_practice",
+        "all_subject_ndgs",
+        "source_image_bytes",
+        "decoded_image_pixels"
+      ]
+    },
+    "institutional_ndgs": [
+      "11153238"
+    ],
+    "supervision_counts": {
+      "supervised": 1018,
+      "ignored_ocr_mismatch": 55,
+      "empty": 134,
+      "ignored_alignment": 25,
+      "partial_supervision": 21
+    },
+    "training_role_words": {
+      "O": 27767,
+      "ndg": 114,
+      "IGNORE": 3900,
+      "tipo": 205,
+      "stato": 37,
+      "creazione": 38,
+      "denominazione": 245,
+      "filiale_relazione": 268,
+      "rapporto": 180,
+      "tipo_op": 100,
+      "n_fido": 50,
+      "descrizione": 76,
+      "scadenza": 85,
+      "importo_euro": 54,
+      "tooltip_descrizione_ipoteca": 60,
+      "note_della_richiesta": 3549,
+      "sogg_ndg": 39,
+      "sogg_denominazione": 122,
+      "sogg_ruolo": 112,
+      "fase": 27,
+      "evidenze": 35,
+      "tooltip_evidenze_b": 6,
+      "tooltip_descrizione_consap_dr_bis": 32,
+      "tooltip_descrizione_bmb": 8,
+      "ultima_validazione_scheda": 4,
+      "professione_principale": 4,
+      "dal": 2,
+      "numero_mensilita": 1,
+      "retribuzione_annua_netta": 1,
+      "tipo_contratto": 2,
+      "rating_ufficiale": 5,
+      "score_cgs": 5,
+      "nr_altri_componenti_nucleo": 4,
+      "di_cui_percepiscono_reddito": 4,
+      "importo_totale_annuo_nucleo": 4,
+      "note_scheda_privati": 147,
+      "tooltip_descrizione_m_consap": 21
+    },
+    "fields_without_heldout_positive_examples": [
+      "tooltip_descrizione_m_consap",
+      "tooltip_descrizione_consap_dr_bis",
+      "dal",
+      "datore_di_lavoro_anagrafica",
+      "di_cui_percepiscono_reddito",
+      "importo_totale_annuo_nucleo",
+      "note_scheda_privati",
+      "nr_altri_componenti_nucleo",
+      "numero_mensilita",
+      "professione_principale",
+      "rating_ufficiale",
+      "retribuzione_annua_netta",
+      "score_cgs",
+      "tipo_contratto",
+      "ultima_validazione_scheda"
+    ],
+    "fields_without_supervised_training_examples": [
+      "datore_di_lavoro_anagrafica"
+    ],
+    "policy": "Exact aligned fields and ordered exact words within reviewed notes and validation-date text use fitted geometry. Uncertain background and conflicting roles are masked; independently verified exact positives are retained. Whole-field exactness is measured separately. Original OCR text and all reviewed targets are preserved.",
+    "code_sha256": {
+      "__init__.py": "b867b3c2d1acb2b245ec33db1ad749e63e6d7f43b40bda151c03999fbcc472bd",
+      "alignment.py": "0eb63de735305dec3a1308fc5865d12957188a974a015165532dd493e018f3a9",
+      "dataset.py": "b02da506255caffbeabb54d2fe2a6414a5923d2dbec6510dbcf1fc6747177822",
+      "evaluation.py": "35fdab7b413eb8158285ee1791c8aaf0824d808a3ac5335c2f8795645c073060",
+      "modal_ocr.py": "2118b021789d7c168cedae70499929655a7f6c65bf3c1c24a73725998082c7f2",
+      "modal_train.py": "efd0624895310ab1564b1ee33bf37cbd9d34b7061aa9f9ee9b63625c1e04acea",
+      "model.py": "1249b7ac93bdd236ee780238d5098de5025b1fc2ec853a6c4773885d9884a72e",
+      "ocr_runner.py": "50927e0875ec0d833e5cc0f90cfbe2a88be20203c59771584c375bf67687f744",
+      "schema.py": "14612d854e36aeed342a988f8134876c290d51011ac206ecf109fd1b2228c5e3"
+    },
+    "dataset_content_sha256": "e357d50bd8e9661b490db08c6c4f522e4defe957778a6ce2601504d7bb21a1c3"
+  },
+  "settings": {
+    "epochs_max": 8,
+    "variants_train_only": 2,
+    "seed": 7,
+    "batch_size": 2,
+    "accumulation_steps": 4,
+    "learning_rate": 3e-05,
+    "early_stopping_patience": 2,
+    "max_length": 512,
+    "device": "cuda"
+  },
+  "checkpoint_selection": "validation whole-field accuracy, then non-note word F1, then word micro F1",
+  "test_evaluations": 0,
+  "best_epoch": 7,
+  "train_sequences_including_augmentation": 634,
+  "train_seconds": 569.968,
+  "packages": {
+    "torch": "2.12.0+cu130",
+    "transformers": "5.15.0"
+  }
+}

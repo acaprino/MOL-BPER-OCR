@@ -1,0 +1,1 @@
+{"run": "f-x1.5-s0", "stretch": 1.5, "seed": 0, "epochs": 25, "lr": 3e-05, "best_epoch": 25, "max_width": 4096}
