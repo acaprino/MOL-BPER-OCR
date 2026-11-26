@@ -22,6 +22,7 @@ class PageDef:
     order: int
     template: Optional[str]
     slug: str
+    ml_excludes_table_sections: bool = False
 
 
 class PageRegistry:
@@ -53,7 +54,8 @@ class PageRegistry:
             if not isinstance(order, int) or order < 1:
                 raise ValueError(f"prompts.json: missing/invalid 'order' for '{name}'")
             template = (entry.get("template") or "").strip() or None
-            pages.append(PageDef(name=name, order=order, template=template, slug=slugify(name)))
+            pages.append(PageDef(name, order, template, slugify(name),
+                                 ml_excludes_table_sections=entry.get("ml_excludes_table_sections") is True))
         _ensure_unique([p.name.lower() for p in pages], "name")
         _ensure_unique([p.order for p in pages], "order")
         _ensure_unique([p.template.lower() for p in pages if p.template], "template")

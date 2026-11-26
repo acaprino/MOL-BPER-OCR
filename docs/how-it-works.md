@@ -150,8 +150,7 @@ BPERCaptureWorker (QThread)
   while the image stays unchanged. Only the matching job/sequence acknowledgement can complete or
   release the current pending capture. `ERROR` restarts the stability interval before retry;
   non-error results, including `ANCHOR_UNCERTAIN`, complete the visit because headerless pages can
-  still contain useful fields. `captured_page_types` is guidance about successfully processed page
-  names, not a job-wide acquisition gate. Pixel identity detects small identifier changes that pHash
+  still contain useful fields. The [navigation guide](navigazione-edge.md) tracks processed views per normalized NDG. The operator may revisit any view. Pixel identity detects small identifier changes that pHash
   can miss, but animation can keep restarting stability and cause further routing calls.
   See [ADR 0014](adr/0014-acquisizione-per-visita-con-esito.md), which integrates ADR 0007.
 - **Manual capture and stop:** `force_capture()` only enqueues a command. The capture loop performs
@@ -195,4 +194,9 @@ BPERCaptureWorker (QThread)
     entries (config.ini ships `gemini` + `gemini-3.8-flash` through Google's OpenAI-compatible
     endpoint); reads page definitions from `assets/templates/bper/prompts.json`. Router failures
     are logged in the capture feed (deduped per distinct error).
-  - `hybrid` -- tries LLM first, falls back to ML.
+  - `hybrid` tries the provider first. It honors an explicit abstention and falls back to ML when the provider fails.
+  - `local-first` accepts a clear local decision and consults the configured provider on ambiguous frames. An inconclusive result leaves the view unidentified.
+
+### Recovery of desktop sessions
+
+The GUI commits incoming pixels and sequence numbers before acknowledging a capture. A successful extraction replaces those pixels with the result. On restart the client replays unfinished frames and orders the durable results before consolidation. Corrections, uncommitted cell drafts and navigation decisions retain their session identity. [Operator recovery guide](recupero-sessioni.md)

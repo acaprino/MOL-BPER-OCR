@@ -3,9 +3,12 @@
 from __future__ import annotations
 
 import os
+from pathlib import Path
 import sys
+import traceback
 
 import app_paths
+from process_priority import apply_process_priority
 
 # Da bundle windowed (console=False) sys.stdout/stderr sono None: qualunque
 # print (torch.hub, tqdm, warning) manderebbe in crash chi scrive. Redirigiamo
@@ -32,7 +35,32 @@ try:
 except Exception:
     pass
 
-from PyQt6 import QtCore, QtWidgets
+def _recovery_command(args: list[str]) -> int:
+    """Run offline administration, including in the windowed executable."""
+    try:
+        if args == ["--recovery-snapshot"]:
+            from recovery_history import create_snapshot
+
+            directory = app_paths.recovery_dir()
+            snapshot = create_snapshot(directory / "sessions.sqlite3", app_paths.backup_dir())
+            print(f"Copia storica disponibile in {snapshot}", flush=True)
+        elif args[0] == "--recovery-restore" and len(args) == 3:
+            from recovery_history import restore_snapshot
+
+            restore_snapshot(Path(args[1]), Path(args[2]))
+            print(f"Sessioni ripristinate in {args[2]}", flush=True)
+        elif args[0] == "--recovery-export" and len(args) == 2:
+            from recovery_export import export_recovery
+
+            export_recovery(app_paths.recovery_dir(), Path(args[1]))
+        else:
+            print("Uso: --recovery-snapshot | --recovery-restore COPIA CARTELLA_NUOVA "
+                  "| --recovery-export CARTELLA_NUOVA", file=sys.stderr)
+            return 2
+    except Exception as exc:
+        print(f"Operazione di recupero non riuscita. {exc}", file=sys.stderr, flush=True)
+        return 1
+    return 0
 
 
 def main() -> int:
@@ -45,11 +73,16 @@ def main() -> int:
     Returns:
         Exit code restituito da QApplication.exec().
     """
-    app = QtWidgets.QApplication(sys.argv)
+    if sys.argv[1:2] and sys.argv[1].startswith("--recovery-"):
+        return _recovery_command(sys.argv[1:])
+
+    from PyQt6 import QtCore, QtWidgets
+
+    app = QtWidgets.QApplication.instance() or QtWidgets.QApplication(sys.argv)
     app.setApplicationName("Edge Agent")
     app.setOrganizationName("Tri-tech solutions")
 
-    # An error in a slot would end the process and lose every unexported session.
+    # Report unexpected slot exceptions without interrupting the operator.
     import error_report
     error_report.install_excepthook()
 
@@ -64,6 +97,7 @@ def main() -> int:
     config = bootstrap.run_preflight(None)
     if config is None:
         return 1
+    apply_process_priority()
 
     # VINCOLO: questo import deve restare DOPO run_preflight(). La catena
     # ui.main_window → local_extraction_client → extraction.config fotografa
@@ -74,7 +108,6 @@ def main() -> int:
     try:
         from ui.main_window import MainWindow
     except Exception as exc:  # noqa: BLE001
-        import traceback
         traceback.print_exc()
         QtWidgets.QMessageBox.critical(
             None, "Edge Agent",
@@ -84,8 +117,24 @@ def main() -> int:
         )
         return 1
 
-    show_debug = "--debug" in sys.argv
-    window = MainWindow(config, show_debug=show_debug)
+    try:
+        window = MainWindow(config, show_debug="--debug" in sys.argv)
+    except OSError as exc:
+        print(f"[RECOVERY] {exc}", file=sys.stderr)
+        QtWidgets.QMessageBox.critical(
+            None, "Recupero delle sessioni",
+            "Impossibile aprire l'archivio di recupero delle sessioni. "
+            "Se hai già aperto l'Edge Agent, usa la finestra esistente. "
+            "Altrimenti verifica i permessi della cartella di recupero o contatta l'assistenza."
+            f"\n\n{exc}",
+        )
+        return 1
+    except Exception as exc:  # noqa: BLE001
+        traceback.print_exc()
+        QtWidgets.QMessageBox.critical(
+            None, "Edge Agent", f"Impossibile avviare l'applicazione.\n\n{exc}",
+        )
+        return 1
     window.show()
 
     # Hook per lo smoke test automatico: chiude l'app dopo pochi secondi.

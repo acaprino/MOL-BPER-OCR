@@ -88,7 +88,7 @@ L'edge-agent sceglie come riconoscere quale schermata BPER è a video tramite la
 - `ml` -- prototype matching DINOv2, locale e gratuito per frame (richiede `torch`/`torchvision`). Default nel codice (`src/edge-agent/config.py:25`).
 - `llm` -- il router usa l’SDK OpenAI con provider, endpoint e modello risolti dall’INI. È la modalità spedita; il file corrente seleziona Gemini tramite endpoint compatibile OpenAI.
 - `hybrid` -- prima LLM, fallback su ML.
-- `local-first` -- prova il margine del classificatore e le classi di scarto; nel cablaggio attuale ricade su `MLPageRouter`, senza escalation all’LLM. Non usarlo aspettandosi il fallback remoto progettato nell’ADR 0008: vedi [Workflow](05-workflows.md).
+- `local-first` -- usa il classificatore locale per riconoscimenti e scarti sicuri. Nei casi incerti usa il provider LLM configurato. Vedi [Workflow](05-workflows.md).
 
 Le modalità `ml`/`hybrid` degradano con grazia: se l'import di torch fallisce, il classificatore entra in modalità DISABLED e non restituisce classificazioni invece di crashare (`src/edge-agent/page_classifier.py:50,158`).
 
@@ -312,7 +312,7 @@ FileNotFoundError: No dati.csv in <INPUT_DIR> and no archive workbook at <cartel
 
 **Causa:** `INPUT_DIR` non contiene un `dati.csv` e non sta dentro `data/dataset/pratiche`, dove `valori.csv` dà i valori di ogni pratica (`resolve_ground_truth()`, ADR 0032).
 
-**Soluzione:** punta `INPUT_DIR` a una cartella di `data/dataset/pratiche`, oppure metti un `dati.csv` in `INPUT_DIR` (formato in `README.md:221-241`: colonne `Fotogramma`, `Denominazione da attribuire`, `Valore rilevato`). Per estrarre senza ground truth, usa `python gui_app.py` -- lì il CSV è opzionale (`gui_app.py:263`).
+**Soluzione:** punta `INPUT_DIR` a una cartella di `data/dataset/pratiche`, oppure metti un `dati.csv` in `INPUT_DIR` (formato in `docs/07-getting-started.md`: colonne `Fotogramma`, `Denominazione da attribuire`, `Valore rilevato`). Per estrarre senza ground truth, usa `python gui_app.py` -- lì il CSV è opzionale (`gui_app.py:263`).
 
 ### API key mancante o non valida
 
@@ -427,7 +427,7 @@ Prima di indagare la chiave, verifica di avere davvero bisogno del router LLM: l
 
 e la schermata indicata è proprio quella che l'operatore ha davanti. Un nome pagina errato può confondere la guida e i metadati del frame.
 
-**Causa:** disallineamento di inquadratura fra i prototipi e il frame. I prototipi sono screenshot di **finestra**; se il frame che arriva al classificatore è un monitor intero, le ROI relative cadono su contenuto diverso e la scelta fra le 9 pagine diventa arbitraria. Il nome in `captured_page_types` oggi serve soltanto alla guida: non blocca altre visite della stessa pagina. La normalizzazione resta necessaria per classificare correttamente.
+**Causa:** disallineamento di inquadratura fra i prototipi e il frame. I prototipi sono screenshot di **finestra**; se il frame che arriva al classificatore è un monitor intero, le ROI relative cadono su contenuto diverso e la scelta fra le 9 pagine diventa arbitraria. Una nuova visita può acquisire di nuovo la stessa pagina. La normalizzazione resta necessaria per classificare correttamente.
 
 **Come confermarlo:** confronta i valori estratti con le schermate della pratica di riferimento in `data/dataset/pratiche/51350695`. Se corrispondono a una pagina **diversa** da quella nel log, l'estrazione sta funzionando e il problema è il routing.
 
@@ -469,7 +469,7 @@ Non può accadere da questo progetto -- non apre **nessuna** porta. Le voci `htt
 | Bootstrap su Windows | `.\run_edge_agent.bat` | Crea/ripara la `.venv`, installa le dipendenze, avvia l'edge-agent |
 | Installare le dipendenze a mano | `pip install -r requirements.txt` | torch serve solo per router `ml`/`hybrid` |
 | Creare la configurazione | `Copy-Item .env.example .env` | Poi imposta `LLM_API_KEY` |
-| Eseguire il batch CLI | `python main.py` | Verità da `dati.csv` o da `pratiche.xlsx`; scrive JSON + CSV di debug in `OUTPUT_DIR` |
+| Eseguire il batch CLI | `python main.py` | Verità da `dati.csv` o da `data/dataset/valori.csv`, con fallback al workbook storico; scrive JSON + CSV di debug in `OUTPUT_DIR` |
 | Avviare la GUI Tkinter | `python gui_app.py` | CSV di GT opzionale; chiave incollabile in-app; output nella CWD |
 | Avviare l'edge-agent | `python src/edge-agent/edge_agent.py` | Equivalente a `python main.py --gui` |
 | Edge-agent + tab di debug | `.\run_edge_agent.bat --debug` | Richiede anche `show_llm_tab = true` in `config.ini:32` |
@@ -488,3 +488,7 @@ Non può accadere da questo progetto -- non apre **nessuna** porta. Le voci `htt
 ---
 
 Riferimenti incrociati: [Anatomia del progetto](09-project-anatomy.md) per il catalogo completo di variabili d'ambiente e file di configurazione. [Come iniziare](07-getting-started.md) per il primo setup. [Tech Stack](03-tech-stack.md) per dipendenze e vincoli di versione.
+
+## Archivio di recupero e priorità Windows
+
+Configurare `EDGE_AGENT_RECOVERY_DIR` per la cartella primaria e `EDGE_AGENT_BACKUP_DIR` per la replica e lo storico. Per impostazione predefinita l’archivio primario è nel profilo utente. La replica e lo storico sono nella sottocartella `backup` accanto all’eseguibile o, da sorgente, in `src/edge-agent/backup/`. `EDGE_AGENT_PRIORITY=above_normal` richiede una priorità Windows superiore alla normale. [Configurazione, limiti e prova di ripristino](recupero-sessioni.md)

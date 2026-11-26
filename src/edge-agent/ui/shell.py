@@ -94,22 +94,35 @@ class StatusHeader(QtWidgets.QFrame):
         layout.addWidget(self.toggle_button)
 
         self._running = False
+        self._resume = False
         theme.notifier().changed.connect(self._retint)
         self.set_running(False)
         self.set_counters(0, 0, 0)
 
     def _retint(self) -> None:
-        self.set_running(self._running)
+        self.toggle_button.setIcon(
+            icons.icon("square" if self._running else "play", theme.current_tokens().on_primary, 16)
+        )
+
+    def set_stopping(self) -> None:
+        self.state_label.setText("Arresto della cattura in corso")
+        self.toggle_button.setEnabled(False)
+        self.toggle_button.setText("Arresto…")
+        self.toggle_button.setToolTip("Attendi il termine della cattura")
 
     def set_running(self, running: bool) -> None:
         self._running = running
+        self.toggle_button.setEnabled(True)
         # State is spelled out in words, never carried by the glyph alone.
         self.state_label.setText("● Cattura in corso" if running else "○ Cattura ferma")
-        self.toggle_button.setText("Ferma" if running else "Avvia")
-        self.toggle_button.setIcon(
-            icons.icon("square" if running else "play", theme.current_tokens().on_primary, 16)
-        )
+        self.toggle_button.setText("Ferma" if running else ("Riprendi" if self._resume else "Avvia"))
+        self._retint()
         self.toggle_button.setToolTip("Ferma la cattura (F9)" if running else "Avvia la cattura (F9)")
+
+    def set_resume_selected(self, selected: bool) -> None:
+        self._resume = selected
+        if not self._running:
+            self.toggle_button.setText("Riprendi" if selected else "Avvia")
 
     def set_counters(self, queued: int, done: int, practices: int) -> None:
         self.counters_label.setText(f"{done} elaborati su {queued} · {practices} pratiche")

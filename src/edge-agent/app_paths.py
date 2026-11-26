@@ -2,8 +2,21 @@
 
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
+
+
+def recovery_dir() -> Path:
+    """Keep operator sessions in the user's profile across portable app upgrades."""
+    override = os.getenv("EDGE_AGENT_RECOVERY_DIR")
+    if override:
+        return Path(override).expanduser()
+    if sys.platform == "win32":
+        base = Path(os.getenv("LOCALAPPDATA") or Path.home() / "AppData" / "Local")
+    else:
+        base = Path(os.getenv("XDG_STATE_HOME") or Path.home() / ".local" / "state")
+    return base / "MutuiOnline" / "BPER-EdgeAgent" / "recovery"
 
 
 def is_frozen() -> bool:
@@ -21,6 +34,12 @@ def app_dir() -> Path:
     if is_frozen():
         return Path(sys.executable).resolve().parent
     return Path(__file__).resolve().parent
+
+
+def backup_dir() -> Path:
+    """Resolve the replica and history relative to the installed application."""
+    directory = Path(os.getenv("EDGE_AGENT_BACKUP_DIR") or "backup").expanduser()
+    return (app_dir() / directory).resolve()
 
 
 def src_dir() -> Path:

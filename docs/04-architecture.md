@@ -3,6 +3,8 @@
 CLI, GUI Tkinter e edge-agent PyQt6 condividono un motore di estrazione senza dipendenze dalla UI. `ExtractionPipeline` legge gli identificativi, esegue la lettura principale e rilegge le aree deboli, poi restituisce campi e metadati. L'edge-agent aggiunge cattura, riconoscimento della pagina e consolidamento: i frame di una stessa pratica confluiscono in una riga consultabile ed esportabile.
 <!-- Source: src/extraction/pipeline.py:55; src/extraction/cli.py::_debug_log; gui_app.py:238; src/edge-agent/local_extraction_client.py:90; src/edge-agent/practice_consolidation.py:87 -->
 
+La guida alla cattura mantiene la copertura delle viste per NDG. Il percorso dei dati sul monitor è descritto nella [macchina a stati](navigazione-edge.md). L’addestramento offline usa due lettori OCR con i rispettivi checkpoint LiLT, descritti nella [guida ai modelli](ocr-lilt.md).
+
 ## Diagramma dei componenti
 
 Il coordinamento risiede nel processo locale; la lettura delle immagini usa API di modelli esterni. Il router LLM ha un proprio percorso di rete, separato dalle chiamate del motore. Le frecce tratteggiate indicano notifiche Qt; il dettaglio temporale è nei [workflow](05-workflows.md).
@@ -49,7 +51,7 @@ flowchart TB
 ## Struttura delle directory
 
 ```text
-poc-data-src/extraction/
+poc-data-extraction/
   main.py                       # CLI; --gui inoltra all'edge-agent
   gui_app.py                    # Tkinter: file, valutazione facoltativa, export
   run_edge_agent.bat            # Launcher Windows
@@ -61,7 +63,7 @@ poc-data-src/extraction/
   src/
     prompt_store.py             # Catalogo prompt condiviso, solo stdlib
     extraction/                 # Motore, schema, immagini, valutazione, batch
-    training/                   # Dataset supervisionato v3.1 e training/valutazione LiLT
+    training/                   # Dataset da archivio revisionato, OCR e training/valutazione LiLT
     edge-agent/
       edge_agent.py             # Avvio Qt, preflight, import della UI
       app_paths.py / bootstrap.py # Percorsi source/bundle e preparazione avvio
@@ -82,10 +84,9 @@ poc-data-src/extraction/
   tests/                        # Test di comportamento
   tools/                        # Script di verifica (check.py) e calibrazione prototipi
   data/
-    reference/                  # Screenshot di riferimento (9 PNG tracciati); dati.csv locale
-    pratiche/                   # Archivio delle 33 pratiche: schermate per pratica e pratiche.xlsx con i valori corretti
-    revisione/                  # Fonti della data entry umana, una cartella per lotto
-    training/                   # Bundle ground-truth, OCR e run LiLT
+    dataset/                    # pratiche/, pratiche.csv, schermate.csv e valori.csv
+  models/                       # Riferimenti ai checkpoint e lettore Nano derivato
+  outputs/                      # Cache OCR, dataset derivati e risultati locali
   docs/                         # Guida ufficiale e ADR
 ```
 
@@ -116,11 +117,11 @@ CLI e Tkinter riusano `BatchRunner`: la creazione dei modelli, l'esecuzione para
 
 | File | Responsabilità |
 |---|---|
-| [fields.py](../extraction/fields.py) | `FIELD_KEYS` e corrispondenza delle etichette CSV con le chiavi italiane. |
-| [schemas.py](../extraction/schemas.py) | `FieldResult`, risposte anchor/main e righe soggetti, fidi, garanzie. |
-| [field_definitions.py](../extraction/field_definitions.py) | Nome visualizzato, pagina di origine e gruppo di export di ogni campo. |
-| [page_definitions.py](../extraction/page_definitions.py) | Cinque pagine di origine e quattro gruppi di export. |
-| [canonical_mapping.py](../extraction/canonical_mapping.py) | Trasformazione dei campi in voci rivolte al cliente. |
+| [fields.py](../src/extraction/fields.py) | `FIELD_KEYS` e corrispondenza delle etichette CSV con le chiavi italiane. |
+| [schemas.py](../src/extraction/schemas.py) | `FieldResult`, risposte anchor/main e righe soggetti, fidi, garanzie. |
+| [field_definitions.py](../src/extraction/field_definitions.py) | Nome visualizzato, pagina di origine e gruppo di export di ogni campo. |
+| [page_definitions.py](../src/extraction/page_definitions.py) | Cinque pagine di origine e quattro gruppi di export. |
+| [canonical_mapping.py](../src/extraction/canonical_mapping.py) | Trasformazione dei campi in voci rivolte al cliente. |
 
 <!-- Source: src/extraction/fields.py:12; src/extraction/schemas.py:31; src/extraction/schemas.py:73; src/extraction/field_definitions.py:1; src/extraction/page_definitions.py:5; src/extraction/canonical_mapping.py:20 -->
 
@@ -183,7 +184,7 @@ Le strategie ML, LLM, hybrid e il comportamento effettivo di local-first sono de
 Il contratto centrale è un risultato per immagine: campi, liste tabellari, `canonical_fields`, `_attempts`, `_meta_agg`, `_field_sources`, `_content_crop` e `_status`. L'uscita anticipata senza anchor omette `canonical_fields`. Il client aggiunge pagina, numero, confidenza del routing e `_capture_sequence`; un'eccezione del motore diventa un risultato ridotto `ERROR` con campi vuoti. Un errore diagnostico aggiunge `_diagnostic_error` conservando il risultato.
 <!-- Source: src/extraction/pipeline.py:151; src/extraction/pipeline.py:196; src/edge-agent/local_extraction_client.py:170; src/edge-agent/local_extraction_client.py:182 -->
 
-Nel batch gli output sono indicizzati dallo stem del file e salvati prima della valutazione. Dal vivo restano in memoria sotto il job: `consolidate()` li raggruppa per NDG normalizzato, applica `pick_best()` e produce `PracticeRecord`. La tabella e l'export Excel riusano questa fusione. Excel contiene 45 colonne, NDG e denominazione all'inizio, due righe di intestazione e una riga per pratica; i valori sono testo anche quando iniziano con `=` o hanno segno negativo.
+Nel batch gli output sono indicizzati dallo stem del file e salvati prima della valutazione. Dal vivo ogni cattura ha un progressivo e una copia persistente. Quando l’estrazione riesce il risultato sostituisce i pixel salvati. `consolidate()` li raggruppa per NDG normalizzato, applica `pick_best()` e produce `PracticeRecord`. La tabella e l'export Excel riusano questa fusione. Excel contiene 45 colonne, NDG e denominazione all'inizio, due righe di intestazione e una riga per pratica; i valori sono testo anche quando iniziano con `=` o hanno segno negativo.
 <!-- Source: src/extraction/imaging.py:29; src/extraction/cli.py::main; src/extraction/normalization.py:40; src/edge-agent/practice_consolidation.py:67; src/edge-agent/practice_consolidation.py:87; src/edge-agent/ui/data_table_tab.py:194; src/edge-agent/excel_export.py:92; src/edge-agent/excel_export.py:124; src/edge-agent/excel_export.py:177 -->
 
 ## Configurazione

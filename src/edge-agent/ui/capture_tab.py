@@ -29,8 +29,10 @@ from workers.capture import (
 )
 
 from . import icons
+from .navigation_card import NavigationCard
 from .overlay import CaptureBorderOverlay
-from .widgets import Card, CollapsiblePanel, default_export_name
+from .widgets import Card, CollapsiblePanel
+from .workbook_export import WorkbookExport
 
 
 class CaptureTab(QWidget):
@@ -49,7 +51,9 @@ class CaptureTab(QWidget):
     """
 
     running_changed = QtCore.pyqtSignal(bool)        # cattura avviata / fermata
+    stopping = QtCore.pyqtSignal()
     counters_changed = QtCore.pyqtSignal(int, int)   # (frame inviati, risultati elaborati)
+    resume_selected = QtCore.pyqtSignal(bool)
 
     def __init__(
             self,
@@ -57,23 +61,36 @@ class CaptureTab(QWidget):
             api_client: Any,
             parent: Optional[QtWidgets.QWidget] = None,
             debug_tab: Optional[QtWidgets.QWidget] = None,
+            workbook_export: Optional[WorkbookExport] = None,
     ) -> None:
         super().__init__(parent)
 
         self.config = config
         self.api_client = api_client
+        self._export = workbook_export or WorkbookExport(api_client, self)
 
         self.worker: Optional[BaseCaptureWorker] = None
+        self._stopping = False
         self.job_id: Optional[str] = None
         self._overlay: Optional[CaptureBorderOverlay] = None
         self._debug_tab: Optional[QtWidgets.QWidget] = debug_tab
         self._n_results: int = 0
         self._n_queued: int = 0
         self._error_messages: set[str] = set()  # distinct errors since the capture started
+        self._manual_page: str = ""
+        self._manual_timer = QtCore.QTimer(self)
+        self._manual_timer.setSingleShot(True)
+        self._manual_timer.timeout.connect(self._submit_manual_capture)
 
         self._init_ui()
+        self._export.bind_button(self.export_button)
+        if getattr(self.api_client, "has_recovery", False):
+            for job_id in self.api_client.recovered_jobs:
+                self.session_combo.addItem(self.api_client.session_label(job_id), job_id)
+            self.session_combo.setCurrentIndex(self.session_combo.count() - 1)
         # Settings are read when a capture starts: they are locked while it runs.
         self.running_changed.connect(lambda running: self.settings_card.setEnabled(not running))
+        self.running_changed.connect(self.navigation_card.set_live)
 
         # Connessioni uniche al client (vive quanto la finestra): i contatori
         # filtrano per job_id, quindi nessun connect/disconnect per sessione.
@@ -116,11 +133,19 @@ class CaptureTab(QWidget):
         self.window_filter_edit.setText(self.config.window_title_contains)
         self.window_filter_edit.setPlaceholderText("Parte del titolo della finestra")
 
-        for row, (text, field) in enumerate((
+        settings = [
             ("Modalità", self.mode_combo),
             ("Velocità di acquisizione", self.fps_spin),
             ("Titolo della finestra", self.window_filter_edit),
-        )):
+        ]
+        self.session_combo = QComboBox(self.settings_card)
+        self.session_combo.addItem("Nuova sessione", None)
+        self.session_combo.currentIndexChanged.connect(self._select_capture_session)
+        if getattr(self.api_client, "has_recovery", False):
+            settings.insert(0, ("Sessione di cattura", self.session_combo))
+        else:
+            self.session_combo.hide()
+        for row, (text, field) in enumerate(settings):
             label = QLabel(text, self.settings_card)
             label.setBuddy(field)
             grid.addWidget(label, row, 0)
@@ -142,7 +167,7 @@ class CaptureTab(QWidget):
         self.force_page_combo.setToolTip("Pagina da acquisire subito")
         self.force_capture_button = QPushButton("Acquisisci ora", self)
         icons.bind_icon(self.force_capture_button, "camera", "text", 18)
-        self.force_capture_button.setToolTip("Acquisisci subito la pagina scelta (solo in modalità BPER)")
+        self.force_capture_button.setToolTip("Se l’agent copre il monitor di cattura, si riduce a icona e lascia tre secondi per mostrare la pagina BPER.")
         self.force_capture_button.setEnabled(False)
 
         self.export_button = QPushButton("Esporta Excel", self)
@@ -158,9 +183,16 @@ class CaptureTab(QWidget):
         actions.addWidget(self.export_button)
         layout.addLayout(actions)
 
+        self.navigation_card = NavigationCard(self)
+        self.navigation_card.hide()
+        self.navigation_card.availability_requested.connect(self._set_view_available)
+        self.navigation_card.reopen_requested.connect(self._reopen_view)
+        layout.addWidget(self.navigation_card)
+
         # --- Log: closed, showing its last line and the error count ---
         self.log_text = QTextEdit(self)
         self.log_text.setReadOnly(True)
+        self.log_text.document().setMaximumBlockCount(1000)
         self.log_text.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
         self.log_text.setFont(QtGui.QFont("Consolas", 9))
         self.log_panel = CollapsiblePanel("Registro attività", self.log_text, self)
@@ -205,6 +237,9 @@ class CaptureTab(QWidget):
     def log_error_count(self) -> int:
         return len(self._error_messages)
 
+    def log_warning(self, message: str) -> None:
+        self._log(f"[AVVISO] {message}")
+
     def _create_job_id(self) -> Optional[str]:
         """Avvia un nuovo job locale e ritorna il job_id."""
         job_id = self.api_client.start_job()
@@ -213,6 +248,32 @@ class CaptureTab(QWidget):
             return None
         self._log(f"Nuovo job avviato: {job_id}")
         return job_id
+
+    def _select_capture_session(self, _index: int) -> None:
+        self.job_id = self.session_combo.currentData()
+        self.navigation_card.hide()
+        self.resume_selected.emit(self.job_id is not None)
+        self.refresh_counters()
+
+    def refresh_counters(self) -> None:
+        # Worker signals can predate the window or arrive after a newer snapshot.
+        self._n_queued, self._n_results = (
+            self.api_client.capture_counts(self.job_id) if self.job_id else (0, 0)
+        )
+        self.counters_changed.emit(self._n_queued, self._n_results)
+
+    @QtCore.pyqtSlot(str, dict)
+    def _on_navigation(self, job_id: str, progress: dict[str, Any]) -> None:
+        if self.sender() is self.worker and job_id == self.job_id:
+            self.navigation_card.show_progress(progress)
+
+    def _set_view_available(self, ndg: str, name: str, available: bool) -> None:
+        if isinstance(self.worker, BPERCaptureWorker):
+            self.worker.set_page_available(ndg, name, available)
+
+    def _reopen_view(self, ndg: str, name: str) -> None:
+        if isinstance(self.worker, BPERCaptureWorker):
+            self.worker.reopen_page(ndg, name)
 
     def _make_job_id_getter(self) -> Callable[[], Optional[str]]:
         return lambda: self.job_id
@@ -224,8 +285,7 @@ class CaptureTab(QWidget):
             QMessageBox.warning(self, "Avviso", "Cattura già in corso.")
             return
 
-        # Creazione job lato backend
-        job_id = self._create_job_id()
+        job_id = self.session_combo.currentData() or self._create_job_id()
         if not job_id:
             QMessageBox.critical(
                 self,
@@ -236,10 +296,13 @@ class CaptureTab(QWidget):
             return
 
         self.job_id = job_id
-        self._n_results = 0
-        self._n_queued = 0
         self._error_messages.clear()
-        self.counters_changed.emit(0, 0)
+        if self.session_combo.currentData():
+            self._log(f"Ripresa della sessione: {self.api_client.session_label(job_id)}")
+            self.refresh_counters()
+        else:
+            self._n_queued = self._n_results = 0
+            self.counters_changed.emit(0, 0)
 
         # Aggiorna la config dai controlli UI
         self.config.update_from_ui(
@@ -249,6 +312,8 @@ class CaptureTab(QWidget):
 
         # Instanzia il worker in base alla modalità scelta
         mode = self.mode_combo.currentData()
+        self.navigation_card.show_progress({})
+        self.navigation_card.setVisible(mode == "bper")
         job_id_getter = self._make_job_id_getter()
 
         if mode == "bper":
@@ -258,6 +323,7 @@ class CaptureTab(QWidget):
                 api_client=self.api_client,
                 parent=self,
             )
+            worker.navigation_changed.connect(self._on_navigation)
             self._log("Avvio cattura in modalità BPER.")
             # Popola combo pagine dal registro (prompts.json, source of truth)
             pages = self._load_bper_page_names(self.config.router_mode)
@@ -280,6 +346,7 @@ class CaptureTab(QWidget):
         # Collega segnali del worker
         worker.tick.connect(self._on_worker_tick)
         worker.error.connect(self._on_worker_error)
+        worker.finished.connect(self._on_worker_finished)
         # Debug LLM: collega se tab presente
         try:
             if self._debug_tab is not None:
@@ -319,36 +386,41 @@ class CaptureTab(QWidget):
             self.force_page_combo.setEnabled(has_pages)
             self.force_capture_button.setEnabled(has_pages)
 
-    def _on_stop_capture(self) -> None:
-        if self.worker is None:
+    def stop_capture(self) -> None:
+        if self.worker is None or self._stopping:
             return
 
+        self._stopping = True
+        self._manual_timer.stop()
         self._log("Richiesta arresto cattura...")
-        try:
-            self.worker.stop()
-            if not self.worker.wait(5000):
-                # Il loop di cattura non esegue più lavoro lungo: se accade,
-                # è un bug da indagare, non da mascherare con terminate().
-                self._log("[WARN] Worker di cattura ancora attivo dopo 5s.")
-        except Exception as exc:  # noqa: BLE001
-            self._log(f"[ERROR] Errore in stop_capture: {exc}")
-        finally:
-            self.worker = None
-            in_flight = self._n_queued - self._n_results
-            if in_flight > 0:
-                self._log(f"Cattura arrestata. Estrazioni ancora in corso: {in_flight} (proseguono in background).")
-            else:
-                self._log("Cattura arrestata.")
-            self.running_changed.emit(False)
-            self.force_page_combo.setEnabled(False)
-            self.force_capture_button.setEnabled(False)
-            # Nasconde overlay se presente
-            try:
-                if self._overlay is not None:
-                    self._overlay.hide()
-                    self._overlay.deleteLater()
-            finally:
-                self._overlay = None
+        self.navigation_card.set_live(False)
+        self.force_page_combo.setEnabled(False)
+        self.force_capture_button.setEnabled(False)
+        self.stopping.emit()
+        self.worker.stop()
+
+    @QtCore.pyqtSlot()
+    def _on_worker_finished(self) -> None:
+        worker = self.worker
+        if worker is None or worker is not self.sender():
+            return
+        self.worker = None
+        self._manual_timer.stop()
+        self.navigation_card.finish_capture()
+        worker.deleteLater()
+        self._stopping = False
+        self.force_page_combo.setEnabled(False)
+        self.force_capture_button.setEnabled(False)
+        if self._overlay is not None:
+            self._overlay.hide()
+            self._overlay.deleteLater()
+            self._overlay = None
+        in_flight = self._n_queued - self._n_results
+        if in_flight > 0:
+            self._log(f"Cattura arrestata. Estrazioni ancora in corso: {in_flight} (proseguono in background).")
+        else:
+            self._log("Cattura arrestata.")
+        self.running_changed.emit(False)
 
     def _on_worker_tick(self, message: str) -> None:
         self._log(message)
@@ -364,51 +436,20 @@ class CaptureTab(QWidget):
     # ------------------------------------------------------------------ Azioni backend
 
     def _on_export_excel(self) -> None:
-        if not self.job_id or self.api_client.practice_count(self.job_id) == 0:
-            QMessageBox.warning(
-                self,
-                "Niente da esportare",
-                "Non c'è ancora niente da esportare. Avvia la cattura e attendi almeno un'estrazione.",
-            )
-            return
-
-        file_path, _ = QtWidgets.QFileDialog.getSaveFileName(
-            self,
-            "Salva Excel",
-            default_export_name(),
-            "File Excel (*.xlsx)",
-        )
-        if not file_path:
-            return
-
-        try:
-            # The single export path: corrections and labels included.
-            written = self.api_client.export_workbook(self.job_id, file_path)
-        except Exception as e:  # noqa: BLE001
-            self._log(f"[ERROR] Export Excel fallita: {e}")
-            QMessageBox.critical(
-                self,
-                "Salvataggio non riuscito",
-                f"Non riesco a salvare il file:\n{e}",
-            )
-            return
-
-        self._log(f"Export Excel salvata in: {file_path} ({written} pratiche)")
-        QMessageBox.information(
-            self,
-            "Esportazione completata",
-            f"{written} pratiche salvate in:\n{file_path}",
-        )
+        self._export.start(self, self.job_id, self._log)
 
     def _on_frame_queued(self, job_id: str, _page_type: str) -> None:
         if job_id == self.job_id:
-            self._n_queued += 1
-            self.counters_changed.emit(self._n_queued, self._n_results)
+            if getattr(self.api_client, "has_recovery", False) and self.session_combo.findData(job_id) < 0:
+                with QtCore.QSignalBlocker(self.session_combo):
+                    self.session_combo.addItem(self.api_client.session_label(job_id), job_id)
+                    self.session_combo.setCurrentIndex(self.session_combo.findData(job_id))
+                self.resume_selected.emit(True)
+            self.refresh_counters()
 
     def _on_result_ready_count(self, job_id: str, result: dict) -> None:
         if job_id == self.job_id:
-            self._n_results += 1
-            self.counters_changed.emit(self._n_queued, self._n_results)
+            self.refresh_counters()
             page = str(result.get("_page_type") or result.get("screen_id") or "?")
             status = str(result.get("_status") or "OK")
             self._log(f"Elaborazione terminata: «{page}» (stato: {status})")
@@ -421,11 +462,10 @@ class CaptureTab(QWidget):
     def is_running(self) -> bool:
         return self.worker is not None
 
-    def stop_capture(self) -> None:
-        self._on_stop_capture()
-
     # ------------------------------------------------------------------ Forza scatto handler
     def _on_force_capture(self) -> None:
+        if self._stopping or self._manual_timer.isActive():
+            return
         if not self.worker:
             QMessageBox.warning(self, "Nessun worker", "Avvia prima la cattura.")
             return
@@ -433,13 +473,31 @@ class CaptureTab(QWidget):
         if not page:
             QMessageBox.warning(self, "Selezione mancante", "Seleziona una pagina da forzare.")
             return
-        try:
-            # Queue the request; the BPER capture thread owns the camera.
-            if isinstance(self.worker, BPERCaptureWorker) and hasattr(self.worker, "force_capture"):
-                # type: ignore[attr-defined]
-                self.worker.force_capture(page)
-                self._log(f"[UI] Forza scatto richiesto per pagina: {page}")
-            else:
-                QMessageBox.warning(self, "Modalità non supportata", "La forzatura è disponibile solo in modalità BPER.")
-        except Exception as exc:  # noqa: BLE001
-            self._log(f"[ERROR] Forza scatto fallita: {exc}")
+        if not isinstance(self.worker, BPERCaptureWorker):
+            QMessageBox.warning(self, "Modalità non supportata", "La forzatura è disponibile solo in modalità BPER.")
+            return
+        self._manual_page = page
+        if self._covers_capture_monitor():
+            self._log("Scatto manuale tra tre secondi. Porta in primo piano la pagina BPER.")
+            self.window().showMinimized()
+            self._manual_timer.start(3000)
+        else:
+            self._submit_manual_capture()
+
+    def _covers_capture_monitor(self) -> bool:
+        window = self.window()
+        screens = QtGui.QGuiApplication.screens()
+        index = int(self.config.monitor_index or 1) - 1
+        target = screens[index] if 0 <= index < len(screens) else QtGui.QGuiApplication.primaryScreen()
+        return bool(window.isVisible() and not window.isMinimized() and target
+                    and target.geometry().intersects(window.frameGeometry()))
+
+    def _submit_manual_capture(self) -> None:
+        if self._stopping or not isinstance(self.worker, BPERCaptureWorker):
+            return
+        if self._covers_capture_monitor():
+            self._log("Scatto manuale annullato. L’edge-agent copre il monitor da acquisire.")
+            return
+        # Only the capture thread touches the camera.
+        self.worker.force_capture(self._manual_page)
+        self._log(f"[UI] Forza scatto richiesto per pagina: {self._manual_page}")

@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import sys
 import threading
 import uuid
+from collections import defaultdict
 from datetime import datetime
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 from PIL import Image
 from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
@@ -38,7 +39,8 @@ from prompt_store import catalog_source
 
 from excel_export import export_results
 from extraction_pool import DaemonThreadPool
-from practice_consolidation import CORRECTABLE_KEYS, PracticeRecord, consolidate, has_content
+from practice_consolidation import CORRECTABLE_KEYS, PracticeCounter, PracticeRecord, consolidate, has_content
+from session_frames import json_bytes, pack_pending, unpack_pending
 
 # Excel refuses cells longer than this, so a pasted text is cut here.
 MAX_CORRECTION_LENGTH = 32767
@@ -69,7 +71,7 @@ def _log_extraction(job_id: str, result: Dict[str, Any]) -> None:
 
     error = result.get("_error")
     if error:
-        print(f"[EXTRACT]   error: {error}")
+        print("[EXTRACT]   extraction failed")
 
     for key, payload in (result.get("fields") or {}).items():
         if not isinstance(payload, dict):
@@ -79,7 +81,7 @@ def _log_extraction(job_id: str, result: Dict[str, Any]) -> None:
             continue
         confidence = payload.get("confidence") or 0.0
         print(
-            f"[EXTRACT]   {key}={value!r} conf={float(confidence):.2f} "
+            f"[EXTRACT]   {key} present conf={float(confidence):.2f} "
             f"src={sources.get(key, '?')}"
         )
 
@@ -97,7 +99,7 @@ def clean_correction(value: Optional[str]) -> Optional[str]:
     return text or None
 
 
-def _fingerprint(records: Sequence[PracticeRecord]) -> Optional[str]:
+def _fingerprint(records: Sequence[PracticeRecord], labels: Dict[str, str]) -> Optional[str]:
     """Hash of the exportable content, or None when there is nothing to export.
 
     An error-only session consolidates to one empty record: it has no content, so
@@ -109,7 +111,7 @@ def _fingerprint(records: Sequence[PracticeRecord]) -> Optional[str]:
     ]
     if not any(has_content(record) for record in records):
         return None
-    return hashlib.sha1(json.dumps(rows, default=str, ensure_ascii=False).encode()).hexdigest()
+    return hashlib.sha256(json_bytes([rows, sorted(labels.items())])).hexdigest()
 
 
 class LocalExtractionClient(QtCore.QObject):
@@ -117,27 +119,36 @@ class LocalExtractionClient(QtCore.QObject):
     Local extraction client implementing the ingest_frame() interface
     expected by BPERCaptureWorker.
 
-    Uses ExtractionPipeline to process each captured frame locally,
-    stores results in memory, and emits result_ready when done.
+    Runs extraction on the local pool and emits result_ready when done.
+    The desktop provides a recovery directory for all accepted work.
     Compatible surface: start_job(), ingest_frame(), requeue_job(),
     get_results(), frame_queued (signal), shutdown(), pending_extractions().
     """
 
     result_ready = QtCore.pyqtSignal(str, dict)   # (job_id, result)
     frame_queued = QtCore.pyqtSignal(str, str)    # (job_id, page_type)
+    recovery_error = QtCore.pyqtSignal(str)
+    history_warning = QtCore.pyqtSignal(str)
 
     def __init__(
         self,
         parent: Optional[QtCore.QObject] = None,
         pipeline: Optional[ExtractionPipeline] = None,
+        *,
+        recovery_dir: Optional[Path] = None,
+        export_only: bool = False,
     ) -> None:
         super().__init__(parent)
+        self._export_only = export_only
+        if export_only and recovery_dir is None:
+            raise ValueError("L'esportazione di recupero richiede un archivio esistente.")
 
         # Which prompt catalog is live: without this line a redirected or
         # tampered prompts/ folder leaves no trace in edge-agent.log.
-        print(f"[PROMPTS] catalog loaded from {catalog_source()}")
+        if not export_only:
+            print(f"[PROMPTS] catalog loaded from {catalog_source()}")
 
-        if pipeline is None:
+        if pipeline is None and not export_only:
             main_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL)
             anchor_model = create_chat_model(LLM_PROVIDER, model=LLM_MODEL_ANCHOR)
             pipeline = ExtractionPipeline(
@@ -150,14 +161,15 @@ class LocalExtractionClient(QtCore.QObject):
 
         # Extraction runs on a daemon pool; the shared-pipeline pattern matches
         # BatchRunner (src/extraction/cli.py): one pipeline, N worker threads.
-        self._pool = DaemonThreadPool(max_workers=max(1, int(PARALLEL_WORKERS)))
+        self._pool = None if export_only else DaemonThreadPool(max_workers=max(1, int(PARALLEL_WORKERS)))
 
         self._results: Dict[str, List[Dict[str, Any]]] = {}
+        self._practice_counts: Dict[str, PracticeCounter] = defaultdict(PracticeCounter)
         self._completed: Dict[str, Dict[int, Dict[str, Any]]] = {}
         self._next_capture_sequence: Dict[str, int] = {}
         self._lock = threading.Lock()
 
-        # Operator state, in memory only like the results (no customer data on disk):
+        # In-memory views of the committed session data.
         # {job: {normalized NDG: {schema_key: value}}}, renamed column labels shared by
         # every export, the start (ordinal, time) of each session and the fingerprint
         # of what each session last exported.
@@ -165,11 +177,139 @@ class LocalExtractionClient(QtCore.QObject):
         self._column_labels: Dict[str, str] = {}
         self._started: Dict[str, Tuple[int, datetime]] = {}
         self._exported: Dict[str, Optional[str]] = {}
+        self._drafts: dict[str, dict[str, str]] = {}
+        self._navigation: dict[str, list[dict]] = {}
+        self._writer = threading.RLock()
+        self._closed = False
+        self._store = None
+        self._history = None
+        self.has_recovery = recovery_dir is not None
+        self.recovered_jobs: tuple[str, ...] = ()
+        self.recovered_from_backup = False
+        self.recovery_problem = ""
+        self.history_problem = ""
+        if recovery_dir is not None:
+            from recovery_history import RecoveryHistory
+            from recovery_store import RecoveryStore
+            try:
+                self._store = RecoveryStore(recovery_dir, backup_directory=app_paths.backup_dir(),
+                                            create=not export_only)
+                self.recovered_from_backup = self._store.recovered_from_backup
+                if not export_only:
+                    self._history = RecoveryHistory(
+                        self._store.primary_path, self._store.replica_directory,
+                        on_error=self._report_history_warning,
+                    )
+                self._recover_sessions()
+            except Exception as exc:
+                self.shutdown()
+                raise OSError(f"Archivio delle sessioni non disponibile. {exc}") from exc
+
+    def _recover_sessions(self) -> None:
+        """Load ordered results and defer pending image decoding to the pool."""
+        pending = []
+        slots: dict[str, set[int]] = defaultdict(set)
+        for key in self._store.keys():
+            data = self._store.read(key)
+            if key == "labels":
+                self._column_labels = json.loads(data)
+                continue
+            kind, job, *tail = key.split("/")
+            if kind == "session":
+                ordinal, timestamp = json.loads(data)
+                self._started[job] = ordinal, datetime.fromisoformat(timestamp)
+            elif kind == "edits":
+                edits = json.loads(data)
+                self._corrections[job] = edits["corrections"]
+                if edits.get("draft") is not None:
+                    self._drafts[job] = edits["draft"]
+            elif kind == "export":
+                self._exported[job] = json.loads(data)
+            elif kind == "navigation":
+                self._navigation[job] = json.loads(data)
+            elif kind == "frame":
+                sequence = int(tail[0])
+                slots[job].add(sequence)
+                if data.startswith(b"P1\n"):
+                    pending.append((job, sequence))
+                elif data.startswith(b"R1\n"):
+                    result = json.loads(data[3:])
+                    if result["_capture_sequence"] != sequence:
+                        raise ValueError("Progressivo del risultato incoerente.")
+                    self._publish_locked(job, sequence, result)
+                else:
+                    raise ValueError("Formato del fotogramma non riconosciuto.")
+            else:
+                raise ValueError("Versione dell'archivio delle sessioni non riconosciuta.")
+        for job, sequences in slots.items():
+            if job not in self._started or sequences != set(range(len(sequences))):
+                raise ValueError("Sequenza di catture incompleta.")
+            self._next_capture_sequence[job] = len(sequences)
+        self.recovered_jobs = tuple(job for job in sorted(slots, key=self._started.__getitem__))
+        if self._pool is not None:
+            for job, sequence in sorted(pending):
+                self._pool.submit(self._resume_frame, job, sequence)
+
+    def pending_capture_sequences(self, job: str) -> tuple[int, ...]:
+        """Slots without a result, excluding completed results held behind a gap."""
+        with self._lock:
+            prefix = len(self._results.get(job, []))
+            completed = self._completed.get(job, {})
+            return tuple(slot for slot in range(prefix, self._next_capture_sequence.get(job, 0))
+                         if slot not in completed)
+
+    def _resume_frame(self, job: str, sequence: int) -> None:
+        try:
+            with self._writer:
+                if self._closed:
+                    return
+                data = self._store.read(f"frame/{job}/{sequence}")
+            image, page_no, page, confidence = unpack_pending(data)
+        except Exception as exc:
+            self._report_recovery_failure(exc)
+            return
+        self._process_frame(job, image, page_no, page, confidence, "{}", sequence)
+
+    def _report_recovery_failure(self, exc: Exception) -> None:
+        with self._writer:
+            if self.recovery_problem:
+                return
+            self.recovery_problem = f"Archivio di recupero non disponibile. Verifica spazio e accesso, poi riapri l’agent. {type(exc).__name__}"
+        self.recovery_error.emit(self.recovery_problem)
+
+    def _report_history_warning(self, message: str) -> None:
+        with self._writer:
+            if self._closed:
+                return
+            self.history_problem = message
+        self.history_warning.emit(message)
+
+    def _write(self, key: str, data: bytes) -> None:
+        if self._export_only:
+            raise RuntimeError("L'archivio è aperto per la sola esportazione.")
+        if self._closed:
+            raise RuntimeError("Extraction pool has stopped accepting frames")
+        if self._store is None:
+            return
+        if self.recovery_problem:
+            raise OSError(self.recovery_problem)
+        try:
+            self._store.put(key, data)
+        except Exception as exc:
+            self._report_recovery_failure(exc)
+            raise OSError(self.recovery_problem) from exc
+        # Avoid taking a first historical snapshot of an empty, newly registered job.
+        if self._history is not None and not key.startswith("session/"):
+            self._history.request()
 
     # ------------------------------------------------------------------ APIClient-compatible interface
 
     def _register_job_locked(self, job_id: str) -> None:
-        self._started.setdefault(job_id, (len(self._started) + 1, datetime.now()))
+        if job_id not in self._started:
+            ordinal, timestamp = len(self._started) + 1, datetime.now()
+            self._write(f"session/{job_id}", json_bytes([ordinal, timestamp.isoformat()]))
+            with self._lock:
+                self._started[job_id] = ordinal, timestamp
 
     def start_job(self) -> str:
         """Generate a new local job ID.
@@ -196,16 +336,27 @@ class LocalExtractionClient(QtCore.QObject):
         """
         # Reserve only accepted slots. A fast completion waits for this lock,
         # so it cannot publish before the sequence has been committed.
-        with self._lock:
+        if self.has_recovery and (not job_id or "/" in job_id):
+            raise ValueError("Identificativo di sessione non valido.")
+        payload = pack_pending(img, page_no, page_type, confidence) if self.has_recovery else None
+        with self._writer:
+            if self._closed:
+                raise RuntimeError("Extraction pool has stopped accepting frames")
             self._register_job_locked(job_id)
             sequence = self._next_capture_sequence.get(job_id, 0)
-            accepted = self._pool.submit(
-                self._process_frame, job_id, img, page_no, page_type,
-                confidence, fields_json, sequence,
-            )
-            if not accepted:
-                raise RuntimeError("Extraction pool has stopped accepting frames")
-            self._next_capture_sequence[job_id] = sequence + 1
+            if payload is not None:
+                self._write(f"frame/{job_id}/{sequence}", payload)
+            with self._lock:
+                if self.has_recovery:
+                    accepted = self._pool.submit(self._resume_frame, job_id, sequence)
+                else:
+                    accepted = self._pool.submit(
+                        self._process_frame, job_id, img, page_no, page_type,
+                        confidence, fields_json, sequence,
+                    )
+                if not accepted:
+                    raise RuntimeError("Extraction pool has stopped accepting frames")
+                self._next_capture_sequence[job_id] = sequence + 1
 
         self.frame_queued.emit(job_id, page_type)
         return sequence
@@ -246,18 +397,30 @@ class LocalExtractionClient(QtCore.QObject):
             # Diagnostics must not leave a missing slot that blocks later results.
             result["_diagnostic_error"] = str(exc)
 
-        with self._lock:
-            completed = self._completed.setdefault(job_id, {})
-            completed[capture_sequence] = result
-            published = self._results.setdefault(job_id, [])
-            # An anonymous frame belongs to the preceding captured practice.
-            # Sorting only finished frames could temporarily attach it to an
-            # earlier practice while the intervening identifier is still running.
-            while len(published) in completed:
-                published.append(completed.pop(len(published)))
+        with self._writer:
+            if self._closed and self.has_recovery:
+                return  # Pending slots are replayed by the next owner.
+            if self.has_recovery and result.get("_status") != "ERROR":
+                try:
+                    self._write(f"frame/{job_id}/{capture_sequence}", b"R1\n" + json_bytes(result))
+                except Exception as exc:
+                    self._report_recovery_failure(exc)
+                    return
+            # When the provider failed, keep the original pixels on disk for retry on restart.
+            with self._lock:
+                self._publish_locked(job_id, capture_sequence, result)
 
         # Qt signal is thread-safe across thread boundaries
         self.result_ready.emit(job_id, dict(result))
+
+    def _publish_locked(self, job: str, sequence: int, result: dict) -> None:
+        completed = self._completed.setdefault(job, {})
+        completed[sequence] = result
+        published = self._results.setdefault(job, [])
+        while len(published) in completed:
+            frame = completed.pop(len(published))
+            published.append(frame)
+            self._practice_counts[job].add(frame)
 
     def requeue_job(self, job_id: str) -> bool:
         """No-op stub for local mode."""
@@ -265,14 +428,13 @@ class LocalExtractionClient(QtCore.QObject):
 
     def pending_extractions(self) -> int:
         """Number of queued frames not yet being processed."""
-        return self._pool.pending()
+        return self._pool.pending() if self._pool is not None else 0
 
     def frames_in_progress(self) -> int:
         """Frames accepted whose result is not exportable yet.
 
         Unlike pending_extractions() this includes the frames a worker already picked
-        up, and the finished ones still waiting for an earlier frame to be published:
-        closing the window now would lose all of them.
+        up, and finished ones still waiting for an earlier frame to be published.
         """
         with self._lock:
             return sum(
@@ -281,10 +443,17 @@ class LocalExtractionClient(QtCore.QObject):
             )
 
     def shutdown(self) -> None:
-        """Stop the pool: queued frames are discarded; running tasks cannot
-        block process exit (daemon threads)."""
-        with self._lock:
-            self._pool.stop()
+        """Stop scheduling work. Durable unfinished slots resume on the next launch."""
+        with self._writer:
+            if self._closed:
+                return
+            self._closed = True
+            if self._history is not None:
+                self._history.close()
+            if self._pool is not None:
+                self._pool.stop()
+            if self._store is not None:
+                self._store.close()
 
     # ------------------------------------------------------------------ Data access
 
@@ -296,13 +465,19 @@ class LocalExtractionClient(QtCore.QObject):
     def practice_count(self, job_id: str) -> int:
         """Practices with at least one value, corrections included: what an export would write."""
         with self._lock:
-            results = list(self._results.get(job_id, []))
-            corrections = self._corrections_locked(job_id)
-        return sum(1 for record in consolidate(results, corrections) if has_content(record))
+            counter = self._practice_counts.get(job_id)
+            return counter.count if counter else 0
 
     def get_all_job_ids(self) -> List[str]:
         with self._lock:
-            return list(self._results.keys())
+            return list(self._next_capture_sequence)
+
+    def capture_counts(self, job: str) -> tuple[int, int]:
+        with self._lock:
+            return self._next_capture_sequence.get(job, 0), len(self._results.get(job, []))
+
+    def last_accepted_sequence(self, job: str) -> int:
+        return self.capture_counts(job)[0] - 1
 
     # ------------------------------------------------------------------ Sessions, corrections, export
 
@@ -323,20 +498,67 @@ class LocalExtractionClient(QtCore.QObject):
         if schema_key not in CORRECTABLE_KEYS:
             raise ValueError(f"Il campo {schema_key!r} non è correggibile")
         cleaned = clean_correction(value)
-        with self._lock:
-            self._corrections.setdefault(job_id, {}).setdefault(key, {})[schema_key] = cleaned
+        with self._writer:
+            corrections = self.get_corrections(job_id)
+            corrections.setdefault(key, {})[schema_key] = cleaned
+            self._save_confirmed_edits(job_id, key, schema_key, corrections)
 
     def clear_correction(self, job_id: str, ndg: str, schema_key: str) -> None:
         """Drop one correction, restoring the extracted value."""
         key = normalize_ndg(ndg)
-        with self._lock:
-            by_ndg = self._corrections.get(job_id, {})
+        with self._writer:
+            by_ndg = self.get_corrections(job_id)
             fields = by_ndg.get(key or "", {})
             fields.pop(schema_key, None)
             if not fields:
                 by_ndg.pop(key or "", None)
-            if not by_ndg:
-                self._corrections.pop(job_id, None)
+            self._save_confirmed_edits(job_id, key or "", schema_key, by_ndg)
+
+    def _save_confirmed_edits(self, job: str, ndg: str, key: str, corrections: dict) -> None:
+        draft = self.get_cell_draft(job)
+        if draft and (draft["ndg"], draft["key"]) == (ndg, key):
+            draft = None
+        self._save_edits(job, corrections, draft)
+
+    def _save_edits(self, job: str, corrections: dict, draft: Optional[dict]) -> None:
+        self._write(f"edits/{job}", json_bytes({"corrections": corrections, "draft": draft}))
+        with self._lock:
+            self._corrections[job] = corrections
+            if draft is None:
+                self._drafts.pop(job, None)
+            else:
+                self._drafts[job] = draft
+
+    def set_cell_draft(self, job: str, ndg: str, key: str, text: str) -> None:
+        normalized = normalize_ndg(ndg)
+        if normalized is None or key not in CORRECTABLE_KEYS:
+            raise ValueError("La cella non è modificabile.")
+        draft = {"ndg": normalized, "key": key, "text": text}
+        with self._writer:
+            self._save_edits(job, self.get_corrections(job), draft)
+
+    def clear_cell_draft(self, job: str) -> None:
+        with self._writer:
+            if job in self._drafts:
+                self._save_edits(job, self.get_corrections(job), None)
+
+    def get_cell_draft(self, job: str) -> Optional[dict[str, str]]:
+        with self._lock:
+            return dict(self._drafts[job]) if job in self._drafts else None
+
+    def navigation_decisions(self, job: str) -> list[dict]:
+        with self._lock:
+            return [dict(decision) for decision in self._navigation.get(job, [])]
+
+    def record_navigation_decision(self, job: str, ndg: str, page: str, action: str, sequence: int) -> None:
+        if action not in {"reopen", "skip", "restore"}:
+            raise ValueError("Azione di navigazione non valida.")
+        with self._writer:
+            decisions = self.navigation_decisions(job)
+            decisions.append(dict(ndg=ndg, page=page, action=action, sequence=sequence))
+            self._write(f"navigation/{job}", json_bytes(decisions))
+            with self._lock:
+                self._navigation[job] = decisions
 
     def get_corrections(self, job_id: str) -> Dict[str, Dict[str, Optional[str]]]:
         with self._lock:
@@ -354,11 +576,15 @@ class LocalExtractionClient(QtCore.QObject):
         if schema_key not in FIELD_KEYS:
             raise ValueError(f"Colonna sconosciuta: {schema_key!r}")
         cleaned = clean_correction(label)
-        with self._lock:
+        with self._writer:
+            labels = self.get_column_labels()
             if cleaned:
-                self._column_labels[schema_key] = cleaned
+                labels[schema_key] = cleaned
             else:
-                self._column_labels.pop(schema_key, None)
+                labels.pop(schema_key, None)
+            self._write("labels", json_bytes(labels))
+            with self._lock:
+                self._column_labels = labels
 
     def export_workbook(self, job_id: str, path: str) -> int:
         """The only export path: corrections and shared labels included.
@@ -371,21 +597,31 @@ class LocalExtractionClient(QtCore.QObject):
             corrections = self._corrections_locked(job_id)
             labels = dict(self._column_labels)
         written = export_results(results, path, labels=labels, corrections=corrections)
-        fingerprint = _fingerprint(consolidate(results, corrections))
-        with self._lock:
-            self._exported[job_id] = fingerprint
+        if self._export_only:
+            return written
+        fingerprint = _fingerprint(consolidate(results, corrections), labels)
+        with self._writer:
+            try:
+                self._write(f"export/{job_id}", json_bytes(fingerprint))
+            except OSError:
+                # The workbook was committed. Keep the previous export marker and
+                # let recovery_error explain the journal fault to the operator.
+                return written
+            with self._lock:
+                self._exported[job_id] = fingerprint
         return written
 
     def unexported_jobs(self) -> List[str]:
         """Sessions whose exportable content differs from their last export."""
         with self._lock:
+            labels = dict(self._column_labels)
             snapshot = [
                 (job_id, list(results), self._corrections_locked(job_id), self._exported.get(job_id))
                 for job_id, results in self._results.items()
             ]
         pending = []
         for job_id, results, corrections, exported in snapshot:
-            fingerprint = _fingerprint(consolidate(results, corrections))
+            fingerprint = _fingerprint(consolidate(results, corrections), labels)
             if fingerprint is not None and fingerprint != exported:
                 pending.append(job_id)
         return pending

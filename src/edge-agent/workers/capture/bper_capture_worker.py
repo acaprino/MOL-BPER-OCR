@@ -7,19 +7,16 @@ import hashlib
 import queue
 import time
 import uuid
-from typing import Optional, Set, Tuple, List, Any, Callable
+from functools import partial
+from typing import Optional, Tuple, Any, Callable
 
 import imagehash
 from PIL import Image
 from PyQt6 import QtCore
 from llm_router import PageRouter, MLPageRouter, LLMPageRouter, RouterResult  # type: ignore
 
-try:
-    from page_classifier import BPERPagePrototypeClassifier  # type: ignore
-except Exception:  # noqa: BLE001
-    BPERPagePrototypeClassifier = None  # type: ignore
-
 from .base_capture_worker import BaseCaptureWorker
+from capture_navigation import CaptureNavigation
 from frame_normalize import UNCHANGED, find_window_rect, normalize_frame
 from image_ops import preprocess_for_ocr
 import app_paths
@@ -42,6 +39,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
     # soglia di “uguale” per dedup frame (distanza Hamming su pHash)
     DEDUP_HASH_THRESHOLD = 3
+    navigation_changed = QtCore.pyqtSignal(str, dict)
 
     def __init__(
             self,
@@ -59,8 +57,15 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._frame_identity: Optional[Tuple[Tuple[int, int], str, bytes]] = None
         self._visit_sequence: int = 0
         self._visit_pending: Optional[int] = None
-        self._visit_completed: bool = False
+        self._visit_status = "unrecognized"
+        self._completed_sequence: Optional[int] = None
+        self._active_job: Optional[str] = None
+        self._last_submitted_sequence = -1
+        self._navigation = CaptureNavigation([])
+        self._last_navigation: Optional[dict] = None
+        self._camera_unavailable = False
         self._pending_captures: dict[Tuple[str, int], Tuple[int, PageDef]] = {}
+        self._recovers_navigation = callable(getattr(api_client, "navigation_decisions", None))
         self._result_connected = api_client is not None and hasattr(api_client, "result_ready")
         if self._result_connected:
             api_client.result_ready.connect(
@@ -73,12 +78,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
         # Stabilità pagina (macchina a stati pura, vedi stability.py)
         self._tracker = StabilityTracker()
 
-        # Successfully processed page names for guidance, never a dedup gate.
-        self.captured_page_types: Set[str] = set()
-
         # Registro pagine: caricato in run() nel thread worker
         self.registry: PageRegistry = PageRegistry.empty()
-        self._acquirable_names: List[str] = []
 
         # Routing (ML o LLM): l'inizializzazione vera avviene in run(), nel
         # thread worker — il caricamento DINOv2 non deve congelare la UI.
@@ -95,9 +96,6 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
         # mss context singleton (creato una volta nel QThread, non in __init__)
         self._mss_ctx: Optional[Any] = None
-
-        # Anti-spam log: ultima guida emessa e ultima pagina "già acquisita"
-        self._last_guidance_page: Optional[str] = None
 
         # Ultimo errore router già loggato (per non ripeterlo a ogni frame)
         self._last_router_error: Optional[str] = None
@@ -128,7 +126,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
             templates_dir = app_paths.templates_dir()
 
             mode = (self.config.router_mode or "ml").lower()
-            if mode == "llm":
+            if mode in {"llm", "hybrid", "local-first"}:
                 prompts_path = templates_dir / "prompts.json"
                 api_key, base_url, model = self.config.resolve_llm_settings()
                 self.router = LLMPageRouter(
@@ -148,41 +146,11 @@ class BPERCaptureWorker(BaseCaptureWorker):
                     pages_count = 0
                 has_key = bool(api_key)
                 self.tick.emit(
-                    f"[BPER-LLM] Router LLM inizializzato (provider={self.config.llm_provider}, model={model}, pages={pages_count}, api_key={'yes' if has_key else 'no'})"
+                    f"[BPER-LLM] Router {mode} inizializzato (provider={self.config.llm_provider}, model={model}, pages={pages_count}, api_key={'yes' if has_key else 'no'})"
                 )
-            elif mode == "hybrid":
-                # per ora: usa LLM, altrimenti fallback su ML
-                prompts_path = templates_dir / "prompts.json"
-                api_key, base_url, model = self.config.resolve_llm_settings()
-                self.router = LLMPageRouter(
-                    prompts_path=prompts_path,
-                    provider=self.config.llm_provider,
-                    base_url=base_url,
-                    model=model,
-                    api_key=api_key or "",
-                    timeout=self.config.llm_timeout,
-                )
-                # Log diagnostico
-                pages_count = 0
-                try:
-                    spec = json.loads(prompts_path.read_text(encoding="utf-8")) if prompts_path.exists() else {}
-                    pages_count = len(spec.get("pages", [])) if isinstance(spec, dict) else 0
-                except Exception:
-                    pages_count = 0
-                has_key = bool(api_key)
-                self.tick.emit(
-                    f"[BPER-LLM] Router ibrido inizializzato (LLM→fallback ML, provider={self.config.llm_provider}, model={model}, pages={pages_count}, api_key={'yes' if has_key else 'no'})"
-                )
-                # In parallelo inizializza ML per fallback, se disponibile
-                if BPERPagePrototypeClassifier is not None:
+                if mode != "llm":
                     try:
-                        from page_classifier import DEFAULT_CROP_ROI, DEFAULT_SIMILARITY_THRESHOLD
-                        self.classifier = BPERPagePrototypeClassifier(
-                            templates_dir=templates_dir,
-                            crop_roi=DEFAULT_CROP_ROI,
-                            similarity_threshold=DEFAULT_SIMILARITY_THRESHOLD,
-                            device="cpu",
-                        )
+                        self.classifier = MLPageRouter(templates_dir).classifier
                     except Exception:
                         self.classifier = None
             else:
@@ -242,7 +210,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
     # ------------------------------------------------------------------ page registry
 
     def _load_registry(self) -> None:
-        """Carica il registro pagine da prompts.json e annuncia la sequenza."""
+        """Load the installed page catalogue and announce the supported views."""
         try:
             self.registry = PageRegistry.load(app_paths.templates_dir() / "prompts.json")
         except Exception as exc:  # noqa: BLE001
@@ -252,25 +220,44 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
         mode = (self.config.router_mode or "ml").lower()
         pages = self.registry.acquirable(mode)
-        self._acquirable_names = [p.name for p in pages]
+        self._navigation = CaptureNavigation(pages)
 
         if pages:
-            self.tick.emit(f"─── Schermate da acquisire: {len(pages)} ───")
+            self.tick.emit(f"─── Viste riconoscibili nel catalogo: {len(pages)} ───")
             for i, page in enumerate(pages, 1):
                 self.tick.emit(f"  {i:2}. {page.name}")
             self.tick.emit("──────────────────────────────────────")
-            first = self._next_pending_page()
-            if first:
-                self.tick.emit(f"→ Prima schermata da aprire nel sistema BPER: «{first}»")
         else:
             self.tick.emit("[BPER] Attenzione: nessuna pagina definita; funzionamento libero.")
 
-    def _next_pending_page(self) -> Optional[str]:
-        """Nome canonico della prossima pagina non ancora acquisita."""
-        for name in self._acquirable_names:
-            if name not in self.captured_page_types:
-                return name
-        return None
+    @property
+    def captured_page_types(self) -> set[str]:
+        """Successfully extracted variants of the last identified practice."""
+        return self._navigation.captured
+
+    def _emit_navigation(self) -> None:
+        if not self._active_job:
+            return
+        page = None if self._camera_unavailable else self._last_routed_page
+        state = self._navigation.snapshot(
+            page.name if page else None,
+            "error" if self._camera_unavailable else self._visit_status,
+            self._completed_sequence,
+        )
+        if state != self._last_navigation:
+            self._last_navigation = state
+            self.navigation_changed.emit(self._active_job, state)
+
+    @QtCore.pyqtSlot(str, str, bool)
+    def set_page_available(self, ndg: str, page_name: str, available: bool) -> None:
+        """Queue an operator decision for a specific practice and optional view."""
+        if not self._stop_requested:
+            action = "restore" if available else "skip"
+            self._commands.put(("decision", (self.job_id_getter(), ndg, page_name, action)))
+
+    def reopen_page(self, ndg: str, page_name: str) -> None:
+        if not self._stop_requested:
+            self._commands.put(("decision", (self.job_id_getter(), ndg, page_name, "reopen")))
 
     # ------------------------------------------------------------------ core loop
 
@@ -290,35 +277,57 @@ class BPERCaptureWorker(BaseCaptureWorker):
             except queue.Empty:
                 break
             if command == "manual":
-                self._execute_manual_capture(payload)
-                manual = True
+                job_id, page_name = payload
+                if job_id == self._active_job:
+                    self._execute_manual_capture(page_name)
+                    manual = True
+            elif command == "decision":
+                job_id, ndg, page_name, action = payload
+                if job_id != self._active_job or not job_id:
+                    continue
+                sequence = self._last_submitted_sequence
+                save = None
+                if self._recovers_navigation:
+                    save = partial(self.api_client.record_navigation_decision, job_id, ndg, page_name, action, sequence)
+                try:
+                    self._navigation.apply_decision(ndg, page_name, action, sequence, before_change=save)
+                except Exception as exc:
+                    self.on_error(exc)
+                else:
+                    self._emit_navigation()
             else:
                 self._complete_capture(*payload)
         return manual
 
     def _complete_capture(self, job_id: str, sequence: Optional[int], status: Optional[str]) -> None:
         """An old completion cannot change the pending state of a newer visit."""
-        if sequence is None:
+        if sequence is None or job_id != self._active_job:
             return
         pending = self._pending_captures.pop((job_id, sequence), None)
+        if pending is None and not self._recovers_navigation:
+            return
+        self._navigation.update(self.api_client.get_results(job_id))
         if pending is None:
+            # A pre-crash frame can advance the prefix but cannot confirm this monitor visit.
+            self._emit_navigation()
             return
         visit, page = pending
         current = visit == self._visit_sequence and sequence == self._visit_pending
         if status == "ERROR":
             if current:
                 self._visit_pending = None
+                self._visit_status = "error"
                 self._restart_stability(page)
             self.tick.emit(f"⚠️ Estrazione fallita per «{page.name}»; la pagina può essere acquisita nuovamente.")
+            self._emit_navigation()
             return
         # ANCHOR_UNCERTAIN can contain useful fields from pages without an NDG.
-        self.captured_page_types.add(page.name)
         if current:
             self._visit_pending = None
-            self._visit_completed = True
-        next_page = self._next_pending_page()
-        hint = f" → prossima schermata: «{next_page}»" if next_page else ""
-        self.tick.emit(f"✅ Estrazione completata per «{page.name}»{hint}")
+            self._visit_status = "captured"
+            self._completed_sequence = sequence
+        self.tick.emit(f"✅ Estrazione completata per «{page.name}»")
+        self._emit_navigation()
 
     def _restart_stability(self, page: PageDef) -> None:
         """An error requires another stable interval, not a retry every frame."""
@@ -326,7 +335,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._tracker.observe(page.name, time.time())
         self._last_routed_page = page
 
-    def _observe_frame(self, raw: Image.Image) -> None:
+    def _observe_frame(self, raw: Image.Image) -> bool:
         """A visit is one unchanged normalized image, including small ID edits.
 
         pHash is useful for routing cost but can miss a one-digit NDG change.
@@ -338,10 +347,32 @@ class BPERCaptureWorker(BaseCaptureWorker):
             self._frame_identity = identity
             self._visit_sequence += 1
             self._visit_pending = None
-            self._visit_completed = False
+            self._visit_status = "recognizing"
+            self._completed_sequence = None
             self._tracker.reset()
             self._last_routed_page = None
             self._last_route_attempt_ts = None
+            return True
+        return False
+
+    def _attach_job(self, job_id: Optional[str]) -> None:
+        navigation = CaptureNavigation(self._navigation.pages)
+        sequence = -1
+        if job_id and self._recovers_navigation:
+            sequence = self.api_client.last_accepted_sequence(job_id)
+            if sequence >= 0:
+                navigation.update(self.api_client.get_results(job_id), self.api_client.navigation_decisions(job_id))
+        self._active_job = job_id
+        self._last_submitted_sequence = sequence
+        self._navigation = navigation
+        self._last_navigation = None
+        self._frame_identity = None
+        self._pending_captures.clear()
+        self._visit_pending = None
+        self._completed_sequence = None
+        self._visit_status = "unrecognized"
+        self._last_routed_page = None
+        self._camera_unavailable = False
 
     def _capture_once(self) -> None:
         """
@@ -356,18 +387,26 @@ class BPERCaptureWorker(BaseCaptureWorker):
         """
         if self._stop_requested:
             return
+        job_id = self.job_id_getter()
+        if job_id != self._active_job:
+            self._attach_job(job_id)
         if self._drain_commands() or self._stop_requested:
             return
-        job_id = self.job_id_getter()
         if not job_id:
             return
 
+        recovering_camera = self._camera_unavailable
         raw = self._grab_raw()
-        if raw is None or self._stop_requested:
+        self._camera_unavailable = raw is None
+        if raw is None:
+            self._emit_navigation()
+            return
+        if self._stop_requested:
             return
 
-        self._observe_frame(raw)
-        if self._visit_pending is not None or self._visit_completed:
+        if self._observe_frame(raw) or recovering_camera:
+            self._emit_navigation()
+        if self._visit_pending is not None or self._visit_status == "captured":
             return
 
         is_dup = self._is_duplicate_frame(raw)
@@ -404,6 +443,8 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._last_routed_page = page
         self._last_route_score = score
         self._last_route_fields = fields
+        self._visit_status = "observed" if page else "unrecognized"
+        self._emit_navigation()
 
         prev_candidate = self._tracker.candidate
         ready = self._tracker.observe(page.name if page else None, time.time())
@@ -428,14 +469,22 @@ class BPERCaptureWorker(BaseCaptureWorker):
         self._last_routed_page = page
         self._last_route_score = score
         self._last_route_fields = fields
+        # Manual selection can replace a still-pending capture on identical
+        # pixels. Even if this submission fails, its predecessor cannot confirm it.
+        self._visit_pending = None
+        self._completed_sequence = None
         sequence = self._upload_page(job_id, img, page, score, fields)
         if sequence is None:
+            self._visit_status = "error"
             self._restart_stability(page)
+            self._emit_navigation()
             return
         self._pending_captures[(job_id, sequence)] = (self._visit_sequence, page)
+        self._last_submitted_sequence = sequence
         self._visit_pending = sequence
-        self._visit_completed = False
+        self._visit_status = "pending"
         self._tracker.reset()
+        self._emit_navigation()
 
     # ------------------------------------------------------------------ screenshot & dedup
 
@@ -453,7 +502,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 self._mss_ctx = _mss.mss()
             except Exception as exc:  # noqa: BLE001
                 self.on_error(RuntimeError(f"mss non disponibile: {exc}"))
-                self._running = False
+                self.stop()
                 return None
 
         try:
@@ -490,7 +539,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
                     f"Cattura fallita {self._consecutive_capture_errors} volte consecutive. "
                     f"Ultimo errore: {exc}"
                 ))
-                self._running = False
+                self.stop()
             return None
 
     def _announce_framing(
@@ -638,9 +687,10 @@ class BPERCaptureWorker(BaseCaptureWorker):
 
             if res.page_type:
                 resolved = self.registry.resolve(res.page_type)
-                shown = resolved.name if resolved else res.page_type
+                if resolved is None:
+                    return None, float(res.confidence), {}
                 self.tick.emit(
-                    f"[Router] Riconosciuta: «{shown}» (score={res.confidence:.3f})"
+                    f"[Router] Riconosciuta: «{resolved.name}» (score={res.confidence:.3f})"
                 )
                 return res.page_type, float(res.confidence), dict(res.fields or {})
             else:
@@ -650,22 +700,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 if reason and reason != self._last_router_error:
                     self.tick.emit(f"[Router] Errore riconoscimento: {reason}")
                     self._last_router_error = reason
-                # Guida l'operatore verso la schermata attesa
-                try:
-                    next_page = self._next_pending_page()
-                    if next_page and next_page != self._last_guidance_page:
-                        self.tick.emit(
-                            f"🔍 Schermata non riconosciuta — "
-                            f"apri nel sistema BPER: «{next_page}»"
-                        )
-                        self._last_guidance_page = next_page
-                    elif not next_page:
-                        self.tick.emit("🔍 Schermata non riconosciuta.")
-                except Exception:
-                    self.tick.emit("🔍 Schermata non riconosciuta.")
                 # Fallback a ML solo in modalità hybrid: se il router È già il
                 # classificatore ML, riclassificare lo stesso frame è identico.
-                if self.classifier is not None and isinstance(self.router, LLMPageRouter):
+                if self.config.router_mode.lower() == "hybrid" and self.classifier is not None:
                     label, score = self.classifier.classify(img)
                     if label is not None:
                         resolved = self.registry.resolve(label)
@@ -722,7 +759,7 @@ class BPERCaptureWorker(BaseCaptureWorker):
     def force_capture(self, page_name: str) -> None:
         """Request a manual shot without touching camera or capture state."""
         if not self._stop_requested:
-            self._commands.put(("manual", page_name))
+            self._commands.put(("manual", (self.job_id_getter(), page_name)))
 
     def _execute_manual_capture(self, page_name: str) -> None:
         """Process the UI request in the same thread as automatic capture."""
@@ -742,7 +779,9 @@ class BPERCaptureWorker(BaseCaptureWorker):
                 return
 
             raw = self._grab_raw()
+            self._camera_unavailable = raw is None
             if raw is None or self._stop_requested:
+                self._emit_navigation()
                 self.tick.emit("[BPER] Forza scatto: nessuno screenshot disponibile.")
                 return
             self._observe_frame(raw)

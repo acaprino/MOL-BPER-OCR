@@ -7,13 +7,21 @@ extraction engine is exposed through three front-ends: a CLI batch runner, a Tki
 desktop GUI, and a PyQt6 edge-agent that captures the screen live.
 
 - **Language/runtime:** Python 3.12/3.13 (practical target: `run_edge_agent.bat` probes
-  `py -3.13` then `py -3.12` and errors otherwise; no packaging metadata pins a version)
+  `py -3.13`, then `py -3.12`, then `python` on PATH; no packaging metadata pins a version)
 - **LLM access:** LangChain. `create_chat_model()` in `src/extraction/llm_factory.py` is the single
   factory that selects the provider from the `LLM_PROVIDER` env var (OpenAI GPT-4o or Google Gemini).
 - **Core libs:** LangChain (`langchain-openai` / `langchain-google-genai`), Pillow, Pandas
 - **UI:** Tkinter (stdlib) for `gui_app.py`; PyQt6 with its own theme (`src/edge-agent/theme.py`) for the edge-agent
 - **Entry points:** `main.py` (CLI batch; `--gui` launches the edge-agent), `gui_app.py`
   (Tkinter GUI), `src/edge-agent/edge_agent.py` (PyQt6 edge-agent)
+
+## Start here
+
+- For the bank operator's steps, clues on screen and field list read [the data-entry guide](docs/flusso-data-entry.md).
+- The desktop replica and its history default to `backup/` next to the entry script or portable executable. Release archives include that directory empty.
+- For crash recovery, drafts, backup paths and offline export read [session recovery](docs/recupero-sessioni.md).
+- For per-practice guidance, revisits, acknowledgements and missing views read [edge navigation](docs/navigazione-edge.md).
+- Maintain both offline OCR paths with their matching LiLT checkpoint. See [OCR + LiLT](docs/ocr-lilt.md) for the detector and reader used in each measured run, baseline scores and lineage, and [training](src/training/README.md) for commands. The live extractor uses the configured VLM.
 
 ## How It Works
 
@@ -112,7 +120,8 @@ Retry subject-row admission, source-page/export-group metadata and GUI environme
 dedicated regressions in `test_pipeline_retry_subjects.py`, `test_page_metadata.py` and
 `test_gui_config.py`. The offline LiLT training and evaluation package (`src/training/`) is covered by
 `test_training_alignment.py`, `test_training_dataset.py`, `test_training_model.py` and
-`test_training_evaluation.py`.
+`test_training_evaluation.py` and `test_training_ocr_runner.py`. Archive coverage lives in
+`test_dataset_archive.py`. For the remote fast suite, `tools/modal_tests.py` describes the Modal runner and its fixtures.
 
 `test_page_classifier.py` needs torch and runs DINOv2 on CPU (~20s) against the prototypes the app
 ships; it skips via `pytest.importorskip` where torch is absent. It rebuilds the
@@ -304,7 +313,7 @@ downstream effects.
       failing the `ui.main_window` import chain and taking the app down. This is **not** about the
       bootstrap order of constraint 3: `llm_router` is only reachable via `ui.main_window`, which is
       already imported after `run_preflight()`.
-14. **Edge-agent shows business data only** -- the UI presents the 45 canonical fields, one row per
+15. **Edge-agent shows business data only** -- the UI presents the 45 canonical fields, one row per
     consolidated practice. Confidence, status, cost, tokens, latency and field provenance go to
     `edge-agent.log` via `_log_extraction()`, never back into a tab. Notes:
     - **One row = one practice.** The router recognises 9 screen variants. Field metadata names
@@ -314,12 +323,11 @@ downstream effects.
       carries 1-6 useful fields. `consolidate()` groups frames by normalized NDG (a frame whose NDG
       was not read attaches to the most recent practice; frames before the first readable NDG wait
       in a buffer) and merges fields with `pick_best()` -- do not write a second merge semantics.
-    - **Operator corrections are an overlay, in memory only.** `consolidate(results, corrections)`
+    - **Operator corrections are a durable overlay.** `consolidate(results, corrections)`
       applies `{normalized NDG: {field: value}}` after the frame merge (the operator wins and a later
       frame cannot undo it; `pick_best()` stays the only frame-merge rule). `LocalExtractionClient`
       owns them, the shared column labels and `export_workbook()`, the single export path of both
-      tabs. The NDG and records without one are not correctable. Nothing is written to disk
-      (customer data); closing with unexported sessions asks first (ADR 0033).
+      tabs. The NDG and records without one are not correctable. The GUI commits accepted captures, results, edits, drafts and navigation decisions to an encrypted local recovery store with a transactional replica. Successful extraction replaces the saved pixels. Resume pending slots with their original sequence numbers. See [ADR 0039](docs/adr/0039-recupero-sessioni.md).
     - **`normalize_ndg()` is not `norm_number_str()`.** The latter is a *quantity* normalizer: it
       turns `12.345` into `12.35` (splitting one practice across two rows) and `12345/A` into
       `12345.00` (merging two distinct practices). An NDG is an identifier.
@@ -335,7 +343,7 @@ downstream effects.
 ## Code Conventions
 
 - **Commit authorship (hard rule):** commits are authored by the human developer only. NEVER
-  credit Codex or any AI assistant in a commit -- no `Co-Authored-By:` trailer, no
+  credit any AI assistant in a commit -- no `Co-Authored-By:` trailer, no
   "Generated with" line, no AI mention anywhere in subject, body, or footer. This overrides
   any default tooling behavior that appends such trailers.
 - **Type annotations:** every function has full annotations on parameters and return type, e.g.
@@ -364,8 +372,8 @@ different page of the BPER credit-management application.
 | Practice metadata | `tipo`, `stato`, `fase`, `creazione`, `evidenze` |
 | Credit data | `filiale_relazione`, `n_fido`, `rapporto`, `descrizione`, `scadenza`, `importo_euro`, `tipo_op` |
 | Notes & tooltips | `note_della_richiesta`, `tooltip_descrizione_bmb`, `tooltip_evidenze_b`, `tooltip_descrizione_m_consap`, `tooltip_descrizione_consap_dr_bis`, `tooltip_descrizione_ipoteca` |
-| Soggetti (screens 2-3) | `ndg_1/2/3/4`, `denominazione_1/2/3/4`, `ruolo_1/2/3/4` |
-| Privati scheda (screens 4-5) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` |
+| Soggetti (screen 4) | `ndg_1/2/3/4`, `denominazione_1/2/3/4`, `ruolo_1/2/3/4` |
+| Scheda Privati (separate application) | `dal`, `datore_di_lavoro_anagrafica`, `di_cui_percepiscono_reddito`, `importo_totale_annuo_nucleo`, `note_scheda_privati`, `nr_altri_componenti_nucleo`, `numero_mensilita`, `professione_principale`, `rating_ufficiale`, `retribuzione_annua_netta`, `score_cgs`, `tipo_contratto`, `ultima_validazione_scheda` |
 
 **Crop regions** (relative coords, `src/extraction/config.py`):
 - `CONTENT_CROP = (0.18, 0.12, 0.98, 0.98)` -- full content area (main pass); applied only on the file path (`extract_from_screen()`) and only when the image matches the calibration family in BOTH aspect (within 5% of 848/679) and size (long side 800-900px) -- aspect alone is not identity: 1280x1024 sits 0.09% from the calibrated aspect (`select_content_crop()`, ADR 0010). The live path (`extract_from_image()`) never crops, and off calibration the anchor pass reads the whole image and retry tables may only fill, never replace
@@ -413,7 +421,7 @@ stay at the repository root:
 
 | File | Purpose |
 |---|---|
-| `main.py` | Shim: adds `src/` to `sys.path`, loads `.env` via `python-dotenv`, then `from extraction import *`. `python main.py` runs the CLI; `python main.py --gui` launches the edge-agent. |
+| `main.py` | Adds `src/` to `sys.path`. `python main.py --gui` enters the desktop bootstrap before importing extraction. Batch and Python import paths load `.env` and re-export the extraction API. |
 | `gui_app.py` | Tkinter GUI: adds `src/` to `sys.path`, loads `.env` before importing `extraction`, initializes matching provider/model menus, uploads screenshots, processes, displays and exports CSV/JSON via the shared batch runner. |
 | `src/edge-agent/edge_agent.py` | PyQt6 entry point: loads `.env`, creates `AgentConfig`, launches `MainWindow`. `--debug` adds the Debug LLM tab (`ui/debug_tab.py`), but the router traffic only reaches it when `config.ini` also has `[debug] show_llm_tab = true`, which gates the `llm_debug` signal. Both are required. |
 | `run_edge_agent.bat` | Windows launcher: bootstraps/self-heals `.venv` (Python 3.13, then 3.12), installs `requirements.txt`, starts `src\edge-agent\edge_agent.py`. |
@@ -463,8 +471,7 @@ Called out individually, because the filename alone does not tell you:
 - `env_key.py` -- stdlib-only, the single writer of `LLM_API_KEY` into a `.env`: used by the
   first-run dialog and run as a script by `build_exe.bat` to bake a key into the package.
 - `error_report.py` -- stdlib-only `install_excepthook()`: an exception that escapes a Qt slot is
-  logged and shown instead of ending the process (PyQt6 would, and the sessions live in memory
-  only, ADR 0033). Installed first thing in `main()`.
+  logged and shown. The recovery store also protects accepted work if the process terminates. Installed first thing in `main()`.
 - `bootstrap.py` -- `run_preflight()` creates/loads the local `.env`; `_ensure_files()` re-seeds
   `prompts/` from the bundle only when missing or empty. Must run *before* `ui.main_window` is
   imported (Constraint 3).
@@ -548,13 +555,12 @@ the archive; OCR, datasets and models are rebuilt, never kept as sources:
 | `docs/how-it-works.md` | The pipeline mechanics extracted from this file: multi-pass stages, three run modes, edge-agent capture flow. In English, like this file, because it is the same document split for size |
 | `docs/` | Narrative codebase guide in Italian (start at `docs/INDEX.md`) |
 | `docs/adr/` | Architecture Decision Records in Italian, one decision per file, numbered and immutable once accepted (start at `docs/adr/README.md`). A decision that changes behaviour gets an ADR *and* a test; the ADR explains why, the test keeps it true |
-| `src/training/README.md` | Operational guide in Italian for preparing the reviewed v3.1 dataset and running offline LiLT training |
+| `src/training/README.md` | Commands for rebuilding OCR-derived datasets from the current practice archive and training the matching LiLT |
 | `.tritech/codebase-map/` | Codebase map generated by the `codebase-map` plugin (`/codebase-map:analyze`); regenerate it, do not hand-edit. The former `.codebase-xray/` analyses were removed from the working tree and survive in git history (last at `fdf7dc4`) |
 
 ## Dependencies
 
-All dependencies live in a single root `requirements.txt`; there is **no** `src/edge-agent/requirements.txt`.
-Versions are loosely bounded, not strictly pinned.
+Application dependencies are in the root `requirements.txt`. The offline RapidOCR environment uses the separate pins in `requirements-ocr.txt`. Model artifacts and provenance are described in `models/README.md`.
 
 **Extraction pipeline:**
 ```

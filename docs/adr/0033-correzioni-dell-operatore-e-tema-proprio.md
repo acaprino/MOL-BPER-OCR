@@ -1,7 +1,7 @@
 # 0033 — Correzioni dell'operatore e tema proprio
 
 - Data: 2026-11-22
-- Stato: Accettato
+- Stato: accettato per tema, correzioni ed export. La decisione sulla persistenza è stata sostituita dalla [ADR 0039](0039-recupero-sessioni.md).
 
 ## Contesto
 

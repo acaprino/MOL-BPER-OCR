@@ -32,7 +32,7 @@ def run_extraction_batch(
 ) -> Dict[str, Dict[str, Any]]:
 ```
 
-**Source:** [extraction/cli.py](../extraction/cli.py), righe 285–312.
+**Source:** [extraction/cli.py](../src/extraction/cli.py), righe 285–312.
 Restituisce `{screen_id: risultato}`; salta i percorsi inesistenti con un avviso.
 Le callback sono eseguite dal thread che chiama il batch. In parallelo un errore viene
 segnalato a `on_error` oppure stampato; in sequenziale, senza `on_error`, viene rilanciato.
@@ -61,7 +61,7 @@ def extract_from_image(
 def extract_from_screen(self, path: str) -> Dict[str, Any]:
 ```
 
-**Source:** [extraction/pipeline.py](../extraction/pipeline.py), righe 62, 78, 122 e 223.
+**Source:** [extraction/pipeline.py](../src/extraction/pipeline.py), righe 62, 78, 122 e 223.
 Il costruttore riceve modelli già creati. `extract_anchors()` restituisce i due campi
 e `_meta`; gli altri metodi restituiscono il risultato completo o l'uscita anticipata
 descritta nei [flussi di estrazione](05-workflows.md). Errori di apertura immagine e delle letture iniziali possono propagarsi.
@@ -97,7 +97,7 @@ def pending_extractions(self) -> int:
 def shutdown(self) -> None:
 ```
 
-**Source:** [edge-agent/local_extraction_client.py](../edge-agent/local_extraction_client.py),
+**Source:** [edge-agent/local_extraction_client.py](../src/edge-agent/local_extraction_client.py),
 righe 87–127 e 210–225. `start_job()` genera un UUID; `ingest_frame()` restituisce una
 sequenza da zero per job e solleva `RuntimeError` se il pool è chiuso, senza emettere
 `frame_queued`. `fields_json` è accettato per compatibilità ma non guida la pipeline.
@@ -105,6 +105,10 @@ sequenza da zero per job e solleva `RuntimeError` se il pool è chiuso, senza em
 quelli già iniziati. `get_results()` copia la lista, non i dizionari annidati: i consumatori
 non devono modificarli. `requeue_job()` è uno stub che restituisce `True`, non un retry.
 <!-- Source: src/edge-agent/local_extraction_client.py:123; src/edge-agent/local_extraction_client.py:145; src/edge-agent/local_extraction_client.py:157; src/edge-agent/local_extraction_client.py:206; src/edge-agent/local_extraction_client.py:222; src/edge-agent/extraction_pool.py:41 -->
+
+## Navigazione della pratica
+
+Per collegare una GUI alla navigazione, il worker BPER emette `navigation_changed(job_id, stato)`. Consumare solo i segnali del worker e della sessione correnti. Il dizionario espone `current_page`, `status`, `practice_ndg`, `identity_source`, `coverage_ndg`, `next_page`, `action` e le liste `missing`, `optional`, `unavailable`, `captured`. Usare `set_page_available(ndg, page_name, available)` per i tooltip e `reopen_page(ndg, page_name)` per riaprire una vista acquisita. I comandi vengono accodati al thread di cattura. [Stati ed esempi](navigazione-edge.md)
 
 ## Consolidamento ed esportazione
 
@@ -125,8 +129,8 @@ def export_results(
 ) -> int:
 ```
 
-**Source:** [practice_consolidation.py](../edge-agent/practice_consolidation.py), riga 105;
-[excel_export.py](../edge-agent/excel_export.py), riga 217.
+**Source:** [practice_consolidation.py](../src/edge-agent/practice_consolidation.py), riga 105;
+[excel_export.py](../src/edge-agent/excel_export.py), riga 217.
 L'input deve rispettare l'ordine di cattura. `consolidate()` non scrive su disco;
 `export_results()` consolida, scrive il workbook e restituisce il numero di pratiche.
 `labels` sostituisce le etichette visualizzate per chiave di schema. Gli errori del
@@ -142,9 +146,7 @@ salvataggio non sono intercettati dall'API di esportazione.
   `get_results()` espone invece il prefisso contiguo completato, errori compresi.
 - Tabella ed export leggono quel prefisso prima di consolidare. Un risultato lento
   può ritardare i successivi; gli errori diagnostici non devono lasciare buchi.
-- `shutdown()` scarta i lavori ancora in coda e non attende quelli già partiti.
-  I thread daemon possono proseguire finché il processo resta attivo; chiudere
-  l'applicazione non garantisce di completare tutti i risultati prima dell'export.
+- `shutdown()` ferma il pool senza attendere il provider. Nella GUI, i fotogrammi confermati hanno già una copia su disco. Il rilancio riprende gli slot pendenti e mantiene ogni risultato completato nella posizione corretta. [Recupero](recupero-sessioni.md)
 
 <!-- Source: src/extraction/cli.py::BatchRunner.run; src/edge-agent/local_extraction_client.py:127; src/edge-agent/local_extraction_client.py:157; src/edge-agent/local_extraction_client.py:214; src/edge-agent/local_extraction_client.py:222; src/edge-agent/extraction_pool.py:45 -->
 

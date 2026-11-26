@@ -30,6 +30,8 @@ spiega come i risultati diventano disponibili in ordine di acquisizione.
 
 ## Dati che attraversano i confini
 
+Durante la cattura il worker BPER aggiorna la copertura per NDG e la invia alla guida Qt. [Worker](../src/edge-agent/workers/capture/bper_capture_worker.py) · [Stato per pratica](../src/edge-agent/capture_navigation.py) · [Guida Qt](../src/edge-agent/ui/navigation_card.py). I due percorsi di addestramento e i loro dati di controllo sono descritti nella [guida OCR e LiLT](ocr-lilt.md).
+
 Il [modello dei dati](06-data-model.md) descrive il risultato dell'estrazione,
 i metadati, i campi canonici, il consolidamento per NDG e il formato Excel.
 

@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw
 
 from frame_normalize import normalize_frame
 from image_ops import preprocess_for_ocr
+from page_classifier import BPERPagePrototypeClassifier
 
 TEMPLATES = Path(__file__).resolve().parent.parent / "src" / "edge-agent" / "assets" / "templates" / "bper"
 SCREENS = [f"screen {n}" for n in range(1, 10)]
@@ -80,6 +81,25 @@ def test_recognizes_each_page_from_a_full_monitor_frame(classifier, screen):
     label, score = classifier.classify(_as_worker_sees_it(_live_frame(_reference(screen))))
 
     assert label == screen, f"got {label!r} at score {score:.3f}"
+
+
+@pytest.mark.slow
+def test_wide_financial_page_cannot_be_acquired_as_notes(classifier: BPERPagePrototypeClassifier) -> None:
+    financial = (Path(__file__).resolve().parents[1] / "data/dataset/pratiche"
+                 / "51185037/gestione-fidi-01.png")
+    with Image.open(financial) as image:
+        label, _ = classifier.classify(preprocess_for_ocr(image.convert("RGB")))
+
+    assert label in {None, "screen 5"}
+
+
+@pytest.mark.slow
+def test_wide_notes_can_still_be_acquired(classifier: BPERPagePrototypeClassifier) -> None:
+    notes = Path(__file__).parent / "fixtures/frames/no-tooltip/base-9a-chiuso.png"
+    with Image.open(notes) as image:
+        label, _ = classifier.classify(preprocess_for_ocr(image.convert("RGB")))
+
+    assert label == "screen 9"
 
 
 @pytest.mark.slow

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import threading
 import time
 from typing import Optional, Callable
 
@@ -29,9 +30,7 @@ class BaseCaptureWorker(QtCore.QThread):
         self.config = config
         self.job_id_getter = job_id_getter
 
-        self._running = False
-        # Latch: uno stop() arrivato durante l'init lunga del subclass non va perso
-        self._stop_requested: bool = False
+        self._stop_event = threading.Event()
         self._capture_fps = config.fps or 1
 
     # =====================================================================
@@ -44,21 +43,20 @@ class BaseCaptureWorker(QtCore.QThread):
 
         Chiama _capture_once() n volte al secondo (fps configurato).
         """
-        self._running = not self._stop_requested
         delay = 1.0 / float(self._capture_fps)
 
         self.tick.emit(f"[Worker] Avviato (FPS={self._capture_fps})")
 
         try:
-            while self._running:
-                t0 = time.time()
+            while not self._stop_requested:
+                t0 = time.monotonic()
                 try:
                     self._capture_once()
                 except Exception as exc:  # noqa: BLE001
                     self.error.emit(exc)
-                dt = time.time() - t0
-                if dt < delay:
-                    self.msleep(int((delay - dt) * 1000))
+                remaining = delay - (time.monotonic() - t0)
+                if remaining > 0:
+                    self._stop_event.wait(remaining)
         finally:
             self.tick.emit("[Worker] Terminato.")
 
@@ -66,13 +64,16 @@ class BaseCaptureWorker(QtCore.QThread):
     # API chiamate dal thread principale
     # =====================================================================
 
-    def start_capture(self):
+    def start_capture(self) -> None:
         if not self.isRunning():
             self.start()
 
-    def stop(self):
-        self._running = False
-        self._stop_requested = True
+    @property
+    def _stop_requested(self) -> bool:
+        return self._stop_event.is_set()
+
+    def stop(self) -> None:
+        self._stop_event.set()
 
     # =====================================================================
     # Metodi da implementare nei worker specifici

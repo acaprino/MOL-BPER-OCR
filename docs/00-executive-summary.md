@@ -1,36 +1,17 @@
-# Sintesi per tutti
+# Cosa fa il progetto
 
-**poc-data-extraction** è un prototipo funzionante che legge gli screenshot di un applicativo bancario interno e trasforma ciò che vede sullo schermo in dati organizzati e verificabili, e poi si dà il voto da solo, dicendo anche quanto è costata la lettura.
+Il data entrista legge le schermate della pratica di credito BPER. L’edge-agent riconosce la vista aperta, acquisisce i dati e li raggruppa in una riga per NDG. L’operatore può controllare e correggere i valori nella scheda **Dati estratti** prima di esportarli in Excel.
 
-Questa pagina è per chiunque: non serve essere sviluppatori. Se un termine non è chiaro, il [Glossario](11-glossary.md) lo spiega in parole semplici.
+**Esempio.** Una pratica ha due garanzie. L’operatore può leggere la prima descrizione, passare alle note e tornare sulla seconda garanzia. La navigazione deve conservare quanto raccolto per quella pratica e rendere visibile la vista ancora da acquisire. La [guida al data entry](flusso-data-entry.md) descrive le azioni e i campi di ogni schermata.
 
-## Il problema che risolve
+## Come si legge una schermata
 
-In BPER, gruppo bancario italiano, i dettagli di una pratica di credito (codici e nomi dei clienti, importi dei fidi, garanzie, dati su reddito e lavoro) vivono sulle schermate di un applicativo interno. Oggi, portare quelle informazioni altrove significa che una persona legge lo schermo e ridigita tutto a mano. È lento, noioso e facile da sbagliare.
+L’applicazione in uso legge i campi con un servizio VLM. Il riconoscimento della pagina serve a decidere quando acquisire una vista. Il batch confronta i valori con la verità revisionata nell’archivio e riporta accuratezza per campo, tempi e costi. [Flussi di elaborazione](05-workflows.md)
 
-## Come funziona, in parole semplici
+In parallelo il progetto mantiene due percorsi per la lettura su CPU, **RapidOCR + LiLT** e **OCRia-nano-1 di LlamaIndex + LiLT**. L’OCR localizza e trascrive il testo. LiLT usa testo e posizione per attribuire ogni parola a un campo. I risultati sul controllo e le parti ancora sperimentali sono nella [guida ai due percorsi](ocr-lilt.md).
 
-Dai al software uno screenshot di una di quelle schermate, oppure lo lasci osservare in silenzio il monitor mentre un operatore sfoglia l'applicativo. Il software invia l'immagine a un servizio di intelligenza artificiale capace di guardare le immagini e rispondere a domande su di esse: la stessa tecnologia dietro i moderni assistenti conversazionali. Le domande arrivano in tre passi accurati: prima *"di chi è questa pratica?"*, per agganciare il cliente giusto; poi *"leggi tutto quello che c'è su questa pagina"*; infine *"riguarda solo le parti su cui non eri sicuro"*. Ogni risposta torna come una voce etichettata, con allegato un livello di confidenza.
+## Dove proseguire
 
-Immaginalo come un impiegato diligente affiancato da un supervisore severo. L'impiegato trascrive ogni schermata in un modulo. Il supervisore poi confronta ogni voce con un foglio delle risposte corrette, la marca come giusta, sbagliata, mancante o inventata, e stima quanto è costata la lettura di ogni pagina: perché i servizi di AI dietro le quinte si pagano a consumo.
-
-## Cosa ottieni
-
-- Per ogni schermata: un record con 45 campi possibili. Nell’edge-agent i dati di più schermate vengono riuniti in **una riga per pratica**, mostrata in Dati Estratti ed esportabile in Excel.
-- Nel batch con il foglio di riferimento: un **report di accuratezza** e un **report dei costi stimati**. L’edge-agent può lavorare senza quel foglio; registra la diagnostica separatamente dai dati mostrati all’operatore.
-
-Insieme, questi due report rispondono alla domanda per cui il progetto esiste: **l'AI può sostituire in modo affidabile la ridigitazione manuale di queste schermate bancarie, e a quale prezzo?**
-
-## A chi serve
-
-Agli ingegneri di Tri-tech solutions che costruiscono e valutano il sistema. È inclusa anche un'applicazione desktop che un operatore di banca potrebbe usare direttamente: osserva lo schermo, riconosce quale pagina è aperta, cattura i dati in automatico e suggerisce quale pagina aprire dopo.
-
-## Lo stato, onestamente
-
-È un proof of concept in sviluppo attivo. Esistono una suite automatica in `tests/` e una build portable Windows dell’edge-agent (`build_exe.bat`); la verifica dell’accuratezza su dati reali richiede ancora un foglio di riferimento fornito separatamente. Mancano CI e una distribuzione con dipendenze bloccate a versioni esatte. Le prove automatiche non sostituiscono la verifica sul monitor e con il provider utilizzati in banca.
-
-## Dove andare adesso
-
-- **Non sei tecnico?** Ti bastano questa pagina e il [Glossario](11-glossary.md).
-- **Vuoi capire come funziona senza leggere codice:** [Panoramica](01-overview.md).
-- **Sei uno sviluppatore:** parti dalla [Panoramica](01-overview.md), poi [Architettura](04-architecture.md) per come si incastrano i pezzi e [Getting Started](07-getting-started.md) per eseguirlo tu stesso.
+- [Passi dell’operatore e albero di navigazione](flusso-data-entry.md)
+- [Avvio dell’applicazione](07-getting-started.md)
+- [Archivio delle pratiche e valori corretti](../data/README.md)

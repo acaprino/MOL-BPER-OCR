@@ -2,6 +2,10 @@
 
 Questo è un proof of concept interamente in Python che tratta il vision LLM come un componente intercambiabile. Ogni chiamata di estrazione passa da **LangChain**, così un'unica funzione factory (`create_chat_model()` in **`src/extraction/llm_factory.py`**) sceglie a runtime tra OpenAI e Google Gemini a partire da una sola variabile d'ambiente, e il resto dello stack è disposto attorno a quella cucitura: Pillow per il ritaglio e il miglioramento delle immagini, Pandas per il confronto con la ground truth, Tkinter e PyQt6 per le due interfacce desktop, e un classificatore opzionale PyTorch/DINOv2 per il riconoscimento delle pagine sul dispositivo. Non c'è web server, non c'è database, la build portable usa `build_exe.bat` e `edge_agent.spec`; le dipendenze applicative sono in `requirements.txt`.
 
+## Lettura offline su CPU
+
+Il percorso RapidOCR usa i modelli PP-OCR e un ambiente separato. Nel percorso Nano è stato valutato sia OCRia-nano-1 originale sia il rilevatore PP-OCR con lettore latino Nano riaddestrato. LiLT assegna i ruoli alle parole prodotte dalla specifica configurazione OCR. Per riconoscere la pagina in cattura l’edge-agent dispone di un router dedicato. [Modelli, risultati e versioni](ocr-lilt.md)
+
 ## Linguaggi
 
 | Linguaggio | Versione | Dove è configurato |
@@ -49,7 +53,7 @@ Raggruppate per scopo. Tutto vive nell'unico **`requirements.txt`** alla radice;
 
 ## Infrastruttura
 
-Non c’è database né broker esterno. Esistono code locali in memoria (`extraction_pool.py` e i comandi del worker) e i prototipi DINOv2 delle pagine, distribuiti con l'app (ADR 0030). `LocalExtractionClient` conserva i risultati sotto lock e pubblica il prefisso completato in ordine di acquisizione. CLI e Tkinter esportano JSON/CSV; la UI dell’edge-agent consolida le schermate per pratica ed esporta Excel. La memoria della sessione non è un archivio persistente.
+L’edge-agent usa un archivio SQLite locale cifrato per il recupero. Esistono code locali in memoria (`extraction_pool.py` e i comandi del worker) e i prototipi DINOv2 delle pagine, distribuiti con l'app (ADR 0030). `LocalExtractionClient` conserva i risultati sotto lock e pubblica il prefisso completato in ordine di acquisizione. CLI e Tkinter esportano JSON/CSV; la UI dell’edge-agent consolida le schermate per pratica ed esporta Excel. L’archivio conferma ogni acquisizione dopo la scrittura della copia di sicurezza. [Recupero delle sessioni](recupero-sessioni.md)
 
 Servizi esterni vivi (tutti HTTPS in uscita):
 - **API OpenAI**: provider di estrazione via LangChain (`gpt-4o` come default del codice) e provider possibile per il router tramite SDK OpenAI.

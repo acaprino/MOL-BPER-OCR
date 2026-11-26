@@ -6,8 +6,11 @@ and per-cell styling that df.to_excel() cannot express.
 
 from __future__ import annotations
 
+import os
 import sys
 from dataclasses import dataclass
+from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import Any, Dict, List, Mapping, Optional, Sequence
 
 from openpyxl import Workbook
@@ -217,7 +220,19 @@ def write_workbook(
     ws.auto_filter.ref = f"A2:{last_column}{last_row}"
     ws.freeze_panes = "C3"
 
-    wb.save(path)
+    # Stage on the destination volume for atomic replace. Windows requires
+    # the temporary handle to be closed before the rename.
+    destination = Path(path)
+    staged = NamedTemporaryFile(dir=destination.parent, prefix=".edge-agent-", delete=False)
+    try:
+        with staged:
+            wb.save(staged)
+            staged.flush()
+            os.fsync(staged.fileno())
+        os.replace(staged.name, destination)
+    except BaseException:
+        Path(staged.name).unlink(missing_ok=True)
+        raise
 
 
 def export_results(

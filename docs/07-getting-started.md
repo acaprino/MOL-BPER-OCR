@@ -11,6 +11,8 @@ Leggi questa guida insieme ad [Architettura](04-architecture.md),
 [Workflow](05-workflows.md) e [API Python](12-python-api.md). I comandi seguenti
 partono dalla radice del repository; gli esempi di configurazione sono segnaposto.
 
+Per usare la guida durante la cattura vedi il [percorso del data entrista](flusso-data-entry.md). Per l’addestramento OCR servono gli [ambienti offline](../src/training/README.md).
+
 ## Prerequisiti
 
 - **Python 3.13 o 3.12** come target pratico. Il launcher cerca prima queste versioni,
@@ -18,8 +20,7 @@ partono dalla radice del repository; gli esempi di configurazione sono segnapost
   di runtime dichiarato in un file di packaging.
 - **Credenziale OpenAI o Gemini** per l'estrazione reale. Il motore usa OpenAI e
   `gpt-4o` come default del codice; un modello deve essere compatibile con il provider.
-- **CSV `INPUT_DIR/dati.csv`** soltanto per la CLI. Il dataset non è distribuito nel
-  repository; va ottenuto separatamente prima di eseguire la valutazione.
+- **Valori attesi** per il batch CLI. La pratica predefinita usa il file versionato `data/dataset/valori.csv`. Per una cartella esterna all’archivio puoi fornire un `dati.csv`.
 - **Ambiente desktop e monitor BPER** per la cattura live. Il frame del monitor viene
   riportato sulla finestra applicativa prima di routing ed estrazione.
 - **torch/torchvision e pesi DINOv2** per il riconoscimento ML. Le dipendenze sono nel
@@ -116,7 +117,7 @@ LLM_MODEL=<modello Gemini abilitato per la tua chiave>
 La factory rifiuta le coppie disallineate: un modello `gemini-*` con `LLM_PROVIDER=openai` (o `gpt-*` con `gemini`) solleva `ValueError`.
 <!-- Source: src/extraction/llm_factory.py:49-63 -->
 
-### 4. Fornisci il CSV di ground truth (solo CLI)
+### 4. Scegli la pratica da valutare (CLI)
 
 Per le pratiche dell'archivio non serve nulla: con `INPUT_DIR` su una cartella di `data/dataset/pratiche` (default
 `data/dataset/pratiche/51350695`, la pratica di riferimento) la CLI legge i valori dalle righe della pratica in
@@ -332,7 +333,7 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
 
 ## Trabocchetti
 
-- **La CLI si arresta senza verità.** Se `INPUT_DIR` non contiene un `dati.csv` e non sta in una cartella con `pratiche.xlsx` accanto, `python main.py` solleva `FileNotFoundError`; le due GUI funzionano senza.
+- **La CLI si arresta senza verità.** Se `INPUT_DIR` non contiene un `dati.csv` e non ha né la verità di `data/dataset/valori.csv` né il vecchio workbook `pratiche.xlsx`, `python main.py` solleva `FileNotFoundError`; le due GUI funzionano senza.
 <!-- Source: src/extraction/cli.py::main -->
 
 - **La storia git è stata riscritta il 2026-07-21: i cloni stantii sono pericolosi.** Una chiave OpenAI era stata committata in `src/edge-agent/config.ini`; è stata ripulita dall'intera storia con `git filter-repo` e force-pushata. Ogni hash di commit è cambiato. Se il clone precede la riscrittura, conserva separatamente il lavoro locale utile e usa un clone nuovo; evita merge o push della vecchia storia.
@@ -366,8 +367,7 @@ automatica: avvialo su una macchina di build predisposta a queste operazioni.
 - **I completamenti sono paralleli, la visualizzazione segue l'ordine di cattura.**
   Un frame già estratto può attendere quello precedente prima di comparire. Non
   costruire una lista dai segnali `result_ready`: rileggi `get_results()` per
-  preservare l'associazione delle note senza NDG. Arrestare il pool scarta la coda,
-  non attende tutte le estrazioni della sessione.
+  preservare l'associazione delle note senza NDG. Le catture pendenti sono registrate su disco e tornano in elaborazione al rilancio della GUI. [Ripresa dopo un arresto](recupero-sessioni.md)
   <!-- Source: src/edge-agent/local_extraction_client.py:194; src/edge-agent/local_extraction_client.py:214; tests/test_local_extraction_client.py:117 -->
 
 - **L'italiano è intenzionale.** I prompt del VLM, le chiavi dei campi (`professione_principale`), le stringhe UI di PyQt6/Tkinter e le intestazioni CSV sono termini di dominio italiani: non tradurli. Codice, identificatori, commenti e messaggi di commit restano in inglese (policy linguistica nelle istruzioni del repository).

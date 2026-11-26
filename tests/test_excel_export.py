@@ -1,8 +1,10 @@
 """Tests for src/edge-agent/excel_export.py (formatted workbook writer)."""
 
+import os
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+import pytest
 from openpyxl import load_workbook
 
 from excel_export import build_columns, export_results, write_workbook
@@ -190,3 +192,43 @@ def test_export_drops_characters_excel_refuses_from_extracted_values(tmp_path: P
 
 def test_export_results_skips_a_session_with_nothing_but_errors(tmp_path: Path) -> None:
     assert export_results([{"fields": {}, "_status": "ERROR"}], str(tmp_path / "e.xlsx")) == 0
+
+
+def test_failed_disk_flush_preserves_the_previous_workbook(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    path = tmp_path / "pratiche.xlsx"
+    export_results([_frame("12345")], str(path))
+    original = path.read_bytes()
+
+    def disk_full(_fd: int) -> None:
+        raise OSError("disk full")
+
+    monkeypatch.setattr(os, "fsync", disk_full)
+    with pytest.raises(OSError, match="disk full"):
+        export_results([_frame("67890")], str(path))
+
+    assert path.read_bytes() == original
+    assert list(tmp_path.iterdir()) == [path]
+
+
+def test_locked_destination_keeps_the_old_export_until_the_new_one_can_replace_it(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    path = tmp_path / "pratiche.xlsx"
+    export_results([_frame("12345")], str(path))
+    original = path.read_bytes()
+
+    def destination_locked(source: str, destination: str) -> None:
+        assert Path(source).parent == Path(destination).parent == tmp_path
+        raise PermissionError("file in use")
+
+    with monkeypatch.context() as patch:
+        patch.setattr(os, "replace", destination_locked)
+        with pytest.raises(PermissionError, match="file in use"):
+            export_results([_frame("67890")], str(path))
+
+    assert path.read_bytes() == original
+    assert list(tmp_path.iterdir()) == [path]
+    assert export_results([_frame("67890")], str(path)) == 1
+    assert load_workbook(path).active["A3"].value == "67890"

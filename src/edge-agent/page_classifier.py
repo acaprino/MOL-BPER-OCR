@@ -25,6 +25,10 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 
+from PIL import Image
+
+from page_registry import PageRegistry
+
 # ============================================================
 # Costanti DINOv2 (unica definizione: bootstrap e router le importano da qui)
 # ============================================================
@@ -87,6 +91,40 @@ class Classification:
     margin: float
     runner_up: Optional[str]
     rejected_by: Optional[str]
+
+
+def _shows_pef_table_sections(image: Image.Image) -> bool:
+    """Detect the additional navy table headers that contradict the Notes layout."""
+    import numpy as np
+
+    thumbnail = image.convert("RGB")
+    thumbnail.thumbnail((900, 900), Image.Resampling.BILINEAR)
+    red, green, blue = np.asarray(thumbnail).transpose(2, 0, 1)
+    # OCR contrast stretching can turn the navy virtually black.
+    dark = (red < 80) & (green < 90) & (blue < 155)
+    height, width = dark.shape
+    coverage = dark.sum(axis=1)
+    rows = np.flatnonzero(coverage > 0.20 * width)
+    rows = rows[rows > 0.17 * height]  # exclude the browser toolbar
+    if not rows.size:
+        return False
+
+    # Text can interrupt a bar for a few scan lines. Group them into one header.
+    breaks = np.flatnonzero(np.diff(rows) > max(2, round(0.008 * height))) + 1
+    right_edges = []
+    for band in np.split(rows, breaks):
+        if len(band) < 2 or band[-1] - band[0] > 0.06 * height:
+            continue
+        row = dark[band[coverage[band].argmax()]]
+        runs = np.flatnonzero(np.diff(np.r_[False, row, False])).reshape(-1, 2)
+        left, right = max(runs, key=lambda span: span[1] - span[0])
+        if right - left > 0.20 * width:
+            right_edges.append(right)
+
+    # Notes has the common navigation and identity bars. A third aligned header
+    # belongs to a content table (Elenco Soggetti, FIDI or GARANZIE).
+    return any(sum(abs(x - right) < 0.025 * width for x in right_edges) >= 3
+               for right in right_edges)
 
 
 def _scan_dataset_images(templates_dir: Path) -> Dict[str, List[Path]]:
@@ -261,6 +299,14 @@ class BPERPagePrototypeClassifier:
                 immagini (ADR 0030).
         """
         self.templates_dir = Path(templates_dir)
+        try:
+            pages = PageRegistry.load(self.templates_dir / "prompts.json").pages
+        except (OSError, ValueError, TypeError, AttributeError):
+            # A missing or damaged page catalog must not disable the local classifier.
+            pages = []
+        self._pages_without_table_sections = {
+            page.template for page in pages if page.template and page.ml_excludes_table_sections
+        }
         if cache_path is None:
             cache_path = self.templates_dir / "bper_page_prototypes.json"
         self.cache_path = Path(cache_path)
@@ -675,6 +721,9 @@ class BPERPagePrototypeClassifier:
             return Classification(None, best_score, margin, runner_up, best_label)
 
         if best_score < self.similarity_threshold:
+            return Classification(None, best_score, margin, runner_up, None)
+
+        if best_label in self._pages_without_table_sections and _shows_pef_table_sections(image):
             return Classification(None, best_score, margin, runner_up, None)
 
         return Classification(best_label, best_score, margin, runner_up, None)

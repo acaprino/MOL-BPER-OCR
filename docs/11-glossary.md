@@ -4,6 +4,15 @@ Definizioni in parole semplici di ogni termine ricorrente in questa documentazio
 
 Se sei nuovo del progetto, leggi prima la [Sintesi per tutti](00-executive-summary.md) e tieni questa pagina aperta accanto a tutto il resto. Per dove ogni struttura vive nel codice, vedi [Data Model](06-data-model.md); per cosa il sistema ne fa, vedi [Funzionalità](02-features.md).
 
+## Lettura e navigazione
+
+| Termine | Significato nel progetto |
+|---|---|
+| **Vista** | La pagina insieme a ciò che si vede al momento, ad esempio la descrizione di una garanzia aperta. Una visita può tornare a una vista già acquisita. |
+| **Router di pagina** | Identifica la vista sul monitor. La conferma dei campi avviene dopo l’estrazione. |
+| **Rilevatore e lettore OCR** | Il rilevatore localizza il testo nei pixel. Il lettore trascrive i caratteri dentro ciascun riquadro. |
+| **LiLT** | Assegna un ruolo alle parole OCR usando testo e posizione, così il decodificatore può ricomporre i campi bancari. |
+
 ## Termini bancari / di dominio
 
 | Termine | Significato |
@@ -59,7 +68,7 @@ Se sei nuovo del progetto, leggi prima la [Sintesi per tutti](00-executive-summa
 | **pHash dedup** | Confronto percettivo per ridurre il routing dei frame simili. La visita è distinta invece dall’impronta esatta dei pixel normalizzati, così anche una piccola modifica dell’NDG consente una nuova acquisizione. |
 | **distanza di Hamming** | Quanti bit differiscono tra due hash; una distanza piccola significa frame quasi duplicati. |
 | **cancello di stabilità** | Il requisito di "stare fermi" 2 secondi prima che una pagina riconosciuta venga catturata -- evita di estrarre a metà scroll. |
-| **page routing / router** | Decidere quale pagina è a schermo. `ml` usa il classificatore locale; `llm` il provider configurato; `hybrid` prova LLM e poi ML. `local-first` valuta prima margine e classi di scarto, ma attualmente ricade su ML, senza fallback remoto. |
+| **page routing / router** | Decidere quale pagina è a schermo. `ml` usa il classificatore locale; `llm` il provider configurato; `hybrid` prova LLM e poi ML. `local-first` valuta prima margine e classi di scarto locali e consulta il provider LLM per i casi incerti. |
 | **classificatore a prototipi** (DINOv2) | Il router ML locale: trasforma l'area applicativa della pagina in un embedding di 384 numeri e lo confronta con prototipi per pagina in cache, per similarità del coseno **centrata**. |
 | **coseno centrato** | Il confronto usato dal classificatore: prima di misurare la similarità si sottrae il centroide dei prototipi sia alla query sia ai prototipi. Pagine diverse dello stesso applicativo condividono quasi tutti i pixel, e la componente condivisa domina il coseno grezzo; togliendola resta soltanto ciò che distingue una pagina dalle altre. Non cambia quale pagina vince, moltiplica per trenta il margine con cui vince. |
 | **inquadratura normalizzata** | Il ritaglio applicato in `_grab_raw()` per riportare una cattura a schermo intero sulla finestra applicativa. Serve perché ogni ritaglio del sistema è espresso in coordinate relative tarate su screenshot di finestra. |

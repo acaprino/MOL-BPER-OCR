@@ -145,12 +145,14 @@ def test_out_of_order_completions_preserve_practice_assignment(
 
         visible = client.get_results("job")
         assert [result["screen_id"] for result in visible] == [pages[0]]
+        assert client.practice_count("job") == 1
         assert consolidate(visible)[0].fields["note_della_richiesta"]["value"] is None
 
         pipeline.release[delayed_page].set()
         _wait_for(lambda: len(completions) == 3, app)
         results = client.get_results("job")
         assert [result["screen_id"] for result in results] == pages
+        assert client.practice_count("job") == 2
         records = {record.ndg: record for record in consolidate(results)}
         note_owner = "222" if delayed_page == "second-practice" else "111"
         other_practice = "111" if note_owner == "222" else "222"

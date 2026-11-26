@@ -1,6 +1,6 @@
 # Modello dei dati
 
-Questo progetto non ha un database. Il suo paesaggio dati è fatto di dict Python in memoria, modelli Pydantic che definiscono la forma dell'output dell'LLM e file piatti su disco: un CSV di ground truth rispetto a cui l'estrazione viene valutata e i report JSON/CSV scritti dopo un'esecuzione. Il centro del modello è il **dict risultato**: l'unica struttura che esce dalla pipeline ed entra in ogni consumatore a valle (valutazione, export CSV, la vista risultati Tkinter e il consolidamento delle pratiche nell'edge-agent).
+Il motore di estrazione usa strutture Python in memoria, modelli Pydantic, immagini e file CSV/JSON. Il **dict risultato** alimenta la valutazione, l'export CSV, la vista risultati Tkinter e il consolidamento per NDG nell'edge-agent. Il simulatore conserva le proprie pratiche sintetiche in SQLite. Per il training, da schermate e trascrizioni si costruisce un dataset di parole, coordinate ed etichette per ciascuna lettura OCR. [Archivio](../data/README.md) · [Dataset dei due percorsi LiLT](../src/training/README.md)
 
 Tre concetti ancorano tutto. **`FIELD_KEYS`** è l'elenco canonico di esattamente 45 campi scalari e l'unica fonte di verità: il modello Pydantic dei campi viene generato da esso, e la mappatura CSV, le definizioni canoniche e le aree di retry devono restargli allineate. Gli **schemi Pydantic** (`src/extraction/schemas.py`) definiscono che aspetto ha una risposta LLM valida. Le **definizioni canoniche di campo/pagina** (`src/extraction/field_definitions.py`, `src/extraction/page_definitions.py`) mappano ogni campo su un nome visualizzato italiano e una delle cinque pagine di origine; il gruppo di export è una proprietà distinta e conserva quattro bande di colonne. Le chiavi dei campi sono termini italiani del dominio bancario (`professione_principale`, `filiale_relazione`, ...) e sono portanti: devono corrispondere alle etichette della ground truth tramite `CSV_TO_SCHEMA` e non vanno mai tradotte. Le definizioni in linguaggio semplice dei termini di dominio sono nel [Glossario](11-glossary.md).
 <!-- Source: src/extraction/fields.py:12-54 -->
@@ -116,9 +116,8 @@ finale è `OK` quando NDG e denominazione non sono nulli dopo tutti i passaggi; 
 <!-- Source: src/extraction/pipeline.py:151; src/extraction/pipeline.py:224 -->
 
 **Persistenza.** La CLI scrive i risultati completi in
-`INPUT_DIR/poc_outputs_improved.json`; Tkinter scrive `poc_outputs_gui.json` nella
-directory corrente. Il client live conserva risultati e completamenti in memoria,
-protetti da lock, fino alla chiusura del processo; l'export Excel è esplicito.
+`OUTPUT_DIR/poc_outputs_improved.json`; Tkinter scrive `poc_outputs_gui.json` nella
+directory corrente. Il client desktop salva ogni cattura accettata e i risultati nell’archivio cifrato della sessione. Al riavvio ricostruisce il prefisso completato e riprende le catture pendenti. L’export Excel è esplicito. [Recupero](recupero-sessioni.md)
 <!-- Source: src/extraction/cli.py::main; gui_app.py:250; src/edge-agent/local_extraction_client.py:114; src/edge-agent/ui/data_table_tab.py:255 -->
 
 ### Ordine di acquisizione e disponibilità dei risultati
@@ -132,8 +131,7 @@ pronto, anche fuori ordine e prima del ritorno di `ingest_frame()` o del segnale
 <!-- Source: src/edge-agent/local_extraction_client.py:145; src/edge-agent/local_extraction_client.py:194; src/edge-agent/local_extraction_client.py:222; src/edge-agent/ui/data_table_tab.py:128; tests/test_local_extraction_client.py:117; tests/test_local_extraction_client.py:183; tests/test_local_extraction_client.py:220 -->
 
 Questo ordinamento conserva il legame fra una schermata senza NDG e la pratica
-che la precede. Può ritardare la visualizzazione di risultati già pronti; lo
-shutdown scarta i lavori ancora in coda e può lasciare incompleto il prefisso.
+che la precede. Un risultato già pronto può attendere una lettura precedente. Se l’agent chiude durante l’attesa, il rilancio completa il prefisso dai fotogrammi salvati.
 La lista restituita è una copia superficiale: i consumatori non devono modificare
 i dizionari annidati. La motivazione è nell'[ADR 0013](adr/0013-risultati-nell-ordine-di-acquisizione.md).
 <!-- Source: src/edge-agent/local_extraction_client.py:214; src/edge-agent/local_extraction_client.py:222; src/edge-agent/practice_consolidation.py:87 -->
@@ -335,6 +333,8 @@ risultato e nella diagnostica del client, non nelle 45 colonne business.
 <!-- Source: src/edge-agent/excel_export.py:124; src/extraction/evaluation.py:15; src/extraction/normalization.py:78; src/edge-agent/local_extraction_client.py:41; tests/test_excel_export.py:92; tests/test_excel_export.py:104 -->
 
 ## Strutture dati dell'edge-agent
+
+La guida ricostruisce la copertura per sessione e NDG dalle catture e dalle decisioni registrate. `practice_ndg` identifica la vista corrente quando l'esito è disponibile. `coverage_ndg` identifica la pratica dell'elenco mostrato, anche mentre il monitor cambia. Le viste da acquisire, condizionali, non applicabili e già lette formano collezioni distinte. La guida raggruppa le viste, mentre la tabella consolida i valori dei singoli campi. [Navigazione e correzione della copertura](navigazione-edge.md)
 
 Tre strutture più piccole sostengono la cattura dal vivo (vedi [Architettura](04-architecture.md)):
 

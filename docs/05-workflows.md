@@ -148,7 +148,7 @@ flowchart LR
 `ingest_frame()` accetta il lavoro e restituisce la sequenza del frame da zero per job. Solo i lavori accettati consumano una sequenza; un pool chiuso solleva `RuntimeError` senza emettere `frame_queued`. `fields_json` è mantenuto nell'interfaccia, ma non guida la pipeline. Il worker marca la visita come pendente, senza dichiararla già acquisita.
 <!-- Source: src/edge-agent/local_extraction_client.py:127; src/edge-agent/local_extraction_client.py:145; src/edge-agent/local_extraction_client.py:157; src/edge-agent/workers/capture/bper_capture_worker.py:422 -->
 
-La conferma dell'esito, o *ack*, entra in una coda di comandi con `(job_id, sequenza, stato)`. La coppia job/sequenza identifica visita e pagina originarie. Solo l'ack della cattura corrente può completare o liberare quella visita; una risposta vecchia non modifica il pendente di una visita nuova. Il set `captured_page_types` registra i nomi elaborati per la guida, senza impedire successive acquisizioni della stessa pagina.
+La conferma dell'esito, o *ack*, entra in una coda di comandi con `(job_id, sequenza, stato)`. La coppia job/sequenza identifica visita e pagina originarie. Solo l'ack della cattura corrente può completare o liberare quella visita; una risposta vecchia non modifica il pendente di una visita nuova. La [guida di navigazione](navigazione-edge.md) aggiorna la copertura per NDG nell’ordine delle catture. Una pagina può essere visitata e acquisita più volte.
 <!-- Source: src/edge-agent/workers/capture/bper_capture_worker.py:278; src/edge-agent/workers/capture/bper_capture_worker.py:299; src/edge-agent/workers/capture/bper_capture_worker.py:267 -->
 
 Dopo `ERROR` o rifiuto di ingest serve un nuovo intervallo stabile prima del retry automatico. `ANCHOR_UNCERTAIN` completa la visita: una pagina senza NDG può comunque avere campi utili e non va ripetuta indefinitamente solo per lo stato. La pagina corrente, mentre è pendente o completata, non viene instradata e accodata a ogni tick; un cambiamento di pixel riabilita la cattura.
@@ -203,8 +203,8 @@ I compromessi sono espliciti negli [ADR 0013](adr/0013-risultati-nell-ordine-di-
 
 - un frame lento ritarda la visualizzazione dei successivi già pronti;
 - animazioni o aggiornamenti continui dei pixel riavviano la stabilità e possono aumentare routing e attesa; lo scatto manuale resta disponibile;
-- il client conserva risultati in memoria senza una politica di svuotamento; le copie di `get_results()` proteggono la lista, non i dizionari annidati;
-- `shutdown()` scarta le estrazioni ancora in coda e non attende il completamento della sessione: eventuali buchi possono lasciare risultati successivi non pubblicabili;
+- il client salva le catture prima di confermarle e ricostruisce i risultati in ordine alla riapertura. Le copie di `get_results()` proteggono la lista, mentre i dizionari annidati restano condivisi. [Guida al recupero](recupero-sessioni.md)
+- `shutdown()` ferma l’elaborazione. Alla riapertura della GUI i fotogrammi salvati e ancora pendenti tornano in coda e sbloccano i risultati successivi;
 - cinque errori consecutivi di screenshot fermano la cattura; l'assenza di mss la ferma subito. Le altre eccezioni per tick vengono segnalate dal loop.
 
 <!-- Source: src/edge-agent/local_extraction_client.py:116; src/edge-agent/local_extraction_client.py:194; src/edge-agent/local_extraction_client.py:214; src/edge-agent/local_extraction_client.py:222; src/edge-agent/extraction_pool.py:45; src/edge-agent/workers/capture/bper_capture_worker.py:329; src/edge-agent/workers/capture/bper_capture_worker.py:444; src/edge-agent/workers/capture/base_capture_worker.py:53 -->
@@ -219,7 +219,7 @@ Il routing assegna una pagina alla schermata prima dell'estrazione. `RouterResul
 | `ml` | `MLPageRouter` possiede un classificatore DINOv2 locale e restituisce la classificazione. |
 | `llm` | `LLMPageRouter` invia frame e fascia header all'endpoint configurato. |
 | `hybrid` | Prima LLM; se non trova una pagina e il classificatore è disponibile, ripiega su ML. |
-| `local-first` | Esegue prima il controllo locale su margine e classe di scarto. Nell'inizializzazione attuale il router di riserva è ancora `MLPageRouter`: non viene creato un fallback LLM. |
+| `local-first` | Esegue prima il controllo locale su margine e classe di scarto. Se l’evidenza locale è incerta, consulta il router LLM configurato. |
 
 <!-- Source: src/edge-agent/workers/capture/bper_capture_worker.py:123; src/edge-agent/workers/capture/bper_capture_worker.py:571; src/edge-agent/workers/capture/bper_capture_worker.py:622; src/edge-agent/llm_router.py:43 -->
 
@@ -242,7 +242,7 @@ DINOv2 ViT-S/14 produce un vettore di 384 dimensioni dalla ROI dell'area applica
 La cache include la geometria dell'embedding: ROI, resize, modello e regola di punteggio. Un cambiamento di geometria invalida i prototipi, come descritto negli [ADR 0002](adr/0002-riconoscimento-pagina-roi-e-coseno-centrato.md) e [0003](adr/0003-chiave-cache-prototipi-con-geometria.md). Se torch/torchvision non sono importabili, il classificatore si disabilita. Il caricamento usa Torch Hub; il preflight prepara pesi e cache per `ml` e `hybrid`, ma non include `local-first` in quel controllo.
 <!-- Source: src/edge-agent/page_classifier.py:140; src/edge-agent/page_classifier.py:166; src/edge-agent/page_classifier.py:313; src/edge-agent/page_classifier.py:350; src/edge-agent/bootstrap.py:510 -->
 
-In `local-first`, un prototipo di scarto termina la decisione senza rete; una pagina con margine almeno `local_margin_min`, default 0.10, viene accettata localmente. Se il margine è basso si passa al router configurato, che nell'implementazione corrente è ancora ML: la soglia di margine non garantisce quindi l'escalation remota né impone un rifiuto finale.
+In `local-first`, un prototipo di scarto termina la decisione senza rete; una pagina con margine almeno `local_margin_min`, default 0.10, viene accettata localmente. Se il margine è basso si consulta il router LLM. Un’astensione o l’indisponibilità del provider lasciano la vista da identificare.
 <!-- Source: src/edge-agent/workers/capture/bper_capture_worker.py:103; src/edge-agent/workers/capture/bper_capture_worker.py:190; src/edge-agent/workers/capture/bper_capture_worker.py:571; src/edge-agent/workers/capture/bper_capture_worker.py:622 -->
 
 ## Processi in background

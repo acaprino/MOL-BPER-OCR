@@ -13,8 +13,8 @@ Tre fatti orientano la lettura di tutto il resto:
 Il repository raccoglie i sorgenti in **`src/`** (`src/extraction/`, `src/edge-agent/`, `src/training/`, `src/prompt_store.py`) più gli entry point alla radice (`main.py`, `gui_app.py`, `run_edge_agent.bat`, `build_exe.bat`, `edge_agent.spec`). L'edge-agent raggiunge `src/` inserendolo in `sys.path` tramite `app_paths.src_dir()` (`src/edge-agent/local_extraction_client.py:18-20`), mentre `main.py` e `gui_app.py` inseriscono `src/` (e `src/edge-agent/` con `--gui`) all'avvio.
 
 ```
-poc-data-src/extraction/
-  main.py                      # Shim di ingresso: aggiunge src/ a sys.path, carica .env, `from extraction import *`; --gui avvia l'edge-agent
+poc-data-extraction/
+  main.py                      # Shim di ingresso: con --gui avvia il bootstrap desktop, altrimenti carica .env e importa l’API batch
   gui_app.py                   # Entry point GUI Tkinter (aggiunge src/ a sys.path, carica .env prima di extraction)
   run_edge_agent.bat           # Launcher Windows: bootstrap auto-riparante della .venv + avvio src/edge-agent/edge_agent.py
   requirements.txt             # Dipendenze applicative, training offline e PyInstaller (vincoli laschi)
@@ -36,8 +36,8 @@ poc-data-src/extraction/
     prompt_store.py            # Loader del catalogo prompt: solo stdlib, fuori da src/extraction/ per non tirarsi dietro LangChain
     training/                  # Package offline per dataset supervisionato e addestramento LiLT
       schema.py                # Vocabolario dei 45 campi e 37 ruoli semantici (letto da src/extraction/fields.py)
-      alignment.py             # Allineamento dei valori revisionati sui token RapidOCR e geometria delle celle
-      dataset.py               # Costruzione bundle train/val/test da Excel v3.1, supervisione e audit anti-leakage
+      alignment.py             # Allineamento dei valori revisionati sui token OCR e geometria delle celle
+      dataset.py               # Costruzione del dataset dagli split di data/dataset e dalla cache del lettore, supervisione e audit anti-leakage
       model.py                 # Chunking senza taglio tabella FIDI, augmentation, training LiLT e inferenza CPU/GPU
       evaluation.py            # Decoder campi e metriche rigorose (disponibilità OCR, F1 parole, accuratezza campi)
       modal_train.py           # Entry point remoto Modal per training GPU e scaricamento cpu_model
@@ -98,7 +98,7 @@ poc-data-src/extraction/
     dataset/                   # Archivio pulito (ADR 0032): pratiche/<id>/<pagina>-<NN>.png (INPUT_DIR predefinito: pratiche/51350695),
                                # valori.csv, schermate.csv, pratiche.csv
 
-  docs/                  # Questa documentazione narrativa in italiano (INDEX + doc 00-12)
+  docs/                  # Questa documentazione narrativa in italiano (indice, guide operative e ADR)
   .claude/                     # Impostazioni locali Claude Code (solo settings.local.json)
   .idea/                       # File di progetto PyCharm
   .venv/                       # Virtualenv locale (in gitignore; creato da run_edge_agent.bat)
@@ -198,7 +198,7 @@ Non esistono comandi di lint o migrazione database; il progetto non avvia un ser
 
 ### CLI (`python main.py`)
 
-1. **`main.py`** sopprime gli `UserWarning` di pydantic/langchain (`main.py:3-5`), poi carica `.env` (`main.py:7`).
+1. **`main.py`** carica `.env` per il batch. Con `--gui` passa subito al bootstrap desktop per presentare anche gli errori di avvio nella finestra Qt.
 2. `from extraction import *` -- questo import è il momento della configurazione: `src/extraction/config.py` fotografa tutte le env var in costanti adesso.
 3. `extraction.cli.main()` (`src/extraction/cli.py::main`): verifica che `GROUND_TRUTH_CSV` esista → carica la ground truth → raccoglie gli screenshot da `INPUT_DIR` → `BatchRunner` costruisce i due ChatModel LangChain condivisi (main + anchor) **una volta sola, prima del pool** (`src/extraction/cli.py::BatchRunner.__init__`) -- una API key mancante/invalida fallisce qui con `ValueError: API key required...` (`src/extraction/llm_factory.py:41-44`) → `ThreadPoolExecutor` (se `PARALLEL_ENABLED`) esegue `ExtractionPipeline.extract_from_screen()` per immagine → output salvati, valutazione e riepilogo costi stampati.
 4. **Verifica di funzionamento:** l'esecuzione termina con le righe `Saved outputs: ...` / `Saved debug report: ...` più le tabelle di accuratezza e costo su stdout.

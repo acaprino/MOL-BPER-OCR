@@ -55,6 +55,7 @@ def install_fake_vlm(monkeypatch, recorder, responder=None):
 # Offscreen: no display needed (also on Modal). Absent PyQt6 -> widget tests skip.
 
 import os
+from pathlib import Path
 
 import pytest
 
@@ -72,3 +73,10 @@ def qapp():
     if _QAPP is None:
         pytest.skip("PyQt6 is not installed")
     return _QAPP
+
+
+@pytest.fixture
+def isolated_edge_backup(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+    directory = tmp_path / "backup"
+    monkeypatch.setenv("EDGE_AGENT_BACKUP_DIR", str(directory))
+    return directory

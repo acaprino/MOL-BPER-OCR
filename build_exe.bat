@@ -65,6 +65,13 @@ if errorlevel 1 (
 
 rem Pulizia della build precedente: evita residui nel pacchetto finale
 rem (cache pesi scaricata nei test, .env con chiave reale, file orfani).
+if exist "dist\EdgeAgent\backup" (
+    ".venv\Scripts\python.exe" -c "from pathlib import Path; import sys; p=Path(r'dist\EdgeAgent\backup'); sys.exit(p.resolve()!=p.absolute() or any(p.iterdir()))"
+    if errorlevel 1 (
+        echo [ERRORE] Conserva la cartella dist\EdgeAgent in un altro percorso prima della build: backup contiene dati o non e' accessibile.
+        exit /b 1
+    )
+)
 if exist "dist\EdgeAgent" rmdir /s /q "dist\EdgeAgent" 2>nul
 if exist "dist\EdgeAgent" (
     echo [ERRORE] dist\EdgeAgent e' in uso da un altro processo: chiudi EdgeAgent e rilancia.
@@ -119,7 +126,7 @@ if defined EDGE_AGENT_PACKAGE_KEY (
 echo [INFO] Creo lo zip finale (puo' richiedere qualche minuto)...
 for /f %%i in ('powershell -NoProfile -Command "Get-Date -Format yyyy-MM-dd"') do set BUILD_DATE=%%i
 set "ZIP_PATH=dist\EdgeAgent_%BUILD_DATE%%ZIP_SUFFIX%.zip"
-powershell -NoProfile -Command "Compress-Archive -Path 'dist\EdgeAgent' -DestinationPath '%ZIP_PATH%' -Force"
+".venv\Scripts\python.exe" "tools\package_portable.py" "dist\EdgeAgent" "%ZIP_PATH%"
 if errorlevel 1 (
     echo [ERRORE] Creazione zip fallita.
     exit /b 1

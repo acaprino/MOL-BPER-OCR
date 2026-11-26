@@ -78,10 +78,13 @@ tarati, e nessun test lo verificava.
 | [0034](0034-lightonocr-surya-oxr-rifiutati.md) | Rifiutati LightOnOCR-3, Surya e OXR-1.0 per leggere e dividere le schermate | Rifiutato |
 | [0035](0035-ocr-delle-pratiche-di-test-permesso.md) | La lettura OCR delle pratiche di test è permessa | Accettato |
 | [0036](0036-screenvlm-rifiutato.md) | Rifiutato ScreenVLM per leggere le schermate | Rifiutato |
+| [0037](0037-navigazione-per-pratica.md) | Guidare la navigazione e conservare la copertura delle viste per pratica | Accettato |
+| [0038](0038-evidenze-del-router.md) | Riconoscere garanzie e note con riscontri visivi nel router LLM e nel classificatore locale | Accettato |
+| [0039](0039-recupero-sessioni.md) | Rendere recuperabili catture, correzioni e decisioni di navigazione | Accettato |
 
 ## Da scrivere
 
-Le scelte già portanti nel codice, elencate in `CLAUDE.md` sotto *Architectural Constraints*, non
+Le scelte già portanti nel codice, elencate in `AGENTS.md` sotto *Architectural Constraints*, non
 hanno ancora un ADR. Vanno recuperate a ritroso quando si lavora sulla zona che le riguarda, non
 tutte in una volta: un ADR scritto senza ricostruire il contesto reale è peggio di un ADR assente.
 

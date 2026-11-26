@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import sys
 from dataclasses import dataclass
-from typing import Any, Dict, List, Mapping, Optional, Sequence, Tuple
+from typing import Any, Dict, Iterable, List, Mapping, Optional, Sequence, Tuple
 
 import app_paths
 
@@ -58,13 +58,21 @@ def is_correctable(record: PracticeRecord, schema_key: str) -> bool:
     return record.ndg is not None and schema_key in CORRECTABLE_KEYS
 
 
+def _value_of(field: Any) -> Any:
+    return field.get("value") if isinstance(field, dict) else None
+
+
+def _has_values(fields: Iterable[Any]) -> bool:
+    return any(not is_nullish(_value_of(field)) for field in fields)
+
+
 def has_content(record: PracticeRecord) -> bool:
     """Whether any field of the practice holds a value.
 
     A session of errors only consolidates to one empty record: it is not a practice
     to count, show a total for, or warn about.
     """
-    return any(not is_nullish(field["value"]) for field in record.fields.values())
+    return _has_values(record.fields.values())
 
 
 # ============================================================
@@ -72,9 +80,31 @@ def has_content(record: PracticeRecord) -> bool:
 # ============================================================
 
 
-def _frame_ndg(result: Dict[str, Any]) -> Optional[str]:
+def frame_ndg(result: Dict[str, Any]) -> Optional[str]:
     """Group key of a frame, from its ndg field."""
-    return normalize_ndg(((result.get("fields") or {}).get("ndg") or {}).get("value"))
+    return normalize_ndg(_value_of((result.get("fields") or {}).get("ndg")))
+
+
+class PracticeCounter:
+    """Count exportable practices as their frames are published in capture order."""
+
+    def __init__(self) -> None:
+        self._ndgs: set[str] = set()
+        self._has_anonymous_data = False
+
+    def add(self, result: Dict[str, Any]) -> None:
+        ndg = frame_ndg(result)
+        if ndg is not None:
+            self._ndgs.add(ndg)
+        elif not self.count:
+            fields = result.get("fields") or {}
+            self._has_anonymous_data = _has_values(fields.get(key) for key in FIELD_KEYS)
+
+    @property
+    def count(self) -> int:
+        # The first identified practice absorbs any anonymous prefix. Corrections
+        # can never clear an NDG or address an anonymous record.
+        return len(self._ndgs) or int(self._has_anonymous_data)
 
 
 # ============================================================
@@ -149,7 +179,7 @@ def consolidate(
     last_key: Optional[str] = None
 
     for result in results:
-        key = _frame_ndg(result)
+        key = frame_ndg(result)
 
         if key is None:
             if last_key is None:

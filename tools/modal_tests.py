@@ -34,7 +34,8 @@ image = (
     .add_local_file(str(ROOT / "build_exe.bat"), f"{REPO}/build_exe.bat")
     .add_local_dir(str(ROOT / "prompts"), f"{REPO}/prompts")
     .add_local_dir(str(ROOT / "src"), f"{REPO}/src",
-                   ignore=["edge-agent/assets/**/*.pt", "edge-agent/assets/**/*.png", "**/__pycache__/**"])
+                   ignore=["edge-agent/backup/**", "edge-agent/assets/**/*.pt", "edge-agent/assets/**/*.png",
+                           "**/__pycache__/**"])
     .add_local_dir(str(ROOT / "tests"), f"{REPO}/tests", ignore=["fixtures/**", "**/__pycache__/**"])
     .add_local_dir(str(ROOT / "tools"), f"{REPO}/tools", ignore=["**/__pycache__/**"])
     .add_local_dir(str(ROOT / "bper-emulator"), f"{REPO}/bper-emulator", ignore=["**/__pycache__/**"])

@@ -12,12 +12,15 @@ fallisce la chiamata, ritorna (None, 0.0, {}).
 """
 
 import json
+import re
 import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Dict, Optional
 
 from PIL import Image
+
+MIN_PAGE_CONFIDENCE = 0.60
 
 try:
     from openai import OpenAI  # type: ignore
@@ -169,13 +172,38 @@ class LLMPageRouter(PageRouter):
             pass
         return None
 
+    def _read_decision(self, data: Dict[str, Any]) -> RouterResult:
+        """Abstain when the provider cannot support its proposed page."""
+        pages = self._spec.get("pages", [])
+        catchall = next((p["name"] for p in pages if p.get("catchall")), None)
+        label = str(data.get("page_type", "")).strip().casefold()
+        page = next((p for p in pages if label and p.get("name", "").casefold() == label), None)
+        raw_score = data.get("confidence")
+        try:
+            score = 0.0 if isinstance(raw_score, bool) else float(raw_score)
+        except (TypeError, ValueError, OverflowError):
+            score = 0.0
+        if page is None or not MIN_PAGE_CONFIDENCE <= score <= 1.0:
+            return RouterResult(catchall, 0.0, {}, reason="Pagina incerta.", expected=self._expected_page)
+
+        allowed = page.get("evidence_texts")
+        if allowed is not None:
+            def words(value: str) -> list[str]:
+                return re.findall(r"[^\W_]+", value.casefold())
+
+            evidence = data.get("evidence")
+            if not isinstance(evidence, str) or not any(words(evidence) == words(text) for text in allowed):
+                return RouterResult(catchall, 0.0, {}, reason="Riscontro visivo insufficiente.", expected=self._expected_page)
+
+        return RouterResult(page["name"], score, {}, reason=data.get("reason"), expected=self._expected_page)
+
     def route(self, image: Image.Image) -> RouterResult:
         # Se manca client (niente API key o import fallito), fallback nullo
         if self._client is None:
             self._last_debug = {
                 "error": "LLM client non inizializzato (manca API key o import OpenAI fallito)",
             }
-            return RouterResult(None, 0.0, {})
+            return RouterResult(None, 0.0, {}, reason=self._last_debug["error"], expected=self._expected_page)
 
         # Prepara immagini per la richiesta:
         #  - downscale lato lungo a 1280px per ridurre latenza/costi
@@ -241,21 +269,11 @@ class LLMPageRouter(PageRouter):
                     data = json.loads(content or "{}")
                 except Exception:  # noqa: BLE001
                     # alcuni modelli potrebbero incapsulare il JSON in testo, prova a individuarlo
-                    import re
-
                     m = re.search(r"\{[\s\S]*\}", content or "")
                     if m:
                         data = json.loads(m.group(0))
 
-                page_type = data.get("page_type") if isinstance(data, dict) else None
-                confidence = float(data.get("confidence", 0.0)) if isinstance(data, dict) else 0.0
-                reason = data.get("reason") if isinstance(data, dict) else None
-                # Validate page_type against known page names; reject hallucinated values
-                if page_type is not None:
-                    known_pages = [p.get("name") for p in self._spec.get("pages", []) if p.get("name")]
-                    if page_type not in known_pages:
-                        low_map = {n.lower(): n for n in known_pages}
-                        page_type = low_map.get(str(page_type).lower())
+                result = self._read_decision(data if isinstance(data, dict) else {})
                 # salva debug
                 self._last_debug = {
                     "provider": self.provider,
@@ -264,13 +282,13 @@ class LLMPageRouter(PageRouter):
                     "user_prompt": user_prompt,
                     "response_text": content,
                     "parsed": {
-                        "page_type": page_type,
-                        "confidence": confidence,
-                        "reason": reason,
+                        "page_type": result.page_type,
+                        "confidence": result.confidence,
+                        "reason": result.reason,
                         "expected": self._expected_page,
                     },
                 }
-                return RouterResult(page_type, confidence, {}, reason=reason, expected=self._expected_page)
+                return result
             except Exception as e:  # noqa: BLE001
                 last_exc = e
                 # backoff semplice

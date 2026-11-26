@@ -1,26 +1,25 @@
 # Piano: prove di OCR e LiLT in condizioni dinamiche, con il simulatore
 
-- Data: 2026-11-23
-- Stato: **bozza, nessuna prova eseguita.** Le soglie sono proposte, da confermare.
+- Proposta del 23 novembre 2026, aggiornata il 26 novembre.
+- **Confronto dinamico dei due percorsi OCR + LiLT da eseguire.** Le soglie sotto sono proposte.
 
 ## Perché
 
-Tutte le misure di OCR e LiLT fatte finora (126 valori su 133 nel testo letto, 139 campi su 146 in controllo) sono su
-PNG già salvati, un fotogramma alla volta, a scala 1×. Nell'uso reale la schermata è dal vivo: la finestra del browser
-cambia dimensione, la pagina scorre, si seleziona una riga, il cursore passa sopra i valori. Inoltre ogni fotogramma
-passa da `preprocess_for_ocr()` (ingrandimento ×1,25 o ×1,5, maschera di nitidezza, contrasto) prima di essere letto.
-Nulla di questo è misurato per OCR e LiLT. Oggi nell'app i campi li estrae l'LLM e RapidOCR/LiLT sono un percorso
-offline, quindi è un rischio da chiudere prima di collegarli.
+Le misure sui campi interi di RapidOCR e del lettore OCRia-nano riaddestrato, ciascuno con il proprio LiLT, vengono
+da PNG salvati. Nella cattura dal vivo la finestra cambia dimensione, la pagina scorre, la selezione o il cursore
+coprono i valori e il frame adottato passa da `preprocess_for_ocr()`. Occorre misurare entrambi i percorsi su
+queste immagini prima di collegarli all'edge-agent, che oggi estrae i campi con il VLM. [Misure su PNG](ocr-lilt.md#risultati-sul-controllo)
 
 Il simulatore (`bper-emulator/`) produce schermate e valori giusti per costruzione e senza dati di clienti: è lo
 strumento adatto. Non sostituisce le pratiche vere: le soglie di accuratezza "ufficiali" restano misurate su quelle.
 
-## Cosa manca nel simulatore
+## Cosa offre il simulatore
 
-Lo script `capture_bper_dataset.cjs` cattura oggi solo a 842×617 (le 9 schermate di ogni pratica) e a 1920×945
-(Scheda Privati, con scorrimento via parametri `scroll` e `noteScroll`). Non ha opzioni per la dimensione della
-finestra, la selezione di una riga, il testo evidenziato o il cursore. Va esteso prima di cominciare: è il lavoro
-della sessione che sviluppa il simulatore.
+`bper-emulator/live_test.py` registra e riproduce scenari di scorrimento, hover e ridimensionamento con il worker e
+il classificatore di pagina reali. Per impostazione predefinita il test usa i valori dell'emulatore per misurare il
+consolidamento. Per misurare i campi OCR occorre leggere gli stessi frame adottati con i due percorsi e confrontarne
+i risultati con i valori visibili. Il pilota sulle singole righe sintetiche ha verificato la somiglianza dei
+riquadri; resta da misurare la catena OCR + LiLT nelle condizioni sotto. [Scenari e modalità disponibili](../bper-emulator/live_test_README.md)
 
 ## Fasi
 
@@ -30,9 +29,8 @@ della sessione che sviluppa il simulatore.
 2. **Base statica.** Circa 20 pratiche sintetiche (circa 1.500 valori), finestra nativa, nessuna interazione. Con quel
    numero l'errore è circa ±0,6 punti, quindi uno scarto di 2-3 punti si distingue dal rumore.
 3. **Le cinque condizioni**, sulle stesse pratiche e ognuna confrontata con la base (tabella sotto).
-4. **Percorso live reale, a mano.** L'emulatore in una vera finestra del browser, catturato con il vero lavoratore di
-   cattura (`BPERCaptureWorker`, con `frame_normalize` e `preprocess_for_ocr`) e non con Playwright, una pratica per
-   condizione. I PNG di Playwright vengono da Chrome senza testa e non coincidono con la resa della VDI.
+4. **Percorso dal vivo.** Usare `live_test.py live` su una macchina con desktop interattivo, una pratica per
+   condizione. Conservare l'inquadratura e le impostazioni di preprocessing effettive per confrontare replay e VDI.
 
 ## Condizioni e soglie proposte
 
@@ -55,16 +53,16 @@ Una condizione che cala di oltre 10 punti è un blocco. Il calo si calcola rispe
 
 ## Regole
 
-- Le pratiche vere di test restano sigillate (ADR 0027). Le pratiche sintetiche di test si catturano solo con
-  `--include-test`, che lo script già impone.
+- Le pratiche vere di test si possono leggere con l'OCR. I loro valori si usano una volta sola sul candidato congelato
+  (ADR 0027 e 0035). Il registratore dinamico usa le pratiche sintetiche ammesse dal proprio scenario.
 - Le pratiche con cui si addestra non si usano per misurare.
 - Il simulatore non contiene dati di clienti, quindi inviarlo a Modal non è un problema di privacy; si chiede comunque
   il via prima di ogni invio.
-- I pesi di LiLT sono sul volume Modal `bper-lilt-spike`: la misura dei campi va fatta lì, oppure scaricando i pesi
-  (circa 1,1 GB).
+- Associare a ogni lettura i suoi pesi LiLT dal volume `bper-lilt-spike` (circa 1,1 GB per modello).
+  [Identificativi dei modelli](ocr-lilt.md#modelli-e-provenienza)
 
 ## Da decidere
 
 1. Le soglie della tabella.
-2. Chi estende lo script di cattura (dimensione finestra, selezione, cursore) e quando.
-3. Se il passo 4 si fa su una macchina con desktop interattivo, perché non è automatizzabile in una pipeline.
+2. Quali condizioni richiedono nuovi scenari, in particolare selezione del testo e cursore sui caratteri.
+3. Su quale PC o VDI eseguire il passo 4.

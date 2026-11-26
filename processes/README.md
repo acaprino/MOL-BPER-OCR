@@ -4,9 +4,14 @@ Un **processo** è una sequenza di schermate che un operatore percorre per porta
 un compito dentro un applicativo. Ogni processo sta in un file JSON, e i processi si
 accodano in sequenza: `bper-p1` è il primo, e altri potranno seguirlo.
 
-| file | id | applicativo | pagine |
+| file | id | applicativo | viste di riferimento |
 |---|---|---|---|
 | `bper-p1.json` | `bper-p1` | BPER Gestione Pratiche (PEF) | 9 |
+
+Per seguire una pratica, dalla ricerca fino alla verifica delle 45 colonne, consulta il
+[percorso dell’operatore](../docs/flusso-data-entry.md). I nove template PEF rappresentano
+quattro pagine sorgenti con diverse posizioni di scorrimento e tooltip. La quinta sorgente,
+Scheda Privati, fornisce 13 campi da un applicativo separato.
 
 `bper-p1/transizioni/` conserva le schermate di navigazione fra le pagine (Scheda Privati, Scheda Immobile,
 Gestione GEP, FICS) che documentano il processo; il codice non le legge. Fino al 2026-11-22 stavano fra gli
@@ -41,10 +46,9 @@ di BPER. Nessuna descrizione diceva che quell'applicativo non fa parte del proce
   a chi tara un classificatore: sono le distinzioni difficili, e sono note in anticipo.
 - **`pages[]`** — per ogni pagina: `order`, `name`, `slug`, `template`, `signature` (cosa
   la caratterizza), **`excludes`** (cosa la esclude), `fields` (i campi che vivono lì).
-- **`catchall`** — la categoria di scarto, con la nota che un falso positivo consuma lo slot
-  di una pagina per l'intero job.
+- **`catchall`** - la categoria di scarto per una vista ambigua o esterna al processo.
 
-## Navigazione: un grafo, non una lista
+## Navigazione fra le viste
 
 Un processo **non** è una sequenza da percorrere una volta sola. L'operatore si sposta
 liberamente: torna a una pagina già vista, la riapre per leggere un tooltip diverso, salta a
@@ -61,9 +65,10 @@ modello di transizioni, sta scritta nell'interfaccia.
 | `navigator` | Verifica Preliminare, **Istruttoria**, Proposta, Parere, Delibera, e i passi della fase aperta | colonna "Navigatore" a sinistra |
 | `content-tabs` | Gestione Fidi e Garanzie, Note a Istruttoria, Note da Richiesta, Dettaglio BPI | riga di schede sopra il contenuto |
 
-Il navigatore porta anche lo **stato** di ogni voce: spunta verde per i passi conclusi,
-pallino arancione sulla voce corrente, matita su quelli da fare. Leggere quello stato dice
-a che punto del processo ci si trova, senza doverlo ricostruire.
+Il Navigatore mostra la **voce aperta** e l’**avanzamento della lavorazione**. La spunta
+verde indica un passo concluso, il pallino arancione il passo in corso e la matita quelli
+da fare. Per individuare la vista consultata, guarda la voce selezionata e il titolo del
+contenuto. Un operatore può tornare su un passo concluso.
 
 Ogni pagina dichiara la propria posizione nei tre livelli in `location`, più
 `within_page_state` per ciò che distingue varianti della stessa posizione (lo scorrimento
@@ -73,24 +78,24 @@ schermata con un popup diverso, ed è per questo che sono le più difficili da d
 
 ### Conseguenza sulla cattura
 
-`capture_policy.revisiting_allowed` è `true`, e non è un dettaglio: le pagine 6, 7 e 8 si
-raggiungono **solo** tornando sulla 5 e aprendo un tooltip diverso. Un sistema che rifiuta
-di riacquisire una pagina già vista non può raccoglierle.
-
-Il codice oggi non rispetta questo modello, e il file lo dichiara in
-`capture_policy.implementation_gap` invece di lasciarlo scoprire: `captured_page_types` è a
-sola aggiunta, e la guida procede in ordine lineare. Allinearlo è una modifica di
-comportamento e merita la sua decisione.
+`capture_policy.revisiting_allowed` è `true`. Sulla scheda Fidi l’operatore può mostrare
+la tabella di base, aprire un tooltip, richiuderlo e puntare un’altra riga. Una nuova visita
+può riattivare la cattura anche quando porta lo stesso nome di una vista già elaborata.
+Un tooltip può mancare se la pratica non contiene la riga o il relativo testo. Un esito
+di elaborazione richiede comunque la verifica dei valori da parte dell’operatore.
+Le regole di acquisizione e della guida sono descritte nella
+[navigazione dell’edge-agent](../docs/navigazione-edge.md) e nell’[ADR 0014](../docs/adr/0014-acquisizione-per-visita-con-esito.md).
 
 ## Rapporto con `prompts.json`
 
-Questo catalogo è la **formalizzazione**, non ancora il file che il programma legge a runtime:
-l'edge-agent continua a leggere `src/edge-agent/assets/templates/bper/prompts.json`. I due
-divergono di proposito su un punto, documentato nel campo `note` della pagina 9.
-
-Collegare il runtime a questo catalogo è una modifica di comportamento e merita una
-decisione a sé, con il suo ADR: finché non avviene, chi modifica una descrizione deve
-sapere che sta toccando due file.
+Gli strumenti di etichettatura offline usano `bper-p1.json` per descrivere l’applicativo e
+distinguere le viste. Il registro dei template dell’edge-agent legge
+[`prompts.json`](../src/edge-agent/assets/templates/bper/prompts.json). I due cataloghi
+identificano la pagina 9 dalla scheda attiva e dal riquadro **Nota della richiesta**, anche
+quando è chiuso. Il campo `note` registra il motivo per cui la descrizione precedente
+confondeva documenti e note. I campi citati nelle descrizioni delle viste aiutano a
+riconoscerle. I campi e le colonne dell’export si verificano nelle
+[definizioni canoniche](../src/extraction/field_definitions.py).
 
 ## Aggiungere un processo
 

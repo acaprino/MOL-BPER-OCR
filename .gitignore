@@ -21,6 +21,7 @@ test_no_gt/
 
 # Runtime log
 src/edge-agent/edge-agent.log
+/src/edge-agent/backup/
 
 # Generated extraction outputs (may contain banking PII)
 poc_outputs*.json

@@ -1,5 +1,7 @@
 # Piano per la Prossima Versione dell'Estrazione Locale (`next-ver-plan.md`)
 
+> **Piano storico di ottobre 2026.** Le baseline e i percorsi qui sotto identificano il corpus dell'epoca. Per l'archivio attuale, le misure di RapidOCR e OCRia-nano con LiLT e la procedura di aggiornamento, consultare [Lettura locale delle schermate](ocr-lilt.md).
+
 **Data:** 2026-10-17 — aggiornato il 2026-10-18  
 **Ambito:** Evoluzione della pipeline locale CPU (`OCR + Estrazione dei 45 campi BPER`) rispetto alla baseline `data/training/runs/lilt-v3.1-20261016` e ad `ADR 0022`.
 

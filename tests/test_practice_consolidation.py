@@ -129,6 +129,23 @@ def test_empty_input_yields_no_records() -> None:
     assert consolidate([]) == []
 
 
+def test_live_count_matches_exportable_practices_after_each_frame() -> None:
+    from practice_consolidation import PracticeCounter
+
+    frames = [
+        _frame(None), _frame(None, unknown=("ignore", 1.0)), _frame(None, tipo=("N/D", 1.0)),
+        _frame(None, importo_euro=(0, 0.7)), _frame("012.345"), _frame(None), _frame("12345"),
+        _frame("12345/A"), _frame("12345a"),
+    ]
+    corrections = {"12345": {"tipo": None}, "12345A": {"denominazione": "Modificata"}}
+    counter = PracticeCounter()
+    assert counter.count == 0
+    for size, frame in enumerate(frames, start=1):
+        counter.add(frame)
+        records = consolidate(frames[:size], corrections)
+        assert counter.count == sum(has_content(record) for record in records)
+
+
 def test_record_is_frozen() -> None:
     record = consolidate([_frame("12345")])[0]
     assert isinstance(record, PracticeRecord)

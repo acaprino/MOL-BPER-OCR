@@ -1,6 +1,7 @@
 """Tests for ui/capture_tab.py (settings card, actions, collapsible log, export)."""
 
 import os
+import threading
 from typing import Any, Iterator
 
 import pytest
@@ -13,7 +14,7 @@ os.environ.setdefault("LLM_API_KEY", "test-key")
 import time
 
 from PIL import Image
-from PyQt6 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtTest, QtWidgets
 
 import ui.capture_tab as capture_tab_module
 
@@ -76,11 +77,16 @@ def test_export_marks_the_session_as_exported(tab: CaptureTab, qapp, tmp_path, m
         time.sleep(0.01)
     tab.job_id = job
     target = tmp_path / "out.xlsx"
+    finished = threading.Event()
     # The two dialogs are the genuine boundary: the real export path runs.
     monkeypatch.setattr(QtWidgets.QFileDialog, "getSaveFileName", staticmethod(lambda *a, **k: (str(target), "")))
-    monkeypatch.setattr(QtWidgets.QMessageBox, "information", staticmethod(lambda *a, **k: None))
+    monkeypatch.setattr(QtWidgets.QMessageBox, "information", staticmethod(lambda *a, **k: finished.set()))
     assert client.unexported_jobs() == [job]
     tab._on_export_excel()
+    deadline = time.monotonic() + 5
+    while not finished.is_set() and time.monotonic() < deadline:
+        QtTest.QTest.qWait(10)
+    assert finished.is_set()
     assert target.is_file()
     assert client.unexported_jobs() == []
 
@@ -96,15 +102,21 @@ class FakeWorker(QtCore.QObject):
     tick = QtCore.pyqtSignal(str)
     error = QtCore.pyqtSignal(Exception)
     llm_debug = QtCore.pyqtSignal(str)
+    navigation_changed = QtCore.pyqtSignal(str, dict)
+    finished = QtCore.pyqtSignal()
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(kwargs.get("parent"))
+        self.manual_pages: list[str] = []
 
     def start_capture(self) -> None:
         pass
 
+    def force_capture(self, page: str) -> None:
+        self.manual_pages.append(page)
+
     def stop(self) -> None:
-        pass
+        self.finished.emit()
 
     def wait(self, _ms: int) -> bool:
         return True
@@ -113,6 +125,31 @@ class FakeWorker(QtCore.QObject):
 class BrokenPipeline:
     def extract_from_image(self, img: Image.Image, screen_id: str) -> dict[str, Any]:
         raise RuntimeError("VLM down")
+
+
+def test_manual_shot_on_the_captured_monitor_gives_time_to_expose_pef(
+    tab: CaptureTab, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(capture_tab_module, "BPERCaptureWorker", FakeWorker)
+    tab.config.show_capture_border = False
+    tab.show()
+    tab.start_capture()
+    selected = tab.force_page_combo.currentText()
+    pages = tab.worker.manual_pages
+    tab.force_capture_button.click()
+    assert tab.isMinimized() and not pages
+    QtTest.QTest.qWait(3350)
+    assert pages == [selected]
+    tab.stop_capture()
+    tab.close()
+
+
+def test_activity_log_keeps_recent_messages_after_a_long_capture(tab: CaptureTab) -> None:
+    for sequence in range(1_050):
+        tab._on_worker_tick(f"Fotogramma {sequence}.")
+    visible = tab.log_text.toPlainText()
+    assert "Fotogramma 0." not in visible
+    assert "Fotogramma 1049." in visible
 
 
 def test_repeated_identical_worker_errors_count_once(tab: CaptureTab) -> None:

@@ -1,5 +1,6 @@
 """Tests for the stop latch in BaseCaptureWorker (run() called synchronously)."""
 
+import threading
 from typing import List, Optional
 
 from PyQt6.QtCore import QCoreApplication
@@ -40,3 +41,23 @@ def test_run_without_prior_stop_executes_loop() -> None:
     worker = _ProbeWorker()
     worker.run()
     assert worker.calls == ["tick"]
+
+
+def test_stop_wakes_capture_before_the_next_poll(qapp: QCoreApplication) -> None:
+    captured = threading.Event()
+
+    class SlowPollingWorker(BaseCaptureWorker):
+        def _capture_once(self) -> None:
+            captured.set()
+
+    config = _FakeConfig()
+    config.fps = 1
+    worker = SlowPollingWorker(config, lambda: "job")
+    worker.start_capture()
+    try:
+        assert captured.wait(3)
+        worker.stop()
+        assert worker.wait(500), "stopping an idle capture waited for the full 1 s polling interval"
+    finally:
+        worker.stop()
+        worker.wait(3000)

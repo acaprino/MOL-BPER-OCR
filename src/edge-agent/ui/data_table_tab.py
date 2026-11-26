@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import sys
-from typing import Any, List, Optional
+from collections import deque
+from dataclasses import dataclass
+from functools import partial
+from typing import Any, Callable, List, Optional
 
 from PyQt6 import QtCore, QtGui
 from PyQt6.QtGui import QBrush, QColor, QFont
@@ -17,12 +20,13 @@ from PyQt6.QtWidgets import (
     QComboBox,
     QTableWidget,
     QTableWidgetItem,
-    QFileDialog,
     QInputDialog,
-    QMessageBox,
     QHeaderView,
     QStackedLayout,
     QAbstractItemView,
+    QAbstractItemDelegate,
+    QStyledItemDelegate,
+    QStyleOptionViewItem,
     QMenu,
 )
 
@@ -39,7 +43,7 @@ from practice_consolidation import PracticeRecord, consolidate, has_content, is_
 
 from . import icons
 from .frozen_table import FrozenColumnsTable
-from .widgets import default_export_name
+from .workbook_export import WorkbookExport
 
 # ============================================================
 # Costanti
@@ -53,6 +57,113 @@ CORRECTED_ROLE = QtCore.Qt.ItemDataRole.UserRole + 1
 # una riga reale con celle unite via setSpan().
 _BAND_ROW = 0
 _FIRST_DATA_ROW = 1
+
+
+@dataclass(frozen=True)
+class _EditWrite:
+    action: str
+    job: Optional[str]
+    persist: Callable[[], None]
+    editor_id: int = 0
+    text: str = ""
+
+
+class _WriteResult(QtCore.QObject):
+    finished = QtCore.pyqtSignal(object, str)
+
+
+class _WriteTask(QtCore.QRunnable):
+    def __init__(self, request: _EditWrite) -> None:
+        super().__init__()
+        self.request = request
+        self.result = _WriteResult()
+
+    def run(self) -> None:
+        try:
+            self.request.persist()
+        except Exception as exc:
+            self.result.finished.emit(self.request, str(exc) or type(exc).__name__)
+        else:
+            self.result.finished.emit(self.request, "")
+
+
+class _DraftDelegate(QStyledItemDelegate):
+    """Keep unconfirmed editor text separate from the cell used for display and export."""
+
+    def __init__(self, tab: DataTableTab, view: QAbstractItemView) -> None:
+        super().__init__(view)
+        self.tab = tab
+        self.editor: Optional[QLineEdit] = None
+        self.closeEditor.connect(self._on_close)
+
+    def createEditor(
+        self, parent: QWidget, option: QStyleOptionViewItem, index: QtCore.QModelIndex,
+    ) -> Optional[QLineEdit]:
+        target = self.tab._edit_target(index.row(), index.column())
+        if not target or self.tab.has_pending_writes():
+            return None
+        job, ndg, key, _original = target
+        draft = self.tab._client.get_cell_draft(job)
+        if draft and (draft["ndg"], draft["key"]) != (ndg, key):
+            # The existing draft has its own resume/discard controls.
+            return None
+        editor = QLineEdit(parent)
+        editor.setProperty("cellTarget", target)
+        editor.setToolTip("Invio o Tab per confermare, Esc per scartare. La bozza viene salvata mentre scrivi.")
+        editor.textEdited.connect(lambda text: self._save_draft(editor, text))
+        self.editor = editor
+        return editor
+
+    def eventFilter(self, watched: QtCore.QObject, event: QtCore.QEvent) -> bool:
+        if (isinstance(watched, QLineEdit) and isinstance(event, QtGui.QKeyEvent)
+                and event.type() == QtCore.QEvent.Type.KeyPress
+                and event.key() in (QtCore.Qt.Key.Key_Return, QtCore.Qt.Key.Key_Enter)):
+            # Qt normally posts Return's commit to the next event-loop turn.
+            # Queue the intent now so switching session or closing cannot erase it.
+            self.commitData.emit(watched)
+            self.closeEditor.emit(watched, QAbstractItemDelegate.EndEditHint.SubmitModelCache)
+            return True
+        if isinstance(watched, QLineEdit) and isinstance(event, QtGui.QFocusEvent):
+            if event.type() == QtCore.QEvent.Type.FocusOut:
+                # Searching, switching session or closing the window keeps an
+                # unfinished draft. Only the editor's commit keys confirm it.
+                if event.reason() != QtCore.Qt.FocusReason.PopupFocusReason:
+                    self.closeEditor.emit(watched, QAbstractItemDelegate.EndEditHint.NoHint)
+                return False
+        return super().eventFilter(watched, event)
+
+    def setEditorData(self, editor: QLineEdit, index: QtCore.QModelIndex) -> None:
+        if editor.property("initialised"):
+            return
+        job, _ndg, _key, _original = editor.property("cellTarget")
+        draft = self.tab._client.get_cell_draft(job)
+        if draft:
+            editor.setText(draft["text"])
+            editor.setCursorPosition(len(editor.text()))
+        else:
+            editor.setText(str(index.data(QtCore.Qt.ItemDataRole.EditRole) or ""))
+            editor.selectAll()
+        editor.setProperty("initialised", True)
+        editor.setProperty("savedText", editor.text())
+        self.tab.draft_bar.hide()
+
+    def _save_draft(self, editor: QLineEdit, text: str) -> None:
+        job, ndg, key, _original = editor.property("cellTarget")
+        save = partial(self.tab._client.set_cell_draft, job, ndg, key, text)
+        self.tab._queue_write(_EditWrite("draft", job, save, id(editor), text))
+
+    def setModelData(self, editor: QLineEdit, model: QtCore.QAbstractItemModel, index: QtCore.QModelIndex) -> None:
+        # The normal Qt delegate skips itemChanged when text equals the cell.
+        # Confirming even that text must atomically retire the matching draft.
+        if not editor.isReadOnly():
+            self.tab._commit_text(*editor.property("cellTarget"), editor.text())
+
+    def _on_close(self, editor: QLineEdit, hint: QAbstractItemDelegate.EndEditHint) -> None:
+        if editor is self.editor:
+            self.editor = None
+        if hint == QAbstractItemDelegate.EndEditHint.RevertModelCache:
+            job, _ndg, _key, _original = editor.property("cellTarget")
+            self.tab._discard_draft(job)
 
 
 # ============================================================
@@ -72,21 +183,33 @@ class DataTableTab(QWidget):
     export (anche quello della tab Cattura).
     """
 
+    writes_pending_changed = QtCore.pyqtSignal(bool)
+
     def __init__(
         self,
         extraction_client: Any,
         parent: Optional[QWidget] = None,
+        workbook_export: Optional[WorkbookExport] = None,
     ) -> None:
         super().__init__(parent)
 
         self._client = extraction_client
+        self._export = workbook_export or WorkbookExport(extraction_client, self)
         self._current_job_id: Optional[str] = None
         self._records: List[PracticeRecord] = []
         self._columns: List[ColumnSpec] = build_columns(self._client.get_column_labels())
         self._loading = False         # filling the table is not an edit
-        self._reload_pending = False  # a result arrived while a cell was being edited
+        self._reload_pending = False
+        self._active_write: Optional[_WriteTask] = None
+        self._queued_writes: deque[_EditWrite] = deque()
+        self.last_write_failed = False
+        self._result_timer = QtCore.QTimer(self)
+        self._result_timer.setSingleShot(True)
+        self._result_timer.timeout.connect(self._flush_results)
 
         self._init_ui()
+        self._export.bind_button(self.export_button)
+        self.writes_pending_changed.connect(self._update_export_after_edit)
         # Corrected cells use theme colours: redraw them when the theme changes.
         theme.notifier().changed.connect(self._reload_current)
 
@@ -94,6 +217,12 @@ class DataTableTab(QWidget):
             self._client.result_ready.connect(self._on_result_ready)
         except Exception:
             pass
+        if self._client.recovered_jobs:
+            with QtCore.QSignalBlocker(self.job_combo):
+                for job_id in self._client.recovered_jobs:
+                    self._ensure_job_item(job_id)
+                self.job_combo.setCurrentIndex(self.job_combo.count() - 1)
+            self._on_job_index_changed(self.job_combo.currentIndex())
 
     # ------------------------------------------------------------------ UI setup
 
@@ -143,6 +272,32 @@ class DataTableTab(QWidget):
         toolbar.addWidget(self.export_button)
         layout.addLayout(toolbar)
 
+        self.save_status = QLabel(self)
+        self.save_status.setProperty("muted", True)
+        self.save_status.hide()
+        layout.addWidget(self.save_status)
+        self.edit_error = QLabel(self)
+        self.edit_error.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        self.edit_error.setWordWrap(True)
+        self.edit_error.hide()
+        layout.addWidget(self.edit_error)
+
+        self.draft_bar = QWidget(self)
+        draft_layout = QHBoxLayout(self.draft_bar)
+        draft_layout.setContentsMargins(0, 0, 0, 0)
+        self.draft_label = QLabel(self.draft_bar)
+        self.draft_label.setTextFormat(QtCore.Qt.TextFormat.PlainText)
+        self.draft_label.setWordWrap(True)
+        draft_layout.addWidget(self.draft_label, stretch=1)
+        self.resume_draft_button = QPushButton("Riprendi modifica", self.draft_bar)
+        self.resume_draft_button.clicked.connect(self._resume_draft)
+        draft_layout.addWidget(self.resume_draft_button)
+        discard = QPushButton("Scarta bozza", self.draft_bar)
+        discard.clicked.connect(lambda: self._discard_draft(self._current_job_id))
+        draft_layout.addWidget(discard)
+        self.draft_bar.hide()
+        layout.addWidget(self.draft_bar)
+
         # NDG and denominazione stay in view while the other 43 columns scroll.
         self.table = FrozenColumnsTable(frozen_count=2, parent=self)
         # Double click, F2 or typing corrects a cell; the NDG, the page band and rows
@@ -164,6 +319,8 @@ class DataTableTab(QWidget):
         # The two views (scrolling and frozen) behave the same way.
         frozen = self.table.frozen_view
         for view in (self.table, frozen):
+            if self._client.has_recovery:
+                view.setItemDelegate(_DraftDelegate(self, view))
             view.horizontalHeader().sectionDoubleClicked.connect(self._on_header_double_clicked)
             view.itemDelegate().closeEditor.connect(self._on_editor_closed)
             view.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
@@ -205,14 +362,34 @@ class DataTableTab(QWidget):
         self.job_combo.setCurrentIndex(self.job_combo.findData(job_id))
 
     def _on_result_ready(self, job_id: str, _result: dict) -> None:
-        self._ensure_job_item(job_id)
+        # Adding the first combo item also selects it. Defer that first render
+        # just like subsequent results so one burst only needs one snapshot.
         if self._current_job_id is None:
-            self._select_job(job_id)
+            with QtCore.QSignalBlocker(self.job_combo):
+                self._select_job(job_id)
+            self._current_job_id = job_id
+        else:
+            self._ensure_job_item(job_id)
         if job_id == self._current_job_id:
-            self._load_table(job_id)
+            self._reload_pending = True
+            if self.isVisible() and not self._result_timer.isActive():
+                self._result_timer.start(0)
+
+    def showEvent(self, event: QtGui.QShowEvent) -> None:
+        super().showEvent(event)
+        if self._reload_pending:
+            self._result_timer.start(0)
+
+    def _flush_results(self) -> None:
+        if self.isVisible() and self._reload_pending and self._current_job_id:
+            self._load_table(self._current_job_id, results_only=True)
 
     def _on_job_index_changed(self, index: int) -> None:
         job_id = self.job_combo.itemData(index) if index >= 0 else None
+        if job_id != self._current_job_id:
+            self.leave_draft_open()
+            if not self.has_pending_writes():
+                self.save_status.hide()
         self._current_job_id = job_id or None
         if self._current_job_id:
             self._load_table(self._current_job_id)
@@ -246,7 +423,14 @@ class DataTableTab(QWidget):
         self._apply_column_label(column.schema_key, new_label)
 
     def _apply_column_label(self, schema_key: str, label: str) -> None:
-        self._client.set_column_label(schema_key, label)
+        if self._client.has_recovery:
+            self._queue_write(_EditWrite("rename", None, partial(self._client.set_column_label, schema_key, label)))
+            return
+        try:
+            self._client.set_column_label(schema_key, label)
+        except OSError as exc:
+            self._show_edit_error(exc)
+            return
         # L'ordine non dipende dalle label (build_columns ordina sui display_name
         # canonici), quindi rinominare non fa saltare le colonne.
         self._columns = build_columns(self._client.get_column_labels())
@@ -266,13 +450,14 @@ class DataTableTab(QWidget):
 
     def _clear_table(self) -> None:
         self._records = []
+        self._refresh_draft()
         self.table.clearContents()
         self.table.setRowCount(0)
         self.table.setColumnCount(0)
         self.table.sync_frozen_columns()
         self.stack.setCurrentWidget(self.empty_state)
 
-    def _load_table(self, job_id: str) -> None:
+    def _load_table(self, job_id: str, *, results_only: bool = False) -> None:
         # A new result must not pull the open editor away: reload as soon as the
         # operator is done (see _on_editor_closed).
         if self.table.is_editing():
@@ -281,6 +466,7 @@ class DataTableTab(QWidget):
         self._reload_pending = False
 
         # A session of errors only consolidates to one blank record: not a practice.
+        previous = self._records if results_only else []
         self._records = [
             record
             for record in consolidate(self._client.get_results(job_id), self._client.get_corrections(job_id))
@@ -292,23 +478,31 @@ class DataTableTab(QWidget):
 
         self._loading = True
         try:
-            self.table.clearSpans()
+            first_load = self.table.columnCount() == 0
             self.table.setColumnCount(len(self._columns))
             self.table.setRowCount(_FIRST_DATA_ROW + len(self._records))
 
-            self._refresh_headers()
-            self._paint_band_row()
+            if first_load:
+                self.table.clearSpans()
+                self._refresh_headers()
+                self._paint_band_row()
 
             for row_offset, record in enumerate(self._records):
+                if row_offset < len(previous):
+                    old = previous[row_offset]
+                    if old.ndg == record.ndg and old.fields == record.fields:
+                        continue
                 row = _FIRST_DATA_ROW + row_offset
                 for col_idx, column in enumerate(self._columns):
                     self._set_cell(row, col_idx, record, column)
-            self.table.sync_frozen_columns()
+            if first_load:
+                self.table.sync_frozen_columns()
         finally:
             self._loading = False
 
         self.stack.setCurrentWidget(self.table)
         self._apply_filter()
+        self._refresh_draft()
 
     def _reload_current(self) -> None:
         if self._current_job_id:
@@ -371,36 +565,159 @@ class DataTableTab(QWidget):
 
     # ------------------------------------------------------------------ Correzioni
 
+    def _show_edit_error(self, exc: OSError | str) -> None:
+        self.edit_error.setText(f"Modifica non salvata. {exc}")
+        self.edit_error.show()
+
+    def has_pending_writes(self) -> bool:
+        return self._active_write is not None
+
+    def _queue_write(self, request: _EditWrite) -> None:
+        if self.has_pending_writes():
+            # Text supersedes earlier unsent text for this editor only. Confirm
+            # and discard are ordered barriers and must never be coalesced.
+            if request.action == "draft" and self._queued_writes:
+                last = self._queued_writes[-1]
+                if last.action == "draft" and last.editor_id == request.editor_id:
+                    self._queued_writes.pop()
+            self._queued_writes.append(request)
+            return
+        self.last_write_failed = False
+        self.edit_error.hide()
+        self.save_status.setText("Salvataggio…")
+        self.save_status.show()
+        self.draft_bar.hide()
+        self._start_write(request)
+        self.writes_pending_changed.emit(True)
+
+    def _start_write(self, request: _EditWrite) -> None:
+        task = _WriteTask(request)
+        task.result.finished.connect(self._on_write_finished, QtCore.Qt.ConnectionType.QueuedConnection)
+        self._active_write = task
+        QtCore.QThreadPool.globalInstance().start(task)
+
+    @QtCore.pyqtSlot(object, str)
+    def _on_write_finished(self, request: _EditWrite, error: str) -> None:
+        for view in (self.table, self.table.frozen_view):
+            delegate = view.itemDelegate()
+            editor = delegate.editor if isinstance(delegate, _DraftDelegate) else None
+            if editor is not None and id(editor) == request.editor_id:
+                if error:
+                    editor.setText(editor.property("savedText"))
+                    editor.setReadOnly(True)
+                else:
+                    editor.setProperty("savedText", request.text)
+        if error:
+            self.last_write_failed = True
+            self._queued_writes.clear()
+            self.save_status.hide()
+            self._show_edit_error(error)
+        elif request.action == "rename":
+            self._columns = build_columns(self._client.get_column_labels())
+            self._refresh_headers()
+        elif request.action == "confirm" and request.job == self._current_job_id:
+            self._reload_current()
+        if self._queued_writes:
+            self._start_write(self._queued_writes.popleft())
+            return
+        self._active_write = None
+        if not error:
+            labels = {"draft": "Bozza salvata.", "discard": "Bozza scartata."}
+            self.save_status.setText(labels.get(request.action, "Modifica salvata."))
+            self.save_status.setVisible(request.job is None or request.job == self._current_job_id)
+        self._refresh_draft()
+        self.writes_pending_changed.emit(False)
+
+    def _refresh_draft(self) -> None:
+        job_id = self._current_job_id
+        draft = self._client.get_cell_draft(job_id) if job_id and self._client.has_recovery else None
+        if not draft or self.table.is_editing() or self.has_pending_writes():
+            self.draft_bar.hide()
+            return
+        column = next((c for c in self._columns if c.schema_key == draft["key"]), None)
+        label = column.label if column else draft["key"]
+        self.draft_label.setText(
+            f"Bozza per {label} · NDG {draft['ndg']}. Conferma la modifica per includerla nell’esportazione."
+        )
+        self.resume_draft_button.setEnabled(
+            column is not None and any(record.ndg == draft["ndg"] for record in self._records)
+        )
+        self.draft_bar.show()
+
+    def _resume_draft(self) -> None:
+        if not self._current_job_id:
+            return
+        draft = self._client.get_cell_draft(self._current_job_id)
+        if draft:
+            col = next(i for i, c in enumerate(self._columns) if c.schema_key == draft["key"])
+            for row, record in enumerate(self._records, _FIRST_DATA_ROW):
+                if record.ndg == draft["ndg"]:
+                    if self.table.isRowHidden(row):
+                        self.search_box.clear()
+                    item = self.table.item(row, col)
+                    self.table.setCurrentItem(item)
+                    self.table.scrollToItem(item)
+                    self.table.editItem(item)
+                    break
+
+    def _discard_draft(self, job_id: Optional[str]) -> None:
+        if job_id:
+            self._queue_write(_EditWrite("discard", job_id, partial(self._client.clear_cell_draft, job_id)))
+
+    def _edit_target(self, row: int, col: int) -> Optional[tuple[str, str, str, Optional[str]]]:
+        index = row - _FIRST_DATA_ROW
+        job_id = self._current_job_id
+        if not job_id or not 0 <= index < len(self._records) or not 0 <= col < len(self._columns):
+            return None
+        record, key = self._records[index], self._columns[col].schema_key
+        if not record.ndg or not is_correctable(record, key):
+            return None
+        field = record.fields[key]
+        original = field["original_value"] if field.get("corrected") else field["value"]
+        return job_id, record.ndg, key, None if original is None else str(original)
+
+    def _commit_text(self, job_id: str, ndg: str, key: str, original: Optional[str], text: str) -> None:
+        typed = clean_correction(text)
+        if typed == clean_correction(original):
+            save = partial(self._client.clear_correction, job_id, ndg, key)
+        else:
+            save = partial(self._client.set_correction, job_id, ndg, key, typed)
+        if self._client.has_recovery:
+            self._queue_write(_EditWrite("confirm", job_id, save))
+            return
+        try:
+            save()
+        except OSError as exc:
+            self._show_edit_error(exc)
+
     def _on_item_changed(self, item: QTableWidgetItem) -> None:
         if self._loading:
             return
-        index = item.row() - _FIRST_DATA_ROW
-        job_id = self._current_job_id
-        if not job_id or not 0 <= index < len(self._records) or not 0 <= item.column() < len(self._columns):
-            return
-        record, column = self._records[index], self._columns[item.column()]
-        if is_correctable(record, column.schema_key):
-            field = record.fields[column.schema_key]
-            original = field["original_value"] if field.get("corrected") else field["value"]
-            typed = clean_correction(item.text())
-            if typed == clean_correction(None if original is None else str(original)):
-                # Typing the extracted value back is the same as not correcting.
-                self._client.clear_correction(job_id, record.ndg, column.schema_key)
-            else:
-                self._client.set_correction(job_id, record.ndg, column.schema_key, typed)
+        target = self._edit_target(item.row(), item.column())
+        if target:
+            self._commit_text(*target, item.text())
         # Also for a cell that is not correctable: redraw from the real state.
         QtCore.QTimer.singleShot(0, self._reload_current)
 
     def _on_editor_closed(self, *_args: object) -> None:
         if self._reload_pending:
             QtCore.QTimer.singleShot(0, self._reload_current)
+        else:
+            QtCore.QTimer.singleShot(0, self._refresh_draft)
 
     def _restore_original(self, row: int, col: int) -> None:
         index = row - _FIRST_DATA_ROW
         job_id = self._current_job_id
         if not job_id or not 0 <= index < len(self._records) or not 0 <= col < len(self._columns):
             return
-        self._client.clear_correction(job_id, self._records[index].ndg, self._columns[col].schema_key)
+        clear = partial(self._client.clear_correction, job_id, self._records[index].ndg, self._columns[col].schema_key)
+        if self._client.has_recovery:
+            self._queue_write(_EditWrite("confirm", job_id, clear))
+            return
+        try:
+            clear()
+        except OSError as exc:
+            self._show_edit_error(exc)
         self._reload_current()
 
     def _on_context_menu(self, pos: QtCore.QPoint) -> None:
@@ -426,38 +743,25 @@ class DataTableTab(QWidget):
     # ------------------------------------------------------------------ Export
 
     def _on_export_excel(self) -> None:
-        job_id = self._current_job_id
-        if not job_id or not self._records:
-            QMessageBox.warning(
-                self,
-                "Niente da esportare",
-                "Non c'è ancora niente da esportare. Avvia la cattura e attendi almeno un'estrazione.",
-            )
-            return
+        self._export.start(self, self._current_job_id)
 
-        path, _ = QFileDialog.getSaveFileName(
-            self, "Salva Excel", default_export_name(), "Excel (*.xlsx)"
-        )
-        if not path:
-            return
-
-        try:
-            # The single export path: renamed labels included.
-            written = self._client.export_workbook(job_id, path)
-        except Exception as e:  # noqa: BLE001
-            QMessageBox.critical(self, "Salvataggio non riuscito", f"Non riesco a salvare il file:\n{e}")
-            return
-
-        QMessageBox.information(
-            self,
-            "Esportazione completata",
-            f"{written} pratiche salvate in:\n{path}",
-        )
+    @QtCore.pyqtSlot(bool)
+    def _update_export_after_edit(self, pending: bool) -> None:
+        self._export.set_edits_pending(pending, self.last_write_failed)
 
     # ------------------------------------------------------------------ Public API
+
+    def leave_draft_open(self) -> None:
+        """Close the editor without treating a session change or exit as confirmation."""
+        for view in (self.table, self.table.frozen_view):
+            delegate = view.itemDelegate()
+            if isinstance(delegate, _DraftDelegate) and delegate.editor is not None:
+                delegate.closeEditor.emit(delegate.editor, QAbstractItemDelegate.EndEditHint.NoHint)
 
     def set_job_id(self, job_id: Optional[str]) -> None:
         """Chiamato da MainWindow quando si passa a questa tab."""
         if not job_id:
             return
         self._select_job(job_id)
+        if self._reload_pending:
+            self._load_table(job_id, results_only=True)

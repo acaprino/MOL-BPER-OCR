@@ -10,6 +10,8 @@ data/dataset/
   valori.csv                          la verità: una riga per valore
 ```
 
+Entrambi i percorsi OCR + LiLT usano questo archivio e producono cache, dataset e checkpoint identificabili separatamente. [Confronto e aggiornamento dei modelli](../docs/ocr-lilt.md)
+
 ## Nomi
 
 - **Pratica:** il numero di pratica (`51350695`), come sta sull'intestazione della scheda Soggetti.

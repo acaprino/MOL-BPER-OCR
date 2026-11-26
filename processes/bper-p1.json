@@ -2,7 +2,7 @@
   "id": "bper-p1",
   "name": "BPER P1",
   "title": "Lettura pratica di credito in Gestione Pratiche",
-  "description": "Sequenza di schermate che un operatore percorre per leggere una pratica di credito nell'applicativo BPER Gestione Pratiche (PEF). Il processo copre la lista pratiche in tre viste e il dettaglio della pratica in sei viste, dalle quali si estraggono i 45 campi del catalogo.",
+  "description": "Nove viste di riferimento per la lettura di una pratica in BPER Gestione Pratiche (PEF). I 45 campi comprendono anche 13 dati di Scheda Privati, applicativo separato dalle nove viste. Vedere docs/flusso-data-entry.md per i gesti e i controlli dell'operatore.",
   "sequence": 1,
   "next": null,
   "application": {
@@ -51,25 +51,25 @@
       "name": "Risultato ricerca",
       "slug": "risultato-ricerca",
       "template": "screen 1",
-      "signature": "Tabella non scorsa: sono visibili ADD, NDG, Numero, Denominazione, Tipo, Stato, Fase, Creazione, Evidenze. Una riga evidenziata.",
+      "signature": "Elenco Pratiche con il gruppo iniziale delle colonne e la barra orizzontale nella parte iniziale della corsa. La porzione leggibile delle altre colonne dipende dalla larghezza e dallo scorrimento.",
       "excludes": [
-        "nessun tooltip aperto",
-        "nessuna sidebar di navigazione a sinistra"
+        "tabella con le colonne estese o con il popup Evidenze aperto",
+        "dettaglio pratica con il Navigatore a sinistra"
       ],
       "fields": [
         "NDG",
         "Denom.",
         "Tipo",
-        "tooltip su valore campo Descrizione: BMB",
         "Stato",
         "Fase"
       ],
+      "note": "Per leggere il tooltip BMB, quando presente, tenere il puntatore sul codice Tipo della riga. È un gesto aggiuntivo in elenco, senza un template proprio. La schermata 1 di riferimento ha il popup chiuso.",
       "location": {
         "app_tab": "Elenco Pratiche",
         "phase": null,
         "step": null,
         "content_tab": null,
-        "within_page_state": "tabella non scorsa"
+        "within_page_state": "colonne iniziali, nessun tooltip"
       },
       "revisitable": true
     },
@@ -78,10 +78,10 @@
       "name": "Risultato ricerca - Colonne estese",
       "slug": "risultato-ricerca-colonne-estese",
       "template": "screen 2",
-      "signature": "Stessa lista scorsa orizzontalmente: le colonne base sono uscite dalla vista e compaiono colonne di assegnazione e date (Assegnato, Data Elic., Recapito).",
+      "signature": "Nella tabella superiore dei risultati la barra è spostata verso destra e si leggono colonne successive di assegnazione e date. ABI, NDG e denominazione possono restare fissi in entrambe le viste. Confrontare le intestazioni delle colonne mobili e la barra della tabella superiore.",
       "excludes": [
-        "nessun tooltip aperto",
-        "nessuna sidebar a sinistra"
+        "vista con le sole colonne iniziali o con il popup Evidenze aperto",
+        "dettaglio pratica con il Navigatore a sinistra"
       ],
       "fields": [
         "Creazione"
@@ -100,9 +100,10 @@
       "name": "Risultato ricerca - Tooltip mostrata",
       "slug": "risultato-ricerca-tooltip",
       "template": "screen 3",
-      "signature": "Stessa lista scorsa a destra, colonne prevalentemente temporali, CON un tooltip galleggiante aperto su una cella della riga selezionata, tipicamente su Evidenze.",
+      "signature": "Elenco Pratiche con il tooltip aperto su un codice della colonna Evidenze. Nel riferimento il codice B espone Origination BSTORE.",
       "excludes": [
-        "nessuna sidebar a sinistra"
+        "popup Tipo o Denom. anziché Evidenze",
+        "dettaglio pratica con il Navigatore a sinistra"
       ],
       "fields": [
         "Evidenze",
@@ -124,8 +125,8 @@
       "template": "screen 4",
       "signature": "Dettaglio pratica con la tabella soggetti espansa e dominante: piu' righe con ruolo, denominazione, NDG, quote.",
       "excludes": [
-        "nessuna sezione finanziaria prominente (importi, rate, garanzie)",
-        "nessun tooltip sui campi finanziari"
+        "sezione finanziaria dominante con Fidi e Garanzie",
+        "tooltip su una descrizione finanziaria"
       ],
       "fields": [
         "NDG (riga 1)",
@@ -137,11 +138,15 @@
         "NDG (riga 3)",
         "Denominazione (riga 3)",
         "Ruolo (riga 3)",
+        "NDG (riga 4, se presente)",
+        "Denominazione (riga 4, se presente)",
+        "Ruolo (riga 4, se presente)",
         "Filiale relazione"
       ],
+      "note": "La pratica di riferimento mostra tre righe. La testata identifica la pratica e la sua filiale. Nel simulatore la tabella è consultabile anche sotto Istruttoria.",
       "location": {
         "app_tab": "PEF 2.0",
-        "phase": "Istruttoria",
+        "phase": "Verifica Preliminare",
         "step": "Elenco Soggetti",
         "content_tab": null,
         "within_page_state": null
@@ -154,8 +159,9 @@
       "slug": "gestione-fidi-e-garanzie",
       "template": "screen 5",
       "signature": "Dettaglio pratica con tabella fidi (numero fido, rapporto, descrizione, scadenza, importo, tipo operazione) e tabella garanzie sottostante.",
+      "note": "I sei campi scalari dei fidi si leggono dalla prima riga visibile della tabella Fidi. Le altre celle qui elencate descrivono la tabella Garanzie visibile e non generano ulteriori colonne nelle 45 esportate.",
       "excludes": [
-        "NESSUN popup tooltip sovrapposto: e' cio' che la distingue dalle pagine 6, 7 e 8"
+        "popup su una descrizione dei Fidi o delle Garanzie"
       ],
       "fields": [
         "n° FIDO",
@@ -195,7 +201,7 @@
       "template": "screen 6",
       "signature": "Come la pagina 5, con un tooltip testuale aperto sulla colonna 'Descrizione' della tabella FIDI, nella parte centrale del layout.",
       "excludes": [
-        "il tooltip non e' sulla tabella garanzie"
+        "popup su una descrizione della tabella Garanzie"
       ],
       "fields": [
         "tooltip su valore campo Descrizione (riga 1): M. CONSAP >= 80%"
@@ -214,9 +220,10 @@
       "name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 1)",
       "slug": "gestione-fidi-tooltip-garanzie-riga1",
       "template": "screen 7",
-      "signature": "Come la pagina 5, con un tooltip aperto sulla colonna 'Descrizione' della tabella GARANZIE, in corrispondenza della PRIMA riga.",
+      "signature": "Tabella Garanzie con il popup della garanzia CONSAP DR BIS: nel riferimento la prima riga mostra la descrizione estesa con DR SOSTEGNI BIS. Nelle altre pratiche individuare la garanzia per descrizione anche se cambia riga.",
       "excludes": [
-        "il popup e' piu' in alto rispetto alla variante riga 2"
+        "tooltip IPOTECA DI PRIMO GRADO",
+        "popup di una descrizione della tabella Fidi"
       ],
       "fields": [
         "tooltip su valore campo Descrizione (riga 1): CONSAP DR BIS"
@@ -226,7 +233,7 @@
         "phase": "Istruttoria",
         "step": "Gestione Fidi e Garanzie",
         "content_tab": "Gestione Fidi e Garanzie",
-        "within_page_state": "tooltip su Descrizione garanzie, riga 1"
+        "within_page_state": "tooltip della garanzia CONSAP DR BIS, prima riga nel riferimento"
       },
       "revisitable": true
     },
@@ -235,9 +242,10 @@
       "name": "Gestione Fidi e Garanzie - Tooltip Descrizione Garanzie (riga 2)",
       "slug": "gestione-fidi-tooltip-garanzie-riga2",
       "template": "screen 8",
-      "signature": "Come la pagina 5, con un tooltip aperto sulla colonna 'Descrizione' della tabella GARANZIE, in corrispondenza della SECONDA riga.",
+      "signature": "Tabella Garanzie con il popup della garanzia IPOTECA I GR.: nel riferimento la seconda riga mostra IPOTECA DI PRIMO GRADO. Nelle altre pratiche individuare l'ipoteca per descrizione anche se cambia riga.",
       "excludes": [
-        "il popup e' piu' in basso rispetto alla variante riga 1"
+        "tooltip della garanzia CONSAP con DR SOSTEGNI BIS",
+        "popup di una descrizione della tabella Fidi"
       ],
       "fields": [
         "tooltip su valore campo Descrizione (riga 2): IPOTECA I GR."
@@ -247,7 +255,7 @@
         "phase": "Istruttoria",
         "step": "Gestione Fidi e Garanzie",
         "content_tab": "Gestione Fidi e Garanzie",
-        "within_page_state": "tooltip su Descrizione garanzie, riga 2"
+        "within_page_state": "tooltip della garanzia IPOTECA I GR., seconda riga nel riferimento"
       },
       "revisitable": true
     },
@@ -256,20 +264,22 @@
       "name": "Note da Richiesta",
       "slug": "note-da-richiesta",
       "template": "screen 9",
-      "signature": "Dettaglio pratica con il riquadro 'Nota della richiesta': un blocco di testo narrativo esteso che occupa la maggior parte dell'area contenuto.",
+      "signature": "Dettaglio pratica con la scheda Note da Richiesta attiva e il riquadro Nota della richiesta. Il titolo identifica il riquadro anche quando è chiuso o il testo è breve.",
       "excludes": [
-        "non e' un elenco di documenti con checklist e allegati"
+        "sola etichetta della scheda Note da Richiesta quando è attiva un'altra scheda",
+        "Note a Istruttoria",
+        "elenco di documenti con checklist e allegati"
       ],
       "fields": [
         "Note della richiesta"
       ],
-      "note": "La descrizione originale in prompts.json ammetteva anche 'elenco documenti con checklist e allegati'. Quella frase ha attirato decine di schermate di gestione documentale, sia di BPER sia dell'altro gestionale, dentro questa classe durante l'etichettatura del 2026-08-18. Il tratto caratterizzante e' il riquadro di note, non i documenti.",
+      "note": "La precedente descrizione ammetteva anche checklist e allegati. Nell'etichettatura del 2026-08-18 questa indicazione attirava schermate di gestione documentale. Per leggere il testo serve il riquadro Nota della richiesta aperto.",
       "location": {
         "app_tab": "PEF 2.0",
         "phase": "Istruttoria",
         "step": "Gestione Fidi e Garanzie",
         "content_tab": "Note da Richiesta",
-        "within_page_state": null
+        "within_page_state": "riquadro Nota della richiesta, aperto o chiuso"
       },
       "revisitable": true
     }
@@ -277,12 +287,12 @@
   "catchall": {
     "name": "Altro / Non riconosciuto",
     "signature": "Qualsiasi schermata che non corrisponda chiaramente a una delle pagine sopra, inclusa qualsiasi schermata di un'applicazione diversa da BPER Gestione Pratiche.",
-    "note": "Da preferire ogni volta che la corrispondenza e' ambigua. Un falso positivo consuma lo slot di una pagina per l'intero job."
+    "note": "Una corrispondenza ambigua rientra nello scarto. Un falso positivo può attribuire una lettura alla vista sbagliata. Una nuova visita può essere acquisita."
   },
   "navigation": {
     "model": "graph",
     "bidirectional": true,
-    "rationale": "L'operatore si muove liberamente: puo' tornare a una pagina gia' vista, riaprirla per un tooltip diverso, saltare a un altro passo e rientrare. Un modello a lista ordinata descrive il percorso suggerito, non quello percorso, e trattare l'ordine come vincolo produce due difetti: la guida chiede una pagina che l'operatore ha gia' davanti, e una pagina acquisita per errore non e' piu' recuperabile.",
+    "rationale": "L'operatore può tornare in elenco, cambiare passo o scheda di contenuto e riaprire un tooltip. L'ordine numerico identifica le nove viste di riferimento. Il percorso effettivo dipende dalla pratica, dal punto di partenza e dai controlli disponibili.",
     "observed_from": [
       "data/dataset/pratiche/51350695/gestione-fidi-01.png: navigatore di fase e barra schede applicative",
       "data/dataset/pratiche/51350695/note-01.png: schede di contenuto dentro un passo"
@@ -299,23 +309,23 @@
           "PEF 2.0 - Pratica: <numero>"
         ],
         "readable_from_screen": "barra schede con icone: lente per Ricerca Pratica, griglia per Elenco Pratiche, ingranaggio per la pratica aperta. La scheda attiva ha etichetta in verde acqua e sfondo chiaro.",
-        "note": "E' qui che avviene il movimento avanti/indietro piu' frequente: dalla lista alla pratica e viceversa, con un clic e in entrambi i sensi, senza perdere lo stato."
+        "note": "Le schede aperte consentono il ritorno fra elenco e pratica. Al rientro verificare riga, NDG, passo e posizione di scorrimento."
       },
       {
         "id": "navigator",
         "name": "Navigatore di fase",
         "scope": "dentro la scheda della pratica (PEF 2.0)",
         "free_movement": true,
-        "readable_from_screen": "colonna a sinistra intitolata 'Navigatore'. Ogni voce porta un'icona di stato che dichiara a che punto e' il processo.",
+        "readable_from_screen": "Nella colonna Navigatore il riquadro indica la voce aperta. Le icone indicano l'avanzamento della lavorazione e possono riferirsi a un passo diverso da quello consultato.",
         "state_markers": {
           "completato": "spunta verde",
-          "corrente": "pallino arancione, voce evidenziata e riquadrata",
+          "corrente": "pallino arancione",
           "da fare": "matita"
         },
         "phases": [
           {
             "name": "Verifica Preliminare",
-            "steps": []
+            "steps": ["Elenco Soggetti"]
           },
           {
             "name": "Istruttoria",
@@ -346,7 +356,7 @@
           "Gestione Documentale",
           "Stampe"
         ],
-        "note": "La fase corrente non va dedotta da un modello di transizioni: e' scritta sullo schermo. Leggerla e' piu' affidabile che inferirla, e da' al riconoscitore un contesto forte proprio dove e' piu' debole (le varianti con tooltip di uno stesso passo). 'Gestione Documentale' sotto Funzioni spiega le schermate documentali presenti nelle registrazioni: sono BPER, ma non appartengono a questo processo."
+        "note": "Consultare insieme la voce selezionata e il titolo dell'area di lavoro. Gestione Documentale, sotto Funzioni, porta a schermate presenti nelle registrazioni e fuori dalle nove viste."
       },
       {
         "id": "content-tabs",
@@ -363,11 +373,11 @@
         "note": "E' il livello che distingue la pagina 9 dalla 5: stesso passo, scheda diversa."
       }
     ],
-    "reachability": "Ogni pagina del processo e' raggiungibile da ogni altra cambiando al piu' un valore per livello. Non esistono passaggi a senso unico ne' pagine terminali."
+    "reachability": "Usare le schede aperte, le voci disponibili del Navigatore, le schede interne e i gesti sulla tabella. Un tooltip richiede la cella corrispondente e il relativo testo. Le pratiche possono offrire percorsi diversi."
   },
   "capture_policy": {
     "revisiting_allowed": true,
-    "rationale": "Le pagine 6, 7 e 8 si raggiungono SOLO passando dalla 5 e aprendo un tooltip diverso: impedire il ritorno a una pagina gia' acquisita impedisce di raccoglierle. Piu' in generale, l'operatore torna indietro per motivi legittimi e il sistema deve seguirlo.",
-    "implementation_gap": "Il codice attuale non rispetta questo modello. `captured_page_types` in src/edge-agent/workers/capture/bper_capture_worker.py e' a sola aggiunta: una pagina acquisita fa uscire ogni frame successivo dal ramo 'gia' acquisita', e la guida continua a chiedere la pagina successiva secondo un ordine lineare. Il solo rientro possibile e' manuale, via 'Acquisisci ora' (force_capture), che non controlla l'appartenenza a quel set. Allineare il codice a questo modello e' una modifica di comportamento e merita una decisione a se'."
+    "rationale": "Sulla stessa pagina finanziaria l'operatore può esporre la tabella e, separatamente, i tooltip disponibili. Una visita successiva può contribuire nuovi valori o consentire una verifica.",
+    "implementation_note": "La cattura si riarma al cambio dei pixel della visita. La conferma di elaborazione e la verifica dei valori sono distinte. Per le regole della guida e la gestione degli esiti vedere docs/navigazione-edge.md e ADR 0014."
   }
 }

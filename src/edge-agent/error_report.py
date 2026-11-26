@@ -1,7 +1,7 @@
 """Last-resort handler for an exception that escapes a Qt slot.
 
-PyQt6 ends the process on an unhandled exception in a slot, and the sessions and
-corrections live in memory only (ADR 0033): one slot bug would lose all unexported work.
+PyQt6 can end the process on an unhandled exception in a slot. Reporting it lets
+the operator check the last saved work and export before restarting.
 Top-level and free of `ui`/`extraction` imports, so it can be installed first thing.
 """
 
@@ -14,8 +14,8 @@ from types import TracebackType
 from typing import Callable, Optional, Type
 
 _MESSAGE = (
-    "Si è verificato un errore imprevisto. L'applicazione resta aperta: esporta subito i dati "
-    "che non vuoi perdere e poi riavviala.\n\nDettaglio: {kind}: {detail}"
+    "Si è verificato un errore imprevisto. Controlla lo stato del salvataggio, "
+    "esporta i dati disponibili e riapri l’applicazione.\n\nDettaglio: {kind}: {detail}"
 )
 
 
